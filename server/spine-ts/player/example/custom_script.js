@@ -64,6 +64,7 @@ class CharacterSwapper {
             animation: requestData["animation"],
             scaleX: 0.45,
             scaleY: 0.45,
+            maxSizePx: 350,
             // rawDataURIs: map,
             premultipliedAlpha: true,
             backgroundColor: "#00000000",
@@ -74,11 +75,6 @@ class CharacterSwapper {
                 console.log(error);
             }
         };
-        // HACK:
-        if (requestData["operator_id"] == "enemy_1526_sfsui") {
-            this.actorConfig.scaleX = 0.15;
-            this.actorConfig.scaleY = 0.15;
-        }
 
         if (this.spinePlayer == null) {
             console.log("Creating a new spine player");

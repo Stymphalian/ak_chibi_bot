@@ -73,6 +73,9 @@ module spine {
 
 		scaleX: number
 		scaleY: number
+		defaultScaleX: number
+		defaultScaleY: number
+		maxSizePx: number
 
 		/* Optional: the position and size of the viewport in world coordinates of the skeleton. Default: the setup pose bounding box. */
 		viewport: {
