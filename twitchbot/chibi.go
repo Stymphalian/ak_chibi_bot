@@ -181,10 +181,12 @@ func (c *ChibiActor) validateUpdateSetDefaultOtherwise(update *spine.OperatorInf
 	if _, ok := currentOp.Skins[update.Skin].Stances[update.ChibiType].Facings[update.Facing]; !ok {
 		update.Facing = "Front"
 	}
-	if !slices.Contains(currentOp.Skins[update.Skin].Stances[update.ChibiType].Facings[update.Facing], update.Animation) {
+
+	animations := currentOp.Skins[update.Skin].Stances[update.ChibiType].Facings[update.Facing]
+	if !slices.Contains(animations, update.Animation) {
 		update.Animation = spine.GetDefaultAnimForChibiType(update.ChibiType)
 	}
-	if !slices.Contains(currentOp.Skins[update.Skin].Stances[update.ChibiType].Facings[update.Facing], update.Animation) {
+	if !slices.Contains(animations, update.Animation) {
 		// If it still doesn't exist then just choose one randomly
 		update.Animation = currentOp.Skins[update.Skin].Stances[update.ChibiType].Facings[update.Facing][0]
 	}
@@ -302,7 +304,19 @@ func (c *ChibiActor) SetEnemy(args []string, current *spine.OperatorInfo) (strin
 // Short cut to switch to base stance, and then invoke "Move" animation
 func (c *ChibiActor) SetWalk(args []string, current *spine.OperatorInfo) (string, error) {
 	current.ChibiType = spine.CHIBI_TYPE_ENUM_BASE
-	current.Animation = "Move"
+
+	// Set the animatino to "Move". If "Move" doesn't exist in the list of
+	// animations then try to find an animation with "Move" in its name
+	moveAnimation := "Move"
+	if !slices.Contains(current.Animations, moveAnimation) {
+		for _, animation := range current.Animations {
+			if strings.Contains(animation, "Move") {
+				moveAnimation = animation
+				break
+			}
+		}
+	}
+	current.Animation = moveAnimation
 	return "", nil
 }
 
