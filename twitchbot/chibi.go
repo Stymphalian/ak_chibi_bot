@@ -215,12 +215,14 @@ func (c *ChibiActor) UpdateChibi(username string, usernameDisplay string, update
 
 func (c *ChibiActor) ChibiHelp(trimmed string) (string, error) {
 	log.Printf("!chibi_help command triggered with %v\n", trimmed)
-	msg := `!chibi commands are used to control the Arknights chibi at the bottom of the screen. ` +
-		`Examples: "!chibi Rockrock", "!chibi Lava Alter", "!chibi play Move", "!chibi skin epoque#2". ` +
-		`Use "!chibi skins" and "!chibi anims" lists available skins and animations. ` +
-		`Also change between base or battle models with "!chibi stance battle". ` +
-		`When in battle stance you can have them face front or back "!chibi face back". ` +
-		`Have fun, but please don't abuse them!`
+	msg := `!chibi to control your Arknights chibi. ` +
+		`"!chibi Rockrock" to change your operator. ` +
+		`"!chibi play Move", "!chibi skin epoque#2" to change the animation and skin. ` +
+		`"!chibi skins" and "!chibi anims" lists available skins and animations. ` +
+		`"!chibi stance battle" to change from base or battle chibis. ` +
+		`"!chibi enemy mandragora" to change into an enemy mob instead of an operator. ` +
+		`"!chibi walk" to have your chibi walk around the screen. ` +
+		`Look at the About section of the stream for more info.`
 	return msg, nil
 }
 
@@ -396,9 +398,9 @@ func (c *ChibiActor) GetChibiInfo(userName string, subInfoName string) (string, 
 	var msg string
 	switch subInfoName {
 	case "skins":
-		msg = fmt.Sprintf("Available Skins: %s", strings.Join(current.Skins, ", "))
+		msg = fmt.Sprintf("Available skins for %s: %s", current.Name, strings.Join(current.Skins, ", "))
 	case "anims":
-		msg = fmt.Sprintf("Available Animations: %s", strings.Join(current.Animations, ","))
+		msg = fmt.Sprintf("Available animations for %s: %s", current.Name, strings.Join(current.Animations, ","))
 	case "info":
 		msg = fmt.Sprintf("Current Chibi: %s, %s, %s, %s, %s", current.Name, current.Skin, current.ChibiType, current.Facing, current.Animation)
 	default:
