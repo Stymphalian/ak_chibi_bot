@@ -11,8 +11,8 @@ forwards instructions to the Runtime via websockets. It acts as a client between
 `Chibi` component and the `Runtime`.
 5. The HTTP [Server](server/main.go) which glues everything together. It is the
 entry point of the program. It connects the Twitch IRC client, and also serves
-the web files required to show the Browser spine runtime webpage. It also runs 
-the hold the spine Bridge to facilitate communication between the `Chibi` and 
+the web files required to show the Browser spine runtime webpage. It also contains
+the spine Bridge to facilitate communication between the `Chibi` and 
 the `Runtime` components.
 
 
@@ -46,13 +46,13 @@ key parts of the chibi we want.
 3. The chibi "stance" which can be either "base" or "battle". Base is the model which 
 shows up when your OPs are working in the factories or wandering the dorms. 
 "battle" stance are the models which appears in the playable maps of the game. 
-4. Front and Back is the facing direction. (i.e when deploying an operator facing up)
-they would be showing you their back instead of their face. Only "battle" chibis
+4. Front and Back is the facing direction (i.e when deploying an operator facing up
+they would be showing you their back instead of their face). Only "battle" chibis
 have a Back facing. Everything else should be put into the
 "Front" directory.
 
 The `saved_names.json` files are used for fuzzy matching on the operators
-names when issuing `!chibi` commands when selectin operators.
+names when issuing `!chibi` commands when selecting operators.
 For example `Młynar` would be very hard to type due to the non-ascii 
 character, so we have some alternative spellings like `Mlynar` 
 which can be matched against to resolve the name.

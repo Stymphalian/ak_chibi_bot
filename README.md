@@ -3,6 +3,8 @@ This is a twitch bot to allow viewers to play with an Arknights chibi on the scr
 issuing `!chibi` commands in chat. The bot runs locally on your machine meaning 
 all network requests are local to your computer except to/from the twitch chat.
 
+![Demo Image](readme_assets/demo1.png)
+
 # Example Commands
 Command Name | Description
 -----------|-----------------------
