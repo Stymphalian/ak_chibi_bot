@@ -1,0 +1,8 @@
+{
+    "broadcaster": "",
+    "channel_name": "",
+    "twitch_access_token": "",
+
+    "exclude_names": ["streamelements"],
+    "twitch_bot": ""
+}

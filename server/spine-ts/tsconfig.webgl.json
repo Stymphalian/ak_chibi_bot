@@ -1,0 +1,22 @@
+{
+	"compilerOptions": {
+		"module": "none",
+		"noImplicitAny": true,
+		"removeComments": true,
+		"preserveConstEnums": true,
+		"outFile": "build/spine-webgl.js",
+		"sourceMap": true,
+		"declaration": true,
+		"target": "ES2022",
+	},
+	"include": [
+		"core/src/**/*",
+		"webgl/src/**/*"
+	],
+	"exclude": [
+		"canvas",
+		"widget",
+		"threejs",
+		"build"	 
+	]
+}

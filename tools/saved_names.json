@@ -1,0 +1,1035 @@
+{
+    "char_285_medic2": [
+        "Lancet",
+        "Lancet-2"
+    ],
+    "char_286_cast3": [
+        "Castle",
+        "Castle-3",
+        "Castle3"
+    ],
+    "char_376_therex": [
+        "THRM",
+        "THRM-EX",
+        "Thermal EX",
+        "Thermal",
+        "Thermal X"
+    ],
+    "char_4000_jnight": [
+        "Justice Knight",
+        "'Justice Knight'"
+    ],
+    "char_4077_palico": [
+        "Palico",
+        "Terra Research Commission"
+    ],
+    "char_4091_ulika": [
+        "UOfficial",
+        "U-Official"
+    ],
+    "char_4093_frston": [
+        "Friston",
+        "Friston-3",
+        "Friston 3"
+    ],
+    "char_502_nblade": [
+        "Yato"
+    ],
+    "char_500_noirc": [
+        "Noir Corne",
+        "NoirCorne"
+    ],
+    "char_503_rang": [
+        "Rangers"
+    ],
+    "char_501_durin": [
+        "Durin"
+    ],
+    "char_009_12fce": [
+        "12F"
+    ],
+    "char_123_fang": [
+        "Fang"
+    ],
+    "char_240_wyvern": [
+        "Vanilla"
+    ],
+    "char_504_rguard": [
+        "Reserve Operator - Melee"
+    ],
+    "char_192_falco": [
+        "Plume"
+    ],
+    "char_208_melan": [
+        "Melantha"
+    ],
+    "char_281_popka": [
+        "Popukar"
+    ],
+    "char_209_ardign": [
+        "Cardigan"
+    ],
+    "char_122_beagle": [
+        "Beagle"
+    ],
+    "char_514_rdfend": [
+        "Reserve Operator - Defender"
+    ],
+    "char_284_spot": [
+        "Spot"
+    ],
+    "char_124_kroos": [
+        "Kroos"
+    ],
+    "char_211_adnach": [
+        "Adnachiel"
+    ],
+    "char_507_rsnipe": [
+        "Reserve Operator - Sniper"
+    ],
+    "char_121_lava": [
+        "Lava"
+    ],
+    "char_120_hibisc": [
+        "Hibiscus"
+    ],
+    "char_212_ansel": [
+        "Ansel"
+    ],
+    "char_506_rmedic": [
+        "Reserve Operator - Logistics"
+    ],
+    "char_210_stward": [
+        "Steward"
+    ],
+    "char_505_rcast": [
+        "Reserve Operator - Caster"
+    ],
+    "char_278_orchid": [
+        "Orchid"
+    ],
+    "char_141_nights": [
+        "Haze"
+    ],
+    "char_109_fmout": [
+        "Gitano"
+    ],
+    "char_253_greyy": [
+        "Greyy"
+    ],
+    "char_328_cammou": [
+        "Click"
+    ],
+    "char_469_indigo": [
+        "Indigo"
+    ],
+    "char_4004_pudd": [
+        "Pudding"
+    ],
+    "char_235_jesica": [
+        "Jessica"
+    ],
+    "char_126_shotst": [
+        "Meteor"
+    ],
+    "char_190_clour": [
+        "Vermeil"
+    ],
+    "char_133_mm": [
+        "May"
+    ],
+    "char_118_yuki": [
+        "Shirayuki"
+    ],
+    "char_440_pinecn": [
+        "Pinecone"
+    ],
+    "char_302_glaze": [
+        "Ambriel"
+    ],
+    "char_366_acdrop": [
+        "Aciddrop"
+    ],
+    "char_4062_totter": [
+        "Totter"
+    ],
+    "char_4100_caper": [
+        "Caper"
+    ],
+    "char_198_blackd": [
+        "Courier"
+    ],
+    "char_149_scave": [
+        "Scavenger"
+    ],
+    "char_290_vigna": [
+        "Vigna"
+    ],
+    "char_151_myrtle": [
+        "Myrtle"
+    ],
+    "char_452_bstalk": [
+        "Beanstalk"
+    ],
+    "char_130_doberm": [
+        "Dobermann"
+    ],
+    "char_289_gyuki": [
+        "Matoimaru"
+    ],
+    "char_159_peacok": [
+        "Conviction"
+    ],
+    "char_193_frostl": [
+        "Frostleaf"
+    ],
+    "char_127_estell": [
+        "Estelle"
+    ],
+    "char_185_frncat": [
+        "Mousse"
+    ],
+    "char_301_cutter": [
+        "Cutter"
+    ],
+    "char_337_utage": [
+        "Utage"
+    ],
+    "char_271_spikes": [
+        "Arene"
+    ],
+    "char_4067_lolxh": [
+        "Luo Xiaohei"
+    ],
+    "char_4063_quartz": [
+        "Quartz"
+    ],
+    "char_491_humus": [
+        "Humus"
+    ],
+    "char_237_gravel": [
+        "Gravel"
+    ],
+    "char_272_strong": [
+        "Jaye"
+    ],
+    "char_236_rope": [
+        "Rope"
+    ],
+    "char_117_myrrh": [
+        "Myrrh"
+    ],
+    "char_187_ccheal": [
+        "Gavial"
+    ],
+    "char_298_susuro": [
+        "Sussurro"
+    ],
+    "char_181_flower": [
+        "Perfumer"
+    ],
+    "char_385_finlpp": [
+        "Purestream"
+    ],
+    "char_4041_chnut": [
+        "Chestnut"
+    ],
+    "char_199_yak": [
+        "Matterhorn"
+    ],
+    "char_150_snakek": [
+        "Cuora"
+    ],
+    "char_381_bubble": [
+        "Bubble"
+    ],
+    "char_196_sunbr": [
+        "Gummy"
+    ],
+    "char_260_durnar": [
+        "Durnar",
+        "Dur-nar"
+    ],
+    "char_110_deepcl": [
+        "Deepcolor"
+    ],
+    "char_183_skgoat": [
+        "Earthspirit"
+    ],
+    "char_258_podego": [
+        "Podenco"
+    ],
+    "char_484_robrta": [
+        "Roberta"
+    ],
+    "char_355_ethan": [
+        "Ethan"
+    ],
+    "char_277_sqrrel": [
+        "Shaw"
+    ],
+    "char_4107_vrdant": [
+        "Verdant"
+    ],
+    "char_128_plosis": [
+        "Ptilopsis"
+    ],
+    "char_275_breeze": [
+        "Breeze"
+    ],
+    "char_115_headbr": [
+        "Zima"
+    ],
+    "char_102_texas": [
+        "Texas"
+    ],
+    "char_349_chiave": [
+        "Chiave"
+    ],
+    "char_488_buildr": [
+        "Poncirus"
+    ],
+    "char_513_apionr": [
+        "Tulip"
+    ],
+    "char_261_sddrag": [
+        "Reed"
+    ],
+    "char_496_wildmn": [
+        "Wild Mane"
+    ],
+    "char_401_elysm": [
+        "Elysium"
+    ],
+    "char_476_blkngt": [
+        "Blacknight"
+    ],
+    "char_497_ctable": [
+        "Cantabile"
+    ],
+    "char_4017_puzzle": [
+        "Puzzle"
+    ],
+    "char_308_swire": [
+        "Swire"
+    ],
+    "char_265_sophia": [
+        "Whislash"
+    ],
+    "char_4106_bryota": [
+        "Bryophyta"
+    ],
+    "char_106_franka": [
+        "Franka"
+    ],
+    "char_131_flameb": [
+        "Flamebringer"
+    ],
+    "char_154_morgan": [
+        "Morgan"
+    ],
+    "char_508_aguard": [
+        "Sharp"
+    ],
+    "char_155_tiger": [
+        "Indra"
+    ],
+    "char_415_flint": [
+        "Flint"
+    ],
+    "char_157_dagda": [
+        "Dagda"
+    ],
+    "char_140_whitew": [
+        "Lappland"
+    ],
+    "char_294_ayer": [
+        "Ayerscarpe"
+    ],
+    "char_4083_chimes": [
+        "Wind Chimes"
+    ],
+    "char_252_bibeak": [
+        "Bibeak"
+    ],
+    "char_459_tachak": [
+        "Tachanka"
+    ],
+    "char_143_ghost": [
+        "Specter"
+    ],
+    "char_356_broca": [
+        "Broca"
+    ],
+    "char_274_astesi": [
+        "Astesia"
+    ],
+    "char_333_sidero": [
+        "Sideroca"
+    ],
+    "char_475_akafyu": [
+        "Akafuyu"
+    ],
+    "char_1030_noirc2": [
+        "Noir Corne Alter",
+        "Rathalos S Noir Corne",
+        "NoirCorne Alter",
+        "Rathalos",
+        "NoirCorne 2",
+        "Noir Corne 2"
+    ],
+    "char_421_crow": [
+        "La Pluma"
+    ],
+    "char_4066_highmo": [
+        "Highmore"
+    ],
+    "char_486_takila": [
+        "Tequila"
+    ],
+    "char_129_bluep": [
+        "Blue Poison"
+    ],
+    "char_204_platnm": [
+        "Platinum"
+    ],
+    "char_367_swllow": [
+        "GreyThroat"
+    ],
+    "char_511_asnipe": [
+        "Stormeye"
+    ],
+    "char_365_aprl": [
+        "April"
+    ],
+    "char_1021_kroos2": [
+        "Kroos Alter",
+        "Kroos the Keen Glint",
+        "Kroos 2",
+        "Kroos2"
+    ],
+    "char_498_inside": [
+        "Insider"
+    ],
+    "char_219_meteo": [
+        "Meteorite"
+    ],
+    "char_379_sesa": [
+        "Sesa"
+    ],
+    "char_4078_bdhkgt": [
+        "Jieyun"
+    ],
+    "char_279_excu": [
+        "Executor"
+    ],
+    "char_346_aosta": [
+        "Aosta"
+    ],
+    "char_002_amiya": [
+        "Amiya"
+    ],
+    "char_405_absin": [
+        "Absinthe"
+    ],
+    "char_411_tomimi": [
+        "Tomimi"
+    ],
+    "char_466_qanik": [
+        "Qanipalaat"
+    ],
+    "char_166_skfire": [
+        "Skyfire"
+    ],
+    "char_509_acast": [
+        "Pith"
+    ],
+    "char_306_leizi": [
+        "Leizi"
+    ],
+    "char_135_halo": [
+        "Astgenne"
+    ],
+    "char_344_beewax": [
+        "Beeswax"
+    ],
+    "char_373_lionhd": [
+        "Leonhardt"
+    ],
+    "char_341_sntlla": [
+        "Santalla"
+    ],
+    "char_388_mint": [
+        "Mint"
+    ],
+    "char_338_iris": [
+        "Iris"
+    ],
+    "char_297_hamoni": [
+        "Harmonie"
+    ],
+    "char_4110_delphn": [
+        "Delphine"
+    ],
+    "char_1011_lava2": [
+        "Lava Alter",
+        "Lava the Purgatory",
+        "Lava 2"
+    ],
+    "char_489_serum": [
+        "Corroserum"
+    ],
+    "char_4013_kjera": [
+        "Kjera"
+    ],
+    "char_4040_rockr": [
+        "Rockrock"
+    ],
+    "char_4054_malist": [
+        "Minimalist"
+    ],
+    "char_499_kaitou": [
+        "Diamante"
+    ],
+    "char_242_otter": [
+        "Mayer"
+    ],
+    "char_336_folivo": [
+        "Scene"
+    ],
+    "char_108_silent": [
+        "Silence"
+    ],
+    "char_171_bldsk": [
+        "Warfarin"
+    ],
+    "char_345_folnic": [
+        "Folinic"
+    ],
+    "char_510_amedic": [
+        "Touch"
+    ],
+    "char_348_ceylon": [
+        "Ceylon"
+    ],
+    "char_436_whispr": [
+        "Whisperain"
+    ],
+    "char_402_tuye": [
+        "Tuye"
+    ],
+    "char_473_mberry": [
+        "Mulberry"
+    ],
+    "char_449_glider": [
+        "Honeyberry"
+    ],
+    "char_1024_hbisc2": [
+        "Hibiscus Alter",
+        "Hibiscus the Purifier",
+        "Hibiscus 2",
+        "HibiAlter"
+    ],
+    "char_494_vendla": [
+        "Vendela"
+    ],
+    "char_4071_peper": [
+        "Paprika"
+    ],
+    "char_148_nearl": [
+        "Nearl"
+    ],
+    "char_226_hmau": [
+        "Hung"
+    ],
+    "char_4109_baslin": [
+        "Bassline"
+    ],
+    "char_144_red": [
+        "Projekt Red",
+        "Project Red",
+        "Red"
+    ],
+    "char_243_waaifu": [
+        "Waai Fu"
+    ],
+    "char_214_kafka": [
+        "Kafka"
+    ],
+    "char_455_nothin": [
+        "Mr. Nothing",
+        "Mr Nothing",
+        "MrNothing"
+    ],
+    "char_107_liskam": [
+        "Liskarm"
+    ],
+    "char_201_moeshd": [
+        "Croissant"
+    ],
+    "char_325_bison": [
+        "Bison"
+    ],
+    "char_163_hpsts": [
+        "Vulcan"
+    ],
+    "char_378_asbest": [
+        "Asbestos"
+    ],
+    "char_512_aprot": [
+        "Shalem"
+    ],
+    "char_4025_aprot2": [
+        "Shalem"
+    ],
+    "char_4047_pianst": [
+        "Czerny"
+    ],
+    "char_457_blitz": [
+        "Blitz"
+    ],
+    "char_304_zebra": [
+        "Heavyrain"
+    ],
+    "char_431_ashlok": [
+        "Ashlock"
+    ],
+    "char_493_firwhl": [
+        "Firewhistle"
+    ],
+    "char_422_aurora": [
+        "Aurora"
+    ],
+    "char_464_cement": [
+        "Cement"
+    ],
+    "char_145_prove": [
+        "Provence"
+    ],
+    "char_4006_melnte": [
+        "Melanite"
+    ],
+    "char_158_milu": [
+        "Firewatch"
+    ],
+    "char_218_cuttle": [
+        "Andreana"
+    ],
+    "char_4014_lunacu": [
+        "Lunacub"
+    ],
+    "char_363_toddi": [
+        "Toddifons"
+    ],
+    "char_4043_erato": [
+        "Erato"
+    ],
+    "char_1027_greyy2": [
+        "Greyy Alter",
+        "Greyy the Lightningbearer",
+        "Greyy 2"
+    ],
+    "char_4104_coldst": [
+        "Coldshot"
+    ],
+    "char_4015_spuria": [
+        "Spuria"
+    ],
+    "char_173_slchan": [
+        "Cliffheart"
+    ],
+    "char_383_snsant": [
+        "Snowsant"
+    ],
+    "char_4105_almond": [
+        "Almond"
+    ],
+    "char_174_slbell": [
+        "Pramanix"
+    ],
+    "char_254_vodfox": [
+        "Shamare"
+    ],
+    "char_195_glassb": [
+        "Istina"
+    ],
+    "char_326_glacus": [
+        "Glaucus"
+    ],
+    "char_4032_provs": [
+        "Proviso"
+    ],
+    "char_433_windft": [
+        "Windflit"
+    ],
+    "char_101_sora": [
+        "Sora"
+    ],
+    "char_4045_heidi": [
+        "Heidi"
+    ],
+    "char_343_tknogi": [
+        "Tsukinogi"
+    ],
+    "char_4019_ncdeer": [
+        "Nine-Colored Deer"
+    ],
+    "char_492_quercu": [
+        "Quercus"
+    ],
+    "char_4102_threye": [
+        "Valarqvin"
+    ],
+    "char_215_mantic": [
+        "Manticore"
+    ],
+    "char_478_kirara": [
+        "Kirara"
+    ],
+    "char_241_panda": [
+        "FEater"
+    ],
+    "char_4036_forcer": [
+        "Enforcer"
+    ],
+    "char_451_robin": [
+        "Robin"
+    ],
+    "char_458_rfrost": [
+        "Frost"
+    ],
+    "char_369_bena": [
+        "Bena"
+    ],
+    "char_4016_kazema": [
+        "Kazemaru"
+    ],
+    "char_103_angel": [
+        "Exusiai"
+    ],
+    "char_332_archet": [
+        "Archetto"
+    ],
+    "char_456_ash": [
+        "Ash"
+    ],
+    "char_340_shwaz": [
+        "Schwarz"
+    ],
+    "char_4055_bgsnow": [
+        "Pozemka",
+        "Pozëmka"
+    ],
+    "char_430_fartth": [
+        "Fartooth"
+    ],
+    "char_113_cqbw": [
+        "W"
+    ],
+    "char_300_phenxi": [
+        "Fiammetta"
+    ],
+    "char_197_poca": [
+        "Rosa"
+    ],
+    "char_2012_typhon": [
+        "Typhon"
+    ],
+    "char_391_rosmon": [
+        "Rosmontis"
+    ],
+    "char_1013_chen2": [
+        "Chen Alter",
+        "Ch'en Alter",
+        "Ch'en the Holungday",
+        "Chen 2",
+        "Chen2"
+    ],
+    "char_112_siege": [
+        "Siege"
+    ],
+    "char_222_bpipe": [
+        "Bagpipe"
+    ],
+    "char_362_saga": [
+        "Saga"
+    ],
+    "char_479_sleach": [
+        "Saileach"
+    ],
+    "char_420_flamtl": [
+        "Flametail"
+    ],
+    "char_427_vigil": [
+        "Vigil"
+    ],
+    "char_249_mlyss": [
+        "Muelsyse"
+    ],
+    "char_4087_ines": [
+        "Ines"
+    ],
+    "char_134_ifrit": [
+        "Ifrit"
+    ],
+    "char_213_mostma": [
+        "Mostima"
+    ],
+    "char_180_amgoat": [
+        "Eyja",
+        "Eyjafjalla"
+    ],
+    "char_2013_cerber": [
+        "Ceobe"
+    ],
+    "char_4027_heyak": [
+        "Ho'olheyak",
+        "Holoheyak",
+        "Hoolheyak",
+        "Ho'loheyak"
+    ],
+    "char_2015_dusk": [
+        "Dusk"
+    ],
+    "char_472_pasngr": [
+        "Passenger"
+    ],
+    "char_426_billro": [
+        "Carnelian"
+    ],
+    "char_4080_lin": [
+        "Lin"
+    ],
+    "char_377_gdglow": [
+        "Goldenglow"
+    ],
+    "char_4046_ebnhlz": [
+        "Ebenholz"
+    ],
+    "char_206_gnosis": [
+        "Gnosis"
+    ],
+    "char_291_aglina": [
+        "Angelina"
+    ],
+    "char_358_lisa": [
+        "Suzuran"
+    ],
+    "char_248_mgllan": [
+        "Magallan"
+    ],
+    "char_1012_skadi2": [
+        "Skadi Alter",
+        "Skadi the Corrupting Heart",
+        "Skadi2",
+        "Skadi 2"
+    ],
+    "char_1031_slent2": [
+        "Silence Alter",
+        "Silence the Paradigmatic",
+        "Silence 2",
+        "Silence2"
+    ],
+    "char_2023_ling": [
+        "Ling"
+    ],
+    "char_4072_ironmn": [
+        "Stainless"
+    ],
+    "char_245_cello": [
+        "Virtuosa"
+    ],
+    "char_250_phatom": [
+        "Phantom"
+    ],
+    "char_1028_texas2": [
+        "Texas Alter",
+        "Texas the Omertosa",
+        "Texas 2",
+        "Texas2"
+    ],
+    "char_1029_yato2": [
+        "Yato Alter",
+        "Kirin R Yato",
+        "Yato2",
+        "Yato 2"
+    ],
+    "char_322_lmlee": [
+        "Lee"
+    ],
+    "char_1033_swire2": [
+        "Swire Alter",
+        "Swire the Elegant Wit",
+        "Swire 2",
+        "Swire2"
+    ],
+    "char_400_weedy": [
+        "Weedy"
+    ],
+    "char_225_haak": [
+        "Aak"
+    ],
+    "char_474_glady": [
+        "Gladiia"
+    ],
+    "char_437_mizuki": [
+        "Mizuki"
+    ],
+    "char_1023_ghost2": [
+        "Specter Alter",
+        "Specter the Unchained",
+        "Specter 2",
+        "Specter2"
+    ],
+    "char_4048_doroth": [
+        "Dorothy"
+    ],
+    "char_147_shining": [
+        "Shining"
+    ],
+    "char_179_cgbird": [
+        "Nightingale"
+    ],
+    "char_003_kalts": [
+        "Kal'tsit",
+        "Kaltsit"
+    ],
+    "char_4042_lumen": [
+        "Lumen"
+    ],
+    "char_1016_agoat2": [
+        "Eyja Alter",
+        "Eyjafjalla the Hvít Aska",
+        "Eyjafjalla Alter",
+        "EyjaAlter",
+        "Eyja 2",
+        "Eyja2"
+    ],
+    "char_1020_reed2": [
+        "Reed Alter",
+        "Reed the Flame Shadow",
+        "Reed2",
+        "Reed 2"
+    ],
+    "char_136_hsguma": [
+        "Hoshiguma"
+    ],
+    "char_202_demkni": [
+        "Saria"
+    ],
+    "char_423_blemsh": [
+        "Blemishine"
+    ],
+    "char_2014_nian": [
+        "Nian"
+    ],
+    "char_311_mudrok": [
+        "Mudrock"
+    ],
+    "char_4065_judge": [
+        "Penance"
+    ],
+    "char_416_zumama": [
+        "Eunectes"
+    ],
+    "char_4039_horn": [
+        "Horn"
+    ],
+    "char_1034_jesca2": [
+        "Jessica Alter",
+        "Jessica the Liberated",
+        "Jessica 2",
+        "Jessica2"
+    ],
+    "char_264_f12yin": [
+        "Mountain"
+    ],
+    "char_2024_chyue": [
+        "Chongyue"
+    ],
+    "char_172_svrash": [
+        "SilverAsh"
+    ],
+    "char_293_thorns": [
+        "Thorns"
+    ],
+    "char_4082_qiubai": [
+        "Qiubai"
+    ],
+    "char_4088_hodrer": [
+        "Hoederer"
+    ],
+    "char_010_chen": [
+        "Ch'en",
+        "Chen"
+    ],
+    "char_4009_irene": [
+        "Irene"
+    ],
+    "char_017_huang": [
+        "Blaze"
+    ],
+    "char_1026_gvial2": [
+        "Gavial Alter",
+        "Gavial the Invincible",
+        "Gavial 2",
+        "Gavial2"
+    ],
+    "char_350_surtr": [
+        "Surtr"
+    ],
+    "char_4098_vvana": [
+        "Viviana"
+    ],
+    "char_188_helage": [
+        "Hellagur"
+    ],
+    "char_485_pallas": [
+        "Pallas"
+    ],
+    "char_1014_nearl2": [
+        "Nearl Alter",
+        "Nearl the Radiant Knight",
+        "NTRKnight",
+        "Nearl 2",
+        "Nearl2"
+    ],
+    "char_4011_lessng": [
+        "Lessing"
+    ],
+    "char_1032_excu2": [
+        "Executor Alter",
+        "Executor the Ex Foedere",
+        "Executor2",
+        "Executor 2"
+    ],
+    "char_4064_mlynar": [
+        "Mlynar",
+        "Młynar",
+        "Mylnar"
+    ],
+    "char_230_savage": [
+        "Savage"
+    ],
+    "char_282_catap": [
+        "Catapult"
+    ],
+    "char_283_midn": [
+        "Midnight"
+    ],
+    "char_137_brownb": [
+        "Beehunter"
+    ],
+    "char_347_jaksel": [
+        "Jackie"
+    ],
+    "char_164_nightm": [
+        "Nightmare"
+    ],
+    "char_220_grani": [
+        "Grani"
+    ],
+    "char_263_skadi": [
+        "Skadi"
+    ]
+}
