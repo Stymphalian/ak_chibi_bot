@@ -304,14 +304,14 @@ func (s *SpineAssetMap) Contains(operatorId string, skin string, chibiType Chibi
 
 type CommonNames struct {
 	operatorIdToNames map[string]([]string)
-	namesToOperatorId map[string]string
+	namesToOperatorId map[string]([]string)
 	allNames          []string
 }
 
 func NewCommonNames() *CommonNames {
 	return &CommonNames{
 		operatorIdToNames: make(map[string]([]string)),
-		namesToOperatorId: make(map[string]string),
+		namesToOperatorId: make(map[string]([]string)),
 		allNames:          make([]string, 0),
 	}
 }
@@ -327,12 +327,27 @@ func (s *CommonNames) Load(assetFilePath string) error {
 		log.Fatal(err)
 	}
 
-	nameToOperatorId := make(map[string]string)
+	nameToOperatorId := make(map[string][]string)
 	allNames := make([]string, len(savedNames))
+
+	dupes := make([]string, 0)
 	for operatorId, names := range savedNames {
 		for _, name := range names {
-			nameToOperatorId[name] = operatorId
+			if _, ok := nameToOperatorId[name]; !ok {
+				nameToOperatorId[name] = make([]string, 0)
+			}
+			if len(nameToOperatorId[name]) > 0 {
+				dupes = append(dupes, name)
+			}
+			nameToOperatorId[name] = append(nameToOperatorId[name], operatorId)
 			allNames = append(allNames, name)
+		}
+	}
+
+	if len(dupes) > 0 {
+		//A7, EB, SA1, SA2
+		for _, name := range dupes {
+			log.Printf("Duplicate names: %s\n", name)
 		}
 	}
 
@@ -369,13 +384,19 @@ func (s *CommonNames) GetCanonicalName(operatorId string) string {
 }
 
 func (s *CommonNames) IsMatch(name string) (string, bool) {
-	if operatorId, ok := s.namesToOperatorId[name]; ok {
-		return operatorId, true
+	if operatorIds, ok := s.namesToOperatorId[name]; ok {
+		if len(operatorIds) != 1 {
+			return "", false
+		}
+		return operatorIds[0], true
 	}
 	// TODO: Improve this O(n) algorithm
-	for operatorName, operatorId := range s.namesToOperatorId {
+	for operatorName, operatorIds := range s.namesToOperatorId {
 		if strings.EqualFold(operatorName, name) {
-			return operatorId, true
+			if len(operatorIds) != 1 {
+				return "", false
+			}
+			return operatorIds[0], true
 		}
 	}
 	return "", false
@@ -386,15 +407,23 @@ func (s *CommonNames) FindMatchs(userInput string, numSuggestions int) (output [
 	sort.Sort(rankedMatches)
 
 	set := make(map[string]bool)
+	out := false
 	for _, match := range rankedMatches {
-		log.Println(match)
-		operatorId := s.namesToOperatorId[match.Target]
-		if _, ok := set[operatorId]; !ok {
-			set[operatorId] = true
-			output = append(output, operatorId)
+		log.Printf("Found multiple matches: %v\n", match)
+		operatorIds := s.namesToOperatorId[match.Target]
+		for _, operatorId := range operatorIds {
+
+			if _, ok := set[operatorId]; !ok {
+				set[operatorId] = true
+				output = append(output, operatorId)
+			}
 			if len(output) >= numSuggestions {
+				out = true
 				break
 			}
+		}
+		if out {
+			break
 		}
 	}
 	return

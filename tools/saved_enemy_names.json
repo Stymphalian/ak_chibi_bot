@@ -291,7 +291,8 @@
         "Shielded Senior Caster",
         "A7"
     ],
-    "enemy_1037_lunsbr": [
+    "enemy_1037_lunsbr": [],
+    "enemy_1037_lunsabr": [
         "Spec Ops Soldier",
         "33"
     ],
@@ -331,11 +332,13 @@
         "Frost",
         "D9"
     ],
-    "enemy_1043_zomsbr": [
+    "enemy_1043_zomsbr": [],
+    "enemy_1043_zomsbr_2": [],
+    "enemy_1043_zomsabr": [
         "Possessed Soldier",
         "P1"
     ],
-    "enemy_1043_zomsbr_2": [
+    "enemy_1043_zomsabr_2": [
         "Possessed Soldier Leader",
         "P2"
     ],
@@ -417,7 +420,7 @@
     ],
     "enemy_1054_norshd_2": [
         "Heavy Defender Type-S",
-        "P10"
+        "P10 Defender"
     ],
     "enemy_1055_ganman": [
         "Sicilian",
@@ -1333,14 +1336,16 @@
         "Dublinn Shadowcaster Leader",
         "DU8"
     ],
-    "enemy_1169_duphlx": [
+    "enemy_1169_duphx": [
         "Dublinn Phalanx Infantry",
         "DU9"
     ],
-    "enemy_1169_duphlx_2": [
+    "enemy_1169_duphx_2": [
         "Dublinn Phalanx Commander",
         "DU10"
     ],
+    "enemy_1169_duphlx": [],
+    "enemy_1169_duphlx_2": [],
     "enemy_1170_dushld": [
         "Dublinn Heavy Defender",
         "DU11"
@@ -1677,10 +1682,7 @@
         "Iron Lampstand",
         "AN32"
     ],
-    "enemy_1211_msfsui": [
-        "Wisp",
-        "AN33"
-    ],
+    "enemy_1211_msfsui": [],
     "enemy_1212_mtrfol": [
         "Pathfinder Legionarius",
         "SK1"
@@ -1831,36 +1833,33 @@
     ],
     "enemy_1230_dsbudr_2": [
         "Nourished Founder",
-        "SM16"
-    ],
-    "enemy_1230_dsbudr_4": [
         "Regressed Founder",
+        "SM16",
         "SM17"
     ],
+    "enemy_1230_dsbudr_4": [],
     "enemy_1231_dsrunr": [
         "Nethersea Predator",
         "SM18"
     ],
     "enemy_1231_dsrunr_2": [
         "Nourished Predator",
-        "SM19"
-    ],
-    "enemy_1231_dsrunr_4": [
         "Regressed Predator",
+        "SM19",
         "SM20"
     ],
+    "enemy_1231_dsrunr_4": [],
     "enemy_1232_dssalr": [
         "Nethersea Brandguider",
         "SM21"
     ],
     "enemy_1232_dssalr_2": [
         "Nourished Brandguider",
+        "Regressed Brandguider",
+        "SM23",
         "SM22"
     ],
-    "enemy_1232_dssalr_4": [
-        "Regressed Brandguider",
-        "SM23"
-    ],
+    "enemy_1232_dssalr_4": [],
     "enemy_1233_dsshtr": [
         "Nethersea Spewer",
         "SM24"
@@ -1869,34 +1868,29 @@
         "Nourished Spewer",
         "SM25"
     ],
-    "enemy_1233_dsshtr_4": [
-        "Regressed Spewer",
-        "SM26"
-    ],
+    "enemy_1233_dsshtr_4": [],
     "enemy_1234_dsubrl": [
         "Nethersea Swarmcaller",
         "SM27"
     ],
     "enemy_1234_dsubrl_2": [
         "Nourished Swarmcaller",
-        "SM28"
-    ],
-    "enemy_1234_dsubrl_4": [
         "Regressed Swarmcaller",
+        "SM28",
         "SM29"
     ],
+    "enemy_1234_dsubrl_4": [],
     "enemy_1235_dsbskr": [
         "Nethersea Reefbreaker",
         "SM30"
     ],
     "enemy_1235_dsbskr_2": [
         "Nourished Reefbreaker",
-        "SM31"
-    ],
-    "enemy_1235_dsbskr_4": [
         "Regressed Reefbreaker",
+        "SM31",
         "SM32"
     ],
+    "enemy_1235_dsbskr_4": [],
     "enemy_1238_ltmob": [
         "Street Layabout",
         "LE1"
@@ -2453,18 +2447,14 @@
         "Kouaku Cautelotaur",
         "HS18"
     ],
-    "enemy_1312_ymillu": [
-        "Winters Void",
-        "SH17"
-    ],
+    "enemy_1312_ymillu": [],
     "enemy_1313_wdfmr": [
         "Norport Civilian",
-        "LUD5"
-    ],
-    "enemy_1313_wdfmr_2": [
         "Norport Spy",
+        "LUD5",
         "LUD6"
     ],
+    "enemy_1313_wdfmr_2": [],
     "enemy_1314_wdnjd": [
         "Pathfinder Spy",
         "LUD7"
@@ -2613,10 +2603,7 @@
         "Traffic Officer Captain",
         "LT18"
     ],
-    "enemy_1334_ristar": [
-        "Planetary Debris",
-        "KW0"
-    ],
+    "enemy_1334_ristar": [],
     "enemy_1335_bldrat": [
         "Gnawbeast",
         "HE1"
@@ -2679,12 +2666,11 @@
     ],
     "enemy_3005_lpeopl": [
         "Monastery Inhabitant",
-        "SA1"
-    ],
-    "enemy_3005_lpeopl_2": [
-        "Monastery Inhabitant",
+        "Monastery Inhabitant 2",
+        "SA1",
         "SA2"
     ],
+    "enemy_3005_lpeopl_2": [],
     "enemy_1344_ddlamb": [
         "Hot Spring Mischievous Rascal",
         "FF1"
@@ -3004,10 +2990,7 @@
         "Pathshaper Fractal",
         "SY6"
     ],
-    "enemy_2040_syrott": [
-        "Isharmlas Tears",
-        "SY7"
-    ],
+    "enemy_2040_syrott": [],
     "enemy_2041_syjely": [
         "Izumiks Offspring",
         "SY8"
@@ -3036,10 +3019,7 @@
         "Testaceous Vinecreeps",
         "EJ5"
     ],
-    "enemy_2047_smtree": [
-        "Silvernwhite Bulwark",
-        "-"
-    ],
+    "enemy_2047_smtree": [],
     "enemy_4001_toxcar": [
         "Retrofitted Gastruck",
         "MU1"
@@ -3077,7 +3057,6 @@
         "TA"
     ],
     "enemy_1504_cqbw": [
-        "W",
         "W"
     ],
     "enemy_1505_frstar": [
@@ -3208,20 +3187,15 @@
         "Ya",
         "YA01"
     ],
-    "enemy_1538_ymmons_2": [
-        "Mirage",
-        "YA02"
-    ],
-    "enemy_1538_ymmons_3": [
-        "Delusion",
-        "YA03"
-    ],
+    "enemy_1538_ymmons_2": [],
+    "enemy_1538_ymmons_3": [],
     "enemy_1537_mhrors": [
         "Rathalos",
         "6935"
     ],
     "enemy_1539_reid": [
-        "Hateful Avenger",
+        "Red",
+        "The Hateful Avenger",
         "A15"
     ],
     "enemy_1540_wdncr": [
@@ -3229,7 +3203,7 @@
         "EB"
     ],
     "enemy_1541_wdslms": [
-        "Damazti Cluster",
+        "Damazti Cluster Citizen",
         "DC3"
     ],
     "enemy_1542_wdslm": [
@@ -3400,18 +3374,9 @@
         "Self-Driving Recon Cart",
         "SMC0"
     ],
-    "enemy_5008_cstrwd": [
-        "The Boons of Art!",
-        "-"
-    ],
-    "enemy_5009_shtrwd": [
-        "The Clutchness of Art!",
-        "-"
-    ],
-    "enemy_5010_catrdg": [
-        "Weaksauce",
-        "-"
-    ],
+    "enemy_5008_cstrwd": [],
+    "enemy_5009_shtrwd": [],
+    "enemy_5010_catrdg": [],
     "enemy_6001_trsgst": [
         "Fleet-footed Thief",
         "DL1"
@@ -3432,10 +3397,7 @@
         "Spherical Colossus",
         "DL5"
     ],
-    "enemy_6006_fystone": [
-        "Crude Sphere",
-        "DL6"
-    ],
+    "enemy_6006_fystone": [],
     "enemy_6007_mtslm": [
         "Drifting Cabin",
         "DL7"
@@ -3532,10 +3494,11 @@
         "Consortium of Pincers",
         "SD13"
     ],
-    "enemy_7007_xbbird": [
+    "enemy_7007_xbbird_3": [
         "Sandfall Crystalhoof",
-        "SD14"
+        "SD14"        
     ],
+    "enemy_7007_xbbird": [],
     "enemy_7008_wrkwrk": [
         "Basic Harvester",
         "SD15"
@@ -3569,16 +3532,6 @@
         "SFR02"
     ],
     "enemy_8001_flmlod": [
-        "Sverdsmeltr",
-        "Sverdsmeltr, Guardian Ember of the King",
-        "SFR01"
-    ],
-    "enemy_8001_flmlod_2": [
-        "Sverdsmeltr",
-        "Sverdsmeltr, Guardian Ember of the King",
-        "SFR01"
-    ],
-    "enemy_8001_flmlod_3": [
         "Sverdsmeltr",
         "Sverdsmeltr, Guardian Ember of the King",
         "SFR01"

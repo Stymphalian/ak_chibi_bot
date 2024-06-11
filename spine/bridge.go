@@ -61,6 +61,23 @@ func NewSpineBridge(assetDir string, config *misc.TwitchConfig) (*SpineBridge, e
 	if err := s.EnemyCommonNames.Load(filepath.Join(assetDir, "saved_enemy_names.json")); err != nil {
 		return nil, err
 	}
+
+	// Check for missing assets
+	for enemyId, characterIds := range s.EnemyCommonNames.operatorIdToNames {
+		if _, ok := s.EnemyAssetMap.Data[enemyId]; !ok {
+			if len(characterIds) > 0 {
+				log.Println("Missing enemy", enemyId)
+			}
+		}
+	}
+	for operatorId, characterIds := range s.CommonNames.operatorIdToNames {
+		if _, ok := s.AssetMap.Data[operatorId]; !ok {
+			if len(characterIds) > 0 {
+				log.Println("Missing operator", operatorId)
+			}
+		}
+	}
+
 	s.resetState()
 
 	return s, nil
@@ -549,7 +566,7 @@ func (s *SpineBridge) GetOperatorIdFromName(name string, faction FactionEnum) (s
 		return operatorId, nil
 	}
 
-	matches := commonNames.FindMatchs(name, 3)
+	matches := commonNames.FindMatchs(name, 5)
 	humanMatches := make([]string, 0)
 	for _, match := range matches {
 		humanMatches = append(humanMatches, commonNames.operatorIdToNames[match][0])
