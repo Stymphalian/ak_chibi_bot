@@ -96,6 +96,7 @@ func (c *ChibiActor) HandleCommand(userName string, userNameDisplay string, trim
 	// !chibi anim Special
 	// !chibi stance base|battle
 	// !chibi face front|back
+	// !chibi enemy The last steam knight
 
 	current, err := c.client.CurrentInfo(userName)
 	if err != nil {
@@ -109,6 +110,23 @@ func (c *ChibiActor) HandleCommand(userName string, userNameDisplay string, trim
 	var msg string
 	arg2 := strings.TrimSpace(args[1])
 	switch arg2 {
+	case "admin":
+		if userName != c.twitchConfig.Broadcaster {
+			log.Printf("Only broadcaster can use !chibi admin: %s\n", userName)
+			return "", nil
+		}
+		// !chibi admin <username> "!chibi command"
+		if len(args) < 3 {
+			log.Printf("Only broadcaster can use !chibi admin not enough args %v\n", args)
+			return "", nil
+		}
+		splitStr := strings.SplitN(trimmed, " ", 4)
+		targetUser := splitStr[2]
+		if len(splitStr) == 4 {
+			restCommand := splitStr[3]
+			return c.HandleCommand(targetUser, targetUser, restCommand)
+		}
+		return "", nil
 	case "help":
 		return c.ChibiHelp(trimmed)
 	case "skins":
