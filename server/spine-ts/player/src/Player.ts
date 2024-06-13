@@ -556,11 +556,19 @@ module spine {
 						actor.defaultBB.height,
 						Color.ORANGE
 					)
+					this.sceneRenderer.rect(
+						false,
+						actor.position.x,
+						actor.position.y,
+						actor.defaultBB.width,
+						actor.defaultBB.height,
+						Color.RED
+					)
 					
 					if (actor.endPosition) {
 						this.sceneRenderer.line(actor.endPosition.x, 0, actor.endPosition.x, 2000, Color.WHITE);
 					}
-					this.sceneRenderer.circle(true, actor.position.x, actor.position.y, 10, Color.RED);
+					this.sceneRenderer.circle(true, actor.position.x, actor.position.y, 10, Color.RED);					
 
 					this.sceneRenderer.line(0, 0, 0, 2000, Color.RED);
 					this.sceneRenderer.line(0, 540, 1920, 540, Color.RED);
@@ -850,25 +858,27 @@ module spine {
 			}
 
 			// Resize very large chibis to more reasonable sizes
-			let maxSize = actor.defaultBB.width;
-			if (actor.defaultBB.height > maxSize) {
-				maxSize = actor.defaultBB.height;
+			let width = actor.defaultBB.width;
+			let height = actor.defaultBB.height;
+			let maxSize = width;
+			if (height > maxSize) {
+				maxSize = height;
 			}
-			if (maxSize> actor.config.maxSizePx) {
+			if (maxSize> actor.config.maxSizePx && actor.config.chibiId.includes("enemy_")) {
 				console.log("Resizing actor to " + actor.config.maxSizePx);
-				let ratio = actor.defaultBB.width / actor.defaultBB.height;
+				let ratio = width / height;
 
 				let xNew = 0;
 				let yNew = 0;
-				if (actor.defaultBB.height > actor.defaultBB.width) {
+				if (height > width) {
 					xNew = ratio * actor.config.maxSizePx;
 					yNew = actor.config.maxSizePx;
 				} else {
 					xNew = actor.config.maxSizePx;
 					yNew = actor.config.maxSizePx / ratio;
 				}
-				let newScaleX = (xNew * actor.config.scaleX) / actor.defaultBB.width;
-				let newScaleY = (yNew * actor.config.scaleY) / actor.defaultBB.height;
+				let newScaleX = (xNew * actor.config.scaleX) / width;
+				let newScaleY = (yNew * actor.config.scaleY) / height;
 
 				actor.config.defaultScaleX = actor.config.scaleX;
 				actor.config.defaultScaleY = actor.config.scaleY;
@@ -920,8 +930,10 @@ module spine {
 			return {
 				x: offset.x,
 				y: offset.y,
-				width: size.x,
-				height: size.y
+				// width: size.x,
+				// height: size.y
+				width: size.x + offset.x,
+				height: size.y + offset.y
 			}
 		}
 

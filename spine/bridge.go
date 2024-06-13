@@ -224,7 +224,7 @@ func (s *SpineBridge) HandleSpine(w http.ResponseWriter, r *http.Request) error 
 			log.Print("Default")
 		}
 	}
-	s.resetState("")
+	s.resetState(s.twitchConfig.InitialOperator)
 	return nil
 }
 

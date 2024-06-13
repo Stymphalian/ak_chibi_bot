@@ -128,6 +128,9 @@ module spine {
 		animation_listener: spine.AnimationStateListener
 
 		userDisplayName: string,
+
+		/** char_002_amiya, enemy_1526_sfsui, etc */
+		chibiId: string,
 	}
 
 	export class Actor {

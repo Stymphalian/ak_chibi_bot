@@ -1831,6 +1831,7 @@ declare namespace spine {
         error: (widget: SpinePlayer, msg: string) => void;
         animation_listener: spine.AnimationStateListener;
         userDisplayName: string;
+        chibiId: string;
     }
     class Actor {
         loaded: boolean;

@@ -58,16 +58,17 @@ class CharacterSwapper {
             }
         };
         this.actorConfig = {
+            chibiId: requestData["operator_id"],
             userDisplayName: requestData['user_name_display'],
             skelUrl: requestData["skel_file"],
             atlasUrl: requestData["atlas_file"],
+            // rawDataURIs: map,
             animation: requestData["animation"],
             startPosX: requestData["start_position_x"],
             startPosY: requestData["start_position_y"],
             scaleX: 0.45,
             scaleY: 0.45,
             maxSizePx: 350,
-            // rawDataURIs: map,
             premultipliedAlpha: true,
             backgroundColor: "#00000000",
 

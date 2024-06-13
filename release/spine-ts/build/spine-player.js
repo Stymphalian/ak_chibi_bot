@@ -11325,6 +11325,7 @@ var spine;
                         this.sceneRenderer.rect(false, actor.position.x - (actor.animViewport.width + actor.animViewport.x), actor.position.y + actor.animViewport.y, actor.animViewport.width, actor.animViewport.height, spine.Color.GREEN);
                     }
                     this.sceneRenderer.rect(false, actor.position.x + actor.defaultBB.x, actor.position.y + actor.defaultBB.y, actor.defaultBB.width, actor.defaultBB.height, spine.Color.ORANGE);
+                    this.sceneRenderer.rect(false, actor.position.x, actor.position.y, actor.defaultBB.width, actor.defaultBB.height, spine.Color.RED);
                     if (actor.endPosition) {
                         this.sceneRenderer.line(actor.endPosition.x, 0, actor.endPosition.x, 2000, spine.Color.WHITE);
                     }
@@ -11586,16 +11587,18 @@ var spine;
                 actor.position.y = 0;
                 actor.position.y = actor.config.startPosY;
             }
-            let maxSize = actor.defaultBB.width;
-            if (actor.defaultBB.height > maxSize) {
-                maxSize = actor.defaultBB.height;
+            let width = actor.defaultBB.width;
+            let height = actor.defaultBB.height;
+            let maxSize = width;
+            if (height > maxSize) {
+                maxSize = height;
             }
-            if (maxSize > actor.config.maxSizePx) {
+            if (maxSize > actor.config.maxSizePx && actor.config.chibiId.includes("enemy_")) {
                 console.log("Resizing actor to " + actor.config.maxSizePx);
-                let ratio = actor.defaultBB.width / actor.defaultBB.height;
+                let ratio = width / height;
                 let xNew = 0;
                 let yNew = 0;
-                if (actor.defaultBB.height > actor.defaultBB.width) {
+                if (height > width) {
                     xNew = ratio * actor.config.maxSizePx;
                     yNew = actor.config.maxSizePx;
                 }
@@ -11603,8 +11606,8 @@ var spine;
                     xNew = actor.config.maxSizePx;
                     yNew = actor.config.maxSizePx / ratio;
                 }
-                let newScaleX = (xNew * actor.config.scaleX) / actor.defaultBB.width;
-                let newScaleY = (yNew * actor.config.scaleY) / actor.defaultBB.height;
+                let newScaleX = (xNew * actor.config.scaleX) / width;
+                let newScaleY = (yNew * actor.config.scaleY) / height;
                 actor.config.defaultScaleX = actor.config.scaleX;
                 actor.config.defaultScaleY = actor.config.scaleY;
                 actor.config.scaleX = newScaleX;
@@ -11649,8 +11652,8 @@ var spine;
             return {
                 x: offset.x,
                 y: offset.y,
-                width: size.x,
-                height: size.y
+                width: size.x + offset.x,
+                height: size.y + offset.y
             };
         }
         calculateAnimationViewport(actor, animationName) {
