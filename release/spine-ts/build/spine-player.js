@@ -10939,8 +10939,14 @@ var spine;
                 else {
                     this.scale.x = -this.config.scaleX;
                 }
-                if (Math.abs(this.endPosition.x - this.position.x) < 10) {
-                    this.setDestination();
+                if (Math.abs(this.endPosition.x - this.position.x) < 5) {
+                    this.position.x = this.endPosition.x;
+                    if (this.config.wandering) {
+                        this.setDestination();
+                    }
+                    else {
+                        this.config.animation = "Idle";
+                    }
                 }
             }
             this.setSkeletonMovementData(viewport);
@@ -11554,11 +11560,18 @@ var spine;
             console.log("animViewport: " + JSON.stringify(animViewport));
             actor.animViewport = animViewport;
             actor.defaultBB = this.getDefaultBoundingBox(actor);
+            console.log("defaultBB: " + JSON.stringify(actor.defaultBB));
             actor.animationState.clearTracks();
             actor.skeleton.setToSetupPose();
             actor.animationState.setAnimation(0, animation, true);
             if (actor.config.animation.includes("Move")) {
-                actor.setDestination();
+                if (typeof actor.config.desiredPositionX == undefined) {
+                    actor.setDestination();
+                }
+                else {
+                    actor.endPosition = new spine.Vector2(actor.config.desiredPositionX * this.playerConfig.viewport.width
+                        - (this.playerConfig.viewport.width / 2), 0);
+                }
             }
             else {
                 actor.clearDestination();
@@ -11568,6 +11581,36 @@ var spine;
             }
             else {
                 actor.position.y = 0;
+            }
+            let maxSize = actor.defaultBB.width;
+            if (actor.defaultBB.height > maxSize) {
+                maxSize = actor.defaultBB.height;
+            }
+            if (maxSize > actor.config.maxSizePx) {
+                let ratio = actor.defaultBB.width / actor.defaultBB.height;
+                let xNew = 0;
+                let yNew = 0;
+                if (actor.defaultBB.height > actor.defaultBB.width) {
+                    xNew = ratio * actor.config.maxSizePx;
+                    yNew = actor.config.maxSizePx;
+                }
+                else {
+                    xNew = actor.config.maxSizePx;
+                    yNew = actor.config.maxSizePx / ratio;
+                }
+                let newScaleX = (xNew * actor.config.scaleX) / actor.defaultBB.width;
+                let newScaleY = (yNew * actor.config.scaleY) / actor.defaultBB.height;
+                actor.config.defaultScaleX = actor.config.scaleX;
+                actor.config.defaultScaleY = actor.config.scaleY;
+                actor.config.scaleX = newScaleX;
+                actor.config.scaleY = newScaleY;
+                actor.scale.x = Math.sign(actor.scale.x) * actor.config.scaleX;
+                actor.scale.y = Math.sign(actor.scale.y) * actor.config.scaleY;
+                actor.animViewport = this.calculateAnimationViewport(actor, animation);
+                actor.defaultBB = this.getDefaultBoundingBox(actor);
+                actor.animationState.clearTracks();
+                actor.skeleton.setToSetupPose();
+                actor.animationState.setAnimation(0, animation, true);
             }
         }
         getDefaultBoundingBox(actor) {

@@ -22,6 +22,7 @@ type SetOperatorRequest struct {
 	ChibiType       ChibiTypeEnum   `json:"chibi_type"`        // base
 	Facing          ChibiFacingEnum `json:"facing"`            // Front
 	Animation       string          `json:"animation"`         // Relax
+	PositionX       *float64        `json:"position_x"`        // 0.5, nil means wander
 }
 type SetOperatorResponse struct {
 	SpineResponse
@@ -61,6 +62,7 @@ type OperatorInfo struct {
 	ChibiType  ChibiTypeEnum
 	Facing     ChibiFacingEnum
 	Animation  string
+	PositionX  *float64
 
 	Skins      []string
 	Animations []string
@@ -70,6 +72,7 @@ func EmptyOperatorInfo() *OperatorInfo {
 	return &OperatorInfo{
 		Skins:      make([]string, 0),
 		Animations: make([]string, 0),
+		PositionX:  nil,
 	}
 }
 

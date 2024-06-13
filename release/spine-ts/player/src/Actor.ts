@@ -73,6 +73,12 @@ module spine {
 
 		scaleX: number
 		scaleY: number
+		defaultScaleX: number
+		defaultScaleY: number
+		maxSizePx: number
+
+		desiredPositionX: number,
+		wandering: boolean,
 
 		/* Optional: the position and size of the viewport in world coordinates of the skeleton. Default: the setup pose bounding box. */
 		viewport: {
@@ -211,10 +217,15 @@ module spine {
 					this.scale.x = -this.config.scaleX;
 				}
 
-				if (Math.abs(this.endPosition.x - this.position.x) < 10) {
-					// Find a new destination;
-					this.setDestination();
-					// this.loopPositions();
+				if (Math.abs(this.endPosition.x - this.position.x) < 5) {
+					this.position.x = this.endPosition.x;
+					if (this.config.wandering) {
+						// Find a new destination;
+						this.setDestination();
+						// this.loopPositions();
+					} else {
+						this.config.animation = "Idle";
+					}
 				}
 			}
 			this.setSkeletonMovementData(viewport);

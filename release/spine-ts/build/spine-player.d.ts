@@ -1798,6 +1798,11 @@ declare namespace spine {
         premultipliedAlpha: boolean;
         scaleX: number;
         scaleY: number;
+        defaultScaleX: number;
+        defaultScaleY: number;
+        maxSizePx: number;
+        desiredPositionX: number;
+        wandering: boolean;
         viewport: {
             x: number;
             y: number;

@@ -830,7 +830,15 @@ module spine {
 			actor.animationState.setAnimation(0, animation, true);
 
 			if (actor.config.animation.includes("Move")) {
-				actor.setDestination();
+				if (typeof actor.config.desiredPositionX == undefined) {
+					actor.setDestination();
+				} else {
+					actor.endPosition = new spine.Vector2(
+						actor.config.desiredPositionX * this.playerConfig.viewport.width
+						- (this.playerConfig.viewport.width/2),
+						0,
+					);
+				}
 			} else {
 				actor.clearDestination();
 			}
@@ -840,6 +848,7 @@ module spine {
 				actor.position.y = 0;
 			}
 
+			// Resize very large chibis to more reasonable sizes
 			let maxSize = actor.defaultBB.width;
 			if (actor.defaultBB.height > maxSize) {
 				maxSize = actor.defaultBB.height;

@@ -68,6 +68,10 @@ class CharacterSwapper {
             // rawDataURIs: map,
             premultipliedAlpha: true,
             backgroundColor: "#00000000",
+
+            desiredPositionX: requestData["position_x"],
+            wandering: requestData["wandering"],
+
             success: (widget) => {
                 console.log("Successfully loaded actor");
             },

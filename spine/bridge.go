@@ -15,7 +15,9 @@ import (
 )
 
 type ChatUser struct {
-	userName            string
+	userName string
+
+	// TODO: Change to just hold an OperatorInfo object
 	currentOperatorName string
 	currentOperatorId   string
 	currentFaction      FactionEnum
@@ -23,6 +25,7 @@ type ChatUser struct {
 	currentChibiType    ChibiTypeEnum
 	currentFacing       ChibiFacingEnum
 	currentAnimation    string
+	currentPositionX    *float64
 }
 
 type SpineBridge struct {
@@ -191,6 +194,7 @@ func (s *SpineBridge) HandleSpine(w http.ResponseWriter, r *http.Request) error 
 		chatUser.currentChibiType,
 		chatUser.currentFacing,
 		chatUser.currentAnimation,
+		chatUser.currentPositionX,
 	)
 	for {
 		var messageType, message, err = c.ReadMessage()
@@ -252,6 +256,7 @@ func (s *SpineBridge) HandleAdmin(w http.ResponseWriter, r *http.Request) error 
 				ChibiType:       CHIBI_TYPE_ENUM_BASE,
 				Facing:          CHIBI_FACING_ENUM_FRONT,
 				Animation:       "Move",
+				PositionX:       nil,
 			})
 		}
 		w.Header().Set("Content-Type", "application/json")
@@ -296,6 +301,7 @@ func (s *SpineBridge) resetState() {
 			currentChibiType:    CHIBI_TYPE_ENUM_BASE,
 			currentFacing:       CHIBI_FACING_ENUM_FRONT,
 			currentAnimation:    "Move",
+			currentPositionX:    nil,
 		},
 	}
 }
@@ -309,6 +315,7 @@ func (s *SpineBridge) setInternalSpineOperator(
 	chibiType ChibiTypeEnum,
 	facing ChibiFacingEnum,
 	animation string,
+	positionX *float64,
 ) error {
 	assetMap := s.getAssetMapFromFaction(faction)
 	commonNames := s.getCommonNamesFromFaction(faction)
@@ -369,6 +376,11 @@ func (s *SpineBridge) setInternalSpineOperator(
 	// }
 	// pngFileContentsB64 = base64.StdEncoding.EncodeToString(pngFileBytes)
 
+	wandering := false
+	if positionX == nil {
+		wandering = true
+	}
+
 	data := map[string]interface{}{
 		"type_name":         SET_OPERATOR,
 		"user_name":         userName,
@@ -377,6 +389,8 @@ func (s *SpineBridge) setInternalSpineOperator(
 		"atlas_file":        formatPathFn(atlasFile),
 		"png_file":          formatPathFn(pngFile),
 		"skel_file":         formatPathFn(skelFile),
+		"position_x":        positionX,
+		"wandering":         wandering,
 
 		// "atlas_file_base64": atlasFileContentsB64,
 		// "skel_file_base64":  skelFileContentsB64,
@@ -412,6 +426,7 @@ func (s *SpineBridge) setInternalSpineOperator(
 		chatUser.currentFacing = CHIBI_FACING_ENUM_BACK
 	}
 	chatUser.currentAnimation = animation
+	chatUser.currentPositionX = positionX
 
 	return nil
 }
@@ -456,6 +471,7 @@ func (s *SpineBridge) SetOperator(req *SetOperatorRequest) (*SetOperatorResponse
 		req.ChibiType,
 		req.Facing,
 		req.Animation,
+		req.PositionX,
 	)
 	if err != nil {
 		return nil, err
@@ -614,6 +630,7 @@ func (s *SpineBridge) CurrentInfo(userName string) (OperatorInfo, error) {
 		animations = append(animations, animationName)
 	}
 
+	// positionX = -1.0
 	return OperatorInfo{
 		Name:       chatUser.currentOperatorName,
 		OperatorId: chatUser.currentOperatorId,
@@ -622,6 +639,7 @@ func (s *SpineBridge) CurrentInfo(userName string) (OperatorInfo, error) {
 		ChibiType:  chatUser.currentChibiType,
 		Facing:     chatUser.currentFacing,
 		Animation:  chatUser.currentAnimation,
+		PositionX:  nil,
 
 		Skins:      skins,
 		Animations: animations,

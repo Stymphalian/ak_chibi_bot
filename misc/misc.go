@@ -7,6 +7,15 @@ import (
 	"strings"
 )
 
+type Vector2 struct {
+	X float64
+	Y float64
+}
+
+func (v Vector2) String() string {
+	return fmt.Sprintf("(%f, %f)", v.X, v.Y)
+}
+
 func MatchesKeywords(str string, keywords []string) (string, bool) {
 	for _, keyword := range keywords {
 		if strings.EqualFold(str, keyword) {

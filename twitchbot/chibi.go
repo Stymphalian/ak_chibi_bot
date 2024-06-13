@@ -6,6 +6,7 @@ import (
 	"log"
 	"math/rand"
 	"slices"
+	"strconv"
 	"strings"
 
 	"github.com/Stymphalian/ak_chibi_bot/misc"
@@ -96,6 +97,7 @@ func (c *ChibiActor) HandleCommand(userName string, userNameDisplay string, trim
 	// !chibi anim Special
 	// !chibi stance base|battle
 	// !chibi face front|back
+	// !chibi walk <number>
 	// !chibi enemy The last steam knight
 
 	current, err := c.client.CurrentInfo(userName)
@@ -223,6 +225,7 @@ func (c *ChibiActor) UpdateChibi(username string, usernameDisplay string, update
 		ChibiType:       update.ChibiType,
 		Facing:          update.Facing,
 		Animation:       update.Animation,
+		PositionX:       update.PositionX,
 	})
 	if err != nil {
 		log.Printf("Failed to set chibi (%s)", err.Error())
@@ -254,8 +257,6 @@ func (c *ChibiActor) SetSkin(args []string, current *spine.OperatorInfo) (string
 		return "", errors.New("unsupported skin")
 	}
 	current.Skin = skinName
-	// TODO: see if we can keep the same animation
-	// current.Animation = spine.GetDefaultAnimForChibiType(current.ChibiType)
 	return "", nil
 }
 
@@ -337,6 +338,18 @@ func (c *ChibiActor) SetWalk(args []string, current *spine.OperatorInfo) (string
 		}
 	}
 	current.Animation = moveAnimation
+
+	if len(args) == 3 {
+		errMsg := errors.New("incorrect usage: !chibi walk <number> (ie. !chibi walk 1, !chibi walk 0.2)")
+		desiredPosition, err := strconv.ParseFloat(args[2], 64)
+		if err != nil {
+			return "", errMsg
+		}
+		if (desiredPosition < 0.0) || (desiredPosition > 1.0) {
+			return "", errMsg
+		}
+		current.PositionX = &desiredPosition
+	}
 	return "", nil
 }
 
@@ -403,6 +416,7 @@ func (c *ChibiActor) addRandomChibi(userName string, userNameDisplay string) (st
 		ChibiType:       chibiType,
 		Facing:          spine.CHIBI_FACING_ENUM_FRONT,
 		Animation:       spine.GetDefaultAnimForChibiType(chibiType),
+		PositionX:       nil,
 	})
 	return "", err
 }
