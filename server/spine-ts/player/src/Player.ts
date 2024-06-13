@@ -520,7 +520,7 @@ module spine {
 				this.drawText(
 					actor.config.userDisplayName,
 					actor.position.x,
-					actor.defaultBB.height - 20,
+					actor.position.y + actor.defaultBB.height - 20,
 				)
 				this.sceneRenderer.end();
 
@@ -846,6 +846,7 @@ module spine {
 				actor.position.y = Math.abs(actor.animViewport.y)
 			} else {
 				actor.position.y = 0;
+				actor.position.y = actor.config.startPosY;
 			}
 
 			// Resize very large chibis to more reasonable sizes
@@ -854,6 +855,7 @@ module spine {
 				maxSize = actor.defaultBB.height;
 			}
 			if (maxSize> actor.config.maxSizePx) {
+				console.log("Resizing actor to " + actor.config.maxSizePx);
 				let ratio = actor.defaultBB.width / actor.defaultBB.height;
 
 				let xNew = 0;
@@ -899,6 +901,8 @@ module spine {
 			actor.skeleton.setToSetupPose()
 			actor.animationState.setAnimationWith(0, animation, true);
 
+			let savedX = actor.skeleton.x;
+			let savedY = actor.skeleton.y;
 			actor.skeleton.x = 0;
 			actor.skeleton.y = 0;
 			actor.skeleton.scaleX = Math.abs(actor.config.scaleX);
@@ -909,6 +913,9 @@ module spine {
 			let offset = new spine.Vector2();
 			let size = new spine.Vector2();
 			actor.skeleton.getBounds(offset, size);
+
+			actor.skeleton.x = savedX;
+			actor.skeleton.y = savedY;
 
 			return {
 				x: offset.x,
@@ -933,6 +940,8 @@ module spine {
 			let offset = new spine.Vector2();
 			let size = new spine.Vector2();
 
+			let savedX = actor.skeleton.x;
+			let savedY = actor.skeleton.y;
 			for (var i = 0; i < steps; i++) {
 				actor.animationState.update(stepTime);
 				actor.animationState.apply(actor.skeleton);
@@ -951,6 +960,9 @@ module spine {
 				minY = Math.min(offset.y, minY);
 				maxY = Math.max(offset.y + size.y, maxY);
 			}
+
+			actor.skeleton.x = savedX;
+			actor.skeleton.y = savedY;
 
 			offset.x = minX;
 			offset.y = minY;

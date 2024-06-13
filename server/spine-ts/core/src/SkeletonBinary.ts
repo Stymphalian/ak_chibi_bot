@@ -287,7 +287,7 @@ module spine {
 					let attachment = this.readAttachment(input, skeletonData, skin, slotIndex, name, nonessential);
 					if (attachment != null) skin.setAttachment(slotIndex, name, attachment);
 				}
-			}
+			}			
 			return skin;
 		}
 

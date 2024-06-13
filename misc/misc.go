@@ -48,6 +48,10 @@ type TwitchConfig struct {
 	// Optional.
 	// List of usernames to exclude from getting a chibi
 	ExcludeNames []string `json:"exclude_names"`
+
+	// Optional
+	// Default to Amiya
+	InitialOperator string `json:"initial_operator"`
 }
 
 func LoadTwitchConfig(path string) (*TwitchConfig, error) {

@@ -23,6 +23,8 @@ type SetOperatorRequest struct {
 	Facing          ChibiFacingEnum `json:"facing"`            // Front
 	Animation       string          `json:"animation"`         // Relax
 	PositionX       *float64        `json:"position_x"`        // 0.5, nil means wander
+	StartPositionX  *float64        `json:"start_position_x"`  //
+	StartPositionY  *float64        `json:"start_position_y"`  //
 }
 type SetOperatorResponse struct {
 	SpineResponse
@@ -37,9 +39,27 @@ type AnimationsList []string
 type FacingData struct {
 	Facings map[ChibiFacingEnum]AnimationsList `json:"facing"`
 }
+
+func (f *FacingData) HasFacing(facing ChibiFacingEnum) bool {
+	if _, ok := f.Facings[facing]; !ok {
+		return false
+	}
+	animations := f.Facings[facing]
+	return len(animations) != 0
+}
+
 type SkinData struct {
 	Stances map[ChibiTypeEnum]FacingData `json:"stance"`
 }
+
+func (s *SkinData) HasChibiType(chibiType ChibiTypeEnum) bool {
+	if _, ok := s.Stances[chibiType]; !ok {
+		return false
+	}
+	faceData := s.Stances[chibiType]
+	return len(faceData.Facings) != 0
+}
+
 type GetOperatorResponse struct {
 	SpineResponse
 	OperatorId string              `json:"operator_id"` // char_002_amiya

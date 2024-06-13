@@ -1801,6 +1801,8 @@ declare namespace spine {
         defaultScaleX: number;
         defaultScaleY: number;
         maxSizePx: number;
+        startPosX: number;
+        startPosY: number;
         desiredPositionX: number;
         wandering: boolean;
         viewport: {

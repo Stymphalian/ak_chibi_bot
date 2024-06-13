@@ -77,6 +77,8 @@ module spine {
 		defaultScaleY: number
 		maxSizePx: number
 
+		startPosX : number
+		startPosY : number
 		desiredPositionX: number,
 		wandering: boolean,
 
@@ -154,6 +156,13 @@ module spine {
 			this.movementSpeed = new spine.Vector2(80 + Math.random()*40,0);  // ~100 px/ second
 			let x = Math.random()*1920 - (1920/2)
 			this.position = new spine.Vector2(x, 0);
+
+			if (config.startPosX || config.startPosY) {
+				this.position = new spine.Vector2(
+					config.startPosX,
+					config.startPosY
+				);
+			}
 			// this.position = new spine.Vector2(0, 0);
 		}
 
@@ -162,7 +171,7 @@ module spine {
 			// instead of hardcoding it here.
 			this.startPosition = new spine.Vector2(this.position.x, this.position.y);
 			let half = 1920 / 2;
-			this.endPosition = new spine.Vector2(Math.random()*1920 - half, 0);
+			this.endPosition = new spine.Vector2(Math.random()*1920 - half, this.position.y);
 			// this.startPosition = new spine.Vector2(0, 0);
 			// this.endPosition = new spine.Vector2(0, 0);
 		}

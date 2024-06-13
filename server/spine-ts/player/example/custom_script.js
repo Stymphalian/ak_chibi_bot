@@ -62,6 +62,8 @@ class CharacterSwapper {
             skelUrl: requestData["skel_file"],
             atlasUrl: requestData["atlas_file"],
             animation: requestData["animation"],
+            startPosX: requestData["start_position_x"],
+            startPosY: requestData["start_position_y"],
             scaleX: 0.45,
             scaleY: 0.45,
             maxSizePx: 350,

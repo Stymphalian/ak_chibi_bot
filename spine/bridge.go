@@ -9,6 +9,7 @@ import (
 	"path/filepath"
 	"slices"
 	"strings"
+	"time"
 
 	"github.com/Stymphalian/ak_chibi_bot/misc"
 	"github.com/gorilla/websocket"
@@ -26,6 +27,9 @@ type ChatUser struct {
 	currentFacing       ChibiFacingEnum
 	currentAnimation    string
 	currentPositionX    *float64
+
+	currentStartPositionX *float64
+	currentStartPositionY *float64
 }
 
 type SpineBridge struct {
@@ -81,7 +85,7 @@ func NewSpineBridge(assetDir string, config *misc.TwitchConfig) (*SpineBridge, e
 		}
 	}
 
-	s.resetState()
+	s.resetState(config.InitialOperator)
 
 	return s, nil
 }
@@ -195,6 +199,8 @@ func (s *SpineBridge) HandleSpine(w http.ResponseWriter, r *http.Request) error 
 		chatUser.currentFacing,
 		chatUser.currentAnimation,
 		chatUser.currentPositionX,
+		chatUser.currentStartPositionX,
+		chatUser.currentStartPositionY,
 	)
 	for {
 		var messageType, message, err = c.ReadMessage()
@@ -218,7 +224,7 @@ func (s *SpineBridge) HandleSpine(w http.ResponseWriter, r *http.Request) error 
 			log.Print("Default")
 		}
 	}
-	s.resetState()
+	s.resetState("")
 	return nil
 }
 
@@ -238,6 +244,71 @@ func (s *SpineBridge) HandleAdmin(w http.ResponseWriter, r *http.Request) error 
 	case "remove":
 		userName := data["user_name"].(string)
 		s.RemoveOperator(&RemoveOperatorRequest{UserName: userName})
+		w.Header().Set("Content-Type", "application/json")
+		json.NewEncoder(w).Encode(map[string]interface{}{
+			"status": "success",
+		})
+		return nil
+	case "debug":
+		operatorIdsInterface, ok := data["operator_ids"].([]interface{})
+		if !ok {
+			return errors.New("operator_ids is not an array")
+		}
+		operator_ids := make([]string, len(operatorIdsInterface))
+		for i, idInterface := range operatorIdsInterface {
+			idString, ok := idInterface.(string)
+			if !ok {
+				return errors.New("operator_ids contains a non-string element")
+			}
+			operator_ids[i] = idString
+		}
+
+		startPosX := -960.0 + 40.0
+		startPosY := 40.0
+		for _, operator_id := range operator_ids {
+			resp, err := s.GetOperator(&GetOperatorRequest{
+				OperatorId: operator_id,
+				Faction:    FACTION_ENUM_OPERATOR,
+			})
+			if err != nil {
+				log.Panic("@@@@ Failed to get operator", err)
+			}
+
+			for skin, skinEntry := range resp.Skins {
+				if !skinEntry.HasChibiType(CHIBI_TYPE_ENUM_BATTLE) {
+					continue
+				}
+				if skin != "default" {
+					continue
+				}
+				_, err := s.SetOperator(&SetOperatorRequest{
+					UserName:        operator_id + "_" + skin,
+					UserNameDisplay: operator_id + "_" + skin,
+					OperatorId:      operator_id,
+					Faction:         FACTION_ENUM_OPERATOR,
+					Skin:            skin,
+					ChibiType:       CHIBI_TYPE_ENUM_BATTLE,
+					Facing:          CHIBI_FACING_ENUM_FRONT,
+					Animation:       "Idle",
+					PositionX:       nil,
+					StartPositionX:  &startPosX,
+					StartPositionY:  &startPosY,
+				})
+				if err != nil {
+					log.Panic("@@@@ Failed to set operator", err)
+				}
+
+				if err == nil {
+					startPosX += 80.0
+					if startPosX > 960 {
+						startPosX = -960.0 + 40.0
+						startPosY += 80.0
+					}
+				}
+				time.Sleep(2 * time.Second)
+			}
+		}
+
 		w.Header().Set("Content-Type", "application/json")
 		json.NewEncoder(w).Encode(map[string]interface{}{
 			"status": "success",
@@ -286,22 +357,26 @@ func (s *SpineBridge) HandleAdmin(w http.ResponseWriter, r *http.Request) error 
 	}
 }
 
-func (s *SpineBridge) resetState() {
-	opName := "Croissant"
+func (s *SpineBridge) resetState(opName string) {
+	if len(opName) == 0 {
+		opName = "Amiya"
+	}
 	opId, _ := s.GetOperatorIdFromName(opName, FACTION_ENUM_OPERATOR)
 
 	broadcasterName := s.twitchConfig.Broadcaster
 	s.chatUsers = map[string]*ChatUser{
 		broadcasterName: {
-			userName:            broadcasterName,
-			currentOperatorName: opName,
-			currentOperatorId:   opId,
-			currentFaction:      FACTION_ENUM_OPERATOR,
-			currentSkin:         "default",
-			currentChibiType:    CHIBI_TYPE_ENUM_BASE,
-			currentFacing:       CHIBI_FACING_ENUM_FRONT,
-			currentAnimation:    "Move",
-			currentPositionX:    nil,
+			userName:              broadcasterName,
+			currentOperatorName:   opName,
+			currentOperatorId:     opId,
+			currentFaction:        FACTION_ENUM_OPERATOR,
+			currentSkin:           "default",
+			currentChibiType:      CHIBI_TYPE_ENUM_BASE,
+			currentFacing:         CHIBI_FACING_ENUM_FRONT,
+			currentAnimation:      "Move",
+			currentPositionX:      nil,
+			currentStartPositionX: nil,
+			currentStartPositionY: nil,
 		},
 	}
 }
@@ -316,6 +391,8 @@ func (s *SpineBridge) setInternalSpineOperator(
 	facing ChibiFacingEnum,
 	animation string,
 	positionX *float64,
+	startPosX *float64,
+	startPosY *float64,
 ) error {
 	assetMap := s.getAssetMapFromFaction(faction)
 	commonNames := s.getCommonNamesFromFaction(faction)
@@ -391,6 +468,9 @@ func (s *SpineBridge) setInternalSpineOperator(
 		"skel_file":         formatPathFn(skelFile),
 		"position_x":        positionX,
 		"wandering":         wandering,
+
+		"start_position_x": startPosX,
+		"start_position_y": startPosY,
 
 		// "atlas_file_base64": atlasFileContentsB64,
 		// "skel_file_base64":  skelFileContentsB64,
@@ -472,6 +552,8 @@ func (s *SpineBridge) SetOperator(req *SetOperatorRequest) (*SetOperatorResponse
 		req.Facing,
 		req.Animation,
 		req.PositionX,
+		req.StartPositionX,
+		req.StartPositionY,
 	)
 	if err != nil {
 		return nil, err

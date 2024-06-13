@@ -10897,11 +10897,14 @@ var spine;
             this.movementSpeed = new spine.Vector2(80 + Math.random() * 40, 0);
             let x = Math.random() * 1920 - (1920 / 2);
             this.position = new spine.Vector2(x, 0);
+            if (config.startPosX || config.startPosY) {
+                this.position = new spine.Vector2(config.startPosX, config.startPosY);
+            }
         }
         setDestination() {
             this.startPosition = new spine.Vector2(this.position.x, this.position.y);
             let half = 1920 / 2;
-            this.endPosition = new spine.Vector2(Math.random() * 1920 - half, 0);
+            this.endPosition = new spine.Vector2(Math.random() * 1920 - half, this.position.y);
         }
         loopPositions() {
             let temp = this.endPosition;
@@ -11311,7 +11314,7 @@ var spine;
                     }
                 }
                 this.sceneRenderer.drawSkeleton(actor.skeleton, actor.config.premultipliedAlpha);
-                this.drawText(actor.config.userDisplayName, actor.position.x, actor.defaultBB.height - 20);
+                this.drawText(actor.config.userDisplayName, actor.position.x, actor.position.y + actor.defaultBB.height - 20);
                 this.sceneRenderer.end();
                 if (this.playerConfig.viewport.debugRender) {
                     this.sceneRenderer.begin();
@@ -11581,12 +11584,14 @@ var spine;
             }
             else {
                 actor.position.y = 0;
+                actor.position.y = actor.config.startPosY;
             }
             let maxSize = actor.defaultBB.width;
             if (actor.defaultBB.height > maxSize) {
                 maxSize = actor.defaultBB.height;
             }
             if (maxSize > actor.config.maxSizePx) {
+                console.log("Resizing actor to " + actor.config.maxSizePx);
                 let ratio = actor.defaultBB.width / actor.defaultBB.height;
                 let xNew = 0;
                 let yNew = 0;
@@ -11627,6 +11632,8 @@ var spine;
             actor.animationState.clearTracks();
             actor.skeleton.setToSetupPose();
             actor.animationState.setAnimationWith(0, animation, true);
+            let savedX = actor.skeleton.x;
+            let savedY = actor.skeleton.y;
             actor.skeleton.x = 0;
             actor.skeleton.y = 0;
             actor.skeleton.scaleX = Math.abs(actor.config.scaleX);
@@ -11637,6 +11644,8 @@ var spine;
             let offset = new spine.Vector2();
             let size = new spine.Vector2();
             actor.skeleton.getBounds(offset, size);
+            actor.skeleton.x = savedX;
+            actor.skeleton.y = savedY;
             return {
                 x: offset.x,
                 y: offset.y,
@@ -11657,6 +11666,8 @@ var spine;
             let maxY = -100000000;
             let offset = new spine.Vector2();
             let size = new spine.Vector2();
+            let savedX = actor.skeleton.x;
+            let savedY = actor.skeleton.y;
             for (var i = 0; i < steps; i++) {
                 actor.animationState.update(stepTime);
                 actor.animationState.apply(actor.skeleton);
@@ -11672,6 +11683,8 @@ var spine;
                 minY = Math.min(offset.y, minY);
                 maxY = Math.max(offset.y + size.y, maxY);
             }
+            actor.skeleton.x = savedX;
+            actor.skeleton.y = savedY;
             offset.x = minX;
             offset.y = minY;
             size.x = maxX - minX;
