@@ -804,7 +804,7 @@ module spine {
 
 			for(let [key,actor] of this.actors) {
 				actor.paused = false;
-				if (actor.config.animation) {
+				if (actor.config.animation && actor.animationState) {
 					if (!actor.animationState.getCurrent(0)) {
 						this.setAnimation(actor, actor.config.animation);
 					}
@@ -896,8 +896,8 @@ module spine {
 		}
 
 		private getDefaultBoundingBox (actor: Actor) {
-			let animationName;
 			let animations = actor.skeleton.data.animations;
+			let animationName = animations[0].name
 			for (let i = 0, n = animations.length; i < n; i++) {
 				let animName = animations[i].name;
 				if (animName.toLocaleLowerCase().includes("default")) {

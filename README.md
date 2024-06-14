@@ -94,7 +94,7 @@ Now open http://localhost:7001/player/example in your web-browser and you can no
 see a chibi walking around. 
 
 ### Releasing
-To build a release binary run the following within the container `./build_release.sh`
+To build a release binary run the following within the container `./tools/build_release.sh`
 
 # Disclaimer
 1. All the art assets/chibis are owned by Arknights/Hypergryph. I claim no ownership and

@@ -275,7 +275,7 @@ func (s *SpineBridge) HandleAdmin(w http.ResponseWriter, r *http.Request) error 
 			}
 
 			for skin, skinEntry := range resp.Skins {
-				if !skinEntry.HasChibiType(CHIBI_TYPE_ENUM_BATTLE) {
+				if !skinEntry.HasChibiType(CHIBI_TYPE_ENUM_BASE) {
 					continue
 				}
 				if skin != "default" {
@@ -287,9 +287,9 @@ func (s *SpineBridge) HandleAdmin(w http.ResponseWriter, r *http.Request) error 
 					OperatorId:      operator_id,
 					Faction:         FACTION_ENUM_OPERATOR,
 					Skin:            skin,
-					ChibiType:       CHIBI_TYPE_ENUM_BATTLE,
+					ChibiType:       CHIBI_TYPE_ENUM_BASE,
 					Facing:          CHIBI_FACING_ENUM_FRONT,
-					Animation:       "Idle",
+					Animation:       "Relax",
 					PositionX:       nil,
 					StartPositionX:  &startPosX,
 					StartPositionY:  &startPosY,
@@ -305,7 +305,7 @@ func (s *SpineBridge) HandleAdmin(w http.ResponseWriter, r *http.Request) error 
 						startPosY += 80.0
 					}
 				}
-				time.Sleep(2 * time.Second)
+				time.Sleep(100 * time.Millisecond)
 			}
 		}
 

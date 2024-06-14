@@ -3,8 +3,29 @@ class CharacterSwapper {
     constructor() {
         this.socket = null;
         this.spinePlayer = null;
-
+        this.backoffTimeMsec = 2500; // 2.5 seconds
+        this.backOffMaxtimeMsec = 1 * 60 * 1000; // 5 minutes
         this.openWebSocket();
+
+        if (this.spinePlayer == null) {
+            this.spinePlayerConfig = {
+                backgroundColor: "#00000000",
+                alpha: true,
+                viewport: {
+                    x: 0,
+                    y: 0,
+                    width: 1920,
+                    height: 1080,
+                    padLeft: 0,
+                    padRight: 0,
+                    padTop: 0,
+                    padBottom: 0,
+                    debugRender: false,
+                }
+            };
+            console.log("Creating a new spine player");
+            this.spinePlayer = new spine.SpinePlayer("container", this.spinePlayerConfig);   
+        }
     }
 
     openWebSocket() {
@@ -12,10 +33,18 @@ class CharacterSwapper {
         this.socket = new WebSocket("ws://localhost:7001/spine");
         this.socket.addEventListener("open", (event) => {
             console.log("Socket opened");
+            this.backoffTimeMsec = 5000;
         });
-        this.socket.addEventListener("message", this.messageHandler.bind(this));
+        this.socket.addEventListener("message", 
+            this.messageHandler.bind(this)
+        );
         this.socket.addEventListener("close", (event) => {
             console.log("Close received: " + event.data);
+            this.backoffTimeMsec *= 2;
+            if (this.backoffTimeMsec < this.backOffMaxtimeMsec) {
+                console.log("Retrying in " + this.backoffTimeMsec + "ms");
+                setTimeout(() => this.openWebSocket(), this.backoffTimeMsec);
+            }
         });
         this.socket.addEventListener("error", (event) => {
             console.log("Error received: " + event.data);
@@ -42,21 +71,7 @@ class CharacterSwapper {
         // map[requestData["atlas_file"]] = requestData["atlas_file_base64"];
         // map[requestData["png_file"]] = requestData["png_file_base64"];
         let username = requestData["user_name"];
-        this.spinePlayerConfig = {
-            backgroundColor: "#00000000",
-            alpha: true,
-            viewport: {
-                x: 0,
-                y: 0,
-                width: 1920,
-                height: 1080,
-                padLeft: 0,
-                padRight: 0,
-                padTop: 0,
-                padBottom: 0,
-                debugRender: false,
-            }
-        };
+
         this.actorConfig = {
             chibiId: requestData["operator_id"],
             userDisplayName: requestData['user_name_display'],
@@ -83,10 +98,6 @@ class CharacterSwapper {
             }
         };
 
-        if (this.spinePlayer == null) {
-            console.log("Creating a new spine player");
-            this.spinePlayer = new spine.SpinePlayer("container", this.spinePlayerConfig);   
-        }
         this.spinePlayer.changeOrAddActor(username, this.actorConfig);
     }
 
