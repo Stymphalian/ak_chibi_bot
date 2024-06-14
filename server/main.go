@@ -110,7 +110,6 @@ func main() {
 		http.StripPrefix("/assets/", http.FileServer(http.Dir(*assetDir))),
 	)
 	http.Handle("/spine", errorHandling(annotateError(spineServer.HandleSpine)))
-	http.Handle("/forward", errorHandling(annotateError(spineServer.HandleForward)))
 	http.Handle("/admin", errorHandling(annotateError(spineServer.HandleAdmin)))
 
 	go func() {

@@ -12,8 +12,14 @@ import (
 	"time"
 
 	"github.com/Stymphalian/ak_chibi_bot/misc"
+	"github.com/google/uuid"
 	"github.com/gorilla/websocket"
 )
+
+type Room struct {
+	conn *websocket.Conn
+	done chan struct{}
+}
 
 type ChatUser struct {
 	userName string
@@ -36,8 +42,7 @@ type SpineBridge struct {
 	chatUsers    map[string]*ChatUser
 	twitchConfig *misc.TwitchConfig
 
-	conn             *websocket.Conn
-	done             chan struct{}
+	Rooms            map[string]*Room
 	AssetMap         *SpineAssetMap
 	CommonNames      *CommonNames
 	EnemyAssetMap    *SpineAssetMap
@@ -48,8 +53,7 @@ func NewSpineBridge(assetDir string, config *misc.TwitchConfig) (*SpineBridge, e
 	s := &SpineBridge{
 		chatUsers:        make(map[string]*ChatUser, 0),
 		twitchConfig:     config,
-		conn:             nil,
-		done:             nil,
+		Rooms:            make(map[string]*Room, 0),
 		AssetMap:         NewSpineAssetMap(),
 		CommonNames:      NewCommonNames(),
 		EnemyAssetMap:    NewSpineAssetMap(),
@@ -92,55 +96,24 @@ func NewSpineBridge(assetDir string, config *misc.TwitchConfig) (*SpineBridge, e
 
 func (s *SpineBridge) Close() {
 	log.Println("SpineBridge::Close() called")
-	if s.conn == nil {
-		return
+	for roomName, room := range s.Rooms {
+		if room.conn == nil {
+			return
+		}
+		err := room.conn.WriteMessage(
+			websocket.CloseMessage,
+			websocket.FormatCloseMessage(websocket.CloseNormalClosure, ""),
+		)
+		if err != nil {
+			log.Printf("write close for room %s: %v\n", roomName, err)
+		}
+		<-room.done
 	}
-	err := s.conn.WriteMessage(
-		websocket.CloseMessage,
-		websocket.FormatCloseMessage(websocket.CloseNormalClosure, ""),
-	)
-	if err != nil {
-		log.Println("write close:", err)
-	}
-	<-s.done
 	log.Println("SpineBridge::Close() finished")
 }
 
-func (s *SpineBridge) getOpenWsConnection() *websocket.Conn {
-	return s.conn
-}
-
 func (s *SpineBridge) clientConnected() bool {
-	return s.conn != nil
-}
-
-func (s *SpineBridge) HandleForward(w http.ResponseWriter, r *http.Request) error {
-	if !s.clientConnected() {
-		return errors.New("no client is yet attached to the bridge")
-	}
-	var upgrader = websocket.Upgrader{} // use default options
-	c, err := upgrader.Upgrade(w, r, nil)
-	if err != nil {
-		log.Print("upgrade: ", err)
-		return nil
-	}
-	defer c.Close()
-
-	client := s.getOpenWsConnection()
-	for {
-		messageType, message, err := c.ReadMessage()
-		if err != nil {
-			log.Println("read:", err)
-			break
-		}
-		log.Printf("recv: %s, type: %d", message, messageType)
-
-		if err := client.WriteMessage(websocket.TextMessage, message); err != nil {
-			log.Println("Failed to forward message", err)
-		}
-	}
-
-	return nil
+	return len(s.Rooms) > 0
 }
 
 func (s *SpineBridge) handleResponseMessages(message []byte) {
@@ -152,24 +125,9 @@ func (s *SpineBridge) handleResponseMessages(message []byte) {
 		return
 	}
 	log.Println("data", data)
-	// switch data["type_name"] {
-	// case GET_ANIMATIONS:
-	// 	log.Print(GET_ANIMATIONS)
-	// 	resp := GetAnimationsResponse{}
-	// 	if err := json.NewDecoder(bytes.NewReader(message)).Decode(&resp); err != nil {
-	// 		log.Println("Failed to decode message", err)
-	// 		break
-	// 	}
-	// 	log.Print("Processed AnimationsResponse ", resp)
-	// 	s.skinAnimations = resp.Animations
-	// }
 }
 
 func (s *SpineBridge) HandleSpine(w http.ResponseWriter, r *http.Request) error {
-	if s.clientConnected() {
-		return errors.New("client already connected. Only one client allowed at a time")
-	}
-
 	var upgrader = websocket.Upgrader{} // use default options
 	c, err := upgrader.Upgrade(w, r, nil)
 	if err != nil {
@@ -177,31 +135,41 @@ func (s *SpineBridge) HandleSpine(w http.ResponseWriter, r *http.Request) error 
 		return nil
 	}
 
+	room := &Room{
+		conn: c,
+		done: make(chan struct{}),
+	}
+	// Get a uuid string
+	roomName := uuid.New().String()
+	s.Rooms[roomName] = room
+
 	// Track that something has connected to the client
 	log.Print("Client connected.")
-	s.conn = c
-	s.done = make(chan struct{})
+	room.conn = c
+	room.done = make(chan struct{})
 	defer func() {
 		log.Println("Closing connection and done channel.")
-		close(s.done)
-		s.conn.Close()
-		s.conn = nil
+		close(room.done)
+		room.conn.Close()
+		room.conn = nil
 	}()
 
-	chatUser := s.chatUsers[s.twitchConfig.Broadcaster]
-	s.setInternalSpineOperator(
-		chatUser.userName,
-		chatUser.userName,
-		chatUser.currentOperatorId,
-		chatUser.currentFaction,
-		chatUser.currentSkin,
-		chatUser.currentChibiType,
-		chatUser.currentFacing,
-		chatUser.currentAnimation,
-		chatUser.currentPositionX,
-		chatUser.currentStartPositionX,
-		chatUser.currentStartPositionY,
-	)
+	for _, chatUser := range s.chatUsers {
+		s.setInternalSpineOperator(
+			chatUser.userName,
+			chatUser.userName,
+			chatUser.currentOperatorId,
+			chatUser.currentFaction,
+			chatUser.currentSkin,
+			chatUser.currentChibiType,
+			chatUser.currentFacing,
+			chatUser.currentAnimation,
+			chatUser.currentPositionX,
+			chatUser.currentStartPositionX,
+			chatUser.currentStartPositionY,
+		)
+	}
+
 	for {
 		var messageType, message, err = c.ReadMessage()
 		if err != nil {
@@ -481,8 +449,10 @@ func (s *SpineBridge) setInternalSpineOperator(
 
 	data_json, _ := json.Marshal(data)
 	log.Println("setInternalSpineOperator sending: ", string(data_json))
-	if s.conn != nil {
-		s.conn.WriteJSON(data)
+	for _, room := range s.Rooms {
+		if room.conn != nil {
+			room.conn.WriteJSON(data)
+		}
 	}
 
 	chatUser, ok := s.chatUsers[userName]
@@ -639,8 +609,10 @@ func (s *SpineBridge) RemoveOperator(r *RemoveOperatorRequest) (*RemoveOperatorR
 
 	data_json, _ := json.Marshal(data)
 	log.Println("RemoveOperator() sending: ", string(data_json))
-	if s.conn != nil {
-		s.conn.WriteJSON(data)
+	for _, room := range s.Rooms {
+		if room.conn != nil {
+			room.conn.WriteJSON(data)
+		}
 	}
 
 	delete(s.chatUsers, r.UserName)
