@@ -29,7 +29,7 @@ by right clicking and selecting (open in command prompt/terminal).
 5. Open up the `config.json` file in a text-editor. Update the `broadcaster` name, `channelName` and `twitch_access_token` fields.
 4. Run the server binary (`.\server_win386.exe -assetdir assets -address localhost:7001 -twitch_config config.json`)
 6. Open up OBS and add a `Browser` source to your stream.
-7. Set the URL to http://localhost:7001/player/example
+7. Set the URL to http://localhost:7001/
 8. Set the width and height to 1920x1080
 6. A chibi should now be walking around.
 7. Open up your twitch chat and start typing in commands
@@ -90,7 +90,7 @@ tsc -w -p tsconfig.webgl.json
 tsc -w -p tsconfig.player.json
 ```
 
-Now open http://localhost:7001/player/example in your web-browser and you can now 
+Now open http://localhost:7001/ in your web-browser and you can now 
 see a chibi walking around. 
 
 ### Releasing

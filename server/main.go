@@ -106,8 +106,8 @@ func main() {
 	server := &http.Server{Addr: *address}
 	http.Handle("/", http.FileServer(http.Dir("./spine-ts")))
 	http.Handle(
-		"/player/example/assets/",
-		http.StripPrefix("/player/example/assets/", http.FileServer(http.Dir(*assetDir))),
+		"/assets/",
+		http.StripPrefix("/assets/", http.FileServer(http.Dir(*assetDir))),
 	)
 	http.Handle("/spine", errorHandling(annotateError(spineServer.HandleSpine)))
 	http.Handle("/forward", errorHandling(annotateError(spineServer.HandleForward)))
