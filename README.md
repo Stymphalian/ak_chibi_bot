@@ -23,7 +23,7 @@ Command Name | Description
 1. Download this repository and open up a window to it
 2. Open up a command-prompt/terminal window in that directory (i.e C:/Users/Stymphalian/Downloads/ak_chibi_bot/)
 by right clicking and selecting (open in command prompt/terminal).
-3. Go to the `release/` folder
+3. Unzip the `release.zip` folder into a `release` folder.
 4. Download the chibi assets files from [here](https://f002.backblazeb2.com/file/ak-gamedata/assets_20240610.zip) and unzip into the `releases` folder with the name `assets`.
 5. You now need register the bot to your channel. Follow the instructions from [Authentication](#Authentication)
 5. Open up the `config.json` file in a text-editor. Update the `broadcaster` name, `channelName` and `twitch_access_token` fields.
@@ -94,17 +94,7 @@ Now open http://localhost:7001/player/example in your web-browser and you can no
 see a chibi walking around. 
 
 ### Releasing
-To build a release binary. Run the following within the container:
-```
-cd /work/server
-env GOOS=windows GOARCH=386 go build -o server_win386.exe
-cd /work
-mkdir -p release/
-mkdir -p release/spine-ts
-mv /work/server/server_win386.exe release/
-cp -r /work/server/spine-ts/build release/spine-ts
-cp -r /work/server/spine-ts/player release/spine-ts
-```
+To build a release binary run the following within the container `./build_release.sh`
 
 # Disclaimer
 1. All the art assets/chibis are owned by Arknights/Hypergryph. I claim no ownership and

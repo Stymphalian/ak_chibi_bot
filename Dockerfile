@@ -2,6 +2,7 @@ FROM golang:1.22.3
 
 # Install npm and typescript
 RUN apt-get update
+RUN apt-get -y install zip
 RUN mkdir -p /node
 RUN cd /node
 RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
