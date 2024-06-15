@@ -14,6 +14,13 @@ import (
 	"github.com/lithammer/fuzzysearch/fuzzy"
 )
 
+const (
+	DEFAULT_ANIM_BASE      = "Relax"
+	DEFAULT_ANIM_BATTLE    = "Idle"
+	DEFAULT_SKIN_NAME      = "default"
+	DEFAULT_MOVE_ANIM_NAME = "Move"
+)
+
 type ChibiFacingEnum string
 
 const (
@@ -68,11 +75,12 @@ func FactionEnum_Parse(str string) (FactionEnum, error) {
 	}
 }
 
+// TODO:
 func GetDefaultAnimForChibiType(chibiType ChibiTypeEnum) string {
 	if chibiType == CHIBI_TYPE_ENUM_BASE {
-		return "Move"
+		return DEFAULT_ANIM_BASE
 	} else {
-		return "Idle"
+		return DEFAULT_ANIM_BATTLE
 	}
 }
 
@@ -270,7 +278,7 @@ func (s *SpineAssetMap) Get(
 	}
 }
 
-func (s *SpineAssetMap) Contains(operatorId string, skin string, chibiType ChibiTypeEnum, facing ChibiFacingEnum, animation string) error {
+func (s *SpineAssetMap) Contains(operatorId string, skin string, chibiType ChibiTypeEnum, facing ChibiFacingEnum, animations []string) error {
 	if _, ok := s.Data[operatorId]; !ok {
 		return fmt.Errorf("invalid operator name (%s)", operatorId)
 	}
@@ -296,9 +304,12 @@ func (s *SpineAssetMap) Contains(operatorId string, skin string, chibiType Chibi
 		spineData = s.Data[operatorId].Skins[skin].Battle[facing]
 	}
 
-	if !slices.Contains(spineData.Animations, animation) {
-		return fmt.Errorf("skin does not have animation (%s)", animation)
+	for _, animation := range animations {
+		if !slices.Contains(spineData.Animations, animation) {
+			return fmt.Errorf("skin does not have animation (%s)", animation)
+		}
 	}
+
 	return nil
 }
 

@@ -61,4 +61,4 @@ These asset files are not widely distributed. You can find many github repositor
 which have done this work for you, but not all of them are up to date.
 I got these assets myself through other means, but in order to not bloat
 the repo I have not included them here.
-Please find a zip [here](https://f002.backblazeb2.com/file/ak-gamedata/assets_20240610.zip) which I will try to keep up to date.
+Please find a zip [here](https://f002.backblazeb2.com/file/ak-gamedata/assets_20240614.zip) which I will try to keep up to date.

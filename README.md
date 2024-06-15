@@ -16,15 +16,16 @@ Command Name | Description
 !chibi stance <base,battle> | Set the chibi to their base model (ie. the one which walk around the factory/dorms) or the battle map model
 !chibi skin epoque | Change the skin to `epoque` or any other skin name.
 !chibi play Attack | Change the animation the chibi currently plays. The animation loops forever.
-!chibi walk | Have the chibi walk back and forth across the screen.
+!chibi walk <?number> | Have the chibi walk back and forth across the screen. Optionally specify a number between 0 and 1.0 for the chibi to walk to that part of the screen.
 !chibi enemy The Last Steam Knight | Change the chibi into one of the enemies in the game.
+!chibi who Rock | Ask the bot for operators/enemies which match the given name.
 
 # Quick Start
 1. Download this repository and open up a window to it
 2. Open up a command-prompt/terminal window in that directory (i.e C:/Users/Stymphalian/Downloads/ak_chibi_bot/)
 by right clicking and selecting (open in command prompt/terminal).
 3. Unzip the `release.zip` folder into a `release` folder.
-4. Download the chibi assets files from [here](https://f002.backblazeb2.com/file/ak-gamedata/assets_20240610.zip) and unzip into the `releases` folder with the name `assets`.
+4. Download the chibi assets files from [here](https://f002.backblazeb2.com/file/ak-gamedata/assets_20240614.zip) and unzip into the `releases` folder with the name `assets`.
 5. You now need register the bot to your channel. Follow the instructions from [Authentication](#Authentication)
 5. Open up the `config.json` file in a text-editor. Update the `broadcaster` name, `channelName` and `twitch_access_token` fields.
 4. Run the server binary (`.\server_win386.exe -assetdir assets -address localhost:7001 -twitch_config config.json`)

@@ -1,0 +1,14 @@
+{
+    "broadcaster": "",
+    "channel_name": "",
+    "twitch_bot": "",
+    "twitch_access_token": "",
+    "exclude_names": ["streamelements", "nightbot"],
+    "initial_operator": "Amiya",
+    "operator_details": {
+        "skin": "default",
+        "stance": "base",
+        "animations":  ["Relax"],
+        "position_x": 0.5
+    }
+}

@@ -99,6 +99,7 @@ func (c *ChibiActor) HandleCommand(userName string, userNameDisplay string, trim
 	// !chibi face front|back
 	// !chibi walk <number>
 	// !chibi enemy The last steam knight
+	// !chibi admin <username> "!chibi command"
 
 	current, err := c.client.CurrentInfo(userName)
 	if err != nil {
@@ -137,6 +138,8 @@ func (c *ChibiActor) HandleCommand(userName string, userNameDisplay string, trim
 		return c.GetChibiInfo(userName, "anims")
 	case "info":
 		return c.GetChibiInfo(userName, "info")
+	case "who":
+		return c.GetWhoInfo(args, &current)
 	case "skin":
 		msg, err = c.SetSkin(args, &current)
 	case "anim":
@@ -185,7 +188,7 @@ func (c *ChibiActor) validateUpdateSetDefaultOtherwise(update *spine.OperatorInf
 	}
 
 	if _, ok := currentOp.Skins[update.Skin]; !ok {
-		update.Skin = "default"
+		update.Skin = spine.DEFAULT_SKIN_NAME
 	}
 	facings := currentOp.Skins[update.Skin].Stances[update.ChibiType]
 	if len(facings.Facings) == 0 {
@@ -203,12 +206,20 @@ func (c *ChibiActor) validateUpdateSetDefaultOtherwise(update *spine.OperatorInf
 	}
 
 	animations := currentOp.Skins[update.Skin].Stances[update.ChibiType].Facings[update.Facing]
-	if !slices.Contains(animations, update.Animation) {
-		update.Animation = spine.GetDefaultAnimForChibiType(update.ChibiType)
+	for _, anim := range update.CurrentAnimations {
+		if !slices.Contains(animations, anim) {
+			update.CurrentAnimations = []string{spine.GetDefaultAnimForChibiType(update.ChibiType)}
+			break
+		}
 	}
-	if !slices.Contains(animations, update.Animation) {
-		// If it still doesn't exist then just choose one randomly
-		update.Animation = currentOp.Skins[update.Skin].Stances[update.ChibiType].Facings[update.Facing][0]
+	// If it still doesn't exist then just choose one randomly
+	for _, anim := range update.CurrentAnimations {
+		if !slices.Contains(animations, anim) {
+			update.CurrentAnimations = []string{
+				currentOp.Skins[update.Skin].Stances[update.ChibiType].Facings[update.Facing][0],
+			}
+			break
+		}
 	}
 	return nil
 }
@@ -219,13 +230,15 @@ func (c *ChibiActor) UpdateChibi(username string, usernameDisplay string, update
 	_, err := c.client.SetOperator(&spine.SetOperatorRequest{
 		UserName:        username,
 		UserNameDisplay: usernameDisplay,
-		OperatorId:      update.OperatorId,
-		Faction:         update.Faction,
-		Skin:            update.Skin,
-		ChibiType:       update.ChibiType,
-		Facing:          update.Facing,
-		Animation:       update.Animation,
-		PositionX:       update.PositionX,
+		Operator: spine.OperatorInfo{
+			OperatorId:        update.OperatorId,
+			Faction:           update.Faction,
+			Skin:              update.Skin,
+			ChibiType:         update.ChibiType,
+			Facing:            update.Facing,
+			CurrentAnimations: update.CurrentAnimations,
+			TargetPos:         update.TargetPos,
+		},
 	})
 	if err != nil {
 		log.Printf("Failed to set chibi (%s)", err.Error())
@@ -249,12 +262,12 @@ func (c *ChibiActor) ChibiHelp(trimmed string) (string, error) {
 
 func (c *ChibiActor) SetSkin(args []string, current *spine.OperatorInfo) (string, error) {
 	if len(args) < 3 {
-		return "", errors.New("incorrect usage: !chibi skin <skinName> (ie. !chibi skin default, !chibi skin epoque#2)")
+		return "", errors.New("")
 	}
 
 	skinName, hasSkin := misc.MatchesKeywords(args[2], current.Skins)
 	if !hasSkin {
-		return "", errors.New("unsupported skin")
+		return "", errors.New("")
 	}
 	current.Skin = skinName
 	return "", nil
@@ -262,24 +275,40 @@ func (c *ChibiActor) SetSkin(args []string, current *spine.OperatorInfo) (string
 
 func (c *ChibiActor) SetAnimation(args []string, current *spine.OperatorInfo) (string, error) {
 	if len(args) < 3 {
-		return "", errors.New("incorrect usage: !chibi play <animationName> (ie. !chibi play move, !chibi play special)")
+		return "", errors.New("")
 	}
 
 	animation, ok := misc.MatchesKeywords(args[2], current.Animations)
 	if !ok {
-		return "", errors.New("unsupported animation")
+		return "", errors.New("")
 	}
-	current.Animation = animation
+	current.CurrentAnimations = []string{animation}
+
+	if len(args) >= 4 {
+		animations := make([]string, 0)
+		skipAdding := false
+		for i := 2; i < len(args); i++ {
+			anim, ok := misc.MatchesKeywords(args[i], current.Animations)
+			if !ok {
+				skipAdding = true
+				break
+			}
+			animations = append(animations, anim)
+		}
+		if !skipAdding {
+			current.CurrentAnimations = animations
+		}
+	}
 	return "", nil
 }
 
 func (c *ChibiActor) SetStance(args []string, current *spine.OperatorInfo) (string, error) {
 	if len(args) < 3 {
-		return "", errors.New("incorrect usage: !chibi stance <base|battle> (ie. !chibi stance base, !chibi stance battle)")
+		return "", errors.New("try something like !chibi stance battle")
 	}
 	stance, err := spine.ChibiTypeEnum_Parse(args[2])
 	if err != nil {
-		return "", errors.New("incorrect usage: !chibi stance <base|battle> (ie. !chibi stance base, !chibi stance battle)")
+		return "", errors.New("try something like !chibi stance battle")
 	}
 	current.ChibiType = stance
 	return "", nil
@@ -287,11 +316,11 @@ func (c *ChibiActor) SetStance(args []string, current *spine.OperatorInfo) (stri
 
 func (c *ChibiActor) SetFacing(args []string, current *spine.OperatorInfo) (string, error) {
 	if len(args) < 3 {
-		return "", errors.New("incorrect usage: !chibi face <front|back> (ie. !chibi face front, !chibi face back)")
+		return "", errors.New("try something like !chibi face back")
 	}
 	facing, err := spine.ChibiFacingEnum_Parse(args[2])
 	if err != nil {
-		return "", errors.New("incorrect usage: !chibi face <front|back> (ie. !chibi face front, !chibi face back)")
+		return "", errors.New("try something like !chibi face back or !chibi face front")
 	}
 	if current.ChibiType == spine.CHIBI_TYPE_ENUM_BASE && facing == spine.CHIBI_FACING_ENUM_BACK {
 		return "", errors.New("base chibi's can't face backwards. Try setting to battle stance first")
@@ -301,7 +330,7 @@ func (c *ChibiActor) SetFacing(args []string, current *spine.OperatorInfo) (stri
 }
 
 func (c *ChibiActor) SetEnemy(args []string, current *spine.OperatorInfo) (string, error) {
-	errMsg := errors.New("incorrect usage: !chibi enemy <enemyname or ID> (ie. !chibi enemy Avenger, !chibi enemy SM8")
+	errMsg := errors.New("try something like !chibi enemy <enemyname or ID> (ie. !chibi enemy Avenger, !chibi enemy SM8")
 	if len(args) < 3 {
 		return "", errMsg
 	}
@@ -310,11 +339,7 @@ func (c *ChibiActor) SetEnemy(args []string, current *spine.OperatorInfo) (strin
 	humanOperatorName := strings.TrimSpace(trimmed)
 	operatorId, matches := c.client.GetOperatorIdFromName(humanOperatorName, spine.FACTION_ENUM_ENEMY)
 	if matches != nil {
-		if len(matches) == 0 {
-			return "", errors.New("unknown enemy name")
-		} else {
-			return "", errors.New("Did you mean: " + strings.Join(matches, ", "))
-		}
+		return "", errors.New("")
 	}
 	current.OperatorId = operatorId
 	current.Faction = spine.FACTION_ENUM_ENEMY
@@ -328,19 +353,19 @@ func (c *ChibiActor) SetWalk(args []string, current *spine.OperatorInfo) (string
 
 	// Set the animatino to "Move". If "Move" doesn't exist in the list of
 	// animations then try to find an animation with "Move" in its name
-	moveAnimation := "Move"
+	moveAnimation := spine.DEFAULT_MOVE_ANIM_NAME
 	if !slices.Contains(current.Animations, moveAnimation) {
 		for _, animation := range current.Animations {
-			if strings.Contains(animation, "Move") {
+			if strings.Contains(animation, spine.DEFAULT_MOVE_ANIM_NAME) {
 				moveAnimation = animation
 				break
 			}
 		}
 	}
-	current.Animation = moveAnimation
+	current.CurrentAnimations = []string{moveAnimation}
 
 	if len(args) == 3 {
-		errMsg := errors.New("incorrect usage: !chibi walk <number> (ie. !chibi walk 1, !chibi walk 0.2)")
+		errMsg := errors.New("try something like !chibi walk 0.45")
 		desiredPosition, err := strconv.ParseFloat(args[2], 64)
 		if err != nil {
 			return "", errMsg
@@ -348,15 +373,45 @@ func (c *ChibiActor) SetWalk(args []string, current *spine.OperatorInfo) (string
 		if (desiredPosition < 0.0) || (desiredPosition > 1.0) {
 			return "", errMsg
 		}
-		current.PositionX = &desiredPosition
+		current.TargetPos = misc.NewOption(misc.Vector2{
+			X: desiredPosition, Y: 0.0,
+		})
 	}
 	return "", nil
+}
+
+func (c *ChibiActor) GetWhoInfo(args []string, current *spine.OperatorInfo) (string, error) {
+	// !chibi who <name>
+	if len(args) < 3 {
+		return "", errors.New("try something like !chibi who steam knight")
+	}
+	chibiName := strings.Join(args[2:], " ")
+	log.Printf("Searching for %s\n", chibiName)
+
+	opName, operatorMatches := c.client.GetOperatorIdFromName(chibiName, spine.FACTION_ENUM_OPERATOR)
+	enemyName, enemyMatches := c.client.GetOperatorIdFromName(chibiName, spine.FACTION_ENUM_ENEMY)
+
+	opMat := make([]string, 0)
+	if operatorMatches != nil {
+		opMat = append(opMat, operatorMatches...)
+	} else {
+		opMat = append(opMat, opName)
+	}
+
+	enemyMat := make([]string, 0)
+	if enemyMatches != nil {
+		enemyMat = append(enemyMat, enemyMatches...)
+	} else {
+		enemyMat = append(enemyMat, enemyName)
+	}
+
+	return fmt.Sprintf("Did you mean: %s or enemies %s", strings.Join(opMat, ", "), strings.Join(enemyMat, ", ")), nil
 }
 
 func (c *ChibiActor) SetChibiModel(trimmed string, current *spine.OperatorInfo) (string, error) {
 	log.Printf("!chibi command triggered with %v\n", trimmed)
 	args := strings.Split(trimmed, " ")
-	errMsg := errors.New("incorrect usage: !chibi <name> (ie. !chibi Amiya, !chibi Lava Alter)")
+	errMsg := errors.New("try something like !chibi <name> (ie. !chibi Amiya, !chibi Lava Alter)")
 	if len(args) < 2 {
 		return "", errMsg
 	}
@@ -368,15 +423,11 @@ func (c *ChibiActor) SetChibiModel(trimmed string, current *spine.OperatorInfo) 
 	humanOperatorName := strings.TrimSpace(splitStrs[1])
 	operatorId, matches := c.client.GetOperatorIdFromName(humanOperatorName, spine.FACTION_ENUM_OPERATOR)
 	if matches != nil {
-		if len(matches) == 0 {
-			return "", errors.New("unknown operator name")
-		} else {
-			return "", errors.New("Did you mean: " + strings.Join(matches, ", "))
-		}
+		return "", errors.New("")
 	}
 
 	current.OperatorId = operatorId
-	current.Skin = "default"
+	current.Skin = spine.DEFAULT_SKIN_NAME
 	current.Faction = spine.FACTION_ENUM_OPERATOR
 	return "", nil
 }
@@ -398,7 +449,7 @@ func (c *ChibiActor) addRandomChibi(userName string, userNameDisplay string) (st
 		return "", err
 	}
 	chibiType := spine.CHIBI_TYPE_ENUM_BASE
-	stanceMap, ok := operatorData.Skins["default"].Stances[spine.CHIBI_TYPE_ENUM_BASE]
+	stanceMap, ok := operatorData.Skins[spine.DEFAULT_SKIN_NAME].Stances[spine.CHIBI_TYPE_ENUM_BASE]
 	if !ok {
 		chibiType = spine.CHIBI_TYPE_ENUM_BATTLE
 	}
@@ -410,13 +461,14 @@ func (c *ChibiActor) addRandomChibi(userName string, userNameDisplay string) (st
 	_, err = c.client.SetOperator(&spine.SetOperatorRequest{
 		UserName:        userName,
 		UserNameDisplay: userNameDisplay,
-		OperatorId:      operatorId,
-		Faction:         spine.FACTION_ENUM_OPERATOR,
-		Skin:            "default",
-		ChibiType:       chibiType,
-		Facing:          spine.CHIBI_FACING_ENUM_FRONT,
-		Animation:       spine.GetDefaultAnimForChibiType(chibiType),
-		PositionX:       nil,
+		Operator: spine.OperatorInfo{
+			OperatorId:        operatorId,
+			Faction:           spine.FACTION_ENUM_OPERATOR,
+			Skin:              spine.DEFAULT_SKIN_NAME,
+			ChibiType:         chibiType,
+			Facing:            spine.CHIBI_FACING_ENUM_FRONT,
+			CurrentAnimations: []string{spine.GetDefaultAnimForChibiType(chibiType)},
+		},
 	})
 	return "", err
 }
@@ -430,11 +482,18 @@ func (c *ChibiActor) GetChibiInfo(userName string, subInfoName string) (string, 
 	var msg string
 	switch subInfoName {
 	case "skins":
-		msg = fmt.Sprintf("Available skins for %s: %s", current.Name, strings.Join(current.Skins, ", "))
+		msg = fmt.Sprintf("%s skins: %s", current.DisplayName, strings.Join(current.Skins, ", "))
 	case "anims":
-		msg = fmt.Sprintf("Available animations for %s: %s", current.Name, strings.Join(current.Animations, ","))
+		msg = fmt.Sprintf("%s animations: %s", current.DisplayName, strings.Join(current.Animations, ","))
 	case "info":
-		msg = fmt.Sprintf("Current Chibi: %s, %s, %s, %s, %s", current.Name, current.Skin, current.ChibiType, current.Facing, current.Animation)
+		msg = fmt.Sprintf(
+			"[%s]: %s, %s, %s, (%s)",
+			current.DisplayName,
+			current.Skin,
+			current.ChibiType,
+			current.Facing,
+			strings.Join(current.CurrentAnimations, ","),
+		)
 	default:
 		return "", errors.New("incorrect usage: !chibi <skins|anims|info>")
 	}

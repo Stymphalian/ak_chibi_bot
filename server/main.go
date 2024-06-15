@@ -105,10 +105,7 @@ func main() {
 	log.Println("Starting server")
 	server := &http.Server{Addr: *address}
 	http.Handle("/", http.FileServer(http.Dir("./spine-ts")))
-	http.Handle(
-		"/assets/",
-		http.StripPrefix("/assets/", http.FileServer(http.Dir(*assetDir))),
-	)
+	http.Handle("/assets/", http.StripPrefix("/assets/", http.FileServer(http.Dir(*assetDir))))
 	http.Handle("/spine", errorHandling(annotateError(spineServer.HandleSpine)))
 	http.Handle("/admin", errorHandling(annotateError(spineServer.HandleAdmin)))
 

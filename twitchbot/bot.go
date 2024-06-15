@@ -87,9 +87,12 @@ func (t *TwitchBot) garbageCollectOldChibis(timer *time.Ticker, period time.Dura
 func (t *TwitchBot) ReadPump() {
 	// TODO: Make this timer for timing out chibis configurable
 	// TODO: Move this logic into chibi
-	timer := time.NewTicker(20 * time.Minute)
-	defer timer.Stop()
-	go t.garbageCollectOldChibis(timer, 20*time.Minute)
+	if t.twitchConfig.RemoveChibiAfterMinutes > 0 {
+		cleanupInterval := time.Duration(t.twitchConfig.RemoveChibiAfterMinutes) * time.Minute
+		timer := time.NewTicker(cleanupInterval)
+		defer timer.Stop()
+		go t.garbageCollectOldChibis(timer, 20*time.Minute)
+	}
 
 	t.tc.OnNoticeMessage(func(m twitch.NoticeMessage) {
 		log.Printf("NOTICE message %v\n", m)

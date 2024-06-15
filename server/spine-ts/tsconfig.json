@@ -10,9 +10,10 @@
 		"target": "ES2022",
 	},
 	"include": [
-		"core/src/**/*",
-		"webgl/src/**/*",
-		"player/src/**/*"
+		"src/core/**/*",
+		"src/webgl/**/*",
+		"src/player/**/*",
+		"src/*",
 	],
 	"exclude": [
 		"build"

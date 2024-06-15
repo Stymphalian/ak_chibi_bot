@@ -22,20 +22,8 @@ type Room struct {
 }
 
 type ChatUser struct {
-	userName string
-
-	// TODO: Change to just hold an OperatorInfo object
-	currentOperatorName string
-	currentOperatorId   string
-	currentFaction      FactionEnum
-	currentSkin         string
-	currentChibiType    ChibiTypeEnum
-	currentFacing       ChibiFacingEnum
-	currentAnimation    string
-	currentPositionX    *float64
-
-	currentStartPositionX *float64
-	currentStartPositionY *float64
+	userName        string
+	currentOperator OperatorInfo
 }
 
 type SpineBridge struct {
@@ -89,7 +77,7 @@ func NewSpineBridge(assetDir string, config *misc.TwitchConfig) (*SpineBridge, e
 		}
 	}
 
-	s.resetState(config.InitialOperator)
+	s.resetState(config.InitialOperator, config.OperatorDetails)
 
 	return s, nil
 }
@@ -158,15 +146,7 @@ func (s *SpineBridge) HandleSpine(w http.ResponseWriter, r *http.Request) error 
 		s.setInternalSpineOperator(
 			chatUser.userName,
 			chatUser.userName,
-			chatUser.currentOperatorId,
-			chatUser.currentFaction,
-			chatUser.currentSkin,
-			chatUser.currentChibiType,
-			chatUser.currentFacing,
-			chatUser.currentAnimation,
-			chatUser.currentPositionX,
-			chatUser.currentStartPositionX,
-			chatUser.currentStartPositionY,
+			chatUser.currentOperator,
 		)
 	}
 
@@ -192,7 +172,7 @@ func (s *SpineBridge) HandleSpine(w http.ResponseWriter, r *http.Request) error 
 			log.Print("Default")
 		}
 	}
-	s.resetState(s.twitchConfig.InitialOperator)
+	s.resetState(s.twitchConfig.InitialOperator, s.twitchConfig.OperatorDetails)
 	return nil
 }
 
@@ -231,46 +211,110 @@ func (s *SpineBridge) HandleAdmin(w http.ResponseWriter, r *http.Request) error 
 			operator_ids[i] = idString
 		}
 
-		startPosX := -960.0 + 40.0
-		startPosY := 40.0
+		enemyIdsInterface, ok := data["enemy_ids"].([]interface{})
+		if !ok {
+			return errors.New("operator_ids is not an array")
+		}
+		enemy_ids := make([]string, len(enemyIdsInterface))
+		for i, idInterface := range enemyIdsInterface {
+			idString, ok := idInterface.(string)
+			if !ok {
+				return errors.New("enemy_ids contains a non-string element")
+			}
+			enemy_ids[i] = idString
+		}
+
+		startPosX := 0 + 0.02
+		startPosY := 0.04
 		for _, operator_id := range operator_ids {
 			resp, err := s.GetOperator(&GetOperatorRequest{
 				OperatorId: operator_id,
 				Faction:    FACTION_ENUM_OPERATOR,
 			})
 			if err != nil {
-				log.Panic("@@@@ Failed to get operator", err)
+				log.Panic("Failed to get operator", err)
 			}
 
 			for skin, skinEntry := range resp.Skins {
-				if !skinEntry.HasChibiType(CHIBI_TYPE_ENUM_BASE) {
+				if !skinEntry.HasChibiType(CHIBI_TYPE_ENUM_BATTLE) {
 					continue
 				}
-				if skin != "default" {
+				if skin != DEFAULT_SKIN_NAME {
 					continue
 				}
 				_, err := s.SetOperator(&SetOperatorRequest{
 					UserName:        operator_id + "_" + skin,
 					UserNameDisplay: operator_id + "_" + skin,
-					OperatorId:      operator_id,
-					Faction:         FACTION_ENUM_OPERATOR,
-					Skin:            skin,
-					ChibiType:       CHIBI_TYPE_ENUM_BASE,
-					Facing:          CHIBI_FACING_ENUM_FRONT,
-					Animation:       "Relax",
-					PositionX:       nil,
-					StartPositionX:  &startPosX,
-					StartPositionY:  &startPosY,
+					Operator: OperatorInfo{
+						OperatorId:        operator_id,
+						Faction:           FACTION_ENUM_OPERATOR,
+						Skin:              skin,
+						ChibiType:         CHIBI_TYPE_ENUM_BATTLE,
+						Facing:            CHIBI_FACING_ENUM_FRONT,
+						CurrentAnimations: []string{DEFAULT_ANIM_BATTLE},
+						StartPos:          misc.NewOption(misc.Vector2{X: startPosX, Y: startPosY}),
+					},
 				})
 				if err != nil {
-					log.Panic("@@@@ Failed to set operator", err)
+					log.Panic("Failed to set operator", err)
 				}
 
 				if err == nil {
-					startPosX += 80.0
-					if startPosX > 960 {
-						startPosX = -960.0 + 40.0
-						startPosY += 80.0
+					startPosX += 0.08
+					if startPosX > 1.0 {
+						startPosX = 0.02
+						startPosY += 0.08
+					}
+				}
+				time.Sleep(100 * time.Millisecond)
+			}
+		}
+
+		for _, operator_id := range enemy_ids {
+			resp, err := s.GetOperator(&GetOperatorRequest{
+				OperatorId: operator_id,
+				Faction:    FACTION_ENUM_ENEMY,
+			})
+			if err != nil {
+				log.Panic("Failed to get enemy", err)
+			}
+
+			for skin, skinEntry := range resp.Skins {
+				if !skinEntry.HasChibiType(CHIBI_TYPE_ENUM_BATTLE) {
+					continue
+				}
+
+				animation := DEFAULT_ANIM_BATTLE
+				for _, anim := range skinEntry.Stances[CHIBI_TYPE_ENUM_BATTLE].Facings[CHIBI_FACING_ENUM_FRONT] {
+					if anim == DEFAULT_ANIM_BATTLE {
+						animation = DEFAULT_ANIM_BATTLE
+						break
+					}
+					animation = anim
+				}
+
+				_, err := s.SetOperator(&SetOperatorRequest{
+					UserName:        operator_id + "_" + skin,
+					UserNameDisplay: operator_id + "_" + skin,
+					Operator: OperatorInfo{
+						OperatorId:        operator_id,
+						Faction:           FACTION_ENUM_ENEMY,
+						Skin:              skin,
+						ChibiType:         CHIBI_TYPE_ENUM_BATTLE,
+						Facing:            CHIBI_FACING_ENUM_FRONT,
+						CurrentAnimations: []string{animation},
+						StartPos:          misc.NewOption(misc.Vector2{X: startPosX, Y: startPosY}),
+					},
+				})
+				if err != nil {
+					log.Panic("Failed to set enemy", err)
+				}
+
+				if err == nil {
+					startPosX += 0.08
+					if startPosX > 1.0 {
+						startPosX = 0.02
+						startPosY += 0.08
 					}
 				}
 				time.Sleep(100 * time.Millisecond)
@@ -289,13 +333,14 @@ func (s *SpineBridge) HandleAdmin(w http.ResponseWriter, r *http.Request) error 
 			s.SetOperator(&SetOperatorRequest{
 				UserName:        userName,
 				UserNameDisplay: userName,
-				OperatorId:      operatorId,
-				Faction:         FACTION_ENUM_OPERATOR,
-				Skin:            "default",
-				ChibiType:       CHIBI_TYPE_ENUM_BASE,
-				Facing:          CHIBI_FACING_ENUM_FRONT,
-				Animation:       "Move",
-				PositionX:       nil,
+				Operator: OperatorInfo{
+					OperatorId:        operatorId,
+					Faction:           FACTION_ENUM_OPERATOR,
+					Skin:              DEFAULT_SKIN_NAME,
+					ChibiType:         CHIBI_TYPE_ENUM_BASE,
+					Facing:            CHIBI_FACING_ENUM_FRONT,
+					CurrentAnimations: []string{DEFAULT_ANIM_BASE},
+				},
 			})
 		}
 		w.Header().Set("Content-Type", "application/json")
@@ -325,26 +370,42 @@ func (s *SpineBridge) HandleAdmin(w http.ResponseWriter, r *http.Request) error 
 	}
 }
 
-func (s *SpineBridge) resetState(opName string) {
+func (s *SpineBridge) resetState(opName string, details misc.InitialOperatorDetails) {
 	if len(opName) == 0 {
 		opName = "Amiya"
 	}
-	opId, _ := s.GetOperatorIdFromName(opName, FACTION_ENUM_OPERATOR)
+
+	faction := FACTION_ENUM_OPERATOR
+	opId, err := s.GetOperatorIdFromName(opName, FACTION_ENUM_OPERATOR)
+	if err != nil {
+		faction = FACTION_ENUM_ENEMY
+		opId, err = s.GetOperatorIdFromName(opName, FACTION_ENUM_ENEMY)
+	}
+	if err != nil {
+		log.Panic("Failed to get operator id", err)
+	}
+	stance, err2 := ChibiTypeEnum_Parse(details.Stance)
+	if err2 != nil {
+		log.Panic("Failed to parse stance", err2)
+	}
 
 	broadcasterName := s.twitchConfig.Broadcaster
 	s.chatUsers = map[string]*ChatUser{
 		broadcasterName: {
-			userName:              broadcasterName,
-			currentOperatorName:   opName,
-			currentOperatorId:     opId,
-			currentFaction:        FACTION_ENUM_OPERATOR,
-			currentSkin:           "default",
-			currentChibiType:      CHIBI_TYPE_ENUM_BASE,
-			currentFacing:         CHIBI_FACING_ENUM_FRONT,
-			currentAnimation:      "Move",
-			currentPositionX:      nil,
-			currentStartPositionX: nil,
-			currentStartPositionY: nil,
+			userName: broadcasterName,
+			currentOperator: OperatorInfo{
+				DisplayName:       opName,
+				OperatorId:        opId,
+				Faction:           faction,
+				Skin:              details.Skin,
+				ChibiType:         stance,
+				Facing:            CHIBI_FACING_ENUM_FRONT,
+				CurrentAnimations: details.Animations,
+
+				StartPos:   misc.NewOption(misc.Vector2{X: details.PositionX, Y: 0.0}),
+				Skins:      nil,
+				Animations: nil,
+			},
 		},
 	}
 }
@@ -352,47 +413,31 @@ func (s *SpineBridge) resetState(opName string) {
 func (s *SpineBridge) setInternalSpineOperator(
 	userName string,
 	userNameDisplay string,
-	operatorId string,
-	faction FactionEnum,
-	skinName string,
-	chibiType ChibiTypeEnum,
-	facing ChibiFacingEnum,
-	animation string,
-	positionX *float64,
-	startPosX *float64,
-	startPosY *float64,
+	info OperatorInfo,
 ) error {
-	assetMap := s.getAssetMapFromFaction(faction)
-	commonNames := s.getCommonNamesFromFaction(faction)
+	assetMap := s.getAssetMapFromFaction(info.Faction)
+	commonNames := s.getCommonNamesFromFaction(info.Faction)
 
 	// Validate the setOperator Request
 	{
-		log.Println("Request setOperator", operatorId, faction, skinName, chibiType, facing, animation)
-		err := assetMap.Contains(operatorId, skinName, chibiType, facing, animation)
+		log.Println("Request setOperator", info.OperatorId, info.Faction, info.Skin, info.ChibiType, info.Facing, info.CurrentAnimations)
+		err := assetMap.Contains(info.OperatorId, info.Skin, info.ChibiType, info.Facing, info.CurrentAnimations)
 		if err != nil {
 			log.Println("Validate setOperator request failed", err)
 			return err
 		}
 	}
 
-	isBase := chibiType == CHIBI_TYPE_ENUM_BASE
-	isFront := facing == CHIBI_FACING_ENUM_FRONT
+	isBase := info.ChibiType == CHIBI_TYPE_ENUM_BASE
+	isFront := info.Facing == CHIBI_FACING_ENUM_FRONT
 
 	atlasFile := ""
 	pngFile := ""
 	skelFile := ""
-	defaultAnimation := "Idle"
-	if isBase {
-		defaultAnimation = "Relax"
-	}
-	spineData := assetMap.Get(operatorId, skinName, isBase, isFront)
+	spineData := assetMap.Get(info.OperatorId, info.Skin, isBase, isFront)
 	atlasFile = spineData.AtlasFilepath
 	pngFile = spineData.PngFilepath
 	skelFile = spineData.SkelFilepath
-	if len(animation) == 0 {
-		animation = defaultAnimation
-	}
-
 	formatPathFn := func(path string) string {
 		return "assets/" + strings.ReplaceAll(path, string(os.PathSeparator), "/")
 	}
@@ -422,7 +467,7 @@ func (s *SpineBridge) setInternalSpineOperator(
 	// pngFileContentsB64 = base64.StdEncoding.EncodeToString(pngFileBytes)
 
 	wandering := false
-	if positionX == nil {
+	if info.TargetPos.IsNone() {
 		wandering = true
 	}
 
@@ -430,21 +475,17 @@ func (s *SpineBridge) setInternalSpineOperator(
 		"type_name":         SET_OPERATOR,
 		"user_name":         userName,
 		"user_name_display": userNameDisplay,
-		"operator_id":       operatorId,
+		"operator_id":       info.OperatorId,
 		"atlas_file":        formatPathFn(atlasFile),
 		"png_file":          formatPathFn(pngFile),
 		"skel_file":         formatPathFn(skelFile),
-		"position_x":        positionX,
 		"wandering":         wandering,
-
-		"start_position_x": startPosX,
-		"start_position_y": startPosY,
-
+		"animations":        info.CurrentAnimations,
+		"start_pos":         info.StartPos,
+		"target_pos":        info.TargetPos,
 		// "atlas_file_base64": atlasFileContentsB64,
 		// "skel_file_base64":  skelFileContentsB64,
 		// "png_file_base64":   pngFileContentsB64,
-
-		"animation": animation,
 	}
 
 	data_json, _ := json.Marshal(data)
@@ -461,23 +502,8 @@ func (s *SpineBridge) setInternalSpineOperator(
 		chatUser = s.chatUsers[userName]
 	}
 
-	chatUser.currentOperatorName = commonNames.GetCanonicalName(operatorId)
-	chatUser.currentOperatorId = operatorId
-	chatUser.currentFaction = faction
-	chatUser.currentSkin = skinName
-	if isBase {
-		chatUser.currentChibiType = CHIBI_TYPE_ENUM_BASE
-	} else {
-		chatUser.currentChibiType = CHIBI_TYPE_ENUM_BATTLE
-	}
-	if isFront {
-		chatUser.currentFacing = CHIBI_FACING_ENUM_FRONT
-	} else {
-		chatUser.currentFacing = CHIBI_FACING_ENUM_BACK
-	}
-	chatUser.currentAnimation = animation
-	chatUser.currentPositionX = positionX
-
+	chatUser.currentOperator.DisplayName = commonNames.GetCanonicalName(info.OperatorId)
+	chatUser.currentOperator = info
 	return nil
 }
 
@@ -515,15 +541,7 @@ func (s *SpineBridge) SetOperator(req *SetOperatorRequest) (*SetOperatorResponse
 	err := s.setInternalSpineOperator(
 		req.UserName,
 		req.UserNameDisplay,
-		req.OperatorId,
-		req.Faction,
-		req.Skin,
-		req.ChibiType,
-		req.Facing,
-		req.Animation,
-		req.PositionX,
-		req.StartPositionX,
-		req.StartPositionY,
+		req.Operator,
 	)
 	if err != nil {
 		return nil, err
@@ -619,7 +637,6 @@ func (s *SpineBridge) RemoveOperator(r *RemoveOperatorRequest) (*RemoveOperatorR
 	return successResp, nil
 }
 
-// TODO: Add a GetEnemyIds()
 func (s *SpineBridge) GetOperatorIds(faction FactionEnum) ([]string, error) {
 	assetMap := s.getAssetMapFromFaction(faction)
 	operatorIds := make([]string, 0)
@@ -657,22 +674,25 @@ func (s *SpineBridge) CurrentInfo(userName string) (OperatorInfo, error) {
 		return *EmptyOperatorInfo(), NewUserNotFound("User not found: " + userName)
 	}
 
-	assetMap := s.getAssetMapFromFaction(chatUser.currentFaction)
+	assetMap := s.getAssetMapFromFaction(chatUser.currentOperator.Faction)
 
 	skins := make([]string, 0)
-	for skinName := range assetMap.Data[chatUser.currentOperatorId].Skins {
+	for skinName := range assetMap.Data[chatUser.currentOperator.OperatorId].Skins {
 		skins = append(skins, skinName)
 	}
 
 	animations := make([]string, 0)
 	spineData := assetMap.Get(
-		chatUser.currentOperatorId,
-		chatUser.currentSkin,
-		chatUser.currentChibiType == CHIBI_TYPE_ENUM_BASE,
-		chatUser.currentFacing == CHIBI_FACING_ENUM_FRONT,
+		chatUser.currentOperator.OperatorId,
+		chatUser.currentOperator.Skin,
+		chatUser.currentOperator.ChibiType == CHIBI_TYPE_ENUM_BASE,
+		chatUser.currentOperator.Facing == CHIBI_FACING_ENUM_FRONT,
 	)
 	for _, animationName := range spineData.Animations {
 		if slices.Contains(excludeAnimations, animationName) {
+			continue
+		}
+		if strings.Contains(animationName, "Default") {
 			continue
 		}
 		if strings.HasSuffix(animationName, "_Begin") {
@@ -686,14 +706,13 @@ func (s *SpineBridge) CurrentInfo(userName string) (OperatorInfo, error) {
 
 	// positionX = -1.0
 	return OperatorInfo{
-		Name:       chatUser.currentOperatorName,
-		OperatorId: chatUser.currentOperatorId,
-		Faction:    chatUser.currentFaction,
-		Skin:       chatUser.currentSkin,
-		ChibiType:  chatUser.currentChibiType,
-		Facing:     chatUser.currentFacing,
-		Animation:  chatUser.currentAnimation,
-		PositionX:  nil,
+		DisplayName:       chatUser.currentOperator.DisplayName,
+		OperatorId:        chatUser.currentOperator.OperatorId,
+		Faction:           chatUser.currentOperator.Faction,
+		Skin:              chatUser.currentOperator.Skin,
+		ChibiType:         chatUser.currentOperator.ChibiType,
+		Facing:            chatUser.currentOperator.Facing,
+		CurrentAnimations: chatUser.currentOperator.CurrentAnimations,
 
 		Skins:      skins,
 		Animations: animations,

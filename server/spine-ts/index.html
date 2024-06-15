@@ -17,7 +17,11 @@ body {
 <body>
 	<div id="container" style="width: 1920px; height: 1080px;"></div>
 </body>
-<script type="text/javascript" src="src/custom_script.js"></script>
+<script type="text/javascript">
+	window.addEventListener("load", () => {
+		window.SpineRuntime = new stym.Runtime();
+	});
+</script>
 
 </body>
 </html>

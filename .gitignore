@@ -1,12 +1,16 @@
 server/spine-ts/player/example/assets/all_chars
 server/spine-ts/player/example/assets/all_chars - Copy
 python/venv
-# tools/venv
+tools/venv
+tools/chars_list.txt
+tools/enemys_list.txt
+
 server/assets/characters/
 server/assets/enemies/
 server/assets/*.json
 server/spine-ts/build/*
 server/twitch_config.json
+server/config.json
 server/server_linux
 server/server_win386.exe
 server/*.exe

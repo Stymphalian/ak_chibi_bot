@@ -1,5 +1,7 @@
 package spine
 
+import "github.com/Stymphalian/ak_chibi_bot/misc"
+
 const (
 	SET_OPERATOR    = "SET_OPERATOR"
 	REMOVE_OPERATOR = "REMOVE_OPERATOR"
@@ -14,17 +16,9 @@ type SpineResponse struct {
 
 // SetOperator
 type SetOperatorRequest struct {
-	UserName        string          `json:"user_name"`         // chonkyking
-	UserNameDisplay string          `json:"user_name_display"` // ChonkyKing
-	OperatorId      string          `json:"operator_id"`       // char_002_amiya
-	Faction         FactionEnum     `json:"faction"`           // operator or enemy
-	Skin            string          `json:"skin"`              // build_char_002_amiya
-	ChibiType       ChibiTypeEnum   `json:"chibi_type"`        // base
-	Facing          ChibiFacingEnum `json:"facing"`            // Front
-	Animation       string          `json:"animation"`         // Relax
-	PositionX       *float64        `json:"position_x"`        // 0.5, nil means wander
-	StartPositionX  *float64        `json:"start_position_x"`  //
-	StartPositionY  *float64        `json:"start_position_y"`  //
+	UserName        string       `json:"user_name"`         // chonkyking
+	UserNameDisplay string       `json:"user_name_display"` // ChonkyKing
+	Operator        OperatorInfo `json:"operator"`
 }
 type SetOperatorResponse struct {
 	SpineResponse
@@ -75,24 +69,25 @@ type RemoveOperatorResponse struct {
 }
 
 type OperatorInfo struct {
-	Name       string
-	Faction    FactionEnum
-	OperatorId string
-	Skin       string
-	ChibiType  ChibiTypeEnum
-	Facing     ChibiFacingEnum
-	Animation  string
-	PositionX  *float64
+	DisplayName       string          `json:"display_name"`
+	Faction           FactionEnum     `json:"faction"`
+	OperatorId        string          `json:"operator_id"`
+	Skin              string          `json:"skin"`
+	ChibiType         ChibiTypeEnum   `json:"chibi_type"`
+	Facing            ChibiFacingEnum `json:"facing"`
+	CurrentAnimations []string        `json:"animation"`
 
-	Skins      []string
-	Animations []string
+	TargetPos misc.Option[misc.Vector2] `json:"target_pos"`
+	StartPos  misc.Option[misc.Vector2] `json:"start_pos"`
+
+	Skins      []string `json:"skins"`
+	Animations []string `json:"animations"`
 }
 
 func EmptyOperatorInfo() *OperatorInfo {
 	return &OperatorInfo{
 		Skins:      make([]string, 0),
 		Animations: make([]string, 0),
-		PositionX:  nil,
 	}
 }
 
