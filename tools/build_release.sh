@@ -14,7 +14,7 @@ tsc -p tsconfig.json
 cp -r /work/server/spine-ts/build /work/release/spine-ts
 cp -r /work/server/spine-ts/css /work/release/spine-ts
 cp -r /work/server/spine-ts/static /work/release/spine-ts
-cp /work/server/favicon.ico /work/release/spine-ts/favicon.ico
+cp /work/server/spine-ts/favicon.ico /work/release/spine-ts/favicon.ico
 cp /work/server/spine-ts/index.html /work/release/spine-ts/index.html
 
 ## Copy over the config
