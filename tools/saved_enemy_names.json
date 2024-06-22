@@ -292,10 +292,6 @@
         "A7"
     ],
     "enemy_1037_lunsbr": [],
-    "enemy_1037_lunsabr": [
-        "Spec Ops Soldier",
-        "33"
-    ],
     "enemy_1038_lunmag": [
         "Spec Ops Caster",
         "AL1"
@@ -334,14 +330,6 @@
     ],
     "enemy_1043_zomsbr": [],
     "enemy_1043_zomsbr_2": [],
-    "enemy_1043_zomsabr": [
-        "Possessed Soldier",
-        "P1"
-    ],
-    "enemy_1043_zomsabr_2": [
-        "Possessed Soldier Leader",
-        "P2"
-    ],
     "enemy_1044_zomstr": [
         "Possessed Junkman",
         "P3"
@@ -1335,14 +1323,6 @@
     "enemy_1168_dumage_2": [
         "Dublinn Shadowcaster Leader",
         "DU8"
-    ],
-    "enemy_1169_duphx": [
-        "Dublinn Phalanx Infantry",
-        "DU9"
-    ],
-    "enemy_1169_duphx_2": [
-        "Dublinn Phalanx Commander",
-        "DU10"
     ],
     "enemy_1169_duphlx": [],
     "enemy_1169_duphlx_2": [],
@@ -2661,7 +2641,9 @@
         "BH4"
     ],
     "enemy_1342_frtuna": [
-        "Fortuna, Fallen Angel",
+        "Fortuna",
+        "Fallen Angel",
+        "Fortuna - Fallen Angel",
         "FA"
     ],
     "enemy_3005_lpeopl": [
@@ -2933,6 +2915,78 @@
     "enemy_1379_ltncdt_2": [
         "Witch Kings Orchestra Conductor",
         "MST2"
+    ],
+    "enemy_1381_winman": [
+        "Delegation Recruit",
+        "VM1"
+    ],
+    "enemy_1381_winman_2": [
+        "Delegation Veteran",
+        "VM2"
+    ],
+    "enemy_1382_winbal": [
+        "Delegation Assault Recruit",
+        "VM3"
+    ],
+    "enemy_1382_winbal_2": [
+        "Delegation Assault Veteran",
+        "VM4"
+    ],
+    "enemy_1383_windog": [
+        "Clockwork Patroller",
+        "VM5"
+    ],
+    "enemy_1383_windog_2": [
+        "Clockwork Warrior",
+        "VM6"
+    ],
+    "enemy_1384_winfrz": [
+        "Frozen Mountain Burdenbeast",
+        "VM7"
+    ],
+    "enemy_1384_winfrz_2": [
+        "Slumbering Mountain Burdenbeast",
+        "VM8"
+    ],
+    "enemy_1385_winbom": [
+        "Jet Canister",
+        "VM9"
+    ],
+    "enemy_1385_winbom_2": [
+        "Boom Canister",
+        "VM10"
+    ],
+    "enemy_1386_winmag": [
+        "Delegation Caster",
+        "VM11"
+    ],
+    "enemy_1386_winmag_2": [
+        "Delegation Caster Commander",
+        "VM12"
+    ],
+    "enemy_1387_winshd": [
+        "Delegation Shieldbearer",
+        "VM13"
+    ],
+    "enemy_1387_winshd_2": [
+        "Delegation Shieldbearer Captain",
+        "VM14"
+    ],
+    "enemy_1388_wingnt": [
+        "Catapult",
+        "VM15"
+    ],
+    "enemy_1388_wingnt_2": [
+        "Mortar",
+        "VM16"
+    ],
+    "enemy_1389_winbab": [
+        "Delegation Centurion",
+        "VM17"
+    ],
+    "enemy_1389_winbab_2": [
+        "Delegation Centurion Champion",
+        "VM18"
     ],
     "enemy_2001_duckmi": [
         "Duck Lord",
@@ -3234,6 +3288,11 @@
         "Herkunftshorn, Witch King",
         "HH"
     ],
+    "enemy_1549_windoc": [
+        "Harold",
+        "Harold Craigavon",
+        "HC"
+    ],
     "enemy_2003_rockman": [
         "Lost Colossus",
         "WDG"
@@ -3494,10 +3553,6 @@
         "Consortium of Pincers",
         "SD13"
     ],
-    "enemy_7007_xbbird_3": [
-        "Sandfall Crystalhoof",
-        "SD14"        
-    ],
     "enemy_7007_xbbird": [],
     "enemy_7008_wrkwrk": [
         "Basic Harvester",
@@ -3535,5 +3590,31 @@
         "Sverdsmeltr",
         "Sverdsmeltr, Guardian Ember of the King",
         "SFR01"
+    ],
+    "enemy_8001_flmlod_2": [],
+    "enemy_8001_flmlod_3": [],
+    "enemy_1037_lunsabr": [
+        "Spec Ops Soldier",
+        "33"
+    ],
+    "enemy_1043_zomsabr": [
+        "Possessed Soldier",
+        "P1"
+    ],
+    "enemy_1043_zomsabr_2": [
+        "Possessed Soldier Leader",
+        "P2"
+    ],
+    "enemy_1169_duphx": [
+        "Dublinn Phalanx Infantry",
+        "DU9"
+    ],
+    "enemy_1169_duphx_2": [
+        "Dublinn Phalanx Commander",
+        "DU10"
+    ],
+    "enemy_7007_xbbird_3": [
+        "Sandfall Crystalhoof",
+        "SD14"
     ]
 }

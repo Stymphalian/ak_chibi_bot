@@ -16,7 +16,7 @@ def process_enemy_table(enemy_table: Path, saved_names):
                 continue
 
             if key in saved_names:
-                print(saved_names[key])
+                # print(saved_names[key])
                 output_dict[key] = saved_names[key]
                 continue
 
@@ -48,6 +48,11 @@ def process_enemy_table(enemy_table: Path, saved_names):
             except Exception as e:
                 print(e)
                 print("Unhandled enemy id: " + key, name) 
+
+        for key in saved_names:
+            if key not in output_dict:
+                output_dict[key] = saved_names[key]
+                
         return output_dict
 
 

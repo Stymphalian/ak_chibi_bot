@@ -25,7 +25,7 @@ Command Name | Description
 2. Open up a command-prompt/terminal window in that directory (i.e C:/Users/Stymphalian/Downloads/ak_chibi_bot/)
 by right clicking and selecting (open in command prompt/terminal).
 3. Unzip the `release.zip` folder into a `release` folder.
-4. Download the chibi assets files from [here](https://f002.backblazeb2.com/file/ak-gamedata/assets_20240614.zip) and unzip into the `releases` folder with the name `assets`.
+4. Download the chibi assets files from [here](https://f002.backblazeb2.com/file/ak-gamedata/assets_20240621.zip) and unzip into the `releases` folder with the name `assets`.
 5. You now need register the bot to your channel. Follow the instructions from [Authentication](#Authentication)
 5. Open up the `config.json` file in a text-editor. Update the `broadcaster` name, `channelName` and `twitch_access_token` fields.
 4. Run the server binary (`.\server_win386.exe -assetdir assets -address localhost:7001 -twitch_config config.json`)
@@ -86,9 +86,7 @@ To hot-reload the spine-runtime typescript library:
 ```
 /work
 cd /work/server/spine-ts
-tsc -w -p tsconfig.core.json
-tsc -w -p tsconfig.webgl.json
-tsc -w -p tsconfig.player.json
+tsc -w -p tsconfig.json
 ```
 
 Now open http://localhost:7001/ in your web-browser and you can now 

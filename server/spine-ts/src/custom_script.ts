@@ -33,14 +33,14 @@ module stym {
                         padRight: 0,
                         padTop: 0,
                         padBottom: 0,
-                        debugRender: true,
+                        debugRender: false,
                     },
                     fullScreenBackgroundColor: null,
                     backgroundImage: null,
                     textSize: 14,
                     textFont: "lato",
                 };
-
+                
                 console.log("Creating a new spine player");
                 this.spinePlayer = new spine.SpinePlayer("container", this.spinePlayerConfig);   
             }
