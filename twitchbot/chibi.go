@@ -388,21 +388,35 @@ func (c *ChibiActor) GetWhoInfo(args []string, current *spine.OperatorInfo) (str
 	chibiName := strings.Join(args[2:], " ")
 	log.Printf("Searching for %s\n", chibiName)
 
-	opName, operatorMatches := c.client.GetOperatorIdFromName(chibiName, spine.FACTION_ENUM_OPERATOR)
-	enemyName, enemyMatches := c.client.GetOperatorIdFromName(chibiName, spine.FACTION_ENUM_ENEMY)
+	operatorId, operatorMatches := c.client.GetOperatorIdFromName(chibiName, spine.FACTION_ENUM_OPERATOR)
+	enemyId, enemyMatches := c.client.GetOperatorIdFromName(chibiName, spine.FACTION_ENUM_ENEMY)
 
 	opMat := make([]string, 0)
 	if operatorMatches != nil {
 		opMat = append(opMat, operatorMatches...)
 	} else {
-		opMat = append(opMat, opName)
+		resp, err := c.client.GetOperator(&spine.GetOperatorRequest{
+			OperatorId: operatorId,
+			Faction:    spine.FACTION_ENUM_OPERATOR,
+		})
+		if err != nil {
+			return "", nil
+		}
+		opMat = append(opMat, resp.OperatorName)
 	}
 
 	enemyMat := make([]string, 0)
 	if enemyMatches != nil {
 		enemyMat = append(enemyMat, enemyMatches...)
 	} else {
-		enemyMat = append(enemyMat, enemyName)
+		resp, err := c.client.GetOperator(&spine.GetOperatorRequest{
+			OperatorId: enemyId,
+			Faction:    spine.FACTION_ENUM_ENEMY,
+		})
+		if err != nil {
+			return "", nil
+		}
+		enemyMat = append(enemyMat, resp.OperatorName)
 	}
 
 	return fmt.Sprintf("Did you mean: %s or enemies %s", strings.Join(opMat, ", "), strings.Join(enemyMat, ", ")), nil
@@ -487,7 +501,7 @@ func (c *ChibiActor) GetChibiInfo(userName string, subInfoName string) (string, 
 		msg = fmt.Sprintf("%s animations: %s", current.DisplayName, strings.Join(current.Animations, ","))
 	case "info":
 		msg = fmt.Sprintf(
-			"[%s]: %s, %s, %s, (%s)",
+			"%s: %s, %s, %s, (%s)",
 			current.DisplayName,
 			current.Skin,
 			current.ChibiType,

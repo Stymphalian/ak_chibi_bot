@@ -376,13 +376,13 @@ func (s *SpineBridge) resetState(opName string, details misc.InitialOperatorDeta
 	}
 
 	faction := FACTION_ENUM_OPERATOR
-	opId, err := s.GetOperatorIdFromName(opName, FACTION_ENUM_OPERATOR)
-	if err != nil {
+	opId, matches := s.GetOperatorIdFromName(opName, FACTION_ENUM_OPERATOR)
+	if matches != nil {
 		faction = FACTION_ENUM_ENEMY
-		opId, err = s.GetOperatorIdFromName(opName, FACTION_ENUM_ENEMY)
+		opId, matches = s.GetOperatorIdFromName(opName, FACTION_ENUM_ENEMY)
 	}
-	if err != nil {
-		log.Panic("Failed to get operator id", err)
+	if matches != nil {
+		log.Panic("Failed to get operator id", matches)
 	}
 	stance, err2 := ChibiTypeEnum_Parse(details.Stance)
 	if err2 != nil {
@@ -502,8 +502,8 @@ func (s *SpineBridge) setInternalSpineOperator(
 		chatUser = s.chatUsers[userName]
 	}
 
-	chatUser.currentOperator.DisplayName = commonNames.GetCanonicalName(info.OperatorId)
 	chatUser.currentOperator = info
+	chatUser.currentOperator.DisplayName = commonNames.GetCanonicalName(info.OperatorId)
 	return nil
 }
 
@@ -591,14 +591,17 @@ func (s *SpineBridge) GetOperator(req *GetOperatorRequest) (*GetOperatorResponse
 		}
 	}
 
+	canonicalName := s.getCommonNamesFromFaction(req.Faction).GetCanonicalName(req.OperatorId)
+
 	return &GetOperatorResponse{
 		SpineResponse: SpineResponse{
 			TypeName:   SET_OPERATOR,
 			ErrorMsg:   "",
 			StatusCode: 200,
 		},
-		OperatorId: req.OperatorId,
-		Skins:      skinDataMap,
+		OperatorId:   req.OperatorId,
+		OperatorName: canonicalName,
+		Skins:        skinDataMap,
 	}, nil
 }
 

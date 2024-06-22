@@ -56,8 +56,9 @@ func (s *SkinData) HasChibiType(chibiType ChibiTypeEnum) bool {
 
 type GetOperatorResponse struct {
 	SpineResponse
-	OperatorId string              `json:"operator_id"` // char_002_amiya
-	Skins      map[string]SkinData `json:"skins"`       // build_char_002_amiya
+	OperatorId   string              `json:"operator_id"` // char_002_amiya
+	OperatorName string              `json:"operator_name"`
+	Skins        map[string]SkinData `json:"skins"` // build_char_002_amiya
 }
 
 // RemoveOperator
