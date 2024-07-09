@@ -4,7 +4,7 @@
     "twitch_bot": "",
     "twitch_access_token": "",
     "exclude_names": ["streamelements", "nightbot"],
-    "initial_operator": "Amiya",
+    "initial_operator": "Ray",
     "operator_details": {
         "skin": "default",
         "stance": "base",

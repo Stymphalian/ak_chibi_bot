@@ -3501,6 +3501,22 @@
         "Supersweetie Delivery Drone",
         "DL17"
     ],
+    "enemy_6018_carrier": [
+        "Hatred Without Root",
+        "DL18"
+    ],
+    "enemy_6019_escort": [
+        "Seeding Drone",
+        "DL19"
+    ],
+    "enemy_6020_orang": [
+        "Spirit of Liquor",
+        "DL20"
+    ],
+    "enemy_6021_cask": [
+        "Aged Mead",
+        "DL21"
+    ],
     "enemy_7001_blwzad": [
         "Tribal Shaman",
         "SD1"

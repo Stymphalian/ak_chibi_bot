@@ -494,6 +494,9 @@
     "char_499_kaitou": [
         "Diamante"
     ],
+    "char_4081_warmy": [
+        "Warmy"
+    ],
     "char_242_otter": [
         "Mayer"
     ],
@@ -750,6 +753,9 @@
         "Ch'en the Holungday",
         "Chen 2",
         "Chen2"
+    ],
+    "char_4117_ray": [
+        "Ray"
     ],
     "char_112_siege": [
         "Siege"
@@ -1028,7 +1034,8 @@
         "Midnight"
     ],
     "char_137_brownb": [
-        "Beehunter"
+        "Beehunter",
+        "oraoraora"
     ],
     "char_347_jaksel": [
         "Jackie"
