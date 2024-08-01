@@ -100,6 +100,7 @@ func (c *ChibiActor) HandleCommand(userName string, userNameDisplay string, trim
 	// !chibi walk <number>
 	// !chibi enemy The last steam knight
 	// !chibi admin <username> "!chibi command"
+	// !chibi speed 0.1
 
 	current, err := c.client.CurrentInfo(userName)
 	if err != nil {
@@ -154,6 +155,8 @@ func (c *ChibiActor) HandleCommand(userName string, userNameDisplay string, trim
 		msg, err = c.SetEnemy(args, &current)
 	case "walk":
 		msg, err = c.SetWalk(args, &current)
+	case "speed":
+		msg, err = c.SetAnimationSpeed(args, &current)
 	default:
 		if _, ok := misc.MatchesKeywords(arg2, current.Animations); ok {
 			msg, err = c.SetAnimation([]string{"!chibi", "play", arg2}, &current)
@@ -221,6 +224,9 @@ func (c *ChibiActor) validateUpdateSetDefaultOtherwise(update *spine.OperatorInf
 			break
 		}
 	}
+	if update.AnimationSpeed == 0 {
+		update.AnimationSpeed = 1.0
+	}
 	return nil
 }
 
@@ -238,6 +244,7 @@ func (c *ChibiActor) UpdateChibi(username string, usernameDisplay string, update
 			Facing:            update.Facing,
 			CurrentAnimations: update.CurrentAnimations,
 			TargetPos:         update.TargetPos,
+			AnimationSpeed:    update.AnimationSpeed,
 		},
 	})
 	if err != nil {
@@ -377,6 +384,21 @@ func (c *ChibiActor) SetWalk(args []string, current *spine.OperatorInfo) (string
 			X: desiredPosition, Y: 0.0,
 		})
 	}
+	return "", nil
+}
+
+func (c *ChibiActor) SetAnimationSpeed(args []string, current *spine.OperatorInfo) (string, error) {
+	if len(args) < 3 {
+		return "", errors.New("try something like !chibi speed 0.5")
+	}
+	animationSpeed, err := strconv.ParseFloat(args[2], 64)
+	if err != nil {
+		return "", errors.New("try something like !chibi speed 1.5")
+	}
+	if animationSpeed <= 0 || animationSpeed > 3.0 {
+		return "", errors.New("try something like !chibi speed 2.0")
+	}
+	current.AnimationSpeed = animationSpeed
 	return "", nil
 }
 

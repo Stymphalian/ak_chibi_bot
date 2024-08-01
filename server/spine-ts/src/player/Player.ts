@@ -788,6 +788,7 @@ module spine {
 			// Determine viewport
 			actor.animViewport = this.calculateAnimationViewport(actor, animation);
 			actor.defaultBB = this.getDefaultBoundingBox(actor);
+			actor.animationState.timeScale = actor.config.animationPlaySpeed;
 			actor.animationState.clearTracks();
 			actor.skeleton.setToSetupPose();
 			

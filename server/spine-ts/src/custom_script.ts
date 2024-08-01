@@ -116,6 +116,7 @@ module stym {
                 // scaleY: 0.15,
                 maxSizePx: 350,
                 premultipliedAlpha: true,
+                animationPlaySpeed: requestData["animation_speed"] ?  requestData["animation_speed"] : 1.0,
     
                 extraOffsetX: 0,
                 extraOffsetY: 0,

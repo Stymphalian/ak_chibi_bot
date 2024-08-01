@@ -68,6 +68,9 @@ module spine {
 		/* Optional: whether the skeleton uses premultiplied alpha. Default: true. */
 		premultipliedAlpha: boolean
 
+		/** Optional: Animation play speed. 0 to 2.0 */
+		animationPlaySpeed: number,
+
 		scaleX: number
 		scaleY: number
 		defaultScaleX?: number

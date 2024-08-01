@@ -77,6 +77,7 @@ type OperatorInfo struct {
 	ChibiType         ChibiTypeEnum   `json:"chibi_type"`
 	Facing            ChibiFacingEnum `json:"facing"`
 	CurrentAnimations []string        `json:"animation"`
+	AnimationSpeed    float64         `json:"animation_speed"`
 
 	TargetPos misc.Option[misc.Vector2] `json:"target_pos"`
 	StartPos  misc.Option[misc.Vector2] `json:"start_pos"`

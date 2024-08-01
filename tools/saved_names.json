@@ -292,6 +292,9 @@
     "char_513_apionr": [
         "Tulip"
     ],
+    "char_4023_rfalcn": [
+        "Kestrel"
+    ],
     "char_261_sddrag": [
         "Reed"
     ],
@@ -300,6 +303,10 @@
     ],
     "char_401_elysm": [
         "Elysium"
+    ],
+    "char_4119_wanqin": [
+        "Wanqing",
+        "Wanking"
     ],
     "char_476_blkngt": [
         "Blacknight"
@@ -495,7 +502,8 @@
         "Diamante"
     ],
     "char_4081_warmy": [
-        "Warmy"
+        "Warmy",
+        "Potlid"
     ],
     "char_242_otter": [
         "Mayer"
@@ -667,6 +675,10 @@
     ],
     "char_4032_provs": [
         "Proviso"
+    ],
+    "char_4122_grabds": [
+        "Grain Buds",
+        "Grainbuds"
     ],
     "char_433_windft": [
         "Windflit"
@@ -932,6 +944,9 @@
     "char_423_blemsh": [
         "Blemishine"
     ],
+    "char_2025_shu": [
+        "Shu"
+    ],
     "char_2014_nian": [
         "Nian"
     ],
@@ -957,7 +972,9 @@
         "Mountain"
     ],
     "char_2024_chyue": [
-        "Chongyue"
+        "Chongyue",
+        "chongus",
+        "chungus"
     ],
     "char_172_svrash": [
         "SilverAsh"
@@ -999,6 +1016,10 @@
     ],
     "char_188_helage": [
         "Hellagur"
+    ],
+    "char_4121_zuole": [
+        "Zuo Le",
+        "Zuole"
     ],
     "char_485_pallas": [
         "Pallas"

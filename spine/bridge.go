@@ -441,6 +441,9 @@ func (s *SpineBridge) setInternalSpineOperator(
 	formatPathFn := func(path string) string {
 		return "assets/" + strings.ReplaceAll(path, string(os.PathSeparator), "/")
 	}
+	if info.AnimationSpeed == 0.0 {
+		info.AnimationSpeed = 1.0
+	}
 
 	// atlasFileContentsB64 := ""
 	// atlasFileBytes, err := os.ReadFile(spineData.AtlasFullFilepath)
@@ -483,6 +486,7 @@ func (s *SpineBridge) setInternalSpineOperator(
 		"animations":        info.CurrentAnimations,
 		"start_pos":         info.StartPos,
 		"target_pos":        info.TargetPos,
+		"animation_speed":   info.AnimationSpeed,
 		// "atlas_file_base64": atlasFileContentsB64,
 		// "skel_file_base64":  skelFileContentsB64,
 		// "png_file_base64":   pngFileContentsB64,
