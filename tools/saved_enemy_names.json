@@ -3068,6 +3068,82 @@
         "Out of Control Sky Pole - Yi",
         "HSL20"
     ],
+    "enemy_1401_pogpro": [
+        "Coalition Army Hound",
+        "R18"
+    ],
+    "enemy_1401_pogpro_2": [
+        "Coalition Army Hound Pro",
+        "R19"
+    ],
+    "enemy_1402_tgshd": [
+        "Armored Scout",
+        "R20"
+    ],
+    "enemy_1402_tgshd_2": [
+        "Heavy Scout",
+        "R21"
+    ],
+    "enemy_1403_gunsho": [
+        "Light Rapid Crossbowman",
+        "R22"
+    ],
+    "enemy_1403_gunsho_2": [
+        "Heavy Rapid Crossbowman",
+        "R23"
+    ],
+    "enemy_1404_msnip": [
+        "Heavy Crossbowman Ambusher",
+        "R24"
+    ],
+    "enemy_1404_msnip_2": [
+        "Heavy Crossbowman Hunter",
+        "R25"
+    ],
+    "enemy_1405_boomer": [
+        "Reckless Grenadier",
+        "R26"
+    ],
+    "enemy_1405_boomer_2": [
+        "Impetuous Grenadier",
+        "R27"
+    ],
+    "enemy_1406_chghmr": [
+        "Battleline Advance Guard",
+        "R28"
+    ],
+    "enemy_1406_chghmr_2": [
+        "Battleline Breacher",
+        "R29"
+    ],
+    "enemy_1407_hummbd": [
+        "Farseer",
+        "R30"
+    ],
+    "enemy_1407_hummbd_2": [
+        "Farseer B",
+        "R31"
+    ],
+    "enemy_1408_scotcn": [
+        "Battlefield Observing Mortarman",
+        "R32"
+    ],
+    "enemy_1408_scotcn_2": [
+        "Battlefield Surveying Mortarman",
+        "R33"
+    ],
+    "enemy_1409_bdguad": [
+        "Mateos Security Guard",
+        "R34"
+    ],
+    "enemy_1409_bdguad_2": [
+        "Mateos Guard",
+        "R35"
+    ],
+    "enemy_1409_bdguad_3": [
+        "Mateos Bodyguard",
+        "R36"
+    ],
     "enemy_2001_duckmi": [
         "Duck Lord",
         "DLD"
@@ -3384,6 +3460,10 @@
     "enemy_1550_dhnzzh": [
         "Slumbering of Sui",
         "SUI"
+    ],
+    "enemy_1551_bolicp": [
+        "Captain Mateo",
+        "EC"
     ],
     "enemy_2003_rockman": [
         "Lost Colossus",
