@@ -9,14 +9,14 @@ import (
 	"path/filepath"
 	"slices"
 	"strings"
-	"time"
 
 	"github.com/Stymphalian/ak_chibi_bot/misc"
+	// "github.com/Stymphalian/ak_chibi_bot/twitchbot"
 	"github.com/google/uuid"
 	"github.com/gorilla/websocket"
 )
 
-type Room struct {
+type WebSocketConn struct {
 	conn *websocket.Conn
 	done chan struct{}
 }
@@ -26,10 +26,20 @@ type ChatUser struct {
 	currentOperator OperatorInfo
 }
 
-type SpineBridge struct {
-	chatUsers    map[string]*ChatUser
-	twitchConfig *misc.TwitchConfig
+type Room struct {
+	chatUsers            map[string]*ChatUser
+	WebSocketConnections map[string]*WebSocketConn
+}
 
+func NewRoom() *Room {
+	return &Room{
+		chatUsers:            make(map[string]*ChatUser, 0),
+		WebSocketConnections: make(map[string]*WebSocketConn, 0),
+	}
+}
+
+type SpineBridge struct {
+	twitchConfig     *misc.TwitchConfig
 	Rooms            map[string]*Room
 	AssetMap         *SpineAssetMap
 	CommonNames      *CommonNames
@@ -39,7 +49,8 @@ type SpineBridge struct {
 
 func NewSpineBridge(assetDir string, config *misc.TwitchConfig) (*SpineBridge, error) {
 	s := &SpineBridge{
-		chatUsers:        make(map[string]*ChatUser, 0),
+		// chatUsers:            make(map[string]*ChatUser, 0),
+		// WebSocketConnections: make(map[string]*WebSocketConn, 0),
 		twitchConfig:     config,
 		Rooms:            make(map[string]*Room, 0),
 		AssetMap:         NewSpineAssetMap(),
@@ -77,31 +88,38 @@ func NewSpineBridge(assetDir string, config *misc.TwitchConfig) (*SpineBridge, e
 		}
 	}
 
-	s.resetState(config.InitialOperator, config.OperatorDetails)
+	// s.resetState(config.InitialOperator, config.OperatorDetails)
 
 	return s, nil
 }
 
 func (s *SpineBridge) Close() {
 	log.Println("SpineBridge::Close() called")
-	for roomName, room := range s.Rooms {
-		if room.conn == nil {
-			return
+	for _, room := range s.Rooms {
+		for roomName, websocketConn := range room.WebSocketConnections {
+			if websocketConn.conn == nil {
+				return
+			}
+			err := websocketConn.conn.WriteMessage(
+				websocket.CloseMessage,
+				websocket.FormatCloseMessage(websocket.CloseNormalClosure, ""),
+			)
+			if err != nil {
+				log.Printf("write close for websocketConn %s: %v\n", roomName, err)
+			}
+			<-websocketConn.done
 		}
-		err := room.conn.WriteMessage(
-			websocket.CloseMessage,
-			websocket.FormatCloseMessage(websocket.CloseNormalClosure, ""),
-		)
-		if err != nil {
-			log.Printf("write close for room %s: %v\n", roomName, err)
-		}
-		<-room.done
 	}
 	log.Println("SpineBridge::Close() finished")
 }
 
-func (s *SpineBridge) clientConnected() bool {
-	return len(s.Rooms) > 0
+func (s *SpineBridge) clientConnected(channel string) bool {
+	if _, ok := s.Rooms[channel]; !ok {
+		return false
+	} else {
+		return len(s.Rooms[channel].WebSocketConnections) > 0
+	}
+	// return len(s.WebSocketConnections) > 0
 }
 
 func (s *SpineBridge) handleResponseMessages(message []byte) {
@@ -116,6 +134,11 @@ func (s *SpineBridge) handleResponseMessages(message []byte) {
 }
 
 func (s *SpineBridge) HandleSpine(w http.ResponseWriter, r *http.Request) error {
+	if !r.URL.Query().Has("channelName") {
+		log.Println("invalid ws connection. Requires channelName")
+	}
+	channelName := r.URL.Query().Get("channelName")
+
 	var upgrader = websocket.Upgrader{} // use default options
 	c, err := upgrader.Upgrade(w, r, nil)
 	if err != nil {
@@ -123,27 +146,32 @@ func (s *SpineBridge) HandleSpine(w http.ResponseWriter, r *http.Request) error 
 		return nil
 	}
 
-	room := &Room{
+	websocketConn := &WebSocketConn{
 		conn: c,
 		done: make(chan struct{}),
 	}
 	// Get a uuid string
 	roomName := uuid.New().String()
-	s.Rooms[roomName] = room
+	if _, ok := s.Rooms[channelName]; !ok {
+		s.Rooms[channelName] = NewRoom()
+	}
+	room := s.Rooms[channelName]
+	room.WebSocketConnections[roomName] = websocketConn
 
 	// Track that something has connected to the client
 	log.Print("Client connected.")
-	room.conn = c
-	room.done = make(chan struct{})
+	websocketConn.conn = c
+	websocketConn.done = make(chan struct{})
 	defer func() {
 		log.Println("Closing connection and done channel.")
-		close(room.done)
-		room.conn.Close()
-		room.conn = nil
+		close(websocketConn.done)
+		websocketConn.conn.Close()
+		websocketConn.conn = nil
 	}()
 
-	for _, chatUser := range s.chatUsers {
+	for _, chatUser := range room.chatUsers {
 		s.setInternalSpineOperator(
+			channelName,
 			chatUser.userName,
 			chatUser.userName,
 			chatUser.currentOperator,
@@ -172,245 +200,247 @@ func (s *SpineBridge) HandleSpine(w http.ResponseWriter, r *http.Request) error 
 			log.Print("Default")
 		}
 	}
-	s.resetState(s.twitchConfig.InitialOperator, s.twitchConfig.OperatorDetails)
+	// s.resetState(s.twitchConfig.InitialOperator, s.twitchConfig.OperatorDetails)
 	return nil
 }
 
 func (s *SpineBridge) HandleAdmin(w http.ResponseWriter, r *http.Request) error {
-	if r.Method != http.MethodPost {
-		return nil
-	}
+	return nil
+	// if r.Method != http.MethodPost {
+	// 	return nil
+	// }
 
-	decoder := json.NewDecoder(r.Body)
-	var data map[string]interface{}
-	err := decoder.Decode(&data)
-	if err != nil {
-		return err
-	}
+	// decoder := json.NewDecoder(r.Body)
+	// var data map[string]interface{}
+	// err := decoder.Decode(&data)
+	// if err != nil {
+	// 	return err
+	// }
 
-	switch data["action"].(string) {
-	case "remove":
-		userName := data["user_name"].(string)
-		s.RemoveOperator(&RemoveOperatorRequest{UserName: userName})
-		w.Header().Set("Content-Type", "application/json")
-		json.NewEncoder(w).Encode(map[string]interface{}{
-			"status": "success",
-		})
-		return nil
-	case "debug":
-		operatorIdsInterface, ok := data["operator_ids"].([]interface{})
-		if !ok {
-			return errors.New("operator_ids is not an array")
-		}
-		operator_ids := make([]string, len(operatorIdsInterface))
-		for i, idInterface := range operatorIdsInterface {
-			idString, ok := idInterface.(string)
-			if !ok {
-				return errors.New("operator_ids contains a non-string element")
-			}
-			operator_ids[i] = idString
-		}
+	// switch data["action"].(string) {
+	// case "remove":
+	// 	userName := data["user_name"].(string)
+	// 	s.RemoveOperator(&RemoveOperatorRequest{UserName: userName})
+	// 	w.Header().Set("Content-Type", "application/json")
+	// 	json.NewEncoder(w).Encode(map[string]interface{}{
+	// 		"status": "success",
+	// 	})
+	// 	return nil
+	// case "debug":
+	// 	operatorIdsInterface, ok := data["operator_ids"].([]interface{})
+	// 	if !ok {
+	// 		return errors.New("operator_ids is not an array")
+	// 	}
+	// 	operator_ids := make([]string, len(operatorIdsInterface))
+	// 	for i, idInterface := range operatorIdsInterface {
+	// 		idString, ok := idInterface.(string)
+	// 		if !ok {
+	// 			return errors.New("operator_ids contains a non-string element")
+	// 		}
+	// 		operator_ids[i] = idString
+	// 	}
 
-		enemyIdsInterface, ok := data["enemy_ids"].([]interface{})
-		if !ok {
-			return errors.New("operator_ids is not an array")
-		}
-		enemy_ids := make([]string, len(enemyIdsInterface))
-		for i, idInterface := range enemyIdsInterface {
-			idString, ok := idInterface.(string)
-			if !ok {
-				return errors.New("enemy_ids contains a non-string element")
-			}
-			enemy_ids[i] = idString
-		}
+	// 	enemyIdsInterface, ok := data["enemy_ids"].([]interface{})
+	// 	if !ok {
+	// 		return errors.New("operator_ids is not an array")
+	// 	}
+	// 	enemy_ids := make([]string, len(enemyIdsInterface))
+	// 	for i, idInterface := range enemyIdsInterface {
+	// 		idString, ok := idInterface.(string)
+	// 		if !ok {
+	// 			return errors.New("enemy_ids contains a non-string element")
+	// 		}
+	// 		enemy_ids[i] = idString
+	// 	}
 
-		startPosX := 0 + 0.02
-		startPosY := 0.04
-		for _, operator_id := range operator_ids {
-			resp, err := s.GetOperator(&GetOperatorRequest{
-				OperatorId: operator_id,
-				Faction:    FACTION_ENUM_OPERATOR,
-			})
-			if err != nil {
-				log.Panic("Failed to get operator", err)
-			}
+	// 	startPosX := 0 + 0.02
+	// 	startPosY := 0.04
+	// 	for _, operator_id := range operator_ids {
+	// 		resp, err := s.GetOperator(&GetOperatorRequest{
+	// 			OperatorId: operator_id,
+	// 			Faction:    FACTION_ENUM_OPERATOR,
+	// 		})
+	// 		if err != nil {
+	// 			log.Panic("Failed to get operator", err)
+	// 		}
 
-			for skin, skinEntry := range resp.Skins {
-				if !skinEntry.HasChibiType(CHIBI_TYPE_ENUM_BATTLE) {
-					continue
-				}
-				if skin != DEFAULT_SKIN_NAME {
-					continue
-				}
-				_, err := s.SetOperator(&SetOperatorRequest{
-					UserName:        operator_id + "_" + skin,
-					UserNameDisplay: operator_id + "_" + skin,
-					Operator: OperatorInfo{
-						OperatorId:        operator_id,
-						Faction:           FACTION_ENUM_OPERATOR,
-						Skin:              skin,
-						ChibiType:         CHIBI_TYPE_ENUM_BATTLE,
-						Facing:            CHIBI_FACING_ENUM_FRONT,
-						CurrentAnimations: []string{DEFAULT_ANIM_BATTLE},
-						StartPos:          misc.NewOption(misc.Vector2{X: startPosX, Y: startPosY}),
-					},
-				})
-				if err != nil {
-					log.Panic("Failed to set operator", err)
-				}
+	// 		for skin, skinEntry := range resp.Skins {
+	// 			if !skinEntry.HasChibiType(CHIBI_TYPE_ENUM_BATTLE) {
+	// 				continue
+	// 			}
+	// 			if skin != DEFAULT_SKIN_NAME {
+	// 				continue
+	// 			}
+	// 			_, err := s.SetOperator(&SetOperatorRequest{
+	// 				UserName:        operator_id + "_" + skin,
+	// 				UserNameDisplay: operator_id + "_" + skin,
+	// 				Operator: OperatorInfo{
+	// 					OperatorId:        operator_id,
+	// 					Faction:           FACTION_ENUM_OPERATOR,
+	// 					Skin:              skin,
+	// 					ChibiType:         CHIBI_TYPE_ENUM_BATTLE,
+	// 					Facing:            CHIBI_FACING_ENUM_FRONT,
+	// 					CurrentAnimations: []string{DEFAULT_ANIM_BATTLE},
+	// 					StartPos:          misc.NewOption(misc.Vector2{X: startPosX, Y: startPosY}),
+	// 				},
+	// 			})
+	// 			if err != nil {
+	// 				log.Panic("Failed to set operator", err)
+	// 			}
 
-				if err == nil {
-					startPosX += 0.08
-					if startPosX > 1.0 {
-						startPosX = 0.02
-						startPosY += 0.08
-					}
-				}
-				time.Sleep(100 * time.Millisecond)
-			}
-		}
+	// 			if err == nil {
+	// 				startPosX += 0.08
+	// 				if startPosX > 1.0 {
+	// 					startPosX = 0.02
+	// 					startPosY += 0.08
+	// 				}
+	// 			}
+	// 			time.Sleep(100 * time.Millisecond)
+	// 		}
+	// 	}
 
-		for _, operator_id := range enemy_ids {
-			resp, err := s.GetOperator(&GetOperatorRequest{
-				OperatorId: operator_id,
-				Faction:    FACTION_ENUM_ENEMY,
-			})
-			if err != nil {
-				log.Panic("Failed to get enemy", err)
-			}
+	// 	for _, operator_id := range enemy_ids {
+	// 		resp, err := s.GetOperator(&GetOperatorRequest{
+	// 			OperatorId: operator_id,
+	// 			Faction:    FACTION_ENUM_ENEMY,
+	// 		})
+	// 		if err != nil {
+	// 			log.Panic("Failed to get enemy", err)
+	// 		}
 
-			for skin, skinEntry := range resp.Skins {
-				if !skinEntry.HasChibiType(CHIBI_TYPE_ENUM_BATTLE) {
-					continue
-				}
+	// 		for skin, skinEntry := range resp.Skins {
+	// 			if !skinEntry.HasChibiType(CHIBI_TYPE_ENUM_BATTLE) {
+	// 				continue
+	// 			}
 
-				animation := DEFAULT_ANIM_BATTLE
-				for _, anim := range skinEntry.Stances[CHIBI_TYPE_ENUM_BATTLE].Facings[CHIBI_FACING_ENUM_FRONT] {
-					if anim == DEFAULT_ANIM_BATTLE {
-						animation = DEFAULT_ANIM_BATTLE
-						break
-					}
-					animation = anim
-				}
+	// 			animation := DEFAULT_ANIM_BATTLE
+	// 			for _, anim := range skinEntry.Stances[CHIBI_TYPE_ENUM_BATTLE].Facings[CHIBI_FACING_ENUM_FRONT] {
+	// 				if anim == DEFAULT_ANIM_BATTLE {
+	// 					animation = DEFAULT_ANIM_BATTLE
+	// 					break
+	// 				}
+	// 				animation = anim
+	// 			}
 
-				_, err := s.SetOperator(&SetOperatorRequest{
-					UserName:        operator_id + "_" + skin,
-					UserNameDisplay: operator_id + "_" + skin,
-					Operator: OperatorInfo{
-						OperatorId:        operator_id,
-						Faction:           FACTION_ENUM_ENEMY,
-						Skin:              skin,
-						ChibiType:         CHIBI_TYPE_ENUM_BATTLE,
-						Facing:            CHIBI_FACING_ENUM_FRONT,
-						CurrentAnimations: []string{animation},
-						StartPos:          misc.NewOption(misc.Vector2{X: startPosX, Y: startPosY}),
-					},
-				})
-				if err != nil {
-					log.Panic("Failed to set enemy", err)
-				}
+	// 			_, err := s.SetOperator(&SetOperatorRequest{
+	// 				UserName:        operator_id + "_" + skin,
+	// 				UserNameDisplay: operator_id + "_" + skin,
+	// 				Operator: OperatorInfo{
+	// 					OperatorId:        operator_id,
+	// 					Faction:           FACTION_ENUM_ENEMY,
+	// 					Skin:              skin,
+	// 					ChibiType:         CHIBI_TYPE_ENUM_BATTLE,
+	// 					Facing:            CHIBI_FACING_ENUM_FRONT,
+	// 					CurrentAnimations: []string{animation},
+	// 					StartPos:          misc.NewOption(misc.Vector2{X: startPosX, Y: startPosY}),
+	// 				},
+	// 			})
+	// 			if err != nil {
+	// 				log.Panic("Failed to set enemy", err)
+	// 			}
 
-				if err == nil {
-					startPosX += 0.08
-					if startPosX > 1.0 {
-						startPosX = 0.02
-						startPosY += 0.08
-					}
-				}
-				time.Sleep(100 * time.Millisecond)
-			}
-		}
+	// 			if err == nil {
+	// 				startPosX += 0.08
+	// 				if startPosX > 1.0 {
+	// 					startPosX = 0.02
+	// 					startPosY += 0.08
+	// 				}
+	// 			}
+	// 			time.Sleep(100 * time.Millisecond)
+	// 		}
+	// 	}
 
-		w.Header().Set("Content-Type", "application/json")
-		json.NewEncoder(w).Encode(map[string]interface{}{
-			"status": "success",
-		})
-		return nil
-	case "add":
-		userName := data["user_name"].(string)
-		if _, ok := s.chatUsers[userName]; !ok {
-			operatorId := "char_002_amiya"
-			s.SetOperator(&SetOperatorRequest{
-				UserName:        userName,
-				UserNameDisplay: userName,
-				Operator: OperatorInfo{
-					OperatorId:        operatorId,
-					Faction:           FACTION_ENUM_OPERATOR,
-					Skin:              DEFAULT_SKIN_NAME,
-					ChibiType:         CHIBI_TYPE_ENUM_BASE,
-					Facing:            CHIBI_FACING_ENUM_FRONT,
-					CurrentAnimations: []string{DEFAULT_ANIM_BASE},
-				},
-			})
-		}
-		w.Header().Set("Content-Type", "application/json")
-		json.NewEncoder(w).Encode(map[string]interface{}{
-			"status": "success",
-		})
-		return nil
-	case "list":
-		w.Header().Set("Content-Type", "application/json")
-		usernames := make([]string, 0)
-		for name := range s.chatUsers {
-			usernames = append(usernames, name)
-		}
+	// 	w.Header().Set("Content-Type", "application/json")
+	// 	json.NewEncoder(w).Encode(map[string]interface{}{
+	// 		"status": "success",
+	// 	})
+	// 	return nil
+	// case "add":
+	// 	userName := data["user_name"].(string)
+	// 	if _, ok := s.chatUsers[userName]; !ok {
+	// 		operatorId := "char_002_amiya"
+	// 		s.SetOperator(&SetOperatorRequest{
+	// 			UserName:        userName,
+	// 			UserNameDisplay: userName,
+	// 			Operator: OperatorInfo{
+	// 				OperatorId:        operatorId,
+	// 				Faction:           FACTION_ENUM_OPERATOR,
+	// 				Skin:              DEFAULT_SKIN_NAME,
+	// 				ChibiType:         CHIBI_TYPE_ENUM_BASE,
+	// 				Facing:            CHIBI_FACING_ENUM_FRONT,
+	// 				CurrentAnimations: []string{DEFAULT_ANIM_BASE},
+	// 			},
+	// 		})
+	// 	}
+	// 	w.Header().Set("Content-Type", "application/json")
+	// 	json.NewEncoder(w).Encode(map[string]interface{}{
+	// 		"status": "success",
+	// 	})
+	// 	return nil
+	// case "list":
+	// 	w.Header().Set("Content-Type", "application/json")
+	// 	usernames := make([]string, 0)
+	// 	for name := range s.chatUsers {
+	// 		usernames = append(usernames, name)
+	// 	}
 
-		json.NewEncoder(w).Encode(map[string]interface{}{
-			"status": "success",
-			"users":  usernames,
-		})
-		return nil
-	default:
-		w.Header().Set("Content-Type", "application/json")
-		json.NewEncoder(w).Encode(map[string]interface{}{
-			"status":  "failed",
-			"message": "Unknown action",
-		})
-		return nil
-	}
+	// 	json.NewEncoder(w).Encode(map[string]interface{}{
+	// 		"status": "success",
+	// 		"users":  usernames,
+	// 	})
+	// 	return nil
+	// default:
+	// 	w.Header().Set("Content-Type", "application/json")
+	// 	json.NewEncoder(w).Encode(map[string]interface{}{
+	// 		"status":  "failed",
+	// 		"message": "Unknown action",
+	// 	})
+	// 	return nil
+	// }
 }
 
 func (s *SpineBridge) resetState(opName string, details misc.InitialOperatorDetails) {
-	if len(opName) == 0 {
-		opName = "Amiya"
-	}
+	// if len(opName) == 0 {
+	// 	opName = "Amiya"
+	// }
 
-	faction := FACTION_ENUM_OPERATOR
-	opId, matches := s.GetOperatorIdFromName(opName, FACTION_ENUM_OPERATOR)
-	if matches != nil {
-		faction = FACTION_ENUM_ENEMY
-		opId, matches = s.GetOperatorIdFromName(opName, FACTION_ENUM_ENEMY)
-	}
-	if matches != nil {
-		log.Panic("Failed to get operator id", matches)
-	}
-	stance, err2 := ChibiTypeEnum_Parse(details.Stance)
-	if err2 != nil {
-		log.Panic("Failed to parse stance", err2)
-	}
+	// faction := FACTION_ENUM_OPERATOR
+	// opId, matches := s.GetOperatorIdFromName(opName, FACTION_ENUM_OPERATOR)
+	// if matches != nil {
+	// 	faction = FACTION_ENUM_ENEMY
+	// 	opId, matches = s.GetOperatorIdFromName(opName, FACTION_ENUM_ENEMY)
+	// }
+	// if matches != nil {
+	// 	log.Panic("Failed to get operator id", matches)
+	// }
+	// stance, err2 := ChibiTypeEnum_Parse(details.Stance)
+	// if err2 != nil {
+	// 	log.Panic("Failed to parse stance", err2)
+	// }
 
-	broadcasterName := s.twitchConfig.Broadcaster
-	s.chatUsers = map[string]*ChatUser{
-		broadcasterName: {
-			userName: broadcasterName,
-			currentOperator: OperatorInfo{
-				DisplayName:       opName,
-				OperatorId:        opId,
-				Faction:           faction,
-				Skin:              details.Skin,
-				ChibiType:         stance,
-				Facing:            CHIBI_FACING_ENUM_FRONT,
-				CurrentAnimations: details.Animations,
+	// broadcasterName := s.twitchConfig.Broadcaster
+	// s.chatUsers = map[string]*ChatUser{
+	// 	// broadcasterName: {
+	// 	// 	userName: broadcasterName,
+	// 	// 	currentOperator: OperatorInfo{
+	// 	// 		DisplayName:       opName,
+	// 	// 		OperatorId:        opId,
+	// 	// 		Faction:           faction,
+	// 	// 		Skin:              details.Skin,
+	// 	// 		ChibiType:         stance,
+	// 	// 		Facing:            CHIBI_FACING_ENUM_FRONT,
+	// 	// 		CurrentAnimations: details.Animations,
 
-				StartPos:   misc.NewOption(misc.Vector2{X: details.PositionX, Y: 0.0}),
-				Skins:      nil,
-				Animations: nil,
-			},
-		},
-	}
+	// 	// 		StartPos:   misc.NewOption(misc.Vector2{X: details.PositionX, Y: 0.0}),
+	// 	// 		Skins:      nil,
+	// 	// 		Animations: nil,
+	// 	// 	},
+	// 	// },
+	// }
 }
 
 func (s *SpineBridge) setInternalSpineOperator(
+	channel string,
 	userName string,
 	userNameDisplay string,
 	info OperatorInfo,
@@ -494,16 +524,18 @@ func (s *SpineBridge) setInternalSpineOperator(
 
 	data_json, _ := json.Marshal(data)
 	log.Println("setInternalSpineOperator sending: ", string(data_json))
-	for _, room := range s.Rooms {
-		if room.conn != nil {
-			room.conn.WriteJSON(data)
+	room := s.Rooms[channel]
+
+	for _, websocketConn := range room.WebSocketConnections {
+		if websocketConn.conn != nil {
+			websocketConn.conn.WriteJSON(data)
 		}
 	}
 
-	chatUser, ok := s.chatUsers[userName]
+	chatUser, ok := room.chatUsers[userName]
 	if !ok {
-		s.chatUsers[userName] = &ChatUser{userName: userName}
-		chatUser = s.chatUsers[userName]
+		room.chatUsers[userName] = &ChatUser{userName: userName}
+		chatUser = room.chatUsers[userName]
 	}
 
 	chatUser.currentOperator = info
@@ -537,12 +569,13 @@ func (s *SpineBridge) getCommonNamesFromFaction(faction FactionEnum) *CommonName
 
 // Start Spine Client Interfact functions
 // ----------------------------
-func (s *SpineBridge) SetOperator(req *SetOperatorRequest) (*SetOperatorResponse, error) {
-	if !s.clientConnected() {
+func (s *SpineBridge) SetOperator(channel string, req *SetOperatorRequest) (*SetOperatorResponse, error) {
+	if !s.clientConnected(channel) {
 		return nil, errors.New("SpineBridge client is not yet attached")
 	}
 
 	err := s.setInternalSpineOperator(
+		channel,
 		req.UserName,
 		req.UserNameDisplay,
 		req.Operator,
@@ -561,9 +594,9 @@ func (s *SpineBridge) SetOperator(req *SetOperatorRequest) (*SetOperatorResponse
 }
 
 func (s *SpineBridge) GetOperator(req *GetOperatorRequest) (*GetOperatorResponse, error) {
-	if !s.clientConnected() {
-		return nil, errors.New("SpineBridge client is not yet attached")
-	}
+	// if !s.clientConnected(channel) {
+	// 	return nil, errors.New("SpineBridge client is not yet attached")
+	// }
 	assetMap := s.getAssetMapFromFaction(req.Faction)
 
 	operatorData, ok := assetMap.Data[req.OperatorId]
@@ -609,8 +642,8 @@ func (s *SpineBridge) GetOperator(req *GetOperatorRequest) (*GetOperatorResponse
 	}, nil
 }
 
-func (s *SpineBridge) RemoveOperator(r *RemoveOperatorRequest) (*RemoveOperatorResponse, error) {
-	if !s.clientConnected() {
+func (s *SpineBridge) RemoveOperator(channel string, r *RemoveOperatorRequest) (*RemoveOperatorResponse, error) {
+	if !s.clientConnected(channel) {
 		return nil, errors.New("SpineBridge client is not yet attached")
 	}
 
@@ -623,7 +656,8 @@ func (s *SpineBridge) RemoveOperator(r *RemoveOperatorRequest) (*RemoveOperatorR
 	}
 
 	// We already don't have an entry for this user, so just return early
-	if _, ok := s.chatUsers[r.UserName]; !ok {
+	room := s.Rooms[channel]
+	if _, ok := room.chatUsers[r.UserName]; !ok {
 		return successResp, nil
 	}
 
@@ -634,13 +668,13 @@ func (s *SpineBridge) RemoveOperator(r *RemoveOperatorRequest) (*RemoveOperatorR
 
 	data_json, _ := json.Marshal(data)
 	log.Println("RemoveOperator() sending: ", string(data_json))
-	for _, room := range s.Rooms {
-		if room.conn != nil {
-			room.conn.WriteJSON(data)
+	for _, websocketConn := range room.WebSocketConnections {
+		if websocketConn.conn != nil {
+			websocketConn.conn.WriteJSON(data)
 		}
 	}
 
-	delete(s.chatUsers, r.UserName)
+	delete(room.chatUsers, r.UserName)
 	return successResp, nil
 }
 
@@ -668,15 +702,16 @@ func (s *SpineBridge) GetOperatorIdFromName(name string, faction FactionEnum) (s
 	return "", humanMatches
 }
 
-func (s *SpineBridge) CurrentInfo(userName string) (OperatorInfo, error) {
-	if !s.clientConnected() {
+func (s *SpineBridge) CurrentInfo(channel string, userName string) (OperatorInfo, error) {
+	if !s.clientConnected(channel) {
 		return OperatorInfo{}, errors.New("SpineBridge client is not yet attached")
 	}
 	excludeAnimations := []string{
 		"Default",
 		"Start",
 	}
-	chatUser, ok := s.chatUsers[userName]
+	room := s.Rooms[channel]
+	chatUser, ok := room.chatUsers[userName]
 	if !ok {
 		return *EmptyOperatorInfo(), NewUserNotFound("User not found: " + userName)
 	}

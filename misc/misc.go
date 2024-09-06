@@ -25,7 +25,7 @@ func MatchesKeywords(str string, keywords []string) (string, bool) {
 	return "", false
 }
 
-type TwitchConfig struct {
+type BroadcasterConfig struct {
 	// Required
 	// Your twitch username (lowercase)
 	Broadcaster string `json:"broadcaster"`
@@ -34,13 +34,27 @@ type TwitchConfig struct {
 	// The name of the channel on twitch to connect to
 	ChannelName string `json:"channel_name"`
 
+	// // Required
+	// // Twitch OAUTH Access Token. Keep this secret
+	// TwitchAccessToken string `json:"twitch_access_token"`
+}
+
+type TwitchConfig struct {
+	// // Required
+	// // Your twitch username (lowercase)
+	// Broadcaster string `json:"broadcaster"`
+
+	// // Required.
+	// // The name of the channel on twitch to connect to
+	// ChannelName string `json:"channel_name"`
+
 	// Required
 	// Twitch OAUTH Access Token. Keep this secret
 	TwitchAccessToken string `json:"twitch_access_token"`
 
 	// Option.
 	// If left empty, then assumes this is the same as the Broadcaster
-	// You can set this so this so that the bot respons under a different name
+	// You can set this so this so that the bot responds under a different name
 	// other than the broadcasters. Just make sure to set the TwitchAccessToken
 	// to that of the Bot instead of the Broadcasters
 	TwitchBot string `json:"twitch_bot"`
@@ -89,16 +103,16 @@ func LoadTwitchConfig(path string) (*TwitchConfig, error) {
 		return nil, err
 	}
 
-	if len(config.Broadcaster) == 0 {
-		return nil, fmt.Errorf("broadcaster not set in twitch config (%s)", path)
-	}
-	if len(config.ChannelName) == 0 {
-		return nil, fmt.Errorf("channel_name not set in twitch config (%s)", path)
-	}
+	// if len(config.Broadcaster) == 0 {
+	// 	return nil, fmt.Errorf("broadcaster not set in twitch config (%s)", path)
+	// }
+	// if len(config.ChannelName) == 0 {
+	// 	return nil, fmt.Errorf("channel_name not set in twitch config (%s)", path)
+	// }
 
-	if len(config.TwitchBot) == 0 {
-		config.TwitchBot = config.Broadcaster
-	}
+	// if len(config.TwitchBot) == 0 {
+	// 	config.TwitchBot = config.Broadcaster
+	// }
 	if config.RemoveChibiAfterMinutes == 0 {
 		config.RemoveChibiAfterMinutes = 40
 	}
@@ -117,6 +131,33 @@ func LoadTwitchConfig(path string) (*TwitchConfig, error) {
 	}
 	if config.OperatorDetails.PositionX == 0 {
 		config.OperatorDetails.PositionX = 0.5
+	}
+
+	return &config, nil
+}
+
+func LoadBroadcasterConfig(path string) (*BroadcasterConfig, error) {
+	file, err := os.Open(path)
+	if err != nil {
+		return nil, err
+	}
+	defer file.Close()
+
+	config := BroadcasterConfig{}
+	bytes, err := os.ReadFile(path)
+	if err != nil {
+		return nil, err
+	}
+	err = json.Unmarshal(bytes, &config)
+	if err != nil {
+		return nil, err
+	}
+
+	if len(config.Broadcaster) == 0 {
+		return nil, fmt.Errorf("broadcaster not set in twitch config (%s)", path)
+	}
+	if len(config.ChannelName) == 0 {
+		return nil, fmt.Errorf("channel_name not set in twitch config (%s)", path)
 	}
 
 	return &config, nil

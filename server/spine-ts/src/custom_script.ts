@@ -8,16 +8,18 @@ module stym {
         public actorConfig: spine.SpineActorConfig;
         public backoffTimeMsec: number;
         public backOffMaxtimeMsec: number;
+        public channelName: string;
     
-        constructor() {
+        constructor(channelName: string) {
             let font = new FontFace("lato", "url(static/fonts/Lato/Lato-Black.ttf)");
             font.load().then(() => {document.fonts.add(font);})
     
+            this.channelName = channelName;
             this.socket = null;
             this.spinePlayer = null;
             this.backoffTimeMsec = 1000; // 2.5 seconds
             this.backOffMaxtimeMsec = 1 * 60 * 1000; // 5 minutes
-            this.openWebSocket();
+            this.openWebSocket(this.channelName);
     
             if (this.spinePlayer == null) {
                 this.spinePlayerConfig = {
@@ -46,9 +48,12 @@ module stym {
             }
         }
     
-        openWebSocket() {
+        openWebSocket(channelName: string) {
+            const protocolPrefix = (window.location.protocol === 'https:') ? 'wss:' : 'ws:';
+            const websocketPath =  protocolPrefix + '//' + location.host + `/ws/?channelName=${channelName}`;
+
             console.log("Openning websocket");
-            this.socket = new WebSocket("ws://localhost:7001/spine");
+            this.socket = new WebSocket(websocketPath);
             this.socket.addEventListener("open", (event) => {
                 console.log("Socket opened");
                 this.backoffTimeMsec = 1000;
@@ -61,7 +66,7 @@ module stym {
                 this.backoffTimeMsec *= 2;
                 if (this.backoffTimeMsec < this.backOffMaxtimeMsec) {
                     console.log("Retrying in " + this.backoffTimeMsec + "ms");
-                    setTimeout(() => this.openWebSocket(), this.backoffTimeMsec);
+                    setTimeout(() => this.openWebSocket(this.channelName), this.backoffTimeMsec);
                 }
             });
             this.socket.addEventListener("error", (event) => {

@@ -67,47 +67,28 @@ func errorHandling(handler HandlerWithErr) http.Handler {
 	})
 }
 
-func main() {
-	assetDir := flag.String("assetdir", "/ak_chibi_assets/assets", "Asset directory")
-	address := flag.String("address", ":7001", "Server address")
-	twitchConfigPath := flag.String("twitch_config", "twitch_config.json", "Twitch config filepath containig channel names and tokens")
-	flag.Parse()
-	log.Println("-assetdir: ", *assetDir)
-	log.Println("-address: ", *address)
-	log.Println("-twitch_config:", *twitchConfigPath)
+type MainStruct struct {
+	assetDir         *string
+	address          *string
+	twitchConfigPath *string
 
-	if *twitchConfigPath == "" {
-		log.Fatal("Must specify -twitch_config")
-		return
-	}
+	spineServer *spine.SpineBridge
+	chibiActor  *twitchbot.ChibiActor
+	twitchBot   *twitchbot.TwitchBot
+}
 
-	twitchConfig, err := misc.LoadTwitchConfig(*twitchConfigPath)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	spineServer, err := spine.NewSpineBridge(*assetDir, twitchConfig)
-	if err != nil {
-		log.Fatal(err)
-		return
-	}
-	defer spineServer.Close()
-
-	chibiActor := twitchbot.NewChibiActor(spineServer, twitchConfig)
-	twitchBot, err := twitchbot.NewTwitchBot(chibiActor, twitchConfig)
-	if err != nil {
-		log.Fatal(err)
-		return
-	}
-	defer twitchBot.Close()
-	go twitchBot.ReadPump()
+func (s *MainStruct) run() {
+	defer s.spineServer.Close()
+	defer s.twitchBot.Close()
+	go s.twitchBot.ReadPump()
 
 	log.Println("Starting server")
-	server := &http.Server{Addr: *address}
-	http.Handle("/", http.FileServer(http.Dir("./spine-ts")))
-	http.Handle("/assets/", http.StripPrefix("/assets/", http.FileServer(http.Dir(*assetDir))))
-	http.Handle("/spine", errorHandling(annotateError(spineServer.HandleSpine)))
-	http.Handle("/admin", errorHandling(annotateError(spineServer.HandleAdmin)))
+	server := &http.Server{Addr: *s.address}
+	http.Handle("/runtime/assets/", http.StripPrefix("/runtime/assets/", http.FileServer(http.Dir(*s.assetDir))))
+	http.Handle("/runtime/", http.StripPrefix("/runtime/", http.FileServer(http.Dir("./spine-ts"))))
+	http.Handle("/room/", errorHandling(annotateError(s.HandleRoom)))
+	http.Handle("/ws/", errorHandling(annotateError(s.spineServer.HandleSpine)))
+	// http.Handle("/admin", errorHandling(annotateError(s.spineServer.HandleAdmin)))
 
 	go func() {
 		sigint := make(chan os.Signal, 1)
@@ -121,4 +102,60 @@ func main() {
 	}()
 
 	fmt.Println(server.ListenAndServe())
+}
+
+func (s *MainStruct) HandleRoom(w http.ResponseWriter, r *http.Request) error {
+	if !r.URL.Query().Has("channelName") {
+		log.Println("invalid connection. Requires channelName query argument")
+		return nil
+	}
+	channelName := r.URL.Query().Get("channelName")
+
+	s.twitchBot.JoinChannel(channelName)
+	http.Redirect(w, r, fmt.Sprintf("/runtime/?channelName=%s", channelName), http.StatusSeeOther)
+	// log.Println(r.URL.Path)
+	return nil
+}
+
+func NewMainStruct() *MainStruct {
+	assetDir := flag.String("assetdir", "/ak_chibi_assets/assets", "Asset directory")
+	address := flag.String("address", ":7001", "Server address")
+	twitchConfigPath := flag.String("twitch_config", "twitch_config.json", "Twitch config filepath containig channel names and tokens")
+	flag.Parse()
+	log.Println("-assetdir: ", *assetDir)
+	log.Println("-address: ", *address)
+	log.Println("-twitch_config:", *twitchConfigPath)
+
+	if *twitchConfigPath == "" {
+		log.Fatal("Must specify -twitch_config")
+	}
+
+	twitchConfig, err := misc.LoadTwitchConfig(*twitchConfigPath)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	spineServer, err := spine.NewSpineBridge(*assetDir, twitchConfig)
+	if err != nil {
+		log.Fatal(err)
+	}
+	chibiActor := twitchbot.NewChibiActor(spineServer, twitchConfig)
+	twitchBot, err := twitchbot.NewTwitchBot(chibiActor, twitchConfig)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	return &MainStruct{
+		assetDir,
+		address,
+		twitchConfigPath,
+		spineServer,
+		chibiActor,
+		twitchBot,
+	}
+}
+
+func main() {
+	m := NewMainStruct()
+	m.run()
 }

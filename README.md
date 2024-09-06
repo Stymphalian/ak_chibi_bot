@@ -54,7 +54,7 @@ Please read the twitch [documentation](https://dev.twitch.tv/docs/authentication
 Set the Oauth Redirect URL to `http://localhost:7001`
 
 You will now need an OAUTH access token in order to connect to the Twitch IRC.
-Again follow the twitch [documentation](https://dev.twitch.tv/docs/irc/authenticate-bot/)
+Again follow the twitch [documentation](https://dev.twitch.tv/docs/authentication/getting-tokens-oauth/#implicit-grant-flow )
 You can do also quickly get one by going to this URL:
 
 `https://id.twitch.tv/oauth2/authorize?response_type=token&client_id=<your client id>&redirect_uri=http://localhost:7001&scope=chat%3Aread+chat%3Aedit`
