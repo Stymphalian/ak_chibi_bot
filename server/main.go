@@ -9,9 +9,9 @@ import (
 	"os"
 	"os/signal"
 
-	"github.com/Stymphalian/ak_chibi_bot/misc"
-	"github.com/Stymphalian/ak_chibi_bot/spine"
-	"github.com/Stymphalian/ak_chibi_bot/twitchbot"
+	"github.com/Stymphalian/ak_chibi_bot/internal/misc"
+	"github.com/Stymphalian/ak_chibi_bot/internal/spine"
+	"github.com/Stymphalian/ak_chibi_bot/internal/twitchbot"
 )
 
 // HumanReadableError represents error information
@@ -69,6 +69,8 @@ func errorHandling(handler HandlerWithErr) http.Handler {
 
 type MainStruct struct {
 	assetDir         *string
+	imageDir         string
+	spineAssetDir    string
 	address          *string
 	twitchConfigPath *string
 
@@ -84,8 +86,11 @@ func (s *MainStruct) run() {
 
 	log.Println("Starting server")
 	server := &http.Server{Addr: *s.address}
-	http.Handle("/runtime/assets/", http.StripPrefix("/runtime/assets/", http.FileServer(http.Dir(*s.assetDir))))
-	http.Handle("/runtime/", http.StripPrefix("/runtime/", http.FileServer(http.Dir("./spine-ts"))))
+
+	log.Println(s.imageDir)
+	log.Println(s.spineAssetDir)
+	http.Handle("/runtime/assets/", http.StripPrefix("/runtime/assets/", http.FileServer(http.Dir(s.imageDir))))
+	http.Handle("/runtime/", http.StripPrefix("/runtime/", http.FileServer(http.Dir(s.spineAssetDir))))
 	http.Handle("/room/", errorHandling(annotateError(s.HandleRoom)))
 	http.Handle("/ws/", errorHandling(annotateError(s.spineServer.HandleSpine)))
 	// http.Handle("/admin", errorHandling(annotateError(s.spineServer.HandleAdmin)))
@@ -113,12 +118,12 @@ func (s *MainStruct) HandleRoom(w http.ResponseWriter, r *http.Request) error {
 
 	s.twitchBot.JoinChannel(channelName)
 	http.Redirect(w, r, fmt.Sprintf("/runtime/?channelName=%s", channelName), http.StatusSeeOther)
-	// log.Println(r.URL.Path)
+	log.Println(r.URL.Path)
 	return nil
 }
 
 func NewMainStruct() *MainStruct {
-	assetDir := flag.String("assetdir", "/ak_chibi_assets/assets", "Asset directory")
+	assetDir := flag.String("assetdir", "/ak_chibi_assets", "Asset directory")
 	address := flag.String("address", ":7001", "Server address")
 	twitchConfigPath := flag.String("twitch_config", "twitch_config.json", "Twitch config filepath containig channel names and tokens")
 	flag.Parse()
@@ -135,7 +140,10 @@ func NewMainStruct() *MainStruct {
 		log.Fatal(err)
 	}
 
-	spineServer, err := spine.NewSpineBridge(*assetDir, twitchConfig)
+	imageDir := fmt.Sprintf("%s/%s", *assetDir, "assets")
+	spineAssetDir := fmt.Sprintf("%s/%s", *assetDir, "spine-ts")
+
+	spineServer, err := spine.NewSpineBridge(imageDir, twitchConfig)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -147,6 +155,8 @@ func NewMainStruct() *MainStruct {
 
 	return &MainStruct{
 		assetDir,
+		imageDir,
+		spineAssetDir,
 		address,
 		twitchConfigPath,
 		spineServer,

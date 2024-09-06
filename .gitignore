@@ -5,6 +5,7 @@ tools/venv
 tools/chars_list.txt
 tools/enemys_list.txt
 
+assets/assets/
 server/assets/characters/
 server/assets/enemies/
 server/assets/*.json
