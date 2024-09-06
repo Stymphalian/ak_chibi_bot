@@ -68,8 +68,7 @@ func errorHandling(handler HandlerWithErr) http.Handler {
 }
 
 type MainStruct struct {
-	assetDir         *string
-	imageDir         string
+	imageAssetDir    string
 	spineAssetDir    string
 	address          *string
 	twitchConfigPath *string
@@ -87,9 +86,9 @@ func (s *MainStruct) run() {
 	log.Println("Starting server")
 	server := &http.Server{Addr: *s.address}
 
-	log.Println(s.imageDir)
+	log.Println(s.imageAssetDir)
 	log.Println(s.spineAssetDir)
-	http.Handle("/runtime/assets/", http.StripPrefix("/runtime/assets/", http.FileServer(http.Dir(s.imageDir))))
+	http.Handle("/runtime/assets/", http.StripPrefix("/runtime/assets/", http.FileServer(http.Dir(s.imageAssetDir))))
 	http.Handle("/runtime/", http.StripPrefix("/runtime/", http.FileServer(http.Dir(s.spineAssetDir))))
 	http.Handle("/room/", errorHandling(annotateError(s.HandleRoom)))
 	http.Handle("/ws/", errorHandling(annotateError(s.spineServer.HandleSpine)))
@@ -123,11 +122,13 @@ func (s *MainStruct) HandleRoom(w http.ResponseWriter, r *http.Request) error {
 }
 
 func NewMainStruct() *MainStruct {
-	assetDir := flag.String("assetdir", "/ak_chibi_assets", "Asset directory")
-	address := flag.String("address", ":7001", "Server address")
+	imageAssetDir := flag.String("image_assetdir", "/ak_chibi_assets/assets", "Image Asset Directory")
+	spineAssetDir := flag.String("spine_assetdir", "/ak_chibi_assets/spine-ts", "Spine Asset Directory")
+	address := flag.String("address", ":8080", "Server address")
 	twitchConfigPath := flag.String("twitch_config", "twitch_config.json", "Twitch config filepath containig channel names and tokens")
 	flag.Parse()
-	log.Println("-assetdir: ", *assetDir)
+	log.Println("-image_assetdir: ", *imageAssetDir)
+	log.Println("-spine_assetdir: ", *spineAssetDir)
 	log.Println("-address: ", *address)
 	log.Println("-twitch_config:", *twitchConfigPath)
 
@@ -140,10 +141,7 @@ func NewMainStruct() *MainStruct {
 		log.Fatal(err)
 	}
 
-	imageDir := fmt.Sprintf("%s/%s", *assetDir, "assets")
-	spineAssetDir := fmt.Sprintf("%s/%s", *assetDir, "spine-ts")
-
-	spineServer, err := spine.NewSpineBridge(imageDir, twitchConfig)
+	spineServer, err := spine.NewSpineBridge(*imageAssetDir, twitchConfig)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -154,9 +152,8 @@ func NewMainStruct() *MainStruct {
 	}
 
 	return &MainStruct{
-		assetDir,
-		imageDir,
-		spineAssetDir,
+		*imageAssetDir,
+		*spineAssetDir,
 		address,
 		twitchConfigPath,
 		spineServer,

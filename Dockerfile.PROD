@@ -1,9 +1,8 @@
 FROM golang:1.22.3
 
+# Copy over the source and program
 WORKDIR /work
 RUN mkdir /ak_chibi_assets
-
-# Copy over the source and program
 COPY go.mod go.sum ./
 COPY server/ ./server
 COPY internal ./internal
@@ -15,12 +14,11 @@ COPY ./assets/spine-ts/favicon.ico /ak_chibi_assets/spine-ts/favicon.ico
 COPY ./assets/spine-ts/index.html /ak_chibi_assets/spine-ts/index.html
 
 # BUILD
+RUN go mod download && go mod verify
 RUN go build -o ak_chibi_bot server/main.go
 EXPOSE 8080 
 
 # RUN
 ENV GOPATH=/work
-CMD ["/work/ak_chibi_bot", "-address=:8080", "-twitch_config=server/config.json"]
-
-
+ENTRYPOINT ["/work/ak_chibi_bot", "-address=:8080", "-twitch_config=server/config.json"]
 
