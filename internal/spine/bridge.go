@@ -129,7 +129,6 @@ func (s *SpineBridge) AddWebsocketConnection(w http.ResponseWriter, r *http.Requ
 			log.Print("Default")
 		}
 	}
-	// s.resetState(s.twitchConfig.InitialOperator, s.twitchConfig.OperatorDetails)
 	return nil
 }
 
@@ -325,46 +324,6 @@ func (s *SpineBridge) HandleAdmin(w http.ResponseWriter, r *http.Request) error 
 	// 		"message": "Unknown action",
 	// 	})
 	// 	return nil
-	// }
-}
-
-func (s *SpineBridge) resetState(opName string, details misc.InitialOperatorDetails) {
-	// if len(opName) == 0 {
-	// 	opName = "Amiya"
-	// }
-
-	// faction := FACTION_ENUM_OPERATOR
-	// opId, matches := s.GetOperatorIdFromName(opName, FACTION_ENUM_OPERATOR)
-	// if matches != nil {
-	// 	faction = FACTION_ENUM_ENEMY
-	// 	opId, matches = s.GetOperatorIdFromName(opName, FACTION_ENUM_ENEMY)
-	// }
-	// if matches != nil {
-	// 	log.Panic("Failed to get operator id", matches)
-	// }
-	// stance, err2 := ChibiTypeEnum_Parse(details.Stance)
-	// if err2 != nil {
-	// 	log.Panic("Failed to parse stance", err2)
-	// }
-
-	// broadcasterName := s.twitchConfig.Broadcaster
-	// s.chatUsers = map[string]*ChatUser{
-	// 	// broadcasterName: {
-	// 	// 	userName: broadcasterName,
-	// 	// 	currentOperator: OperatorInfo{
-	// 	// 		DisplayName:       opName,
-	// 	// 		OperatorId:        opId,
-	// 	// 		Faction:           faction,
-	// 	// 		Skin:              details.Skin,
-	// 	// 		ChibiType:         stance,
-	// 	// 		Facing:            CHIBI_FACING_ENUM_FRONT,
-	// 	// 		CurrentAnimations: details.Animations,
-
-	// 	// 		StartPos:   misc.NewOption(misc.Vector2{X: details.PositionX, Y: 0.0}),
-	// 	// 		Skins:      nil,
-	// 	// 		Animations: nil,
-	// 	// 	},
-	// 	// },
 	// }
 }
 
@@ -661,5 +620,45 @@ func (s *SpineBridge) CurrentInfo(userName string) (OperatorInfo, error) {
 	}, nil
 }
 
+func (s *SpineBridge) SetToDefault(broadcasterName string, opName string, details misc.InitialOperatorDetails) {
+	if len(opName) == 0 {
+		opName = "Amiya"
+	}
+
+	faction := FACTION_ENUM_OPERATOR
+	opId, matches := s.GetOperatorIdFromName(opName, FACTION_ENUM_OPERATOR)
+	if matches != nil {
+		faction = FACTION_ENUM_ENEMY
+		opId, matches = s.GetOperatorIdFromName(opName, FACTION_ENUM_ENEMY)
+	}
+	if matches != nil {
+		log.Panic("Failed to get operator id", matches)
+	}
+	stance, err2 := ChibiTypeEnum_Parse(details.Stance)
+	if err2 != nil {
+		log.Panic("Failed to parse stance", err2)
+	}
+
+	// broadcasterName := "stymphalian__"
+	s.chatUsers = map[string]*ChatUser{
+		broadcasterName: {
+			userName: broadcasterName,
+			currentOperator: OperatorInfo{
+				DisplayName:       opName,
+				OperatorId:        opId,
+				Faction:           faction,
+				Skin:              details.Skin,
+				ChibiType:         stance,
+				Facing:            CHIBI_FACING_ENUM_FRONT,
+				CurrentAnimations: details.Animations,
+
+				StartPos:   misc.NewOption(misc.Vector2{X: details.PositionX, Y: 0.0}),
+				Skins:      nil,
+				Animations: nil,
+			},
+		},
+	}
+}
+
 // ----------------------------
-// End Spine Client Interfact functions
+// End Spine Client Interface functions

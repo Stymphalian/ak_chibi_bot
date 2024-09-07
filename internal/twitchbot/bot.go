@@ -16,12 +16,12 @@ type ChannelUser struct {
 }
 
 type TwitchBot struct {
-	chibiActor                chibi.ChibiActorInterface
-	channelName               string
-	garbageCollectionRateMins int
-	tc                        *twitch.Client
-	lastUserChat              map[ChannelUser]time.Time
-	latestChatterTime         time.Time
+	chibiActor                  chibi.ChibiActorInterface
+	channelName                 string
+	garbageCollectionPeriodMins int
+	tc                          *twitch.Client
+	lastUserChat                map[ChannelUser]time.Time
+	latestChatterTime           time.Time
 }
 
 func NewTwitchBot(
@@ -29,7 +29,7 @@ func NewTwitchBot(
 	twitchChannelName string,
 	twitchBotName string,
 	twitchAccessToken string,
-	garbageCollectionRateMins int) (*TwitchBot, error) {
+	garbageCollectionPeriodMins int) (*TwitchBot, error) {
 
 	accessToken := twitchAccessToken
 	if len(accessToken) == 0 {
@@ -43,12 +43,12 @@ func NewTwitchBot(
 		"oauth:"+accessToken,
 	)
 	self := &TwitchBot{
-		chibiActor:                chibiActor,
-		channelName:               twitchChannelName,
-		garbageCollectionRateMins: garbageCollectionRateMins,
-		tc:                        tc,
-		lastUserChat:              make(map[ChannelUser]time.Time),
-		latestChatterTime:         time.Now(),
+		chibiActor:                  chibiActor,
+		channelName:                 twitchChannelName,
+		garbageCollectionPeriodMins: garbageCollectionPeriodMins,
+		tc:                          tc,
+		lastUserChat:                make(map[ChannelUser]time.Time),
+		latestChatterTime:           time.Now(),
 	}
 	return self, nil
 }
@@ -90,6 +90,7 @@ func (t *TwitchBot) garbageCollectOldChibis(timer *time.Ticker, period time.Dura
 			user := channelUser.User
 			if time.Since(lastChat) > period {
 				if user == t.channelName {
+					// Skip removing the broadcaster's chibi
 					continue
 				}
 				log.Println("Removing chibi for", user)
@@ -100,8 +101,8 @@ func (t *TwitchBot) garbageCollectOldChibis(timer *time.Ticker, period time.Dura
 }
 
 func (t *TwitchBot) ReadPump() {
-	if t.garbageCollectionRateMins > 0 {
-		cleanupInterval := time.Duration(t.garbageCollectionRateMins) * time.Minute
+	if t.garbageCollectionPeriodMins > 0 {
+		cleanupInterval := time.Duration(t.garbageCollectionPeriodMins) * time.Minute
 		timer := time.NewTicker(cleanupInterval)
 		defer timer.Stop()
 		go t.garbageCollectOldChibis(timer, cleanupInterval)

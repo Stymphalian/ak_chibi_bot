@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"errors"
 	"flag"
 	"fmt"
 	"log"
@@ -83,7 +82,7 @@ func NewMainStruct() *MainStruct {
 	imageAssetDir := flag.String("image_assetdir", "/ak_chibi_assets/assets", "Image Asset Directory")
 	spineAssetDir := flag.String("spine_assetdir", "/ak_chibi_assets/spine-ts", "Spine Asset Directory")
 	address := flag.String("address", ":8080", "Server address")
-	twitchConfigPath := flag.String("twitch_config", "twitch_config.json", "Twitch config filepath containig channel names and tokens")
+	twitchConfigPath := flag.String("twitch_config", "twitch_config.json", "Twitch config filepath containing channel names and tokens")
 	flag.Parse()
 	log.Println("-image_assetdir: ", *imageAssetDir)
 	log.Println("-spine_assetdir: ", *spineAssetDir)
@@ -150,6 +149,7 @@ func (s *MainStruct) HandleRoom(w http.ResponseWriter, r *http.Request) error {
 		return nil
 	}
 	channelName := r.URL.Query().Get("channelName")
+
 	s.roomManager.CreateRoomOrNoOp(channelName, context.Background())
 	http.Redirect(w, r, fmt.Sprintf("/runtime/?channelName=%s", channelName), http.StatusSeeOther)
 	return nil
@@ -161,11 +161,7 @@ func (s *MainStruct) HandleSpineWebSocket(w http.ResponseWriter, r *http.Request
 		return nil
 	}
 	channelName := r.URL.Query().Get("channelName")
-	room, ok := s.roomManager.Rooms[channelName]
-	if !ok {
-		return errors.New("channel room does not exist")
-	}
-	return room.SpineBridge.AddWebsocketConnection(w, r)
+	return s.roomManager.HandleSpineWebSocket(channelName, w, r)
 }
 
 func main() {

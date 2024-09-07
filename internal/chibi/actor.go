@@ -24,10 +24,6 @@ func NewChibiActor(client spine.SpineClient, excludeNames []string) *ChibiActor 
 
 func (c *ChibiActor) GiveChibiToUser(userName string, userNameDisplay string) error {
 	// Skip giving chibis to these Users
-	// if userName == c.twitchConfig.Broadcaster ||
-	// 	slices.Contains(c.twitchConfig.ExcludeNames, userName) {
-	// 	return nil
-	// }
 	if slices.Contains(c.excludeNames, userName) {
 		return nil
 	}
@@ -45,10 +41,6 @@ func (c *ChibiActor) GiveChibiToUser(userName string, userNameDisplay string) er
 }
 
 func (c *ChibiActor) RemoveUserChibi(userName string) error {
-	// if userName == c.twitchConfig.Broadcaster ||
-	// 	slices.Contains(c.twitchConfig.ExcludeNames, userName) {
-	// 	return nil
-	// }
 	if slices.Contains(c.excludeNames, userName) {
 		return nil
 	}
@@ -68,6 +60,13 @@ func (c *ChibiActor) HasChibi(userName string) bool {
 		return !ok
 	}
 	return true
+}
+
+func (c *ChibiActor) SetToDefault(
+	broadcasterName string,
+	opName string,
+	details misc.InitialOperatorDetails) {
+	c.client.SetToDefault(broadcasterName, opName, details)
 }
 
 func (c *ChibiActor) Close() {

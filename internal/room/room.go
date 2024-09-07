@@ -2,7 +2,9 @@ package room
 
 import (
 	"context"
+	"errors"
 	"log"
+	"net/http"
 	"time"
 
 	"github.com/Stymphalian/ak_chibi_bot/internal/chibi"
@@ -13,9 +15,12 @@ import (
 
 type Room struct {
 	ChannelName string
-	SpineBridge *spine.SpineBridge
-	ChibiActor  *chibi.ChibiActor
-	TwitchChat  *twitchbot.TwitchBot
+
+	DefaultOperatorName   string
+	DefaultOperatorConfig misc.InitialOperatorDetails
+	SpineBridge           *spine.SpineBridge
+	ChibiActor            *chibi.ChibiActor
+	TwitchChat            *twitchbot.TwitchBot
 }
 
 func (r *Room) Close() {
@@ -24,6 +29,8 @@ func (r *Room) Close() {
 }
 
 func (r *Room) Run() {
+	r.ChibiActor.SetToDefault(r.ChannelName, r.DefaultOperatorName, r.DefaultOperatorConfig)
+
 	defer r.TwitchChat.Close()
 	go r.TwitchChat.ReadPump()
 }
@@ -92,14 +99,24 @@ func (r *RoomsManager) CreateRoomOrNoOp(channel string, ctx context.Context) err
 
 	if _, ok := r.Rooms[channel]; !ok {
 		r.Rooms[channel] = &Room{
-			ChannelName: channel,
-			SpineBridge: spineBridge,
-			ChibiActor:  chibiActor,
-			TwitchChat:  twitchBot,
+			ChannelName:           channel,
+			DefaultOperatorName:   r.TwitchConfig.InitialOperator,
+			DefaultOperatorConfig: r.TwitchConfig.OperatorDetails,
+			SpineBridge:           spineBridge,
+			ChibiActor:            chibiActor,
+			TwitchChat:            twitchBot,
 		}
 		r.RunCh <- channel
 	}
 	return nil
+}
+
+func (m *RoomsManager) HandleSpineWebSocket(channelName string, w http.ResponseWriter, r *http.Request) error {
+	room, ok := m.Rooms[channelName]
+	if !ok {
+		return errors.New("channel room does not exist")
+	}
+	return room.SpineBridge.AddWebsocketConnection(w, r)
 }
 
 func (r *RoomsManager) Shutdown() {
