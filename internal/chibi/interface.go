@@ -9,5 +9,4 @@ type ChibiActorInterface interface {
 	HasChibi(userName string) bool
 
 	SetToDefault(broadcasterName string, opName string, details misc.InitialOperatorDetails)
-	Close()
 }

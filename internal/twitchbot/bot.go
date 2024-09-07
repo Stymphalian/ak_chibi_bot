@@ -1,6 +1,7 @@
 package twitchbot
 
 import (
+	"errors"
 	"fmt"
 	"log"
 	"os"
@@ -53,11 +54,14 @@ func NewTwitchBot(
 	return self, nil
 }
 
-func (t *TwitchBot) Close() {
+func (t *TwitchBot) Close() error {
 	log.Println("TwitchBot::Close() called")
-	t.chibiActor.Close()
-	t.tc.Disconnect()
+	err := t.tc.Disconnect()
+	if err != nil {
+		log.Println(err)
+	}
 	log.Println("TwitchBot::Close() finished")
+	return err
 }
 
 func (t *TwitchBot) HandlePrivateMessage(m twitch.PrivateMessage) {
@@ -126,9 +130,11 @@ func (t *TwitchBot) ReadPump() {
 
 	log.Println("Joined channel name", t.channelName)
 	if err := t.tc.Connect(); err != nil {
-		log.Println("Failed to connect to twitch", err)
+		if !errors.Is(err, twitch.ErrClientDisconnected) {
+			log.Println("Failed to connect to twitch", err)
+		}
 	}
-	log.Println("Read pump done")
+	log.Println("Read pump done for ", t.channelName)
 }
 
 func (t *TwitchBot) LastChatterTime() time.Time {

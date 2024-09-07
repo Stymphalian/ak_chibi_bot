@@ -8,6 +8,8 @@ import (
 	"os"
 	"slices"
 	"strings"
+	"sync"
+	"time"
 
 	"github.com/Stymphalian/ak_chibi_bot/internal/misc"
 	"github.com/google/uuid"
@@ -15,8 +17,9 @@ import (
 )
 
 type WebSocketConn struct {
-	conn *websocket.Conn
-	done chan struct{}
+	conn   *websocket.Conn
+	done   chan struct{}
+	remove bool
 }
 
 type ChatUser struct {
@@ -39,11 +42,13 @@ func NewSpineBridge(assets *AssetManager) (*SpineBridge, error) {
 	return s, nil
 }
 
-func (s *SpineBridge) Close() {
+func (s *SpineBridge) Close() error {
 	log.Println("SpineBridge::Close() called")
+
+	var wg sync.WaitGroup
 	for roomName, websocketConn := range s.WebSocketConnections {
 		if websocketConn.conn == nil {
-			return
+			continue
 		}
 		err := websocketConn.conn.WriteMessage(
 			websocket.CloseMessage,
@@ -52,9 +57,23 @@ func (s *SpineBridge) Close() {
 		if err != nil {
 			log.Printf("write close for websocketConn %s: %v\n", roomName, err)
 		}
-		<-websocketConn.done
+
+		wg.Add(1)
+		go func() {
+			select {
+			case <-time.After(100 * time.Millisecond):
+				wg.Done()
+			case <-websocketConn.done:
+				wg.Done()
+			}
+		}()
 	}
+
+	// Wait for the clients to reply
+	wg.Wait()
+
 	log.Println("SpineBridge::Close() finished")
+	return nil
 }
 
 func (s *SpineBridge) clientConnected() bool {
@@ -81,8 +100,9 @@ func (s *SpineBridge) AddWebsocketConnection(w http.ResponseWriter, r *http.Requ
 	}
 
 	websocketConn := &WebSocketConn{
-		conn: c,
-		done: make(chan struct{}),
+		conn:   c,
+		done:   make(chan struct{}),
+		remove: false,
 	}
 	// Get a uuid string
 	connectionName := uuid.New().String()
@@ -90,13 +110,15 @@ func (s *SpineBridge) AddWebsocketConnection(w http.ResponseWriter, r *http.Requ
 
 	// Track that something has connected to the client
 	log.Print("Client connected.")
-	websocketConn.conn = c
-	websocketConn.done = make(chan struct{})
 	defer func() {
 		log.Println("Closing connection and done channel.")
 		close(websocketConn.done)
 		websocketConn.conn.Close()
-		websocketConn.conn = nil
+		if websocketConn.remove {
+			delete(s.WebSocketConnections, connectionName)
+		} else {
+			websocketConn.conn = nil
+		}
 	}()
 
 	for _, chatUser := range s.chatUsers {
@@ -111,6 +133,10 @@ func (s *SpineBridge) AddWebsocketConnection(w http.ResponseWriter, r *http.Requ
 		var messageType, message, err = c.ReadMessage()
 		if err != nil {
 			log.Println("read:", err)
+			if websocket.IsCloseError(err, websocket.CloseNormalClosure, websocket.CloseGoingAway) {
+				log.Println("Websocket closing")
+				websocketConn.remove = true
+			}
 			break
 		}
 		log.Printf("recv: (%v)%v\n", messageType, string(message))
@@ -125,6 +151,8 @@ func (s *SpineBridge) AddWebsocketConnection(w http.ResponseWriter, r *http.Requ
 			log.Print("PongMessage")
 		case websocket.BinaryMessage:
 			log.Print("BinaryMessage")
+		case websocket.CloseMessage:
+			log.Print("CloseMessage")
 		default:
 			log.Print("Default")
 		}

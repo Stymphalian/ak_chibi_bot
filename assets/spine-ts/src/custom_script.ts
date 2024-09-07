@@ -63,11 +63,15 @@ module stym {
             );
             this.socket.addEventListener("close", (event) => {
                 console.log("Close received: ",event);
-                this.backoffTimeMsec *= 2;
-                if (this.backoffTimeMsec < this.backOffMaxtimeMsec) {
-                    console.log("Retrying in " + this.backoffTimeMsec + "ms");
-                    setTimeout(() => this.openWebSocket(this.channelName), this.backoffTimeMsec);
+
+                if (event.code >= 1000 && event.code <= 1002) {
+                    return
                 }
+                // this.backoffTimeMsec *= 2;
+                // if (this.backoffTimeMsec < this.backOffMaxtimeMsec) {
+                //     console.log("Retrying in " + this.backoffTimeMsec + "ms");
+                //     setTimeout(() => this.openWebSocket(this.channelName), this.backoffTimeMsec);
+                // }
             });
             this.socket.addEventListener("error", (event) => {
                 console.log("Error received: ", event);

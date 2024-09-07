@@ -1,6 +1,10 @@
 package spine
 
-import "github.com/Stymphalian/ak_chibi_bot/internal/misc"
+import (
+	"io"
+
+	"github.com/Stymphalian/ak_chibi_bot/internal/misc"
+)
 
 const (
 	SET_OPERATOR    = "SET_OPERATOR"
@@ -94,6 +98,7 @@ func EmptyOperatorInfo() *OperatorInfo {
 }
 
 type SpineClient interface {
+	io.Closer
 	SetOperator(r *SetOperatorRequest) (*SetOperatorResponse, error)
 	GetOperator(r *GetOperatorRequest) (*GetOperatorResponse, error)
 	RemoveOperator(r *RemoveOperatorRequest) (*RemoveOperatorResponse, error)
@@ -103,7 +108,6 @@ type SpineClient interface {
 	CurrentInfo(userName string) (OperatorInfo, error)
 
 	SetToDefault(broadcasterName string, opName string, details misc.InitialOperatorDetails)
-	Close()
 }
 
 type UserNotFound struct {

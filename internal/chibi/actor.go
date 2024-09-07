@@ -69,12 +69,6 @@ func (c *ChibiActor) SetToDefault(
 	c.client.SetToDefault(broadcasterName, opName, details)
 }
 
-func (c *ChibiActor) Close() {
-	log.Println("ChibiActor::Close() start")
-	c.client.Close()
-	log.Println("ChibiActor::Close() end")
-}
-
 func (c *ChibiActor) HandleCommand(userName string, userNameDisplay string, trimmed string) (string, error) {
 	if !strings.HasPrefix(trimmed, "!chibi") {
 		return "", nil

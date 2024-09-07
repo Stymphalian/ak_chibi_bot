@@ -369,23 +369,6 @@ func (s *CommonNames) Load(assetFilePath string) error {
 	s.allNames = allNames
 	log.Printf("Found %d common names\n", len(s.operatorIdToNames))
 	return nil
-	// go func() {
-	// 	scanner := bufio.NewScanner(os.Stdin)
-	// 	for scanner.Scan() {
-	// 		text := scanner.Text()
-
-	// 		matches := s.commonNames.FindMatchs(text, 3)
-	// 		log.Println("Did you mean...")
-	// 		for _, m := range matches {
-	// 			log.Println(s.commonNames.operatorIdToNames[m][0])
-	// 		}
-
-	// 	}
-	// 	if err := scanner.Err(); err != nil {
-	// 		log.Println("read stdin:", err)
-	// 		return
-	// 	}
-	// }()
 }
 
 func (s *CommonNames) GetCanonicalName(operatorId string) string {

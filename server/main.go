@@ -2,12 +2,14 @@ package main
 
 import (
 	"context"
+	"errors"
 	"flag"
 	"fmt"
 	"log"
 	"net/http"
 	"os"
 	"os/signal"
+	"syscall"
 
 	"github.com/Stymphalian/ak_chibi_bot/internal/misc"
 	"github.com/Stymphalian/ak_chibi_bot/internal/room"
@@ -131,8 +133,10 @@ func (s *MainStruct) run() {
 
 	go func() {
 		sigint := make(chan os.Signal, 1)
-		signal.Notify(sigint, os.Interrupt)
+		signal.Notify(sigint, os.Interrupt, syscall.SIGTERM)
 		<-sigint
+		signal.Stop(sigint)
+
 		log.Println("Signal interrupt received, shutting down")
 		if err := server.Shutdown(context.Background()); err != nil {
 			log.Printf("HTTP server Shutdown: %v", err)
@@ -141,12 +145,12 @@ func (s *MainStruct) run() {
 	}()
 
 	fmt.Println(server.ListenAndServe())
+	s.roomManager.WaitForShutdownWithTimeout()
 }
 
 func (s *MainStruct) HandleRoom(w http.ResponseWriter, r *http.Request) error {
 	if !r.URL.Query().Has("channelName") {
-		log.Println("invalid connection. Requires channelName query argument")
-		return nil
+		return errors.New("invalid connection. Requires channelName query argument")
 	}
 	channelName := r.URL.Query().Get("channelName")
 
@@ -157,8 +161,7 @@ func (s *MainStruct) HandleRoom(w http.ResponseWriter, r *http.Request) error {
 
 func (s *MainStruct) HandleSpineWebSocket(w http.ResponseWriter, r *http.Request) error {
 	if !r.URL.Query().Has("channelName") {
-		log.Println("invalid connection. Requires channelName query argument")
-		return nil
+		return errors.New("invalid connection. Requires channelName query argument")
 	}
 	channelName := r.URL.Query().Get("channelName")
 	return s.roomManager.HandleSpineWebSocket(channelName, w, r)
