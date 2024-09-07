@@ -31,13 +31,14 @@ type SpineBridge struct {
 	Assets               *AssetManager
 	chatUsers            map[string]*ChatUser
 	WebSocketConnections map[string]*WebSocketConn
+	// TODO: Might want to add mutex locking for updating websocket connections
 }
 
 func NewSpineBridge(assets *AssetManager) (*SpineBridge, error) {
 	s := &SpineBridge{
+		Assets:               assets,
 		chatUsers:            make(map[string]*ChatUser, 0),
 		WebSocketConnections: make(map[string]*WebSocketConn, 0),
-		Assets:               assets,
 	}
 	return s, nil
 }

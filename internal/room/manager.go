@@ -5,6 +5,7 @@ import (
 	"errors"
 	"log"
 	"net/http"
+	"sync"
 	"time"
 
 	"github.com/Stymphalian/ak_chibi_bot/internal/chibi"
@@ -18,7 +19,9 @@ const (
 )
 
 type RoomsManager struct {
-	Rooms        map[string]*Room
+	Rooms       map[string]*Room
+	rooms_mutex sync.Mutex
+
 	AssetManager *spine.AssetManager
 	TwitchConfig *misc.TwitchConfig
 
@@ -39,6 +42,8 @@ func NewRoomsManager(assets *spine.AssetManager, twitchConfig *misc.TwitchConfig
 func (r *RoomsManager) GarbageCollectRooms(timer *time.Ticker, period time.Duration) {
 	for range timer.C {
 		log.Println("Garbage collecting unused chat rooms")
+
+		r.rooms_mutex.Lock()
 		for channel, room := range r.Rooms {
 			lastChat := room.TwitchChat.LastChatterTime()
 			if time.Since(lastChat) > period {
@@ -46,6 +51,7 @@ func (r *RoomsManager) GarbageCollectRooms(timer *time.Ticker, period time.Durat
 				delete(r.Rooms, channel)
 			}
 		}
+		r.rooms_mutex.Unlock()
 	}
 }
 
@@ -85,6 +91,8 @@ func (r *RoomsManager) CreateRoomOrNoOp(channel string, ctx context.Context) err
 	}
 	log.Println("CreateRoomOrNoOp after")
 
+	r.rooms_mutex.Lock()
+	defer r.rooms_mutex.Unlock()
 	r.Rooms[channel] = NewRoom(
 		channel,
 		r.TwitchConfig.InitialOperator,
@@ -111,6 +119,8 @@ func (r *RoomsManager) Shutdown() {
 
 	go func() {
 		defer close(r.shutdownDoneCh)
+		r.rooms_mutex.Lock()
+		defer r.rooms_mutex.Unlock()
 		for _, room := range r.Rooms {
 			err := room.Close()
 			if err != nil {
