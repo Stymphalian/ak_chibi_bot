@@ -6,12 +6,10 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"path/filepath"
 	"slices"
 	"strings"
 
 	"github.com/Stymphalian/ak_chibi_bot/internal/misc"
-	// "github.com/Stymphalian/ak_chibi_bot/twitchbot"
 	"github.com/google/uuid"
 	"github.com/gorilla/websocket"
 )
@@ -26,100 +24,41 @@ type ChatUser struct {
 	currentOperator OperatorInfo
 }
 
-type Room struct {
+type SpineBridge struct {
+	Assets               *AssetManager
 	chatUsers            map[string]*ChatUser
 	WebSocketConnections map[string]*WebSocketConn
 }
 
-func NewRoom() *Room {
-	return &Room{
+func NewSpineBridge(assets *AssetManager) (*SpineBridge, error) {
+	s := &SpineBridge{
 		chatUsers:            make(map[string]*ChatUser, 0),
 		WebSocketConnections: make(map[string]*WebSocketConn, 0),
+		Assets:               assets,
 	}
-}
-
-type SpineBridge struct {
-	twitchConfig     *misc.TwitchConfig
-	Rooms            map[string]*Room
-	AssetMap         *SpineAssetMap
-	CommonNames      *CommonNames
-	EnemyAssetMap    *SpineAssetMap
-	EnemyCommonNames *CommonNames
-}
-
-func NewSpineBridge(assetDir string, config *misc.TwitchConfig) (*SpineBridge, error) {
-	s := &SpineBridge{
-		// chatUsers:            make(map[string]*ChatUser, 0),
-		// WebSocketConnections: make(map[string]*WebSocketConn, 0),
-		twitchConfig:     config,
-		Rooms:            make(map[string]*Room, 0),
-		AssetMap:         NewSpineAssetMap(),
-		CommonNames:      NewCommonNames(),
-		EnemyAssetMap:    NewSpineAssetMap(),
-		EnemyCommonNames: NewCommonNames(),
-	}
-
-	if err := s.AssetMap.Load(assetDir, "characters"); err != nil {
-		return nil, err
-	}
-	if err := s.CommonNames.Load(filepath.Join(assetDir, "saved_names.json")); err != nil {
-		return nil, err
-	}
-	if err := s.EnemyAssetMap.Load(assetDir, "enemies"); err != nil {
-		return nil, err
-	}
-	if err := s.EnemyCommonNames.Load(filepath.Join(assetDir, "saved_enemy_names.json")); err != nil {
-		return nil, err
-	}
-
-	// Check for missing assets
-	for enemyId, characterIds := range s.EnemyCommonNames.operatorIdToNames {
-		if _, ok := s.EnemyAssetMap.Data[enemyId]; !ok {
-			if len(characterIds) > 0 {
-				log.Println("Missing enemy", enemyId)
-			}
-		}
-	}
-	for operatorId, characterIds := range s.CommonNames.operatorIdToNames {
-		if _, ok := s.AssetMap.Data[operatorId]; !ok {
-			if len(characterIds) > 0 {
-				log.Println("Missing operator", operatorId)
-			}
-		}
-	}
-
-	// s.resetState(config.InitialOperator, config.OperatorDetails)
-
 	return s, nil
 }
 
 func (s *SpineBridge) Close() {
 	log.Println("SpineBridge::Close() called")
-	for _, room := range s.Rooms {
-		for roomName, websocketConn := range room.WebSocketConnections {
-			if websocketConn.conn == nil {
-				return
-			}
-			err := websocketConn.conn.WriteMessage(
-				websocket.CloseMessage,
-				websocket.FormatCloseMessage(websocket.CloseNormalClosure, ""),
-			)
-			if err != nil {
-				log.Printf("write close for websocketConn %s: %v\n", roomName, err)
-			}
-			<-websocketConn.done
+	for roomName, websocketConn := range s.WebSocketConnections {
+		if websocketConn.conn == nil {
+			return
 		}
+		err := websocketConn.conn.WriteMessage(
+			websocket.CloseMessage,
+			websocket.FormatCloseMessage(websocket.CloseNormalClosure, ""),
+		)
+		if err != nil {
+			log.Printf("write close for websocketConn %s: %v\n", roomName, err)
+		}
+		<-websocketConn.done
 	}
 	log.Println("SpineBridge::Close() finished")
 }
 
-func (s *SpineBridge) clientConnected(channel string) bool {
-	if _, ok := s.Rooms[channel]; !ok {
-		return false
-	} else {
-		return len(s.Rooms[channel].WebSocketConnections) > 0
-	}
-	// return len(s.WebSocketConnections) > 0
+func (s *SpineBridge) clientConnected() bool {
+	return len(s.WebSocketConnections) > 0
 }
 
 func (s *SpineBridge) handleResponseMessages(message []byte) {
@@ -133,12 +72,7 @@ func (s *SpineBridge) handleResponseMessages(message []byte) {
 	log.Println("data", data)
 }
 
-func (s *SpineBridge) HandleSpine(w http.ResponseWriter, r *http.Request) error {
-	if !r.URL.Query().Has("channelName") {
-		log.Println("invalid ws connection. Requires channelName")
-	}
-	channelName := r.URL.Query().Get("channelName")
-
+func (s *SpineBridge) AddWebsocketConnection(w http.ResponseWriter, r *http.Request) error {
 	var upgrader = websocket.Upgrader{} // use default options
 	c, err := upgrader.Upgrade(w, r, nil)
 	if err != nil {
@@ -151,12 +85,8 @@ func (s *SpineBridge) HandleSpine(w http.ResponseWriter, r *http.Request) error 
 		done: make(chan struct{}),
 	}
 	// Get a uuid string
-	roomName := uuid.New().String()
-	if _, ok := s.Rooms[channelName]; !ok {
-		s.Rooms[channelName] = NewRoom()
-	}
-	room := s.Rooms[channelName]
-	room.WebSocketConnections[roomName] = websocketConn
+	connectionName := uuid.New().String()
+	s.WebSocketConnections[connectionName] = websocketConn
 
 	// Track that something has connected to the client
 	log.Print("Client connected.")
@@ -169,9 +99,8 @@ func (s *SpineBridge) HandleSpine(w http.ResponseWriter, r *http.Request) error 
 		websocketConn.conn = nil
 	}()
 
-	for _, chatUser := range room.chatUsers {
+	for _, chatUser := range s.chatUsers {
 		s.setInternalSpineOperator(
-			channelName,
 			chatUser.userName,
 			chatUser.userName,
 			chatUser.currentOperator,
@@ -440,13 +369,12 @@ func (s *SpineBridge) resetState(opName string, details misc.InitialOperatorDeta
 }
 
 func (s *SpineBridge) setInternalSpineOperator(
-	channel string,
 	userName string,
 	userNameDisplay string,
 	info OperatorInfo,
 ) error {
-	assetMap := s.getAssetMapFromFaction(info.Faction)
-	commonNames := s.getCommonNamesFromFaction(info.Faction)
+	assetMap := s.Assets.getAssetMapFromFaction(info.Faction)
+	commonNames := s.Assets.getCommonNamesFromFaction(info.Faction)
 
 	// Validate the setOperator Request
 	{
@@ -524,18 +452,17 @@ func (s *SpineBridge) setInternalSpineOperator(
 
 	data_json, _ := json.Marshal(data)
 	log.Println("setInternalSpineOperator sending: ", string(data_json))
-	room := s.Rooms[channel]
 
-	for _, websocketConn := range room.WebSocketConnections {
+	for _, websocketConn := range s.WebSocketConnections {
 		if websocketConn.conn != nil {
 			websocketConn.conn.WriteJSON(data)
 		}
 	}
 
-	chatUser, ok := room.chatUsers[userName]
+	chatUser, ok := s.chatUsers[userName]
 	if !ok {
-		room.chatUsers[userName] = &ChatUser{userName: userName}
-		chatUser = room.chatUsers[userName]
+		s.chatUsers[userName] = &ChatUser{userName: userName}
+		chatUser = s.chatUsers[userName]
 	}
 
 	chatUser.currentOperator = info
@@ -543,39 +470,14 @@ func (s *SpineBridge) setInternalSpineOperator(
 	return nil
 }
 
-func (s *SpineBridge) getAssetMapFromFaction(faction FactionEnum) *SpineAssetMap {
-	switch faction {
-	case FACTION_ENUM_OPERATOR:
-		return s.AssetMap
-	case FACTION_ENUM_ENEMY:
-		return s.EnemyAssetMap
-	default:
-		log.Fatalf("Unknown faction when fetching assetmap: %v", faction)
-		return nil
-	}
-}
-
-func (s *SpineBridge) getCommonNamesFromFaction(faction FactionEnum) *CommonNames {
-	switch faction {
-	case FACTION_ENUM_OPERATOR:
-		return s.CommonNames
-	case FACTION_ENUM_ENEMY:
-		return s.EnemyCommonNames
-	default:
-		log.Fatalf("Unknown faction when fetching common names: %v", faction)
-		return nil
-	}
-}
-
 // Start Spine Client Interfact functions
 // ----------------------------
-func (s *SpineBridge) SetOperator(channel string, req *SetOperatorRequest) (*SetOperatorResponse, error) {
-	if !s.clientConnected(channel) {
+func (s *SpineBridge) SetOperator(req *SetOperatorRequest) (*SetOperatorResponse, error) {
+	if !s.clientConnected() {
 		return nil, errors.New("SpineBridge client is not yet attached")
 	}
 
 	err := s.setInternalSpineOperator(
-		channel,
 		req.UserName,
 		req.UserNameDisplay,
 		req.Operator,
@@ -594,10 +496,10 @@ func (s *SpineBridge) SetOperator(channel string, req *SetOperatorRequest) (*Set
 }
 
 func (s *SpineBridge) GetOperator(req *GetOperatorRequest) (*GetOperatorResponse, error) {
-	// if !s.clientConnected(channel) {
-	// 	return nil, errors.New("SpineBridge client is not yet attached")
-	// }
-	assetMap := s.getAssetMapFromFaction(req.Faction)
+	if !s.clientConnected() {
+		return nil, errors.New("SpineBridge client is not yet attached")
+	}
+	assetMap := s.Assets.getAssetMapFromFaction(req.Faction)
 
 	operatorData, ok := assetMap.Data[req.OperatorId]
 	if !ok {
@@ -628,7 +530,7 @@ func (s *SpineBridge) GetOperator(req *GetOperatorRequest) (*GetOperatorResponse
 		}
 	}
 
-	canonicalName := s.getCommonNamesFromFaction(req.Faction).GetCanonicalName(req.OperatorId)
+	canonicalName := s.Assets.getCommonNamesFromFaction(req.Faction).GetCanonicalName(req.OperatorId)
 
 	return &GetOperatorResponse{
 		SpineResponse: SpineResponse{
@@ -642,8 +544,8 @@ func (s *SpineBridge) GetOperator(req *GetOperatorRequest) (*GetOperatorResponse
 	}, nil
 }
 
-func (s *SpineBridge) RemoveOperator(channel string, r *RemoveOperatorRequest) (*RemoveOperatorResponse, error) {
-	if !s.clientConnected(channel) {
+func (s *SpineBridge) RemoveOperator(r *RemoveOperatorRequest) (*RemoveOperatorResponse, error) {
+	if !s.clientConnected() {
 		return nil, errors.New("SpineBridge client is not yet attached")
 	}
 
@@ -656,8 +558,7 @@ func (s *SpineBridge) RemoveOperator(channel string, r *RemoveOperatorRequest) (
 	}
 
 	// We already don't have an entry for this user, so just return early
-	room := s.Rooms[channel]
-	if _, ok := room.chatUsers[r.UserName]; !ok {
+	if _, ok := s.chatUsers[r.UserName]; !ok {
 		return successResp, nil
 	}
 
@@ -668,18 +569,18 @@ func (s *SpineBridge) RemoveOperator(channel string, r *RemoveOperatorRequest) (
 
 	data_json, _ := json.Marshal(data)
 	log.Println("RemoveOperator() sending: ", string(data_json))
-	for _, websocketConn := range room.WebSocketConnections {
+	for _, websocketConn := range s.WebSocketConnections {
 		if websocketConn.conn != nil {
 			websocketConn.conn.WriteJSON(data)
 		}
 	}
 
-	delete(room.chatUsers, r.UserName)
+	delete(s.chatUsers, r.UserName)
 	return successResp, nil
 }
 
 func (s *SpineBridge) GetOperatorIds(faction FactionEnum) ([]string, error) {
-	assetMap := s.getAssetMapFromFaction(faction)
+	assetMap := s.Assets.getAssetMapFromFaction(faction)
 	operatorIds := make([]string, 0)
 	for operatorId := range assetMap.Data {
 		operatorIds = append(operatorIds, operatorId)
@@ -688,7 +589,7 @@ func (s *SpineBridge) GetOperatorIds(faction FactionEnum) ([]string, error) {
 }
 
 func (s *SpineBridge) GetOperatorIdFromName(name string, faction FactionEnum) (string, []string) {
-	commonNames := s.getCommonNamesFromFaction(faction)
+	commonNames := s.Assets.getCommonNamesFromFaction(faction)
 
 	if operatorId, ok := commonNames.IsMatch(name); ok {
 		return operatorId, nil
@@ -702,21 +603,20 @@ func (s *SpineBridge) GetOperatorIdFromName(name string, faction FactionEnum) (s
 	return "", humanMatches
 }
 
-func (s *SpineBridge) CurrentInfo(channel string, userName string) (OperatorInfo, error) {
-	if !s.clientConnected(channel) {
+func (s *SpineBridge) CurrentInfo(userName string) (OperatorInfo, error) {
+	if !s.clientConnected() {
 		return OperatorInfo{}, errors.New("SpineBridge client is not yet attached")
 	}
 	excludeAnimations := []string{
 		"Default",
 		"Start",
 	}
-	room := s.Rooms[channel]
-	chatUser, ok := room.chatUsers[userName]
+	chatUser, ok := s.chatUsers[userName]
 	if !ok {
 		return *EmptyOperatorInfo(), NewUserNotFound("User not found: " + userName)
 	}
 
-	assetMap := s.getAssetMapFromFaction(chatUser.currentOperator.Faction)
+	assetMap := s.Assets.getAssetMapFromFaction(chatUser.currentOperator.Faction)
 
 	skins := make([]string, 0)
 	for skinName := range assetMap.Data[chatUser.currentOperator.OperatorId].Skins {

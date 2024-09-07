@@ -1,9 +1,9 @@
 {
-    "broadcaster": "",
-    "channel_name": "",
     "twitch_bot": "",
-    "twitch_access_token": "",
+    "twitch_access_token": "replace_me",
     "exclude_names": ["streamelements", "nightbot"],
+    "remove_unused_rooms_after_minutes": 360,
+    "remove_chibi_after_minutes": 40,
     "initial_operator": "Ray",
     "operator_details": {
         "skin": "default",

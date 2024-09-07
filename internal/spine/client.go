@@ -94,13 +94,14 @@ func EmptyOperatorInfo() *OperatorInfo {
 }
 
 type SpineClient interface {
-	SetOperator(channel string, r *SetOperatorRequest) (*SetOperatorResponse, error)
+	SetOperator(r *SetOperatorRequest) (*SetOperatorResponse, error)
 	GetOperator(r *GetOperatorRequest) (*GetOperatorResponse, error)
-	RemoveOperator(channel string, r *RemoveOperatorRequest) (*RemoveOperatorResponse, error)
+	RemoveOperator(r *RemoveOperatorRequest) (*RemoveOperatorResponse, error)
 
 	GetOperatorIds(faction FactionEnum) ([]string, error)
 	GetOperatorIdFromName(name string, faction FactionEnum) (string, []string)
-	CurrentInfo(channel string, userName string) (OperatorInfo, error)
+	CurrentInfo(userName string) (OperatorInfo, error)
+	Close()
 }
 
 type UserNotFound struct {

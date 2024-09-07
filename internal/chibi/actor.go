@@ -1,4 +1,4 @@
-package twitchbot
+package chibi
 
 import (
 	"errors"
@@ -13,54 +13,46 @@ import (
 	"github.com/Stymphalian/ak_chibi_bot/internal/spine"
 )
 
-type ChibiClient interface {
-	HandleCommand(channel string, userName string, userNameDisplay string, msg string) (string, error)
-	GiveChibiToUser(channel string, userName string, userNameDisplay string) error
-	RemoveUserChibi(channel string, userName string) error
-	HasChibi(channel string, userName string) bool
-}
-
 type ChibiActor struct {
 	client       spine.SpineClient
-	twitchConfig *misc.TwitchConfig
+	excludeNames []string
 }
 
-func NewChibiActor(client spine.SpineClient, config *misc.TwitchConfig) *ChibiActor {
-	return &ChibiActor{client: client, twitchConfig: config}
+func NewChibiActor(client spine.SpineClient, excludeNames []string) *ChibiActor {
+	return &ChibiActor{client: client, excludeNames: excludeNames}
 }
 
-func (c *ChibiActor) GiveChibiToUser(channel string, userName string, userNameDisplay string) error {
+func (c *ChibiActor) GiveChibiToUser(userName string, userNameDisplay string) error {
 	// Skip giving chibis to these Users
 	// if userName == c.twitchConfig.Broadcaster ||
 	// 	slices.Contains(c.twitchConfig.ExcludeNames, userName) {
 	// 	return nil
 	// }
-	if slices.Contains(c.twitchConfig.ExcludeNames, userName) {
+	if slices.Contains(c.excludeNames, userName) {
 		return nil
 	}
 
-	_, err := c.client.CurrentInfo(channel, userName)
+	_, err := c.client.CurrentInfo(userName)
 	if err == nil {
 		return nil
 	}
 
-	_, err = c.addRandomChibi(channel, userName, userNameDisplay)
+	_, err = c.addRandomChibi(userName, userNameDisplay)
 	if err == nil {
 		log.Println("User joined. Adding a chibi for them ", userName)
 	}
 	return err
 }
 
-func (c *ChibiActor) RemoveUserChibi(channel string, userName string) error {
+func (c *ChibiActor) RemoveUserChibi(userName string) error {
 	// if userName == c.twitchConfig.Broadcaster ||
 	// 	slices.Contains(c.twitchConfig.ExcludeNames, userName) {
 	// 	return nil
 	// }
-	if slices.Contains(c.twitchConfig.ExcludeNames, userName) {
+	if slices.Contains(c.excludeNames, userName) {
 		return nil
 	}
 	_, err := c.client.RemoveOperator(
-		channel,
 		&spine.RemoveOperatorRequest{UserName: userName},
 	)
 	if err != nil {
@@ -69,8 +61,8 @@ func (c *ChibiActor) RemoveUserChibi(channel string, userName string) error {
 	return nil
 }
 
-func (c *ChibiActor) HasChibi(channel string, userName string) bool {
-	_, err := c.client.CurrentInfo(channel, userName)
+func (c *ChibiActor) HasChibi(userName string) bool {
+	_, err := c.client.CurrentInfo(userName)
 	if err != nil {
 		_, ok := err.(*spine.UserNotFound)
 		return !ok
@@ -78,7 +70,13 @@ func (c *ChibiActor) HasChibi(channel string, userName string) bool {
 	return true
 }
 
-func (c *ChibiActor) HandleCommand(channel string, userName string, userNameDisplay string, trimmed string) (string, error) {
+func (c *ChibiActor) Close() {
+	log.Println("ChibiActor::Close() start")
+	c.client.Close()
+	log.Println("ChibiActor::Close() end")
+}
+
+func (c *ChibiActor) HandleCommand(userName string, userNameDisplay string, trimmed string) (string, error) {
 	if !strings.HasPrefix(trimmed, "!chibi") {
 		return "", nil
 	}
@@ -109,7 +107,7 @@ func (c *ChibiActor) HandleCommand(channel string, userName string, userNameDisp
 	// !chibi admin <username> "!chibi command"
 	// !chibi speed 0.1
 
-	current, err := c.client.CurrentInfo(channel, userName)
+	current, err := c.client.CurrentInfo(userName)
 	if err != nil {
 		switch err.(type) {
 		case *spine.UserNotFound:
@@ -141,11 +139,11 @@ func (c *ChibiActor) HandleCommand(channel string, userName string, userNameDisp
 	case "help":
 		return c.ChibiHelp(trimmed)
 	case "skins":
-		return c.GetChibiInfo(channel, userName, "skins")
+		return c.GetChibiInfo(userName, "skins")
 	case "anims":
-		return c.GetChibiInfo(channel, userName, "anims")
+		return c.GetChibiInfo(userName, "anims")
 	case "info":
-		return c.GetChibiInfo(channel, userName, "info")
+		return c.GetChibiInfo(userName, "info")
 	case "who":
 		return c.GetWhoInfo(args, &current)
 	case "skin":
@@ -178,13 +176,13 @@ func (c *ChibiActor) HandleCommand(channel string, userName string, userNameDisp
 	}
 
 	if err == nil {
-		c.UpdateChibi(channel, userName, userNameDisplay, &current)
+		c.UpdateChibi(userName, userNameDisplay, &current)
 	}
 
 	return msg, err
 }
 
-func (c *ChibiActor) validateUpdateSetDefaultOtherwise(channel string, update *spine.OperatorInfo) error {
+func (c *ChibiActor) validateUpdateSetDefaultOtherwise(update *spine.OperatorInfo) error {
 	if len(update.Faction) == 0 {
 		update.Faction = spine.FACTION_ENUM_OPERATOR
 	}
@@ -237,11 +235,10 @@ func (c *ChibiActor) validateUpdateSetDefaultOtherwise(channel string, update *s
 	return nil
 }
 
-func (c *ChibiActor) UpdateChibi(channel string, username string, usernameDisplay string, update *spine.OperatorInfo) error {
-	c.validateUpdateSetDefaultOtherwise(channel, update)
+func (c *ChibiActor) UpdateChibi(username string, usernameDisplay string, update *spine.OperatorInfo) error {
+	c.validateUpdateSetDefaultOtherwise(update)
 
 	_, err := c.client.SetOperator(
-		channel,
 		&spine.SetOperatorRequest{
 			UserName:        username,
 			UserNameDisplay: usernameDisplay,
@@ -478,7 +475,7 @@ func (c *ChibiActor) SetChibiModel(trimmed string, current *spine.OperatorInfo) 
 	return "", nil
 }
 
-func (c *ChibiActor) addRandomChibi(channel string, userName string, userNameDisplay string) (string, error) {
+func (c *ChibiActor) addRandomChibi(userName string, userNameDisplay string) (string, error) {
 	operatorIds, err := c.client.GetOperatorIds(spine.FACTION_ENUM_OPERATOR)
 	if err != nil {
 		return "", err
@@ -505,7 +502,6 @@ func (c *ChibiActor) addRandomChibi(channel string, userName string, userNameDis
 
 	log.Printf("Giving %s the chibi %s\n", userName, operatorId)
 	_, err = c.client.SetOperator(
-		channel,
 		&spine.SetOperatorRequest{
 			UserName:        userName,
 			UserNameDisplay: userNameDisplay,
@@ -521,8 +517,8 @@ func (c *ChibiActor) addRandomChibi(channel string, userName string, userNameDis
 	return "", err
 }
 
-func (c *ChibiActor) GetChibiInfo(channel string, userName string, subInfoName string) (string, error) {
-	current, err := c.client.CurrentInfo(channel, userName)
+func (c *ChibiActor) GetChibiInfo(userName string, subInfoName string) (string, error) {
+	current, err := c.client.CurrentInfo(userName)
 	if err != nil {
 		return "", nil
 	}

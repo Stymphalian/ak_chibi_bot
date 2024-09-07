@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"errors"
 	"flag"
 	"fmt"
 	"log"
@@ -10,8 +11,8 @@ import (
 	"os/signal"
 
 	"github.com/Stymphalian/ak_chibi_bot/internal/misc"
+	"github.com/Stymphalian/ak_chibi_bot/internal/room"
 	"github.com/Stymphalian/ak_chibi_bot/internal/spine"
-	"github.com/Stymphalian/ak_chibi_bot/internal/twitchbot"
 )
 
 // HumanReadableError represents error information
@@ -73,52 +74,9 @@ type MainStruct struct {
 	address          *string
 	twitchConfigPath *string
 
-	spineServer *spine.SpineBridge
-	chibiActor  *twitchbot.ChibiActor
-	twitchBot   *twitchbot.TwitchBot
-}
-
-func (s *MainStruct) run() {
-	defer s.spineServer.Close()
-	defer s.twitchBot.Close()
-	go s.twitchBot.ReadPump()
-
-	log.Println("Starting server")
-	server := &http.Server{Addr: *s.address}
-
-	log.Println(s.imageAssetDir)
-	log.Println(s.spineAssetDir)
-	http.Handle("/runtime/assets/", http.StripPrefix("/runtime/assets/", http.FileServer(http.Dir(s.imageAssetDir))))
-	http.Handle("/runtime/", http.StripPrefix("/runtime/", http.FileServer(http.Dir(s.spineAssetDir))))
-	http.Handle("/room/", errorHandling(annotateError(s.HandleRoom)))
-	http.Handle("/ws/", errorHandling(annotateError(s.spineServer.HandleSpine)))
-	// http.Handle("/admin", errorHandling(annotateError(s.spineServer.HandleAdmin)))
-
-	go func() {
-		sigint := make(chan os.Signal, 1)
-		signal.Notify(sigint, os.Interrupt)
-		<-sigint
-		log.Println("Signal interrupt received, shutting down")
-		if err := server.Shutdown(context.Background()); err != nil {
-			log.Printf("HTTP server Shutdown: %v", err)
-			os.Exit(1)
-		}
-	}()
-
-	fmt.Println(server.ListenAndServe())
-}
-
-func (s *MainStruct) HandleRoom(w http.ResponseWriter, r *http.Request) error {
-	if !r.URL.Query().Has("channelName") {
-		log.Println("invalid connection. Requires channelName query argument")
-		return nil
-	}
-	channelName := r.URL.Query().Get("channelName")
-
-	s.twitchBot.JoinChannel(channelName)
-	http.Redirect(w, r, fmt.Sprintf("/runtime/?channelName=%s", channelName), http.StatusSeeOther)
-	log.Println(r.URL.Path)
-	return nil
+	twitchConfig *misc.TwitchConfig
+	assetManager *spine.AssetManager
+	roomManager  *room.RoomsManager
 }
 
 func NewMainStruct() *MainStruct {
@@ -140,26 +98,74 @@ func NewMainStruct() *MainStruct {
 	if err != nil {
 		log.Fatal(err)
 	}
-
-	spineServer, err := spine.NewSpineBridge(*imageAssetDir, twitchConfig)
+	assetManager, err := spine.NewAssetManager(*imageAssetDir)
 	if err != nil {
 		log.Fatal(err)
 	}
-	chibiActor := twitchbot.NewChibiActor(spineServer, twitchConfig)
-	twitchBot, err := twitchbot.NewTwitchBot(chibiActor, twitchConfig)
-	if err != nil {
-		log.Fatal(err)
-	}
+	roomManager := room.NewRoomsManager(assetManager, twitchConfig)
 
 	return &MainStruct{
 		*imageAssetDir,
 		*spineAssetDir,
 		address,
 		twitchConfigPath,
-		spineServer,
-		chibiActor,
-		twitchBot,
+
+		twitchConfig,
+		assetManager,
+		roomManager,
 	}
+}
+
+func (s *MainStruct) run() {
+	go s.roomManager.RunLoop()
+
+	log.Println("Starting server")
+	server := &http.Server{Addr: *s.address}
+	server.RegisterOnShutdown(s.roomManager.Shutdown)
+
+	log.Println(s.imageAssetDir)
+	log.Println(s.spineAssetDir)
+	http.Handle("/runtime/assets/", http.StripPrefix("/runtime/assets/", http.FileServer(http.Dir(s.imageAssetDir))))
+	http.Handle("/runtime/", http.StripPrefix("/runtime/", http.FileServer(http.Dir(s.spineAssetDir))))
+	http.Handle("/room/", errorHandling(annotateError(s.HandleRoom)))
+	http.Handle("/ws/", errorHandling(annotateError(s.HandleSpineWebSocket)))
+
+	go func() {
+		sigint := make(chan os.Signal, 1)
+		signal.Notify(sigint, os.Interrupt)
+		<-sigint
+		log.Println("Signal interrupt received, shutting down")
+		if err := server.Shutdown(context.Background()); err != nil {
+			log.Printf("HTTP server Shutdown: %v", err)
+			os.Exit(1)
+		}
+	}()
+
+	fmt.Println(server.ListenAndServe())
+}
+
+func (s *MainStruct) HandleRoom(w http.ResponseWriter, r *http.Request) error {
+	if !r.URL.Query().Has("channelName") {
+		log.Println("invalid connection. Requires channelName query argument")
+		return nil
+	}
+	channelName := r.URL.Query().Get("channelName")
+	s.roomManager.CreateRoomOrNoOp(channelName, context.Background())
+	http.Redirect(w, r, fmt.Sprintf("/runtime/?channelName=%s", channelName), http.StatusSeeOther)
+	return nil
+}
+
+func (s *MainStruct) HandleSpineWebSocket(w http.ResponseWriter, r *http.Request) error {
+	if !r.URL.Query().Has("channelName") {
+		log.Println("invalid connection. Requires channelName query argument")
+		return nil
+	}
+	channelName := r.URL.Query().Get("channelName")
+	room, ok := s.roomManager.Rooms[channelName]
+	if !ok {
+		return errors.New("channel room does not exist")
+	}
+	return room.SpineBridge.AddWebsocketConnection(w, r)
 }
 
 func main() {

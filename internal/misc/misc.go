@@ -25,30 +25,14 @@ func MatchesKeywords(str string, keywords []string) (string, bool) {
 	return "", false
 }
 
-type BroadcasterConfig struct {
-	// Required
-	// Your twitch username (lowercase)
-	Broadcaster string `json:"broadcaster"`
-
-	// Required.
-	// The name of the channel on twitch to connect to
-	ChannelName string `json:"channel_name"`
-
-	// // Required
-	// // Twitch OAUTH Access Token. Keep this secret
-	// TwitchAccessToken string `json:"twitch_access_token"`
-}
-
 type TwitchConfig struct {
 	// Required
 	// Twitch OAUTH Access Token. Keep this secret
 	TwitchAccessToken string `json:"twitch_access_token"`
 
-	// Option.
-	// If left empty, then assumes this is the same as the Broadcaster
-	// You can set this so this so that the bot responds under a different name
-	// other than the broadcasters. Just make sure to set the TwitchAccessToken
-	// to that of the Bot instead of the Broadcasters
+	// Required.
+	// The twitch name of the bot. This should be the channel in which
+	// the bot was registered with and it should match with the TwitchAccessToken
 	TwitchBot string `json:"twitch_bot"`
 
 	// Option.
@@ -69,6 +53,12 @@ type TwitchConfig struct {
 	// user have not chatted. Set to -1 to never remove chibis
 	// Default: 40 minutes
 	RemoveChibiAfterMinutes int `json:"remove_chibi_after_minutes"`
+
+	// Option
+	// The interval in minutes to check when to garbage collect unused
+	// chat rooms. Set to -1 to never cleanup rooms
+	// Default: 360 (6 hours)
+	RemoveUnusedRoomsAfterMinutes int `json:"remove_unused_rooms_after_minutes"`
 }
 
 type InitialOperatorDetails struct {
@@ -95,18 +85,17 @@ func LoadTwitchConfig(path string) (*TwitchConfig, error) {
 		return nil, err
 	}
 
-	// if len(config.Broadcaster) == 0 {
-	// 	return nil, fmt.Errorf("broadcaster not set in twitch config (%s)", path)
-	// }
-	// if len(config.ChannelName) == 0 {
-	// 	return nil, fmt.Errorf("channel_name not set in twitch config (%s)", path)
-	// }
-
-	// if len(config.TwitchBot) == 0 {
-	// 	config.TwitchBot = config.Broadcaster
-	// }
+	if len(config.TwitchBot) == 0 {
+		return nil, fmt.Errorf("twitch_bot not set in twitch config (%s)", path)
+	}
+	if len(config.TwitchAccessToken) == 0 {
+		return nil, fmt.Errorf("twitch_access_token not set in twitch config (%s)", path)
+	}
 	if config.RemoveChibiAfterMinutes == 0 {
 		config.RemoveChibiAfterMinutes = 40
+	}
+	if config.RemoveUnusedRoomsAfterMinutes == 0 {
+		config.RemoveUnusedRoomsAfterMinutes = 360
 	}
 	if config.OperatorDetails.Skin == "" {
 		config.OperatorDetails.Skin = "default"
@@ -123,33 +112,6 @@ func LoadTwitchConfig(path string) (*TwitchConfig, error) {
 	}
 	if config.OperatorDetails.PositionX == 0 {
 		config.OperatorDetails.PositionX = 0.5
-	}
-
-	return &config, nil
-}
-
-func LoadBroadcasterConfig(path string) (*BroadcasterConfig, error) {
-	file, err := os.Open(path)
-	if err != nil {
-		return nil, err
-	}
-	defer file.Close()
-
-	config := BroadcasterConfig{}
-	bytes, err := os.ReadFile(path)
-	if err != nil {
-		return nil, err
-	}
-	err = json.Unmarshal(bytes, &config)
-	if err != nil {
-		return nil, err
-	}
-
-	if len(config.Broadcaster) == 0 {
-		return nil, fmt.Errorf("broadcaster not set in twitch config (%s)", path)
-	}
-	if len(config.ChannelName) == 0 {
-		return nil, fmt.Errorf("channel_name not set in twitch config (%s)", path)
 	}
 
 	return &config, nil

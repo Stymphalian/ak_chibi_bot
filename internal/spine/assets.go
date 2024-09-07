@@ -441,3 +441,74 @@ func (s *CommonNames) FindMatchs(userInput string, numSuggestions int) (output [
 	}
 	return
 }
+
+type AssetManager struct {
+	AssetMap         *SpineAssetMap
+	CommonNames      *CommonNames
+	EnemyAssetMap    *SpineAssetMap
+	EnemyCommonNames *CommonNames
+}
+
+func NewAssetManager(assetDir string) (*AssetManager, error) {
+	s := &AssetManager{
+		AssetMap:         NewSpineAssetMap(),
+		CommonNames:      NewCommonNames(),
+		EnemyAssetMap:    NewSpineAssetMap(),
+		EnemyCommonNames: NewCommonNames(),
+	}
+
+	if err := s.AssetMap.Load(assetDir, "characters"); err != nil {
+		return nil, err
+	}
+	if err := s.CommonNames.Load(filepath.Join(assetDir, "saved_names.json")); err != nil {
+		return nil, err
+	}
+	if err := s.EnemyAssetMap.Load(assetDir, "enemies"); err != nil {
+		return nil, err
+	}
+	if err := s.EnemyCommonNames.Load(filepath.Join(assetDir, "saved_enemy_names.json")); err != nil {
+		return nil, err
+	}
+
+	// Check for missing assets
+	for enemyId, characterIds := range s.EnemyCommonNames.operatorIdToNames {
+		if _, ok := s.EnemyAssetMap.Data[enemyId]; !ok {
+			if len(characterIds) > 0 {
+				log.Println("Missing enemy", enemyId)
+			}
+		}
+	}
+	for operatorId, characterIds := range s.CommonNames.operatorIdToNames {
+		if _, ok := s.AssetMap.Data[operatorId]; !ok {
+			if len(characterIds) > 0 {
+				log.Println("Missing operator", operatorId)
+			}
+		}
+	}
+
+	return s, nil
+}
+
+func (s *AssetManager) getAssetMapFromFaction(faction FactionEnum) *SpineAssetMap {
+	switch faction {
+	case FACTION_ENUM_OPERATOR:
+		return s.AssetMap
+	case FACTION_ENUM_ENEMY:
+		return s.EnemyAssetMap
+	default:
+		log.Fatalf("Unknown faction when fetching assetmap: %v", faction)
+		return nil
+	}
+}
+
+func (s *AssetManager) getCommonNamesFromFaction(faction FactionEnum) *CommonNames {
+	switch faction {
+	case FACTION_ENUM_OPERATOR:
+		return s.CommonNames
+	case FACTION_ENUM_ENEMY:
+		return s.EnemyCommonNames
+	default:
+		log.Fatalf("Unknown faction when fetching common names: %v", faction)
+		return nil
+	}
+}
