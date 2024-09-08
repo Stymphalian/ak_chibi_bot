@@ -573,10 +573,6 @@ func (s *SpineBridge) GetOperator(req *GetOperatorRequest) (*GetOperatorResponse
 }
 
 func (s *SpineBridge) RemoveOperator(r *RemoveOperatorRequest) (*RemoveOperatorResponse, error) {
-	if !s.clientConnected() {
-		return nil, errors.New("SpineBridge client is not yet attached")
-	}
-
 	successResp := &RemoveOperatorResponse{
 		SpineResponse: SpineResponse{
 			TypeName:   REMOVE_OPERATOR,
@@ -595,11 +591,13 @@ func (s *SpineBridge) RemoveOperator(r *RemoveOperatorRequest) (*RemoveOperatorR
 		"user_name": r.UserName,
 	}
 
-	data_json, _ := json.Marshal(data)
-	log.Println("RemoveOperator() sending: ", string(data_json))
-	for _, websocketConn := range s.WebSocketConnections {
-		if websocketConn.conn != nil {
-			websocketConn.conn.WriteJSON(data)
+	if s.clientConnected() {
+		data_json, _ := json.Marshal(data)
+		log.Println("RemoveOperator() sending: ", string(data_json))
+		for _, websocketConn := range s.WebSocketConnections {
+			if websocketConn.conn != nil {
+				websocketConn.conn.WriteJSON(data)
+			}
 		}
 	}
 

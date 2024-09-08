@@ -106,7 +106,7 @@ func (c *ChibiActor) HandleCommand(userName string, userNameDisplay string, trim
 		case *spine.UserNotFound:
 			log.Println("Chibi not found for user ", userName)
 		}
-		return "", errors.New("something went wrong please try again")
+		return "", errors.New("")
 	}
 
 	var msg string
@@ -357,7 +357,7 @@ func (c *ChibiActor) SetEnemy(args []string, current *spine.OperatorInfo) (strin
 func (c *ChibiActor) SetWalk(args []string, current *spine.OperatorInfo) (string, error) {
 	current.ChibiType = spine.CHIBI_TYPE_ENUM_BASE
 
-	// Set the animatino to "Move". If "Move" doesn't exist in the list of
+	// Set the animation to "Move". If "Move" doesn't exist in the list of
 	// animations then try to find an animation with "Move" in its name
 	moveAnimation := spine.DEFAULT_MOVE_ANIM_NAME
 	if !slices.Contains(current.Animations, moveAnimation) {
