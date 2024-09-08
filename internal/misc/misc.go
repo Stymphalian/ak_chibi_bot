@@ -27,6 +27,10 @@ func MatchesKeywords(str string, keywords []string) (string, bool) {
 
 type TwitchConfig struct {
 	// Required
+	// Twitch Client ID. Can be public. Used to make requests to Twitch API.
+	TwitchClientId string `json:"twitch_client_id"`
+
+	// Required
 	// Twitch OAUTH Access Token. Keep this secret
 	TwitchAccessToken string `json:"twitch_access_token"`
 
@@ -92,6 +96,9 @@ func LoadTwitchConfig(path string) (*TwitchConfig, error) {
 
 	if len(config.TwitchBot) == 0 {
 		return nil, fmt.Errorf("twitch_bot not set in twitch config (%s)", path)
+	}
+	if len(config.TwitchClientId) == 0 {
+		return nil, fmt.Errorf("twitch_client_id not set in twitch config (%s)", path)
 	}
 	if len(config.TwitchAccessToken) == 0 {
 		return nil, fmt.Errorf("twitch_access_token not set in twitch config (%s)", path)

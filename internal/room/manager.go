@@ -3,6 +3,7 @@ package room
 import (
 	"context"
 	"errors"
+	"fmt"
 	"log"
 	"net/http"
 	"sync"
@@ -11,6 +12,7 @@ import (
 	"github.com/Stymphalian/ak_chibi_bot/internal/chibi"
 	"github.com/Stymphalian/ak_chibi_bot/internal/misc"
 	"github.com/Stymphalian/ak_chibi_bot/internal/spine"
+	"github.com/Stymphalian/ak_chibi_bot/internal/twitch_api"
 	"github.com/Stymphalian/ak_chibi_bot/internal/twitchbot"
 )
 
@@ -24,6 +26,7 @@ type RoomsManager struct {
 
 	AssetManager *spine.AssetManager
 	TwitchConfig *misc.TwitchConfig
+	twitchClient *twitch_api.Client
 
 	runCh          chan string
 	shutdownDoneCh chan struct{}
@@ -31,15 +34,19 @@ type RoomsManager struct {
 
 func NewRoomsManager(assets *spine.AssetManager, twitchConfig *misc.TwitchConfig) *RoomsManager {
 	return &RoomsManager{
-		Rooms:          make(map[string]*Room, 0),
-		AssetManager:   assets,
-		TwitchConfig:   twitchConfig,
+		Rooms:        make(map[string]*Room, 0),
+		AssetManager: assets,
+		TwitchConfig: twitchConfig,
+		twitchClient: twitch_api.NewClient(
+			twitchConfig.TwitchClientId,
+			twitchConfig.TwitchAccessToken,
+		),
 		runCh:          make(chan string),
 		shutdownDoneCh: make(chan struct{}),
 	}
 }
 
-func (r *RoomsManager) GarbageCollectRooms() {
+func (r *RoomsManager) garbageCollectRooms() {
 	log.Println("Garbage collecting unused chat rooms")
 	period := time.Duration(r.TwitchConfig.RemoveUnusedRoomsAfterMinutes) * time.Minute
 	r.rooms_mutex.Lock()
@@ -56,9 +63,9 @@ func (r *RoomsManager) GarbageCollectRooms() {
 func (r *RoomsManager) RunLoop() {
 	if r.TwitchConfig.RemoveUnusedRoomsAfterMinutes > 0 {
 		stopTimer := misc.StartTimer(
-			"GarbageCollectRooms",
+			"garbageCollectRooms",
 			time.Duration(r.TwitchConfig.RemoveUnusedRoomsAfterMinutes)*time.Minute,
-			r.GarbageCollectRooms,
+			r.garbageCollectRooms,
 		)
 		defer stopTimer()
 	}
@@ -68,7 +75,22 @@ func (r *RoomsManager) RunLoop() {
 	}
 }
 
+func (r *RoomsManager) checkChannelValid(channel string) (bool, error) {
+	resp, err := r.twitchClient.GetUsers(channel)
+	if err != nil {
+		return false, err
+	}
+	if len(resp.Data) == 0 {
+		return false, fmt.Errorf("channel does not exist")
+	}
+	return true, nil
+}
+
 func (r *RoomsManager) CreateRoomOrNoOp(channel string, ctx context.Context) error {
+	// Check to see if channel is valid
+	if valid, err := r.checkChannelValid(channel); err != nil || !valid {
+		return err
+	}
 	if _, ok := r.Rooms[channel]; ok {
 		return nil
 	}

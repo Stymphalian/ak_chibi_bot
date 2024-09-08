@@ -110,7 +110,10 @@ func (s *MainStruct) HandleRoom(w http.ResponseWriter, r *http.Request) error {
 	}
 	channelName := r.URL.Query().Get("channelName")
 
-	s.roomManager.CreateRoomOrNoOp(channelName, context.Background())
+	err := s.roomManager.CreateRoomOrNoOp(channelName, context.Background())
+	if err != nil {
+		return err
+	}
 	http.Redirect(w, r, fmt.Sprintf("/runtime/?channelName=%s", channelName), http.StatusSeeOther)
 	return nil
 }
