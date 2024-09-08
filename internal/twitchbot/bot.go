@@ -140,3 +140,12 @@ func (t *TwitchBot) ReadPump() {
 func (t *TwitchBot) LastChatterTime() time.Time {
 	return t.latestChatterTime
 }
+
+func (t *TwitchBot) LastChatTime(username string) (time.Time, bool) {
+	if lastTime, ok := t.lastUserChat[ChannelUser{
+		User: username,
+	}]; ok {
+		return lastTime, true
+	}
+	return time.Now(), false
+}

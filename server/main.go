@@ -11,83 +11,35 @@ import (
 	"os/signal"
 	"syscall"
 
+	"github.com/Stymphalian/ak_chibi_bot/internal/admin"
 	"github.com/Stymphalian/ak_chibi_bot/internal/misc"
 	"github.com/Stymphalian/ak_chibi_bot/internal/room"
 	"github.com/Stymphalian/ak_chibi_bot/internal/spine"
 )
 
-// HumanReadableError represents error information
-// that can be fed back to a human user.
-//
-// This prevents internal state that might be sensitive
-// being leaked to the outside world.
-type HumanReadableError interface {
-	HumanError() string
-	HTTPCode() int
-}
-type HumanReadableWrapper struct {
-	error
-	ToHuman string
-	Code    int
-}
-
-func (h HumanReadableWrapper) HumanError() string { return h.ToHuman }
-func (h HumanReadableWrapper) HTTPCode() int      { return h.Code }
-
-type HandlerWithErr func(http.ResponseWriter, *http.Request) error
-
-func annotateError(h HandlerWithErr) HandlerWithErr {
-	return func(w http.ResponseWriter, r *http.Request) (err error) {
-		// parse POST body, limit request size
-		if err = r.ParseForm(); err != nil {
-			return HumanReadableWrapper{
-				ToHuman: "Something went wrong! Please try again.",
-				Code:    http.StatusBadRequest,
-				error:   err,
-			}
-		}
-
-		return h(w, r)
-	}
-}
-
-func errorHandling(handler HandlerWithErr) http.Handler {
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		if err := handler(w, r); err != nil {
-			var errorString string = "Something went wrong! Please try again."
-			var errorCode int = 500
-
-			if v, ok := err.(HumanReadableError); ok {
-				errorString, errorCode = v.HumanError(), v.HTTPCode()
-			}
-
-			log.Println(err)
-			w.Write([]byte(errorString))
-			w.WriteHeader(errorCode)
-			return
-		}
-	})
-}
-
 type MainStruct struct {
 	imageAssetDir    string
 	spineAssetDir    string
+	adminAssetDir    string
 	address          *string
 	twitchConfigPath *string
 
 	twitchConfig *misc.TwitchConfig
 	assetManager *spine.AssetManager
 	roomManager  *room.RoomsManager
+	adminServer  *admin.AdminServer
 }
 
 func NewMainStruct() *MainStruct {
 	imageAssetDir := flag.String("image_assetdir", "/ak_chibi_assets/assets", "Image Asset Directory")
 	spineAssetDir := flag.String("spine_assetdir", "/ak_chibi_assets/spine-ts", "Spine Asset Directory")
+	adminAssetDir := flag.String("admin_assetdir", "/ak_chibi_assets/admin", "Admin Asset Directory")
 	address := flag.String("address", ":8080", "Server address")
 	twitchConfigPath := flag.String("twitch_config", "twitch_config.json", "Twitch config filepath containing channel names and tokens")
 	flag.Parse()
 	log.Println("-image_assetdir: ", *imageAssetDir)
 	log.Println("-spine_assetdir: ", *spineAssetDir)
+	log.Println("-admin_assetdir: ", *adminAssetDir)
 	log.Println("-address: ", *address)
 	log.Println("-twitch_config:", *twitchConfigPath)
 
@@ -104,16 +56,19 @@ func NewMainStruct() *MainStruct {
 		log.Fatal(err)
 	}
 	roomManager := room.NewRoomsManager(assetManager, twitchConfig)
+	adminServer := admin.NewAdminServer(roomManager, twitchConfig, *adminAssetDir)
 
 	return &MainStruct{
 		*imageAssetDir,
 		*spineAssetDir,
+		*adminAssetDir,
 		address,
 		twitchConfigPath,
 
 		twitchConfig,
 		assetManager,
 		roomManager,
+		adminServer,
 	}
 }
 
@@ -128,8 +83,9 @@ func (s *MainStruct) run() {
 	log.Println(s.spineAssetDir)
 	http.Handle("/runtime/assets/", http.StripPrefix("/runtime/assets/", http.FileServer(http.Dir(s.imageAssetDir))))
 	http.Handle("/runtime/", http.StripPrefix("/runtime/", http.FileServer(http.Dir(s.spineAssetDir))))
-	http.Handle("/room/", errorHandling(annotateError(s.HandleRoom)))
-	http.Handle("/ws/", errorHandling(annotateError(s.HandleSpineWebSocket)))
+	http.Handle("/room/", misc.Middleware(s.HandleRoom))
+	http.Handle("/ws/", misc.Middleware(s.HandleSpineWebSocket))
+	s.adminServer.RegisterAdmin()
 
 	go func() {
 		sigint := make(chan os.Signal, 1)

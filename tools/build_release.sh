@@ -16,6 +16,7 @@ cp -r /work/assets/spine-ts/css /work/release/spine-ts
 cp -r /work/assets/spine-ts/static /work/release/spine-ts
 cp /work/assets/spine-ts/favicon.ico /work/release/spine-ts/favicon.ico
 cp /work/assets/spine-ts/index.html /work/release/spine-ts/index.html
+cp /work/assets/admin /work/release/admin
 
 ## Copy over the config
 cp /work/tools/default_config.json /work/release/config.json

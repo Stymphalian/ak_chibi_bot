@@ -23,13 +23,13 @@ type WebSocketConn struct {
 }
 
 type ChatUser struct {
-	userName        string
-	currentOperator OperatorInfo
+	UserName        string
+	CurrentOperator OperatorInfo
 }
 
 type SpineBridge struct {
 	Assets               *AssetManager
-	chatUsers            map[string]*ChatUser
+	ChatUsers            map[string]*ChatUser
 	WebSocketConnections map[string]*WebSocketConn
 	// TODO: Might want to add mutex locking for updating websocket connections
 }
@@ -37,7 +37,7 @@ type SpineBridge struct {
 func NewSpineBridge(assets *AssetManager) (*SpineBridge, error) {
 	s := &SpineBridge{
 		Assets:               assets,
-		chatUsers:            make(map[string]*ChatUser, 0),
+		ChatUsers:            make(map[string]*ChatUser, 0),
 		WebSocketConnections: make(map[string]*WebSocketConn, 0),
 	}
 	return s, nil
@@ -122,11 +122,11 @@ func (s *SpineBridge) AddWebsocketConnection(w http.ResponseWriter, r *http.Requ
 		}
 	}()
 
-	for _, chatUser := range s.chatUsers {
+	for _, chatUser := range s.ChatUsers {
 		s.setInternalSpineOperator(
-			chatUser.userName,
-			chatUser.userName,
-			chatUser.currentOperator,
+			chatUser.UserName,
+			chatUser.UserName,
+			chatUser.CurrentOperator,
 		)
 	}
 
@@ -176,8 +176,8 @@ func (s *SpineBridge) HandleAdmin(w http.ResponseWriter, r *http.Request) error 
 
 	// switch data["action"].(string) {
 	// case "remove":
-	// 	userName := data["user_name"].(string)
-	// 	s.RemoveOperator(&RemoveOperatorRequest{UserName: userName})
+	// 	UserName := data["user_name"].(string)
+	// 	s.RemoveOperator(&RemoveOperatorRequest{UserName: UserName})
 	// 	w.Header().Set("Content-Type", "application/json")
 	// 	json.NewEncoder(w).Encode(map[string]interface{}{
 	// 		"status": "success",
@@ -313,12 +313,12 @@ func (s *SpineBridge) HandleAdmin(w http.ResponseWriter, r *http.Request) error 
 	// 	})
 	// 	return nil
 	// case "add":
-	// 	userName := data["user_name"].(string)
-	// 	if _, ok := s.chatUsers[userName]; !ok {
+	// 	UserName := data["user_name"].(string)
+	// 	if _, ok := s.ChatUsers[UserName]; !ok {
 	// 		operatorId := "char_002_amiya"
 	// 		s.SetOperator(&SetOperatorRequest{
-	// 			UserName:        userName,
-	// 			UserNameDisplay: userName,
+	// 			UserName:        UserName,
+	// 			UserNameDisplay: UserName,
 	// 			Operator: OperatorInfo{
 	// 				OperatorId:        operatorId,
 	// 				Faction:           FACTION_ENUM_OPERATOR,
@@ -337,7 +337,7 @@ func (s *SpineBridge) HandleAdmin(w http.ResponseWriter, r *http.Request) error 
 	// case "list":
 	// 	w.Header().Set("Content-Type", "application/json")
 	// 	usernames := make([]string, 0)
-	// 	for name := range s.chatUsers {
+	// 	for name := range s.ChatUsers {
 	// 		usernames = append(usernames, name)
 	// 	}
 
@@ -357,7 +357,7 @@ func (s *SpineBridge) HandleAdmin(w http.ResponseWriter, r *http.Request) error 
 }
 
 func (s *SpineBridge) setInternalSpineOperator(
-	userName string,
+	UserName string,
 	userNameDisplay string,
 	info OperatorInfo,
 ) error {
@@ -422,7 +422,7 @@ func (s *SpineBridge) setInternalSpineOperator(
 
 	data := map[string]interface{}{
 		"type_name":         SET_OPERATOR,
-		"user_name":         userName,
+		"user_name":         UserName,
 		"user_name_display": userNameDisplay,
 		"operator_id":       info.OperatorId,
 		"atlas_file":        formatPathFn(atlasFile),
@@ -447,14 +447,14 @@ func (s *SpineBridge) setInternalSpineOperator(
 		}
 	}
 
-	chatUser, ok := s.chatUsers[userName]
+	chatUser, ok := s.ChatUsers[UserName]
 	if !ok {
-		s.chatUsers[userName] = &ChatUser{userName: userName}
-		chatUser = s.chatUsers[userName]
+		s.ChatUsers[UserName] = &ChatUser{UserName: UserName}
+		chatUser = s.ChatUsers[UserName]
 	}
 
-	chatUser.currentOperator = info
-	chatUser.currentOperator.DisplayName = commonNames.GetCanonicalName(info.OperatorId)
+	chatUser.CurrentOperator = info
+	chatUser.CurrentOperator.DisplayName = commonNames.GetCanonicalName(info.OperatorId)
 	return nil
 }
 
@@ -546,7 +546,7 @@ func (s *SpineBridge) RemoveOperator(r *RemoveOperatorRequest) (*RemoveOperatorR
 	}
 
 	// We already don't have an entry for this user, so just return early
-	if _, ok := s.chatUsers[r.UserName]; !ok {
+	if _, ok := s.ChatUsers[r.UserName]; !ok {
 		return successResp, nil
 	}
 
@@ -563,7 +563,7 @@ func (s *SpineBridge) RemoveOperator(r *RemoveOperatorRequest) (*RemoveOperatorR
 		}
 	}
 
-	delete(s.chatUsers, r.UserName)
+	delete(s.ChatUsers, r.UserName)
 	return successResp, nil
 }
 
@@ -591,7 +591,7 @@ func (s *SpineBridge) GetOperatorIdFromName(name string, faction FactionEnum) (s
 	return "", humanMatches
 }
 
-func (s *SpineBridge) CurrentInfo(userName string) (OperatorInfo, error) {
+func (s *SpineBridge) CurrentInfo(UserName string) (OperatorInfo, error) {
 	if !s.clientConnected() {
 		return OperatorInfo{}, errors.New("SpineBridge client is not yet attached")
 	}
@@ -599,24 +599,24 @@ func (s *SpineBridge) CurrentInfo(userName string) (OperatorInfo, error) {
 		"Default",
 		"Start",
 	}
-	chatUser, ok := s.chatUsers[userName]
+	chatUser, ok := s.ChatUsers[UserName]
 	if !ok {
-		return *EmptyOperatorInfo(), NewUserNotFound("User not found: " + userName)
+		return *EmptyOperatorInfo(), NewUserNotFound("User not found: " + UserName)
 	}
 
-	assetMap := s.Assets.getAssetMapFromFaction(chatUser.currentOperator.Faction)
+	assetMap := s.Assets.getAssetMapFromFaction(chatUser.CurrentOperator.Faction)
 
 	skins := make([]string, 0)
-	for skinName := range assetMap.Data[chatUser.currentOperator.OperatorId].Skins {
+	for skinName := range assetMap.Data[chatUser.CurrentOperator.OperatorId].Skins {
 		skins = append(skins, skinName)
 	}
 
 	animations := make([]string, 0)
 	spineData := assetMap.Get(
-		chatUser.currentOperator.OperatorId,
-		chatUser.currentOperator.Skin,
-		chatUser.currentOperator.ChibiType == CHIBI_TYPE_ENUM_BASE,
-		chatUser.currentOperator.Facing == CHIBI_FACING_ENUM_FRONT,
+		chatUser.CurrentOperator.OperatorId,
+		chatUser.CurrentOperator.Skin,
+		chatUser.CurrentOperator.ChibiType == CHIBI_TYPE_ENUM_BASE,
+		chatUser.CurrentOperator.Facing == CHIBI_FACING_ENUM_FRONT,
 	)
 	for _, animationName := range spineData.Animations {
 		if slices.Contains(excludeAnimations, animationName) {
@@ -636,13 +636,13 @@ func (s *SpineBridge) CurrentInfo(userName string) (OperatorInfo, error) {
 
 	// positionX = -1.0
 	return OperatorInfo{
-		DisplayName:       chatUser.currentOperator.DisplayName,
-		OperatorId:        chatUser.currentOperator.OperatorId,
-		Faction:           chatUser.currentOperator.Faction,
-		Skin:              chatUser.currentOperator.Skin,
-		ChibiType:         chatUser.currentOperator.ChibiType,
-		Facing:            chatUser.currentOperator.Facing,
-		CurrentAnimations: chatUser.currentOperator.CurrentAnimations,
+		DisplayName:       chatUser.CurrentOperator.DisplayName,
+		OperatorId:        chatUser.CurrentOperator.OperatorId,
+		Faction:           chatUser.CurrentOperator.Faction,
+		Skin:              chatUser.CurrentOperator.Skin,
+		ChibiType:         chatUser.CurrentOperator.ChibiType,
+		Facing:            chatUser.CurrentOperator.Facing,
+		CurrentAnimations: chatUser.CurrentOperator.CurrentAnimations,
 
 		Skins:      skins,
 		Animations: animations,
@@ -669,10 +669,10 @@ func (s *SpineBridge) SetToDefault(broadcasterName string, opName string, detail
 	}
 
 	// broadcasterName := "stymphalian__"
-	s.chatUsers = map[string]*ChatUser{
+	s.ChatUsers = map[string]*ChatUser{
 		broadcasterName: {
-			userName: broadcasterName,
-			currentOperator: OperatorInfo{
+			UserName: broadcasterName,
+			CurrentOperator: OperatorInfo{
 				DisplayName:       opName,
 				OperatorId:        opId,
 				Faction:           faction,

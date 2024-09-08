@@ -59,6 +59,11 @@ type TwitchConfig struct {
 	// chat rooms. Set to -1 to never cleanup rooms
 	// Default: 360 (6 hours)
 	RemoveUnusedRoomsAfterMinutes int `json:"remove_unused_rooms_after_minutes"`
+
+	// Option
+	// Secret key used to give access to /admin endpoints.
+	// I can't be bothered with an proper ACL system right now
+	AdminSecret string `json:"admin_secret"`
 }
 
 type InitialOperatorDetails struct {

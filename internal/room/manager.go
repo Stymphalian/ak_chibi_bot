@@ -139,3 +139,14 @@ func (r *RoomsManager) WaitForShutdownWithTimeout() {
 		log.Println("Shutting down gracefully")
 	}
 }
+
+func (r *RoomsManager) RemoveRoom(channel string) error {
+	if _, ok := r.Rooms[channel]; !ok {
+		return nil
+	}
+	r.rooms_mutex.Lock()
+	defer r.rooms_mutex.Unlock()
+	r.Rooms[channel].Close()
+	delete(r.Rooms, channel)
+	return nil
+}
