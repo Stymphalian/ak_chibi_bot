@@ -53,6 +53,7 @@ func (r *RoomsManager) garbageCollectRooms() {
 	for channel, room := range r.Rooms {
 		lastChat := room.TwitchChat.LastChatterTime()
 		if time.Since(lastChat) > period {
+			log.Println("Removing unused room", channel)
 			room.Close()
 			delete(r.Rooms, channel)
 		}

@@ -78,6 +78,7 @@ func (t *TwitchBot) HandlePrivateMessage(m twitch.PrivateMessage) {
 	if trimmed[0] != '!' {
 		return
 	}
+	log.Printf("PRIVMSG message %v\n", m)
 
 	outputMsg, err := t.chibiActor.HandleCommand(m.User.Name, m.User.DisplayName, trimmed)
 	if len(outputMsg) > 0 {
@@ -125,7 +126,7 @@ func (t *TwitchBot) ReadPump() {
 		t.chibiActor.RemoveUserChibi(m.User)
 	})
 	t.tc.OnPrivateMessage(func(m twitch.PrivateMessage) {
-		log.Printf("PRIVMSG message %v\n", m)
+		// log.Printf("PRIVMSG message %v\n", m)
 		t.HandlePrivateMessage(m)
 	})
 	t.tc.Join(t.channelName)
