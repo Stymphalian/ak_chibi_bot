@@ -73,7 +73,6 @@ func (r *RoomsManager) CreateRoomOrNoOp(channel string, ctx context.Context) err
 		return nil
 	}
 
-	log.Println("CreateRoomOrNoOp before")
 	spineBridge, err := spine.NewSpineBridge(r.AssetManager)
 	if err != nil {
 		return err
@@ -89,7 +88,6 @@ func (r *RoomsManager) CreateRoomOrNoOp(channel string, ctx context.Context) err
 	if err != nil {
 		return err
 	}
-	log.Println("CreateRoomOrNoOp after")
 
 	r.rooms_mutex.Lock()
 	defer r.rooms_mutex.Unlock()
@@ -131,12 +129,12 @@ func (r *RoomsManager) Shutdown() {
 }
 
 func (r *RoomsManager) WaitForShutdownWithTimeout() {
-	log.Println("Waiting for shutdown")
+	log.Println("RoomsManager: Waiting for shutdown")
 	select {
 	case <-time.After(forcefulShutdownDuration):
-		log.Printf("Shutting down forcefully after %v", forcefulShutdownDuration)
+		log.Printf("RoomsManager: Shutting down forcefully after %v", forcefulShutdownDuration)
 	case <-r.shutdownDoneCh:
-		log.Println("Shutting down gracefully")
+		log.Println("RoomsManager: Shutting down gracefully")
 	}
 }
 

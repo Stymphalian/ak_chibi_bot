@@ -3,7 +3,6 @@ package admin
 import (
 	"encoding/json"
 	"fmt"
-	"log"
 	"net/http"
 	"text/template"
 	"time"
@@ -54,23 +53,19 @@ func NewAdminServer(roomManager *room.RoomsManager, twitchConfig *misc.TwitchCon
 func (a *AdminServer) adminAuth(h misc.HandlerWithErr) misc.HandlerWithErr {
 	return func(w http.ResponseWriter, r *http.Request) (err error) {
 		if !r.URL.Query().Has("secret") {
-			log.Println("no secret")
 			http.Error(w, "", http.StatusNotFound)
 			return nil
 		}
 		if len(a.twitchConfig.AdminSecret) != 256 {
-			log.Println("adming secret not set")
 			http.Error(w, "", http.StatusNotFound)
 			return nil
 		}
 		secret := r.URL.Query().Get("secret")
 		if len(secret) != 256 {
-			log.Println("not correct length")
 			http.Error(w, "", http.StatusNotFound)
 			return nil
 		}
 		if a.twitchConfig.AdminSecret != secret {
-			log.Println("secret doesn't match")
 			http.Error(w, "", http.StatusNotFound)
 			return nil
 		}
@@ -90,7 +85,6 @@ func (s *AdminServer) RegisterAdmin() {
 }
 
 func (s *AdminServer) HandleAdmin(w http.ResponseWriter, r *http.Request) error {
-	log.Println("Handle Admin")
 	t, err := template.ParseFiles(fmt.Sprintf("%s/index.html", s.assetDir))
 	if err != nil {
 		return err
@@ -104,7 +98,6 @@ func (s *AdminServer) HandleList(w http.ResponseWriter, r *http.Request) error {
 		http.NotFound(w, r)
 		return nil
 	}
-	log.Println("Handle Admin List")
 	w.Header().Set("Content-Type", "application/json")
 
 	var adminInfo AdminInfo
@@ -142,7 +135,6 @@ func (s *AdminServer) HandleRemoveRoom(w http.ResponseWriter, r *http.Request) e
 		http.NotFound(w, r)
 		return nil
 	}
-	log.Println("Handle Remove Room")
 	decoder := json.NewDecoder(r.Body)
 	var reqBody RemoveRoomRequest
 	if err := decoder.Decode(&reqBody); err != nil {
@@ -165,7 +157,6 @@ func (s *AdminServer) HandleRemoveUser(w http.ResponseWriter, r *http.Request) e
 		http.NotFound(w, r)
 		return nil
 	}
-	log.Println("Handle Remove User")
 	decoder := json.NewDecoder(r.Body)
 	var reqBody RemoveUserRequest
 	if err := decoder.Decode(&reqBody); err != nil {

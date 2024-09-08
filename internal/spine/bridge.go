@@ -56,7 +56,6 @@ func (s *SpineBridge) pingWebSockets() {
 			log.Println("Closing websocket pinger")
 			return
 		case <-s.websocketPingerTicker.C:
-			log.Println("Sending pings to websockets")
 			for _, websocketConn := range s.WebSocketConnections {
 				if websocketConn.conn == nil {
 					continue
