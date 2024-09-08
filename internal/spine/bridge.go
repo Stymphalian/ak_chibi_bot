@@ -28,9 +28,11 @@ type ChatUser struct {
 }
 
 type SpineBridge struct {
-	Assets               *AssetManager
-	ChatUsers            map[string]*ChatUser
-	WebSocketConnections map[string]*WebSocketConn
+	Assets                *AssetManager
+	ChatUsers             map[string]*ChatUser
+	WebSocketConnections  map[string]*WebSocketConn
+	websocketPingerTicker *time.Ticker
+	websocketPingerDone   chan bool
 	// TODO: Might want to add mutex locking for updating websocket connections
 }
 
@@ -40,11 +42,39 @@ func NewSpineBridge(assets *AssetManager) (*SpineBridge, error) {
 		ChatUsers:            make(map[string]*ChatUser, 0),
 		WebSocketConnections: make(map[string]*WebSocketConn, 0),
 	}
+	go s.pingWebSockets()
 	return s, nil
+}
+
+func (s *SpineBridge) pingWebSockets() {
+	s.websocketPingerTicker = time.NewTicker(time.Duration(30) * time.Second)
+	s.websocketPingerDone = make(chan bool)
+
+	for {
+		select {
+		case <-s.websocketPingerDone:
+			log.Println("Closing websocket pinger")
+			return
+		case <-s.websocketPingerTicker.C:
+			log.Println("Sending pings to websockets")
+			for _, websocketConn := range s.WebSocketConnections {
+				if websocketConn.conn == nil {
+					continue
+				}
+				websocketConn.conn.WriteControl(
+					websocket.PingMessage,
+					[]byte{},
+					time.Now().Add(time.Duration(1)*time.Second),
+				)
+			}
+		}
+	}
+
 }
 
 func (s *SpineBridge) Close() error {
 	log.Println("SpineBridge::Close() called")
+	close(s.websocketPingerDone)
 
 	var wg sync.WaitGroup
 	for roomName, websocketConn := range s.WebSocketConnections {
@@ -115,11 +145,8 @@ func (s *SpineBridge) AddWebsocketConnection(w http.ResponseWriter, r *http.Requ
 		log.Println("Closing connection and done channel.")
 		close(websocketConn.done)
 		websocketConn.conn.Close()
-		if websocketConn.remove {
-			delete(s.WebSocketConnections, connectionName)
-		} else {
-			websocketConn.conn = nil
-		}
+		websocketConn.conn = nil
+		delete(s.WebSocketConnections, connectionName)
 	}()
 
 	for _, chatUser := range s.ChatUsers {
@@ -130,14 +157,28 @@ func (s *SpineBridge) AddWebsocketConnection(w http.ResponseWriter, r *http.Requ
 		)
 	}
 
+	// stopTimer := misc.StartTimer(
+	// 	fmt.Sprintf("Websocket PingPong %s", connectionName),
+	// 	time.Duration(5)*time.Second,
+	// 	func() {
+	// 		if websocketConn.conn == nil {
+	// 			log.Println("Socket is closed. Exiting timer")
+	// 			return
+	// 		}
+	// 		log.Println("Sending ping")
+	// 		websocketConn.conn.WriteControl(
+	// 			websocket.PingMessage,
+	// 			[]byte{},
+	// 			time.Now().Add(time.Duration(1)*time.Second),
+	// 		)
+	// 	},
+	// )
+	// defer stopTimer()
+
 	for {
 		var messageType, message, err = c.ReadMessage()
 		if err != nil {
 			log.Println("read:", err)
-			if websocket.IsCloseError(err, websocket.CloseNormalClosure, websocket.CloseGoingAway) {
-				log.Println("Websocket closing")
-				websocketConn.remove = true
-			}
 			break
 		}
 		log.Printf("recv: (%v)%v\n", messageType, string(message))

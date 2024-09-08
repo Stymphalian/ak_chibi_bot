@@ -148,7 +148,6 @@ func (s *AdminServer) HandleRemoveRoom(w http.ResponseWriter, r *http.Request) e
 	if err := decoder.Decode(&reqBody); err != nil {
 		return err
 	}
-	log.Println(reqBody)
 
 	channelName := reqBody.ChannelName
 	if len(channelName) == 0 {

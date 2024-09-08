@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"github.com/Stymphalian/ak_chibi_bot/internal/chibi"
+	"github.com/Stymphalian/ak_chibi_bot/internal/misc"
 	"github.com/gempir/go-twitch-irc/v4"
 )
 
@@ -87,29 +88,30 @@ func (t *TwitchBot) HandlePrivateMessage(m twitch.PrivateMessage) {
 	}
 }
 
-func (t *TwitchBot) garbageCollectOldChibis(timer *time.Ticker, period time.Duration) {
-	for range timer.C {
-		log.Println("Garbage collecting old chibis")
-		for channelUser, lastChat := range t.lastUserChat {
-			user := channelUser.User
-			if time.Since(lastChat) > period {
-				if user == t.channelName {
-					// Skip removing the broadcaster's chibi
-					continue
-				}
-				log.Println("Removing chibi for", user)
-				t.chibiActor.RemoveUserChibi(user)
+func (t *TwitchBot) garbageCollectOldChibis() {
+	log.Println("Garbage collecting old chibis")
+	interval := time.Duration(t.garbageCollectionPeriodMins) * time.Minute
+	for channelUser, lastChat := range t.lastUserChat {
+		user := channelUser.User
+		if time.Since(lastChat) > interval {
+			if user == t.channelName {
+				// Skip removing the broadcaster's chibi
+				continue
 			}
+			log.Println("Removing chibi for", user)
+			t.chibiActor.RemoveUserChibi(user)
 		}
 	}
 }
 
 func (t *TwitchBot) ReadPump() {
 	if t.garbageCollectionPeriodMins > 0 {
-		cleanupInterval := time.Duration(t.garbageCollectionPeriodMins) * time.Minute
-		timer := time.NewTicker(cleanupInterval)
-		defer timer.Stop()
-		go t.garbageCollectOldChibis(timer, cleanupInterval)
+		stopTimer := misc.StartTimer(
+			fmt.Sprintf("GarbageCollectOldChibis %s", t.channelName),
+			time.Duration(t.garbageCollectionPeriodMins)*time.Minute,
+			t.garbageCollectOldChibis,
+		)
+		defer stopTimer()
 	}
 
 	t.tc.OnNoticeMessage(func(m twitch.NoticeMessage) {

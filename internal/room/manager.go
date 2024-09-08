@@ -39,28 +39,28 @@ func NewRoomsManager(assets *spine.AssetManager, twitchConfig *misc.TwitchConfig
 	}
 }
 
-func (r *RoomsManager) GarbageCollectRooms(timer *time.Ticker, period time.Duration) {
-	for range timer.C {
-		log.Println("Garbage collecting unused chat rooms")
-
-		r.rooms_mutex.Lock()
-		for channel, room := range r.Rooms {
-			lastChat := room.TwitchChat.LastChatterTime()
-			if time.Since(lastChat) > period {
-				room.Close()
-				delete(r.Rooms, channel)
-			}
+func (r *RoomsManager) GarbageCollectRooms() {
+	log.Println("Garbage collecting unused chat rooms")
+	period := time.Duration(r.TwitchConfig.RemoveUnusedRoomsAfterMinutes) * time.Minute
+	r.rooms_mutex.Lock()
+	for channel, room := range r.Rooms {
+		lastChat := room.TwitchChat.LastChatterTime()
+		if time.Since(lastChat) > period {
+			room.Close()
+			delete(r.Rooms, channel)
 		}
-		r.rooms_mutex.Unlock()
 	}
+	r.rooms_mutex.Unlock()
 }
 
 func (r *RoomsManager) RunLoop() {
 	if r.TwitchConfig.RemoveUnusedRoomsAfterMinutes > 0 {
-		cleanupInterval := time.Duration(r.TwitchConfig.RemoveUnusedRoomsAfterMinutes) * time.Minute
-		timer := time.NewTicker(cleanupInterval)
-		defer timer.Stop()
-		go r.GarbageCollectRooms(timer, cleanupInterval)
+		stopTimer := misc.StartTimer(
+			"GarbageCollectRooms",
+			time.Duration(r.TwitchConfig.RemoveUnusedRoomsAfterMinutes)*time.Minute,
+			r.GarbageCollectRooms,
+		)
+		defer stopTimer()
 	}
 
 	for channel := range r.runCh {
