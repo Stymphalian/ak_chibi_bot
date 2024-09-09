@@ -40,19 +40,19 @@ func ChibiFacingEnum_Parse(str string) (ChibiFacingEnum, error) {
 	}
 }
 
-type ChibiTypeEnum string
+type ChibiStanceEnum string
 
 const (
-	CHIBI_TYPE_ENUM_BATTLE ChibiTypeEnum = "battle"
-	CHIBI_TYPE_ENUM_BASE   ChibiTypeEnum = "base"
+	CHIBI_STANCE_ENUM_BATTLE ChibiStanceEnum = "battle"
+	CHIBI_STANCE_ENUM_BASE   ChibiStanceEnum = "base"
 )
 
-func ChibiTypeEnum_Parse(str string) (ChibiTypeEnum, error) {
+func ChibiStanceEnum_Parse(str string) (ChibiStanceEnum, error) {
 	switch strings.ToLower(str) {
 	case "battle":
-		return CHIBI_TYPE_ENUM_BATTLE, nil
+		return CHIBI_STANCE_ENUM_BATTLE, nil
 	case "base":
-		return CHIBI_TYPE_ENUM_BASE, nil
+		return CHIBI_STANCE_ENUM_BASE, nil
 	default:
 		return "", fmt.Errorf("invalid chibi type (%s)", str)
 	}
@@ -77,8 +77,8 @@ func FactionEnum_Parse(str string) (FactionEnum, error) {
 }
 
 // TODO:
-func GetDefaultAnimForChibiType(chibiType ChibiTypeEnum) string {
-	if chibiType == CHIBI_TYPE_ENUM_BASE {
+func GetDefaultAnimForChibiStance(chibiStance ChibiStanceEnum) string {
+	if chibiStance == CHIBI_STANCE_ENUM_BASE {
 		return DEFAULT_ANIM_BASE
 	} else {
 		return DEFAULT_ANIM_BATTLE
@@ -280,7 +280,13 @@ func (s *SpineAssetMap) Get(
 	}
 }
 
-func (s *SpineAssetMap) Contains(operatorId string, skin string, chibiType ChibiTypeEnum, facing ChibiFacingEnum, animations []string) error {
+func (s *SpineAssetMap) Contains(
+	operatorId string,
+	skin string,
+	chibiStance ChibiStanceEnum,
+	facing ChibiFacingEnum,
+	animations []string,
+) error {
 	if _, ok := s.Data[operatorId]; !ok {
 		return fmt.Errorf("invalid operator name (%s)", operatorId)
 	}
@@ -288,7 +294,7 @@ func (s *SpineAssetMap) Contains(operatorId string, skin string, chibiType Chibi
 		return fmt.Errorf("invalid skin name (%s)", skin)
 	}
 	var spineData *SpineData
-	if chibiType == CHIBI_TYPE_ENUM_BASE {
+	if chibiStance == CHIBI_STANCE_ENUM_BASE {
 		if len(s.Data[operatorId].Skins[skin].Base) == 0 {
 			return fmt.Errorf("skin does not have a 'Base' skin")
 		}

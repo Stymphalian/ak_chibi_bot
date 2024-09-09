@@ -114,7 +114,7 @@ func (s *AdminServer) HandleList(w http.ResponseWriter, r *http.Request) error {
 		for _, chatUser := range roomVal.SpineBridge.ChatUsers {
 			newChatter := Chatter{
 				Username:     chatUser.UserName,
-				Operator:     chatUser.CurrentOperator.DisplayName,
+				Operator:     chatUser.CurrentOperator.OperatorDisplayName,
 				LastChatTime: "",
 			}
 

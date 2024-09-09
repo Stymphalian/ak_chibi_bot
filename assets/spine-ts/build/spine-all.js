@@ -11878,6 +11878,7 @@ var stym;
         }
         swapCharacter(requestData) {
             let username = requestData["user_name"];
+            let action = requestData["action"];
             let startPosX = null;
             let startPosY = null;
             if (requestData["start_pos"] != null) {
@@ -11886,16 +11887,30 @@ var stym;
             }
             let targetPosX = null;
             let targetPosY = null;
-            if (requestData["target_pos"] != null) {
-                targetPosX = requestData["target_pos"]["x"];
-                targetPosY = requestData["target_pos"]["y"];
+            let wandering = false;
+            let animations = [];
+            switch (action) {
+                case "PLAY_ANIMATION":
+                    animations = requestData["action_data"]["animations"];
+                    break;
+                case "WANDER":
+                    animations = [requestData["action_data"]["wander_animation"]];
+                    wandering = true;
+                    break;
+                case "WALK_TO":
+                    animations = [requestData["action_data"]["walk_to_animation"]];
+                    targetPosX = requestData["action_data"]["target_pos"]["x"];
+                    targetPosY = requestData["action_data"]["target_pos"]["y"];
+                    break;
+                default:
+                    return;
             }
             this.actorConfig = {
                 chibiId: requestData["operator_id"],
                 userDisplayName: requestData['user_name_display'],
                 skelUrl: requestData["skel_file"],
                 atlasUrl: requestData["atlas_file"],
-                animations: requestData["animations"] ? requestData["animations"] : [],
+                animations: animations,
                 startPosX: startPosX,
                 startPosY: startPosY,
                 scaleX: 0.45,
@@ -11907,7 +11922,7 @@ var stym;
                 extraOffsetY: 0,
                 desiredPositionX: targetPosX,
                 desiredPositionY: targetPosY,
-                wandering: requestData["wandering"],
+                wandering: wandering,
                 success: (widget) => {
                 },
                 error: (widget, error) => {

@@ -26,7 +26,7 @@ Command Name | Description
 Have the twich bot directly connect to your chat by using a hosted bot.
 1. Open up OBS and add a `Browser` source to your stream.
 2. Set the URL to `https://jellyfish-app-gseou.ondigitalocean.app/room/?channelName=REPLACE_ME`
-3. Change the `REPLACE_ME` part of the channelName to your own channel (ie. `?channelName=stymphalian2__`)
+3. Change the `REPLACE_ME` part of the channelName (lowercase) to your own channel (ie. `?channelName=stymphalian2__`). 
 4. Set the width and height to 1920x1080
 5. A chibi should now be walking around.
 6. Open up your twitch chat and start typing in commands

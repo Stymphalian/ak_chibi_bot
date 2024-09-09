@@ -7,6 +7,16 @@ import (
 	"strings"
 )
 
+func ClampF64(val float64, min float64, max float64) float64 {
+	if val < min {
+		return min
+	} else if val > max {
+		return max
+	} else {
+		return val
+	}
+}
+
 type Vector2 struct {
 	X float64 `json:"x"`
 	Y float64 `json:"y"`
