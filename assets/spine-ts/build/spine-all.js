@@ -10922,12 +10922,13 @@ var spine;
             let rand = Math.random();
             return new spine.Vector2(rand * viewport.width - half, currentPos.y);
         }
-        SetAnimation(actor, animation) {
+        SetAnimation(actor, animation, viewport) {
+            const startPosYScaled = actor.config.startPosY * viewport.y;
             if (animation == "Sit") {
-                actor.position.y = actor.config.startPosY + Math.abs(actor.animViewport.y);
+                actor.position.y = startPosYScaled + Math.abs(actor.animViewport.y);
             }
             else {
-                actor.position.y = actor.config.startPosY;
+                actor.position.y = startPosYScaled;
             }
             this.currentAnimation = animation;
             if (this.currentAnimation.includes("Move")) {
@@ -10974,7 +10975,9 @@ var spine;
             let half = viewport.width / 2;
             return new spine.Vector2(Math.random() * viewport.width - half, currentPos.y);
         }
-        SetAnimation(actor, animation) { }
+        SetAnimation(actor, animation, viewport) {
+            actor.position.y = actor.config.startPosY * viewport.y;
+        }
         GetAnimations() {
             return [this.actionData["wander_animation"]];
         }
@@ -11008,7 +11011,9 @@ var spine;
             this.startDir = null;
             this.reachedDestination = false;
         }
-        SetAnimation(actor, animation) { }
+        SetAnimation(actor, animation, viewport) {
+            actor.position.y = actor.config.startPosY * viewport.y;
+        }
         GetAnimations() {
             if (this.reachedDestination) {
                 return [this.actionData["walk_to_final_animation"]];
@@ -11058,6 +11063,7 @@ var spine;
         speed = 1;
         config;
         lastAnimation = null;
+        viewport = null;
         animViewport = null;
         prevAnimViewport = null;
         defaultBB = null;
@@ -11072,6 +11078,7 @@ var spine;
             this.movementSpeed = new spine.Vector2(80 + Math.random() * 40, 0);
             let x = Math.random() * viewport.width - (viewport.width / 2);
             this.position = new spine.Vector2(x, 0);
+            this.viewport = viewport;
             if (config.startPosX || config.startPosY) {
                 this.position = new spine.Vector2((config.startPosX * viewport.width) - (viewport.width / 2), config.startPosY * viewport.height);
             }
@@ -11153,7 +11160,7 @@ var spine;
             this.skeleton.scaleY = this.scale.y;
         }
         recordAnimation(animation) {
-            this.currentAction.SetAnimation(this, animation);
+            this.currentAction.SetAnimation(this, animation, this.viewport);
             this.lastAnimation = animation;
         }
         initAnimationsInternal(animations) {

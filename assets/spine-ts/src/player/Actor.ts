@@ -131,6 +131,7 @@ module spine {
 		public lastAnimation: string = null;
 		// public animations: string[]
 
+		public viewport: BoundingBox = null;
 		public animViewport: BoundingBox = null;
 		public prevAnimViewport: BoundingBox = null;
 		public defaultBB: BoundingBox = null;
@@ -148,6 +149,7 @@ module spine {
 			this.movementSpeed = new spine.Vector2(80 + Math.random()*40,0);  // ~100 px/ second
 			let x = Math.random()*viewport.width - (viewport.width/2)
 			this.position = new spine.Vector2(x, 0);
+			this.viewport = viewport;
 
 			if (config.startPosX || config.startPosY) {
 				this.position = new spine.Vector2(
@@ -259,7 +261,7 @@ module spine {
 		}
 
 		private recordAnimation(animation: string) {
-			this.currentAction.SetAnimation(this, animation);
+			this.currentAction.SetAnimation(this, animation, this.viewport);
 			this.lastAnimation = animation;
 		}
 

@@ -6,7 +6,7 @@ module spine {
     }
 
     export interface ActorAction {
-        SetAnimation(actor:Actor, animation:string): void;
+        SetAnimation(actor:Actor, animation:string, viewport: BoundingBox): void;
         GetAnimations(): string[]
         UpdatePhysics(actor: Actor, deltaSecs: number, viewport: BoundingBox): void
     }
@@ -44,11 +44,12 @@ module spine {
 			return new spine.Vector2(rand*viewport.width - half, currentPos.y);
         }
 
-        SetAnimation(actor:Actor, animation:string) {
+        SetAnimation(actor:Actor, animation:string, viewport: BoundingBox) {
+            const startPosYScaled = actor.config.startPosY * viewport.y;
             if (animation == "Sit") {
-				actor.position.y = actor.config.startPosY + Math.abs(actor.animViewport.y)
+				actor.position.y = startPosYScaled + Math.abs(actor.animViewport.y)
 			} else {
-				actor.position.y = actor.config.startPosY;
+				actor.position.y = startPosYScaled;
 			}
             this.currentAnimation = animation;
             if (this.currentAnimation.includes("Move")) {
@@ -104,7 +105,9 @@ module spine {
 			return new spine.Vector2(Math.random()*viewport.width - half, currentPos.y);
         }
 
-        SetAnimation(actor: Actor, animation:string) {}
+        SetAnimation(actor:Actor, animation:string, viewport: BoundingBox) {
+            actor.position.y = actor.config.startPosY * viewport.y;
+        }
 
         GetAnimations(): string[] {
             return [this.actionData["wander_animation"]];
@@ -148,7 +151,9 @@ module spine {
             this.reachedDestination = false;
         }
 
-        SetAnimation(actor:Actor, animation:string) {}
+        SetAnimation(actor:Actor, animation:string, viewport: BoundingBox) {
+            actor.position.y = actor.config.startPosY * viewport.y;
+        }
 
         GetAnimations(): string[] {
             if (this.reachedDestination) {

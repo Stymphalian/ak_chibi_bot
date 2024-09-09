@@ -1786,7 +1786,7 @@ declare namespace spine {
         static WALK_TO: string;
     }
     interface ActorAction {
-        SetAnimation(actor: Actor, animation: string): void;
+        SetAnimation(actor: Actor, animation: string, viewport: BoundingBox): void;
         GetAnimations(): string[];
         UpdatePhysics(actor: Actor, deltaSecs: number, viewport: BoundingBox): void;
     }
@@ -1798,7 +1798,7 @@ declare namespace spine {
         currentAnimation: string;
         constructor(actionData: any);
         getRandomPosition(currentPos: Vector2, viewport: BoundingBox): Vector2;
-        SetAnimation(actor: Actor, animation: string): void;
+        SetAnimation(actor: Actor, animation: string, viewport: BoundingBox): void;
         GetAnimations(): string[];
         UpdatePhysics(actor: Actor, deltaSecs: number, viewport: BoundingBox): void;
     }
@@ -1808,7 +1808,7 @@ declare namespace spine {
         endPosition: Vector2;
         constructor(actionData: any);
         getRandomPosition(currentPos: Vector2, viewport: BoundingBox): Vector2;
-        SetAnimation(actor: Actor, animation: string): void;
+        SetAnimation(actor: Actor, animation: string, viewport: BoundingBox): void;
         GetAnimations(): string[];
         UpdatePhysics(actor: Actor, deltaSecs: number, viewport: BoundingBox): void;
     }
@@ -1819,7 +1819,7 @@ declare namespace spine {
         startDir: Vector2;
         reachedDestination: boolean;
         constructor(actionData: any);
-        SetAnimation(actor: Actor, animation: string): void;
+        SetAnimation(actor: Actor, animation: string, viewport: BoundingBox): void;
         GetAnimations(): string[];
         UpdatePhysics(actor: Actor, deltaSecs: number, viewport: BoundingBox): void;
     }
@@ -1876,6 +1876,7 @@ declare namespace spine {
         speed: number;
         config: SpineActorConfig;
         lastAnimation: string;
+        viewport: BoundingBox;
         animViewport: BoundingBox;
         prevAnimViewport: BoundingBox;
         defaultBB: BoundingBox;
