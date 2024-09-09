@@ -99,28 +99,6 @@ module stym {
                 startPosX = requestData["start_pos"]["x"];
                 startPosY = requestData["start_pos"]["y"];
             }
-
-            let targetPosX = null;
-            let targetPosY = null;
-
-            let wandering = false;
-            let animations = [];
-            switch (action) {
-                case "PLAY_ANIMATION":
-                    animations = requestData["action_data"]["animations"];
-                    break;
-                case "WANDER":
-                    animations = [requestData["action_data"]["wander_animation"]];
-                    wandering = true;
-                    break;
-                case "WALK_TO":
-                    animations = [requestData["action_data"]["walk_to_animation"]];
-                    targetPosX = requestData["action_data"]["target_pos"]["x"];
-                    targetPosY = requestData["action_data"]["target_pos"]["y"];
-                    break;
-                default:
-                    return
-            }
     
             this.actorConfig = {
                 chibiId: requestData["operator_id"],
@@ -128,24 +106,18 @@ module stym {
                 skelUrl: requestData["skel_file"],
                 atlasUrl: requestData["atlas_file"],
 
-                animations: animations,
-
                 startPosX: startPosX,
                 startPosY: startPosY,
                 scaleX: 0.45,
                 scaleY: 0.45,
-                // scaleX: 0.15,
-                // scaleY: 0.15,
                 maxSizePx: 350,
                 premultipliedAlpha: true,
                 animationPlaySpeed: requestData["animation_speed"] ?  requestData["animation_speed"] : 1.0,
-    
                 extraOffsetX: 0,
                 extraOffsetY: 0,
     
-                desiredPositionX: targetPosX,
-                desiredPositionY: targetPosY,
-                wandering: wandering,
+                action: requestData["action"],
+                action_data: requestData["action_data"],
     
                 success: (widget) => {
                     // console.log("Successfully loaded actor");

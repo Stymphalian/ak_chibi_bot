@@ -417,10 +417,18 @@ func (c *ChibiActor) SetWalk(args []string, current *spine.OperatorInfo) (string
 
 	// Set the animation to "Move". If "Move" doesn't exist in the list of
 	// animations then try to find an animation with "Move" in its name
+	// Try to keep the current animation if it is already a "move" like animation
+	currentAnimations := current.Action.GetAnimations(current.CurrentAction)
 	moveAnimation := spine.DEFAULT_MOVE_ANIM_NAME
+	for _, animation := range currentAnimations {
+		if strings.Contains(animation, "Move") {
+			moveAnimation = animation
+			break
+		}
+	}
 	if !slices.Contains(current.AvailableAnimations, moveAnimation) {
 		for _, animation := range current.AvailableAnimations {
-			if strings.Contains(animation, spine.DEFAULT_MOVE_ANIM_NAME) {
+			if strings.Contains(animation, "Move") {
 				moveAnimation = animation
 				break
 			}
@@ -441,10 +449,17 @@ func (c *ChibiActor) SetWalk(args []string, current *spine.OperatorInfo) (string
 		}
 
 		current.CurrentAction = spine.ACTION_WALK_TO
+		animationAfterStance := ""
+		if current.ChibiStance == spine.CHIBI_STANCE_ENUM_BASE {
+			animationAfterStance = spine.DEFAULT_ANIM_BASE_RELAX
+		} else {
+			animationAfterStance = spine.DEFAULT_ANIM_BATTLE
+		}
+
 		current.Action = spine.NewActionWalkTo(
 			misc.Vector2{X: desiredPosition, Y: 0.0},
 			moveAnimation,
-			spine.GetDefaultAnimForChibiStance(current.ChibiStance),
+			animationAfterStance,
 		)
 		current.AnimationSpeed = 1.0
 	}
@@ -528,7 +543,6 @@ func (c *ChibiActor) SetChibiModel(trimmed string, current *spine.OperatorInfo) 
 	}
 
 	current.OperatorId = operatorId
-	current.Skin = spine.DEFAULT_SKIN_NAME
 	current.Faction = spine.FACTION_ENUM_OPERATOR
 	current.AnimationSpeed = 1.0
 	return "", nil
@@ -563,15 +577,14 @@ func (c *ChibiActor) GetChibiInfo(userName string, subInfoName string) (string, 
 	case "anims":
 		msg = fmt.Sprintf("%s animations: %s", current.OperatorDisplayName, strings.Join(current.AvailableAnimations, ","))
 	case "info":
+		currentAnimations := current.Action.GetAnimations(current.CurrentAction)
 		msg = fmt.Sprintf(
-			// "%s: %s, %s, %s, (%s)",
-			"%s: %s, %s, %s",
+			"%s: %s, %s, %s, (%s)",
 			current.OperatorDisplayName,
 			current.Skin,
 			current.ChibiStance,
 			current.Facing,
-			// TODO: Fix this to get the current animation
-			// strings.Join(current.CurrentAnimations, ","),
+			strings.Join(currentAnimations, ","),
 		)
 	default:
 		return "", errors.New("incorrect usage: !chibi <skins|anims|info>")

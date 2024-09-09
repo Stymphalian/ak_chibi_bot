@@ -7578,6 +7578,9 @@ var spine;
             let y = this.y;
             return Math.sqrt(x * x + y * y);
         }
+        subtract(other) {
+            return new Vector2(this.x - other.x, this.y - other.y);
+        }
         normalize() {
             let len = this.length();
             if (len != 0) {
@@ -7585,6 +7588,16 @@ var spine;
                 this.y /= len;
             }
             return this;
+        }
+        normalize_new() {
+            let len = this.length();
+            return new Vector2(this.x / len, this.y / len);
+        }
+        angle(other) {
+            let dot = this.x * other.x + this.y * other.y;
+            let len_a = Math.sqrt(this.x * this.x + this.y * this.y);
+            let len_b = Math.sqrt(other.x * other.x + other.y * other.y);
+            return Math.acos(dot / (len_a * len_b));
         }
     }
     spine.Vector2 = Vector2;
@@ -10874,6 +10887,167 @@ var spine;
 })(spine || (spine = {}));
 var spine;
 (function (spine) {
+    class ActionName {
+        static PLAY_ANIMATION = "PLAY_ANIMATION";
+        static WANDER = "WANDER";
+        static WALK_TO = "WALK_TO";
+    }
+    spine.ActionName = ActionName;
+    function ParseActionNameToAction(actionName, actionData) {
+        switch (actionName) {
+            case ActionName.PLAY_ANIMATION:
+                return new PlayAnimationAction(actionData);
+            case ActionName.WANDER:
+                return new WanderAction(actionData);
+            case ActionName.WALK_TO:
+                return new WalkToAction(actionData);
+            default:
+                console.log("Unknown action name ", actionName);
+                return null;
+        }
+    }
+    spine.ParseActionNameToAction = ParseActionNameToAction;
+    class PlayAnimationAction {
+        actionData;
+        startPosition;
+        endPosition;
+        currentAnimation;
+        constructor(actionData) {
+            this.actionData = actionData;
+            this.currentAnimation = null;
+            this.endPosition = null;
+        }
+        getRandomPosition(currentPos, viewport) {
+            let half = viewport.width / 2;
+            let rand = Math.random();
+            return new spine.Vector2(rand * viewport.width - half, currentPos.y);
+        }
+        SetAnimation(actor, animation) {
+            if (animation == "Sit") {
+                actor.position.y = actor.config.startPosY + Math.abs(actor.animViewport.y);
+            }
+            else {
+                actor.position.y = actor.config.startPosY;
+            }
+            this.currentAnimation = animation;
+            if (this.currentAnimation.includes("Move")) {
+                this.startPosition = null;
+                this.endPosition = null;
+            }
+        }
+        GetAnimations() {
+            return this.actionData["animations"];
+        }
+        UpdatePhysics(actor, deltaSecs, viewport) {
+            if (!this.currentAnimation.includes("Move")) {
+                actor.velocity.x = 0;
+                actor.velocity.y = 0;
+            }
+            else {
+                if (this.endPosition == null) {
+                    this.startPosition = actor.position;
+                    this.endPosition = this.getRandomPosition(actor.position, viewport);
+                }
+                let dir = this.endPosition.subtract(actor.position);
+                if (dir.length() < 5) {
+                    actor.position.x = this.endPosition.x;
+                    actor.position.y = this.endPosition.y;
+                    this.startPosition = actor.position;
+                    this.endPosition = this.getRandomPosition(actor.position, viewport);
+                }
+                dir.normalize();
+                actor.velocity = new spine.Vector2(dir.x * actor.movementSpeed.x * deltaSecs, dir.y * actor.movementSpeed.y * deltaSecs);
+            }
+        }
+    }
+    spine.PlayAnimationAction = PlayAnimationAction;
+    class WanderAction {
+        actionData;
+        startPosition = null;
+        endPosition = null;
+        constructor(actionData) {
+            this.actionData = actionData;
+            this.startPosition = null;
+            this.endPosition = null;
+        }
+        getRandomPosition(currentPos, viewport) {
+            let half = viewport.width / 2;
+            return new spine.Vector2(Math.random() * viewport.width - half, currentPos.y);
+        }
+        SetAnimation(actor, animation) { }
+        GetAnimations() {
+            return [this.actionData["wander_animation"]];
+        }
+        UpdatePhysics(actor, deltaSecs, viewport) {
+            if (this.endPosition == null) {
+                this.startPosition = actor.position;
+                this.endPosition = this.getRandomPosition(actor.position, viewport);
+            }
+            let dir = this.endPosition.subtract(actor.position);
+            if (dir.length() < 5) {
+                actor.position.x = this.endPosition.x;
+                actor.position.y = this.endPosition.y;
+                this.startPosition = actor.position;
+                this.endPosition = this.getRandomPosition(actor.position, viewport);
+            }
+            dir.normalize();
+            actor.velocity = new spine.Vector2(dir.x * actor.movementSpeed.x * deltaSecs, dir.y * actor.movementSpeed.y * deltaSecs);
+        }
+    }
+    spine.WanderAction = WanderAction;
+    class WalkToAction {
+        actionData;
+        startPosition = null;
+        endPosition = null;
+        startDir = null;
+        reachedDestination;
+        constructor(actionData) {
+            this.actionData = actionData;
+            this.startPosition = null;
+            this.endPosition = null;
+            this.startDir = null;
+            this.reachedDestination = false;
+        }
+        SetAnimation(actor, animation) { }
+        GetAnimations() {
+            if (this.reachedDestination) {
+                return [this.actionData["walk_to_final_animation"]];
+            }
+            else {
+                return [this.actionData["walk_to_animation"]];
+            }
+        }
+        UpdatePhysics(actor, deltaSecs, viewport) {
+            if (this.reachedDestination) {
+                return;
+            }
+            if (this.endPosition == null) {
+                this.startPosition = actor.position;
+                let target = new spine.Vector2(this.actionData["target_pos"]["x"], this.actionData["target_pos"]["y"]);
+                this.endPosition = new spine.Vector2(target.x * viewport.width - (viewport.width / 2), 0);
+                this.startDir = this.endPosition.subtract(this.startPosition).normalize();
+            }
+            let dir = this.endPosition.subtract(actor.position).normalize();
+            let angle = this.startDir.angle(dir);
+            let reached = Math.abs(Math.PI - angle) < 0.001;
+            if (reached) {
+                actor.position.x = this.endPosition.x;
+                actor.position.y = this.endPosition.y;
+                this.startPosition = actor.position;
+                actor.velocity.x = 0;
+                actor.velocity.y = 0;
+                this.reachedDestination = true;
+                actor.InitAnimationState();
+            }
+            else {
+                actor.velocity = new spine.Vector2(dir.x * actor.movementSpeed.x * deltaSecs, dir.y * actor.movementSpeed.y * deltaSecs);
+            }
+        }
+    }
+    spine.WalkToAction = WalkToAction;
+})(spine || (spine = {}));
+var spine;
+(function (spine) {
     class Actor {
         loaded;
         skeleton;
@@ -10890,8 +11064,9 @@ var spine;
         movementSpeed = new spine.Vector2();
         position = new spine.Vector2();
         scale = new spine.Vector2(1, 1);
+        velocity = new spine.Vector2(0, 0);
         startPosition = null;
-        endPosition = null;
+        currentAction = null;
         constructor(config, viewport) {
             this.ResetWithConfig(config);
             this.movementSpeed = new spine.Vector2(80 + Math.random() * 40, 0);
@@ -10901,22 +11076,11 @@ var spine;
                 this.position = new spine.Vector2((config.startPosX * viewport.width) - (viewport.width / 2), config.startPosY * viewport.height);
             }
         }
-        setDestination(viewport) {
-            this.startPosition = new spine.Vector2(this.position.x, this.position.y);
-            let half = viewport.width / 2;
-            this.endPosition = new spine.Vector2(Math.random() * viewport.width - half, this.position.y);
+        InitAnimations() {
+            this.initAnimationsInternal(this.currentAction.GetAnimations());
         }
-        setEndPosition(position) {
-            this.endPosition = position;
-        }
-        loopPositions() {
-            let temp = this.endPosition;
-            this.endPosition = new spine.Vector2(this.startPosition.x, this.startPosition.y);
-            this.startPosition = new spine.Vector2(temp.x, temp.y);
-        }
-        clearDestination() {
-            this.startPosition = null;
-            this.endPosition = null;
+        GetAnimations() {
+            return this.currentAction.GetAnimations();
         }
         ResetWithConfig(config) {
             this.loaded = false;
@@ -10932,32 +11096,40 @@ var spine;
             this.defaultBB = null;
             this.scale.x = Math.sign(this.scale.x) * config.scaleX;
             this.scale.y = Math.sign(this.scale.y) * config.scaleY;
+            this.currentAction = spine.ParseActionNameToAction(this.config.action, this.config.action_data);
         }
         UpdatePhysics(deltaSecs, viewport) {
-            if (this.endPosition != null) {
-                let dir = new spine.Vector2(this.endPosition.x - this.position.x, this.endPosition.y - this.position.y).normalize();
-                let velocity = new spine.Vector2(dir.x * this.movementSpeed.x * deltaSecs, dir.y * this.movementSpeed.y * deltaSecs);
-                this.position.x += velocity.x;
-                this.position.y += velocity.y;
-                if (velocity.x > 0) {
+            this.currentAction.UpdatePhysics(this, deltaSecs, viewport);
+            this.position.x += this.velocity.x;
+            this.position.y += this.velocity.y;
+            if (this.velocity.x != 0) {
+                if (this.velocity.x > 0) {
                     this.scale.x = this.config.scaleX;
                 }
                 else {
                     this.scale.x = -this.config.scaleX;
                 }
-                if (Math.abs(this.endPosition.x - this.position.x) < 5) {
-                    this.position.x = this.endPosition.x;
-                    if (this.config.wandering) {
-                        this.setDestination(viewport);
-                    }
-                    else {
-                        this.config.animations = ["Idle"];
-                    }
-                }
             }
             this.setSkeletonMovementData(viewport);
         }
-        getUsernameHeaderHeight() {
+        InitAnimationState() {
+            let skeletonData = this.skeleton.data;
+            let stateData = new spine.AnimationStateData(skeletonData);
+            stateData.defaultMix = this.config.defaultMix;
+            this.animationState = new spine.AnimationState(stateData);
+            if (this.config.animation_listener) {
+                this.animationState.clearListeners();
+                this.animationState.addListener(this.config.animation_listener);
+            }
+            if (this.GetAnimations()) {
+                if (this.animationState) {
+                    if (!this.animationState.getCurrent(0)) {
+                        this.InitAnimations();
+                    }
+                }
+            }
+        }
+        GetUsernameHeaderHeight() {
             let finalHeight = 0;
             if (this.config.chibiId.includes("enemy_")) {
                 finalHeight = this.defaultBB.height;
@@ -10979,6 +11151,168 @@ var spine;
             this.skeleton.y = this.position.y + this.config.extraOffsetY;
             this.skeleton.scaleX = this.scale.x;
             this.skeleton.scaleY = this.scale.y;
+        }
+        recordAnimation(animation) {
+            this.currentAction.SetAnimation(this, animation);
+            this.lastAnimation = animation;
+        }
+        initAnimationsInternal(animations) {
+            this.setAnimationState(animations);
+            this.recordAnimation(animations[0]);
+            let width = this.defaultBB.width;
+            let height = this.defaultBB.height;
+            let maxSize = width;
+            if (height > maxSize) {
+                maxSize = height;
+            }
+            if (maxSize > this.config.maxSizePx && this.config.chibiId.includes("enemy_")) {
+                console.log("Resizing actor to " + this.config.maxSizePx);
+                let ratio = width / height;
+                let xNew = 0;
+                let yNew = 0;
+                if (height > width) {
+                    xNew = ratio * this.config.maxSizePx;
+                    yNew = this.config.maxSizePx;
+                }
+                else {
+                    xNew = this.config.maxSizePx;
+                    yNew = this.config.maxSizePx / ratio;
+                }
+                let newScaleX = (xNew * this.config.scaleX) / width;
+                let newScaleY = (yNew * this.config.scaleY) / height;
+                this.config.defaultScaleX = this.config.scaleX;
+                this.config.defaultScaleY = this.config.scaleY;
+                this.config.scaleX = newScaleX;
+                this.config.scaleY = newScaleY;
+                this.scale.x = Math.sign(this.scale.x) * this.config.scaleX;
+                this.scale.y = Math.sign(this.scale.y) * this.config.scaleY;
+                this.setAnimationState(animations);
+                this.recordAnimation(animations[0]);
+            }
+        }
+        setAnimationState(animations) {
+            let animation = animations[0];
+            this.animViewport = this.calculateAnimationViewport(animation);
+            this.defaultBB = this.getDefaultBoundingBox();
+            this.animationState.timeScale = this.config.animationPlaySpeed;
+            this.animationState.clearTracks();
+            this.skeleton.setToSetupPose();
+            this.animationState.setAnimation(0, animation, true);
+            let lastTrackEntry = null;
+            for (let i = 1; i < animations.length; i++) {
+                lastTrackEntry = this.animationState.addAnimation(0, animations[i], false, 0);
+            }
+            if (lastTrackEntry) {
+                this.animationState.addListener({
+                    start: ((trackEntry) => {
+                        this.recordAnimation(trackEntry.animation.name);
+                    }).bind(this),
+                    interrupt: function (trackEntry) { },
+                    end: function (trackEntry) { },
+                    complete: ((trackEntry) => {
+                        if (trackEntry.next == null) {
+                            this.animationState.setAnimation(0, animation, true);
+                            for (let i = 1; i < animations.length; i++) {
+                                lastTrackEntry = this.animationState.addAnimation(0, animations[i], false, 0);
+                            }
+                        }
+                    }).bind(this),
+                    dispose: function (trackEntry) { },
+                    event: function (entry, event) { }
+                });
+            }
+        }
+        getDefaultBoundingBox() {
+            let animations = this.skeleton.data.animations;
+            let offsetAvg = new spine.Vector2();
+            let sizeAvg = new spine.Vector2();
+            let num_processed = 0;
+            for (let i = 0, n = animations.length; i < n; i++) {
+                let animationName = animations[i].name;
+                let animation = this.skeleton.data.findAnimation(animationName);
+                this.animationState.clearTracks();
+                this.skeleton.setToSetupPose();
+                this.animationState.setAnimationWith(0, animation, true);
+                let savedX = this.skeleton.x;
+                let savedY = this.skeleton.y;
+                this.skeleton.x = 0;
+                this.skeleton.y = 0;
+                this.skeleton.scaleX = Math.abs(this.config.scaleX);
+                this.skeleton.scaleY = Math.abs(this.config.scaleY);
+                this.animationState.update(0);
+                this.animationState.apply(this.skeleton);
+                this.skeleton.updateWorldTransform();
+                let offset = new spine.Vector2();
+                let size = new spine.Vector2();
+                this.skeleton.getBounds(offset, size);
+                this.skeleton.x = savedX;
+                this.skeleton.y = savedY;
+                if (Number.isFinite(offset.x) && Number.isFinite(offset.y) && Number.isFinite(size.x) && Number.isFinite(size.y)) {
+                    num_processed += 1;
+                    offsetAvg.x += offset.x;
+                    offsetAvg.y += offset.y;
+                    sizeAvg.x += size.x;
+                    sizeAvg.y += size.y;
+                }
+            }
+            offsetAvg.x /= num_processed;
+            offsetAvg.y /= num_processed;
+            sizeAvg.x /= num_processed;
+            sizeAvg.y /= num_processed;
+            let ret = {
+                x: offsetAvg.x,
+                y: offsetAvg.y,
+                width: sizeAvg.x,
+                height: sizeAvg.y
+            };
+            if (this.config.chibiId.includes("enemy_")) {
+                if (ret.y < -15) {
+                    this.config.extraOffsetY = -ret.y;
+                }
+            }
+            return ret;
+        }
+        calculateAnimationViewport(animationName) {
+            let animation = this.skeleton.data.findAnimation(animationName);
+            this.animationState.clearTracks();
+            this.skeleton.setToSetupPose();
+            this.animationState.setAnimationWith(0, animation, true);
+            let steps = 100;
+            let stepTime = animation.duration > 0 ? animation.duration / steps : 0;
+            let minX = 100000000;
+            let maxX = -100000000;
+            let minY = 100000000;
+            let maxY = -100000000;
+            let offset = new spine.Vector2();
+            let size = new spine.Vector2();
+            let savedX = this.skeleton.x;
+            let savedY = this.skeleton.y;
+            for (var i = 0; i < steps; i++) {
+                this.animationState.update(stepTime);
+                this.animationState.apply(this.skeleton);
+                this.skeleton.x = 0;
+                this.skeleton.y = 0;
+                this.skeleton.scaleX = Math.abs(this.config.scaleX);
+                this.skeleton.scaleY = Math.abs(this.config.scaleY);
+                this.skeleton.updateWorldTransform();
+                this.skeleton.getBounds(offset, size);
+                minX = Math.min(offset.x, minX);
+                maxX = Math.max(offset.x + size.x, maxX);
+                minY = Math.min(offset.y, minY);
+                maxY = Math.max(offset.y + size.y, maxY);
+            }
+            this.skeleton.x = savedX;
+            this.skeleton.y = savedY;
+            offset.x = minX;
+            offset.y = minY;
+            size.x = maxX - minX;
+            size.y = maxY - minY;
+            return {
+                x: offset.x,
+                y: offset.y,
+                width: size.x,
+                height: size.y
+            };
         }
     }
     spine.Actor = Actor;
@@ -11063,9 +11397,6 @@ var spine;
         static HOVER_COLOR_OUTER = new spine.Color(1, 1, 1, 1);
         static NON_HOVER_COLOR_INNER = new spine.Color(0.478, 0, 0, 0.5);
         static NON_HOVER_COLOR_OUTER = new spine.Color(1, 0, 0, 0.8);
-        average_width = 0;
-        average_height = 0;
-        average_count = 0;
         sceneRenderer;
         dom;
         playerControls;
@@ -11224,12 +11555,6 @@ var spine;
         removeActor(actorName) {
             this.actors.delete(actorName);
         }
-        updateActor(actorName, config) {
-            if (!this.actors.has(actorName)) {
-                return;
-            }
-            let actor = this.actors.get(actorName);
-        }
         setupActor(actor) {
             let config = actor.config;
             try {
@@ -11305,7 +11630,7 @@ var spine;
                     continue;
                 }
                 let viewport = this.playerConfig.viewport;
-                if (!actor.paused && actor.config.animations.length > 0) {
+                if (!actor.paused && actor.GetAnimations().length > 0) {
                     actor.time.update();
                     let delta = actor.time.delta * actor.speed;
                     let animationDuration = actor.animationState.getCurrent(0).animation.duration;
@@ -11337,7 +11662,7 @@ var spine;
                     }
                 }
                 this.sceneRenderer.drawSkeleton(actor.skeleton, actor.config.premultipliedAlpha);
-                this.drawText(actor.config.userDisplayName, actor.position.x, actor.position.y + actor.getUsernameHeaderHeight());
+                this.drawText(actor.config.userDisplayName, actor.position.x, actor.position.y + actor.GetUsernameHeaderHeight());
                 this.sceneRenderer.end();
                 if (this.playerConfig.viewport.debugRender) {
                     this.sceneRenderer.begin();
@@ -11348,9 +11673,6 @@ var spine;
                         this.sceneRenderer.rect(false, actor.position.x - (actor.animViewport.width + actor.animViewport.x), actor.position.y + actor.animViewport.y, actor.animViewport.width, actor.animViewport.height, spine.Color.GREEN);
                     }
                     this.sceneRenderer.rect(false, actor.position.x + actor.defaultBB.x, actor.position.y + actor.defaultBB.y, actor.defaultBB.width, actor.defaultBB.height, spine.Color.ORANGE);
-                    if (actor.endPosition) {
-                        this.sceneRenderer.line(actor.endPosition.x, 0, actor.endPosition.x, 2000, spine.Color.WHITE);
-                    }
                     this.sceneRenderer.circle(true, actor.position.x, actor.position.y, 10, spine.Color.RED);
                     this.sceneRenderer.end();
                 }
@@ -11402,13 +11724,6 @@ var spine;
                 }
             }
             actor.skeleton = new spine.Skeleton(skeletonData);
-            let stateData = new spine.AnimationStateData(skeletonData);
-            stateData.defaultMix = actor.config.defaultMix;
-            actor.animationState = new spine.AnimationState(stateData);
-            if (actor.config.animation_listener) {
-                actor.animationState.clearListeners();
-                actor.animationState.addListener(actor.config.animation_listener);
-            }
             if (!actor.config.skin) {
                 if (skeletonData.skins.length > 0) {
                     actor.config.skin = skeletonData.skins[0].name;
@@ -11430,24 +11745,7 @@ var spine;
                 actor.skeleton.setSkinByName(actor.config.skin);
                 actor.skeleton.setSlotsToSetupPose();
             }
-            if (actor.config.animations) {
-                for (let i = 0; i < actor.config.animations.length; i++) {
-                    if (!actor.skeleton.data.findAnimation(actor.config.animations[i])) {
-                        this.showError(actor, `Error: animation '${actor.config.animations[i]}' does not exist in skeleton.`);
-                        return;
-                    }
-                }
-                this.play();
-                this.timelineSlider.change = (percentage) => {
-                    this.pause();
-                    var animationDuration = actor.animationState.getCurrent(0).animation.duration;
-                    var time = animationDuration * percentage;
-                    actor.animationState.update(time - actor.playTime);
-                    actor.animationState.apply(actor.skeleton);
-                    actor.skeleton.updateWorldTransform();
-                    actor.playTime = time;
-                };
-            }
+            actor.InitAnimationState();
             actor.config.success(this);
             actor.loaded = true;
         }
@@ -11527,7 +11825,7 @@ var spine;
                 actor.paused = false;
                 if (actor.animationState) {
                     if (!actor.animationState.getCurrent(0)) {
-                        this.setAnimations(actor, actor.config.animations);
+                        actor.InitAnimations();
                     }
                 }
             }
@@ -11541,197 +11839,6 @@ var spine;
             for (let [key, actor] of this.actors) {
                 actor.paused = true;
             }
-        }
-        setAnimationState(actor, animations) {
-            let animation = animations[0];
-            actor.animViewport = this.calculateAnimationViewport(actor, animation);
-            actor.defaultBB = this.getDefaultBoundingBox(actor);
-            actor.animationState.timeScale = actor.config.animationPlaySpeed;
-            actor.animationState.clearTracks();
-            actor.skeleton.setToSetupPose();
-            actor.animationState.setAnimation(0, animation, true);
-            let lastTrackEntry = null;
-            for (let i = 1; i < animations.length; i++) {
-                lastTrackEntry = actor.animationState.addAnimation(0, animations[i], false, 0);
-            }
-            if (lastTrackEntry) {
-                let startAnim = ((actor, trackEntry) => {
-                    this.startAnimCallback(actor, trackEntry.animation.name);
-                }).bind(this, actor);
-                actor.animationState.addListener({
-                    start: startAnim,
-                    interrupt: function (trackEntry) { },
-                    end: function (trackEntry) { },
-                    complete: function (trackEntry) {
-                        if (trackEntry.next == null) {
-                            actor.animationState.setAnimation(0, animation, true);
-                            for (let i = 1; i < animations.length; i++) {
-                                lastTrackEntry = actor.animationState.addAnimation(0, animations[i], false, 0);
-                            }
-                        }
-                    },
-                    dispose: function (trackEntry) { },
-                    event: function (entry, event) { }
-                });
-            }
-        }
-        startAnimCallback(actor, animation) {
-            if (animation.includes("Move")) {
-                if (actor.config.desiredPositionX != null) {
-                    actor.setEndPosition(new spine.Vector2(actor.config.desiredPositionX * this.playerConfig.viewport.width
-                        - (this.playerConfig.viewport.width / 2), 0));
-                }
-                else {
-                    if (actor.lastAnimation != null) {
-                        if (!actor.lastAnimation.includes("Move")) {
-                            actor.setDestination(this.playerConfig.viewport);
-                        }
-                    }
-                    else {
-                        actor.setDestination(this.playerConfig.viewport);
-                    }
-                }
-            }
-            else {
-                actor.clearDestination();
-            }
-            if (animation == "Sit") {
-                actor.position.y = actor.config.startPosY + Math.abs(actor.animViewport.y);
-            }
-            else {
-                actor.position.y = actor.config.startPosY;
-            }
-            actor.lastAnimation = animation;
-        }
-        setAnimations(actor, animations) {
-            this.setAnimationState(actor, animations);
-            this.startAnimCallback(actor, animations[0]);
-            let width = actor.defaultBB.width;
-            let height = actor.defaultBB.height;
-            let maxSize = width;
-            if (height > maxSize) {
-                maxSize = height;
-            }
-            if (maxSize > actor.config.maxSizePx && actor.config.chibiId.includes("enemy_")) {
-                console.log("Resizing actor to " + actor.config.maxSizePx);
-                let ratio = width / height;
-                let xNew = 0;
-                let yNew = 0;
-                if (height > width) {
-                    xNew = ratio * actor.config.maxSizePx;
-                    yNew = actor.config.maxSizePx;
-                }
-                else {
-                    xNew = actor.config.maxSizePx;
-                    yNew = actor.config.maxSizePx / ratio;
-                }
-                let newScaleX = (xNew * actor.config.scaleX) / width;
-                let newScaleY = (yNew * actor.config.scaleY) / height;
-                actor.config.defaultScaleX = actor.config.scaleX;
-                actor.config.defaultScaleY = actor.config.scaleY;
-                actor.config.scaleX = newScaleX;
-                actor.config.scaleY = newScaleY;
-                actor.scale.x = Math.sign(actor.scale.x) * actor.config.scaleX;
-                actor.scale.y = Math.sign(actor.scale.y) * actor.config.scaleY;
-                this.setAnimationState(actor, animations);
-                this.startAnimCallback(actor, animations[0]);
-            }
-        }
-        getDefaultBoundingBox(actor) {
-            let animations = actor.skeleton.data.animations;
-            let offsetAvg = new spine.Vector2();
-            let sizeAvg = new spine.Vector2();
-            let num_processed = 0;
-            for (let i = 0, n = animations.length; i < n; i++) {
-                let animationName = animations[i].name;
-                let animation = actor.skeleton.data.findAnimation(animationName);
-                actor.animationState.clearTracks();
-                actor.skeleton.setToSetupPose();
-                actor.animationState.setAnimationWith(0, animation, true);
-                let savedX = actor.skeleton.x;
-                let savedY = actor.skeleton.y;
-                actor.skeleton.x = 0;
-                actor.skeleton.y = 0;
-                actor.skeleton.scaleX = Math.abs(actor.config.scaleX);
-                actor.skeleton.scaleY = Math.abs(actor.config.scaleY);
-                actor.animationState.update(0);
-                actor.animationState.apply(actor.skeleton);
-                actor.skeleton.updateWorldTransform();
-                let offset = new spine.Vector2();
-                let size = new spine.Vector2();
-                actor.skeleton.getBounds(offset, size);
-                actor.skeleton.x = savedX;
-                actor.skeleton.y = savedY;
-                if (Number.isFinite(offset.x) && Number.isFinite(offset.y) && Number.isFinite(size.x) && Number.isFinite(size.y)) {
-                    num_processed += 1;
-                    offsetAvg.x += offset.x;
-                    offsetAvg.y += offset.y;
-                    sizeAvg.x += size.x;
-                    sizeAvg.y += size.y;
-                }
-            }
-            offsetAvg.x /= num_processed;
-            offsetAvg.y /= num_processed;
-            sizeAvg.x /= num_processed;
-            sizeAvg.y /= num_processed;
-            this.average_width += sizeAvg.x;
-            this.average_height += sizeAvg.y;
-            this.average_count += 1;
-            let ret = {
-                x: offsetAvg.x,
-                y: offsetAvg.y,
-                width: sizeAvg.x,
-                height: sizeAvg.y
-            };
-            if (actor.config.chibiId.includes("enemy_")) {
-                if (ret.y < -15) {
-                    actor.config.extraOffsetY = -ret.y;
-                }
-            }
-            return ret;
-        }
-        calculateAnimationViewport(actor, animationName) {
-            let animation = actor.skeleton.data.findAnimation(animationName);
-            actor.animationState.clearTracks();
-            actor.skeleton.setToSetupPose();
-            actor.animationState.setAnimationWith(0, animation, true);
-            let steps = 100;
-            let stepTime = animation.duration > 0 ? animation.duration / steps : 0;
-            let minX = 100000000;
-            let maxX = -100000000;
-            let minY = 100000000;
-            let maxY = -100000000;
-            let offset = new spine.Vector2();
-            let size = new spine.Vector2();
-            let savedX = actor.skeleton.x;
-            let savedY = actor.skeleton.y;
-            for (var i = 0; i < steps; i++) {
-                actor.animationState.update(stepTime);
-                actor.animationState.apply(actor.skeleton);
-                actor.setSkeletonMovementData(this.playerConfig.viewport);
-                actor.skeleton.x = 0;
-                actor.skeleton.y = 0;
-                actor.skeleton.scaleX = Math.abs(actor.config.scaleX);
-                actor.skeleton.scaleY = Math.abs(actor.config.scaleY);
-                actor.skeleton.updateWorldTransform();
-                actor.skeleton.getBounds(offset, size);
-                minX = Math.min(offset.x, minX);
-                maxX = Math.max(offset.x + size.x, maxX);
-                minY = Math.min(offset.y, minY);
-                maxY = Math.max(offset.y + size.y, maxY);
-            }
-            actor.skeleton.x = savedX;
-            actor.skeleton.y = savedY;
-            offset.x = minX;
-            offset.y = minY;
-            size.x = maxX - minX;
-            size.y = maxY - minY;
-            return {
-                x: offset.x,
-                y: offset.y,
-                width: size.x,
-                height: size.y
-            };
         }
     }
     spine.SpinePlayer = SpinePlayer;
@@ -11885,32 +11992,11 @@ var stym;
                 startPosX = requestData["start_pos"]["x"];
                 startPosY = requestData["start_pos"]["y"];
             }
-            let targetPosX = null;
-            let targetPosY = null;
-            let wandering = false;
-            let animations = [];
-            switch (action) {
-                case "PLAY_ANIMATION":
-                    animations = requestData["action_data"]["animations"];
-                    break;
-                case "WANDER":
-                    animations = [requestData["action_data"]["wander_animation"]];
-                    wandering = true;
-                    break;
-                case "WALK_TO":
-                    animations = [requestData["action_data"]["walk_to_animation"]];
-                    targetPosX = requestData["action_data"]["target_pos"]["x"];
-                    targetPosY = requestData["action_data"]["target_pos"]["y"];
-                    break;
-                default:
-                    return;
-            }
             this.actorConfig = {
                 chibiId: requestData["operator_id"],
                 userDisplayName: requestData['user_name_display'],
                 skelUrl: requestData["skel_file"],
                 atlasUrl: requestData["atlas_file"],
-                animations: animations,
                 startPosX: startPosX,
                 startPosY: startPosY,
                 scaleX: 0.45,
@@ -11920,9 +12006,8 @@ var stym;
                 animationPlaySpeed: requestData["animation_speed"] ? requestData["animation_speed"] : 1.0,
                 extraOffsetX: 0,
                 extraOffsetY: 0,
-                desiredPositionX: targetPosX,
-                desiredPositionY: targetPosY,
-                wandering: wandering,
+                action: requestData["action"],
+                action_data: requestData["action_data"],
                 success: (widget) => {
                 },
                 error: (widget, error) => {

@@ -15,11 +15,11 @@ import (
 )
 
 const (
-	// DEFAULT_ANIM_BASE      = "Relax"
-	DEFAULT_ANIM_BASE      = "Move"
-	DEFAULT_ANIM_BATTLE    = "Idle"
-	DEFAULT_SKIN_NAME      = "default"
-	DEFAULT_MOVE_ANIM_NAME = "Move"
+	DEFAULT_ANIM_BASE_RELAX = "Relax"
+	DEFAULT_ANIM_BASE       = "Move"
+	DEFAULT_ANIM_BATTLE     = "Idle"
+	DEFAULT_SKIN_NAME       = "default"
+	DEFAULT_MOVE_ANIM_NAME  = "Move"
 )
 
 type ChibiFacingEnum string

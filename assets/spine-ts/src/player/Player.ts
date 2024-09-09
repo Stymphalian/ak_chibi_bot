@@ -37,6 +37,7 @@ module spine {
 		padRight: string | number
 		padTop: string | number
 		padBottom: string | number
+		debugRender: boolean
 	}
 
 	export interface BoundingBox {
@@ -51,17 +52,7 @@ module spine {
 		showControls: boolean
 
 		/* Optional: the position and size of the viewport in world coordinates of the skeleton. Default: the setup pose bounding box. */
-		viewport: {
-			x: number
-			y: number
-			width: number
-			height: number
-			padLeft: string | number
-			padRight: string | number
-			padTop: string | number
-			padBottom: string | number
-			debugRender: boolean,
-		}
+		viewport: Viewport
 
 		/* Optional: whether the canvas should be transparent. Default: false. */
 		alpha: boolean
@@ -166,9 +157,9 @@ module spine {
 		static NON_HOVER_COLOR_INNER = new spine.Color(0.478, 0, 0, 0.5);
 		static NON_HOVER_COLOR_OUTER = new spine.Color(1, 0, 0, 0.8);
 
-		private average_width = 0;
-		private average_height = 0;
-		private average_count = 0;
+		// private average_width = 0;
+		// private average_height = 0;
+		// private average_count = 0;
 
 		private sceneRenderer: spine.webgl.SceneRenderer;
 		private dom: HTMLElement;
@@ -353,13 +344,6 @@ module spine {
 			this.actors.delete(actorName)
 		}
 
-		updateActor(actorName: string, config: Object) {
-			if (!this.actors.has(actorName)) {
-				return;
-			}
-			let actor = this.actors.get(actorName);
-		}
-
 		setupActor(actor: Actor) {
 			let config = actor.config;
 
@@ -467,7 +451,8 @@ module spine {
 				let viewport = this.playerConfig.viewport;
 
 				// Update animation and skeleton based on user selections
-				if (!actor.paused && actor.config.animations.length > 0) {
+				// if (!actor.paused && actor.config.animations.length > 0) {
+				if (!actor.paused && actor.GetAnimations().length > 0) {
 					actor.time.update();
 					let delta = actor.time.delta * actor.speed;
 
@@ -524,7 +509,7 @@ module spine {
 				this.drawText(
 					actor.config.userDisplayName,
 					actor.position.x,
-					actor.position.y + actor.getUsernameHeaderHeight(),
+					actor.position.y + actor.GetUsernameHeaderHeight(),
 				)
 				this.sceneRenderer.end();
 
@@ -561,9 +546,9 @@ module spine {
 						Color.ORANGE
 					)
 					
-					if (actor.endPosition) {
-						this.sceneRenderer.line(actor.endPosition.x, 0, actor.endPosition.x, 2000, Color.WHITE);
-					}
+					// if (actor.endPosition) {
+					// 	this.sceneRenderer.line(actor.endPosition.x, 0, actor.endPosition.x, 2000, Color.WHITE);
+					// }
 					this.sceneRenderer.circle(true, actor.position.x, actor.position.y, 10, Color.RED);
 					// this.sceneRenderer.circle(true, actor.position.x + actor.defaultBB.x, actor.position.y + actor.defaultBB.y, 5, Color.BLUE);
 
@@ -624,13 +609,6 @@ module spine {
 				}
 			}
 			actor.skeleton = new Skeleton(skeletonData);
-			let stateData = new AnimationStateData(skeletonData);
-			stateData.defaultMix = actor.config.defaultMix;
-			actor.animationState = new AnimationState(stateData);
-			if (actor.config.animation_listener) {
-				actor.animationState.clearListeners();
-				actor.animationState.addListener(actor.config.animation_listener);
-			}
 			
 			// Setup skin
 			if (!actor.config.skin) {
@@ -656,32 +634,14 @@ module spine {
 				actor.skeleton.setSkinByName(actor.config.skin);
 				actor.skeleton.setSlotsToSetupPose();
 			}
-
-			if(actor.config.animations) {
-				for(let i = 0; i < actor.config.animations.length; i++) {
-					if (!actor.skeleton.data.findAnimation(actor.config.animations[i])) {
-						this.showError(actor, `Error: animation '${actor.config.animations[i]}' does not exist in skeleton.`);
-						return;
-					}
-				}
-				this.play()
-				this.timelineSlider.change = (percentage) => {
-					this.pause();
-					var animationDuration = actor.animationState.getCurrent(0).animation.duration;
-					var time = animationDuration * percentage;
-					actor.animationState.update(time - actor.playTime);
-					actor.animationState.apply(actor.skeleton);
-					actor.skeleton.updateWorldTransform();
-					actor.playTime = time;
-				}
-			}
+			actor.InitAnimationState();
 
 			actor.config.success(this);
 			actor.loaded = true;
 		}
 
 		private cancelId = 0;
-		setupInput () {
+		private setupInput () {
 			let canvas = this.canvas;
 			let input = new spine.webgl.Input(canvas);
 			input.addListener({
@@ -763,10 +723,10 @@ module spine {
 				actor.paused = false;
 				if (actor.animationState) {
 					if (!actor.animationState.getCurrent(0)) {
-						this.setAnimations(actor, actor.config.animations);
+						actor.InitAnimations();
+						// this.setAnimations(actor, actor.GetAnimations());
 					}
 				}
-				
 			}
 		}
 
@@ -781,231 +741,6 @@ module spine {
 			for(let [key, actor] of this.actors) {
 				actor.paused = true;
 			}
-		}
-
-		public setAnimationState(actor: Actor, animations: string[]) {
-			let animation = animations[0];
-			// Determine viewport
-			actor.animViewport = this.calculateAnimationViewport(actor, animation);
-			actor.defaultBB = this.getDefaultBoundingBox(actor);
-			actor.animationState.timeScale = actor.config.animationPlaySpeed;
-			actor.animationState.clearTracks();
-			actor.skeleton.setToSetupPose();
-			
-			actor.animationState.setAnimation(0, animation, true);
-			let lastTrackEntry = null;
-			for (let i = 1; i < animations.length; i++) {
-				lastTrackEntry = actor.animationState.addAnimation(0, animations[i], false, 0);
-			}
-
-			if (lastTrackEntry) {
-				let startAnim = ((actor: Actor, trackEntry: TrackEntry) => {
-					this.startAnimCallback(actor, trackEntry.animation.name);
-				}).bind(this, actor);
-				actor.animationState.addListener({
-					start: startAnim,
-					interrupt: function (trackEntry) { },
-					end: function (trackEntry) {},
-					complete: function (trackEntry) { 
-						// Loop through all the animations
-						if (trackEntry.next == null) {
-							actor.animationState.setAnimation(0, animation, true);
-							for (let i = 1; i < animations.length; i++) {
-								lastTrackEntry = actor.animationState.addAnimation(0, animations[i], false, 0);
-							}
-						}
-					},
-					dispose: function (trackEntry) {},
-					event: function (entry: TrackEntry, event: Event): void {}
-				});
-			}
-		}
-
-		private startAnimCallback(actor: Actor, animation: string) {
-			if (animation.includes("Move")) {
-				if (actor.config.desiredPositionX != null) {
-					actor.setEndPosition(new spine.Vector2(
-						actor.config.desiredPositionX * this.playerConfig.viewport.width
-						- (this.playerConfig.viewport.width/2),
-						0,
-					));
-				} else {
-					if (actor.lastAnimation != null) {
-						if (!actor.lastAnimation.includes("Move")) {
-							actor.setDestination(this.playerConfig.viewport);
-						}
-					} else {
-						actor.setDestination(this.playerConfig.viewport);
-					}	
-				}
-			} else {
-				actor.clearDestination();
-			}
-			if (animation == "Sit") {
-				actor.position.y = actor.config.startPosY + Math.abs(actor.animViewport.y)
-			} else {
-				actor.position.y = actor.config.startPosY;
-			}
-			actor.lastAnimation = animation;
-		}
-
-		public setAnimations (actor: Actor, animations: string[]) {
-			this.setAnimationState(actor, animations);
-			this.startAnimCallback(actor, animations[0]);
-						
-			// Resize very large chibis to more reasonable sizes
-			let width = actor.defaultBB.width;
-			let height = actor.defaultBB.height;
-			let maxSize = width;
-			if (height > maxSize) {
-				maxSize = height;
-			}
-			if (maxSize> actor.config.maxSizePx && actor.config.chibiId.includes("enemy_")) {
-				console.log("Resizing actor to " + actor.config.maxSizePx);
-				let ratio = width / height;
-
-				let xNew = 0;
-				let yNew = 0;
-				if (height > width) {
-					xNew = ratio * actor.config.maxSizePx;
-					yNew = actor.config.maxSizePx;
-				} else {
-					xNew = actor.config.maxSizePx;
-					yNew = actor.config.maxSizePx / ratio;
-				}
-				let newScaleX = (xNew * actor.config.scaleX) / width;
-				let newScaleY = (yNew * actor.config.scaleY) / height;
-
-				actor.config.defaultScaleX = actor.config.scaleX;
-				actor.config.defaultScaleY = actor.config.scaleY;
-				actor.config.scaleX = newScaleX;
-				actor.config.scaleY = newScaleY;
-				actor.scale.x = Math.sign(actor.scale.x) * actor.config.scaleX;
-				actor.scale.y = Math.sign(actor.scale.y) * actor.config.scaleY;
-
-				this.setAnimationState(actor, animations);
-				this.startAnimCallback(actor, animations[0]);
-			}
-		}
-
-		private getDefaultBoundingBox (actor: Actor) {
-			let animations = actor.skeleton.data.animations;
-
-			let offsetAvg = new spine.Vector2();
-			let sizeAvg = new spine.Vector2();
-			let num_processed = 0;
-			for (let i = 0, n = animations.length; i < n; i++) {
-				let animationName = animations[i].name;
-				// if (!animationName.toLocaleLowerCase().includes("default")) {
-				// 	continue;
-				// }
-				let animation = actor.skeleton.data.findAnimation(animationName);
-				actor.animationState.clearTracks();
-				actor.skeleton.setToSetupPose()
-				actor.animationState.setAnimationWith(0, animation, true);
-
-				let savedX = actor.skeleton.x;
-				let savedY = actor.skeleton.y;
-				actor.skeleton.x = 0;
-				actor.skeleton.y = 0;
-				actor.skeleton.scaleX = Math.abs(actor.config.scaleX);
-				actor.skeleton.scaleY = Math.abs(actor.config.scaleY);
-				actor.animationState.update(0);
-				actor.animationState.apply(actor.skeleton);
-				actor.skeleton.updateWorldTransform();
-				let offset = new spine.Vector2();
-				let size = new spine.Vector2();
-				actor.skeleton.getBounds(offset, size);
-
-				actor.skeleton.x = savedX;
-				actor.skeleton.y = savedY;
-
-				if (Number.isFinite(offset.x) && Number.isFinite(offset.y) && Number.isFinite(size.x) && Number.isFinite(size.y)) {
-					num_processed += 1;
-					offsetAvg.x += offset.x;
-					offsetAvg.y += offset.y;
-					sizeAvg.x += size.x;
-					sizeAvg.y += size.y;
-				}
-			}
-
-			offsetAvg.x /= num_processed;
-			offsetAvg.y /= num_processed;
-			sizeAvg.x /= num_processed;
-			sizeAvg.y /= num_processed;
-
-			this.average_width += sizeAvg.x;
-			this.average_height += sizeAvg.y;
-			this.average_count += 1;
-
-			let ret = {
-				x: offsetAvg.x,
-				y: offsetAvg.y,
-				width: sizeAvg.x,
-				height: sizeAvg.y
-			}
-
-			// HACK: 
-			// For enemies whose y bounding box is too far from the bottom
-			// We add an offset so that it is rendered where we want it
-			if (actor.config.chibiId.includes("enemy_")) {
-				if (ret.y < -15) {
-					actor.config.extraOffsetY = -ret.y;
-				}
-			}
-			return ret;
-		}
-
-		private calculateAnimationViewport (actor: Actor, animationName: string) {
-			let animation = actor.skeleton.data.findAnimation(animationName);
-			actor.animationState.clearTracks();
-			actor.skeleton.setToSetupPose()
-			actor.animationState.setAnimationWith(0, animation, true);
-
-			let steps = 100;
-			let stepTime = animation.duration > 0 ? animation.duration / steps : 0;
-			let minX = 100000000;
-			let maxX = -100000000;
-			let minY = 100000000;
-			let maxY = -100000000;
-			let offset = new spine.Vector2();
-			let size = new spine.Vector2();
-
-			let savedX = actor.skeleton.x;
-			let savedY = actor.skeleton.y;
-			for (var i = 0; i < steps; i++) {
-				actor.animationState.update(stepTime);
-				actor.animationState.apply(actor.skeleton);
-
-				// TODO: Fix this hack
-				actor.setSkeletonMovementData(this.playerConfig.viewport);
-				actor.skeleton.x = 0;
-				actor.skeleton.y = 0;
-				actor.skeleton.scaleX = Math.abs(actor.config.scaleX);
-				actor.skeleton.scaleY = Math.abs(actor.config.scaleY);
-				actor.skeleton.updateWorldTransform();
-				actor.skeleton.getBounds(offset, size);
-
-				minX = Math.min(offset.x, minX);
-				maxX = Math.max(offset.x + size.x, maxX);
-				minY = Math.min(offset.y, minY);
-				maxY = Math.max(offset.y + size.y, maxY);
-			}
-
-			actor.skeleton.x = savedX;
-			actor.skeleton.y = savedY;
-
-			offset.x = minX;
-			offset.y = minY;
-			size.x = maxX - minX;
-			size.y = maxY - minY;
-
-			return {
-				x: offset.x,
-				y: offset.y,
-				width: size.x,
-				height: size.y
-			};
 		}
 	}
 

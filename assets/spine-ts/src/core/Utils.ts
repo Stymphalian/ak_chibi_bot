@@ -340,6 +340,10 @@ module spine {
 			return Math.sqrt(x * x + y * y);
 		}
 
+		subtract(other: Vector2): Vector2 {
+			return new Vector2(this.x - other.x, this.y - other.y);
+		}
+
 		normalize () {
 			let len = this.length();
 			if (len != 0) {
@@ -347,6 +351,21 @@ module spine {
 				this.y /= len;
 			}
 			return this;
+		}
+
+		normalize_new() {
+			let len = this.length();
+			return new Vector2(
+				this.x / len,
+				this.y / len
+			);
+		}
+
+		angle(other: Vector2) {
+			let dot = this.x * other.x + this.y * other.y;
+			let len_a = Math.sqrt(this.x*this.x + this.y*this.y);
+			let len_b = Math.sqrt(other.x*other.x + other.y*other.y);
+			return Math.acos(dot / (len_a*len_b));
 		}
 	}
 

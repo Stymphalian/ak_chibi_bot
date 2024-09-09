@@ -1114,7 +1114,10 @@ declare namespace spine {
         constructor(x?: number, y?: number);
         set(x: number, y: number): Vector2;
         length(): number;
+        subtract(other: Vector2): Vector2;
         normalize(): this;
+        normalize_new(): Vector2;
+        angle(other: Vector2): number;
     }
     class TimeKeeper {
         maxDelta: number;
@@ -1777,6 +1780,51 @@ declare namespace spine.webgl {
     }
 }
 declare namespace spine {
+    class ActionName {
+        static PLAY_ANIMATION: string;
+        static WANDER: string;
+        static WALK_TO: string;
+    }
+    interface ActorAction {
+        SetAnimation(actor: Actor, animation: string): void;
+        GetAnimations(): string[];
+        UpdatePhysics(actor: Actor, deltaSecs: number, viewport: BoundingBox): void;
+    }
+    function ParseActionNameToAction(actionName: string, actionData: any): ActorAction;
+    class PlayAnimationAction implements ActorAction {
+        actionData: any;
+        startPosition: Vector2;
+        endPosition: Vector2;
+        currentAnimation: string;
+        constructor(actionData: any);
+        getRandomPosition(currentPos: Vector2, viewport: BoundingBox): Vector2;
+        SetAnimation(actor: Actor, animation: string): void;
+        GetAnimations(): string[];
+        UpdatePhysics(actor: Actor, deltaSecs: number, viewport: BoundingBox): void;
+    }
+    class WanderAction implements ActorAction {
+        actionData: any;
+        startPosition: Vector2;
+        endPosition: Vector2;
+        constructor(actionData: any);
+        getRandomPosition(currentPos: Vector2, viewport: BoundingBox): Vector2;
+        SetAnimation(actor: Actor, animation: string): void;
+        GetAnimations(): string[];
+        UpdatePhysics(actor: Actor, deltaSecs: number, viewport: BoundingBox): void;
+    }
+    class WalkToAction implements ActorAction {
+        actionData: any;
+        startPosition: Vector2;
+        endPosition: Vector2;
+        startDir: Vector2;
+        reachedDestination: boolean;
+        constructor(actionData: any);
+        SetAnimation(actor: Actor, animation: string): void;
+        GetAnimations(): string[];
+        UpdatePhysics(actor: Actor, deltaSecs: number, viewport: BoundingBox): void;
+    }
+}
+declare namespace spine {
     interface ActorUpdateConfig {
         start_pos: spine.Vector2;
         dest_pos: spine.Vector2;
@@ -1789,7 +1837,6 @@ declare namespace spine {
         skelUrl: string;
         atlasUrl: string;
         rawDataURIs?: Map<string>;
-        animations: string[];
         defaultMix?: number;
         skin?: string;
         skins?: string[];
@@ -1797,14 +1844,11 @@ declare namespace spine {
         animationPlaySpeed: number;
         scaleX: number;
         scaleY: number;
-        defaultScaleX?: number;
-        defaultScaleY?: number;
         maxSizePx: number;
         startPosX: number;
         startPosY: number;
-        desiredPositionX?: number;
-        desiredPositionY?: number;
-        wandering: boolean;
+        defaultScaleX?: number;
+        defaultScaleY?: number;
         extraOffsetX: number;
         extraOffsetY: number;
         backgroundImage?: {
@@ -1819,6 +1863,8 @@ declare namespace spine {
         animation_listener?: spine.AnimationStateListener;
         userDisplayName: string;
         chibiId: string;
+        action: string;
+        action_data: any;
     }
     class Actor {
         loaded: boolean;
@@ -1836,17 +1882,22 @@ declare namespace spine {
         movementSpeed: spine.Vector2;
         position: spine.Vector2;
         scale: spine.Vector2;
+        velocity: spine.Vector2;
         startPosition: spine.Vector2;
-        endPosition: spine.Vector2;
+        currentAction: ActorAction;
         constructor(config: SpineActorConfig, viewport: BoundingBox);
-        setDestination(viewport: BoundingBox): void;
-        setEndPosition(position: spine.Vector2): void;
-        loopPositions(): void;
-        clearDestination(): void;
+        InitAnimations(): void;
+        GetAnimations(): string[];
         ResetWithConfig(config: SpineActorConfig): void;
         UpdatePhysics(deltaSecs: number, viewport: BoundingBox): void;
-        getUsernameHeaderHeight(): number;
-        setSkeletonMovementData(viewport: BoundingBox): void;
+        InitAnimationState(): void;
+        GetUsernameHeaderHeight(): number;
+        private setSkeletonMovementData;
+        private recordAnimation;
+        private initAnimationsInternal;
+        private setAnimationState;
+        private getDefaultBoundingBox;
+        private calculateAnimationViewport;
     }
 }
 declare namespace spine {
@@ -1859,6 +1910,7 @@ declare namespace spine {
         padRight: string | number;
         padTop: string | number;
         padBottom: string | number;
+        debugRender: boolean;
     }
     interface BoundingBox {
         x: number;
@@ -1868,17 +1920,7 @@ declare namespace spine {
     }
     interface SpinePlayerConfig {
         showControls: boolean;
-        viewport: {
-            x: number;
-            y: number;
-            width: number;
-            height: number;
-            padLeft: string | number;
-            padRight: string | number;
-            padTop: string | number;
-            padBottom: string | number;
-            debugRender: boolean;
-        };
+        viewport: Viewport;
         alpha: boolean;
         backgroundColor: string;
         textSize: number;
@@ -1897,9 +1939,6 @@ declare namespace spine {
         static HOVER_COLOR_OUTER: Color;
         static NON_HOVER_COLOR_INNER: Color;
         static NON_HOVER_COLOR_OUTER: Color;
-        private average_width;
-        private average_height;
-        private average_count;
         private sceneRenderer;
         private dom;
         private playerControls;
@@ -1925,21 +1964,15 @@ declare namespace spine {
         setupDom(): HTMLElement;
         changeOrAddActor(actorName: string, config: SpineActorConfig): void;
         removeActor(actorName: string): void;
-        updateActor(actorName: string, config: Object): void;
         setupActor(actor: Actor): void;
         drawText(text: string, xpx: number, ypx: number): void;
         drawFrame(requestNextFrame?: boolean): void;
         scale(sourceWidth: number, sourceHeight: number, targetWidth: number, targetHeight: number): Vector2;
         loadSkeleton(actor: Actor): void;
         private cancelId;
-        setupInput(): void;
+        private setupInput;
         private play;
         private pause;
-        setAnimationState(actor: Actor, animations: string[]): void;
-        private startAnimCallback;
-        setAnimations(actor: Actor, animations: string[]): void;
-        private getDefaultBoundingBox;
-        private calculateAnimationViewport;
     }
 }
 declare namespace stym {
