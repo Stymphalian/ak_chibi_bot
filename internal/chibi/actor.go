@@ -316,7 +316,7 @@ func (c *ChibiActor) ChibiHelp(trimmed string) (string, error) {
 		`"!chibi stance battle" to change from base or battle chibis. ` +
 		`"!chibi enemy mandragora" to change into an enemy mob instead of an operator. ` +
 		`"!chibi walk" to have your chibi walk around the screen. ` +
-		`Look at the About section of the stream for more info.`
+		`Source Code: https://github.com/Stymphalian/ak_chibi_bot`
 	return msg, nil
 }
 

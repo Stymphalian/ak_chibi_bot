@@ -9,6 +9,7 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
+	"strings"
 	"syscall"
 
 	"github.com/Stymphalian/ak_chibi_bot/internal/admin"
@@ -109,6 +110,7 @@ func (s *MainStruct) HandleRoom(w http.ResponseWriter, r *http.Request) error {
 		return errors.New("invalid connection. Requires channelName query argument")
 	}
 	channelName := r.URL.Query().Get("channelName")
+	channelName = strings.ToLower(channelName)
 
 	err := s.roomManager.CreateRoomOrNoOp(channelName, context.Background())
 	if err != nil {
