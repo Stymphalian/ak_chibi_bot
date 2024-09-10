@@ -129,6 +129,7 @@ func (s *SpineBridge) AddWebsocketConnection(w http.ResponseWriter, r *http.Requ
 		log.Print("upgrade: ", err)
 		return nil
 	}
+	misc.Monitor.NumWebsocketConnections += 1
 
 	websocketConn := &WebSocketConn{
 		conn:   c,

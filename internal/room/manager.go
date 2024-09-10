@@ -117,6 +117,8 @@ func (r *RoomsManager) CreateRoomOrNoOp(channel string, ctx context.Context) err
 	)
 	r.Rooms[channel] = room
 	r.rooms_mutex.Unlock()
+
+	misc.Monitor.NumRoomsCreated += 1
 	go room.Run()
 	return nil
 }

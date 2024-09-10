@@ -75,7 +75,7 @@ func NewMainStruct() *MainStruct {
 
 func (s *MainStruct) run() {
 	go s.roomManager.RunLoop()
-	s.roomManager.Restore()
+	// s.roomManager.Restore()
 
 	log.Println("Starting server")
 	server := &http.Server{Addr: *s.address}

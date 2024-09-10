@@ -4,6 +4,8 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"slices"
+	"strings"
 	"text/template"
 	"time"
 
@@ -26,11 +28,13 @@ type Chatter struct {
 type Room struct {
 	ChannelName             string
 	LastTimeUsed            string
-	Chatters                []Chatter
+	Chatters                []*Chatter
 	NumWebsocketConnections int
 }
+
 type AdminInfo struct {
-	Rooms []Room
+	Rooms   []*Room
+	Metrics map[string]interface{}
 }
 
 type RemoveRoomRequest struct {
@@ -82,6 +86,7 @@ func (s *AdminServer) RegisterAdmin() {
 	http.Handle("/admin/list", s.middleware(s.HandleList))
 	http.Handle("/admin/room/remove", s.middleware(s.HandleRemoveRoom))
 	http.Handle("/admin/user/remove", s.middleware(s.HandleRemoveUser))
+	http.Handle("/admin/rooms/restore", s.middleware(s.HandleRestoreRooms))
 }
 
 func (s *AdminServer) HandleAdmin(w http.ResponseWriter, r *http.Request) error {
@@ -101,18 +106,20 @@ func (s *AdminServer) HandleList(w http.ResponseWriter, r *http.Request) error {
 	w.Header().Set("Content-Type", "application/json")
 
 	var adminInfo AdminInfo
-	adminInfo.Rooms = make([]Room, 0)
+	adminInfo.Rooms = make([]*Room, 0)
+	adminInfo.Metrics = make(map[string]interface{}, 0)
+
 	for _, roomVal := range s.roomsManager.Rooms {
 
-		newRoom := Room{
+		newRoom := &Room{
 			ChannelName:             roomVal.ChannelName,
 			LastTimeUsed:            roomVal.TwitchChat.LastChatterTime().Format(time.DateTime),
-			Chatters:                make([]Chatter, 0),
+			Chatters:                make([]*Chatter, 0),
 			NumWebsocketConnections: len(roomVal.SpineBridge.WebSocketConnections),
 		}
 
 		for _, chatUser := range roomVal.SpineBridge.ChatUsers {
-			newChatter := Chatter{
+			newChatter := &Chatter{
 				Username:     chatUser.UserName,
 				Operator:     chatUser.CurrentOperator.OperatorDisplayName,
 				LastChatTime: "",
@@ -124,8 +131,22 @@ func (s *AdminServer) HandleList(w http.ResponseWriter, r *http.Request) error {
 			}
 			newRoom.Chatters = append(newRoom.Chatters, newChatter)
 		}
+
+		slices.SortFunc(newRoom.Chatters, func(a, b *Chatter) int {
+			return strings.Compare(a.Username, b.Username)
+		})
 		adminInfo.Rooms = append(adminInfo.Rooms, newRoom)
 	}
+	slices.SortFunc(adminInfo.Rooms, func(a, b *Room) int {
+		return strings.Compare(a.ChannelName, b.ChannelName)
+	})
+
+	adminInfo.Metrics["NumRoomsCreated"] = misc.Monitor.NumRoomsCreated
+	adminInfo.Metrics["NumWebsocketConnections"] = misc.Monitor.NumWebsocketConnections
+	adminInfo.Metrics["NumUsers"] = misc.Monitor.NumUsers
+	adminInfo.Metrics["NumCommands"] = misc.Monitor.NumCommands
+	adminInfo.Metrics["Datetime"] = time.Now().Format(time.DateTime)
+
 	json.NewEncoder(w).Encode(adminInfo)
 	return nil
 }
@@ -177,4 +198,13 @@ func (s *AdminServer) HandleRemoveUser(w http.ResponseWriter, r *http.Request) e
 		return nil
 	}
 	return room.ChibiActor.RemoveUserChibi(userName)
+}
+
+func (s *AdminServer) HandleRestoreRooms(w http.ResponseWriter, r *http.Request) error {
+	if r.Method != http.MethodPost {
+		http.NotFound(w, r)
+		return nil
+	}
+	s.roomsManager.Restore()
+	return nil
 }

@@ -34,6 +34,23 @@
         .sub-th {
             background-color: #f9f9f9;
         }
+
+        .normal-button {
+            background-color: #3c36f4;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 14px;
+            margin: 4px 2px;
+            cursor: pointer;
+        }
+        .normal-button:hover {
+            background-color:  #3c38b8;
+        }
+
         .remove-button {
             background-color: #f44336;
             color: white;
@@ -65,9 +82,28 @@
         .remove-user-button:hover {
             background-color: #d32f2f;
         }
+
+        table.info-table {
+            width: 20%;
+        }
     </style>
 </head>
 <body>
+    <h1>General Info</h1>
+    <table id="metricsTable" class="info-table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Value</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Restore</td>
+                <td><button class="restore-button normal-button">Restore</button></td>
+            </tr>
+        </tbody>
+    </table>
     <h1>List of Rooms</h1>
     <table id="roomsTable">
         <thead>
@@ -108,7 +144,11 @@
                 data["Rooms"].forEach(room => {
                     const row = document.createElement('tr');
                     row.innerHTML = `
-                        <td>${room.ChannelName}</td>
+                        <td>
+                            <a href="https://twitch.tv/${room.ChannelName}">
+                                ${room.ChannelName}
+                            </a>
+                        </td>
                         <td>${room.LastTimeUsed}</td>
                         <td>${room.NumWebsocketConnections}</td>
                         <td>
@@ -146,6 +186,15 @@
                     tableBody.appendChild(row);
                 });
 
+                const metricsTableBody = document.querySelector('#metricsTable tbody');
+                for (const [key, value] of Object.entries(data["Metrics"])) {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td> ${key} </td>
+                        <td> ${value} </td>
+                    `;
+                    metricsTableBody.appendChild(row);
+                }
 
                 // Add event listeners to all remove buttons
                 document.querySelectorAll('.remove-button').forEach(button => {
@@ -201,6 +250,26 @@
                     });
                 });
 
+                // Add event listeners to all remove buttons
+                document.querySelectorAll('.restore-button').forEach(button => {
+                    button.addEventListener('click', async (event) => {
+                        try {
+                            const response = await fetch(`/admin/rooms/restore?secret=${secret}`, {
+                                method: 'POST',
+                                headers: {'Content-Type': 'application/json'},
+                            });
+
+                            if (!response.ok) {
+                                throw new Error('Network response was not ok');
+                            }
+
+                            // Optionally, refresh the room list after removal
+                            loadRoomList();
+                        } catch (error) {
+                            console.error('Error removing room:', error);
+                        }
+                    });
+                });
             } catch (error) {
                 console.error('Error fetching room list:', error);
             }

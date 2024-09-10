@@ -36,6 +36,7 @@ func (c *ChibiActor) GiveChibiToUser(userName string, userNameDisplay string) er
 	_, err := c.AddRandomChibi(userName, userNameDisplay)
 	if err == nil {
 		log.Println("User joined. Adding a chibi for them ", userName)
+		misc.Monitor.NumUsers += 1
 	}
 	return err
 }
@@ -77,6 +78,7 @@ func (c *ChibiActor) HandleCommand(userName string, userNameDisplay string, trim
 	if len(trimmed) >= 100 {
 		return "", nil
 	}
+	misc.Monitor.NumCommands += 1
 
 	args := strings.Split(trimmed, " ")
 	args = slices.DeleteFunc(args, func(s string) bool { return s == "" })
