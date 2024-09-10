@@ -76,7 +76,6 @@ func FactionEnum_Parse(str string) (FactionEnum, error) {
 	}
 }
 
-// TODO:
 func GetDefaultAnimForChibiStance(chibiStance ChibiStanceEnum) string {
 	if chibiStance == CHIBI_STANCE_ENUM_BASE {
 		return DEFAULT_ANIM_BASE

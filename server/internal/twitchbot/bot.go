@@ -70,6 +70,7 @@ func (t *TwitchBot) HandlePrivateMessage(m twitch.PrivateMessage) {
 	if len(trimmed) == 0 {
 		return
 	}
+
 	t.lastUserChat[ChannelUser{m.User.Name}] = m.Time
 	t.latestChatterTime = m.Time
 	if !t.chibiActor.HasChibi(m.User.Name) {

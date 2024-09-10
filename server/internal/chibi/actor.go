@@ -33,7 +33,7 @@ func (c *ChibiActor) GiveChibiToUser(userName string, userNameDisplay string) er
 		return nil
 	}
 
-	_, err := c.AddRandomChibi(userName, userNameDisplay)
+	_, err := c.addRandomChibi(userName, userNameDisplay)
 	if err == nil {
 		log.Println("User joined. Adding a chibi for them ", userName)
 		misc.Monitor.NumUsers += 1
@@ -83,7 +83,7 @@ func (c *ChibiActor) HandleCommand(userName string, userNameDisplay string, trim
 	args := strings.Split(trimmed, " ")
 	args = slices.DeleteFunc(args, func(s string) bool { return s == "" })
 	if len(args) == 1 && args[0] == "!chibi" {
-		return c.ChibiHelp(trimmed)
+		return c.chibiHelp(trimmed)
 	}
 	if args[0] != "!chibi" {
 		return "", nil
@@ -133,41 +133,41 @@ func (c *ChibiActor) HandleCommand(userName string, userNameDisplay string, trim
 	// 	}
 	// 	return "", nil
 	case "help":
-		return c.ChibiHelp(trimmed)
+		return c.chibiHelp(trimmed)
 	case "skins":
-		return c.GetChibiInfo(userName, "skins")
+		return c.getChibiInfo(userName, "skins")
 	case "anims":
-		return c.GetChibiInfo(userName, "anims")
+		return c.getChibiInfo(userName, "anims")
 	case "info":
-		return c.GetChibiInfo(userName, "info")
+		return c.getChibiInfo(userName, "info")
 	case "who":
-		return c.GetWhoInfo(args, &current)
+		return c.getWhoInfo(args, &current)
 	case "skin":
-		msg, err = c.SetSkin(args, &current)
+		msg, err = c.setSkin(args, &current)
 	case "anim":
-		msg, err = c.SetAnimation(args, &current)
+		msg, err = c.setAnimation(args, &current)
 	case "play":
-		msg, err = c.SetAnimation(args, &current)
+		msg, err = c.setAnimation(args, &current)
 	case "stance":
-		msg, err = c.SetStance(args, &current)
+		msg, err = c.setStance(args, &current)
 	case "face":
-		msg, err = c.SetFacing(args, &current)
+		msg, err = c.setFacing(args, &current)
 	case "enemy":
-		msg, err = c.SetEnemy(args, &current)
+		msg, err = c.setEnemy(args, &current)
 	case "walk":
-		msg, err = c.SetWalk(args, &current)
+		msg, err = c.setWalk(args, &current)
 	case "speed":
-		msg, err = c.SetAnimationSpeed(args, &current)
+		msg, err = c.setAnimationSpeed(args, &current)
 	default:
 		if _, ok := misc.MatchesKeywords(arg2, current.AvailableAnimations); ok {
-			msg, err = c.SetAnimation([]string{"!chibi", "play", arg2}, &current)
+			msg, err = c.setAnimation([]string{"!chibi", "play", arg2}, &current)
 		} else if _, ok := misc.MatchesKeywords(arg2, current.Skins); ok {
-			msg, err = c.SetSkin([]string{"!chibi", "skin", arg2}, &current)
+			msg, err = c.setSkin([]string{"!chibi", "skin", arg2}, &current)
 		} else if _, ok := misc.MatchesKeywords(arg2, []string{"base", "battle"}); ok {
-			msg, err = c.SetStance([]string{"!chibi", "stance", arg2}, &current)
+			msg, err = c.setStance([]string{"!chibi", "stance", arg2}, &current)
 		} else {
 			// matches against operator names
-			msg, err = c.SetChibiModel(trimmed, &current)
+			msg, err = c.setChibiModel(trimmed, &current)
 		}
 	}
 
@@ -315,7 +315,7 @@ func (c *ChibiActor) UpdateChibi(username string, usernameDisplay string, update
 	return nil
 }
 
-func (c *ChibiActor) ChibiHelp(trimmed string) (string, error) {
+func (c *ChibiActor) chibiHelp(trimmed string) (string, error) {
 	log.Printf("!chibi_help command triggered with %v\n", trimmed)
 	msg := `!chibi to control your Arknights chibi. ` +
 		`"!chibi Rockrock" to change your operator. ` +
@@ -328,7 +328,7 @@ func (c *ChibiActor) ChibiHelp(trimmed string) (string, error) {
 	return msg, nil
 }
 
-func (c *ChibiActor) SetSkin(args []string, current *spine.OperatorInfo) (string, error) {
+func (c *ChibiActor) setSkin(args []string, current *spine.OperatorInfo) (string, error) {
 	if len(args) < 3 {
 		return "", errors.New("")
 	}
@@ -342,7 +342,7 @@ func (c *ChibiActor) SetSkin(args []string, current *spine.OperatorInfo) (string
 	return "", nil
 }
 
-func (c *ChibiActor) SetAnimation(args []string, current *spine.OperatorInfo) (string, error) {
+func (c *ChibiActor) setAnimation(args []string, current *spine.OperatorInfo) (string, error) {
 	if len(args) < 3 {
 		return "", errors.New("")
 	}
@@ -372,7 +372,7 @@ func (c *ChibiActor) SetAnimation(args []string, current *spine.OperatorInfo) (s
 	return "", nil
 }
 
-func (c *ChibiActor) SetStance(args []string, current *spine.OperatorInfo) (string, error) {
+func (c *ChibiActor) setStance(args []string, current *spine.OperatorInfo) (string, error) {
 	if len(args) < 3 {
 		return "", errors.New("try something like !chibi stance battle")
 	}
@@ -385,7 +385,7 @@ func (c *ChibiActor) SetStance(args []string, current *spine.OperatorInfo) (stri
 	return "", nil
 }
 
-func (c *ChibiActor) SetFacing(args []string, current *spine.OperatorInfo) (string, error) {
+func (c *ChibiActor) setFacing(args []string, current *spine.OperatorInfo) (string, error) {
 	if len(args) < 3 {
 		return "", errors.New("try something like !chibi face back")
 	}
@@ -401,7 +401,7 @@ func (c *ChibiActor) SetFacing(args []string, current *spine.OperatorInfo) (stri
 	return "", nil
 }
 
-func (c *ChibiActor) SetEnemy(args []string, current *spine.OperatorInfo) (string, error) {
+func (c *ChibiActor) setEnemy(args []string, current *spine.OperatorInfo) (string, error) {
 	errMsg := errors.New("try something like !chibi enemy <enemyname or ID> (ie. !chibi enemy Avenger, !chibi enemy SM8")
 	if len(args) < 3 {
 		return "", errMsg
@@ -420,7 +420,7 @@ func (c *ChibiActor) SetEnemy(args []string, current *spine.OperatorInfo) (strin
 	return "", nil
 }
 
-func (c *ChibiActor) SetWalk(args []string, current *spine.OperatorInfo) (string, error) {
+func (c *ChibiActor) setWalk(args []string, current *spine.OperatorInfo) (string, error) {
 	current.ChibiStance = spine.CHIBI_STANCE_ENUM_BASE
 
 	// Set the animation to "Move". If "Move" doesn't exist in the list of
@@ -474,7 +474,7 @@ func (c *ChibiActor) SetWalk(args []string, current *spine.OperatorInfo) (string
 	return "", nil
 }
 
-func (c *ChibiActor) SetAnimationSpeed(args []string, current *spine.OperatorInfo) (string, error) {
+func (c *ChibiActor) setAnimationSpeed(args []string, current *spine.OperatorInfo) (string, error) {
 	if len(args) < 3 {
 		return "", errors.New("try something like !chibi speed 0.5")
 	}
@@ -489,7 +489,7 @@ func (c *ChibiActor) SetAnimationSpeed(args []string, current *spine.OperatorInf
 	return "", nil
 }
 
-func (c *ChibiActor) GetWhoInfo(args []string, current *spine.OperatorInfo) (string, error) {
+func (c *ChibiActor) getWhoInfo(args []string, current *spine.OperatorInfo) (string, error) {
 	// !chibi who <name>
 	if len(args) < 3 {
 		return "", errors.New("try something like !chibi who steam knight")
@@ -532,7 +532,7 @@ func (c *ChibiActor) GetWhoInfo(args []string, current *spine.OperatorInfo) (str
 	return fmt.Sprintf("Did you mean: %s or enemies %s", strings.Join(opMat, ", "), strings.Join(enemyMat, ", ")), nil
 }
 
-func (c *ChibiActor) SetChibiModel(trimmed string, current *spine.OperatorInfo) (string, error) {
+func (c *ChibiActor) setChibiModel(trimmed string, current *spine.OperatorInfo) (string, error) {
 	log.Printf("!chibi command triggered with %v\n", trimmed)
 	args := strings.Split(trimmed, " ")
 	errMsg := errors.New("try something like !chibi <name> (ie. !chibi Amiya, !chibi Lava Alter)")
@@ -556,7 +556,7 @@ func (c *ChibiActor) SetChibiModel(trimmed string, current *spine.OperatorInfo) 
 	return "", nil
 }
 
-func (c *ChibiActor) AddRandomChibi(userName string, userNameDisplay string) (string, error) {
+func (c *ChibiActor) addRandomChibi(userName string, userNameDisplay string) (string, error) {
 	operatorInfo, err := c.client.GetRandomOperator()
 	if err != nil {
 		return "", err
@@ -572,7 +572,7 @@ func (c *ChibiActor) AddRandomChibi(userName string, userNameDisplay string) (st
 	return "", err
 }
 
-func (c *ChibiActor) GetChibiInfo(userName string, subInfoName string) (string, error) {
+func (c *ChibiActor) getChibiInfo(userName string, subInfoName string) (string, error) {
 	current, err := c.client.CurrentInfo(userName)
 	if err != nil {
 		return "", nil
