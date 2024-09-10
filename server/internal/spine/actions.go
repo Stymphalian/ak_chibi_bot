@@ -1,6 +1,6 @@
 package spine
 
-import "github.com/Stymphalian/ak_chibi_bot/internal/misc"
+import "github.com/Stymphalian/ak_chibi_bot/server/internal/misc"
 
 type ActionEnum string
 

@@ -9,11 +9,11 @@ import (
 	"sync"
 	"time"
 
-	"github.com/Stymphalian/ak_chibi_bot/internal/chibi"
-	"github.com/Stymphalian/ak_chibi_bot/internal/misc"
-	"github.com/Stymphalian/ak_chibi_bot/internal/spine"
-	"github.com/Stymphalian/ak_chibi_bot/internal/twitch_api"
-	"github.com/Stymphalian/ak_chibi_bot/internal/twitchbot"
+	"github.com/Stymphalian/ak_chibi_bot/server/internal/chibi"
+	"github.com/Stymphalian/ak_chibi_bot/server/internal/misc"
+	"github.com/Stymphalian/ak_chibi_bot/server/internal/spine"
+	"github.com/Stymphalian/ak_chibi_bot/server/internal/twitch_api"
+	"github.com/Stymphalian/ak_chibi_bot/server/internal/twitchbot"
 )
 
 const (

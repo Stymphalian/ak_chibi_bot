@@ -8,8 +8,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/Stymphalian/ak_chibi_bot/internal/chibi"
-	"github.com/Stymphalian/ak_chibi_bot/internal/misc"
+	"github.com/Stymphalian/ak_chibi_bot/server/internal/chibi"
+	"github.com/Stymphalian/ak_chibi_bot/server/internal/misc"
 	"github.com/gempir/go-twitch-irc/v4"
 )
 

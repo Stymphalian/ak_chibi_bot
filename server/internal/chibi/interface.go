@@ -1,6 +1,6 @@
 package chibi
 
-import "github.com/Stymphalian/ak_chibi_bot/internal/misc"
+import "github.com/Stymphalian/ak_chibi_bot/server/internal/misc"
 
 type ChibiActorInterface interface {
 	HandleCommand(userName string, userNameDisplay string, msg string) (string, error)

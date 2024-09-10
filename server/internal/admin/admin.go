@@ -9,8 +9,8 @@ import (
 	"text/template"
 	"time"
 
-	"github.com/Stymphalian/ak_chibi_bot/internal/misc"
-	"github.com/Stymphalian/ak_chibi_bot/internal/room"
+	"github.com/Stymphalian/ak_chibi_bot/server/internal/misc"
+	"github.com/Stymphalian/ak_chibi_bot/server/internal/room"
 )
 
 type AdminServer struct {

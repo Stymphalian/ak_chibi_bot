@@ -12,10 +12,10 @@ import (
 	"strings"
 	"syscall"
 
-	"github.com/Stymphalian/ak_chibi_bot/internal/admin"
-	"github.com/Stymphalian/ak_chibi_bot/internal/misc"
-	"github.com/Stymphalian/ak_chibi_bot/internal/room"
-	"github.com/Stymphalian/ak_chibi_bot/internal/spine"
+	"github.com/Stymphalian/ak_chibi_bot/server/internal/admin"
+	"github.com/Stymphalian/ak_chibi_bot/server/internal/misc"
+	"github.com/Stymphalian/ak_chibi_bot/server/internal/room"
+	"github.com/Stymphalian/ak_chibi_bot/server/internal/spine"
 )
 
 type MainStruct struct {

@@ -3,7 +3,7 @@ package spine
 import (
 	"io"
 
-	"github.com/Stymphalian/ak_chibi_bot/internal/misc"
+	"github.com/Stymphalian/ak_chibi_bot/server/internal/misc"
 )
 
 const (

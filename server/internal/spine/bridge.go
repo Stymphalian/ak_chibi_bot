@@ -11,7 +11,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/Stymphalian/ak_chibi_bot/internal/misc"
+	"github.com/Stymphalian/ak_chibi_bot/server/internal/misc"
 	"github.com/google/uuid"
 	"github.com/gorilla/websocket"
 )

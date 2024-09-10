@@ -5,7 +5,7 @@ import (
 	"log"
 
 	"cloud.google.com/go/firestore"
-	"github.com/Stymphalian/ak_chibi_bot/internal/spine"
+	"github.com/Stymphalian/ak_chibi_bot/server/internal/spine"
 	"google.golang.org/api/option"
 )
 

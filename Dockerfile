@@ -13,7 +13,6 @@ WORKDIR /work
 RUN mkdir /ak_chibi_assets
 COPY go.mod go.sum ./
 COPY server/ ./server
-COPY internal ./internal
 COPY ./assets/assets /ak_chibi_assets/assets
 COPY ./assets/spine-ts/build /ak_chibi_assets/spine-ts/build
 COPY ./assets/spine-ts/css /ak_chibi_assets/spine-ts/css
