@@ -11918,6 +11918,7 @@ var stym;
         spinePlayer;
         spinePlayerConfig;
         actorConfig;
+        defaultBackoffTimeMsec;
         backoffTimeMsec;
         backOffMaxtimeMsec;
         channelName;
@@ -11927,8 +11928,9 @@ var stym;
             this.channelName = channelName;
             this.socket = null;
             this.spinePlayer = null;
-            this.backoffTimeMsec = 1000;
-            this.backOffMaxtimeMsec = 1 * 60 * 1000;
+            this.defaultBackoffTimeMsec = 15 * 1000;
+            this.backoffTimeMsec = 15 * 1000;
+            this.backOffMaxtimeMsec = 5 * 60 * 1000;
             this.openWebSocket(this.channelName);
             if (this.spinePlayer == null) {
                 this.spinePlayerConfig = {
@@ -11962,14 +11964,11 @@ var stym;
             this.socket = new WebSocket(websocketPath);
             this.socket.addEventListener("open", (event) => {
                 console.log("Socket opened");
-                this.backoffTimeMsec = 1000;
+                this.backoffTimeMsec = this.defaultBackoffTimeMsec;
             });
             this.socket.addEventListener("message", this.messageHandler.bind(this));
             this.socket.addEventListener("close", (event) => {
                 console.log("Close received: ", event);
-                if (event.code >= 1000 && event.code <= 1002) {
-                    return;
-                }
                 this.backoffTimeMsec *= 2;
                 if (this.backoffTimeMsec < this.backOffMaxtimeMsec) {
                     console.log("Retrying in " + this.backoffTimeMsec + "ms");
@@ -11992,7 +11991,6 @@ var stym;
         }
         swapCharacter(requestData) {
             let username = requestData["user_name"];
-            let action = requestData["action"];
             let startPosX = null;
             let startPosY = null;
             if (requestData["start_pos"] != null) {

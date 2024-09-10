@@ -13,7 +13,7 @@ import (
 
 type AdminServer struct {
 	roomsManager *room.RoomsManager
-	twitchConfig *misc.TwitchConfig
+	botConfig    *misc.BotConfig
 	assetDir     string
 }
 
@@ -42,10 +42,10 @@ type RemoveUserRequest struct {
 	Username    string `json:"username"`
 }
 
-func NewAdminServer(roomManager *room.RoomsManager, twitchConfig *misc.TwitchConfig, adminAssetDir string) *AdminServer {
+func NewAdminServer(roomManager *room.RoomsManager, botConfig *misc.BotConfig, adminAssetDir string) *AdminServer {
 	return &AdminServer{
 		roomsManager: roomManager,
-		twitchConfig: twitchConfig,
+		botConfig:    botConfig,
 		assetDir:     adminAssetDir,
 	}
 }
@@ -56,7 +56,7 @@ func (a *AdminServer) adminAuth(h misc.HandlerWithErr) misc.HandlerWithErr {
 			http.Error(w, "", http.StatusNotFound)
 			return nil
 		}
-		if len(a.twitchConfig.AdminSecret) != 256 {
+		if len(a.botConfig.AdminSecret) != 256 {
 			http.Error(w, "", http.StatusNotFound)
 			return nil
 		}
@@ -65,7 +65,7 @@ func (a *AdminServer) adminAuth(h misc.HandlerWithErr) misc.HandlerWithErr {
 			http.Error(w, "", http.StatusNotFound)
 			return nil
 		}
-		if a.twitchConfig.AdminSecret != secret {
+		if a.botConfig.AdminSecret != secret {
 			http.Error(w, "", http.StatusNotFound)
 			return nil
 		}

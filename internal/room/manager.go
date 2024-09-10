@@ -24,31 +24,28 @@ type RoomsManager struct {
 	Rooms       map[string]*Room
 	rooms_mutex sync.Mutex
 
-	AssetManager *spine.AssetManager
-	TwitchConfig *misc.TwitchConfig
-	twitchClient *twitch_api.Client
-
-	runCh          chan string
+	AssetManager   *spine.AssetManager
+	BotConfig      *misc.BotConfig
+	twitchClient   *twitch_api.Client
 	shutdownDoneCh chan struct{}
 }
 
-func NewRoomsManager(assets *spine.AssetManager, twitchConfig *misc.TwitchConfig) *RoomsManager {
+func NewRoomsManager(assets *spine.AssetManager, botConfig *misc.BotConfig) *RoomsManager {
 	return &RoomsManager{
 		Rooms:        make(map[string]*Room, 0),
 		AssetManager: assets,
-		TwitchConfig: twitchConfig,
+		BotConfig:    botConfig,
 		twitchClient: twitch_api.NewClient(
-			twitchConfig.TwitchClientId,
-			twitchConfig.TwitchAccessToken,
+			botConfig.TwitchClientId,
+			botConfig.TwitchAccessToken,
 		),
-		runCh:          make(chan string),
 		shutdownDoneCh: make(chan struct{}),
 	}
 }
 
 func (r *RoomsManager) garbageCollectRooms() {
 	log.Println("Garbage collecting unused chat rooms")
-	period := time.Duration(r.TwitchConfig.RemoveUnusedRoomsAfterMinutes) * time.Minute
+	period := time.Duration(r.BotConfig.RemoveUnusedRoomsAfterMinutes) * time.Minute
 	r.rooms_mutex.Lock()
 	for channel, room := range r.Rooms {
 		lastChat := room.TwitchChat.LastChatterTime()
@@ -62,18 +59,15 @@ func (r *RoomsManager) garbageCollectRooms() {
 }
 
 func (r *RoomsManager) RunLoop() {
-	if r.TwitchConfig.RemoveUnusedRoomsAfterMinutes > 0 {
+	if r.BotConfig.RemoveUnusedRoomsAfterMinutes > 0 {
 		stopTimer := misc.StartTimer(
 			"garbageCollectRooms",
-			time.Duration(r.TwitchConfig.RemoveUnusedRoomsAfterMinutes)*time.Minute,
+			time.Duration(r.BotConfig.RemoveUnusedRoomsAfterMinutes)*time.Minute,
 			r.garbageCollectRooms,
 		)
 		defer stopTimer()
 	}
-
-	for channel := range r.runCh {
-		go r.Rooms[channel].Run()
-	}
+	<-r.shutdownDoneCh
 }
 
 func (r *RoomsManager) checkChannelValid(channel string) (bool, error) {
@@ -100,29 +94,30 @@ func (r *RoomsManager) CreateRoomOrNoOp(channel string, ctx context.Context) err
 	if err != nil {
 		return err
 	}
-	chibiActor := chibi.NewChibiActor(spineBridge, r.TwitchConfig.ExcludeNames)
+	chibiActor := chibi.NewChibiActor(spineBridge, r.BotConfig.ExcludeNames)
 	twitchBot, err := twitchbot.NewTwitchBot(
 		chibiActor,
 		channel,
-		r.TwitchConfig.TwitchBot,
-		r.TwitchConfig.TwitchAccessToken,
-		r.TwitchConfig.RemoveChibiAfterMinutes,
+		r.BotConfig.TwitchBot,
+		r.BotConfig.TwitchAccessToken,
+		r.BotConfig.RemoveChibiAfterMinutes,
 	)
 	if err != nil {
 		return err
 	}
 
 	r.rooms_mutex.Lock()
-	defer r.rooms_mutex.Unlock()
-	r.Rooms[channel] = NewRoom(
+	room := NewRoom(
 		channel,
-		r.TwitchConfig.InitialOperator,
-		r.TwitchConfig.OperatorDetails,
+		r.BotConfig.InitialOperator,
+		r.BotConfig.OperatorDetails,
 		spineBridge,
 		chibiActor,
 		twitchBot,
 	)
-	r.runCh <- channel
+	r.Rooms[channel] = room
+	r.rooms_mutex.Unlock()
+	go room.Run()
 	return nil
 }
 
@@ -134,9 +129,63 @@ func (m *RoomsManager) HandleSpineWebSocket(channelName string, w http.ResponseW
 	return room.SpineBridge.AddWebsocketConnection(w, r)
 }
 
+func (r *RoomsManager) Restore() error {
+	ctx := context.Background()
+	client, err := CreateFirestoreClient(
+		ctx,
+		r.BotConfig.GoogleCloudProjectId,
+		r.BotConfig.GoogleCloudProjectCredentialsFilePath)
+	if err != nil {
+		return err
+	}
+	defer client.Close()
+
+	ref := client.Collection("backup").Doc("rooms")
+	dsnap, err := ref.Get(ctx)
+	if err != nil {
+		return err
+	}
+	if !dsnap.Exists() {
+		return nil
+	}
+
+	var saveData SaveData
+	dsnap.DataTo(&saveData)
+	// fmt.Printf("Saved Data %#v\n", saveData)
+	RestoreSaveData(r, &saveData)
+
+	// Remove the restore point from firestore
+	_, err = ref.Delete(ctx)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (r *RoomsManager) Save() error {
+	ctx := context.Background()
+
+	client, err := CreateFirestoreClient(
+		ctx,
+		r.BotConfig.GoogleCloudProjectId,
+		r.BotConfig.GoogleCloudProjectCredentialsFilePath)
+	if err != nil {
+		return err
+	}
+	defer client.Close()
+	saveData := CreateSaveData(r)
+
+	_, err = client.Collection("backup").Doc("rooms").Set(ctx, saveData)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 func (r *RoomsManager) Shutdown() {
 	log.Println("RoomsManager calling Shutdown")
-	close(r.runCh)
+	r.Save()
 
 	go func() {
 		defer close(r.shutdownDoneCh)

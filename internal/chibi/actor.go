@@ -12,6 +12,12 @@ import (
 	"github.com/Stymphalian/ak_chibi_bot/internal/spine"
 )
 
+const (
+	MIN_ANIMATION_SPEED     = 0.1
+	DEFAULT_ANIMATION_SPEED = 1.0
+	MAX_ANIMATION_SPEED     = 5.0
+)
+
 type ChibiActor struct {
 	client       spine.SpineClient
 	excludeNames []string
@@ -27,12 +33,7 @@ func (c *ChibiActor) GiveChibiToUser(userName string, userNameDisplay string) er
 		return nil
 	}
 
-	_, err := c.client.CurrentInfo(userName)
-	if err == nil {
-		return nil
-	}
-
-	_, err = c.addRandomChibi(userName, userNameDisplay)
+	_, err := c.AddRandomChibi(userName, userNameDisplay)
 	if err == nil {
 		log.Println("User joined. Adding a chibi for them ", userName)
 	}
@@ -64,7 +65,8 @@ func (c *ChibiActor) HasChibi(userName string) bool {
 func (c *ChibiActor) SetToDefault(
 	broadcasterName string,
 	opName string,
-	details misc.InitialOperatorDetails) {
+	details misc.InitialOperatorDetails,
+) {
 	c.client.SetToDefault(broadcasterName, opName, details)
 }
 
@@ -112,7 +114,7 @@ func (c *ChibiActor) HandleCommand(userName string, userNameDisplay string, trim
 	arg2 := strings.TrimSpace(args[1])
 	switch arg2 {
 	// case "admin":
-	// 	if userName != c.twitchConfig.Broadcaster {
+	// 	if userName != c.botConfig.Broadcaster {
 	// 		log.Printf("Only broadcaster can use !chibi admin: %s\n", userName)
 	// 		return "", nil
 	// 	}
@@ -231,9 +233,13 @@ func (c *ChibiActor) validateUpdateSetDefaultOtherwise(update *spine.OperatorInf
 
 	// Validate animationSpeed
 	if update.AnimationSpeed == 0 {
-		update.AnimationSpeed = 1.0
+		update.AnimationSpeed = DEFAULT_ANIMATION_SPEED
 	}
-	update.AnimationSpeed = misc.ClampF64(update.AnimationSpeed, 0.1, 3.0)
+	update.AnimationSpeed = misc.ClampF64(
+		update.AnimationSpeed,
+		MIN_ANIMATION_SPEED,
+		MAX_ANIMATION_SPEED,
+	)
 
 	// Validate startPos
 	if update.StartPos.IsSome() {
@@ -316,7 +322,7 @@ func (c *ChibiActor) ChibiHelp(trimmed string) (string, error) {
 		`"!chibi stance battle" to change from base or battle chibis. ` +
 		`"!chibi enemy mandragora" to change into an enemy mob instead of an operator. ` +
 		`"!chibi walk" to have your chibi walk around the screen. ` +
-		`Source Code: https://github.com/Stymphalian/ak_chibi_bot`
+		`Source Code from github: search Stymphalian/ak_chibi_bot`
 	return msg, nil
 }
 
@@ -330,7 +336,7 @@ func (c *ChibiActor) SetSkin(args []string, current *spine.OperatorInfo) (string
 		return "", errors.New("")
 	}
 	current.Skin = skinName
-	current.AnimationSpeed = 1.0
+	current.AnimationSpeed = DEFAULT_ANIMATION_SPEED
 	return "", nil
 }
 
@@ -373,7 +379,7 @@ func (c *ChibiActor) SetStance(args []string, current *spine.OperatorInfo) (stri
 		return "", errors.New("try something like !chibi stance battle")
 	}
 	current.ChibiStance = stance
-	current.AnimationSpeed = 1.0
+	current.AnimationSpeed = DEFAULT_ANIMATION_SPEED
 	return "", nil
 }
 
@@ -389,7 +395,7 @@ func (c *ChibiActor) SetFacing(args []string, current *spine.OperatorInfo) (stri
 		return "", errors.New("base chibi's can't face backwards. Try setting to battle stance first")
 	}
 	current.Facing = facing
-	current.AnimationSpeed = 1.0
+	current.AnimationSpeed = DEFAULT_ANIMATION_SPEED
 	return "", nil
 }
 
@@ -407,7 +413,7 @@ func (c *ChibiActor) SetEnemy(args []string, current *spine.OperatorInfo) (strin
 	}
 	current.OperatorId = operatorId
 	current.Faction = spine.FACTION_ENUM_ENEMY
-	current.AnimationSpeed = 1.0
+	current.AnimationSpeed = DEFAULT_ANIMATION_SPEED
 
 	return "", nil
 }
@@ -436,7 +442,7 @@ func (c *ChibiActor) SetWalk(args []string, current *spine.OperatorInfo) (string
 	}
 	current.CurrentAction = spine.ACTION_WANDER
 	current.Action = spine.NewActionWander(moveAnimation)
-	current.AnimationSpeed = 1.0
+	current.AnimationSpeed = DEFAULT_ANIMATION_SPEED
 
 	if len(args) == 3 {
 		errMsg := errors.New("try something like !chibi walk 0.45")
@@ -461,7 +467,7 @@ func (c *ChibiActor) SetWalk(args []string, current *spine.OperatorInfo) (string
 			moveAnimation,
 			animationAfterStance,
 		)
-		current.AnimationSpeed = 1.0
+		current.AnimationSpeed = DEFAULT_ANIMATION_SPEED
 	}
 	return "", nil
 }
@@ -474,7 +480,7 @@ func (c *ChibiActor) SetAnimationSpeed(args []string, current *spine.OperatorInf
 	if err != nil {
 		return "", errors.New("try something like !chibi speed 1.5")
 	}
-	if animationSpeed <= 0 || animationSpeed > 3.0 {
+	if animationSpeed <= 0 || animationSpeed > MAX_ANIMATION_SPEED {
 		return "", errors.New("try something like !chibi speed 2.0")
 	}
 	current.AnimationSpeed = animationSpeed
@@ -544,11 +550,11 @@ func (c *ChibiActor) SetChibiModel(trimmed string, current *spine.OperatorInfo) 
 
 	current.OperatorId = operatorId
 	current.Faction = spine.FACTION_ENUM_OPERATOR
-	current.AnimationSpeed = 1.0
+	current.AnimationSpeed = DEFAULT_ANIMATION_SPEED
 	return "", nil
 }
 
-func (c *ChibiActor) addRandomChibi(userName string, userNameDisplay string) (string, error) {
+func (c *ChibiActor) AddRandomChibi(userName string, userNameDisplay string) (string, error) {
 	operatorInfo, err := c.client.GetRandomOperator()
 	if err != nil {
 		return "", err

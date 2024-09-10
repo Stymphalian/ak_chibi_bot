@@ -35,7 +35,7 @@ func MatchesKeywords(str string, keywords []string) (string, bool) {
 	return "", false
 }
 
-type TwitchConfig struct {
+type BotConfig struct {
 	// Required
 	// Twitch Client ID. Can be public. Used to make requests to Twitch API.
 	TwitchClientId string `json:"twitch_client_id"`
@@ -78,6 +78,17 @@ type TwitchConfig struct {
 	// Secret key used to give access to /admin endpoints.
 	// I can't be bothered with an proper ACL system right now
 	AdminSecret string `json:"admin_secret"`
+
+	// Optional
+	// Google Cloud Project Id used for creating/restore restore points during
+	// the production reloading of the server
+	GoogleCloudProjectId string `json:"google_cloud_project_id"`
+
+	// Optional
+	// Path to the Google Cloud Credential json file. Should be an absolute path
+	// If not provided then Save/Restore won't work. Which is fine unless this
+	// this is the production server.
+	GoogleCloudProjectCredentialsFilePath string `json:"google_cloud_project_credentials_file_path"`
 }
 
 type InitialOperatorDetails struct {
@@ -87,14 +98,14 @@ type InitialOperatorDetails struct {
 	PositionX  float64  `json:"position_x"`
 }
 
-func LoadTwitchConfig(path string) (*TwitchConfig, error) {
+func LoadBotConfig(path string) (*BotConfig, error) {
 	file, err := os.Open(path)
 	if err != nil {
 		return nil, err
 	}
 	defer file.Close()
 
-	config := TwitchConfig{}
+	config := BotConfig{}
 	bytes, err := os.ReadFile(path)
 	if err != nil {
 		return nil, err

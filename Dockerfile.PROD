@@ -21,5 +21,5 @@ EXPOSE 8080
 
 # RUN
 ENV GOPATH=/work
-ENTRYPOINT ["/work/ak_chibi_bot", "-address=:8080", "-twitch_config=server/config.json"]
+ENTRYPOINT ["/work/ak_chibi_bot", "-address=:8080", "-bot_config=/work/server/config.json"]
 

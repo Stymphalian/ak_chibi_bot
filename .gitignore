@@ -11,6 +11,7 @@ server/assets/enemies/
 server/assets/*.json
 server/spine-ts/build/*
 server/twitch_config.json
+server/bot_config.json
 server/config.json
 server/server_linux
 server/server_win386.exe
@@ -20,5 +21,6 @@ release/assets/
 
 irc_log.txt
 server/log.txt
+server/*.json
 SECRET.md
 TODO.md

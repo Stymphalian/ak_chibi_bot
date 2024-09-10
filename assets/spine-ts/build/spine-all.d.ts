@@ -1982,6 +1982,7 @@ declare namespace stym {
         spinePlayer: spine.SpinePlayer;
         spinePlayerConfig: spine.SpinePlayerConfig;
         actorConfig: spine.SpineActorConfig;
+        defaultBackoffTimeMsec: number;
         backoffTimeMsec: number;
         backOffMaxtimeMsec: number;
         channelName: string;

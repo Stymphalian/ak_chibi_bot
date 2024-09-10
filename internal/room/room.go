@@ -25,8 +25,9 @@ func NewRoom(
 	opConfig misc.InitialOperatorDetails,
 	spineBridge *spine.SpineBridge,
 	chibiActor *chibi.ChibiActor,
-	twitchBot *twitchbot.TwitchBot) *Room {
-	return &Room{
+	twitchBot *twitchbot.TwitchBot,
+) *Room {
+	r := &Room{
 		ChannelName:           channel,
 		DefaultOperatorName:   opName,
 		DefaultOperatorConfig: opConfig,
@@ -34,6 +35,8 @@ func NewRoom(
 		ChibiActor:            chibiActor,
 		TwitchChat:            twitchBot,
 	}
+	r.ChibiActor.SetToDefault(r.ChannelName, r.DefaultOperatorName, r.DefaultOperatorConfig)
+	return r
 }
 
 func (r *Room) Close() error {
@@ -55,7 +58,34 @@ func (r *Room) Close() error {
 
 func (r *Room) Run() {
 	log.Printf("Room %s is running\n", r.ChannelName)
-	r.ChibiActor.SetToDefault(r.ChannelName, r.DefaultOperatorName, r.DefaultOperatorConfig)
 	r.TwitchChat.ReadPump()
 	log.Printf("Room %s run is done\n", r.ChannelName)
+}
+
+func (r *Room) GetChatters() []spine.ChatUser {
+	chatters := make([]spine.ChatUser, 0)
+	for _, chatter := range r.SpineBridge.ChatUsers {
+		chatters = append(chatters, *chatter)
+	}
+	return chatters
+}
+
+func (r *Room) AddOperatorToRoom(
+	username string,
+	usernameDisplay string,
+	operatorId string,
+	faction spine.FactionEnum,
+) error {
+	opInfo, err := r.SpineBridge.GetRandomOperator()
+	if err != nil {
+		return err
+	}
+	opInfo.OperatorId = operatorId
+	opInfo.Faction = faction
+
+	err = r.ChibiActor.UpdateChibi(username, usernameDisplay, opInfo)
+	if err != nil {
+		return err
+	}
+	return nil
 }

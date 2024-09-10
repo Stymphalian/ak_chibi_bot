@@ -41,7 +41,7 @@ by right clicking and selecting (open in command prompt/terminal).
 4. Download the chibi assets files from [here](https://f002.backblazeb2.com/file/ak-gamedata/assets_20240805.zip) and unzip into the `releases` folder with the name `assets`.
 5. You now need register the bot to your channel. Follow the instructions from [Authentication](#Authentication)
 6. Open up the `config.json` file in a text-editor. Update the `twitch_bot` field to your channel name, `twitch_client_id` to the clientId you registered your application with, and set the `twitch_access_token` field to what you created in the previous step.
-7. Run the server binary (`.\server_win386.exe -image_assetdir assets -spine_assetdir spine-ts -admin_assetdir admin -address localhost:8080 -twitch_config config.json`)
+7. Run the server binary (`.\server_win386.exe -image_assetdir assets -spine_assetdir spine-ts -admin_assetdir admin -address localhost:8080 -bot_config config.json`)
 8. Open up OBS and add a `Browser` source to your stream.
 9. Set the URL to http://localhost:8080/
 10. Set the width and height to 1920x1080
@@ -93,7 +93,7 @@ Once within the container:
 ```
 /work
 cd /work/server
-go run main.go -spine_assetdir=../assets/spine-ts -address=:8080 -twitch_config=config.json
+go run main.go -spine_assetdir=../assets/spine-ts -address=:8080 -bot_config=config.json
 # This will start the HTTP server and connect to the twitch IRC
 ```
 

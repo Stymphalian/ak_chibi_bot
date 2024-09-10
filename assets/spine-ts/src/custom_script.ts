@@ -6,6 +6,7 @@ module stym {
         public spinePlayer: spine.SpinePlayer;
         public spinePlayerConfig: spine.SpinePlayerConfig;
         public actorConfig: spine.SpineActorConfig;
+        public defaultBackoffTimeMsec: number;
         public backoffTimeMsec: number;
         public backOffMaxtimeMsec: number;
         public channelName: string;
@@ -17,8 +18,9 @@ module stym {
             this.channelName = channelName;
             this.socket = null;
             this.spinePlayer = null;
-            this.backoffTimeMsec = 1000; // 2.5 seconds
-            this.backOffMaxtimeMsec = 1 * 60 * 1000; // 5 minutes
+            this.defaultBackoffTimeMsec = 15 * 1000; // 15 seconds
+            this.backoffTimeMsec = 15 * 1000; // 15 seconds
+            this.backOffMaxtimeMsec = 5 * 60 * 1000; // 5 minutes
             this.openWebSocket(this.channelName);
     
             if (this.spinePlayer == null) {
@@ -56,7 +58,7 @@ module stym {
             this.socket = new WebSocket(websocketPath);
             this.socket.addEventListener("open", (event) => {
                 console.log("Socket opened");
-                this.backoffTimeMsec = 1000;
+                this.backoffTimeMsec = this.defaultBackoffTimeMsec;
             });
             this.socket.addEventListener("message", 
                 this.messageHandler.bind(this)
@@ -64,9 +66,9 @@ module stym {
             this.socket.addEventListener("close", (event) => {
                 console.log("Close received: ",event);
 
-                if (event.code >= 1000 && event.code <= 1002) {
-                    return
-                }
+                // if (event.code >= 1000 && event.code <= 1002) {
+                //     return
+                // }
                 this.backoffTimeMsec *= 2;
                 if (this.backoffTimeMsec < this.backOffMaxtimeMsec) {
                     console.log("Retrying in " + this.backoffTimeMsec + "ms");
@@ -91,8 +93,6 @@ module stym {
         
         swapCharacter(requestData: any) {
             let username = requestData["user_name"];
-            let action = requestData["action"]
-
             let startPosX = null;
             let startPosY = null;
             if (requestData["start_pos"] != null) {

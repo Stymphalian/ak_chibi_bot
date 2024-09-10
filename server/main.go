@@ -19,13 +19,13 @@ import (
 )
 
 type MainStruct struct {
-	imageAssetDir    string
-	spineAssetDir    string
-	adminAssetDir    string
-	address          *string
-	twitchConfigPath *string
+	imageAssetDir string
+	spineAssetDir string
+	adminAssetDir string
+	address       *string
+	botConfigPath *string
+	botConfig     *misc.BotConfig
 
-	twitchConfig *misc.TwitchConfig
 	assetManager *spine.AssetManager
 	roomManager  *room.RoomsManager
 	adminServer  *admin.AdminServer
@@ -36,19 +36,19 @@ func NewMainStruct() *MainStruct {
 	spineAssetDir := flag.String("spine_assetdir", "/ak_chibi_assets/spine-ts", "Spine Asset Directory")
 	adminAssetDir := flag.String("admin_assetdir", "/ak_chibi_assets/admin", "Admin Asset Directory")
 	address := flag.String("address", ":8080", "Server address")
-	twitchConfigPath := flag.String("twitch_config", "twitch_config.json", "Twitch config filepath containing channel names and tokens")
+	botConfigPath := flag.String("bot_config", "bot_config.json", "Config filepath containing channel names and tokens")
 	flag.Parse()
 	log.Println("-image_assetdir: ", *imageAssetDir)
 	log.Println("-spine_assetdir: ", *spineAssetDir)
 	log.Println("-admin_assetdir: ", *adminAssetDir)
 	log.Println("-address: ", *address)
-	log.Println("-twitch_config:", *twitchConfigPath)
+	log.Println("-bot_config:", *botConfigPath)
 
-	if *twitchConfigPath == "" {
-		log.Fatal("Must specify -twitch_config")
+	if *botConfigPath == "" {
+		log.Fatal("Must specify -bot_config")
 	}
 
-	twitchConfig, err := misc.LoadTwitchConfig(*twitchConfigPath)
+	botConfig, err := misc.LoadBotConfig(*botConfigPath)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -56,17 +56,17 @@ func NewMainStruct() *MainStruct {
 	if err != nil {
 		log.Fatal(err)
 	}
-	roomManager := room.NewRoomsManager(assetManager, twitchConfig)
-	adminServer := admin.NewAdminServer(roomManager, twitchConfig, *adminAssetDir)
+	roomManager := room.NewRoomsManager(assetManager, botConfig)
+	adminServer := admin.NewAdminServer(roomManager, botConfig, *adminAssetDir)
 
 	return &MainStruct{
 		*imageAssetDir,
 		*spineAssetDir,
 		*adminAssetDir,
 		address,
-		twitchConfigPath,
+		botConfigPath,
+		botConfig,
 
-		twitchConfig,
 		assetManager,
 		roomManager,
 		adminServer,
@@ -75,6 +75,7 @@ func NewMainStruct() *MainStruct {
 
 func (s *MainStruct) run() {
 	go s.roomManager.RunLoop()
+	s.roomManager.Restore()
 
 	log.Println("Starting server")
 	server := &http.Server{Addr: *s.address}

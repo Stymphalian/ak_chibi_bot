@@ -24,6 +24,7 @@ type WebSocketConn struct {
 
 type ChatUser struct {
 	UserName        string
+	UserNameDisplay string
 	CurrentOperator OperatorInfo
 }
 
@@ -151,28 +152,10 @@ func (s *SpineBridge) AddWebsocketConnection(w http.ResponseWriter, r *http.Requ
 	for _, chatUser := range s.ChatUsers {
 		s.setInternalSpineOperator(
 			chatUser.UserName,
-			chatUser.UserName,
+			chatUser.UserNameDisplay,
 			chatUser.CurrentOperator,
 		)
 	}
-
-	// stopTimer := misc.StartTimer(
-	// 	fmt.Sprintf("Websocket PingPong %s", connectionName),
-	// 	time.Duration(5)*time.Second,
-	// 	func() {
-	// 		if websocketConn.conn == nil {
-	// 			log.Println("Socket is closed. Exiting timer")
-	// 			return
-	// 		}
-	// 		log.Println("Sending ping")
-	// 		websocketConn.conn.WriteControl(
-	// 			websocket.PingMessage,
-	// 			[]byte{},
-	// 			time.Now().Add(time.Duration(1)*time.Second),
-	// 		)
-	// 	},
-	// )
-	// defer stopTimer()
 
 	for {
 		var messageType, message, err = c.ReadMessage()
@@ -271,9 +254,13 @@ func (s *SpineBridge) setInternalSpineOperator(
 
 	chatUser, ok := s.ChatUsers[UserName]
 	if !ok {
-		s.ChatUsers[UserName] = &ChatUser{UserName: UserName}
+		s.ChatUsers[UserName] = &ChatUser{
+			UserName:        UserName,
+			UserNameDisplay: userNameDisplay,
+		}
 		chatUser = s.ChatUsers[UserName]
 	}
+	chatUser.UserNameDisplay = userNameDisplay
 	chatUser.CurrentOperator = info
 	return nil
 }
@@ -290,10 +277,6 @@ func (s *SpineBridge) getOperatorIds(faction FactionEnum) ([]string, error) {
 // Start Spine Client Interface functions
 // ----------------------------
 func (s *SpineBridge) SetOperator(req *SetOperatorRequest) (*SetOperatorResponse, error) {
-	if !s.clientConnected() {
-		return nil, errors.New("SpineBridge client is not yet attached")
-	}
-
 	err := s.setInternalSpineOperator(
 		req.UserName,
 		req.UserNameDisplay,
@@ -407,9 +390,6 @@ func (s *SpineBridge) GetOperatorIdFromName(name string, faction FactionEnum) (s
 }
 
 func (s *SpineBridge) CurrentInfo(UserName string) (OperatorInfo, error) {
-	if !s.clientConnected() {
-		return OperatorInfo{}, errors.New("SpineBridge client is not yet attached")
-	}
 	chatUser, ok := s.ChatUsers[UserName]
 	if !ok {
 		return *EmptyOperatorInfo(), NewUserNotFound("User not found: " + UserName)
@@ -446,7 +426,7 @@ func (s *SpineBridge) SetToDefault(broadcasterName string, opName string, detail
 	availableSkins := opResp.GetSkinNames()
 
 	opInfo := NewOperatorInfo(
-		broadcasterName,
+		opResp.OperatorName,
 		faction,
 		opId,
 		details.Skin,
@@ -463,6 +443,7 @@ func (s *SpineBridge) SetToDefault(broadcasterName string, opName string, detail
 	s.ChatUsers = map[string]*ChatUser{
 		broadcasterName: {
 			UserName:        broadcasterName,
+			UserNameDisplay: broadcasterName,
 			CurrentOperator: opInfo,
 		},
 	}
