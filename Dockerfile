@@ -13,13 +13,8 @@ WORKDIR /work
 RUN mkdir /ak_chibi_assets
 COPY go.mod go.sum ./
 COPY server/ ./server
-COPY ./assets/assets /ak_chibi_assets/assets
-COPY ./assets/spine-ts/build /ak_chibi_assets/spine-ts/build
-COPY ./assets/spine-ts/css /ak_chibi_assets/spine-ts/css
-COPY ./assets/spine-ts/static /ak_chibi_assets/spine-ts/static
-COPY ./assets/spine-ts/favicon.ico /ak_chibi_assets/spine-ts/favicon.ico
-COPY ./assets/spine-ts/index.html /ak_chibi_assets/spine-ts/index.html
-COPY ./assets/admin /ak_chibi_assets/admin
+COPY ./static /ak_chibi_assets
+RUN rm -rf /ak_chibi_assets/spine/src
 
 # BUILD
 RUN go mod download && go mod verify

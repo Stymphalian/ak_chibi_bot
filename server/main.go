@@ -19,12 +19,11 @@ import (
 )
 
 type MainStruct struct {
-	imageAssetDir string
-	spineAssetDir string
-	adminAssetDir string
-	address       *string
-	botConfigPath *string
-	botConfig     *misc.BotConfig
+	imageAssetDir  string
+	staticAssetDir string
+	address        *string
+	botConfigPath  *string
+	botConfig      *misc.BotConfig
 
 	assetManager *spine.AssetManager
 	roomManager  *room.RoomsManager
@@ -32,15 +31,13 @@ type MainStruct struct {
 }
 
 func NewMainStruct() *MainStruct {
-	imageAssetDir := flag.String("image_assetdir", "/ak_chibi_assets/assets", "Image Asset Directory")
-	spineAssetDir := flag.String("spine_assetdir", "/ak_chibi_assets/spine-ts", "Spine Asset Directory")
-	adminAssetDir := flag.String("admin_assetdir", "/ak_chibi_assets/admin", "Admin Asset Directory")
+	imageAssetDir := flag.String("image_assetdir", "../static/assets", "Image Asset Directory")
+	staticAssetsDir := flag.String("static_dir", "../static", "Static assets folder")
 	address := flag.String("address", ":8080", "Server address")
 	botConfigPath := flag.String("bot_config", "bot_config.json", "Config filepath containing channel names and tokens")
 	flag.Parse()
 	log.Println("-image_assetdir: ", *imageAssetDir)
-	log.Println("-spine_assetdir: ", *spineAssetDir)
-	log.Println("-admin_assetdir: ", *adminAssetDir)
+	log.Println("-static_dir: ", *staticAssetsDir)
 	log.Println("-address: ", *address)
 	log.Println("-bot_config:", *botConfigPath)
 
@@ -57,12 +54,11 @@ func NewMainStruct() *MainStruct {
 		log.Fatal(err)
 	}
 	roomManager := room.NewRoomsManager(assetManager, botConfig)
-	adminServer := admin.NewAdminServer(roomManager, botConfig, *adminAssetDir)
+	adminServer := admin.NewAdminServer(roomManager, botConfig, *staticAssetsDir)
 
 	return &MainStruct{
 		*imageAssetDir,
-		*spineAssetDir,
-		*adminAssetDir,
+		*staticAssetsDir,
 		address,
 		botConfigPath,
 		botConfig,
@@ -81,10 +77,11 @@ func (s *MainStruct) run() {
 	server := &http.Server{Addr: *s.address}
 	server.RegisterOnShutdown(s.roomManager.Shutdown)
 
-	log.Println(s.imageAssetDir)
-	log.Println(s.spineAssetDir)
-	http.Handle("/runtime/assets/", http.StripPrefix("/runtime/assets/", http.FileServer(http.Dir(s.imageAssetDir))))
-	http.Handle("/runtime/", http.StripPrefix("/runtime/", http.FileServer(http.Dir(s.spineAssetDir))))
+	log.Printf("Images Assets = %s\n", s.imageAssetDir)
+	log.Printf("Static Assets = %s\n", s.staticAssetDir)
+	http.Handle("/static/assets/", http.StripPrefix("/static/assets/", http.FileServer(http.Dir(s.imageAssetDir))))
+	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir(s.staticAssetDir))))
+	http.Handle("/runtime/{$}", http.StripPrefix("/runtime/", http.FileServer(http.Dir(s.staticAssetDir+"/spine"))))
 	http.Handle("/room/", misc.Middleware(s.HandleRoom))
 	http.Handle("/ws/", misc.Middleware(s.HandleSpineWebSocket))
 	s.adminServer.RegisterAdmin()

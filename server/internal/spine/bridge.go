@@ -220,7 +220,7 @@ func (s *SpineBridge) setInternalSpineOperator(
 	pngFile = spineData.PngFilepath
 	skelFile = spineData.SkelFilepath
 	formatPathFn := func(path string) string {
-		return "assets/" + strings.ReplaceAll(path, string(os.PathSeparator), "/")
+		return "/static/assets/" + strings.ReplaceAll(path, string(os.PathSeparator), "/")
 	}
 
 	// wandering := false

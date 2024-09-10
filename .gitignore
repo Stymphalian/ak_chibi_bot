@@ -9,6 +9,7 @@ assets/assets/
 server/assets/characters/
 server/assets/enemies/
 server/assets/*.json
+static/assets/
 server/spine-ts/build/*
 server/twitch_config.json
 server/bot_config.json

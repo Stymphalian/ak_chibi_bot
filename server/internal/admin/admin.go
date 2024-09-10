@@ -82,15 +82,15 @@ func (s *AdminServer) middleware(h misc.HandlerWithErr) http.Handler {
 }
 
 func (s *AdminServer) RegisterAdmin() {
-	http.Handle("/admin", s.middleware(s.HandleAdmin))
-	http.Handle("/admin/list", s.middleware(s.HandleList))
-	http.Handle("/admin/room/remove", s.middleware(s.HandleRemoveRoom))
-	http.Handle("/admin/user/remove", s.middleware(s.HandleRemoveUser))
-	http.Handle("/admin/rooms/restore", s.middleware(s.HandleRestoreRooms))
+	http.Handle("GET /admin", s.middleware(s.HandleAdmin))
+	http.Handle("GET /admin/list", s.middleware(s.HandleList))
+	http.Handle("POST /admin/room/remove", s.middleware(s.HandleRemoveRoom))
+	http.Handle("POST /admin/user/remove", s.middleware(s.HandleRemoveUser))
+	http.Handle("POST /admin/rooms/restore", s.middleware(s.HandleRestoreRooms))
 }
 
 func (s *AdminServer) HandleAdmin(w http.ResponseWriter, r *http.Request) error {
-	t, err := template.ParseFiles(fmt.Sprintf("%s/index.html", s.assetDir))
+	t, err := template.ParseFiles(fmt.Sprintf("%s/admin/index.html", s.assetDir))
 	if err != nil {
 		return err
 	}
