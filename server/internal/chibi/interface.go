@@ -20,4 +20,5 @@ type ChibiActorInterface interface {
 
 	// TODO: Leaky interface
 	UpdateChibi(username string, userDisplayName string, opInfo *spine.OperatorInfo) error
+	CurrentInfo(userName string) (spine.OperatorInfo, error)
 }

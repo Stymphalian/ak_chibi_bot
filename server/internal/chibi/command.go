@@ -13,7 +13,8 @@ import (
 )
 
 type ChatCommandProcessor struct {
-	client spine.SpineClient
+	chibiActor *ChibiActor
+	client     spine.SpineClient
 }
 
 func (c *ChatCommandProcessor) HandleCommand(userName string, userNameDisplay string, trimmed string) (string, error) {
@@ -48,7 +49,8 @@ func (c *ChatCommandProcessor) HandleCommand(userName string, userNameDisplay st
 	// !chibi admin <username> "!chibi command"
 	// !chibi speed 0.1
 
-	current, err := c.client.CurrentInfo(userName)
+	// current, err := c.client.CurrentInfo(userName)
+	current, err := c.chibiActor.CurrentInfo(userName)
 	if err != nil {
 		switch err.(type) {
 		case *spine.UserNotFound:
@@ -240,6 +242,22 @@ func (c *ChatCommandProcessor) UpdateChibi(username string, usernameDisplay stri
 		log.Printf("Failed to set chibi (%s)", err.Error())
 		return nil
 	}
+
+	c.chibiActor.UpdateChatter(
+		username,
+		usernameDisplay,
+		update,
+	)
+	chatUser, ok := c.chibiActor.ChatUsers[username]
+	if !ok {
+		c.chibiActor.ChatUsers[username] = &spine.ChatUser{
+			UserName:        username,
+			UserNameDisplay: usernameDisplay,
+		}
+		chatUser = c.chibiActor.ChatUsers[username]
+	}
+	chatUser.UserNameDisplay = usernameDisplay
+	chatUser.CurrentOperator = *update
 	return nil
 }
 
@@ -497,11 +515,28 @@ func (c *ChatCommandProcessor) addRandomChibi(userName string, userNameDisplay s
 			UserNameDisplay: userNameDisplay,
 			Operator:        *operatorInfo,
 		})
+	if err != nil {
+		log.Printf("Failed to set chibi (%s)", err.Error())
+		return "", nil
+	}
+
+	// TODO: consolidate
+	chatUser, ok := c.chibiActor.ChatUsers[userName]
+	if !ok {
+		c.chibiActor.ChatUsers[userName] = &spine.ChatUser{
+			UserName:        userName,
+			UserNameDisplay: userNameDisplay,
+		}
+		chatUser = c.chibiActor.ChatUsers[userName]
+	}
+	chatUser.UserNameDisplay = userNameDisplay
+	chatUser.CurrentOperator = *operatorInfo
 	return "", err
 }
 
 func (c *ChatCommandProcessor) getChibiInfo(userName string, subInfoName string) (string, error) {
-	current, err := c.client.CurrentInfo(userName)
+	// current, err := c.client.CurrentInfo(userName)
+	current, err := c.chibiActor.CurrentInfo(userName)
 	if err != nil {
 		return "", nil
 	}

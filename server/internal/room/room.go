@@ -14,9 +14,13 @@ type Room struct {
 
 	DefaultOperatorName   string
 	DefaultOperatorConfig misc.InitialOperatorDetails
-	SpineBridge           *spine.SpineBridge
-	ChibiActor            *chibi.ChibiActor
-	TwitchChat            *chatbot.TwitchBot
+
+	// Displays (View)
+	// Communcations
+	// Actors (chatters) (Model)
+	SpineBridge *spine.SpineBridge
+	ChibiActor  *chibi.ChibiActor
+	TwitchChat  *chatbot.TwitchBot
 }
 
 func NewRoom(
@@ -60,14 +64,14 @@ func (r *Room) Run() {
 	log.Printf("Room %s is running\n", r.ChannelName)
 	err := r.TwitchChat.ReadPump()
 	if err != nil {
-		log.Println("Room %s run error=", err)
+		log.Printf("Room %s run error=", err)
 	}
 	log.Printf("Room %s run is done\n", r.ChannelName)
 }
 
 func (r *Room) GetChatters() []spine.ChatUser {
 	chatters := make([]spine.ChatUser, 0)
-	for _, chatter := range r.SpineBridge.ChatUsers {
+	for _, chatter := range r.ChibiActor.ChatUsers {
 		chatters = append(chatters, *chatter)
 	}
 	return chatters
@@ -79,6 +83,7 @@ func (r *Room) AddOperatorToRoom(
 	operatorId string,
 	faction spine.FactionEnum,
 ) error {
+	// TODO: Leaky interface. Need to move this into a Service or ChibiActor
 	opInfo, err := r.SpineBridge.GetRandomOperator()
 	if err != nil {
 		return err

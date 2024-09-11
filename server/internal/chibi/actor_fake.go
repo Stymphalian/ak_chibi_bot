@@ -5,6 +5,7 @@ import (
 	"strings"
 
 	"github.com/Stymphalian/ak_chibi_bot/server/internal/misc"
+	"github.com/Stymphalian/ak_chibi_bot/server/internal/spine"
 )
 
 type FakeChibiActor struct {
@@ -44,4 +45,16 @@ func (f *FakeChibiActor) HandleCommand(msg ChatMessage) (string, error) {
 		f.Users[msg.Username] = "Invalid"
 		return "invalid", errors.New("Error message")
 	}
+}
+
+func (f *FakeChibiActor) UpdateChibi(username string, userDisplayName string, opInfo *spine.OperatorInfo) error {
+	f.Users[username] = "Updated"
+	return nil
+}
+
+func (f *FakeChibiActor) CurrentInfo(userName string) (spine.OperatorInfo, error) {
+	// chatUser, ok := c.ChatUsers[userName]
+	// if !ok {
+	return *spine.EmptyOperatorInfo(), spine.NewUserNotFound("User not found: " + userName)
+	// }
 }

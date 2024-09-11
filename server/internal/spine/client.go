@@ -145,9 +145,9 @@ type SpineClient interface {
 
 	// GetOperatorIds(faction FactionEnum) ([]string, error)
 	GetOperatorIdFromName(name string, faction FactionEnum) (string, []string)
-	CurrentInfo(userName string) (OperatorInfo, error)
+	// CurrentInfo(userName string) (OperatorInfo, error)
 
-	SetToDefault(broadcasterName string, opName string, details misc.InitialOperatorDetails)
+	// SetToDefault(broadcasterName string, opName string, details misc.InitialOperatorDetails)
 	GetRandomOperator() (*OperatorInfo, error)
 }
 

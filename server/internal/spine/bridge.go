@@ -29,8 +29,9 @@ type ChatUser struct {
 }
 
 type SpineBridge struct {
-	Assets                *AssetManager
-	ChatUsers             map[string]*ChatUser
+	Assets *AssetManager
+	// DisplayUpdates chan ChatUser
+	// ChatUsers             map[string]*ChatUser
 	WebSocketConnections  map[string]*WebSocketConn
 	websocketPingerTicker *time.Ticker
 	websocketPingerDone   chan bool
@@ -39,8 +40,9 @@ type SpineBridge struct {
 
 func NewSpineBridge(assets *AssetManager) (*SpineBridge, error) {
 	s := &SpineBridge{
-		Assets:               assets,
-		ChatUsers:            make(map[string]*ChatUser, 0),
+		Assets: assets,
+		// ChatUsers:            make(map[string]*ChatUser, 0),
+		// DisplayUpdates:       make(chan ChatUser, 10),
 		WebSocketConnections: make(map[string]*WebSocketConn, 0),
 	}
 	go s.pingWebSockets()
@@ -122,7 +124,11 @@ func (s *SpineBridge) handleResponseMessages(message []byte) {
 	log.Println("data", data)
 }
 
-func (s *SpineBridge) AddWebsocketConnection(w http.ResponseWriter, r *http.Request) error {
+func (s *SpineBridge) AddWebsocketConnection(
+	w http.ResponseWriter,
+	r *http.Request,
+	chatters []*ChatUser,
+) error {
 	var upgrader = websocket.Upgrader{} // use default options
 	c, err := upgrader.Upgrade(w, r, nil)
 	if err != nil {
@@ -150,7 +156,14 @@ func (s *SpineBridge) AddWebsocketConnection(w http.ResponseWriter, r *http.Requ
 		delete(s.WebSocketConnections, connectionName)
 	}()
 
-	for _, chatUser := range s.ChatUsers {
+	// for _, chatUser := range s.ChatUsers {
+	// 	s.setInternalSpineOperator(
+	// 		chatUser.UserName,
+	// 		chatUser.UserNameDisplay,
+	// 		chatUser.CurrentOperator,
+	// 	)
+	// }
+	for _, chatUser := range chatters {
 		s.setInternalSpineOperator(
 			chatUser.UserName,
 			chatUser.UserNameDisplay,
@@ -249,16 +262,16 @@ func (s *SpineBridge) setInternalSpineOperator(
 		}
 	}
 
-	chatUser, ok := s.ChatUsers[UserName]
-	if !ok {
-		s.ChatUsers[UserName] = &ChatUser{
-			UserName:        UserName,
-			UserNameDisplay: userNameDisplay,
-		}
-		chatUser = s.ChatUsers[UserName]
-	}
-	chatUser.UserNameDisplay = userNameDisplay
-	chatUser.CurrentOperator = info
+	// chatUser, ok := s.ChatUsers[UserName]
+	// if !ok {
+	// 	s.ChatUsers[UserName] = &ChatUser{
+	// 		UserName:        UserName,
+	// 		UserNameDisplay: userNameDisplay,
+	// 	}
+	// 	chatUser = s.ChatUsers[UserName]
+	// }
+	// chatUser.UserNameDisplay = userNameDisplay
+	// chatUser.CurrentOperator = info
 	return nil
 }
 
@@ -347,10 +360,10 @@ func (s *SpineBridge) RemoveOperator(r *RemoveOperatorRequest) (*RemoveOperatorR
 		},
 	}
 
-	// We already don't have an entry for this user, so just return early
-	if _, ok := s.ChatUsers[r.UserName]; !ok {
-		return successResp, nil
-	}
+	// // We already don't have an entry for this user, so just return early
+	// if _, ok := s.ChatUsers[r.UserName]; !ok {
+	// 	return successResp, nil
+	// }
 
 	data := map[string]interface{}{
 		"type_name": REMOVE_OPERATOR,
@@ -367,7 +380,7 @@ func (s *SpineBridge) RemoveOperator(r *RemoveOperatorRequest) (*RemoveOperatorR
 		}
 	}
 
-	delete(s.ChatUsers, r.UserName)
+	// delete(s.ChatUsers, r.UserName)
 	return successResp, nil
 }
 
@@ -386,64 +399,64 @@ func (s *SpineBridge) GetOperatorIdFromName(name string, faction FactionEnum) (s
 	return "", humanMatches
 }
 
-func (s *SpineBridge) CurrentInfo(UserName string) (OperatorInfo, error) {
-	chatUser, ok := s.ChatUsers[UserName]
-	if !ok {
-		return *EmptyOperatorInfo(), NewUserNotFound("User not found: " + UserName)
-	}
+// func (s *SpineBridge) CurrentInfo(UserName string) (OperatorInfo, error) {
+// 	chatUser, ok := s.ChatUsers[UserName]
+// 	if !ok {
+// 		return *EmptyOperatorInfo(), NewUserNotFound("User not found: " + UserName)
+// 	}
 
-	return chatUser.CurrentOperator, nil
-}
+// 	return chatUser.CurrentOperator, nil
+// }
 
 func (s *SpineBridge) SetToDefault(broadcasterName string, opName string, details misc.InitialOperatorDetails) {
-	if len(opName) == 0 {
-		opName = "Amiya"
-	}
+	// if len(opName) == 0 {
+	// 	opName = "Amiya"
+	// }
 
-	faction := FACTION_ENUM_OPERATOR
-	opId, matches := s.GetOperatorIdFromName(opName, FACTION_ENUM_OPERATOR)
-	if matches != nil {
-		faction = FACTION_ENUM_ENEMY
-		opId, matches = s.GetOperatorIdFromName(opName, FACTION_ENUM_ENEMY)
-	}
-	if matches != nil {
-		log.Panic("Failed to get operator id", matches)
-	}
-	stance, err2 := ChibiStanceEnum_Parse(details.Stance)
-	if err2 != nil {
-		log.Panic("Failed to parse stance", err2)
-	}
+	// faction := FACTION_ENUM_OPERATOR
+	// opId, matches := s.GetOperatorIdFromName(opName, FACTION_ENUM_OPERATOR)
+	// if matches != nil {
+	// 	faction = FACTION_ENUM_ENEMY
+	// 	opId, matches = s.GetOperatorIdFromName(opName, FACTION_ENUM_ENEMY)
+	// }
+	// if matches != nil {
+	// 	log.Panic("Failed to get operator id", matches)
+	// }
+	// stance, err2 := ChibiStanceEnum_Parse(details.Stance)
+	// if err2 != nil {
+	// 	log.Panic("Failed to parse stance", err2)
+	// }
 
-	opResp, err := s.GetOperator(&GetOperatorRequest{opId, faction})
-	if err != nil {
-		log.Panic("Failed to fetch operator info")
-	}
-	availableAnims := opResp.Skins[details.Skin].Stances[stance].Facings[CHIBI_FACING_ENUM_FRONT]
-	availableAnims = FilterAnimations(availableAnims)
-	availableSkins := opResp.GetSkinNames()
+	// opResp, err := s.GetOperator(&GetOperatorRequest{opId, faction})
+	// if err != nil {
+	// 	log.Panic("Failed to fetch operator info")
+	// }
+	// availableAnims := opResp.Skins[details.Skin].Stances[stance].Facings[CHIBI_FACING_ENUM_FRONT]
+	// availableAnims = FilterAnimations(availableAnims)
+	// availableSkins := opResp.GetSkinNames()
 
-	opInfo := NewOperatorInfo(
-		opResp.OperatorName,
-		faction,
-		opId,
-		details.Skin,
-		stance,
-		CHIBI_FACING_ENUM_FRONT,
-		availableSkins,
-		availableAnims,
-		1.0,
-		misc.NewOption(misc.Vector2{X: details.PositionX, Y: 0.0}),
-		ACTION_PLAY_ANIMATION,
-		NewActionPlayAnimation(details.Animations),
-	)
+	// opInfo := NewOperatorInfo(
+	// 	opResp.OperatorName,
+	// 	faction,
+	// 	opId,
+	// 	details.Skin,
+	// 	stance,
+	// 	CHIBI_FACING_ENUM_FRONT,
+	// 	availableSkins,
+	// 	availableAnims,
+	// 	1.0,
+	// 	misc.NewOption(misc.Vector2{X: details.PositionX, Y: 0.0}),
+	// 	ACTION_PLAY_ANIMATION,
+	// 	NewActionPlayAnimation(details.Animations),
+	// )
 
-	s.ChatUsers = map[string]*ChatUser{
-		broadcasterName: {
-			UserName:        broadcasterName,
-			UserNameDisplay: broadcasterName,
-			CurrentOperator: opInfo,
-		},
-	}
+	// s.ChatUsers = map[string]*ChatUser{
+	// 	broadcasterName: {
+	// 		UserName:        broadcasterName,
+	// 		UserNameDisplay: broadcasterName,
+	// 		CurrentOperator: opInfo,
+	// 	},
+	// }
 }
 
 func (s *SpineBridge) GetRandomOperator() (*OperatorInfo, error) {

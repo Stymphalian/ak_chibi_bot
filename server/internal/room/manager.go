@@ -128,7 +128,13 @@ func (m *RoomsManager) HandleSpineWebSocket(channelName string, w http.ResponseW
 	if !ok {
 		return errors.New("channel room does not exist")
 	}
-	return room.SpineBridge.AddWebsocketConnection(w, r)
+
+	chatters := make([]*spine.ChatUser, 0)
+	for _, chatUser := range room.ChibiActor.ChatUsers {
+		chatters = append(chatters, chatUser)
+	}
+
+	return room.SpineBridge.AddWebsocketConnection(w, r, chatters)
 }
 
 func (r *RoomsManager) Restore() error {

@@ -118,7 +118,8 @@ func (s *AdminServer) HandleList(w http.ResponseWriter, r *http.Request) error {
 			NumWebsocketConnections: len(roomVal.SpineBridge.WebSocketConnections),
 		}
 
-		for _, chatUser := range roomVal.SpineBridge.ChatUsers {
+		// for _, chatUser := range roomVal.SpineBridge.ChatUsers {
+		for _, chatUser := range roomVal.ChibiActor.ChatUsers {
 			newChatter := &Chatter{
 				Username:     chatUser.UserName,
 				Operator:     chatUser.CurrentOperator.OperatorDisplayName,
