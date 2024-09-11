@@ -3,10 +3,10 @@ package room
 import (
 	"log"
 
+	"github.com/Stymphalian/ak_chibi_bot/server/internal/chatbot"
 	"github.com/Stymphalian/ak_chibi_bot/server/internal/chibi"
 	"github.com/Stymphalian/ak_chibi_bot/server/internal/misc"
 	"github.com/Stymphalian/ak_chibi_bot/server/internal/spine"
-	"github.com/Stymphalian/ak_chibi_bot/server/internal/twitchbot"
 )
 
 type Room struct {
@@ -16,7 +16,7 @@ type Room struct {
 	DefaultOperatorConfig misc.InitialOperatorDetails
 	SpineBridge           *spine.SpineBridge
 	ChibiActor            *chibi.ChibiActor
-	TwitchChat            *twitchbot.TwitchBot
+	TwitchChat            *chatbot.TwitchBot
 }
 
 func NewRoom(
@@ -25,7 +25,7 @@ func NewRoom(
 	opConfig misc.InitialOperatorDetails,
 	spineBridge *spine.SpineBridge,
 	chibiActor *chibi.ChibiActor,
-	twitchBot *twitchbot.TwitchBot,
+	twitchBot *chatbot.TwitchBot,
 ) *Room {
 	r := &Room{
 		ChannelName:           channel,
@@ -58,7 +58,10 @@ func (r *Room) Close() error {
 
 func (r *Room) Run() {
 	log.Printf("Room %s is running\n", r.ChannelName)
-	r.TwitchChat.ReadPump()
+	err := r.TwitchChat.ReadPump()
+	if err != nil {
+		log.Println("Room %s run error=", err)
+	}
 	log.Printf("Room %s run is done\n", r.ChannelName)
 }
 

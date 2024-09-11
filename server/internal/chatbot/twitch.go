@@ -1,4 +1,4 @@
-package twitchbot
+package chatbot
 
 import (
 	"errors"
@@ -81,7 +81,13 @@ func (t *TwitchBot) HandlePrivateMessage(m twitch.PrivateMessage) {
 	}
 	log.Printf("PRIVMSG message %v\n", m)
 
-	outputMsg, err := t.chibiActor.HandleCommand(m.User.Name, m.User.DisplayName, trimmed)
+	chatMessage := chibi.ChatMessage{
+		Username:        m.User.Name,
+		UserDisplayName: m.User.DisplayName,
+		Message:         trimmed,
+	}
+
+	outputMsg, err := t.chibiActor.HandleCommand(chatMessage)
 	if len(outputMsg) > 0 {
 		t.tc.Say(m.Channel, outputMsg)
 	}
@@ -106,7 +112,7 @@ func (t *TwitchBot) garbageCollectOldChibis() {
 	}
 }
 
-func (t *TwitchBot) ReadPump() {
+func (t *TwitchBot) ReadPump() error {
 	if t.garbageCollectionPeriodMins > 0 {
 		stopTimer := misc.StartTimer(
 			fmt.Sprintf("GarbageCollectOldChibis %s", t.channelName),
@@ -136,9 +142,11 @@ func (t *TwitchBot) ReadPump() {
 	if err := t.tc.Connect(); err != nil {
 		if !errors.Is(err, twitch.ErrClientDisconnected) {
 			log.Println("Failed to connect to twitch", err)
+			return err
 		}
 	}
 	log.Println("Read pump done for ", t.channelName)
+	return nil
 }
 
 func (t *TwitchBot) LastChatterTime() time.Time {

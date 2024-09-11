@@ -9,11 +9,11 @@ import (
 	"sync"
 	"time"
 
+	"github.com/Stymphalian/ak_chibi_bot/server/internal/chatbot"
 	"github.com/Stymphalian/ak_chibi_bot/server/internal/chibi"
 	"github.com/Stymphalian/ak_chibi_bot/server/internal/misc"
 	"github.com/Stymphalian/ak_chibi_bot/server/internal/spine"
 	"github.com/Stymphalian/ak_chibi_bot/server/internal/twitch_api"
-	"github.com/Stymphalian/ak_chibi_bot/server/internal/twitchbot"
 )
 
 const (
@@ -95,7 +95,7 @@ func (r *RoomsManager) CreateRoomOrNoOp(channel string, ctx context.Context) err
 		return err
 	}
 	chibiActor := chibi.NewChibiActor(spineBridge, r.BotConfig.ExcludeNames)
-	twitchBot, err := twitchbot.NewTwitchBot(
+	twitchBot, err := chatbot.NewTwitchBot(
 		chibiActor,
 		channel,
 		r.BotConfig.TwitchBot,

@@ -185,10 +185,6 @@ func (s *SpineBridge) AddWebsocketConnection(w http.ResponseWriter, r *http.Requ
 	return nil
 }
 
-func (s *SpineBridge) HandleAdmin(w http.ResponseWriter, r *http.Request) error {
-	return nil
-}
-
 func (s *SpineBridge) setInternalSpineOperator(
 	UserName string,
 	userNameDisplay string,
