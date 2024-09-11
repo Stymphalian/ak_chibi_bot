@@ -24,21 +24,21 @@ type RoomsManager struct {
 	Rooms       map[string]*Room
 	rooms_mutex sync.Mutex
 
-	AssetManager *spine.AssetManager
-	SpineService *spine.SpineService
+	assetService *spine.AssetService
+	spineService *spine.SpineService
 
-	BotConfig      *misc.BotConfig
+	botConfig      *misc.BotConfig
 	twitchClient   *twitch_api.Client
 	shutdownDoneCh chan struct{}
 }
 
-func NewRoomsManager(assets *spine.AssetManager, botConfig *misc.BotConfig) *RoomsManager {
+func NewRoomsManager(assets *spine.AssetService, botConfig *misc.BotConfig) *RoomsManager {
 	spineService := spine.NewSpineService(assets)
 	return &RoomsManager{
 		Rooms:        make(map[string]*Room, 0),
-		AssetManager: assets,
-		SpineService: spineService,
-		BotConfig:    botConfig,
+		assetService: assets,
+		spineService: spineService,
+		botConfig:    botConfig,
 		twitchClient: twitch_api.NewClient(
 			botConfig.TwitchClientId,
 			botConfig.TwitchAccessToken,
@@ -49,11 +49,10 @@ func NewRoomsManager(assets *spine.AssetManager, botConfig *misc.BotConfig) *Roo
 
 func (r *RoomsManager) garbageCollectRooms() {
 	log.Println("Garbage collecting unused chat rooms")
-	period := time.Duration(r.BotConfig.RemoveUnusedRoomsAfterMinutes) * time.Minute
+	period := time.Duration(r.botConfig.RemoveUnusedRoomsAfterMinutes) * time.Minute
 	r.rooms_mutex.Lock()
 	for channel, room := range r.Rooms {
-		lastChat := room.TwitchChat.LastChatterTime()
-		if time.Since(lastChat) > period {
+		if !room.IsActive(period) {
 			log.Println("Removing unused room", channel)
 			room.Close()
 			delete(r.Rooms, channel)
@@ -63,10 +62,10 @@ func (r *RoomsManager) garbageCollectRooms() {
 }
 
 func (r *RoomsManager) RunLoop() {
-	if r.BotConfig.RemoveUnusedRoomsAfterMinutes > 0 {
+	if r.botConfig.RemoveUnusedRoomsAfterMinutes > 0 {
 		stopTimer := misc.StartTimer(
 			"garbageCollectRooms",
-			time.Duration(r.BotConfig.RemoveUnusedRoomsAfterMinutes)*time.Minute,
+			time.Duration(r.botConfig.RemoveUnusedRoomsAfterMinutes)*time.Minute,
 			r.garbageCollectRooms,
 		)
 		defer stopTimer()
@@ -94,28 +93,32 @@ func (r *RoomsManager) CreateRoomOrNoOp(channel string, ctx context.Context) err
 		return nil
 	}
 
-	spineBridge, err := spine.NewSpineBridge(r.SpineService)
+	spineBridge, err := spine.NewSpineBridge(r.spineService)
 	if err != nil {
 		return err
 	}
-	chibiActor := chibi.NewChibiActor(r.SpineService, spineBridge, r.BotConfig.ExcludeNames)
+	chibiActor := chibi.NewChibiActor(r.spineService, spineBridge, r.botConfig.ExcludeNames)
 	twitchBot, err := chatbot.NewTwitchBot(
 		chibiActor,
 		channel,
-		r.BotConfig.TwitchBot,
-		r.BotConfig.TwitchAccessToken,
-		r.BotConfig.RemoveChibiAfterMinutes,
+		r.botConfig.TwitchBot,
+		r.botConfig.TwitchAccessToken,
+		r.botConfig.RemoveChibiAfterMinutes,
 	)
 	if err != nil {
 		return err
 	}
 
 	r.rooms_mutex.Lock()
+	roomConfig := &RoomConfig{
+		ChannelName:                 channel,
+		DefaultOperatorName:         r.botConfig.InitialOperator,
+		DefaultOperatorConfig:       r.botConfig.OperatorDetails,
+		GarbageCollectionPeriodMins: r.botConfig.RemoveChibiAfterMinutes,
+	}
 	room := NewRoom(
-		channel,
-		r.BotConfig.InitialOperator,
-		r.BotConfig.OperatorDetails,
-		r.SpineService,
+		roomConfig,
+		r.spineService,
 		spineBridge,
 		chibiActor,
 		twitchBot,
@@ -133,21 +136,15 @@ func (m *RoomsManager) HandleSpineWebSocket(channelName string, w http.ResponseW
 	if !ok {
 		return errors.New("channel room does not exist")
 	}
-
-	chatters := make([]*spine.ChatUser, 0)
-	for _, chatUser := range room.ChibiActor.ChatUsers {
-		chatters = append(chatters, chatUser)
-	}
-
-	return room.SpineBridge.AddWebsocketConnection(w, r, chatters)
+	return room.AddWebsocketConnection(w, r)
 }
 
 func (r *RoomsManager) Restore() error {
 	ctx := context.Background()
 	client, err := CreateFirestoreClient(
 		ctx,
-		r.BotConfig.GoogleCloudProjectId,
-		r.BotConfig.GoogleCloudProjectCredentialsFilePath)
+		r.botConfig.GoogleCloudProjectId,
+		r.botConfig.GoogleCloudProjectCredentialsFilePath)
 	if err != nil {
 		return err
 	}
@@ -181,8 +178,8 @@ func (r *RoomsManager) Save() error {
 
 	client, err := CreateFirestoreClient(
 		ctx,
-		r.BotConfig.GoogleCloudProjectId,
-		r.BotConfig.GoogleCloudProjectCredentialsFilePath)
+		r.botConfig.GoogleCloudProjectId,
+		r.botConfig.GoogleCloudProjectCredentialsFilePath)
 	if err != nil {
 		return err
 	}

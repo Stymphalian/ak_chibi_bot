@@ -9,10 +9,10 @@ import (
 )
 
 type SpineService struct {
-	Assets *AssetManager
+	Assets *AssetService
 }
 
-func NewSpineService(assets *AssetManager) *SpineService {
+func NewSpineService(assets *AssetService) *SpineService {
 	return &SpineService{
 		Assets: assets,
 	}

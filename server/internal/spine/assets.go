@@ -430,15 +430,15 @@ func (s *CommonNames) FindMatchs(userInput string, numSuggestions int) (output [
 	return
 }
 
-type AssetManager struct {
+type AssetService struct {
 	AssetMap         *SpineAssetMap
 	CommonNames      *CommonNames
 	EnemyAssetMap    *SpineAssetMap
 	EnemyCommonNames *CommonNames
 }
 
-func NewAssetManager(assetDir string) (*AssetManager, error) {
-	s := &AssetManager{
+func NewAssetService(assetDir string) (*AssetService, error) {
+	s := &AssetService{
 		AssetMap:         NewSpineAssetMap(),
 		CommonNames:      NewCommonNames(),
 		EnemyAssetMap:    NewSpineAssetMap(),
@@ -477,7 +477,7 @@ func NewAssetManager(assetDir string) (*AssetManager, error) {
 	return s, nil
 }
 
-func (s *AssetManager) getAssetMapFromFaction(faction FactionEnum) *SpineAssetMap {
+func (s *AssetService) getAssetMapFromFaction(faction FactionEnum) *SpineAssetMap {
 	switch faction {
 	case FACTION_ENUM_OPERATOR:
 		return s.AssetMap
@@ -489,7 +489,7 @@ func (s *AssetManager) getAssetMapFromFaction(faction FactionEnum) *SpineAssetMa
 	}
 }
 
-func (s *AssetManager) getCommonNamesFromFaction(faction FactionEnum) *CommonNames {
+func (s *AssetService) getCommonNamesFromFaction(faction FactionEnum) *CommonNames {
 	switch faction {
 	case FACTION_ENUM_OPERATOR:
 		return s.CommonNames

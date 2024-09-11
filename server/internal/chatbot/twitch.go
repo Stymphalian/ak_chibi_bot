@@ -6,10 +6,8 @@ import (
 	"log"
 	"os"
 	"strings"
-	"time"
 
 	"github.com/Stymphalian/ak_chibi_bot/server/internal/chibi"
-	"github.com/Stymphalian/ak_chibi_bot/server/internal/misc"
 	"github.com/gempir/go-twitch-irc/v4"
 )
 
@@ -22,8 +20,6 @@ type TwitchBot struct {
 	channelName                 string
 	garbageCollectionPeriodMins int
 	tc                          *twitch.Client
-	lastUserChat                map[ChannelUser]time.Time
-	latestChatterTime           time.Time
 }
 
 func NewTwitchBot(
@@ -49,8 +45,6 @@ func NewTwitchBot(
 		channelName:                 twitchChannelName,
 		garbageCollectionPeriodMins: garbageCollectionPeriodMins,
 		tc:                          tc,
-		lastUserChat:                make(map[ChannelUser]time.Time),
-		latestChatterTime:           time.Now(),
 	}
 	return self, nil
 }
@@ -71,8 +65,6 @@ func (t *TwitchBot) HandlePrivateMessage(m twitch.PrivateMessage) {
 		return
 	}
 
-	t.lastUserChat[ChannelUser{m.User.Name}] = m.Time
-	t.latestChatterTime = m.Time
 	if !t.chibiActor.HasChibi(m.User.Name) {
 		t.chibiActor.GiveChibiToUser(m.User.Name, m.User.DisplayName)
 	}
@@ -96,32 +88,7 @@ func (t *TwitchBot) HandlePrivateMessage(m twitch.PrivateMessage) {
 	}
 }
 
-func (t *TwitchBot) garbageCollectOldChibis() {
-	log.Println("Garbage collecting old chibis")
-	interval := time.Duration(t.garbageCollectionPeriodMins) * time.Minute
-	for channelUser, lastChat := range t.lastUserChat {
-		user := channelUser.User
-		if time.Since(lastChat) > interval {
-			if user == t.channelName {
-				// Skip removing the broadcaster's chibi
-				continue
-			}
-			log.Println("Removing chibi for", user)
-			t.chibiActor.RemoveUserChibi(user)
-		}
-	}
-}
-
 func (t *TwitchBot) ReadPump() error {
-	if t.garbageCollectionPeriodMins > 0 {
-		stopTimer := misc.StartTimer(
-			fmt.Sprintf("GarbageCollectOldChibis %s", t.channelName),
-			time.Duration(t.garbageCollectionPeriodMins)*time.Minute,
-			t.garbageCollectOldChibis,
-		)
-		defer stopTimer()
-	}
-
 	t.tc.OnNoticeMessage(func(m twitch.NoticeMessage) {
 		log.Printf("NOTICE message %v\n", m)
 	})
@@ -147,17 +114,4 @@ func (t *TwitchBot) ReadPump() error {
 	}
 	log.Println("Read pump done for ", t.channelName)
 	return nil
-}
-
-func (t *TwitchBot) LastChatterTime() time.Time {
-	return t.latestChatterTime
-}
-
-func (t *TwitchBot) LastChatTime(username string) (time.Time, bool) {
-	if lastTime, ok := t.lastUserChat[ChannelUser{
-		User: username,
-	}]; ok {
-		return lastTime, true
-	}
-	return time.Now(), false
 }

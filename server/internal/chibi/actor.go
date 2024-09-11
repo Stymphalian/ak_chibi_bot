@@ -16,13 +16,10 @@ const (
 )
 
 type ChibiActor struct {
-	ChatUsers map[string]*spine.ChatUser
-
-	spineService *spine.SpineService
-
-	// TODO: Only used for removing? for now.
-	client spine.SpineClient
-
+	spineService         *spine.SpineService
+	ChatUsers            map[string]*spine.ChatUser
+	LastChatterTime      time.Time
+	client               spine.SpineClient
 	chatCommandProcessor ChatCommandProcessor
 	excludeNames         []string
 }
@@ -33,9 +30,10 @@ func NewChibiActor(
 	excludeNames []string,
 ) *ChibiActor {
 	a := &ChibiActor{
-		ChatUsers:            make(map[string]*spine.ChatUser, 0),
-		client:               client,
 		spineService:         spineService,
+		ChatUsers:            make(map[string]*spine.ChatUser, 0),
+		LastChatterTime:      time.Now(),
+		client:               client,
 		chatCommandProcessor: ChatCommandProcessor{nil, spineService, client},
 		excludeNames:         excludeNames,
 	}
@@ -67,6 +65,8 @@ func (c *ChibiActor) RemoveUserChibi(userName string) error {
 	if err != nil {
 		log.Printf("Error removing chibi for %s: %s\n", userName, err)
 	}
+
+	delete(c.ChatUsers, userName)
 	return nil
 }
 

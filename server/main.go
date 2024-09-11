@@ -25,7 +25,7 @@ type MainStruct struct {
 	botConfigPath  *string
 	botConfig      *misc.BotConfig
 
-	assetManager *spine.AssetManager
+	assetService *spine.AssetService
 	roomManager  *room.RoomsManager
 	adminServer  *admin.AdminServer
 }
@@ -49,11 +49,11 @@ func NewMainStruct() *MainStruct {
 	if err != nil {
 		log.Fatal(err)
 	}
-	assetManager, err := spine.NewAssetManager(*imageAssetDir)
+	assetService, err := spine.NewAssetService(*imageAssetDir)
 	if err != nil {
 		log.Fatal(err)
 	}
-	roomManager := room.NewRoomsManager(assetManager, botConfig)
+	roomManager := room.NewRoomsManager(assetService, botConfig)
 	adminServer := admin.NewAdminServer(roomManager, botConfig, *staticAssetsDir)
 
 	return &MainStruct{
@@ -63,7 +63,7 @@ func NewMainStruct() *MainStruct {
 		botConfigPath,
 		botConfig,
 
-		assetManager,
+		assetService,
 		roomManager,
 		adminServer,
 	}

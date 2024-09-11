@@ -11,6 +11,7 @@ import (
 
 	"github.com/Stymphalian/ak_chibi_bot/server/internal/misc"
 	"github.com/Stymphalian/ak_chibi_bot/server/internal/room"
+	"github.com/Stymphalian/ak_chibi_bot/server/internal/spine"
 )
 
 type AdminServer struct {
@@ -112,26 +113,24 @@ func (s *AdminServer) HandleList(w http.ResponseWriter, r *http.Request) error {
 	for _, roomVal := range s.roomsManager.Rooms {
 
 		newRoom := &Room{
-			ChannelName:             roomVal.ChannelName,
-			LastTimeUsed:            roomVal.TwitchChat.LastChatterTime().Format(time.DateTime),
+			ChannelName:             roomVal.GetChannelName(),
+			LastTimeUsed:            roomVal.GetLastChatterTime().Format(time.DateTime),
 			Chatters:                make([]*Chatter, 0),
-			NumWebsocketConnections: len(roomVal.SpineBridge.WebSocketConnections),
+			NumWebsocketConnections: roomVal.NumConnectedClients(),
 		}
 
-		// for _, chatUser := range roomVal.SpineBridge.ChatUsers {
-		for _, chatUser := range roomVal.ChibiActor.ChatUsers {
+		roomVal.ForEachChatter(func(chatUser *spine.ChatUser) {
 			newChatter := &Chatter{
 				Username:     chatUser.UserName,
 				Operator:     chatUser.CurrentOperator.OperatorDisplayName,
-				LastChatTime: "",
-			}
-
-			lastChatTime, ok := roomVal.TwitchChat.LastChatTime(chatUser.UserName)
-			if ok {
-				newChatter.LastChatTime = lastChatTime.Format(time.DateTime)
+				LastChatTime: chatUser.LastChatTime.Format(time.DateTime),
 			}
 			newRoom.Chatters = append(newRoom.Chatters, newChatter)
-		}
+		})
+
+		// for _, chatUser := range roomVal.ChibiActor.ChatUsers {
+
+		// }
 
 		slices.SortFunc(newRoom.Chatters, func(a, b *Chatter) int {
 			return strings.Compare(a.Username, b.Username)
@@ -198,7 +197,7 @@ func (s *AdminServer) HandleRemoveUser(w http.ResponseWriter, r *http.Request) e
 	if len(userName) == 0 {
 		return nil
 	}
-	return room.ChibiActor.RemoveUserChibi(userName)
+	return room.RemoveUserChibi(userName)
 }
 
 func (s *AdminServer) HandleRestoreRooms(w http.ResponseWriter, r *http.Request) error {
