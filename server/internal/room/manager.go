@@ -24,16 +24,20 @@ type RoomsManager struct {
 	Rooms       map[string]*Room
 	rooms_mutex sync.Mutex
 
-	AssetManager   *spine.AssetManager
+	AssetManager *spine.AssetManager
+	SpineService *spine.SpineService
+
 	BotConfig      *misc.BotConfig
 	twitchClient   *twitch_api.Client
 	shutdownDoneCh chan struct{}
 }
 
 func NewRoomsManager(assets *spine.AssetManager, botConfig *misc.BotConfig) *RoomsManager {
+	spineService := spine.NewSpineService(assets)
 	return &RoomsManager{
 		Rooms:        make(map[string]*Room, 0),
 		AssetManager: assets,
+		SpineService: spineService,
 		BotConfig:    botConfig,
 		twitchClient: twitch_api.NewClient(
 			botConfig.TwitchClientId,
@@ -90,11 +94,11 @@ func (r *RoomsManager) CreateRoomOrNoOp(channel string, ctx context.Context) err
 		return nil
 	}
 
-	spineBridge, err := spine.NewSpineBridge(r.AssetManager)
+	spineBridge, err := spine.NewSpineBridge(r.SpineService)
 	if err != nil {
 		return err
 	}
-	chibiActor := chibi.NewChibiActor(spineBridge, r.BotConfig.ExcludeNames)
+	chibiActor := chibi.NewChibiActor(r.SpineService, spineBridge, r.BotConfig.ExcludeNames)
 	twitchBot, err := chatbot.NewTwitchBot(
 		chibiActor,
 		channel,
@@ -111,6 +115,7 @@ func (r *RoomsManager) CreateRoomOrNoOp(channel string, ctx context.Context) err
 		channel,
 		r.BotConfig.InitialOperator,
 		r.BotConfig.OperatorDetails,
+		r.SpineService,
 		spineBridge,
 		chibiActor,
 		twitchBot,

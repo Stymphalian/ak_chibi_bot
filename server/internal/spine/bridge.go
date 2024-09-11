@@ -2,9 +2,7 @@ package spine
 
 import (
 	"encoding/json"
-	"errors"
 	"log"
-	"math/rand"
 	"net/http"
 	"os"
 	"strings"
@@ -22,27 +20,17 @@ type WebSocketConn struct {
 	remove bool
 }
 
-type ChatUser struct {
-	UserName        string
-	UserNameDisplay string
-	CurrentOperator OperatorInfo
-}
-
 type SpineBridge struct {
-	Assets *AssetManager
-	// DisplayUpdates chan ChatUser
-	// ChatUsers             map[string]*ChatUser
+	spineService          *SpineService
 	WebSocketConnections  map[string]*WebSocketConn
 	websocketPingerTicker *time.Ticker
 	websocketPingerDone   chan bool
 	// TODO: Might want to add mutex locking for updating websocket connections
 }
 
-func NewSpineBridge(assets *AssetManager) (*SpineBridge, error) {
+func NewSpineBridge(spineService *SpineService) (*SpineBridge, error) {
 	s := &SpineBridge{
-		Assets: assets,
-		// ChatUsers:            make(map[string]*ChatUser, 0),
-		// DisplayUpdates:       make(chan ChatUser, 10),
+		spineService:         spineService,
 		WebSocketConnections: make(map[string]*WebSocketConn, 0),
 	}
 	go s.pingWebSockets()
@@ -71,7 +59,6 @@ func (s *SpineBridge) pingWebSockets() {
 			}
 		}
 	}
-
 }
 
 func (s *SpineBridge) Close() error {
@@ -156,13 +143,6 @@ func (s *SpineBridge) AddWebsocketConnection(
 		delete(s.WebSocketConnections, connectionName)
 	}()
 
-	// for _, chatUser := range s.ChatUsers {
-	// 	s.setInternalSpineOperator(
-	// 		chatUser.UserName,
-	// 		chatUser.UserNameDisplay,
-	// 		chatUser.CurrentOperator,
-	// 	)
-	// }
 	for _, chatUser := range chatters {
 		s.setInternalSpineOperator(
 			chatUser.UserName,
@@ -203,19 +183,9 @@ func (s *SpineBridge) setInternalSpineOperator(
 	userNameDisplay string,
 	info OperatorInfo,
 ) error {
-	assetMap := s.Assets.getAssetMapFromFaction(info.Faction)
-
 	// Validate the setOperator Request
-	{
-		// log.Println("Request setOperator", info.OperatorId, info.Faction, info.Skin, info.ChibiStance, info.Facing, info.CurrentAnimations)
-		log.Println("Request setOperator", info.OperatorId, info.Faction,
-			info.Skin, info.ChibiStance, info.Facing, info.CurrentAction)
-		err := assetMap.Contains(info.OperatorId, info.Skin, info.ChibiStance,
-			info.Facing, info.Action.GetAnimations(info.CurrentAction))
-		if err != nil {
-			log.Println("Validate setOperator request failed", err)
-			return err
-		}
+	if err := s.spineService.ValidateOperatorRequest(&info); err != nil {
+		return err
 	}
 
 	isBase := info.ChibiStance == CHIBI_STANCE_ENUM_BASE
@@ -224,18 +194,13 @@ func (s *SpineBridge) setInternalSpineOperator(
 	atlasFile := ""
 	pngFile := ""
 	skelFile := ""
-	spineData := assetMap.Get(info.OperatorId, info.Skin, isBase, isFront)
+	spineData := s.spineService.GetSpineData(info.OperatorId, info.Faction, info.Skin, isBase, isFront)
 	atlasFile = spineData.AtlasFilepath
 	pngFile = spineData.PngFilepath
 	skelFile = spineData.SkelFilepath
 	formatPathFn := func(path string) string {
 		return "/static/assets/" + strings.ReplaceAll(path, string(os.PathSeparator), "/")
 	}
-
-	// wandering := false
-	// if info.TargetPos.IsNone() {
-	// 	wandering = true
-	// }
 
 	data := map[string]interface{}{
 		"type_name":            SET_OPERATOR,
@@ -262,26 +227,7 @@ func (s *SpineBridge) setInternalSpineOperator(
 		}
 	}
 
-	// chatUser, ok := s.ChatUsers[UserName]
-	// if !ok {
-	// 	s.ChatUsers[UserName] = &ChatUser{
-	// 		UserName:        UserName,
-	// 		UserNameDisplay: userNameDisplay,
-	// 	}
-	// 	chatUser = s.ChatUsers[UserName]
-	// }
-	// chatUser.UserNameDisplay = userNameDisplay
-	// chatUser.CurrentOperator = info
 	return nil
-}
-
-func (s *SpineBridge) getOperatorIds(faction FactionEnum) ([]string, error) {
-	assetMap := s.Assets.getAssetMapFromFaction(faction)
-	operatorIds := make([]string, 0)
-	for operatorId := range assetMap.Data {
-		operatorIds = append(operatorIds, operatorId)
-	}
-	return operatorIds, nil
 }
 
 // Start Spine Client Interface functions
@@ -305,52 +251,6 @@ func (s *SpineBridge) SetOperator(req *SetOperatorRequest) (*SetOperatorResponse
 	}, nil
 }
 
-func (s *SpineBridge) GetOperator(req *GetOperatorRequest) (*GetOperatorResponse, error) {
-	assetMap := s.Assets.getAssetMapFromFaction(req.Faction)
-
-	operatorData, ok := assetMap.Data[req.OperatorId]
-	if !ok {
-		return nil, errors.New("No operator with id " + req.OperatorId + " is loaded")
-	}
-
-	skinDataMap := make(map[string]SkinData)
-	for skinName, skin := range operatorData.Skins {
-
-		baseMapping := make(map[ChibiFacingEnum]AnimationsList, 0)
-		battleMapping := make(map[ChibiFacingEnum]AnimationsList, 0)
-		for facing, spineData := range skin.Base {
-			baseMapping[facing] = spineData.Animations
-		}
-		for facing, spineData := range skin.Battle {
-			battleMapping[facing] = spineData.Animations
-		}
-
-		skinDataMap[skinName] = SkinData{
-			Stances: map[ChibiStanceEnum]FacingData{
-				CHIBI_STANCE_ENUM_BASE: {
-					Facings: baseMapping,
-				},
-				CHIBI_STANCE_ENUM_BATTLE: {
-					Facings: battleMapping,
-				},
-			},
-		}
-	}
-
-	canonicalName := s.Assets.getCommonNamesFromFaction(req.Faction).GetCanonicalName(req.OperatorId)
-
-	return &GetOperatorResponse{
-		SpineResponse: SpineResponse{
-			TypeName:   SET_OPERATOR,
-			ErrorMsg:   "",
-			StatusCode: 200,
-		},
-		OperatorId:   req.OperatorId,
-		OperatorName: canonicalName,
-		Skins:        skinDataMap,
-	}, nil
-}
-
 func (s *SpineBridge) RemoveOperator(r *RemoveOperatorRequest) (*RemoveOperatorResponse, error) {
 	successResp := &RemoveOperatorResponse{
 		SpineResponse: SpineResponse{
@@ -359,11 +259,6 @@ func (s *SpineBridge) RemoveOperator(r *RemoveOperatorRequest) (*RemoveOperatorR
 			StatusCode: 200,
 		},
 	}
-
-	// // We already don't have an entry for this user, so just return early
-	// if _, ok := s.ChatUsers[r.UserName]; !ok {
-	// 	return successResp, nil
-	// }
 
 	data := map[string]interface{}{
 		"type_name": REMOVE_OPERATOR,
@@ -382,134 +277,6 @@ func (s *SpineBridge) RemoveOperator(r *RemoveOperatorRequest) (*RemoveOperatorR
 
 	// delete(s.ChatUsers, r.UserName)
 	return successResp, nil
-}
-
-func (s *SpineBridge) GetOperatorIdFromName(name string, faction FactionEnum) (string, []string) {
-	commonNames := s.Assets.getCommonNamesFromFaction(faction)
-
-	if operatorId, ok := commonNames.IsMatch(name); ok {
-		return operatorId, nil
-	}
-
-	matches := commonNames.FindMatchs(name, 5)
-	humanMatches := make([]string, 0)
-	for _, match := range matches {
-		humanMatches = append(humanMatches, commonNames.operatorIdToNames[match][0])
-	}
-	return "", humanMatches
-}
-
-// func (s *SpineBridge) CurrentInfo(UserName string) (OperatorInfo, error) {
-// 	chatUser, ok := s.ChatUsers[UserName]
-// 	if !ok {
-// 		return *EmptyOperatorInfo(), NewUserNotFound("User not found: " + UserName)
-// 	}
-
-// 	return chatUser.CurrentOperator, nil
-// }
-
-func (s *SpineBridge) SetToDefault(broadcasterName string, opName string, details misc.InitialOperatorDetails) {
-	// if len(opName) == 0 {
-	// 	opName = "Amiya"
-	// }
-
-	// faction := FACTION_ENUM_OPERATOR
-	// opId, matches := s.GetOperatorIdFromName(opName, FACTION_ENUM_OPERATOR)
-	// if matches != nil {
-	// 	faction = FACTION_ENUM_ENEMY
-	// 	opId, matches = s.GetOperatorIdFromName(opName, FACTION_ENUM_ENEMY)
-	// }
-	// if matches != nil {
-	// 	log.Panic("Failed to get operator id", matches)
-	// }
-	// stance, err2 := ChibiStanceEnum_Parse(details.Stance)
-	// if err2 != nil {
-	// 	log.Panic("Failed to parse stance", err2)
-	// }
-
-	// opResp, err := s.GetOperator(&GetOperatorRequest{opId, faction})
-	// if err != nil {
-	// 	log.Panic("Failed to fetch operator info")
-	// }
-	// availableAnims := opResp.Skins[details.Skin].Stances[stance].Facings[CHIBI_FACING_ENUM_FRONT]
-	// availableAnims = FilterAnimations(availableAnims)
-	// availableSkins := opResp.GetSkinNames()
-
-	// opInfo := NewOperatorInfo(
-	// 	opResp.OperatorName,
-	// 	faction,
-	// 	opId,
-	// 	details.Skin,
-	// 	stance,
-	// 	CHIBI_FACING_ENUM_FRONT,
-	// 	availableSkins,
-	// 	availableAnims,
-	// 	1.0,
-	// 	misc.NewOption(misc.Vector2{X: details.PositionX, Y: 0.0}),
-	// 	ACTION_PLAY_ANIMATION,
-	// 	NewActionPlayAnimation(details.Animations),
-	// )
-
-	// s.ChatUsers = map[string]*ChatUser{
-	// 	broadcasterName: {
-	// 		UserName:        broadcasterName,
-	// 		UserNameDisplay: broadcasterName,
-	// 		CurrentOperator: opInfo,
-	// 	},
-	// }
-}
-
-func (s *SpineBridge) GetRandomOperator() (*OperatorInfo, error) {
-	operatorIds, err := s.getOperatorIds(FACTION_ENUM_OPERATOR)
-	if err != nil {
-		return nil, err
-	}
-
-	index := rand.Intn(len(operatorIds))
-	operatorId := operatorIds[index]
-
-	faction := FACTION_ENUM_OPERATOR
-	operatorData, err := s.GetOperator(&GetOperatorRequest{
-		OperatorId: operatorId,
-		Faction:    faction,
-	})
-	if err != nil {
-		return nil, err
-	}
-	chibiStance := CHIBI_STANCE_ENUM_BASE
-	skinName := DEFAULT_SKIN_NAME
-	stanceMap, ok := operatorData.Skins[skinName].Stances[chibiStance]
-	if !ok {
-		chibiStance = CHIBI_STANCE_ENUM_BATTLE
-	}
-	if len(stanceMap.Facings) == 0 {
-		chibiStance = CHIBI_STANCE_ENUM_BATTLE
-	}
-	facing := CHIBI_FACING_ENUM_FRONT
-	availableAnimations := operatorData.Skins[skinName].Stances[chibiStance].Facings[facing]
-	availableAnimations = FilterAnimations(availableAnimations)
-	availableSkins := operatorData.GetSkinNames()
-
-	commonNames := s.Assets.getCommonNamesFromFaction(faction)
-	operatorDisplayName := commonNames.GetCanonicalName(operatorId)
-
-	opInfo := NewOperatorInfo(
-		operatorDisplayName,
-		faction,
-		operatorId,
-		skinName,
-		chibiStance,
-		facing,
-		availableSkins,
-		availableAnimations,
-		1.0,
-		misc.EmptyOption[misc.Vector2](),
-		ACTION_PLAY_ANIMATION,
-		NewActionPlayAnimation(
-			[]string{GetDefaultAnimForChibiStance(chibiStance)},
-		),
-	)
-	return &opInfo, nil
 }
 
 // ----------------------------

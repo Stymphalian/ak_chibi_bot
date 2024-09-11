@@ -3,6 +3,7 @@ package chibi
 import (
 	"log"
 	"slices"
+	"time"
 
 	"github.com/Stymphalian/ak_chibi_bot/server/internal/misc"
 	"github.com/Stymphalian/ak_chibi_bot/server/internal/spine"
@@ -17,16 +18,25 @@ const (
 type ChibiActor struct {
 	ChatUsers map[string]*spine.ChatUser
 
-	client               spine.SpineClient
+	spineService *spine.SpineService
+
+	// TODO: Only used for removing? for now.
+	client spine.SpineClient
+
 	chatCommandProcessor ChatCommandProcessor
 	excludeNames         []string
 }
 
-func NewChibiActor(client spine.SpineClient, excludeNames []string) *ChibiActor {
+func NewChibiActor(
+	spineService *spine.SpineService,
+	client spine.SpineClient,
+	excludeNames []string,
+) *ChibiActor {
 	a := &ChibiActor{
 		ChatUsers:            make(map[string]*spine.ChatUser, 0),
 		client:               client,
-		chatCommandProcessor: ChatCommandProcessor{nil, client},
+		spineService:         spineService,
+		chatCommandProcessor: ChatCommandProcessor{nil, spineService, client},
 		excludeNames:         excludeNames,
 	}
 	a.chatCommandProcessor.chibiActor = a
@@ -61,7 +71,6 @@ func (c *ChibiActor) RemoveUserChibi(userName string) error {
 }
 
 func (c *ChibiActor) HasChibi(userName string) bool {
-	// _, err := c.client.CurrentInfo(userName)
 	_, err := c.CurrentInfo(userName)
 	if err != nil {
 		_, ok := err.(*spine.UserNotFound)
@@ -76,52 +85,8 @@ func (c *ChibiActor) SetToDefault(
 	opName string,
 	details misc.InitialOperatorDetails,
 ) {
-	if len(opName) == 0 {
-		opName = "Amiya"
-	}
-
-	faction := spine.FACTION_ENUM_OPERATOR
-	opId, matches := c.client.GetOperatorIdFromName(opName, spine.FACTION_ENUM_OPERATOR)
-	if matches != nil {
-		faction = spine.FACTION_ENUM_ENEMY
-		opId, matches = c.client.GetOperatorIdFromName(opName, spine.FACTION_ENUM_ENEMY)
-	}
-	if matches != nil {
-		log.Panic("Failed to get operator id", matches)
-	}
-	stance, err2 := spine.ChibiStanceEnum_Parse(details.Stance)
-	if err2 != nil {
-		log.Panic("Failed to parse stance", err2)
-	}
-
-	opResp, err := c.client.GetOperator(&spine.GetOperatorRequest{opId, faction})
-	if err != nil {
-		log.Panic("Failed to fetch operator info")
-	}
-	availableAnims := opResp.Skins[details.Skin].Stances[stance].Facings[spine.CHIBI_FACING_ENUM_FRONT]
-	availableAnims = spine.FilterAnimations(availableAnims)
-	availableSkins := opResp.GetSkinNames()
-
-	opInfo := spine.NewOperatorInfo(
-		opResp.OperatorName,
-		faction,
-		opId,
-		details.Skin,
-		stance,
-		spine.CHIBI_FACING_ENUM_FRONT,
-		availableSkins,
-		availableAnims,
-		1.0,
-		misc.NewOption(misc.Vector2{X: details.PositionX, Y: 0.0}),
-		spine.ACTION_PLAY_ANIMATION,
-		spine.NewActionPlayAnimation(details.Animations),
-	)
-	c.UpdateChatter(
-		broadcasterName,
-		broadcasterName,
-		&opInfo,
-	)
-	// c.client.SetToDefault(broadcasterName, opName, details)
+	opInfo := c.spineService.OperatorFromDefault(opName, details)
+	c.UpdateChatter(broadcasterName, broadcasterName, opInfo)
 }
 
 func (c *ChibiActor) HandleCommand(msg ChatMessage) (string, error) {
@@ -157,10 +122,11 @@ func (c *ChibiActor) UpdateChatter(
 ) {
 	chatUser, ok := c.ChatUsers[username]
 	if !ok {
-		c.ChatUsers[username] = &spine.ChatUser{
-			UserName:        username,
-			UserNameDisplay: usernameDisplay,
-		}
+		c.ChatUsers[username] = spine.NewChatUser(
+			username,
+			usernameDisplay,
+			time.Now(),
+		)
 		chatUser = c.ChatUsers[username]
 	}
 	chatUser.UserNameDisplay = usernameDisplay

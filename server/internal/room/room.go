@@ -14,6 +14,7 @@ type Room struct {
 
 	DefaultOperatorName   string
 	DefaultOperatorConfig misc.InitialOperatorDetails
+	SpineService          *spine.SpineService
 
 	// Displays (View)
 	// Communcations
@@ -27,6 +28,7 @@ func NewRoom(
 	channel string,
 	opName string,
 	opConfig misc.InitialOperatorDetails,
+	spineService *spine.SpineService,
 	spineBridge *spine.SpineBridge,
 	chibiActor *chibi.ChibiActor,
 	twitchBot *chatbot.TwitchBot,
@@ -35,6 +37,7 @@ func NewRoom(
 		ChannelName:           channel,
 		DefaultOperatorName:   opName,
 		DefaultOperatorConfig: opConfig,
+		SpineService:          spineService,
 		SpineBridge:           spineBridge,
 		ChibiActor:            chibiActor,
 		TwitchChat:            twitchBot,
@@ -84,7 +87,7 @@ func (r *Room) AddOperatorToRoom(
 	faction spine.FactionEnum,
 ) error {
 	// TODO: Leaky interface. Need to move this into a Service or ChibiActor
-	opInfo, err := r.SpineBridge.GetRandomOperator()
+	opInfo, err := r.SpineService.GetRandomOperator()
 	if err != nil {
 		return err
 	}

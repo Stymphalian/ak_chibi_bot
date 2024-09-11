@@ -13,8 +13,9 @@ import (
 )
 
 type ChatCommandProcessor struct {
-	chibiActor *ChibiActor
-	client     spine.SpineClient
+	chibiActor   *ChibiActor
+	spineService *spine.SpineService
+	client       spine.SpineClient
 }
 
 func (c *ChatCommandProcessor) HandleCommand(userName string, userNameDisplay string, trimmed string) (string, error) {
@@ -130,10 +131,7 @@ func (c *ChatCommandProcessor) validateUpdateSetDefaultOtherwise(update *spine.O
 		update.Faction = spine.FACTION_ENUM_OPERATOR
 	}
 
-	currentOp, err := c.client.GetOperator(&spine.GetOperatorRequest{
-		OperatorId: update.OperatorId,
-		Faction:    update.Faction,
-	})
+	currentOp, err := c.spineService.GetOperator(update.OperatorId, update.Faction)
 	if err != nil {
 		return errors.New("something went wrong please try again")
 	}
@@ -243,21 +241,7 @@ func (c *ChatCommandProcessor) UpdateChibi(username string, usernameDisplay stri
 		return nil
 	}
 
-	c.chibiActor.UpdateChatter(
-		username,
-		usernameDisplay,
-		update,
-	)
-	chatUser, ok := c.chibiActor.ChatUsers[username]
-	if !ok {
-		c.chibiActor.ChatUsers[username] = &spine.ChatUser{
-			UserName:        username,
-			UserNameDisplay: usernameDisplay,
-		}
-		chatUser = c.chibiActor.ChatUsers[username]
-	}
-	chatUser.UserNameDisplay = usernameDisplay
-	chatUser.CurrentOperator = *update
+	c.chibiActor.UpdateChatter(username, usernameDisplay, update)
 	return nil
 }
 
@@ -355,7 +339,7 @@ func (c *ChatCommandProcessor) setEnemy(args []string, current *spine.OperatorIn
 	trimmed := strings.Join(args[2:], " ")
 
 	mobName := strings.TrimSpace(trimmed)
-	operatorId, matches := c.client.GetOperatorIdFromName(mobName, spine.FACTION_ENUM_ENEMY)
+	operatorId, matches := c.spineService.GetOperatorIdFromName(mobName, spine.FACTION_ENUM_ENEMY)
 	if matches != nil {
 		return "", errors.New("")
 	}
@@ -443,17 +427,14 @@ func (c *ChatCommandProcessor) getWhoInfo(args []string, current *spine.Operator
 	chibiName := strings.Join(args[2:], " ")
 	log.Printf("Searching for %s\n", chibiName)
 
-	operatorId, operatorMatches := c.client.GetOperatorIdFromName(chibiName, spine.FACTION_ENUM_OPERATOR)
-	enemyId, enemyMatches := c.client.GetOperatorIdFromName(chibiName, spine.FACTION_ENUM_ENEMY)
+	operatorId, operatorMatches := c.spineService.GetOperatorIdFromName(chibiName, spine.FACTION_ENUM_OPERATOR)
+	enemyId, enemyMatches := c.spineService.GetOperatorIdFromName(chibiName, spine.FACTION_ENUM_ENEMY)
 
 	opMat := make([]string, 0)
 	if operatorMatches != nil {
 		opMat = append(opMat, operatorMatches...)
 	} else {
-		resp, err := c.client.GetOperator(&spine.GetOperatorRequest{
-			OperatorId: operatorId,
-			Faction:    spine.FACTION_ENUM_OPERATOR,
-		})
+		resp, err := c.spineService.GetOperator(operatorId, spine.FACTION_ENUM_OPERATOR)
 		if err != nil {
 			return "", nil
 		}
@@ -464,11 +445,7 @@ func (c *ChatCommandProcessor) getWhoInfo(args []string, current *spine.Operator
 	if enemyMatches != nil {
 		enemyMat = append(enemyMat, enemyMatches...)
 	} else {
-		resp, err := c.client.GetOperator(
-			&spine.GetOperatorRequest{
-				OperatorId: enemyId,
-				Faction:    spine.FACTION_ENUM_ENEMY,
-			})
+		resp, err := c.spineService.GetOperator(enemyId, spine.FACTION_ENUM_ENEMY)
 		if err != nil {
 			return "", nil
 		}
@@ -491,7 +468,7 @@ func (c *ChatCommandProcessor) setChibiModel(trimmed string, current *spine.Oper
 		return "", errMsg
 	}
 	humanOperatorName := strings.TrimSpace(splitStrs[1])
-	operatorId, matches := c.client.GetOperatorIdFromName(humanOperatorName, spine.FACTION_ENUM_OPERATOR)
+	operatorId, matches := c.spineService.GetOperatorIdFromName(humanOperatorName, spine.FACTION_ENUM_OPERATOR)
 	if matches != nil {
 		return "", errors.New("")
 	}
@@ -503,7 +480,7 @@ func (c *ChatCommandProcessor) setChibiModel(trimmed string, current *spine.Oper
 }
 
 func (c *ChatCommandProcessor) addRandomChibi(userName string, userNameDisplay string) (string, error) {
-	operatorInfo, err := c.client.GetRandomOperator()
+	operatorInfo, err := c.spineService.GetRandomOperator()
 	if err != nil {
 		return "", err
 	}
@@ -521,16 +498,7 @@ func (c *ChatCommandProcessor) addRandomChibi(userName string, userNameDisplay s
 	}
 
 	// TODO: consolidate
-	chatUser, ok := c.chibiActor.ChatUsers[userName]
-	if !ok {
-		c.chibiActor.ChatUsers[userName] = &spine.ChatUser{
-			UserName:        userName,
-			UserNameDisplay: userNameDisplay,
-		}
-		chatUser = c.chibiActor.ChatUsers[userName]
-	}
-	chatUser.UserNameDisplay = userNameDisplay
-	chatUser.CurrentOperator = *operatorInfo
+	c.chibiActor.UpdateChatter(userName, userNameDisplay, operatorInfo)
 	return "", err
 }
 
