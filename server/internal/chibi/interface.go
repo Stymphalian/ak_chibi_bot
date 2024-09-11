@@ -11,14 +11,19 @@ type ChatMessage struct {
 	Message         string
 }
 
+type ChatMessageHandler interface {
+	HandleMessage(msg ChatMessage) (string, error)
+}
+
 type ChibiActorInterface interface {
+	ChatMessageHandler
 	GiveChibiToUser(userName string, userNameDisplay string) error
 	RemoveUserChibi(userName string) error
 	HasChibi(userName string) bool
-	SetToDefault(broadcasterName string, opName string, details misc.InitialOperatorDetails)
-	HandleCommand(msg ChatMessage) (string, error)
 
 	// TODO: Leaky interface
+	SetToDefault(broadcasterName string, opName string, details misc.InitialOperatorDetails)
 	UpdateChibi(username string, userDisplayName string, opInfo *spine.OperatorInfo) error
 	CurrentInfo(userName string) (spine.OperatorInfo, error)
+	UpdateChatter(userName string, usernameDisplay string, update *spine.OperatorInfo)
 }

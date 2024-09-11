@@ -11,19 +11,15 @@ import (
 	"github.com/gempir/go-twitch-irc/v4"
 )
 
-type ChannelUser struct {
-	User string
-}
-
 type TwitchBot struct {
-	chibiActor                  chibi.ChibiActorInterface
+	chatMessageHandler          chibi.ChatMessageHandler
 	channelName                 string
 	garbageCollectionPeriodMins int
 	tc                          *twitch.Client
 }
 
 func NewTwitchBot(
-	chibiActor chibi.ChibiActorInterface,
+	chatMessageHandler chibi.ChatMessageHandler,
 	twitchChannelName string,
 	twitchBotName string,
 	twitchAccessToken string,
@@ -41,7 +37,7 @@ func NewTwitchBot(
 		"oauth:"+accessToken,
 	)
 	self := &TwitchBot{
-		chibiActor:                  chibiActor,
+		chatMessageHandler:          chatMessageHandler,
 		channelName:                 twitchChannelName,
 		garbageCollectionPeriodMins: garbageCollectionPeriodMins,
 		tc:                          tc,
@@ -64,22 +60,16 @@ func (t *TwitchBot) HandlePrivateMessage(m twitch.PrivateMessage) {
 	if len(trimmed) == 0 {
 		return
 	}
-
-	if !t.chibiActor.HasChibi(m.User.Name) {
-		t.chibiActor.GiveChibiToUser(m.User.Name, m.User.DisplayName)
+	if trimmed[0] == '!' {
+		log.Printf("PRIVMSG message %v\n", m)
 	}
-	if trimmed[0] != '!' {
-		return
-	}
-	log.Printf("PRIVMSG message %v\n", m)
 
 	chatMessage := chibi.ChatMessage{
 		Username:        m.User.Name,
 		UserDisplayName: m.User.DisplayName,
 		Message:         trimmed,
 	}
-
-	outputMsg, err := t.chibiActor.HandleCommand(chatMessage)
+	outputMsg, err := t.chatMessageHandler.HandleMessage(chatMessage)
 	if len(outputMsg) > 0 {
 		t.tc.Say(m.Channel, outputMsg)
 	}
@@ -88,7 +78,7 @@ func (t *TwitchBot) HandlePrivateMessage(m twitch.PrivateMessage) {
 	}
 }
 
-func (t *TwitchBot) ReadPump() error {
+func (t *TwitchBot) ReadLoop() error {
 	t.tc.OnNoticeMessage(func(m twitch.NoticeMessage) {
 		log.Printf("NOTICE message %v\n", m)
 	})
@@ -97,7 +87,7 @@ func (t *TwitchBot) ReadPump() error {
 	})
 	t.tc.OnUserPartMessage(func(m twitch.UserPartMessage) {
 		log.Printf("PART message %v\n", m)
-		t.chibiActor.RemoveUserChibi(m.User)
+		// t.chatMessageHandler.RemoveUserChibi(m.User)
 	})
 	t.tc.OnPrivateMessage(func(m twitch.PrivateMessage) {
 		// log.Printf("PRIVMSG message %v\n", m)

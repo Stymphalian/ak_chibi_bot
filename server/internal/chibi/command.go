@@ -13,12 +13,16 @@ import (
 )
 
 type ChatCommandProcessor struct {
-	chibiActor   *ChibiActor
+	chibiActor   ChibiActorInterface
 	spineService *spine.SpineService
 	client       spine.SpineClient
 }
 
-func (c *ChatCommandProcessor) HandleCommand(userName string, userNameDisplay string, trimmed string) (string, error) {
+type ActorCommand interface {
+	UpdateActor(c *ChibiActor) error
+}
+
+func (c *ChatCommandProcessor) HandleMessage(userName string, userNameDisplay string, trimmed string) (string, error) {
 	if !strings.HasPrefix(trimmed, "!chibi") {
 		return "", nil
 	}
@@ -50,7 +54,6 @@ func (c *ChatCommandProcessor) HandleCommand(userName string, userNameDisplay st
 	// !chibi admin <username> "!chibi command"
 	// !chibi speed 0.1
 
-	// current, err := c.client.CurrentInfo(userName)
 	current, err := c.chibiActor.CurrentInfo(userName)
 	if err != nil {
 		switch err.(type) {
@@ -126,109 +129,8 @@ func (c *ChatCommandProcessor) HandleCommand(userName string, userNameDisplay st
 	return msg, err
 }
 
-func (c *ChatCommandProcessor) validateUpdateSetDefaultOtherwise(update *spine.OperatorInfo) error {
-	if len(update.Faction) == 0 {
-		update.Faction = spine.FACTION_ENUM_OPERATOR
-	}
-
-	currentOp, err := c.spineService.GetOperator(update.OperatorId, update.Faction)
-	if err != nil {
-		return errors.New("something went wrong please try again")
-	}
-	update.OperatorDisplayName = currentOp.OperatorName
-
-	if _, ok := currentOp.Skins[update.Skin]; !ok {
-		update.Skin = spine.DEFAULT_SKIN_NAME
-	}
-	facings := currentOp.Skins[update.Skin].Stances[update.ChibiStance]
-	if len(facings.Facings) == 0 {
-		switch update.ChibiStance {
-		case spine.CHIBI_STANCE_ENUM_BASE:
-			update.ChibiStance = spine.CHIBI_STANCE_ENUM_BATTLE
-		case spine.CHIBI_STANCE_ENUM_BATTLE:
-			update.ChibiStance = spine.CHIBI_STANCE_ENUM_BASE
-		default:
-			update.ChibiStance = spine.CHIBI_STANCE_ENUM_BASE
-		}
-	}
-	if _, ok := currentOp.Skins[update.Skin].Stances[update.ChibiStance].Facings[update.Facing]; !ok {
-		update.Facing = spine.CHIBI_FACING_ENUM_FRONT
-	}
-
-	update.Skins = currentOp.GetSkinNames()
-
-	// Validate animations
-	update.AvailableAnimations = currentOp.Skins[update.Skin].Stances[update.ChibiStance].Facings[update.Facing]
-	update.AvailableAnimations = spine.FilterAnimations(update.AvailableAnimations)
-
-	// Validate animationSpeed
-	if update.AnimationSpeed == 0 {
-		update.AnimationSpeed = DEFAULT_ANIMATION_SPEED
-	}
-	update.AnimationSpeed = misc.ClampF64(
-		update.AnimationSpeed,
-		MIN_ANIMATION_SPEED,
-		MAX_ANIMATION_SPEED,
-	)
-
-	// Validate startPos
-	if update.StartPos.IsSome() {
-		vec := update.StartPos.Unwrap()
-		if vec.X < 0 || vec.X > 1.0 || vec.Y < 0 || vec.Y > 1.0 {
-			update.StartPos = misc.NewOption(
-				misc.Vector2{
-					X: misc.ClampF64(vec.X, 0, 1.0),
-					Y: misc.ClampF64(vec.Y, 0, 1.0),
-				},
-			)
-		}
-	}
-
-	// Validate actions
-	switch update.CurrentAction {
-	case spine.ACTION_PLAY_ANIMATION:
-		update.Action.Animations = getValidAnimations(
-			update.AvailableAnimations,
-			update.Action.Animations,
-			spine.GetDefaultAnimForChibiStance(update.ChibiStance),
-		)
-	case spine.ACTION_WANDER:
-		update.Action.WanderAnimation = getValidAnimations(
-			update.AvailableAnimations,
-			[]string{update.Action.WanderAnimation},
-			spine.GetDefaultAnimForChibiStance(update.ChibiStance),
-		)[0]
-	case spine.ACTION_WALK_TO:
-		if update.Action.TargetPos.IsNone() {
-			update.Action.TargetPos = misc.NewOption(misc.Vector2{X: 0.5, Y: 0.5})
-		} else {
-			vec := update.Action.TargetPos.Unwrap()
-			update.Action.TargetPos = misc.NewOption(
-				misc.Vector2{
-					X: misc.ClampF64(vec.X, 0, 1.0),
-					Y: misc.ClampF64(vec.Y, 0, 1.0),
-				},
-			)
-			availableAnimations := update.AvailableAnimations
-			defaultAnimation := spine.GetDefaultAnimForChibiStance(update.ChibiStance)
-			update.Action.WalkToAnimation = getValidAnimations(
-				availableAnimations,
-				[]string{update.Action.WalkToAnimation},
-				defaultAnimation,
-			)[0]
-			update.Action.WalkToFinalAnimation = getValidAnimations(
-				availableAnimations,
-				[]string{update.Action.WalkToFinalAnimation},
-				defaultAnimation,
-			)[0]
-		}
-	}
-
-	return nil
-}
-
 func (c *ChatCommandProcessor) UpdateChibi(username string, usernameDisplay string, update *spine.OperatorInfo) error {
-	c.validateUpdateSetDefaultOtherwise(update)
+	c.spineService.ValidateUpdateSetDefaultOtherwise(update)
 
 	_, err := c.client.SetOperator(
 		&spine.SetOperatorRequest{
@@ -268,7 +170,7 @@ func (c *ChatCommandProcessor) setSkin(args []string, current *spine.OperatorInf
 		return "", errors.New("")
 	}
 	current.Skin = skinName
-	current.AnimationSpeed = DEFAULT_ANIMATION_SPEED
+	current.AnimationSpeed = spine.DEFAULT_ANIMATION_SPEED
 	return "", nil
 }
 
@@ -311,7 +213,7 @@ func (c *ChatCommandProcessor) setStance(args []string, current *spine.OperatorI
 		return "", errors.New("try something like !chibi stance battle")
 	}
 	current.ChibiStance = stance
-	current.AnimationSpeed = DEFAULT_ANIMATION_SPEED
+	current.AnimationSpeed = spine.DEFAULT_ANIMATION_SPEED
 	return "", nil
 }
 
@@ -327,7 +229,7 @@ func (c *ChatCommandProcessor) setFacing(args []string, current *spine.OperatorI
 		return "", errors.New("base chibi's can't face backwards. Try setting to battle stance first")
 	}
 	current.Facing = facing
-	current.AnimationSpeed = DEFAULT_ANIMATION_SPEED
+	current.AnimationSpeed = spine.DEFAULT_ANIMATION_SPEED
 	return "", nil
 }
 
@@ -345,7 +247,7 @@ func (c *ChatCommandProcessor) setEnemy(args []string, current *spine.OperatorIn
 	}
 	current.OperatorId = operatorId
 	current.Faction = spine.FACTION_ENUM_ENEMY
-	current.AnimationSpeed = DEFAULT_ANIMATION_SPEED
+	current.AnimationSpeed = spine.DEFAULT_ANIMATION_SPEED
 
 	return "", nil
 }
@@ -374,7 +276,7 @@ func (c *ChatCommandProcessor) setWalk(args []string, current *spine.OperatorInf
 	}
 	current.CurrentAction = spine.ACTION_WANDER
 	current.Action = spine.NewActionWander(moveAnimation)
-	current.AnimationSpeed = DEFAULT_ANIMATION_SPEED
+	current.AnimationSpeed = spine.DEFAULT_ANIMATION_SPEED
 
 	if len(args) == 3 {
 		errMsg := errors.New("try something like !chibi walk 0.45")
@@ -399,7 +301,7 @@ func (c *ChatCommandProcessor) setWalk(args []string, current *spine.OperatorInf
 			moveAnimation,
 			animationAfterStance,
 		)
-		current.AnimationSpeed = DEFAULT_ANIMATION_SPEED
+		current.AnimationSpeed = spine.DEFAULT_ANIMATION_SPEED
 	}
 	return "", nil
 }
@@ -412,7 +314,7 @@ func (c *ChatCommandProcessor) setAnimationSpeed(args []string, current *spine.O
 	if err != nil {
 		return "", errors.New("try something like !chibi speed 1.5")
 	}
-	if animationSpeed <= 0 || animationSpeed > MAX_ANIMATION_SPEED {
+	if animationSpeed <= 0 || animationSpeed > spine.MAX_ANIMATION_SPEED {
 		return "", errors.New("try something like !chibi speed 2.0")
 	}
 	current.AnimationSpeed = animationSpeed
@@ -475,7 +377,7 @@ func (c *ChatCommandProcessor) setChibiModel(trimmed string, current *spine.Oper
 
 	current.OperatorId = operatorId
 	current.Faction = spine.FACTION_ENUM_OPERATOR
-	current.AnimationSpeed = DEFAULT_ANIMATION_SPEED
+	current.AnimationSpeed = spine.DEFAULT_ANIMATION_SPEED
 	return "", nil
 }
 
@@ -503,7 +405,6 @@ func (c *ChatCommandProcessor) addRandomChibi(userName string, userNameDisplay s
 }
 
 func (c *ChatCommandProcessor) getChibiInfo(userName string, subInfoName string) (string, error) {
-	// current, err := c.client.CurrentInfo(userName)
 	current, err := c.chibiActor.CurrentInfo(userName)
 	if err != nil {
 		return "", nil
@@ -529,21 +430,4 @@ func (c *ChatCommandProcessor) getChibiInfo(userName string, subInfoName string)
 		return "", errors.New("incorrect usage: !chibi <skins|anims|info>")
 	}
 	return msg, nil
-}
-
-func getValidAnimations(availableAnimations []string, actionAnimations []string, defaultAnim string) []string {
-	for _, anim := range actionAnimations {
-		if !slices.Contains(availableAnimations, anim) {
-			actionAnimations = []string{defaultAnim}
-			break
-		}
-	}
-	// If it still doesn't exist then just choose one randomly
-	for _, anim := range actionAnimations {
-		if !slices.Contains(availableAnimations, anim) {
-			actionAnimations = []string{availableAnimations[0]}
-			break
-		}
-	}
-	return actionAnimations
 }

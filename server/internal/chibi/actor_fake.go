@@ -9,17 +9,20 @@ import (
 )
 
 type FakeChibiActor struct {
-	Users map[string]string
+	Users map[string]spine.OperatorInfo
 }
 
 func NewFakeChibiActor() *FakeChibiActor {
 	return &FakeChibiActor{
-		Users: make(map[string]string, 0),
+		Users: make(map[string]spine.OperatorInfo, 0),
 	}
 }
 
 func (f *FakeChibiActor) GiveChibiToUser(userName string, userNameDisplay string) error {
-	f.Users[userName] = "Chibi"
+	opInfo := *spine.EmptyOperatorInfo()
+	opInfo.OperatorId = userName
+	opInfo.OperatorDisplayName = userName
+	f.Users[userName] = opInfo
 	return nil
 }
 
@@ -34,27 +37,44 @@ func (f *FakeChibiActor) HasChibi(userName string) bool {
 }
 
 func (f *FakeChibiActor) SetToDefault(broadcasterName string, opName string, details misc.InitialOperatorDetails) {
-	f.Users[broadcasterName] = "Chibi"
+	opInfo := f.Users[broadcasterName]
+	opInfo.OperatorId = "DefaultChibi"
+	opInfo.OperatorDisplayName = "DefaultChibi"
+	f.Users[broadcasterName] = opInfo
+	// f.Users[broadcasterName].OperatorId = "Chibi"
 }
 
-func (f *FakeChibiActor) HandleCommand(msg ChatMessage) (string, error) {
+func (f *FakeChibiActor) HandleMessage(msg ChatMessage) (string, error) {
 	if strings.HasPrefix(msg.Message, "!") {
-		f.Users[msg.Username] = msg.Message
+		opInfo := *spine.EmptyOperatorInfo()
+		opInfo.OperatorId = msg.Message
+		f.Users[msg.Username] = opInfo
 		return "valid", nil
 	} else {
-		f.Users[msg.Username] = "Invalid"
+		opInfo := *spine.EmptyOperatorInfo()
+		opInfo.OperatorId = "Invalid"
+		f.Users[msg.Username] = opInfo
 		return "invalid", errors.New("Error message")
 	}
 }
 
 func (f *FakeChibiActor) UpdateChibi(username string, userDisplayName string, opInfo *spine.OperatorInfo) error {
-	f.Users[username] = "Updated"
+	f.Users[username] = *opInfo
 	return nil
 }
 
 func (f *FakeChibiActor) CurrentInfo(userName string) (spine.OperatorInfo, error) {
-	// chatUser, ok := c.ChatUsers[userName]
-	// if !ok {
-	return *spine.EmptyOperatorInfo(), spine.NewUserNotFound("User not found: " + userName)
-	// }
+	if _, ok := f.Users[userName]; !ok {
+		return *spine.EmptyOperatorInfo(), spine.NewUserNotFound("User not found: " + userName)
+	} else {
+		return f.Users[userName], nil
+	}
+}
+
+func (f *FakeChibiActor) UpdateChatter(
+	username string,
+	usernameDisplay string,
+	update *spine.OperatorInfo,
+) {
+	f.Users[username] = *update
 }

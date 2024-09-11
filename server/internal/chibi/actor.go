@@ -9,18 +9,12 @@ import (
 	"github.com/Stymphalian/ak_chibi_bot/server/internal/spine"
 )
 
-const (
-	MIN_ANIMATION_SPEED     = 0.1
-	DEFAULT_ANIMATION_SPEED = 1.0
-	MAX_ANIMATION_SPEED     = 5.0
-)
-
 type ChibiActor struct {
 	spineService         *spine.SpineService
 	ChatUsers            map[string]*spine.ChatUser
 	LastChatterTime      time.Time
 	client               spine.SpineClient
-	chatCommandProcessor ChatCommandProcessor
+	chatCommandProcessor *ChatCommandProcessor
 	excludeNames         []string
 }
 
@@ -30,14 +24,13 @@ func NewChibiActor(
 	excludeNames []string,
 ) *ChibiActor {
 	a := &ChibiActor{
-		spineService:         spineService,
-		ChatUsers:            make(map[string]*spine.ChatUser, 0),
-		LastChatterTime:      time.Now(),
-		client:               client,
-		chatCommandProcessor: ChatCommandProcessor{nil, spineService, client},
-		excludeNames:         excludeNames,
+		spineService:    spineService,
+		ChatUsers:       make(map[string]*spine.ChatUser, 0),
+		LastChatterTime: time.Now(),
+		client:          client,
+		excludeNames:    excludeNames,
 	}
-	a.chatCommandProcessor.chibiActor = a
+	a.chatCommandProcessor = &ChatCommandProcessor{a, spineService, client}
 	return a
 }
 
@@ -80,6 +73,7 @@ func (c *ChibiActor) HasChibi(userName string) bool {
 }
 
 // TODO: Move this to command processor?
+// TODO: Leaking operatorDetails
 func (c *ChibiActor) SetToDefault(
 	broadcasterName string,
 	opName string,
@@ -89,8 +83,16 @@ func (c *ChibiActor) SetToDefault(
 	c.UpdateChatter(broadcasterName, broadcasterName, opInfo)
 }
 
-func (c *ChibiActor) HandleCommand(msg ChatMessage) (string, error) {
-	return c.chatCommandProcessor.HandleCommand(
+func (c *ChibiActor) HandleMessage(msg ChatMessage) (string, error) {
+	if !c.HasChibi(msg.Username) {
+		c.GiveChibiToUser(msg.Username, msg.UserDisplayName)
+	}
+	if msg.Message[0] != '!' {
+		return "", nil
+	}
+	c.ChatUsers[msg.Username].LastChatTime = time.Now()
+
+	return c.chatCommandProcessor.HandleMessage(
 		msg.Username,
 		msg.UserDisplayName,
 		msg.Message,
@@ -130,5 +132,6 @@ func (c *ChibiActor) UpdateChatter(
 		chatUser = c.ChatUsers[username]
 	}
 	chatUser.UserNameDisplay = usernameDisplay
+	chatUser.LastChatTime = time.Now()
 	chatUser.CurrentOperator = *update
 }

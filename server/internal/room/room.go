@@ -20,16 +20,16 @@ type RoomConfig struct {
 	InactiveRoomPeriodMins      int
 }
 
-// Displays (View)
-// Communcations
-// Actors (chatters) (Model)
+// View - spineBridge
+// Model - chibiActor
+// View-Model/Controller - twitchChat
 type Room struct {
 	SpineService *spine.SpineService
 
 	config      RoomConfig
-	SpineBridge *spine.SpineBridge
-	ChibiActor  *chibi.ChibiActor
-	TwitchChat  *chatbot.TwitchBot
+	spineBridge *spine.SpineBridge
+	chibiActor  *chibi.ChibiActor
+	twitchChat  *chatbot.TwitchBot
 }
 
 func NewRoom(
@@ -42,11 +42,11 @@ func NewRoom(
 	r := &Room{
 		config:       *roomConfig,
 		SpineService: spineService,
-		SpineBridge:  spineBridge,
-		ChibiActor:   chibiActor,
-		TwitchChat:   twitchBot,
+		spineBridge:  spineBridge,
+		chibiActor:   chibiActor,
+		twitchChat:   twitchBot,
 	}
-	r.ChibiActor.SetToDefault(
+	r.chibiActor.SetToDefault(
 		r.config.ChannelName,
 		r.config.DefaultOperatorName,
 		r.config.DefaultOperatorConfig)
@@ -58,19 +58,19 @@ func (r *Room) GetChannelName() string {
 }
 
 func (r *Room) GetLastChatterTime() time.Time {
-	return r.ChibiActor.LastChatterTime
+	return r.chibiActor.LastChatterTime
 }
 
 func (r *Room) Close() error {
 	log.Println("Closing room ", r.config.ChannelName)
 	// Disconnect the twitch chat
-	err := r.TwitchChat.Close()
+	err := r.twitchChat.Close()
 	if err != nil {
 		return err
 	}
 
 	// Disconnect all websockets
-	err = r.SpineBridge.Close()
+	err = r.spineBridge.Close()
 	if err != nil {
 		return err
 	}
@@ -81,14 +81,14 @@ func (r *Room) Close() error {
 func (r *Room) garbageCollectOldChibis() {
 	log.Printf("Garbage collecting old chibis from room %s", r.config.ChannelName)
 	interval := time.Duration(r.config.GarbageCollectionPeriodMins) * time.Minute
-	for username, chatUser := range r.ChibiActor.ChatUsers {
+	for username, chatUser := range r.chibiActor.ChatUsers {
 		if username == r.config.ChannelName {
 			// Skip removing the broadcaster's chibi
 			continue
 		}
 		if !chatUser.IsActive(interval) {
 			log.Println("Removing chibi for", username)
-			r.ChibiActor.RemoveUserChibi(username)
+			r.chibiActor.RemoveUserChibi(username)
 		}
 	}
 }
@@ -105,7 +105,7 @@ func (r *Room) Run() {
 		defer stopTimer()
 	}
 
-	err := r.TwitchChat.ReadPump()
+	err := r.twitchChat.ReadLoop()
 	if err != nil {
 		log.Printf("Room %s run error=", err)
 	}
@@ -114,7 +114,7 @@ func (r *Room) Run() {
 
 func (r *Room) GetChatters() []spine.ChatUser {
 	chatters := make([]spine.ChatUser, 0)
-	for _, chatter := range r.ChibiActor.ChatUsers {
+	for _, chatter := range r.chibiActor.ChatUsers {
 		chatters = append(chatters, *chatter)
 	}
 	return chatters
@@ -134,7 +134,7 @@ func (r *Room) AddOperatorToRoom(
 	opInfo.OperatorId = operatorId
 	opInfo.Faction = faction
 
-	err = r.ChibiActor.UpdateChibi(username, usernameDisplay, opInfo)
+	err = r.chibiActor.UpdateChibi(username, usernameDisplay, opInfo)
 	if err != nil {
 		return err
 	}
@@ -144,27 +144,27 @@ func (r *Room) AddOperatorToRoom(
 func (s *Room) AddWebsocketConnection(w http.ResponseWriter, r *http.Request) error {
 	// TODO: Maybe just pass in the map directly
 	chatters := make([]*spine.ChatUser, 0)
-	for _, chatUser := range s.ChibiActor.ChatUsers {
+	for _, chatUser := range s.chibiActor.ChatUsers {
 		chatters = append(chatters, chatUser)
 	}
-	return s.SpineBridge.AddWebsocketConnection(w, r, chatters)
+	return s.spineBridge.AddWebsocketConnection(w, r, chatters)
 }
 
 func (r *Room) IsActive(period time.Duration) bool {
-	return time.Since(r.ChibiActor.LastChatterTime) <= period
+	return time.Since(r.chibiActor.LastChatterTime) <= period
 }
 
 func (r *Room) NumConnectedClients() int {
-	return len(r.SpineBridge.WebSocketConnections)
+	return len(r.spineBridge.WebSocketConnections)
 }
 
 func (r *Room) ForEachChatter(callback func(chatUser *spine.ChatUser)) {
-	for _, chatUser := range r.ChibiActor.ChatUsers {
+	for _, chatUser := range r.chibiActor.ChatUsers {
 		callback(chatUser)
 	}
 }
 
 // TODO: Leaky interface. Exposing all the ChibiActor methods through the Room
 func (r *Room) RemoveUserChibi(username string) error {
-	return r.ChibiActor.RemoveUserChibi(username)
+	return r.chibiActor.RemoveUserChibi(username)
 }

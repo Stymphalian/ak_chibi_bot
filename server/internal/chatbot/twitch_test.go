@@ -20,8 +20,6 @@ func setupTest() (*TwitchBot, *chibi.FakeChibiActor) {
 	return twitchBot, fakeChibiActor
 }
 
-// Very weird dependency on ChibiActors
-
 func TestHandlePrivateMessageNormalMessage(t *testing.T) {
 	assert := assert.New(t)
 	twitchBot, fakeChibiActor := setupTest()
@@ -32,7 +30,7 @@ func TestHandlePrivateMessageNormalMessage(t *testing.T) {
 	}
 	twitchBot.HandlePrivateMessage(testMsg)
 
-	assert.Equal("Chibi", fakeChibiActor.Users["user"])
+	assert.Equal("Invalid", fakeChibiActor.Users["user"].OperatorId)
 }
 
 func TestHandlePrivateMessageChibiCommand(t *testing.T) {
@@ -45,12 +43,12 @@ func TestHandlePrivateMessageChibiCommand(t *testing.T) {
 	}
 	twitchBot.HandlePrivateMessage(testMsg)
 
-	assert.Equal("!chibi help", fakeChibiActor.Users["user"])
+	assert.Equal("!chibi help", fakeChibiActor.Users["user"].OperatorId)
 }
 
 func TestReadPumpShouldShouldFailToConnectDueToInvalidAccessToken(t *testing.T) {
 	twitchBot, _ := setupTest()
-	err := twitchBot.ReadPump()
+	err := twitchBot.ReadLoop()
 	if !assert.Error(t, err) {
 		assert.Fail(t, "Read pump should have failed to connect")
 	}

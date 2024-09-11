@@ -6,6 +6,12 @@ import (
 	"github.com/Stymphalian/ak_chibi_bot/server/internal/misc"
 )
 
+const (
+	MIN_ANIMATION_SPEED     = 0.1
+	DEFAULT_ANIMATION_SPEED = 1.0
+	MAX_ANIMATION_SPEED     = 5.0
+)
+
 type OperatorInfo struct {
 	OperatorDisplayName string                    `json:"operator_display_name"`
 	Faction             FactionEnum               `json:"faction"`

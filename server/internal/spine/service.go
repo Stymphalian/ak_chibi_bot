@@ -4,6 +4,7 @@ import (
 	"errors"
 	"log"
 	"math/rand"
+	"slices"
 
 	"github.com/Stymphalian/ak_chibi_bot/server/internal/misc"
 )
@@ -29,6 +30,107 @@ func (s *SpineService) ValidateOperatorRequest(info *OperatorInfo) error {
 		log.Println("Validate setOperator request failed", err)
 		return err
 	}
+	return nil
+}
+
+func (c *SpineService) ValidateUpdateSetDefaultOtherwise(update *OperatorInfo) error {
+	if len(update.Faction) == 0 {
+		update.Faction = FACTION_ENUM_OPERATOR
+	}
+
+	currentOp, err := c.GetOperator(update.OperatorId, update.Faction)
+	if err != nil {
+		return errors.New("something went wrong please try again")
+	}
+	update.OperatorDisplayName = currentOp.OperatorName
+
+	if _, ok := currentOp.Skins[update.Skin]; !ok {
+		update.Skin = DEFAULT_SKIN_NAME
+	}
+	facings := currentOp.Skins[update.Skin].Stances[update.ChibiStance]
+	if len(facings.Facings) == 0 {
+		switch update.ChibiStance {
+		case CHIBI_STANCE_ENUM_BASE:
+			update.ChibiStance = CHIBI_STANCE_ENUM_BATTLE
+		case CHIBI_STANCE_ENUM_BATTLE:
+			update.ChibiStance = CHIBI_STANCE_ENUM_BASE
+		default:
+			update.ChibiStance = CHIBI_STANCE_ENUM_BASE
+		}
+	}
+	if _, ok := currentOp.Skins[update.Skin].Stances[update.ChibiStance].Facings[update.Facing]; !ok {
+		update.Facing = CHIBI_FACING_ENUM_FRONT
+	}
+
+	update.Skins = currentOp.GetSkinNames()
+
+	// Validate animations
+	update.AvailableAnimations = currentOp.Skins[update.Skin].Stances[update.ChibiStance].Facings[update.Facing]
+	update.AvailableAnimations = FilterAnimations(update.AvailableAnimations)
+
+	// Validate animationSpeed
+	if update.AnimationSpeed == 0 {
+		update.AnimationSpeed = DEFAULT_ANIMATION_SPEED
+	}
+	update.AnimationSpeed = misc.ClampF64(
+		update.AnimationSpeed,
+		MIN_ANIMATION_SPEED,
+		MAX_ANIMATION_SPEED,
+	)
+
+	// Validate startPos
+	if update.StartPos.IsSome() {
+		vec := update.StartPos.Unwrap()
+		if vec.X < 0 || vec.X > 1.0 || vec.Y < 0 || vec.Y > 1.0 {
+			update.StartPos = misc.NewOption(
+				misc.Vector2{
+					X: misc.ClampF64(vec.X, 0, 1.0),
+					Y: misc.ClampF64(vec.Y, 0, 1.0),
+				},
+			)
+		}
+	}
+
+	// Validate actions
+	switch update.CurrentAction {
+	case ACTION_PLAY_ANIMATION:
+		update.Action.Animations = getValidAnimations(
+			update.AvailableAnimations,
+			update.Action.Animations,
+			GetDefaultAnimForChibiStance(update.ChibiStance),
+		)
+	case ACTION_WANDER:
+		update.Action.WanderAnimation = getValidAnimations(
+			update.AvailableAnimations,
+			[]string{update.Action.WanderAnimation},
+			GetDefaultAnimForChibiStance(update.ChibiStance),
+		)[0]
+	case ACTION_WALK_TO:
+		if update.Action.TargetPos.IsNone() {
+			update.Action.TargetPos = misc.NewOption(misc.Vector2{X: 0.5, Y: 0.5})
+		} else {
+			vec := update.Action.TargetPos.Unwrap()
+			update.Action.TargetPos = misc.NewOption(
+				misc.Vector2{
+					X: misc.ClampF64(vec.X, 0, 1.0),
+					Y: misc.ClampF64(vec.Y, 0, 1.0),
+				},
+			)
+			availableAnimations := update.AvailableAnimations
+			defaultAnimation := GetDefaultAnimForChibiStance(update.ChibiStance)
+			update.Action.WalkToAnimation = getValidAnimations(
+				availableAnimations,
+				[]string{update.Action.WalkToAnimation},
+				defaultAnimation,
+			)[0]
+			update.Action.WalkToFinalAnimation = getValidAnimations(
+				availableAnimations,
+				[]string{update.Action.WalkToFinalAnimation},
+				defaultAnimation,
+			)[0]
+		}
+	}
+
 	return nil
 }
 
@@ -200,4 +302,21 @@ func (s *SpineService) OperatorFromDefault(
 		NewActionPlayAnimation(details.Animations),
 	)
 	return &opInfo
+}
+
+func getValidAnimations(availableAnimations []string, actionAnimations []string, defaultAnim string) []string {
+	for _, anim := range actionAnimations {
+		if !slices.Contains(availableAnimations, anim) {
+			actionAnimations = []string{defaultAnim}
+			break
+		}
+	}
+	// If it still doesn't exist then just choose one randomly
+	for _, anim := range actionAnimations {
+		if !slices.Contains(availableAnimations, anim) {
+			actionAnimations = []string{availableAnimations[0]}
+			break
+		}
+	}
+	return actionAnimations
 }
