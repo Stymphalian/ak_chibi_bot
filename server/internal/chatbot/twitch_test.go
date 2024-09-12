@@ -45,6 +45,19 @@ func TestHandlePrivateMessageChibiCommand(t *testing.T) {
 	assert.Equal("!chibi help", fakeChibiActor.Users["user"].OperatorId)
 }
 
+func TestHandlePrivateMessageChibiCommandWithError(t *testing.T) {
+	assert := assert.New(t)
+	twitchBot, fakeChibiActor := setupTest()
+
+	testMsg := twitch.PrivateMessage{
+		User:    twitch.User{Name: "user"},
+		Message: "!chibi help",
+	}
+	twitchBot.HandlePrivateMessage(testMsg)
+
+	assert.Equal("!chibi help", fakeChibiActor.Users["user"].OperatorId)
+}
+
 func TestReadPumpShouldShouldFailToConnectDueToInvalidAccessToken(t *testing.T) {
 	twitchBot, _ := setupTest()
 	err := twitchBot.ReadLoop()

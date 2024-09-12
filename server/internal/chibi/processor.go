@@ -151,8 +151,10 @@ func (c *ChatCommandProcessor) setSkin(args *ChatArgs, current *spine.OperatorIn
 	current.Skin = skinName
 	current.AnimationSpeed = spine.DEFAULT_ANIMATION_SPEED
 	return &ChatCommandUpdateActor{
-		replyMessage: "",
-		update:       current,
+		replyMessage:    "",
+		username:        args.chatMsg.Username,
+		usernameDisplay: args.chatMsg.UserDisplayName,
+		update:          current,
 	}, nil
 }
 
@@ -185,8 +187,10 @@ func (c *ChatCommandProcessor) setAnimation(args *ChatArgs, current *spine.Opera
 	}
 
 	return &ChatCommandUpdateActor{
-		replyMessage: "",
-		update:       current,
+		replyMessage:    "",
+		username:        args.chatMsg.Username,
+		usernameDisplay: args.chatMsg.UserDisplayName,
+		update:          current,
 	}, nil
 }
 
@@ -200,9 +204,12 @@ func (c *ChatCommandProcessor) setStance(args *ChatArgs, current *spine.Operator
 	}
 	current.ChibiStance = stance
 	current.AnimationSpeed = spine.DEFAULT_ANIMATION_SPEED
+
 	return &ChatCommandUpdateActor{
-		replyMessage: "",
-		update:       current,
+		replyMessage:    "",
+		username:        args.chatMsg.Username,
+		usernameDisplay: args.chatMsg.UserDisplayName,
+		update:          current,
 	}, nil
 }
 
@@ -220,8 +227,10 @@ func (c *ChatCommandProcessor) setFacing(args *ChatArgs, current *spine.Operator
 	current.Facing = facing
 	current.AnimationSpeed = spine.DEFAULT_ANIMATION_SPEED
 	return &ChatCommandUpdateActor{
-		replyMessage: "",
-		update:       current,
+		replyMessage:    "",
+		username:        args.chatMsg.Username,
+		usernameDisplay: args.chatMsg.UserDisplayName,
+		update:          current,
 	}, nil
 }
 
@@ -242,8 +251,10 @@ func (c *ChatCommandProcessor) setEnemy(args *ChatArgs, current *spine.OperatorI
 	current.AnimationSpeed = spine.DEFAULT_ANIMATION_SPEED
 
 	return &ChatCommandUpdateActor{
-		replyMessage: "",
-		update:       current,
+		replyMessage:    "",
+		username:        args.chatMsg.Username,
+		usernameDisplay: args.chatMsg.UserDisplayName,
+		update:          current,
 	}, nil
 }
 
@@ -299,8 +310,10 @@ func (c *ChatCommandProcessor) setWalk(args *ChatArgs, current *spine.OperatorIn
 		current.AnimationSpeed = spine.DEFAULT_ANIMATION_SPEED
 	}
 	return &ChatCommandUpdateActor{
-		replyMessage: "",
-		update:       current,
+		replyMessage:    "",
+		username:        args.chatMsg.Username,
+		usernameDisplay: args.chatMsg.UserDisplayName,
+		update:          current,
 	}, nil
 }
 
@@ -317,8 +330,10 @@ func (c *ChatCommandProcessor) setAnimationSpeed(args *ChatArgs, current *spine.
 	}
 	current.AnimationSpeed = animationSpeed
 	return &ChatCommandUpdateActor{
-		replyMessage: "",
-		update:       current,
+		replyMessage:    "",
+		username:        args.chatMsg.Username,
+		usernameDisplay: args.chatMsg.UserDisplayName,
+		update:          current,
 	}, nil
 }
 
@@ -355,7 +370,16 @@ func (c *ChatCommandProcessor) getWhoInfo(args *ChatArgs) (ChatCommand, error) {
 		enemyMat = append(enemyMat, resp.OperatorName)
 	}
 
-	msg := fmt.Sprintf("Did you mean: %s or enemies %s", strings.Join(opMat, ", "), strings.Join(enemyMat, ", "))
+	var msg string
+	if len(opMat) == 0 && len(enemyMat) == 0 {
+		msg = "Could not find any operators/enemies with that name"
+	} else if len(opMat) == 0 {
+		msg = fmt.Sprintf("Did you mean enemies: %s", strings.Join(enemyMat, ", "))
+	} else if len(enemyMat) == 0 {
+		msg = fmt.Sprintf("Did you mean opeators: %s", strings.Join(opMat, ", "))
+	} else {
+		msg = fmt.Sprintf("Did you mean: %s or enemies %s", strings.Join(opMat, ", "), strings.Join(enemyMat, ", "))
+	}
 	return &ChatCommandSimpleMessage{replyMessage: msg}, nil
 }
 
@@ -382,8 +406,10 @@ func (c *ChatCommandProcessor) setChibiModel(chatArgs *ChatArgs, current *spine.
 	current.Faction = spine.FACTION_ENUM_OPERATOR
 	current.AnimationSpeed = spine.DEFAULT_ANIMATION_SPEED
 	return &ChatCommandUpdateActor{
-		replyMessage: "",
-		update:       current,
+		replyMessage:    "",
+		username:        chatArgs.chatMsg.Username,
+		usernameDisplay: chatArgs.chatMsg.UserDisplayName,
+		update:          current,
 	}, nil
 }
 

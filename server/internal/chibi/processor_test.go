@@ -9,6 +9,53 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+/*
+Manual Test Cases:
+!chibi
+!cibi
+!chibi 01234567890123456789012345678901234567890123456789 01234567890123456789012345678901234567890123456789
+!chibi help
+!chibi skins
+!chibi anims
+!chibi info
+!chibi who
+!chibi who steam knight
+!chibi who lakjsdlkjfsad
+!chibi skin default
+!chibi anim
+!chibi anim asdjlsdf
+!chibi anim relax
+!chibi play sleep
+!chibi play relax sleep
+!chibi stance
+!chibi stance base
+!chibi stance battle
+!chibi face
+!chibi face back
+!chibi face front
+!chibi enemy
+!chibi enemy The last steam knight
+!chibi enemy Eblana
+!chibi enemy B4
+!chibi walk
+!chibi walk 0
+!chibi walk 1.0
+!chibi walk 2
+!chibi walk 0.7
+!chibi speed
+!chibi speed 0
+!chibi speed 6
+!chibi speed 3
+!chibi speed 5.0
+!chibi amiya
+!chibi base
+!chibi battle
+!chibi amiya
+!chibi base
+!chibi walk
+!chibi battle
+*/
+
 func setupCommandTest() (*spine.OperatorInfo, *ChatCommandProcessor) {
 	current := spine.NewOperatorInfo(
 		"Amiya",
@@ -165,7 +212,7 @@ func TestCmdProcessorHandleMessage_ChibiWhoFail(t *testing.T) {
 	})
 
 	assert.Nil(err)
-	assert.Contains(cmd.Reply(actor), "Did you mean:")
+	assert.Contains(cmd.Reply(actor), "Could not find any operators/enemies with that name")
 }
 
 func TestCmdProcessorHandleMessage_ChibiWhoSuccess(t *testing.T) {
@@ -181,7 +228,7 @@ func TestCmdProcessorHandleMessage_ChibiWhoSuccess(t *testing.T) {
 	})
 
 	assert.Nil(err)
-	assert.Contains(cmd.Reply(actor), "Did you mean: Amiya or enemies ")
+	assert.Contains(cmd.Reply(actor), "Did you mean")
 }
 
 func TestCmdProcessorHandleMessage_ChibiSetSkin(t *testing.T) {
@@ -198,7 +245,10 @@ func TestCmdProcessorHandleMessage_ChibiSetSkin(t *testing.T) {
 
 	assert.Nil(err)
 	assert.Empty(cmd.Reply(actor))
-	if _, ok := cmd.(*ChatCommandUpdateActor); !ok {
+	if updateActorCmd, ok := cmd.(*ChatCommandUpdateActor); ok {
+		assert.Equal(updateActorCmd.username, "user1")
+		assert.Equal(updateActorCmd.usernameDisplay, "user1DisplayName")
+	} else {
 		assert.Fail("Command is not of type: ChatCommandUpdateActor")
 	}
 	assert.Equal("skin1", current.Skin)
@@ -219,7 +269,10 @@ func TestCmdProcessorHandleMessage_ChibiPlayAnimation(t *testing.T) {
 
 	assert.Nil(err)
 	assert.Empty(cmd.Reply(actor))
-	if _, ok := cmd.(*ChatCommandUpdateActor); !ok {
+	if updateActorCmd, ok := cmd.(*ChatCommandUpdateActor); ok {
+		assert.Equal(updateActorCmd.username, "user1")
+		assert.Equal(updateActorCmd.usernameDisplay, "user1DisplayName")
+	} else {
 		assert.Fail("Command is not of type: ChatCommandUpdateActor")
 	}
 	assert.Equal(spine.ACTION_PLAY_ANIMATION, current.CurrentAction)
@@ -241,7 +294,10 @@ func TestCmdProcessorHandleMessage_ChibiPlayMultpleAnimation(t *testing.T) {
 
 	assert.Nil(err)
 	assert.Empty(cmd.Reply(actor))
-	if _, ok := cmd.(*ChatCommandUpdateActor); !ok {
+	if updateActorCmd, ok := cmd.(*ChatCommandUpdateActor); ok {
+		assert.Equal(updateActorCmd.username, "user1")
+		assert.Equal(updateActorCmd.usernameDisplay, "user1DisplayName")
+	} else {
 		assert.Fail("Command is not of type: ChatCommandUpdateActor")
 	}
 	assert.Equal(spine.ACTION_PLAY_ANIMATION, current.CurrentAction)
@@ -264,7 +320,10 @@ func TestCmdProcessorHandleMessage_ChibiFace(t *testing.T) {
 
 	assert.Nil(err)
 	assert.Empty(cmd.Reply(actor))
-	if _, ok := cmd.(*ChatCommandUpdateActor); !ok {
+	if updateActorCmd, ok := cmd.(*ChatCommandUpdateActor); ok {
+		assert.Equal(updateActorCmd.username, "user1")
+		assert.Equal(updateActorCmd.usernameDisplay, "user1DisplayName")
+	} else {
 		assert.Fail("Command is not of type: ChatCommandUpdateActor")
 	}
 	assert.Equal(spine.CHIBI_STANCE_ENUM_BATTLE, current.ChibiStance)
@@ -303,7 +362,10 @@ func TestCmdProcessorHandleMessage_ChibiSetFaceOnly(t *testing.T) {
 
 	assert.Nil(err)
 	assert.Empty(cmd.Reply(actor))
-	if _, ok := cmd.(*ChatCommandUpdateActor); !ok {
+	if updateActorCmd, ok := cmd.(*ChatCommandUpdateActor); ok {
+		assert.Equal(updateActorCmd.username, "user1")
+		assert.Equal(updateActorCmd.usernameDisplay, "user1DisplayName")
+	} else {
 		assert.Fail("Command is not of type: ChatCommandUpdateActor")
 	}
 	assert.Equal(spine.CHIBI_FACING_ENUM_BACK, current.Facing)
@@ -347,7 +409,10 @@ func TestCmdProcessorHandleMessage_ChibiWalk(t *testing.T) {
 
 	assert.Nil(err)
 	assert.Empty(cmd.Reply(actor))
-	if _, ok := cmd.(*ChatCommandUpdateActor); !ok {
+	if updateActorCmd, ok := cmd.(*ChatCommandUpdateActor); ok {
+		assert.Equal(updateActorCmd.username, "user1")
+		assert.Equal(updateActorCmd.usernameDisplay, "user1DisplayName")
+	} else {
 		assert.Fail("Command is not of type: ChatCommandUpdateActor")
 	}
 	assert.Equal(spine.ACTION_WANDER, current.CurrentAction)
@@ -369,7 +434,10 @@ func TestCmdProcessorHandleMessage_ChibiWalkTo(t *testing.T) {
 
 	assert.Nil(err)
 	assert.Empty(cmd.Reply(actor))
-	if _, ok := cmd.(*ChatCommandUpdateActor); !ok {
+	if updateActorCmd, ok := cmd.(*ChatCommandUpdateActor); ok {
+		assert.Equal(updateActorCmd.username, "user1")
+		assert.Equal(updateActorCmd.usernameDisplay, "user1DisplayName")
+	} else {
 		assert.Fail("Command is not of type: ChatCommandUpdateActor")
 	}
 	assert.Equal(spine.ACTION_WALK_TO, current.CurrentAction)
@@ -392,7 +460,10 @@ func TestCmdProcessorHandleMessage_ChibiAnimationSpeed(t *testing.T) {
 
 	assert.Nil(err)
 	assert.Empty(cmd.Reply(actor))
-	if _, ok := cmd.(*ChatCommandUpdateActor); !ok {
+	if updateActorCmd, ok := cmd.(*ChatCommandUpdateActor); ok {
+		assert.Equal(updateActorCmd.username, "user1")
+		assert.Equal(updateActorCmd.usernameDisplay, "user1DisplayName")
+	} else {
 		assert.Fail("Command is not of type: ChatCommandUpdateActor")
 	}
 	assert.Equal(2.0, current.AnimationSpeed)
@@ -429,7 +500,11 @@ func TestCmdProcessorHandleMessage_ChibiChooseChibi(t *testing.T) {
 
 	assert.Nil(err)
 	assert.Empty(cmd.Reply(actor))
-	if _, ok := cmd.(*ChatCommandUpdateActor); !ok {
+	// cmd.UpdateActor(actor)
+	if updateActorCmd, ok := cmd.(*ChatCommandUpdateActor); ok {
+		assert.Equal(updateActorCmd.username, "user1")
+		assert.Equal(updateActorCmd.usernameDisplay, "user1DisplayName")
+	} else {
 		assert.Fail("Command is not of type: ChatCommandUpdateActor")
 	}
 	assert.Equal("char_002_amiya", current.OperatorId)

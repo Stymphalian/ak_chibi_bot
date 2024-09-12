@@ -91,6 +91,18 @@ func (c *SpineService) ValidateUpdateSetDefaultOtherwise(update *OperatorInfo) e
 		}
 	}
 
+	// When operators are in Wander/WalkTo actions and they change to battle
+	// stance we need to reset their Actions to something else. Otherwise they
+	// will slide across the screen
+	if update.Faction == FACTION_ENUM_OPERATOR &&
+		update.ChibiStance == CHIBI_STANCE_ENUM_BATTLE &&
+		slices.Contains([]ActionEnum{ACTION_WANDER, ACTION_WALK_TO}, update.CurrentAction) {
+		update.CurrentAction = ACTION_PLAY_ANIMATION
+		update.Action = NewActionPlayAnimation(
+			[]string{GetDefaultAnimForChibiStance(update.ChibiStance)},
+		)
+	}
+
 	// Validate actions
 	switch update.CurrentAction {
 	case ACTION_PLAY_ANIMATION:

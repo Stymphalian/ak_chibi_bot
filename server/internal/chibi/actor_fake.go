@@ -49,12 +49,17 @@ func (f *FakeChibiActor) HandleMessage(msg chat.ChatMessage) (string, error) {
 		opInfo := *spine.EmptyOperatorInfo()
 		opInfo.OperatorId = msg.Message
 		f.Users[msg.Username] = opInfo
-		return "valid", nil
+
+		if msg.Message == "!chibi error" {
+			return "invalid !chibi", errors.New("error message")
+		} else {
+			return "valid", nil
+		}
 	} else {
 		opInfo := *spine.EmptyOperatorInfo()
 		opInfo.OperatorId = "Invalid"
 		f.Users[msg.Username] = opInfo
-		return "invalid", errors.New("Error message")
+		return "invalid", errors.New("error message")
 	}
 }
 

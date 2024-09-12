@@ -67,7 +67,7 @@ func (t *TwitchBot) HandlePrivateMessage(m twitch.PrivateMessage) {
 		Message:         trimmed,
 	}
 	outputMsg, err := t.chatMessageHandler.HandleMessage(chatMessage)
-	if err != nil && len(outputMsg) > 0 {
+	if err == nil && len(outputMsg) > 0 {
 		t.tc.Say(m.Channel, outputMsg)
 	}
 }
