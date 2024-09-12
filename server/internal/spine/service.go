@@ -132,9 +132,9 @@ func (c *SpineService) ValidateUpdateSetDefaultOtherwise(update *OperatorInfo) e
 		})
 	}
 
-	// This fixes a bug where if the Opeator is in a walking action in base stance
+	// This fixes a bug where if the Operator is in a walking action in base stance
 	// and they change to a battle stance. They can't be in a walking action anymore
-	// because operator battle chibis don't have move animations.
+	// because operator battle chibis don't have "Move" animations.
 	// We need to explicitly set them to a play animation when then go into a
 	// a battle stance.
 	// Manually test this:
@@ -161,10 +161,15 @@ func (c *SpineService) ValidateUpdateSetDefaultOtherwise(update *OperatorInfo) e
 			GetDefaultAnimForChibiStance(update.ChibiStance),
 		)
 	case ACTION_WANDER:
+		availableMoves := GetAvailableMoveAnimations(update.AvailableAnimations)
+		defaultMoveAnim := GetDefaultAnimForChibiStance(update.ChibiStance)
+		if len(availableMoves) > 0 {
+			defaultMoveAnim = availableMoves[0]
+		}
 		update.Action.WanderAnimation = getValidAnimations(
 			update.AvailableAnimations,
 			[]string{update.Action.WanderAnimation},
-			GetDefaultAnimForChibiStance(update.ChibiStance),
+			defaultMoveAnim,
 		)[0]
 	case ACTION_WALK_TO:
 		if update.Action.TargetPos.IsNone() {
@@ -178,16 +183,32 @@ func (c *SpineService) ValidateUpdateSetDefaultOtherwise(update *OperatorInfo) e
 				},
 			)
 			availableAnimations := update.AvailableAnimations
-			defaultAnimation := GetDefaultAnimForChibiStance(update.ChibiStance)
+			var defaultIdleAnimation string
+			// FIXED BUG:  The "default" idle animation of a base operator is
+			// Relax. We can't use DefaultAnimForChibiStance because that is
+			// a "Move" animation. Which would cause the chibi to "walk in place"
+			// once they reach their destination
+			if update.ChibiStance == CHIBI_STANCE_ENUM_BASE {
+				defaultIdleAnimation = DEFAULT_ANIM_BASE_RELAX
+			} else {
+				defaultIdleAnimation = DEFAULT_ANIM_BATTLE
+			}
+
+			availableMoves := GetAvailableMoveAnimations(availableAnimations)
+			defaultMoveAnim := GetDefaultAnimForChibiStance(update.ChibiStance)
+			if len(availableMoves) > 0 {
+				defaultMoveAnim = availableMoves[0]
+			}
+
 			update.Action.WalkToAnimation = getValidAnimations(
 				availableAnimations,
 				[]string{update.Action.WalkToAnimation},
-				defaultAnimation,
+				defaultMoveAnim,
 			)[0]
 			update.Action.WalkToFinalAnimation = getValidAnimations(
 				availableAnimations,
 				[]string{update.Action.WalkToFinalAnimation},
-				defaultAnimation,
+				defaultIdleAnimation,
 			)[0]
 		}
 	}
@@ -366,13 +387,17 @@ func (s *SpineService) OperatorFromDefault(
 }
 
 func getValidAnimations(availableAnimations []string, actionAnimations []string, defaultAnim string) []string {
+	// If atleast one of the animations in actionAnimations is not in availableAnimations
+	// we can't take that animation list. So we just use the defaultAnim
 	for _, anim := range actionAnimations {
 		if !slices.Contains(availableAnimations, anim) {
 			actionAnimations = []string{defaultAnim}
 			break
 		}
 	}
-	// If it still doesn't exist then just choose one randomly
+
+	// If the defaultAnim doesn't exist in the availableAnimations
+	// Then we fall back to just using the first available animation
 	for _, anim := range actionAnimations {
 		if !slices.Contains(availableAnimations, anim) {
 			actionAnimations = []string{availableAnimations[0]}

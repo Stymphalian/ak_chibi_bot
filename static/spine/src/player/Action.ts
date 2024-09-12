@@ -178,13 +178,17 @@ module spine {
                     target.x * viewport.width - (viewport.width/2),
                     0,
                 );
-                this.startDir = this.endPosition.subtract(this.startPosition).normalize();
+                this.startDir = this.endPosition.subtract(this.startPosition);
+                if (this.startDir.length() < 10) {
+                    this.reachedDestination = true;
+                }
+                this.startDir = this.startDir.normalize()
             }
 
             let dir = this.endPosition.subtract(actor.position).normalize();
             let angle = this.startDir.angle(dir);
             let reached = Math.abs(Math.PI - angle) < 0.001;
-            if (reached) {
+            if (reached || this.reachedDestination) {
                 // We have reached the target destination
                 actor.position.x = this.endPosition.x;
                 actor.position.y = this.endPosition.y;

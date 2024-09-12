@@ -272,7 +272,9 @@ func (c *ChatCommandProcessor) setEnemy(args *ChatArgs, current *spine.OperatorI
 }
 
 func (c *ChatCommandProcessor) setWalk(args *ChatArgs, current *spine.OperatorInfo) (ChatCommand, error) {
-	current.ChibiStance = spine.CHIBI_STANCE_ENUM_BASE
+	if current.Faction == spine.FACTION_ENUM_OPERATOR {
+		current.ChibiStance = spine.CHIBI_STANCE_ENUM_BASE
+	}
 
 	// Set the animation to "Move". If "Move" doesn't exist in the list of
 	// animations then try to find an animation with "Move" in its name
@@ -303,8 +305,10 @@ func (c *ChatCommandProcessor) setWalk(args *ChatArgs, current *spine.OperatorIn
 		if err != nil {
 			return &ChatCommandNoOp{}, errMsg
 		}
-		if (desiredPosition < 0.0) || (desiredPosition > 1.0) {
-			return &ChatCommandNoOp{}, errMsg
+		if desiredPosition < 0.0 {
+			desiredPosition = 0
+		} else if desiredPosition > 1.0 {
+			desiredPosition = 1.0
 		}
 
 		current.CurrentAction = spine.ACTION_WALK_TO

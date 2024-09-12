@@ -60,10 +60,26 @@ Manual Test Cases:
 !chibi scale 0.5
 !chibi move_speed 160
 
+// Change from enemy to operator during a walk/wander
+// and then transitioning to a battle stance would cause the operator
+// to slide across the screen in their "idle" battle animations
 !chibi enemy b2
 !chibi walk
 !chibi reed
 !chibi battle
+
+// Changing from enemy to operate during a walkto action was causing
+// the operator to forever loop in their "move" animation once they
+// reached their destination
+!chibi enemy b2
+!chibi walk 0.8
+!chibi reed
+
+// For Walkto actions.
+// When walking to the same poisition as your startPosition this would
+// cause the chibi to forever be in their "move" animation. Make sure
+// they correctly transition into their "idle"
+!chibi walk 0.5
 */
 
 func setupCommandTest() (*spine.OperatorInfo, *ChatCommandProcessor) {

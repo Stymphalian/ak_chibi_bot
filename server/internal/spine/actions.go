@@ -2,6 +2,7 @@ package spine
 
 import (
 	"slices"
+	"strings"
 
 	"github.com/Stymphalian/ak_chibi_bot/server/internal/misc"
 )
@@ -45,7 +46,8 @@ type ActionUnion struct {
 	ActionPlayAnimation
 	ActionWander
 	ActionWalkTo
-	IsSet bool
+	IsSet         bool
+	currentAction ActionEnum
 }
 
 func (a *ActionUnion) GetAnimations(action ActionEnum) []string {
@@ -63,14 +65,26 @@ func (a *ActionUnion) GetAnimations(action ActionEnum) []string {
 	}
 }
 
+func GetAvailableMoveAnimations(availableAnimations []string) []string {
+	moveAnims := make([]string, 0)
+	for _, anim := range availableAnimations {
+		if strings.Contains(strings.ToLower(anim), "move") {
+			moveAnims = append(moveAnims, anim)
+		}
+	}
+	return moveAnims
+}
+
 func NewActionPlayAnimation(animations []string) (r ActionUnion) {
 	r.Animations = animations
 	r.IsSet = true
+	r.currentAction = ACTION_PLAY_ANIMATION
 	return r
 }
 func NewActionWander(animation string) (r ActionUnion) {
 	r.WanderAnimation = animation
 	r.IsSet = true
+	r.currentAction = ACTION_WANDER
 	return r
 }
 func NewActionWalkTo(TargetPos misc.Vector2, walkAnimation string, finalAnimation string) (r ActionUnion) {
@@ -78,5 +92,6 @@ func NewActionWalkTo(TargetPos misc.Vector2, walkAnimation string, finalAnimatio
 	r.WalkToAnimation = walkAnimation
 	r.WalkToFinalAnimation = finalAnimation
 	r.IsSet = true
+	r.currentAction = ACTION_WALK_TO
 	return r
 }
