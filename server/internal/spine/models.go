@@ -13,23 +13,10 @@ const (
 	MIN_SCALE_SIZE          = 0.5
 	DEFAULT_SCALE_SIZE      = 1.0
 	MAX_SCALE_SIZE          = 1.5
+	MIN_MOVEMENT_SPEED      = 20
+	DEFAULT_MOVEMENT_SPEED  = 80
+	MAX_MOVEMENT_SPEED      = 200
 )
-
-type UpdateOperatorInfo struct {
-	OperatorDisplayName misc.Option[string]          `json:"operator_display_name"`
-	Faction             misc.Option[FactionEnum]     `json:"faction"`
-	OperatorId          misc.Option[string]          `json:"operator_id"`
-	Skin                misc.Option[string]          `json:"skin"`
-	ChibiStance         misc.Option[ChibiStanceEnum] `json:"chibi_stance"`
-	Facing              misc.Option[ChibiFacingEnum] `json:"facing"`
-	AnimationSpeed      misc.Option[float64]         `json:"animation_speed"`
-	Skins               misc.Option[[]string]        `json:"skins"`
-	AvailableAnimations misc.Option[[]string]        `json:"available_animations"`
-	StartPos            misc.Option[misc.Vector2]    `json:"start_pos"`
-
-	CurrentAction misc.Option[ActionEnum]  `json:"current_action"`
-	Action        misc.Option[ActionUnion] `json:"action"`
-}
 
 type OperatorInfo struct {
 	OperatorDisplayName string                    `json:"operator_display_name"`
@@ -43,6 +30,7 @@ type OperatorInfo struct {
 	Skins               []string                  `json:"skins"`
 	AvailableAnimations []string                  `json:"available_animations"`
 	StartPos            misc.Option[misc.Vector2] `json:"start_pos"`
+	MovementSpeed       misc.Option[misc.Vector2] `json:"movement_speed"`
 
 	CurrentAction ActionEnum  `json:"current_action"`
 	Action        ActionUnion `json:"action"`
@@ -74,6 +62,7 @@ func NewOperatorInfo(
 		Skins:               AvailableSkins,
 		AvailableAnimations: AvailableAnimations,
 		StartPos:            StartPos,
+		MovementSpeed:       misc.EmptyOption[misc.Vector2](),
 
 		CurrentAction: CurrentAction,
 		Action:        Action,

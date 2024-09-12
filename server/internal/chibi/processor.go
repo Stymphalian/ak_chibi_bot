@@ -59,6 +59,7 @@ func (c *ChatCommandProcessor) HandleMessage(current *spine.OperatorInfo, chatMs
 	// !chibi speed 0.1
 	// !chibi size 0.5 [0.1 1.5]
 	// !chibi scale 0.5 [0.1 1.5]
+	// !chibi move_speed 160 [20, 320]
 
 	// var msg string
 	subCommand := strings.TrimSpace(args[1])
@@ -114,6 +115,10 @@ func (c *ChatCommandProcessor) HandleMessage(current *spine.OperatorInfo, chatMs
 		return c.setScale(chatArgs, current)
 	case "scale":
 		return c.setScale(chatArgs, current)
+	case "move_speed":
+		return c.setMoveSpeed(chatArgs, current)
+	case "velocity":
+		return c.setMoveSpeed(chatArgs, current)
 	default:
 		if _, ok := misc.MatchesKeywords(subCommand, current.AvailableAnimations); ok {
 			chatArgs.args = []string{"!chibi", "play", subCommand}
@@ -256,6 +261,7 @@ func (c *ChatCommandProcessor) setEnemy(args *ChatArgs, current *spine.OperatorI
 	current.Faction = spine.FACTION_ENUM_ENEMY
 	current.AnimationSpeed = spine.DEFAULT_ANIMATION_SPEED
 	current.SpriteScale = misc.EmptyOption[misc.Vector2]()
+	// current.MovementSpeed = misc.EmptyOption[misc.Vector2]()
 
 	return &ChatCommandUpdateActor{
 		replyMessage:    "",
@@ -332,8 +338,10 @@ func (c *ChatCommandProcessor) setAnimationSpeed(args *ChatArgs, current *spine.
 	if err != nil {
 		return &ChatCommandNoOp{}, errors.New("try something like !chibi speed 1.5")
 	}
-	if animationSpeed <= 0 || animationSpeed > spine.MAX_ANIMATION_SPEED {
-		return &ChatCommandNoOp{}, errors.New("try something like !chibi speed 2.0")
+	if animationSpeed <= spine.MIN_ANIMATION_SPEED {
+		animationSpeed = spine.MIN_ANIMATION_SPEED
+	} else if animationSpeed > spine.MAX_ANIMATION_SPEED {
+		animationSpeed = spine.MAX_ANIMATION_SPEED
 	}
 	current.AnimationSpeed = animationSpeed
 	return &ChatCommandUpdateActor{
@@ -409,10 +417,21 @@ func (c *ChatCommandProcessor) setChibiModel(chatArgs *ChatArgs, current *spine.
 		return &ChatCommandNoOp{}, nil
 	}
 
+	prevFaction := current.Faction
+	if prevFaction == spine.FACTION_ENUM_ENEMY {
+		// If changing from an enemy to an operator and the current action is
+		// "walking/wander" we need to set the stance to base in order to
+		// make the chibi continue to walk
+		if spine.IsWalkingAction(current.CurrentAction) {
+			current.ChibiStance = spine.CHIBI_STANCE_ENUM_BASE
+		}
+	}
+
 	current.OperatorId = operatorId
 	current.Faction = spine.FACTION_ENUM_OPERATOR
 	current.AnimationSpeed = spine.DEFAULT_ANIMATION_SPEED
 	current.SpriteScale = misc.EmptyOption[misc.Vector2]()
+	// current.MovementSpeed = misc.EmptyOption[misc.Vector2]()
 	return &ChatCommandUpdateActor{
 		replyMessage:    "",
 		username:        chatArgs.chatMsg.Username,
@@ -436,12 +455,44 @@ func (c *ChatCommandProcessor) setScale(args *ChatArgs, current *spine.OperatorI
 	if err != nil {
 		return &ChatCommandNoOp{}, errors.New("try something like !chibi size 1.5")
 	}
-	if spriteScale < spine.MIN_SCALE_SIZE || spriteScale > spine.MAX_SCALE_SIZE {
-		return &ChatCommandNoOp{}, errors.New("try something like !chibi size 2.0")
+	if spriteScale < spine.MIN_SCALE_SIZE {
+		spriteScale = spine.MIN_SCALE_SIZE
+	} else if spriteScale > spine.MAX_SCALE_SIZE {
+		spriteScale = spine.MAX_SCALE_SIZE
 	}
 	current.SpriteScale = misc.NewOption(
 		misc.Vector2{X: spriteScale, Y: spriteScale},
 	)
+	return &ChatCommandUpdateActor{
+		replyMessage:    "",
+		username:        args.chatMsg.Username,
+		usernameDisplay: args.chatMsg.UserDisplayName,
+		update:          current,
+	}, nil
+}
+
+func (c *ChatCommandProcessor) setMoveSpeed(args *ChatArgs, current *spine.OperatorInfo) (ChatCommand, error) {
+	if len(args.args) < 3 {
+		return &ChatCommandNoOp{}, errors.New("try something like !chibi move_speed 120")
+	}
+
+	if args.args[2] == "default" {
+		current.MovementSpeed = misc.EmptyOption[misc.Vector2]()
+	} else {
+		moveSpeed, err := strconv.ParseInt(args.args[2], 10, 64)
+		if err != nil {
+			return &ChatCommandNoOp{}, errors.New("try something like !chibi move_speed 360")
+		}
+		if moveSpeed < spine.MIN_MOVEMENT_SPEED {
+			moveSpeed = spine.MIN_MOVEMENT_SPEED
+		} else if moveSpeed > spine.MAX_MOVEMENT_SPEED {
+			moveSpeed = spine.MAX_MOVEMENT_SPEED
+		}
+		current.MovementSpeed = misc.NewOption(
+			misc.Vector2{X: float64(moveSpeed), Y: 0},
+		)
+	}
+
 	return &ChatCommandUpdateActor{
 		replyMessage:    "",
 		username:        args.chatMsg.Username,

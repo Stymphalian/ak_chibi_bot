@@ -22,6 +22,7 @@ Command Name | Description
 !chibi speed 2.0 | change the speed in which an animation is played (min 0.1, max 5.0)
 !chibi who Rock | Ask the bot for operators/enemies which match the given name.
 !chibi size 0.5 | Change the size/scale of the chibi. (min 0.5, max 1.5). There is still a maximum pixel size limitation on the chibi (350px)
+!chibi velocity 120 | For when the chibi is walking around change the movement speed of the chibi. Units are pixels/seconds (min 20, max 200). Use !chibi velocity default to change back to a default speed (80 +- 40).
 
 # Quick Start - Hosted
 Have the twich bot directly connect to your chat by using a hosted bot.
@@ -48,6 +49,11 @@ by right clicking and selecting (open in command prompt/terminal).
 10. Set the width and height to 1920x1080
 11. A chibi should now be walking around.
 12. Open up your twitch chat and start typing in commands
+
+# Additional Notes
+1. You can change the width/height of the `/room/` by providing extra query parameters in the URL.
+   For example: `https://jellyfish-app-gseou.ondigitalocean.app/room/?channelName=REPLACE_ME&width=1080&height=720`
+   will make the room have size 1080x720 pixels instead of the normal 1920x1080px
 
 
 # For Developers

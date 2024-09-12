@@ -1,6 +1,8 @@
 package chibi
 
 import (
+	"fmt"
+	"log"
 	"testing"
 
 	"github.com/Stymphalian/ak_chibi_bot/server/internal/chat"
@@ -56,6 +58,12 @@ Manual Test Cases:
 !chibi battle
 !chibi size 1.5
 !chibi scale 0.5
+!chibi move_speed 160
+
+!chibi enemy b2
+!chibi walk
+!chibi reed
+!chibi battle
 */
 
 func setupCommandTest() (*spine.OperatorInfo, *ChatCommandProcessor) {
@@ -397,6 +405,36 @@ func TestCmdProcessorHandleMessage_ChibiEnemyNotEnoughArgs(t *testing.T) {
 	}
 }
 
+func TestCmdProcessorHandleMessage_ChibiEnemyHappyPath(t *testing.T) {
+	actor := NewFakeChibiActor()
+	current, sut := setupCommandTest()
+	current.MovementSpeed = misc.NewOption[misc.Vector2](
+		misc.Vector2{X: 160, Y: 0},
+	)
+	actor.UpdateChatter("user1", "user1DisplayName", current)
+
+	assert := assert.New(t)
+	cmd, err := sut.HandleMessage(current, chat.ChatMessage{
+		Username:        "user1",
+		UserDisplayName: "user1DisplayName",
+		Message:         "!chibi enemy Slug",
+	})
+
+	assert.Nil(err)
+	assert.Empty(cmd.Reply(actor))
+	if updateActorCmd, ok := cmd.(*ChatCommandUpdateActor); ok {
+		assert.Equal(updateActorCmd.username, "user1")
+		assert.Equal(updateActorCmd.usernameDisplay, "user1DisplayName")
+	} else {
+		assert.Fail("Command is not of type: ChatCommandUpdateActor")
+	}
+	assert.Equal("enemy_1007_slime_2", current.OperatorId)
+	assert.Equal(spine.FACTION_ENUM_ENEMY, current.Faction)
+	assert.Equal(1.0, current.AnimationSpeed)
+	assert.True(current.SpriteScale.IsNone())
+	assert.Equal(160.0, current.MovementSpeed.Unwrap().X)
+}
+
 func TestCmdProcessorHandleMessage_ChibiWalk(t *testing.T) {
 	actor := NewFakeChibiActor()
 	current, sut := setupCommandTest()
@@ -483,14 +521,16 @@ func TestCmdProcessorHandleMessage_ChibiAnimationSpeedMaxSpeed(t *testing.T) {
 		Message:         "!chibi speed 6.0",
 	})
 
-	if assert.Error(err) {
-		assert.ErrorContains(err, "try something like !chibi speed 2.0")
-	}
+	assert.Nil(err)
+	assert.Equal(spine.MAX_ANIMATION_SPEED, current.AnimationSpeed)
 }
 
-func TestCmdProcessorHandleMessage_ChibiChooseChibi(t *testing.T) {
+func TestCmdProcessorHandleMessage_ChibiChibiModel(t *testing.T) {
 	actor := NewFakeChibiActor()
 	current, sut := setupCommandTest()
+	current.MovementSpeed = misc.NewOption[misc.Vector2](
+		misc.Vector2{X: 160, Y: 0},
+	)
 	actor.UpdateChatter("user1", "user1DisplayName", current)
 
 	assert := assert.New(t)
@@ -513,6 +553,44 @@ func TestCmdProcessorHandleMessage_ChibiChooseChibi(t *testing.T) {
 	assert.Equal(spine.FACTION_ENUM_OPERATOR, current.Faction)
 	assert.Equal(1.0, current.AnimationSpeed)
 	assert.True(current.SpriteScale.IsNone())
+	// assert.True(current.MovementSpeed.IsNone())
+	assert.Equal(160.0, current.MovementSpeed.Unwrap().X)
+}
+
+func TestCmdProcessorHandleMessage_Regression_EnemyToOperatorShouldMaintainWanderAction(t *testing.T) {
+	actor := NewFakeChibiActor()
+	current, sut := setupCommandTest()
+	current.OperatorDisplayName = "Slug"
+	current.OperatorId = "enemy_1007_slime_2"
+	current.Faction = spine.FACTION_ENUM_ENEMY
+	current.ChibiStance = spine.CHIBI_STANCE_ENUM_BATTLE
+	current.CurrentAction = spine.ACTION_WANDER
+	current.Action = spine.NewActionWander("Move")
+	actor.UpdateChatter("user1", "user1DisplayName", current)
+
+	log.Printf("%v\n", current)
+
+	assert := assert.New(t)
+	cmd, err := sut.HandleMessage(current, chat.ChatMessage{
+		Username:        "user1",
+		UserDisplayName: "user1DisplayName",
+		Message:         "!chibi amiya",
+	})
+
+	assert.Nil(err)
+	assert.Empty(cmd.Reply(actor))
+	if updateActorCmd, ok := cmd.(*ChatCommandUpdateActor); ok {
+		assert.Equal(updateActorCmd.username, "user1")
+		assert.Equal(updateActorCmd.usernameDisplay, "user1DisplayName")
+	} else {
+		assert.Fail("Command is not of type: ChatCommandUpdateActor")
+	}
+	assert.Equal("char_002_amiya", current.OperatorId)
+	assert.Equal(spine.FACTION_ENUM_OPERATOR, current.Faction)
+	assert.Equal(1.0, current.AnimationSpeed)
+	assert.True(current.SpriteScale.IsNone())
+	assert.True(current.MovementSpeed.IsNone())
+	assert.Equal(spine.CHIBI_STANCE_ENUM_BASE, current.ChibiStance)
 }
 
 func TestCmdProcessorHandleMessage_ChibiScale(t *testing.T) {
@@ -537,4 +615,44 @@ func TestCmdProcessorHandleMessage_ChibiScale(t *testing.T) {
 	}
 	assert.Equal(0.5, current.SpriteScale.Unwrap().X)
 	assert.Equal(0.5, current.SpriteScale.Unwrap().Y)
+}
+
+func TestCmdProcessorHandleMessage_ChibiMoveSpeed(t *testing.T) {
+	actor := NewFakeChibiActor()
+	current, sut := setupCommandTest()
+	actor.UpdateChatter("user1", "user1DisplayName", current)
+
+	assert := assert.New(t)
+	cmd, err := sut.HandleMessage(current, chat.ChatMessage{
+		Username:        "user1",
+		UserDisplayName: "user1DisplayName",
+		Message:         "!chibi move_speed 160",
+	})
+
+	assert.Nil(err)
+	assert.Empty(cmd.Reply(actor))
+	if updateActorCmd, ok := cmd.(*ChatCommandUpdateActor); ok {
+		assert.Equal(updateActorCmd.username, "user1")
+		assert.Equal(updateActorCmd.usernameDisplay, "user1DisplayName")
+	} else {
+		assert.Fail("Command is not of type: ChatCommandUpdateActor")
+	}
+	assert.Equal(160.0, current.MovementSpeed.Unwrap().X)
+	assert.Equal(0.0, current.MovementSpeed.Unwrap().Y)
+}
+
+func TestCmdProcessorHandleMessage_ChibiMoveSpeedOutOfRange(t *testing.T) {
+	actor := NewFakeChibiActor()
+	current, sut := setupCommandTest()
+	actor.UpdateChatter("user1", "user1DisplayName", current)
+
+	assert := assert.New(t)
+	_, err := sut.HandleMessage(current, chat.ChatMessage{
+		Username:        "user1",
+		UserDisplayName: "user1DisplayName",
+		Message:         fmt.Sprintf("!chibi move_speed %d", spine.MAX_MOVEMENT_SPEED+1),
+	})
+
+	assert.Nil(err)
+	assert.Equal(float64(spine.MAX_MOVEMENT_SPEED), current.MovementSpeed.Unwrap().X)
 }

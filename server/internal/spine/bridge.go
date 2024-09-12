@@ -218,6 +218,7 @@ func (s *SpineBridge) setInternalSpineOperator(
 		"animation_speed":      info.AnimationSpeed,
 		"available_animations": info.AvailableAnimations,
 		"sprite_scale":         info.SpriteScale,
+		"movement_speed":       info.MovementSpeed,
 
 		"action":      info.CurrentAction,
 		"action_data": info.Action,

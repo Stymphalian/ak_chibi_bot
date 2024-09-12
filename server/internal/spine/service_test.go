@@ -14,4 +14,8 @@ func TestValidateUpdateSetDefaultOtherwise(t *testing.T) {
 	// Action.playAnimation must be a valid animations
 	// Action.wander must have valid animation
 	// Action.WalkTo must have a valid animation
+	// test size clamping
+	// test movementSpeed clamping
+	// test unassigned currentAction/action
+	// regression test for enemy->walk->operator->battle causes the chibi to slide across screen
 }

@@ -1,6 +1,10 @@
 package spine
 
-import "github.com/Stymphalian/ak_chibi_bot/server/internal/misc"
+import (
+	"slices"
+
+	"github.com/Stymphalian/ak_chibi_bot/server/internal/misc"
+)
 
 type ActionEnum string
 
@@ -10,6 +14,18 @@ const (
 	ACTION_WALK_TO        = ActionEnum("WALK_TO")
 	ACTION_NONE           = ActionEnum("")
 )
+
+func IsActionEnum(a ActionEnum) bool {
+	return slices.Contains([]ActionEnum{
+		ACTION_PLAY_ANIMATION,
+		ACTION_WANDER,
+		ACTION_WALK_TO,
+	}, a)
+}
+
+func IsWalkingAction(a ActionEnum) bool {
+	return a == ACTION_WANDER || a == ACTION_WALK_TO
+}
 
 type ActionPlayAnimation struct {
 	Animations []string `json:"animations"`
@@ -29,6 +45,7 @@ type ActionUnion struct {
 	ActionPlayAnimation
 	ActionWander
 	ActionWalkTo
+	IsSet bool
 }
 
 func (a *ActionUnion) GetAnimations(action ActionEnum) []string {
@@ -48,15 +65,18 @@ func (a *ActionUnion) GetAnimations(action ActionEnum) []string {
 
 func NewActionPlayAnimation(animations []string) (r ActionUnion) {
 	r.Animations = animations
+	r.IsSet = true
 	return r
 }
 func NewActionWander(animation string) (r ActionUnion) {
 	r.WanderAnimation = animation
+	r.IsSet = true
 	return r
 }
 func NewActionWalkTo(TargetPos misc.Vector2, walkAnimation string, finalAnimation string) (r ActionUnion) {
 	r.TargetPos = misc.NewOption(TargetPos)
 	r.WalkToAnimation = walkAnimation
 	r.WalkToFinalAnimation = finalAnimation
+	r.IsSet = true
 	return r
 }

@@ -92,6 +92,19 @@ func (c *SpineService) ValidateUpdateSetDefaultOtherwise(update *OperatorInfo) e
 		}
 	}
 
+	// Movement Speed
+	if update.MovementSpeed.IsSome() {
+		vec := update.MovementSpeed.Unwrap()
+		if vec.X < MIN_MOVEMENT_SPEED || vec.X > MAX_MOVEMENT_SPEED {
+			update.MovementSpeed = misc.NewOption(
+				misc.Vector2{
+					X: misc.ClampF64(vec.X, MIN_MOVEMENT_SPEED, MAX_MOVEMENT_SPEED),
+					Y: 0,
+				},
+			)
+		}
+	}
+
 	// Validate startPos
 	if update.StartPos.IsSome() {
 		vec := update.StartPos.Unwrap()
@@ -105,19 +118,41 @@ func (c *SpineService) ValidateUpdateSetDefaultOtherwise(update *OperatorInfo) e
 		}
 	}
 
-	// When operators are in Wander/WalkTo actions and they change to battle
-	// stance we need to reset their Actions to something else. Otherwise they
-	// will slide across the screen
-	if update.Faction == FACTION_ENUM_OPERATOR &&
-		update.ChibiStance == CHIBI_STANCE_ENUM_BATTLE &&
-		slices.Contains([]ActionEnum{ACTION_WANDER, ACTION_WALK_TO}, update.CurrentAction) {
+	// Validate actions
+	if !IsActionEnum(update.CurrentAction) {
 		update.CurrentAction = ACTION_PLAY_ANIMATION
-		update.Action = NewActionPlayAnimation(
-			[]string{GetDefaultAnimForChibiStance(update.ChibiStance)},
-		)
+		update.Action = NewActionPlayAnimation([]string{
+			GetDefaultAnimForChibiStance(update.ChibiStance),
+		})
+	}
+	if !update.Action.IsSet {
+		update.CurrentAction = ACTION_PLAY_ANIMATION
+		update.Action = NewActionPlayAnimation([]string{
+			GetDefaultAnimForChibiStance(update.ChibiStance),
+		})
 	}
 
-	// Validate actions
+	// This fixes a bug where if the Opeator is in a walking action in base stance
+	// and they change to a battle stance. They can't be in a walking action anymore
+	// because operator battle chibis don't have move animations.
+	// We need to explicitly set them to a play animation when then go into a
+	// a battle stance.
+	// Manually test this:
+	// !chibi enemy b2 - should be in battle stance
+	// !chibi walk     - makes the action wander
+	// !chibi reed     - changes to reed. should be in base stance but still wander
+	// !chibi battle   - changes to battle stance. should no longer be wandering
+	if update.Faction == FACTION_ENUM_OPERATOR {
+		if IsWalkingAction(update.CurrentAction) {
+			if update.ChibiStance == CHIBI_STANCE_ENUM_BATTLE {
+				update.CurrentAction = ACTION_PLAY_ANIMATION
+				update.Action = NewActionPlayAnimation(
+					[]string{GetDefaultAnimForChibiStance(update.ChibiStance)},
+				)
+			}
+		}
+	}
+
 	switch update.CurrentAction {
 	case ACTION_PLAY_ANIMATION:
 		update.Action.Animations = getValidAnimations(
