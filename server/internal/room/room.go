@@ -46,7 +46,7 @@ func NewRoom(
 		spineRuntime: spineRuntime,
 		chibiActor:   chibiActor,
 		twitchChat:   twitchBot,
-		createdAt:    time.Now(),
+		createdAt:    misc.Clock.Now(),
 	}
 	r.chibiActor.SetToDefault(
 		r.config.ChannelName,
@@ -157,7 +157,7 @@ func (s *Room) AddWebsocketConnection(w http.ResponseWriter, r *http.Request) er
 }
 
 func (r *Room) IsActive(period time.Duration) bool {
-	return time.Since(r.chibiActor.LastChatterTime) <= period
+	return misc.Clock.Since(r.chibiActor.LastChatterTime) <= period
 }
 
 func (r *Room) NumConnectedClients() int {

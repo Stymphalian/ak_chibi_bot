@@ -54,7 +54,7 @@ func (s *SpineBridge) pingWebSockets() {
 				websocketConn.conn.WriteControl(
 					websocket.PingMessage,
 					[]byte{},
-					time.Now().Add(time.Duration(1)*time.Second),
+					misc.Clock.Now().Add(time.Duration(1)*time.Second),
 				)
 			}
 		}

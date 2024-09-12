@@ -27,7 +27,7 @@ func NewChibiActor(
 	a := &ChibiActor{
 		spineService:         spineService,
 		ChatUsers:            make(map[string]*spine.ChatUser, 0),
-		LastChatterTime:      time.Now(),
+		LastChatterTime:      misc.Clock.Now(),
 		client:               client,
 		chatCommandProcessor: &ChatCommandProcessor{spineService},
 		excludeNames:         excludeNames,
@@ -108,7 +108,7 @@ func (c *ChibiActor) HandleMessage(msg chat.ChatMessage) (string, error) {
 	if msg.Message[0] != '!' {
 		return "", nil
 	}
-	c.ChatUsers[msg.Username].LastChatTime = time.Now()
+	c.ChatUsers[msg.Username].LastChatTime = misc.Clock.Now()
 
 	current, err := c.CurrentInfo(msg.Username)
 	if err != nil {
@@ -162,11 +162,11 @@ func (c *ChibiActor) UpdateChatter(
 		c.ChatUsers[username] = spine.NewChatUser(
 			username,
 			usernameDisplay,
-			time.Now(),
+			misc.Clock.Now(),
 		)
 		chatUser = c.ChatUsers[username]
 	}
 	chatUser.UserNameDisplay = usernameDisplay
-	chatUser.LastChatTime = time.Now()
+	chatUser.LastChatTime = misc.Clock.Now()
 	chatUser.CurrentOperator = *update
 }

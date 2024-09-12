@@ -83,7 +83,6 @@ func TestSetToDefault(t *testing.T) {
 func TestChibiActorHandleMessage(t *testing.T) {
 	assert := assert.New(t)
 	sut := setupActorTest()
-
 	sut.HandleMessage(chat.ChatMessage{
 		Username:        "user1",
 		UserDisplayName: "userDisplay",
@@ -92,6 +91,7 @@ func TestChibiActorHandleMessage(t *testing.T) {
 
 	assert.Contains(sut.ChatUsers, "user1")
 	assert.Contains(sut.ChatUsers["user1"].CurrentOperator.Skin, "default")
+	assert.True(misc.Clock.Since(sut.ChatUsers["user1"].LastChatTime) < time.Duration(1)*time.Second)
 }
 
 func TestChibiActorUpdateChibi(t *testing.T) {
@@ -142,5 +142,5 @@ func TestUpdateChatter(t *testing.T) {
 
 	assert.Equal(len(sut.ChatUsers), 1)
 	period := time.Duration(1) * time.Second
-	assert.True(time.Since(sut.ChatUsers["user1"].LastChatTime) < period)
+	assert.True(misc.Clock.Since(sut.ChatUsers["user1"].LastChatTime) < period)
 }

@@ -137,5 +137,5 @@ func NewChatUser(
 }
 
 func (c *ChatUser) IsActive(period time.Duration) bool {
-	return time.Since(c.LastChatTime) < period
+	return misc.Clock.Since(c.LastChatTime) < period
 }

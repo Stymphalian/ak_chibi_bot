@@ -147,7 +147,7 @@ func (s *AdminServer) HandleList(w http.ResponseWriter, r *http.Request) error {
 	adminInfo.Metrics["NumWebsocketConnections"] = misc.Monitor.NumWebsocketConnections
 	adminInfo.Metrics["NumUsers"] = misc.Monitor.NumUsers
 	adminInfo.Metrics["NumCommands"] = misc.Monitor.NumCommands
-	adminInfo.Metrics["Datetime"] = time.Now().Format(time.DateTime)
+	adminInfo.Metrics["Datetime"] = misc.Clock.Now().Format(time.DateTime)
 
 	json.NewEncoder(w).Encode(adminInfo)
 	return nil
