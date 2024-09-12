@@ -4,6 +4,7 @@ import (
 	"errors"
 	"strings"
 
+	"github.com/Stymphalian/ak_chibi_bot/server/internal/chat"
 	"github.com/Stymphalian/ak_chibi_bot/server/internal/misc"
 	"github.com/Stymphalian/ak_chibi_bot/server/internal/spine"
 )
@@ -41,10 +42,9 @@ func (f *FakeChibiActor) SetToDefault(broadcasterName string, opName string, det
 	opInfo.OperatorId = "DefaultChibi"
 	opInfo.OperatorDisplayName = "DefaultChibi"
 	f.Users[broadcasterName] = opInfo
-	// f.Users[broadcasterName].OperatorId = "Chibi"
 }
 
-func (f *FakeChibiActor) HandleMessage(msg ChatMessage) (string, error) {
+func (f *FakeChibiActor) HandleMessage(msg chat.ChatMessage) (string, error) {
 	if strings.HasPrefix(msg.Message, "!") {
 		opInfo := *spine.EmptyOperatorInfo()
 		opInfo.OperatorId = msg.Message

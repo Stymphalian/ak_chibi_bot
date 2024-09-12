@@ -111,7 +111,11 @@ func (s *SpineBridge) handleResponseMessages(message []byte) {
 	log.Println("data", data)
 }
 
-func (s *SpineBridge) AddWebsocketConnection(
+func (s *SpineBridge) NumConnections() int {
+	return len(s.WebSocketConnections)
+}
+
+func (s *SpineBridge) AddConnection(
 	w http.ResponseWriter,
 	r *http.Request,
 	chatters []*ChatUser,

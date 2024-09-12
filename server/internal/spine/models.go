@@ -12,6 +12,22 @@ const (
 	MAX_ANIMATION_SPEED     = 5.0
 )
 
+type UpdateOperatorInfo struct {
+	OperatorDisplayName misc.Option[string]          `json:"operator_display_name"`
+	Faction             misc.Option[FactionEnum]     `json:"faction"`
+	OperatorId          misc.Option[string]          `json:"operator_id"`
+	Skin                misc.Option[string]          `json:"skin"`
+	ChibiStance         misc.Option[ChibiStanceEnum] `json:"chibi_stance"`
+	Facing              misc.Option[ChibiFacingEnum] `json:"facing"`
+	AnimationSpeed      misc.Option[float64]         `json:"animation_speed"`
+	Skins               misc.Option[[]string]        `json:"skins"`
+	AvailableAnimations misc.Option[[]string]        `json:"available_animations"`
+	StartPos            misc.Option[misc.Vector2]    `json:"start_pos"`
+
+	CurrentAction misc.Option[ActionEnum]  `json:"current_action"`
+	Action        misc.Option[ActionUnion] `json:"action"`
+}
+
 type OperatorInfo struct {
 	OperatorDisplayName string                    `json:"operator_display_name"`
 	Faction             FactionEnum               `json:"faction"`

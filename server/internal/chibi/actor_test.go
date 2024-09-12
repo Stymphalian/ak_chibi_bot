@@ -4,6 +4,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/Stymphalian/ak_chibi_bot/server/internal/chat"
 	"github.com/Stymphalian/ak_chibi_bot/server/internal/misc"
 	"github.com/Stymphalian/ak_chibi_bot/server/internal/spine"
 	"github.com/stretchr/testify/assert"
@@ -20,6 +21,8 @@ func setupActorTest() *ChibiActor {
 	)
 	return sut
 }
+
+// TODO: more tests for actor
 
 func TestGiveChibiToUserToExclude(t *testing.T) {
 	assert := assert.New(t)
@@ -81,7 +84,7 @@ func TestChibiActorHandleMessage(t *testing.T) {
 	assert := assert.New(t)
 	sut := setupActorTest()
 
-	sut.HandleMessage(ChatMessage{
+	sut.HandleMessage(chat.ChatMessage{
 		Username:        "user1",
 		UserDisplayName: "userDisplay",
 		Message:         "!chibi Amiya",
@@ -91,29 +94,29 @@ func TestChibiActorHandleMessage(t *testing.T) {
 	assert.Contains(sut.ChatUsers["user1"].CurrentOperator.Skin, "default")
 }
 
-// func TestChibiActorUpdateChibi(t *testing.T) {
-// 	assert := assert.New(t)
-// 	sut := setupActorTest()
+func TestChibiActorUpdateChibi(t *testing.T) {
+	assert := assert.New(t)
+	sut := setupActorTest()
 
-// 	opInfo := spine.NewOperatorInfo(
-// 		"Amiya",
-// 		spine.FACTION_ENUM_OPERATOR,
-// 		"char_002_amiya",
-// 		"default",
-// 		spine.CHIBI_STANCE_ENUM_BASE,
-// 		spine.CHIBI_FACING_ENUM_FRONT,
-// 		[]string{"default"},
-// 		[]string{"Idle", "Relax"},
-// 		1.0,
-// 		misc.EmptyOption[misc.Vector2](),
-// 		spine.ACTION_PLAY_ANIMATION,
-// 		spine.NewActionPlayAnimation([]string{"default"}),
-// 	)
-// 	sut.UpdateChibi("user1", "userDisplay", &opInfo)
-// 	assert.Contains(sut.ChatUsers, "user1")
-// 	assert.Contains(sut.ChatUsers["user1"].CurrentOperator.Skin, "default")
-// 	assert.Equal(sut.ChatUsers["user1"].CurrentOperator.AvailableAnimations, []string{"Idle", "Relax"})
-// }
+	opInfo := spine.NewOperatorInfo(
+		"Amiya",
+		spine.FACTION_ENUM_OPERATOR,
+		"char_002_amiya",
+		"default",
+		spine.CHIBI_STANCE_ENUM_BASE,
+		spine.CHIBI_FACING_ENUM_FRONT,
+		[]string{"default"},
+		[]string{"Idle", "Relax"},
+		1.0,
+		misc.EmptyOption[misc.Vector2](),
+		spine.ACTION_PLAY_ANIMATION,
+		spine.NewActionPlayAnimation([]string{"default"}),
+	)
+	sut.UpdateChibi("user1", "userDisplay", &opInfo)
+	assert.Contains(sut.ChatUsers, "user1")
+	assert.Contains(sut.ChatUsers["user1"].CurrentOperator.Skin, "default")
+	assert.Equal(sut.ChatUsers["user1"].CurrentOperator.AvailableAnimations, []string{"Move", "base_front1", "base_front2"})
+}
 
 func TestActorCurrentInfoEmpty(t *testing.T) {
 	assert := assert.New(t)

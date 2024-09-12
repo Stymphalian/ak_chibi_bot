@@ -15,7 +15,6 @@ func setupTest() (*TwitchBot, *chibi.FakeChibiActor) {
 		"stymphalian__",
 		"stymtwitchbot",
 		"access_token",
-		1,
 	)
 	return twitchBot, fakeChibiActor
 }

@@ -7,23 +7,21 @@ import (
 	"os"
 	"strings"
 
-	"github.com/Stymphalian/ak_chibi_bot/server/internal/chibi"
+	"github.com/Stymphalian/ak_chibi_bot/server/internal/chat"
 	"github.com/gempir/go-twitch-irc/v4"
 )
 
 type TwitchBot struct {
-	chatMessageHandler          chibi.ChatMessageHandler
-	channelName                 string
-	garbageCollectionPeriodMins int
-	tc                          *twitch.Client
+	chatMessageHandler chat.ChatMessageHandler
+	channelName        string
+	tc                 *twitch.Client
 }
 
 func NewTwitchBot(
-	chatMessageHandler chibi.ChatMessageHandler,
+	chatMessageHandler chat.ChatMessageHandler,
 	twitchChannelName string,
 	twitchBotName string,
-	twitchAccessToken string,
-	garbageCollectionPeriodMins int) (*TwitchBot, error) {
+	twitchAccessToken string) (*TwitchBot, error) {
 
 	accessToken := twitchAccessToken
 	if len(accessToken) == 0 {
@@ -37,10 +35,9 @@ func NewTwitchBot(
 		"oauth:"+accessToken,
 	)
 	self := &TwitchBot{
-		chatMessageHandler:          chatMessageHandler,
-		channelName:                 twitchChannelName,
-		garbageCollectionPeriodMins: garbageCollectionPeriodMins,
-		tc:                          tc,
+		chatMessageHandler: chatMessageHandler,
+		channelName:        twitchChannelName,
+		tc:                 tc,
 	}
 	return self, nil
 }
@@ -64,17 +61,14 @@ func (t *TwitchBot) HandlePrivateMessage(m twitch.PrivateMessage) {
 		log.Printf("PRIVMSG message %v\n", m)
 	}
 
-	chatMessage := chibi.ChatMessage{
+	chatMessage := chat.ChatMessage{
 		Username:        m.User.Name,
 		UserDisplayName: m.User.DisplayName,
 		Message:         trimmed,
 	}
 	outputMsg, err := t.chatMessageHandler.HandleMessage(chatMessage)
-	if len(outputMsg) > 0 {
+	if err != nil && len(outputMsg) > 0 {
 		t.tc.Say(m.Channel, outputMsg)
-	}
-	if err != nil {
-		t.tc.Say(m.Channel, err.Error())
 	}
 }
 

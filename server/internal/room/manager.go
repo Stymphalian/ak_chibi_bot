@@ -103,7 +103,6 @@ func (r *RoomsManager) CreateRoomOrNoOp(channel string, ctx context.Context) err
 		channel,
 		r.botConfig.TwitchBot,
 		r.botConfig.TwitchAccessToken,
-		r.botConfig.RemoveChibiAfterMinutes,
 	)
 	if err != nil {
 		return err

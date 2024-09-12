@@ -5,6 +5,7 @@ import (
 	"slices"
 	"time"
 
+	"github.com/Stymphalian/ak_chibi_bot/server/internal/chat"
 	"github.com/Stymphalian/ak_chibi_bot/server/internal/misc"
 	"github.com/Stymphalian/ak_chibi_bot/server/internal/spine"
 )
@@ -24,13 +25,13 @@ func NewChibiActor(
 	excludeNames []string,
 ) *ChibiActor {
 	a := &ChibiActor{
-		spineService:    spineService,
-		ChatUsers:       make(map[string]*spine.ChatUser, 0),
-		LastChatterTime: time.Now(),
-		client:          client,
-		excludeNames:    excludeNames,
+		spineService:         spineService,
+		ChatUsers:            make(map[string]*spine.ChatUser, 0),
+		LastChatterTime:      time.Now(),
+		client:               client,
+		chatCommandProcessor: &ChatCommandProcessor{spineService},
+		excludeNames:         excludeNames,
 	}
-	a.chatCommandProcessor = &ChatCommandProcessor{a, spineService, client}
 	return a
 }
 
@@ -40,7 +41,24 @@ func (c *ChibiActor) GiveChibiToUser(userName string, userNameDisplay string) er
 		return nil
 	}
 
-	_, err := c.chatCommandProcessor.addRandomChibi(userName, userNameDisplay)
+	operatorInfo, err := c.spineService.GetRandomOperator()
+	if err != nil {
+		return err
+	}
+	log.Printf("Giving %s the chibi %s\n", userName, operatorInfo.OperatorId)
+	_, err = c.client.SetOperator(
+		&spine.SetOperatorRequest{
+			UserName:        userName,
+			UserNameDisplay: userNameDisplay,
+			Operator:        *operatorInfo,
+		})
+	if err != nil {
+		log.Printf("Failed to set chibi (%s)", err.Error())
+		return nil
+	}
+	c.UpdateChatter(userName, userNameDisplay, operatorInfo)
+
+	// _, err := c.chatCommandProcessor.addRandomChibi(userName, userNameDisplay)
 	if err == nil {
 		log.Println("User joined. Adding a chibi for them ", userName)
 		misc.Monitor.NumUsers += 1
@@ -83,7 +101,7 @@ func (c *ChibiActor) SetToDefault(
 	c.UpdateChatter(broadcasterName, broadcasterName, opInfo)
 }
 
-func (c *ChibiActor) HandleMessage(msg ChatMessage) (string, error) {
+func (c *ChibiActor) HandleMessage(msg chat.ChatMessage) (string, error) {
 	if !c.HasChibi(msg.Username) {
 		c.GiveChibiToUser(msg.Username, msg.UserDisplayName)
 	}
@@ -92,20 +110,37 @@ func (c *ChibiActor) HandleMessage(msg ChatMessage) (string, error) {
 	}
 	c.ChatUsers[msg.Username].LastChatTime = time.Now()
 
-	return c.chatCommandProcessor.HandleMessage(
-		msg.Username,
-		msg.UserDisplayName,
-		msg.Message,
-	)
+	current, err := c.CurrentInfo(msg.Username)
+	if err != nil {
+		switch err.(type) {
+		case *spine.UserNotFound:
+			log.Println("Chibi not found for user ", msg.Username)
+		}
+		return "", nil
+	}
+
+	chatCommand, err := c.chatCommandProcessor.HandleMessage(&current, msg)
+	chatCommand.UpdateActor(c)
+	return chatCommand.Reply(c), err
 }
 
 // TODO: Leaky interface
 func (c *ChibiActor) UpdateChibi(username string, userDisplayName string, opInfo *spine.OperatorInfo) error {
-	return c.chatCommandProcessor.UpdateChibi(
-		username,
-		userDisplayName,
-		opInfo,
-	)
+	c.spineService.ValidateUpdateSetDefaultOtherwise(opInfo)
+
+	_, err := c.client.SetOperator(
+		&spine.SetOperatorRequest{
+			UserName:        username,
+			UserNameDisplay: userDisplayName,
+			Operator:        *opInfo,
+		})
+	if err != nil {
+		log.Printf("Failed to set chibi (%s)", err.Error())
+		return nil
+	}
+
+	c.UpdateChatter(username, userDisplayName, opInfo)
+	return nil
 }
 
 func (c *ChibiActor) CurrentInfo(userName string) (spine.OperatorInfo, error) {

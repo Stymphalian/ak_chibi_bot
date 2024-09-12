@@ -20,29 +20,29 @@ type RoomConfig struct {
 	InactiveRoomPeriodMins      int
 }
 
-// View - spineBridge
+// View - spineRuntime
 // Model - chibiActor
 // View-Model/Controller - twitchChat
 type Room struct {
 	SpineService *spine.SpineService
 
-	config      RoomConfig
-	spineBridge *spine.SpineBridge
-	chibiActor  *chibi.ChibiActor
-	twitchChat  *chatbot.TwitchBot
+	config       RoomConfig
+	spineRuntime spine.SpineRuntime
+	chibiActor   *chibi.ChibiActor
+	twitchChat   chatbot.ChatBotter
 }
 
 func NewRoom(
 	roomConfig *RoomConfig,
 	spineService *spine.SpineService,
-	spineBridge *spine.SpineBridge,
+	spineRuntime spine.SpineRuntime,
 	chibiActor *chibi.ChibiActor,
-	twitchBot *chatbot.TwitchBot,
+	twitchBot chatbot.ChatBotter,
 ) *Room {
 	r := &Room{
 		config:       *roomConfig,
 		SpineService: spineService,
-		spineBridge:  spineBridge,
+		spineRuntime: spineRuntime,
 		chibiActor:   chibiActor,
 		twitchChat:   twitchBot,
 	}
@@ -70,7 +70,7 @@ func (r *Room) Close() error {
 	}
 
 	// Disconnect all websockets
-	err = r.spineBridge.Close()
+	err = r.spineRuntime.Close()
 	if err != nil {
 		return err
 	}
@@ -147,7 +147,7 @@ func (s *Room) AddWebsocketConnection(w http.ResponseWriter, r *http.Request) er
 	for _, chatUser := range s.chibiActor.ChatUsers {
 		chatters = append(chatters, chatUser)
 	}
-	return s.spineBridge.AddWebsocketConnection(w, r, chatters)
+	return s.spineRuntime.AddConnection(w, r, chatters)
 }
 
 func (r *Room) IsActive(period time.Duration) bool {
@@ -155,7 +155,7 @@ func (r *Room) IsActive(period time.Duration) bool {
 }
 
 func (r *Room) NumConnectedClients() int {
-	return len(r.spineBridge.WebSocketConnections)
+	return r.spineRuntime.NumConnections()
 }
 
 func (r *Room) ForEachChatter(callback func(chatUser *spine.ChatUser)) {
