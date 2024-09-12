@@ -54,6 +54,8 @@ Manual Test Cases:
 !chibi base
 !chibi walk
 !chibi battle
+!chibi size 1.5
+!chibi scale 0.5
 */
 
 func setupCommandTest() (*spine.OperatorInfo, *ChatCommandProcessor) {
@@ -373,7 +375,7 @@ func TestCmdProcessorHandleMessage_ChibiSetFaceOnly(t *testing.T) {
 }
 
 func TestCmdProcessorHandleMessage_ChibiEnemyNotEnoughArgs(t *testing.T) {
-	// TODO
+	// TODO: Need to add enemy to AssetService in order to test enemy happy path
 	actor := NewFakeChibiActor()
 	current, sut := setupCommandTest()
 	actor.UpdateChatter("user1", "user1DisplayName", current)
@@ -510,4 +512,29 @@ func TestCmdProcessorHandleMessage_ChibiChooseChibi(t *testing.T) {
 	assert.Equal("char_002_amiya", current.OperatorId)
 	assert.Equal(spine.FACTION_ENUM_OPERATOR, current.Faction)
 	assert.Equal(1.0, current.AnimationSpeed)
+	assert.True(current.SpriteScale.IsNone())
+}
+
+func TestCmdProcessorHandleMessage_ChibiScale(t *testing.T) {
+	actor := NewFakeChibiActor()
+	current, sut := setupCommandTest()
+	actor.UpdateChatter("user1", "user1DisplayName", current)
+
+	assert := assert.New(t)
+	cmd, err := sut.HandleMessage(current, chat.ChatMessage{
+		Username:        "user1",
+		UserDisplayName: "user1DisplayName",
+		Message:         "!chibi size 0.5",
+	})
+
+	assert.Nil(err)
+	assert.Empty(cmd.Reply(actor))
+	if updateActorCmd, ok := cmd.(*ChatCommandUpdateActor); ok {
+		assert.Equal(updateActorCmd.username, "user1")
+		assert.Equal(updateActorCmd.usernameDisplay, "user1DisplayName")
+	} else {
+		assert.Fail("Command is not of type: ChatCommandUpdateActor")
+	}
+	assert.Equal(0.5, current.SpriteScale.Unwrap().X)
+	assert.Equal(0.5, current.SpriteScale.Unwrap().Y)
 }

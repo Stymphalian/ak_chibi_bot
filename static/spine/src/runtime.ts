@@ -99,6 +99,12 @@ module stym {
                 startPosX = requestData["start_pos"]["x"];
                 startPosY = requestData["start_pos"]["y"];
             }
+            let configScaleX = 1;
+            let configScaleY = 1;
+            if (requestData["sprite_scale"] != null) {
+                configScaleX = requestData["sprite_scale"]["x"];
+                configScaleY = requestData["sprite_scale"]["y"];
+            }
     
             this.actorConfig = {
                 chibiId: requestData["operator_id"],
@@ -108,8 +114,10 @@ module stym {
 
                 startPosX: startPosX,
                 startPosY: startPosY,
-                scaleX: 0.45,
-                scaleY: 0.45,
+                configScaleX: configScaleX,
+                configScaleY: configScaleY,
+                scaleX: 0.45 * configScaleX,
+                scaleY: 0.45 * configScaleY,
                 maxSizePx: 350,
                 premultipliedAlpha: true,
                 animationPlaySpeed: requestData["animation_speed"] ?  requestData["animation_speed"] : 1.0,

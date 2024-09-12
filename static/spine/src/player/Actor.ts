@@ -68,6 +68,8 @@ module spine {
 		/** Optional: Animation play speed. 0 to 3.0 */
 		animationPlaySpeed: number,
 
+		configScaleX: number
+		configScaleY: number
 		scaleX: number
 		scaleY: number
 		maxSizePx: number

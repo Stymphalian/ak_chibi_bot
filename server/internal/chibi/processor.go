@@ -57,6 +57,8 @@ func (c *ChatCommandProcessor) HandleMessage(current *spine.OperatorInfo, chatMs
 	// !chibi enemy The last steam knight
 	// !chibi admin <username> "!chibi command"
 	// !chibi speed 0.1
+	// !chibi size 0.5 [0.1 1.5]
+	// !chibi scale 0.5 [0.1 1.5]
 
 	// var msg string
 	subCommand := strings.TrimSpace(args[1])
@@ -108,6 +110,10 @@ func (c *ChatCommandProcessor) HandleMessage(current *spine.OperatorInfo, chatMs
 		return c.setWalk(chatArgs, current)
 	case "speed":
 		return c.setAnimationSpeed(chatArgs, current)
+	case "size":
+		return c.setScale(chatArgs, current)
+	case "scale":
+		return c.setScale(chatArgs, current)
 	default:
 		if _, ok := misc.MatchesKeywords(subCommand, current.AvailableAnimations); ok {
 			chatArgs.args = []string{"!chibi", "play", subCommand}
@@ -249,6 +255,7 @@ func (c *ChatCommandProcessor) setEnemy(args *ChatArgs, current *spine.OperatorI
 	current.OperatorId = operatorId
 	current.Faction = spine.FACTION_ENUM_ENEMY
 	current.AnimationSpeed = spine.DEFAULT_ANIMATION_SPEED
+	current.SpriteScale = misc.EmptyOption[misc.Vector2]()
 
 	return &ChatCommandUpdateActor{
 		replyMessage:    "",
@@ -405,6 +412,7 @@ func (c *ChatCommandProcessor) setChibiModel(chatArgs *ChatArgs, current *spine.
 	current.OperatorId = operatorId
 	current.Faction = spine.FACTION_ENUM_OPERATOR
 	current.AnimationSpeed = spine.DEFAULT_ANIMATION_SPEED
+	current.SpriteScale = misc.EmptyOption[misc.Vector2]()
 	return &ChatCommandUpdateActor{
 		replyMessage:    "",
 		username:        chatArgs.chatMsg.Username,
@@ -417,5 +425,27 @@ func (c *ChatCommandProcessor) getChibiInfo(args *ChatArgs, subInfoName string) 
 	return &ChatCommandInfo{
 		info:     subInfoName,
 		username: args.chatMsg.Username,
+	}, nil
+}
+
+func (c *ChatCommandProcessor) setScale(args *ChatArgs, current *spine.OperatorInfo) (ChatCommand, error) {
+	if len(args.args) < 3 {
+		return &ChatCommandNoOp{}, errors.New("try something like !chibi size 0.5")
+	}
+	spriteScale, err := strconv.ParseFloat(args.args[2], 64)
+	if err != nil {
+		return &ChatCommandNoOp{}, errors.New("try something like !chibi size 1.5")
+	}
+	if spriteScale < spine.MIN_SCALE_SIZE || spriteScale > spine.MAX_SCALE_SIZE {
+		return &ChatCommandNoOp{}, errors.New("try something like !chibi size 2.0")
+	}
+	current.SpriteScale = misc.NewOption(
+		misc.Vector2{X: spriteScale, Y: spriteScale},
+	)
+	return &ChatCommandUpdateActor{
+		replyMessage:    "",
+		username:        args.chatMsg.Username,
+		usernameDisplay: args.chatMsg.UserDisplayName,
+		update:          current,
 	}, nil
 }

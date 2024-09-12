@@ -19,8 +19,9 @@ Command Name | Description
 !chibi play Attack | Change the animation the chibi currently plays. The animation loops forever.
 !chibi walk <?number> | Have the chibi walk back and forth across the screen. Optionally specify a number between 0 and 1.0 for the chibi to walk to that part of the screen.
 !chibi enemy The Last Steam Knight | Change the chibi into one of the enemies in the game. You can also use the enemies "code". `!chibi enemy B4` is equivalent to `!chibi enemy Originium Slug`. You can find all the enemy codes from [Arknights Wiki](https://arknights.wiki.gg/wiki/Enemy/Normal)
-!chibi speed 2.0 | change the speed in which an animation is played (min 0.1, max 3.0)
+!chibi speed 2.0 | change the speed in which an animation is played (min 0.1, max 5.0)
 !chibi who Rock | Ask the bot for operators/enemies which match the given name.
+!chibi size 0.5 | Change the size/scale of the chibi. (min 0.5, max 1.5). There is still a maximum pixel size limitation on the chibi (350px)
 
 # Quick Start - Hosted
 Have the twich bot directly connect to your chat by using a hosted bot.

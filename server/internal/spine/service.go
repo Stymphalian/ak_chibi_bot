@@ -78,6 +78,20 @@ func (c *SpineService) ValidateUpdateSetDefaultOtherwise(update *OperatorInfo) e
 		MAX_ANIMATION_SPEED,
 	)
 
+	// Sprite Scale
+	if update.SpriteScale.IsSome() {
+		vec := update.SpriteScale.Unwrap()
+		if vec.X < MIN_SCALE_SIZE || vec.X > MAX_SCALE_SIZE ||
+			vec.Y < MIN_SCALE_SIZE || vec.Y > MAX_SCALE_SIZE {
+			update.SpriteScale = misc.NewOption(
+				misc.Vector2{
+					X: misc.ClampF64(vec.X, MIN_SCALE_SIZE, MAX_SCALE_SIZE),
+					Y: misc.ClampF64(vec.Y, MIN_SCALE_SIZE, MAX_SCALE_SIZE),
+				},
+			)
+		}
+	}
+
 	// Validate startPos
 	if update.StartPos.IsSome() {
 		vec := update.StartPos.Unwrap()

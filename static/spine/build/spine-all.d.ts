@@ -1842,6 +1842,8 @@ declare namespace spine {
         skins?: string[];
         premultipliedAlpha: boolean;
         animationPlaySpeed: number;
+        configScaleX: number;
+        configScaleY: number;
         scaleX: number;
         scaleY: number;
         maxSizePx: number;

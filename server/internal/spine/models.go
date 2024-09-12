@@ -10,6 +10,9 @@ const (
 	MIN_ANIMATION_SPEED     = 0.1
 	DEFAULT_ANIMATION_SPEED = 1.0
 	MAX_ANIMATION_SPEED     = 5.0
+	MIN_SCALE_SIZE          = 0.5
+	DEFAULT_SCALE_SIZE      = 1.0
+	MAX_SCALE_SIZE          = 1.5
 )
 
 type UpdateOperatorInfo struct {
@@ -36,6 +39,7 @@ type OperatorInfo struct {
 	ChibiStance         ChibiStanceEnum           `json:"chibi_stance"`
 	Facing              ChibiFacingEnum           `json:"facing"`
 	AnimationSpeed      float64                   `json:"animation_speed"`
+	SpriteScale         misc.Option[misc.Vector2] `json:"sprite_scale"`
 	Skins               []string                  `json:"skins"`
 	AvailableAnimations []string                  `json:"available_animations"`
 	StartPos            misc.Option[misc.Vector2] `json:"start_pos"`
@@ -66,6 +70,7 @@ func NewOperatorInfo(
 		ChibiStance:         ChibiStance,
 		Facing:              Facing,
 		AnimationSpeed:      AnimationSpeed,
+		SpriteScale:         misc.EmptyOption[misc.Vector2](),
 		Skins:               AvailableSkins,
 		AvailableAnimations: AvailableAnimations,
 		StartPos:            StartPos,
