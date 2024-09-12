@@ -30,6 +30,7 @@ type Room struct {
 	spineRuntime spine.SpineRuntime
 	chibiActor   *chibi.ChibiActor
 	twitchChat   chatbot.ChatBotter
+	createdAt    time.Time
 }
 
 func NewRoom(
@@ -45,6 +46,7 @@ func NewRoom(
 		spineRuntime: spineRuntime,
 		chibiActor:   chibiActor,
 		twitchChat:   twitchBot,
+		createdAt:    time.Now(),
 	}
 	r.chibiActor.SetToDefault(
 		r.config.ChannelName,
@@ -59,6 +61,10 @@ func (r *Room) GetChannelName() string {
 
 func (r *Room) GetLastChatterTime() time.Time {
 	return r.chibiActor.LastChatterTime
+}
+
+func (r *Room) CreatedAt() time.Time {
+	return r.createdAt
 }
 
 func (r *Room) Close() error {

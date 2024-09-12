@@ -28,6 +28,7 @@ type Chatter struct {
 
 type Room struct {
 	ChannelName             string
+	CreatedAt               string
 	LastTimeUsed            string
 	Chatters                []*Chatter
 	NumWebsocketConnections int
@@ -117,6 +118,7 @@ func (s *AdminServer) HandleList(w http.ResponseWriter, r *http.Request) error {
 			LastTimeUsed:            roomVal.GetLastChatterTime().Format(time.DateTime),
 			Chatters:                make([]*Chatter, 0),
 			NumWebsocketConnections: roomVal.NumConnectedClients(),
+			CreatedAt:               roomVal.CreatedAt().Format(time.DateTime),
 		}
 
 		roomVal.ForEachChatter(func(chatUser *spine.ChatUser) {

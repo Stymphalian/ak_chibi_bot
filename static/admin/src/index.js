@@ -16,6 +16,7 @@ function fillInRoomsTable(data) {
                     ${room.ChannelName}
                 </a>
             </td>
+            <td>${room.CreatedAt}</td>
             <td>${room.LastTimeUsed}</td>
             <td>${room.NumWebsocketConnections}</td>
             <td>
