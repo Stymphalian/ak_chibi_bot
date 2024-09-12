@@ -62,6 +62,9 @@ func (r *RoomsManager) garbageCollectRooms() {
 }
 
 func (r *RoomsManager) RunLoop() {
+	// misc.GoRunCounter.Add(1)
+	// defer misc.GoRunCounter.Add(-1)
+
 	if r.botConfig.RemoveUnusedRoomsAfterMinutes > 0 {
 		stopTimer := misc.StartTimer(
 			"garbageCollectRooms",
@@ -197,6 +200,9 @@ func (r *RoomsManager) Shutdown() {
 	r.Save()
 
 	go func() {
+		// misc.GoRunCounter.Add(1)
+		// defer misc.GoRunCounter.Add(-1)
+
 		defer close(r.shutdownDoneCh)
 		r.rooms_mutex.Lock()
 		defer r.rooms_mutex.Unlock()
@@ -217,6 +223,8 @@ func (r *RoomsManager) WaitForShutdownWithTimeout() {
 	case <-r.shutdownDoneCh:
 		log.Println("RoomsManager: Shutting down gracefully")
 	}
+
+	// log.Println("Number of running gorountines:", misc.GoRunCounter.Load())
 }
 
 func (r *RoomsManager) RemoveRoom(channel string) error {

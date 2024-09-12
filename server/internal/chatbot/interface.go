@@ -1,8 +1,6 @@
 package chatbot
 
-import "io"
-
 type ChatBotter interface {
-	io.Closer
+	Close() error
 	ReadLoop() error
 }

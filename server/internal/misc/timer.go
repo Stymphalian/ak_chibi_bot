@@ -11,6 +11,9 @@ func StartTimer(name string, interval time.Duration, callback func()) func() {
 	ticker := time.NewTicker(interval)
 	done := make(chan bool)
 	go func() {
+		// GoRunCounter.Add(1)
+		// defer GoRunCounter.Add(-1)
+
 		for {
 			select {
 			case <-done:

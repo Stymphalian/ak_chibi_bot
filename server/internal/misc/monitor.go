@@ -12,3 +12,5 @@ type MonitorStruct struct {
 	NumUsers                int
 	NumCommands             int
 }
+
+// var GoRunCounter atomic.Int64

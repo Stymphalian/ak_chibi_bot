@@ -100,6 +100,9 @@ func (r *Room) garbageCollectOldChibis() {
 }
 
 func (r *Room) Run() {
+	// misc.GoRunCounter.Add(1)
+	// defer misc.GoRunCounter.Add(-1)
+
 	log.Printf("Room %s is running\n", r.config.ChannelName)
 
 	if r.config.GarbageCollectionPeriodMins > 0 {

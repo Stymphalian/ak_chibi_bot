@@ -1,7 +1,6 @@
 package spine
 
 import (
-	"io"
 	"net/http"
 )
 
@@ -35,13 +34,13 @@ type RemoveOperatorResponse struct {
 }
 
 type SpineRuntime interface {
-	io.Closer
+	Close() error
 	AddConnection(w http.ResponseWriter, r *http.Request, chatters []*ChatUser) error
 	NumConnections() int
 }
 
 type SpineClient interface {
-	io.Closer
+	Close() error
 	SetOperator(r *SetOperatorRequest) (*SetOperatorResponse, error)
 	RemoveOperator(r *RemoveOperatorRequest) (*RemoveOperatorResponse, error)
 }

@@ -38,6 +38,9 @@ func NewSpineBridge(spineService *SpineService) (*SpineBridge, error) {
 }
 
 func (s *SpineBridge) pingWebSockets() {
+	// misc.GoRunCounter.Add(1)
+	// defer misc.GoRunCounter.Add(-1)
+
 	s.websocketPingerTicker = time.NewTicker(time.Duration(30) * time.Second)
 	s.websocketPingerDone = make(chan bool)
 
@@ -80,12 +83,14 @@ func (s *SpineBridge) Close() error {
 
 		wg.Add(1)
 		go func() {
+			// misc.GoRunCounter.Add(1)
+			// defer misc.GoRunCounter.Add(-1)
+
 			select {
 			case <-time.After(100 * time.Millisecond):
-				wg.Done()
 			case <-websocketConn.done:
-				wg.Done()
 			}
+			wg.Done()
 		}()
 	}
 
@@ -120,6 +125,9 @@ func (s *SpineBridge) AddConnection(
 	r *http.Request,
 	chatters []*ChatUser,
 ) error {
+	// misc.GoRunCounter.Add(1)
+	// defer misc.GoRunCounter.Add(-1)
+
 	var upgrader = websocket.Upgrader{} // use default options
 	c, err := upgrader.Upgrade(w, r, nil)
 	if err != nil {
