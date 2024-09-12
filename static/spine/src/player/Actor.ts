@@ -76,6 +76,11 @@ module spine {
 		startPosX : number
 		startPosY : number
 
+		defaultMovementSpeedPxX: number,
+		defaultMovementSpeedPxY: number,
+		movementSpeedPxX: number,
+		movementSpeedPxY: number,
+
 		// Unused?
 		defaultScaleX?: number
 		defaultScaleY?: number
@@ -148,7 +153,6 @@ module spine {
 
 		constructor(config: SpineActorConfig, viewport: BoundingBox) {
 			this.ResetWithConfig(config);
-			this.movementSpeed = new spine.Vector2(80 + Math.random()*40,0);  // ~100 px/ second
 			let x = Math.random()*viewport.width - (viewport.width/2)
 			this.position = new spine.Vector2(x, 0);
 			this.viewport = viewport;
@@ -182,6 +186,18 @@ module spine {
 			this.animViewport = null;
 			this.prevAnimViewport = null;
 			this.defaultBB = null;
+
+			// Update movement speed from config
+			if (config.movementSpeedPxX !== null && config.movementSpeedPxY !== null) {
+				this.movementSpeed = new spine.Vector2(
+					config.movementSpeedPxX, config.movementSpeedPxY
+				);
+			} else {
+				this.movementSpeed = new spine.Vector2(
+					config.defaultMovementSpeedPxX + Math.random()*config.defaultMovementSpeedPxX/2,
+					config.defaultMovementSpeedPxY
+				);
+			}
 
 			// current bearing should be kept the same, event as we change
 			// the configuration/animation

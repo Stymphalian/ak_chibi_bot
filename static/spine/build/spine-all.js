@@ -11075,7 +11075,6 @@ var spine;
         currentAction = null;
         constructor(config, viewport) {
             this.ResetWithConfig(config);
-            this.movementSpeed = new spine.Vector2(80 + Math.random() * 40, 0);
             let x = Math.random() * viewport.width - (viewport.width / 2);
             this.position = new spine.Vector2(x, 0);
             this.viewport = viewport;
@@ -11101,6 +11100,12 @@ var spine;
             this.animViewport = null;
             this.prevAnimViewport = null;
             this.defaultBB = null;
+            if (config.movementSpeedPxX !== null && config.movementSpeedPxY !== null) {
+                this.movementSpeed = new spine.Vector2(config.movementSpeedPxX, config.movementSpeedPxY);
+            }
+            else {
+                this.movementSpeed = new spine.Vector2(config.defaultMovementSpeedPxX + Math.random() * config.defaultMovementSpeedPxX / 2, config.defaultMovementSpeedPxY);
+            }
             this.scale.x = Math.sign(this.scale.x) * config.scaleX;
             this.scale.y = Math.sign(this.scale.y) * config.scaleY;
             this.currentAction = spine.ParseActionNameToAction(this.config.action, this.config.action_data);
@@ -11922,7 +11927,7 @@ var stym;
         backoffTimeMsec;
         backOffMaxtimeMsec;
         channelName;
-        constructor(channelName) {
+        constructor(channelName, width, height) {
             let font = new FontFace("lato", "url(/static/fonts/Lato/Lato-Black.ttf)");
             font.load().then(() => { document.fonts.add(font); });
             this.channelName = channelName;
@@ -11940,8 +11945,8 @@ var stym;
                     viewport: {
                         x: 0,
                         y: 0,
-                        width: 1920,
-                        height: 1080,
+                        width: width,
+                        height: height,
                         padLeft: 0,
                         padRight: 0,
                         padTop: 0,
@@ -12003,6 +12008,14 @@ var stym;
                 configScaleX = requestData["sprite_scale"]["x"];
                 configScaleY = requestData["sprite_scale"]["y"];
             }
+            let movementSpeedPxX = null;
+            let movementSpeedPxY = null;
+            if (requestData["movement_speed"] != null) {
+                movementSpeedPxX = requestData["movement_speed"]["x"];
+                movementSpeedPxY = requestData["movement_speed"]["y"];
+            }
+            let defaultMovementSpeedPxX = 80;
+            let defaultMovementSpeedPxY = 0;
             this.actorConfig = {
                 chibiId: requestData["operator_id"],
                 userDisplayName: requestData['user_name_display'],
@@ -12010,6 +12023,10 @@ var stym;
                 atlasUrl: requestData["atlas_file"],
                 startPosX: startPosX,
                 startPosY: startPosY,
+                defaultMovementSpeedPxX: defaultMovementSpeedPxX,
+                defaultMovementSpeedPxY: defaultMovementSpeedPxY,
+                movementSpeedPxX: movementSpeedPxX,
+                movementSpeedPxY: movementSpeedPxY,
                 configScaleX: configScaleX,
                 configScaleY: configScaleY,
                 scaleX: 0.45 * configScaleX,

@@ -1849,6 +1849,10 @@ declare namespace spine {
         maxSizePx: number;
         startPosX: number;
         startPosY: number;
+        defaultMovementSpeedPxX: number;
+        defaultMovementSpeedPxY: number;
+        movementSpeedPxX: number;
+        movementSpeedPxY: number;
         defaultScaleX?: number;
         defaultScaleY?: number;
         extraOffsetX: number;
@@ -1988,7 +1992,7 @@ declare namespace stym {
         backoffTimeMsec: number;
         backOffMaxtimeMsec: number;
         channelName: string;
-        constructor(channelName: string);
+        constructor(channelName: string, width: number, height: number);
         openWebSocket(channelName: string): void;
         messageHandler(event: MessageEvent): void;
         swapCharacter(requestData: any): void;

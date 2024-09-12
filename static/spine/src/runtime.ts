@@ -11,7 +11,7 @@ module stym {
         public backOffMaxtimeMsec: number;
         public channelName: string;
     
-        constructor(channelName: string) {
+        constructor(channelName: string, width: number, height: number) {
             let font = new FontFace("lato", "url(/static/fonts/Lato/Lato-Black.ttf)");
             font.load().then(() => {document.fonts.add(font);})
     
@@ -31,8 +31,10 @@ module stym {
                     viewport: {
                         x: 0,
                         y: 0,
-                        width: 1920,
-                        height: 1080,
+                        // width: 1920,
+                        // height: 1080,
+                        width: width,
+                        height: height,
                         padLeft: 0,
                         padRight: 0,
                         padTop: 0,
@@ -105,6 +107,15 @@ module stym {
                 configScaleX = requestData["sprite_scale"]["x"];
                 configScaleY = requestData["sprite_scale"]["y"];
             }
+
+            let movementSpeedPxX = null;
+            let movementSpeedPxY = null;
+            if (requestData["movement_speed"] != null) {
+                movementSpeedPxX = requestData["movement_speed"]["x"];
+                movementSpeedPxY = requestData["movement_speed"]["y"];
+            }
+            let defaultMovementSpeedPxX = 80;
+            let defaultMovementSpeedPxY = 0;
     
             this.actorConfig = {
                 chibiId: requestData["operator_id"],
@@ -114,6 +125,11 @@ module stym {
 
                 startPosX: startPosX,
                 startPosY: startPosY,
+                defaultMovementSpeedPxX: defaultMovementSpeedPxX,
+                defaultMovementSpeedPxY: defaultMovementSpeedPxY,
+                movementSpeedPxX: movementSpeedPxX,
+                movementSpeedPxY: movementSpeedPxY,
+
                 configScaleX: configScaleX,
                 configScaleY: configScaleY,
                 scaleX: 0.45 * configScaleX,
