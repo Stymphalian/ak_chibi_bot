@@ -12,7 +12,10 @@ import (
 	"strings"
 	"syscall"
 
+	_ "github.com/lib/pq" // add this
+
 	"github.com/Stymphalian/ak_chibi_bot/server/internal/admin"
+	"github.com/Stymphalian/ak_chibi_bot/server/internal/akdb"
 	"github.com/Stymphalian/ak_chibi_bot/server/internal/misc"
 	"github.com/Stymphalian/ak_chibi_bot/server/internal/room"
 	"github.com/Stymphalian/ak_chibi_bot/server/internal/spine"
@@ -127,6 +130,26 @@ func (s *MainStruct) HandleSpineWebSocket(w http.ResponseWriter, r *http.Request
 }
 
 func main() {
-	m := NewMainStruct()
-	m.run()
+	akdb.Prepare()
+	db, err := akdb.Connect()
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer db.Close()
+
+	rows, err := db.Query("SELECT title FROM blog")
+	if err != nil {
+		log.Fatal(err)
+	}
+	for rows.Next() {
+		var title string
+		err = rows.Scan(&title)
+		if err != nil {
+			log.Fatal(err)
+		}
+		log.Println("@@@@ found titles:", title)
+	}
+
+	// m := NewMainStruct()
+	// m.run()
 }

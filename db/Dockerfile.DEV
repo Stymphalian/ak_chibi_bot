@@ -1,0 +1,24 @@
+FROM postgres:latest
+
+COPY ../secrets/postgresdb.key /var/lib/postgresql
+COPY ../secrets/postgresdb.crt /var/lib/postgresql
+COPY ../secrets/CertAuth.crt /var/lib/postgresql
+COPY ../secrets/CertAuth.crl /var/lib/postgresql
+COPY ./ssl-conf.sh /usr/local/bin
+
+RUN chown postgres:postgres /var/lib/postgresql/postgresdb.key
+RUN chown postgres:postgres /var/lib/postgresql/postgresdb.crt
+RUN chown postgres:postgres /var/lib/postgresql/CertAuth.crt
+RUN chown postgres:postgres /var/lib/postgresql/CertAuth.crl
+RUN chmod 600 /var/lib/postgresql/postgresdb.key
+RUN chmod 600 /var/lib/postgresql/postgresdb.crt
+RUN chmod 600 /var/lib/postgresql/CertAuth.crt
+RUN chmod 600 /var/lib/postgresql/CertAuth.crl
+
+CMD ["postgres"                                                    \
+    ,"-c", "ssl=on"                                                 \
+    ,"-c", "ssl_cert_file=/var/lib/postgresql/postgresdb.crt"       \
+    ,"-c", "ssl_key_file=/var/lib/postgresql/postgresdb.key"        \
+    ,"-c", "ssl_ca_file=/var/lib/postgresql/CertAuth.crt"         \
+    ,"-c", "ssl_crl_file=/var/lib/postgresql/CertAuth.crl"           \
+]

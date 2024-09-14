@@ -25,3 +25,6 @@ server/log.txt
 server/*.json
 SECRET.md
 TODO.md
+local_secrets/
+secrets/
+thirdparty/

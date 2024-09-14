@@ -20,3 +20,4 @@ RUN rm -rf /ak_chibi_assets/spine/src
 RUN go mod download && go mod verify
 RUN go build -o ak_chibi_bot server/main.go
 EXPOSE 8080
+# CMD ["go", "run",  "server/main.go", "-address=:8080", "-image_assetdir=/ak_chibi_assets/assets", "-static_dir=./static", "-bot_config=/work/server/config.json"]

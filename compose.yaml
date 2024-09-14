@@ -1,0 +1,55 @@
+name: ak-chibi-bot-services
+
+services:
+  web:
+    image: ak-chibi-bot
+    ports:
+      - "8080:8080"
+    volumes:
+      - type: bind
+        source: ./
+        target: /work        
+      - db-data:/var/lib/postgresql/data
+    environment:
+      - DATABASE_USER=postgres
+      - DATABASE_DB=akdb
+      - DATABASE_HOST=db
+      - DATABASE_PORT=5432
+    # depends_on:
+    #   db:
+    #     condition: service_healthy
+    secrets:
+      - db-password.txt
+    stdin_open: true
+    tty: true
+    # command: ["go", "run",  "server/main.go", "-address=:8080", "-image_assetdir=/ak_chibi_assets/assets", "-static_dir=./static", "-bot_config=/work/server/dev_config.json"]
+
+  db:
+    image: ak-db
+    restart: always
+    user: postgres
+    shm_size: 256mb
+    secrets:
+      - db-password.txt
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=akdb
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD_FILE=/run/secrets/db-password.txt
+    ports:
+      - "5432:5432"
+    expose:
+      - 5432
+    healthcheck:
+      test: [ "CMD", "pg_isready" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  db-data:
+
+secrets:
+  db-password.txt:
+    file: secrets\db-password.txt
