@@ -21,16 +21,17 @@ func Connect() (*sql.DB, error) {
 	return sql.Open(
 		"postgres",
 		fmt.Sprint(
+			//" host=psql.jordanyu.com",
 			" host=db",
 			" port=5432",
 			" user=postgres",
 			" dbname=akdb",
 			fmt.Sprintf(" password=%s", string(bin)),
 			" connect_timeout=10",
-			" sslmode=verify-full",
-			" sslrootcert=/work/secrets/CertAuth2.crt",
-			" sslkey=/work/secrets/postgres.key",
-			" sslcert=/work/secrets/postgres.crt",
+			//" sslmode=verify-full",
+			//" sslrootcert=/work/secrets/CertAuth2.crt",
+			//" sslkey=/work/secrets/postgres.key",
+			//" sslcert=/work/secrets/postgres.crt",
 		),
 	)
 

@@ -1,0 +1,4 @@
+1. Generate the certificates with certbot
+2. Run db/udpate_certs.sh
+3. docker compose deploy up
+4. docker container restart db 

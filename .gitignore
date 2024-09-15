@@ -18,6 +18,8 @@ server/server_linux
 server/server_win386.exe
 server/*.exe
 
+db/certs/
+
 release/assets/
 
 irc_log.txt

@@ -22,14 +22,7 @@ services:
       - db-password.txt
     stdin_open: true
     tty: true
-    command: ["go", "run",  "server/main.go", "-address=:8080", "-image_assetdir=/ak_chibi_assets/assets", "-static_dir=./static", "-bot_config=/work/server/dev_config.json"]
-
-  shell:
-    image: ubuntu
-    volumes:
-      - db-data:/var/lib/postgresql/data
-    stdin_open: true
-    tty: true
+    # command: ["go", "run",  "server/main.go", "-address=:8080", "-image_assetdir=/ak_chibi_assets/assets", "-static_dir=./static", "-bot_config=/work/server/dev_config.json"]
 
   db:
     image: ak-db
@@ -59,4 +52,4 @@ volumes:
 
 secrets:
   db-password.txt:
-    file: secrets/db-password.txt
+    file: secrets\db-password.txt
