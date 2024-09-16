@@ -6,7 +6,7 @@ RUN rm -rf /ak_chibi_assets/spine/src
 
 ## DEVELOPMENT
 ## ----------------
-FROM base as development
+FROM base AS development
 
 # Install npm and typescript
 RUN apt-get update
@@ -25,7 +25,7 @@ CMD ["air"]
 ## BUILDER
 # docker build -t ak-chibi-bot --target builder .
 ## ----------------
-FROM base as builder
+FROM base AS builder
 WORKDIR /build
 COPY go.mod go.sum ./
 RUN go mod download && go mod verify
@@ -34,9 +34,9 @@ COPY server/ ./server
 RUN CGO_ENABLED=0 go build -o /build/ak_chibi_bot server/main.go
 
 ## PRODUCTION
-# docker build -t ak-chibi-bot:prod --target prod .
+# docker build -t ak-chibi-bot:prod --target production .
 ## ---------------
-FROM alpine:3.20 as production
+FROM alpine:3.20 AS production
 WORKDIR /prod
 COPY --from=builder /build/ak_chibi_bot ./ak_chibi_bot
 COPY --from=builder /ak_chibi_assets ./static

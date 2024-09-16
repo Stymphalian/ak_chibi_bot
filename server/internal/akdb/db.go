@@ -11,16 +11,14 @@ import (
 )
 
 func Connect() (*sql.DB, error) {
-	// dbpassWordFile, ok := os.LookupEnv("DATABASE_PASSWORD_FILE")
-	// if !ok {
-	// 	return nil, fmt.Errorf("DATABASE_PASSWORD_FILE not set")
-	// }
-	// bin, err := os.ReadFile(dbpassWordFile)
-	// if err != nil {
-	// 	return nil, err
-	// }
-	bin := "JqG3T7nuVrjGyt8bsoFUkJAdKmpzEZsTJpTvzjMGd8jbHQGf7EC6pF6RqXeHMdXJMHGrXpnDFWUyhDBGb3RxfoGP9HHNsQ2NUuie"
-
+	dbpassWordFile, ok := os.LookupEnv("DATABASE_PASSWORD_FILE")
+	if !ok {
+		return nil, fmt.Errorf("DATABASE_PASSWORD_FILE not set")
+	}
+	bin, err := os.ReadFile(dbpassWordFile)
+	if err != nil {
+		return nil, err
+	}
 	hostname, ok := os.LookupEnv("DATABASE_HOST")
 	if !ok {
 		return nil, fmt.Errorf("DATABASE_HOST not set")

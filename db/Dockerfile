@@ -1,6 +1,6 @@
 # docker build -t ak-db --target development .
 # docker build -t ak-db:prod --target production .
-FROM postgres:16.4 as base
+FROM postgres:16.4 AS base
 COPY ./configs/pg_hba.conf /opt/postgres/pg_hba.conf
 COPY ./configs/postgresql.conf /opt/postgres/postgresql.conf
 COPY ./configs/50-hba.sh /docker-entrypoint-initdb.d/50-hba.sh
@@ -17,8 +17,8 @@ RUN chown postgres:postgres /var/lib/postgresql/privkey.pem
 RUN chmod 600 /var/lib/postgresql/fullchain.pem
 RUN chmod 600 /var/lib/postgresql/privkey.pem
 
-FROM base as development
+FROM base AS development
 CMD ["postgres", "-c", "config_file=/opt/postgres/postgresql.conf"]
 
-FROM base as production
+FROM base AS production
 CMD ["postgres", "-c", "config_file=/opt/postgres/postgresql.conf"]
