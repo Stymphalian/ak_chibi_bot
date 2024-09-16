@@ -1,17 +1,16 @@
+# docker compose -f compose.DEV.yaml up -d
+# docker compose -f compose.DEV.yaml down
+# docker compose -f compose.DEV.yaml logs
 name: ak-services
-
 services:
   web:
-    image: ak-chibi-bot
+    build:
+      context: ./
+      dockerfile: ./Dockerfile
+      target: development
     ports:
       - "8080:8080"
-    volumes:
-      - type: bind
-        source: ./
-        target: /work        
-      - db-data:/var/lib/postgresql/data
     environment:
-      # - DATABASE_USER=postgres
       - DATABASE_USER=web_user
       - DATABASE_DB=akdb
       - DATABASE_HOST=db
@@ -22,12 +21,17 @@ services:
         condition: service_healthy
     secrets:
       - web-user-password.txt
+    volumes:
+      - ./:/app  # Mounting to /app so that the 'air' CLI tool hot reload
+      - db-data:/var/lib/postgresql/data
     stdin_open: true
     tty: true
-    # command: ["go", "run",  "server/main.go", "-address=:8080", "-image_assetdir=/ak_chibi_assets/assets", "-static_dir=./static", "-bot_config=/work/server/dev_config.json"]
 
   db:
-    image: ak-db
+    build:
+      context: ./db
+      dockerfile: ./Dockerfile
+      target: development
     restart: always
     user: postgres
     shm_size: 256mb

@@ -30,3 +30,5 @@ TODO.md
 local_secrets/
 secrets/
 thirdparty/
+tmp/
+.env

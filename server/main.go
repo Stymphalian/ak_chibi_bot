@@ -132,6 +132,7 @@ func (s *MainStruct) HandleSpineWebSocket(w http.ResponseWriter, r *http.Request
 func main() {
 	// m := NewMainStruct()
 	// m.run()
+	// log.Println("Done")
 
 	// return
 	akdb.Prepare()
