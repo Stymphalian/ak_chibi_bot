@@ -1,4 +1,4 @@
-name: ak-chibi-bot-services
+name: ak-services
 
 services:
   web:
@@ -11,25 +11,20 @@ services:
         target: /work        
       - db-data:/var/lib/postgresql/data
     environment:
-      - DATABASE_USER=postgres
+      # - DATABASE_USER=postgres
+      - DATABASE_USER=web_user
       - DATABASE_DB=akdb
       - DATABASE_HOST=db
       - DATABASE_PORT=5432
-    # depends_on:
-    #   db:
-    #     condition: service_healthy
+      - DATABASE_PASSWORD_FILE=/run/secrets/web-user-password.txt
+    depends_on:
+      db:
+        condition: service_healthy
     secrets:
-      - db-password.txt
+      - web-user-password.txt
     stdin_open: true
     tty: true
-    command: ["go", "run",  "server/main.go", "-address=:8080", "-image_assetdir=/ak_chibi_assets/assets", "-static_dir=./static", "-bot_config=/work/server/dev_config.json"]
-
-  shell:
-    image: ubuntu
-    volumes:
-      - db-data:/var/lib/postgresql/data
-    stdin_open: true
-    tty: true
+    # command: ["go", "run",  "server/main.go", "-address=:8080", "-image_assetdir=/ak_chibi_assets/assets", "-static_dir=./static", "-bot_config=/work/server/dev_config.json"]
 
   db:
     image: ak-db
@@ -37,20 +32,22 @@ services:
     user: postgres
     shm_size: 256mb
     secrets:
-      - db-password.txt
+      - postgres-password.txt
     volumes:
       - db-data:/var/lib/postgresql/data
     environment:
       - POSTGRES_DB=akdb
       - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD_FILE=/run/secrets/db-password.txt
+      - POSTGRES_PASSWORD_FILE=/run/secrets/postgres-password.txt
     ports:
       - "5432:5432"
     expose:
       - 5432
     healthcheck:
       test: [ "CMD", "pg_isready" ]
-      interval: 10s
+      start_period: 5s
+      start_interval: 5s
+      interval: 5m
       timeout: 5s
       retries: 5
 
@@ -58,5 +55,7 @@ volumes:
   db-data:
 
 secrets:
-  db-password.txt:
-    file: secrets/db-password.txt
+  postgres-password.txt:
+    file: secrets\postgres-password.txt
+  web-user-password.txt:
+    file: secrets\web-user-password.txt

@@ -11,45 +11,44 @@ import (
 )
 
 func Connect() (*sql.DB, error) {
+	// dbpassWordFile, ok := os.LookupEnv("DATABASE_PASSWORD_FILE")
+	// if !ok {
+	// 	return nil, fmt.Errorf("DATABASE_PASSWORD_FILE not set")
+	// }
+	// bin, err := os.ReadFile(dbpassWordFile)
+	// if err != nil {
+	// 	return nil, err
+	// }
+	bin := "JqG3T7nuVrjGyt8bsoFUkJAdKmpzEZsTJpTvzjMGd8jbHQGf7EC6pF6RqXeHMdXJMHGrXpnDFWUyhDBGb3RxfoGP9HHNsQ2NUuie"
 
-	bin, err := os.ReadFile("/run/secrets/db-password.txt")
-	if err != nil {
-		return nil, err
+	hostname, ok := os.LookupEnv("DATABASE_HOST")
+	if !ok {
+		return nil, fmt.Errorf("DATABASE_HOST not set")
+	}
+	port, ok := os.LookupEnv("DATABASE_PORT")
+	if !ok {
+		return nil, fmt.Errorf("DATABASE_PORT not set")
+	}
+	username, ok := os.LookupEnv("DATABASE_USER")
+	if !ok {
+		return nil, fmt.Errorf("DATABASE_USER not set")
+	}
+	dbname, ok := os.LookupEnv("DATABASE_DB")
+	if !ok {
+		return nil, fmt.Errorf("DATABASE_DB not set")
 	}
 
-	log.Println("@@@@ connecting")
 	return sql.Open(
 		"postgres",
 		fmt.Sprint(
-			//" host=psql.jordanyu.com",
-			" host=db",
-			" port=5432",
-			" user=postgres",
-			" dbname=akdb",
+			fmt.Sprintf(" host=%s", hostname),
+			fmt.Sprintf(" port=%s", port),
+			fmt.Sprintf(" user=%s", username),
+			fmt.Sprintf(" dbname=%s", dbname),
 			fmt.Sprintf(" password=%s", string(bin)),
 			" connect_timeout=10",
-			//" sslmode=verify-full",
-			//" sslrootcert=/work/secrets/CertAuth2.crt",
-			//" sslkey=/work/secrets/postgres.key",
-			//" sslcert=/work/secrets/postgres.crt",
 		),
 	)
-
-	// username := "postgres"
-	// dbHost := "db"
-	// dbPort := "5432"
-	// dbName := "akdb"
-	// return sql.Open("postgres",
-	// 	fmt.Sprintf(
-	// 		"postgres://%s:%s@%s:%s/%s?sslmode=disable",
-	// 		// "postgres://%s:%s@%s:%s/%s",
-	// 		username,
-	// 		string(bin),
-	// 		dbHost,
-	// 		dbPort,
-	// 		dbName,
-	// 	),
-	// )
 }
 
 func Prepare() error {
@@ -66,16 +65,17 @@ func Prepare() error {
 		time.Sleep(time.Second)
 	}
 
-	if _, err := db.Exec("DROP TABLE IF EXISTS blog"); err != nil {
-		return err
-	}
+	// if _, err := db.Exec("DROP TABLE IF EXISTS blog"); err != nil {
+	// 	return err
+	// }
 
-	if _, err := db.Exec("CREATE TABLE IF NOT EXISTS blog (id SERIAL, title VARCHAR)"); err != nil {
-		return err
-	}
+	// if _, err := db.Exec("CREATE TABLE IF NOT EXISTS blog (id SERIAL, title VARCHAR)"); err != nil {
+	// 	return err
+	// }
 
 	for i := 0; i < 10; i++ {
 		if _, err := db.Exec("INSERT INTO blog (title) VALUES ($1);", fmt.Sprintf("Blog post #%d", i)); err != nil {
+			log.Println(err)
 			return err
 		}
 	}

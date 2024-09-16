@@ -15,16 +15,4 @@ RUN chown postgres:postgres /opt/postgres/postgresql.conf
 RUN chmod 600 /opt/postgres/pg_hba.conf
 RUN chmod 600 /opt/postgres/postgresql.conf
 
-CMD ["postgres"                                                    \
-    ,"-c", "config_file=/opt/postgres/postgresql.conf"             \
-]
-    #,"-c", "ssl=on"                                                 \
-    #,"-c", "ssl_cert_file=/var/lib/postgresql/fullchain.pem"       \
-    #,"-c", "ssl_key_file=/var/lib/postgresql/privkey.pem"        \
-    #,"-c", "ssl_cert_file=server.crt"       \
-    #,"-c", "ssl_key_file=server.key"       \ 
-    #,"-c", "ssl_cert_file=/var/lib/postgresql/fullchain.pem"       \
-    #,"-c", "ssl_key_file=/var/lib/postgresql/privkey.pem"        \
-#    ,"-c", "ssl_ca_file=/var/lib/postgresql/CertAuth.crt"         \
-#    ,"-c", "ssl_crl_file=/var/lib/postgresql/CertAuth.crl"           \
-#]
+CMD ["postgres", "-c", "config_file=/opt/postgres/postgresql.conf"]

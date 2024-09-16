@@ -1,24 +1,18 @@
-FROM postgres:latest
+FROM postgres:16.4
 
-COPY ../secrets/postgresdb.key /var/lib/postgresql
-COPY ../secrets/postgresdb.crt /var/lib/postgresql
-COPY ../secrets/CertAuth.crt /var/lib/postgresql
-COPY ../secrets/CertAuth.crl /var/lib/postgresql
-COPY ./ssl-conf.sh /usr/local/bin
+ADD ./secrets/postgresdb.crt /var/lib/postgresql/fullchain.pem
+ADD ./secrets/postgresdb.key /var/lib/postgresql/privkey.pem
+RUN chown postgres:postgres /var/lib/postgresql/fullchain.pem
+RUN chown postgres:postgres /var/lib/postgresql/privkey.pem
+RUN chmod 600 /var/lib/postgresql/fullchain.pem
+RUN chmod 600 /var/lib/postgresql/privkey.pem
 
-RUN chown postgres:postgres /var/lib/postgresql/postgresdb.key
-RUN chown postgres:postgres /var/lib/postgresql/postgresdb.crt
-RUN chown postgres:postgres /var/lib/postgresql/CertAuth.crt
-RUN chown postgres:postgres /var/lib/postgresql/CertAuth.crl
-RUN chmod 600 /var/lib/postgresql/postgresdb.key
-RUN chmod 600 /var/lib/postgresql/postgresdb.crt
-RUN chmod 600 /var/lib/postgresql/CertAuth.crt
-RUN chmod 600 /var/lib/postgresql/CertAuth.crl
+COPY ./configs/pg_hba.conf /opt/postgres/pg_hba.conf
+COPY ./configs/postgresql.conf /opt/postgres/postgresql.conf
+COPY ./configs/50-hba.sh /docker-entrypoint-initdb.d/50-hba.sh
+RUN chown postgres:postgres /opt/postgres/pg_hba.conf
+RUN chown postgres:postgres /opt/postgres/postgresql.conf
+RUN chmod 600 /opt/postgres/pg_hba.conf
+RUN chmod 600 /opt/postgres/postgresql.conf
 
-CMD ["postgres"                                                    \
-    ,"-c", "ssl=on"                                                 \
-    ,"-c", "ssl_cert_file=/var/lib/postgresql/postgresdb.crt"       \
-    ,"-c", "ssl_key_file=/var/lib/postgresql/postgresdb.key"        \
-    ,"-c", "ssl_ca_file=/var/lib/postgresql/CertAuth.crt"         \
-    ,"-c", "ssl_crl_file=/var/lib/postgresql/CertAuth.crl"           \
-]
+CMD ["postgres", "-c", "config_file=/opt/postgres/postgresql.conf"]

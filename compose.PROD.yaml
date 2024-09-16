@@ -1,8 +1,8 @@
-name: ak-chibi-bot-services
+name: ak-services
 
 services:
   web:
-    image: ak-chibi-bot
+    image: stymphalian/ak-chibi-bot
     ports:
       - "8080:8080"
     volumes:
@@ -15,14 +15,22 @@ services:
       - DATABASE_DB=akdb
       - DATABASE_HOST=db
       - DATABASE_PORT=5432
-    # depends_on:
-    #   db:
-    #     condition: service_healthy
+      - DATABASE_PASSWORD_FILE=/run/secrets/db-password.txt
+    depends_on:
+      db:
+        condition: service_healthy
     secrets:
       - db-password.txt
+    # stdin_open: true
+    # tty: true
+    # command: ["go", "run",  "server/main.go", "-address=:8080", "-image_assetdir=/ak_chibi_assets/assets", "-static_dir=./static", "-bot_config=/work/server/dev_config.json"]
+
+  shell:
+    image: ubuntu
+    volumes:
+      - db-data:/var/lib/postgresql/data
     stdin_open: true
     tty: true
-    # command: ["go", "run",  "server/main.go", "-address=:8080", "-image_assetdir=/ak_chibi_assets/assets", "-static_dir=./static", "-bot_config=/work/server/dev_config.json"]
 
   db:
     image: ak-db

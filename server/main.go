@@ -130,10 +130,10 @@ func (s *MainStruct) HandleSpineWebSocket(w http.ResponseWriter, r *http.Request
 }
 
 func main() {
-	m := NewMainStruct()
-	m.run()
+	// m := NewMainStruct()
+	// m.run()
 
-	return
+	// return
 	akdb.Prepare()
 	db, err := akdb.Connect()
 	if err != nil {
