@@ -68,7 +68,14 @@ module spine {
 			request.open("GET", this.encodePath(url), true);
 			request.onload = () => {
 				if (request.status == 200) {
-					success(request.responseText);
+					// success(request.responseText);
+
+					// HACK: Add logic to handle empty resopnse
+					if (request.responseText.length == 0) {
+						error(request.status, request.responseText);	
+					} else {
+						success(request.responseText);
+					}
 				} else {
 					error(request.status, request.responseText);
 				}
@@ -103,7 +110,13 @@ module spine {
 			request.responseType = "arraybuffer";
 			request.onload = () => {
 				if (request.status == 200) {
-					success(new Uint8Array(request.response as ArrayBuffer));
+					// success(new Uint8Array(request.response as ArrayBuffer));
+					// HACK: Add logic to handle empty response
+					if (request.response == null) {
+						error(request.status, request.responseText);
+					} else {
+						success(new Uint8Array(request.response as ArrayBuffer));
+					}
 				} else {
 					error(request.status, request.responseText);
 				}

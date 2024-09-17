@@ -11,6 +11,7 @@ import (
 	"os/signal"
 	"strings"
 	"syscall"
+	"time"
 
 	_ "github.com/lib/pq" // add this
 
@@ -80,7 +81,12 @@ func (s *MainStruct) run() {
 	// s.roomManager.Restore()
 
 	log.Println("Starting server")
-	server := &http.Server{Addr: *s.address}
+	server := &http.Server{
+		Addr:              *s.address,
+		ReadTimeout:       1 * time.Second,
+		ReadHeaderTimeout: 1 * time.Second,
+		WriteTimeout:      10 * time.Second,
+	}
 	server.RegisterOnShutdown(s.roomManager.Shutdown)
 
 	log.Printf("Images Assets = %s\n", s.imageAssetDir)
@@ -91,8 +97,8 @@ func (s *MainStruct) run() {
 	http.Handle("/runtime/{$}", http.StripPrefix("/runtime/", http.FileServer(http.Dir(s.staticAssetDir+"/spine"))))
 	http.Handle("/room/", misc.Middleware(s.HandleRoom))
 	http.Handle("/ws/", misc.Middleware(s.HandleSpineWebSocket))
-	s.adminServer.RegisterAdmin()
-	s.apiServer.Register()
+	s.adminServer.RegisterHandlers()
+	s.apiServer.RegisterHandlers()
 
 	go func() {
 		sigint := make(chan os.Signal, 1)

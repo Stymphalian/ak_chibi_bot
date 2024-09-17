@@ -85,7 +85,7 @@ func (s *AdminServer) middleware(h misc.HandlerWithErr) http.Handler {
 	return misc.Middleware(s.adminAuth(h))
 }
 
-func (s *AdminServer) RegisterAdmin() {
+func (s *AdminServer) RegisterHandlers() {
 	http.Handle("GET /admin", s.middleware(s.HandleAdmin))
 	http.Handle("GET /admin/list", s.middleware(s.HandleList))
 	http.Handle("POST /admin/room/remove", s.middleware(s.HandleRemoveRoom))

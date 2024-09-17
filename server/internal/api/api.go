@@ -44,7 +44,7 @@ func (s *ApiServer) middleware(h misc.HandlerWithErr) http.Handler {
 	return misc.Middleware(s.LoginAuth(h))
 }
 
-func (s *ApiServer) Register() {
+func (s *ApiServer) RegisterHandlers() {
 	http.Handle("POST /api/rooms/update", s.middleware(s.HandleRoomUpdate))
 }
 
