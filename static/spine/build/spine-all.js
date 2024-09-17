@@ -11177,10 +11177,7 @@ var spine;
             this.recordAnimation(animations[0]);
             let width = this.defaultBB.width;
             let height = this.defaultBB.height;
-            let maxSize = width;
-            if (height > maxSize) {
-                maxSize = height;
-            }
+            let maxSize = Math.sqrt(width * width + height * height);
             if (maxSize > this.config.maxSizePx && this.config.chibiId.includes("enemy_")) {
                 console.log("Resizing actor to " + this.config.maxSizePx);
                 let ratio = width / height;
@@ -11955,7 +11952,7 @@ var stym;
                         padRight: 0,
                         padTop: 0,
                         padBottom: 0,
-                        debugRender: false,
+                        debugRender: true,
                     },
                     fullScreenBackgroundColor: null,
                     backgroundImage: null,
@@ -12012,13 +12009,21 @@ var stym;
                 configScaleX = requestData["sprite_scale"]["x"];
                 configScaleY = requestData["sprite_scale"]["y"];
             }
+            let configMaxPixelSize = 350;
+            if (requestData["max_sprite_pixel_size"] != null) {
+                configMaxPixelSize = requestData["max_sprite_pixel_size"];
+            }
+            let referenceMovementSpeedPx = 80;
+            if (requestData["movement_speed_px"] != null) {
+                referenceMovementSpeedPx = requestData["movement_speed_px"];
+            }
             let movementSpeedPxX = null;
             let movementSpeedPxY = null;
             if (requestData["movement_speed"] != null) {
-                movementSpeedPxX = requestData["movement_speed"]["x"];
-                movementSpeedPxY = requestData["movement_speed"]["y"];
+                movementSpeedPxX = Math.floor(requestData["movement_speed"]["x"] * referenceMovementSpeedPx);
+                movementSpeedPxY = Math.floor(requestData["movement_speed"]["y"] * referenceMovementSpeedPx);
             }
-            let defaultMovementSpeedPxX = 80;
+            let defaultMovementSpeedPxX = referenceMovementSpeedPx;
             let defaultMovementSpeedPxY = 0;
             this.actorConfig = {
                 chibiId: requestData["operator_id"],
@@ -12035,7 +12040,7 @@ var stym;
                 configScaleY: configScaleY,
                 scaleX: 0.45 * configScaleX,
                 scaleY: 0.45 * configScaleY,
-                maxSizePx: 350,
+                maxSizePx: configMaxPixelSize,
                 premultipliedAlpha: true,
                 animationPlaySpeed: requestData["animation_speed"] ? requestData["animation_speed"] : 1.0,
                 extraOffsetX: 0,

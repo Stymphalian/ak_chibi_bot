@@ -22,7 +22,7 @@ Command Name | Description
 !chibi speed 2.0 | change the speed in which an animation is played (min 0.1, max 5.0)
 !chibi who Rock | Ask the bot for operators/enemies which match the given name.
 !chibi size 0.5 | Change the size/scale of the chibi. (min 0.5, max 1.5). There is still a maximum pixel size limitation on the chibi (350px)
-!chibi velocity 120 | For when the chibi is walking around change the movement speed of the chibi. Units are pixels/seconds (min 20, max 200). Use !chibi velocity default to change back to a default speed (80 +- 40).
+!chibi velocity 1.2 | For when the chibi is walking around change the movement speed of the chibi (min 0.1, max 2). Use !chibi velocity default to change back to a default speed.
 
 # Quick Start - Hosted
 Have the twich bot directly connect to your chat by using a hosted bot.

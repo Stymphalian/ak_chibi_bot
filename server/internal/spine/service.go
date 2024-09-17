@@ -11,12 +11,48 @@ import (
 
 type SpineService struct {
 	Assets *AssetService
+	config *misc.SpineRuntimeConfig
 }
 
-func NewSpineService(assets *AssetService) *SpineService {
+func NewSpineService(assets *AssetService, config *misc.SpineRuntimeConfig) *SpineService {
 	return &SpineService{
 		Assets: assets,
+		config: config,
 	}
+}
+
+func (s *SpineService) GetDefaultAnimationSpeed() float64 {
+	return s.config.DefaultAnimationSpeed
+}
+func (s *SpineService) GetMinAnimationSpeed() float64 {
+	return s.config.MinAnimationSpeed
+}
+func (s *SpineService) GetMaxAnimationSpeed() float64 {
+	return s.config.MaxAnimationSpeed
+}
+func (s *SpineService) GetDefaultScaleSize() float64 {
+	return s.config.DefaultScaleSize
+}
+func (s *SpineService) GetMinScaleSize() float64 {
+	return s.config.MinScaleSize
+}
+func (s *SpineService) GetMaxScaleSize() float64 {
+	return s.config.MaxScaleSize
+}
+func (s *SpineService) GetReferenceMovementSpeedPx() int {
+	return s.config.ReferenceMovementSpeedPx
+}
+func (s *SpineService) GetDefaultMovementSpeed() float64 {
+	return s.config.DefaultMovementSpeed
+}
+func (s *SpineService) GetMinMovementSpeed() float64 {
+	return s.config.MinMovementSpeed
+}
+func (s *SpineService) GetMaxMovementSpeed() float64 {
+	return s.config.MaxMovementSpeed
+}
+func (s *SpineService) GetMaxSpritePixelSize() int {
+	return s.config.MaxSpritePixelSize
 }
 
 func (s *SpineService) ValidateOperatorRequest(info *OperatorInfo) error {
@@ -70,23 +106,23 @@ func (c *SpineService) ValidateUpdateSetDefaultOtherwise(update *OperatorInfo) e
 
 	// Validate animationSpeed
 	if update.AnimationSpeed == 0 {
-		update.AnimationSpeed = DEFAULT_ANIMATION_SPEED
+		update.AnimationSpeed = c.GetDefaultAnimationSpeed()
 	}
 	update.AnimationSpeed = misc.ClampF64(
 		update.AnimationSpeed,
-		MIN_ANIMATION_SPEED,
-		MAX_ANIMATION_SPEED,
+		c.GetMinAnimationSpeed(),
+		c.GetMaxAnimationSpeed(),
 	)
 
 	// Sprite Scale
 	if update.SpriteScale.IsSome() {
 		vec := update.SpriteScale.Unwrap()
-		if vec.X < MIN_SCALE_SIZE || vec.X > MAX_SCALE_SIZE ||
-			vec.Y < MIN_SCALE_SIZE || vec.Y > MAX_SCALE_SIZE {
+		if vec.X < c.GetMinScaleSize() || vec.X > c.GetMaxScaleSize() ||
+			vec.Y < c.GetMinScaleSize() || vec.Y > c.GetMaxScaleSize() {
 			update.SpriteScale = misc.NewOption(
 				misc.Vector2{
-					X: misc.ClampF64(vec.X, MIN_SCALE_SIZE, MAX_SCALE_SIZE),
-					Y: misc.ClampF64(vec.Y, MIN_SCALE_SIZE, MAX_SCALE_SIZE),
+					X: misc.ClampF64(vec.X, c.GetMinScaleSize(), c.GetMaxScaleSize()),
+					Y: misc.ClampF64(vec.Y, c.GetMinScaleSize(), c.GetMaxScaleSize()),
 				},
 			)
 		}
@@ -95,10 +131,10 @@ func (c *SpineService) ValidateUpdateSetDefaultOtherwise(update *OperatorInfo) e
 	// Movement Speed
 	if update.MovementSpeed.IsSome() {
 		vec := update.MovementSpeed.Unwrap()
-		if vec.X < MIN_MOVEMENT_SPEED || vec.X > MAX_MOVEMENT_SPEED {
+		if vec.X < c.GetMinMovementSpeed() || vec.X > c.GetMaxMovementSpeed() {
 			update.MovementSpeed = misc.NewOption(
 				misc.Vector2{
-					X: misc.ClampF64(vec.X, MIN_MOVEMENT_SPEED, MAX_MOVEMENT_SPEED),
+					X: misc.ClampF64(vec.X, c.GetMinMovementSpeed(), c.GetMaxMovementSpeed()),
 					Y: 0,
 				},
 			)

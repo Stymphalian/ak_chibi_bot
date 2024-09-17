@@ -98,7 +98,7 @@ func setupCommandTest() (*spine.OperatorInfo, *ChatCommandProcessor) {
 		spine.NewActionPlayAnimation([]string{spine.DEFAULT_ANIM_BASE}),
 	)
 	assetManager := spine.NewTestAssetService()
-	spineService := spine.NewSpineService(assetManager)
+	spineService := spine.NewSpineService(assetManager, misc.DefaultSpineRuntimeConfig())
 	sut := &ChatCommandProcessor{
 		spineService: spineService,
 	}
@@ -538,7 +538,7 @@ func TestCmdProcessorHandleMessage_ChibiAnimationSpeedMaxSpeed(t *testing.T) {
 	})
 
 	assert.Nil(err)
-	assert.Equal(spine.MAX_ANIMATION_SPEED, current.AnimationSpeed)
+	assert.Equal(sut.spineService.GetMaxAnimationSpeed(), current.AnimationSpeed)
 }
 
 func TestCmdProcessorHandleMessage_ChibiChibiModel(t *testing.T) {
@@ -642,7 +642,7 @@ func TestCmdProcessorHandleMessage_ChibiMoveSpeed(t *testing.T) {
 	cmd, err := sut.HandleMessage(current, chat.ChatMessage{
 		Username:        "user1",
 		UserDisplayName: "user1DisplayName",
-		Message:         "!chibi move_speed 160",
+		Message:         "!chibi move_speed 2",
 	})
 
 	assert.Nil(err)
@@ -653,7 +653,7 @@ func TestCmdProcessorHandleMessage_ChibiMoveSpeed(t *testing.T) {
 	} else {
 		assert.Fail("Command is not of type: ChatCommandUpdateActor")
 	}
-	assert.Equal(160.0, current.MovementSpeed.Unwrap().X)
+	assert.Equal(2.0, current.MovementSpeed.Unwrap().X)
 	assert.Equal(0.0, current.MovementSpeed.Unwrap().Y)
 }
 
@@ -666,9 +666,9 @@ func TestCmdProcessorHandleMessage_ChibiMoveSpeedOutOfRange(t *testing.T) {
 	_, err := sut.HandleMessage(current, chat.ChatMessage{
 		Username:        "user1",
 		UserDisplayName: "user1DisplayName",
-		Message:         fmt.Sprintf("!chibi move_speed %d", spine.MAX_MOVEMENT_SPEED+1),
+		Message:         fmt.Sprintf("!chibi move_speed %f", sut.spineService.GetMaxMovementSpeed()+1),
 	})
 
 	assert.Nil(err)
-	assert.Equal(float64(spine.MAX_MOVEMENT_SPEED), current.MovementSpeed.Unwrap().X)
+	assert.Equal(float64(sut.spineService.GetMaxMovementSpeed()), current.MovementSpeed.Unwrap().X)
 }

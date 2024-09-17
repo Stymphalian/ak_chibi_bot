@@ -160,7 +160,7 @@ func (c *ChatCommandProcessor) setSkin(args *ChatArgs, current *spine.OperatorIn
 		return &ChatCommandNoOp{}, nil
 	}
 	current.Skin = skinName
-	current.AnimationSpeed = spine.DEFAULT_ANIMATION_SPEED
+	current.AnimationSpeed = c.spineService.GetDefaultAnimationSpeed()
 	return &ChatCommandUpdateActor{
 		replyMessage:    "",
 		username:        args.chatMsg.Username,
@@ -214,7 +214,7 @@ func (c *ChatCommandProcessor) setStance(args *ChatArgs, current *spine.Operator
 		return &ChatCommandNoOp{}, errors.New("try something like !chibi stance battle")
 	}
 	current.ChibiStance = stance
-	current.AnimationSpeed = spine.DEFAULT_ANIMATION_SPEED
+	current.AnimationSpeed = c.spineService.GetDefaultAnimationSpeed()
 
 	return &ChatCommandUpdateActor{
 		replyMessage:    "",
@@ -236,7 +236,7 @@ func (c *ChatCommandProcessor) setFacing(args *ChatArgs, current *spine.Operator
 		return &ChatCommandNoOp{}, errors.New("base chibi's can't face backwards. Try setting to battle stance first")
 	}
 	current.Facing = facing
-	current.AnimationSpeed = spine.DEFAULT_ANIMATION_SPEED
+	current.AnimationSpeed = c.spineService.GetDefaultAnimationSpeed()
 	return &ChatCommandUpdateActor{
 		replyMessage:    "",
 		username:        args.chatMsg.Username,
@@ -259,7 +259,7 @@ func (c *ChatCommandProcessor) setEnemy(args *ChatArgs, current *spine.OperatorI
 	}
 	current.OperatorId = operatorId
 	current.Faction = spine.FACTION_ENUM_ENEMY
-	current.AnimationSpeed = spine.DEFAULT_ANIMATION_SPEED
+	current.AnimationSpeed = c.spineService.GetDefaultAnimationSpeed()
 	current.SpriteScale = misc.EmptyOption[misc.Vector2]()
 	// current.MovementSpeed = misc.EmptyOption[misc.Vector2]()
 
@@ -297,7 +297,7 @@ func (c *ChatCommandProcessor) setWalk(args *ChatArgs, current *spine.OperatorIn
 	}
 	current.CurrentAction = spine.ACTION_WANDER
 	current.Action = spine.NewActionWander(moveAnimation)
-	current.AnimationSpeed = spine.DEFAULT_ANIMATION_SPEED
+	current.AnimationSpeed = c.spineService.GetDefaultAnimationSpeed()
 
 	if len(args.args) == 3 {
 		errMsg := errors.New("try something like !chibi walk 0.45")
@@ -324,7 +324,7 @@ func (c *ChatCommandProcessor) setWalk(args *ChatArgs, current *spine.OperatorIn
 			moveAnimation,
 			animationAfterStance,
 		)
-		current.AnimationSpeed = spine.DEFAULT_ANIMATION_SPEED
+		current.AnimationSpeed = c.spineService.GetDefaultAnimationSpeed()
 	}
 	return &ChatCommandUpdateActor{
 		replyMessage:    "",
@@ -342,10 +342,10 @@ func (c *ChatCommandProcessor) setAnimationSpeed(args *ChatArgs, current *spine.
 	if err != nil {
 		return &ChatCommandNoOp{}, errors.New("try something like !chibi speed 1.5")
 	}
-	if animationSpeed <= spine.MIN_ANIMATION_SPEED {
-		animationSpeed = spine.MIN_ANIMATION_SPEED
-	} else if animationSpeed > spine.MAX_ANIMATION_SPEED {
-		animationSpeed = spine.MAX_ANIMATION_SPEED
+	if animationSpeed <= c.spineService.GetMinAnimationSpeed() {
+		animationSpeed = c.spineService.GetMinAnimationSpeed()
+	} else if animationSpeed > c.spineService.GetMaxAnimationSpeed() {
+		animationSpeed = c.spineService.GetMaxAnimationSpeed()
 	}
 	current.AnimationSpeed = animationSpeed
 	return &ChatCommandUpdateActor{
@@ -433,7 +433,7 @@ func (c *ChatCommandProcessor) setChibiModel(chatArgs *ChatArgs, current *spine.
 
 	current.OperatorId = operatorId
 	current.Faction = spine.FACTION_ENUM_OPERATOR
-	current.AnimationSpeed = spine.DEFAULT_ANIMATION_SPEED
+	current.AnimationSpeed = c.spineService.GetDefaultAnimationSpeed()
 	current.SpriteScale = misc.EmptyOption[misc.Vector2]()
 	// current.MovementSpeed = misc.EmptyOption[misc.Vector2]()
 	return &ChatCommandUpdateActor{
@@ -459,10 +459,10 @@ func (c *ChatCommandProcessor) setScale(args *ChatArgs, current *spine.OperatorI
 	if err != nil {
 		return &ChatCommandNoOp{}, errors.New("try something like !chibi size 1.5")
 	}
-	if spriteScale < spine.MIN_SCALE_SIZE {
-		spriteScale = spine.MIN_SCALE_SIZE
-	} else if spriteScale > spine.MAX_SCALE_SIZE {
-		spriteScale = spine.MAX_SCALE_SIZE
+	if spriteScale < c.spineService.GetMinScaleSize() {
+		spriteScale = c.spineService.GetMinScaleSize()
+	} else if spriteScale > c.spineService.GetMaxScaleSize() {
+		spriteScale = c.spineService.GetMaxScaleSize()
 	}
 	current.SpriteScale = misc.NewOption(
 		misc.Vector2{X: spriteScale, Y: spriteScale},
@@ -483,17 +483,17 @@ func (c *ChatCommandProcessor) setMoveSpeed(args *ChatArgs, current *spine.Opera
 	if args.args[2] == "default" {
 		current.MovementSpeed = misc.EmptyOption[misc.Vector2]()
 	} else {
-		moveSpeed, err := strconv.ParseInt(args.args[2], 10, 64)
+		moveSpeed, err := strconv.ParseFloat(args.args[2], 64)
 		if err != nil {
 			return &ChatCommandNoOp{}, errors.New("try something like !chibi move_speed 360")
 		}
-		if moveSpeed < spine.MIN_MOVEMENT_SPEED {
-			moveSpeed = spine.MIN_MOVEMENT_SPEED
-		} else if moveSpeed > spine.MAX_MOVEMENT_SPEED {
-			moveSpeed = spine.MAX_MOVEMENT_SPEED
+		if moveSpeed < c.spineService.GetMinMovementSpeed() {
+			moveSpeed = c.spineService.GetMinMovementSpeed()
+		} else if moveSpeed > c.spineService.GetMaxMovementSpeed() {
+			moveSpeed = c.spineService.GetMaxMovementSpeed()
 		}
 		current.MovementSpeed = misc.NewOption(
-			misc.Vector2{X: float64(moveSpeed), Y: 0},
+			misc.Vector2{X: moveSpeed, Y: 0},
 		)
 	}
 

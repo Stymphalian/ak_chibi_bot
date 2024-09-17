@@ -33,7 +33,7 @@ type RoomsManager struct {
 }
 
 func NewRoomsManager(assets *spine.AssetService, botConfig *misc.BotConfig) *RoomsManager {
-	spineService := spine.NewSpineService(assets)
+	spineService := spine.NewSpineService(assets, botConfig.SpineRuntimeConfig)
 	return &RoomsManager{
 		Rooms:        make(map[string]*Room, 0),
 		assetService: assets,
@@ -117,6 +117,7 @@ func (r *RoomsManager) CreateRoomOrNoOp(channel string, ctx context.Context) err
 		DefaultOperatorName:         r.botConfig.InitialOperator,
 		DefaultOperatorConfig:       r.botConfig.OperatorDetails,
 		GarbageCollectionPeriodMins: r.botConfig.RemoveChibiAfterMinutes,
+		SpineRuntimeConfig:          r.botConfig.SpineRuntimeConfig,
 	}
 	room := NewRoom(
 		roomConfig,

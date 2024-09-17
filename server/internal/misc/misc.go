@@ -89,6 +89,10 @@ type BotConfig struct {
 	// If not provided then Save/Restore won't work. Which is fine unless this
 	// this is the production server.
 	GoogleCloudProjectCredentialsFilePath string `json:"google_cloud_project_credentials_file_path"`
+
+	// Optional
+	// Default settings for the spine runtime. Min/max/default values
+	SpineRuntimeConfig *SpineRuntimeConfig `json:"spine_runtime_config"`
 }
 
 type InitialOperatorDetails struct {
@@ -145,6 +149,13 @@ func LoadBotConfig(path string) (*BotConfig, error) {
 	}
 	if config.OperatorDetails.PositionX == 0 {
 		config.OperatorDetails.PositionX = 0.5
+	}
+	if config.SpineRuntimeConfig == nil {
+		config.SpineRuntimeConfig = DefaultSpineRuntimeConfig()
+	} else {
+		if err := ValidateSpineRuntimeConfig(config.SpineRuntimeConfig); err != nil {
+			return nil, err
+		}
 	}
 
 	return &config, nil

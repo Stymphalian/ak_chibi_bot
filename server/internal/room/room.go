@@ -18,6 +18,7 @@ type RoomConfig struct {
 	DefaultOperatorConfig       misc.InitialOperatorDetails
 	GarbageCollectionPeriodMins int
 	InactiveRoomPeriodMins      int
+	SpineRuntimeConfig          *misc.SpineRuntimeConfig
 }
 
 // View - spineRuntime

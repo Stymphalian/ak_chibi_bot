@@ -12,7 +12,7 @@ import (
 
 func setupActorTest() *ChibiActor {
 	assetManager := spine.NewTestAssetService()
-	spineService := spine.NewSpineService(assetManager)
+	spineService := spine.NewSpineService(assetManager, misc.DefaultSpineRuntimeConfig())
 	fakeSpineClient := spine.NewFakeSpineClient()
 	sut := NewChibiActor(
 		spineService,

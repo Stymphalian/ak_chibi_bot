@@ -290,11 +290,11 @@ module spine {
 			// Resize very large chibis to more reasonable sizes
 			let width = this.defaultBB.width;
 			let height = this.defaultBB.height;
-			let maxSize = width;
-			if (height > maxSize) {
-				maxSize = height;
-			}
-			if (maxSize> this.config.maxSizePx && this.config.chibiId.includes("enemy_")) {
+			let maxSize = Math.sqrt(width*width + height*height);
+			// if (height > maxSize) {
+			// 	maxSize = height;
+			// }
+			if (maxSize > this.config.maxSizePx && this.config.chibiId.includes("enemy_")) {
 				console.log("Resizing actor to " + this.config.maxSizePx);
 				let ratio = width / height;
 
