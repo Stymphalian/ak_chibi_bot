@@ -1864,8 +1864,8 @@ declare namespace spine {
             width: number;
             height: number;
         };
-        success?: (widget: SpinePlayer) => void;
-        error?: (widget: SpinePlayer, msg: string) => void;
+        success?: (widget: SpinePlayer, actor: Actor) => void;
+        error?: (widget: SpinePlayer, actor: Actor, msg: string) => void;
         animation_listener?: spine.AnimationStateListener;
         userDisplayName: string;
         chibiId: string;
@@ -1892,6 +1892,9 @@ declare namespace spine {
         velocity: spine.Vector2;
         startPosition: spine.Vector2;
         currentAction: ActorAction;
+        load_attempts: number;
+        max_load_attempts: number;
+        load_failed: boolean;
         constructor(config: SpineActorConfig, viewport: BoundingBox);
         InitAnimations(): void;
         GetAnimations(): string[];

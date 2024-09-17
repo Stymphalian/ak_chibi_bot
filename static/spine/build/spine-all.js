@@ -11077,6 +11077,9 @@ var spine;
         velocity = new spine.Vector2(0, 0);
         startPosition = null;
         currentAction = null;
+        load_attempts = 0;
+        max_load_attempts = 10;
+        load_failed = false;
         constructor(config, viewport) {
             this.ResetWithConfig(config);
             let x = Math.random() * viewport.width - (viewport.width / 2);
@@ -11093,6 +11096,8 @@ var spine;
             return this.currentAction.GetAnimations();
         }
         ResetWithConfig(config) {
+            this.load_attempts = 0;
+            this.load_failed = false;
             this.loaded = false;
             this.skeleton = null;
             this.animationState = null;
@@ -11468,9 +11473,9 @@ var spine;
             if (!config.extraOffsetY)
                 config.extraOffsetY = 0;
             if (!config.success)
-                config.success = (widget) => { };
+                config.success = (widget, actor) => { };
             if (!config.error)
-                config.error = (widget, msg) => { };
+                config.error = (widget, actor, msg) => { };
             if (!config.animation_listener) {
                 config.animation_listener = {
                     event: function (trackIndex, event) {
@@ -11499,7 +11504,7 @@ var spine;
             let errorDom = findWithClass(this.dom, "spine-player-error")[0];
             errorDom.classList.remove("spine-player-hidden");
             errorDom.innerHTML = `<p style="text-align: center; align-self: center;">${error}</p>`;
-            actor.config.error(this, error);
+            actor.config.error(this, actor, error);
         }
         hideError() {
             let errorDom = findWithClass(this.dom, "spine-player-error")[0];
@@ -11632,12 +11637,15 @@ var spine;
             this.textCanvasContext.clearRect(0, 0, this.textCanvas.width, this.textCanvas.height);
             this.loadingScreen.backgroundColor.setFromColor(bg);
             this.loadingScreen.draw(this.assetManager.isLoadingComplete());
+            this.sceneRenderer.resize(spine.webgl.ResizeMode.Expand);
             let all_actors_loaded = true;
             for (let [key, actor] of this.actors) {
+                if (actor.load_failed) {
+                    continue;
+                }
                 if (this.assetManager.isLoadingComplete() && actor.skeleton == null) {
                     this.loadSkeleton(actor);
                 }
-                this.sceneRenderer.resize(spine.webgl.ResizeMode.Expand);
                 if (!actor.loaded) {
                     all_actors_loaded = false;
                     continue;
@@ -11706,7 +11714,7 @@ var spine;
             return temp;
         }
         loadSkeleton(actor) {
-            if (actor.loaded)
+            if (actor.loaded || actor.load_failed)
                 return;
             if (this.assetManager.hasErrors()) {
                 this.showError(actor, "Error: assets could not be loaded.<br><br>" + escapeHtml(JSON.stringify(this.assetManager.getErrors())));
@@ -11759,7 +11767,7 @@ var spine;
                 actor.skeleton.setSlotsToSetupPose();
             }
             actor.InitAnimationState();
-            actor.config.success(this);
+            actor.config.success(this, actor);
             actor.loaded = true;
         }
         cancelId = 0;
@@ -11952,7 +11960,7 @@ var stym;
                         padRight: 0,
                         padTop: 0,
                         padBottom: 0,
-                        debugRender: true,
+                        debugRender: false,
                     },
                     fullScreenBackgroundColor: null,
                     backgroundImage: null,
@@ -12047,9 +12055,14 @@ var stym;
                 extraOffsetY: 0,
                 action: requestData["action"],
                 action_data: requestData["action_data"],
-                success: (widget) => {
+                success: (widget, actor) => {
                 },
-                error: (widget, error) => {
+                error: (widget, actor, error) => {
+                    actor.load_attempts += 1;
+                    if (actor.load_attempts > actor.max_load_attempts) {
+                        actor.load_failed = true;
+                    }
+                    console.log(this);
                     console.log(error);
                 }
             };

@@ -216,8 +216,8 @@ module spine {
 			if (!config.scaleY) config.scaleY = 1;
 			if (!config.extraOffsetX) config.extraOffsetX = 0;
 			if (!config.extraOffsetY) config.extraOffsetY = 0;
-			if (!config.success) config.success = (widget) => {};
-			if (!config.error) config.error = (widget, msg) => {};
+			if (!config.success) config.success = (widget, actor) => {};
+			if (!config.error) config.error = (widget, actor, msg) => {};
 			if (!config.animation_listener) {
 				config.animation_listener = {
 					event: function(trackIndex, event) {
@@ -256,7 +256,7 @@ module spine {
 			errorDom.innerHTML = `<p style="text-align: center; align-self: center;">${error}</p>`;
 
 			// this.playerConfig.error(this, error);
-			actor.config.error(this, error);
+			actor.config.error(this, actor, error);
 		}
 
 		hideError() {
@@ -431,23 +431,31 @@ module spine {
 			this.loadingScreen.backgroundColor.setFromColor(bg);
 			this.loadingScreen.draw(this.assetManager.isLoadingComplete());
 
+			// Resize the canvas
+			this.sceneRenderer.resize(webgl.ResizeMode.Expand);
+
 			let all_actors_loaded = true;
 			for (let [key,actor] of this.actors) {
+				if (actor.load_failed) {
+					// Permanant failure trying to load this actor. Just skip it.
+					continue;
+				}
+
 				// Have we finished loading the asset? Then set things up
 				// if (this.assetManager.isLoadingComplete() && this.skeleton == null) this.loadSkeleton();
 				if (this.assetManager.isLoadingComplete() && actor.skeleton == null) {
 					this.loadSkeleton(actor);
 				}
 					
-				// Resize the canvas
-				this.sceneRenderer.resize(webgl.ResizeMode.Expand);
+				// // Resize the canvas
+				// this.sceneRenderer.resize(webgl.ResizeMode.Expand);
 
 				// Update and draw the skeleton
 				if (!actor.loaded) {
 					all_actors_loaded = false;
 					continue;
 				}
-
+				
 				let viewport = this.playerConfig.viewport;
 
 				// Update animation and skeleton based on user selections
@@ -580,7 +588,7 @@ module spine {
 		}
 
 		loadSkeleton (actor: Actor) {
-			if (actor.loaded) return;
+			if (actor.loaded || actor.load_failed) return;
 
 			if (this.assetManager.hasErrors()) {
 				this.showError(actor, "Error: assets could not be loaded.<br><br>" + escapeHtml(JSON.stringify(this.assetManager.getErrors())));
@@ -636,7 +644,7 @@ module spine {
 			}
 			actor.InitAnimationState();
 
-			actor.config.success(this);
+			actor.config.success(this, actor);
 			actor.loaded = true;
 		}
 

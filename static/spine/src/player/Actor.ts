@@ -106,10 +106,10 @@ module spine {
 		// controlBones: string[]
 
 		/* Optional: callback when the widget and its assets have been successfully loaded. */
-		success?: (widget: SpinePlayer) => void
+		success?: (widget: SpinePlayer, actor: Actor) => void
 
 		/* Optional: callback when the widget could not be loaded. */
-		error?: (widget: SpinePlayer, msg: string) => void
+		error?: (widget: SpinePlayer, actor: Actor, msg: string) => void
 
 		/** Optional: Callbacks for the animations */
 		animation_listener?: spine.AnimationStateListener
@@ -151,6 +151,11 @@ module spine {
 		public startPosition: spine.Vector2 = null;
 		public currentAction: ActorAction = null;
 
+		// Actor loading retry logic
+		public load_attempts: number = 0;
+		public max_load_attempts: number = 10;
+		public load_failed: boolean = false;
+
 		constructor(config: SpineActorConfig, viewport: BoundingBox) {
 			this.ResetWithConfig(config);
 			let x = Math.random()*viewport.width - (viewport.width/2)
@@ -174,6 +179,9 @@ module spine {
 		}
 
 		public ResetWithConfig(config: SpineActorConfig) {
+			this.load_attempts = 0;
+			this.load_failed = false;
+
 			this.loaded = false;
 			this.skeleton = null;
 			this.animationState = null;

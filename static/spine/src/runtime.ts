@@ -39,7 +39,7 @@ module stym {
                         padRight: 0,
                         padTop: 0,
                         padBottom: 0,
-                        debugRender: true,
+                        debugRender: false,
                     },
                     fullScreenBackgroundColor: null,
                     backgroundImage: null,
@@ -151,10 +151,15 @@ module stym {
                 action: requestData["action"],
                 action_data: requestData["action_data"],
     
-                success: (widget) => {
+                success: (widget, actor) => {
                     // console.log("Successfully loaded actor");
                 },
-                error: (widget, error) => {
+                error: (widget, actor: spine.Actor, error) => {
+                    actor.load_attempts += 1;
+                    if (actor.load_attempts > actor.max_load_attempts) {
+                        actor.load_failed = true;
+                    }
+                    console.log(this);
                     console.log(error);
                 }
             };

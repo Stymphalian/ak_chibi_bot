@@ -31,12 +31,14 @@ type Room struct {
 	CreatedAt               string
 	LastTimeUsed            string
 	Chatters                []*Chatter
+	NextGCTime              string
 	NumWebsocketConnections int
 }
 
 type AdminInfo struct {
-	Rooms   []*Room
-	Metrics map[string]interface{}
+	Rooms      []*Room
+	NextGCTime string
+	Metrics    map[string]interface{}
 }
 
 type RemoveRoomRequest struct {
@@ -110,6 +112,7 @@ func (s *AdminServer) HandleList(w http.ResponseWriter, r *http.Request) error {
 	var adminInfo AdminInfo
 	adminInfo.Rooms = make([]*Room, 0)
 	adminInfo.Metrics = make(map[string]interface{}, 0)
+	adminInfo.NextGCTime = s.roomsManager.GetNextGarbageCollectionTime().Format(time.DateTime)
 
 	for _, roomVal := range s.roomsManager.Rooms {
 
@@ -119,6 +122,7 @@ func (s *AdminServer) HandleList(w http.ResponseWriter, r *http.Request) error {
 			Chatters:                make([]*Chatter, 0),
 			NumWebsocketConnections: roomVal.NumConnectedClients(),
 			CreatedAt:               roomVal.CreatedAt().Format(time.DateTime),
+			NextGCTime:              roomVal.GetNextGarbageCollectionTime().Format(time.DateTime),
 		}
 
 		roomVal.ForEachChatter(func(chatUser *spine.ChatUser) {
@@ -129,10 +133,6 @@ func (s *AdminServer) HandleList(w http.ResponseWriter, r *http.Request) error {
 			}
 			newRoom.Chatters = append(newRoom.Chatters, newChatter)
 		})
-
-		// for _, chatUser := range roomVal.ChibiActor.ChatUsers {
-
-		// }
 
 		slices.SortFunc(newRoom.Chatters, func(a, b *Chatter) int {
 			return strings.Compare(a.Username, b.Username)

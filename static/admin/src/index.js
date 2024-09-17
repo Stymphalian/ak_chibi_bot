@@ -16,10 +16,16 @@ function fillInRoomsTable(data) {
                     ${room.ChannelName}
                 </a>
             </td>
-            <td>${room.CreatedAt}</td>
-            <td>${room.LastTimeUsed}</td>
+
+            <td>
+                <p>CreatedAt: ${room.CreatedAt}</p>
+                <p>LasTime: ${room.LastTimeUsed}</p>
+                <p>NextGCTime: ${room.NextGCTime}</p>
+            </td>
+            
             <td>${room.NumWebsocketConnections}</td>
             <td>
+                <p>Number Chatters: ${room.Chatters.length}</p>
                 <table class="sub-table">
                     <thead>
                         <tr>
@@ -117,6 +123,13 @@ function fillGeneralInfoTable(data) {
             <td><button class="restore-button normal-button">Restore</button></td>
         </tr>
     `;
+    const row = document.createElement('tr');
+    row.innerHTML = `
+        <td> Next Rooms GC Time </td>
+        <td> ${data["NextGCTime"]} </td>
+    `;
+    metricsTableBody.appendChild(row);
+
     for (const [key, value] of Object.entries(data["Metrics"])) {
         const row = document.createElement('tr');
         row.innerHTML = `

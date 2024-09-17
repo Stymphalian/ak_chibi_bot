@@ -27,11 +27,12 @@ type RoomConfig struct {
 type Room struct {
 	SpineService *spine.SpineService
 
-	config       RoomConfig
-	spineRuntime spine.SpineRuntime
-	chibiActor   *chibi.ChibiActor
-	twitchChat   chatbot.ChatBotter
-	createdAt    time.Time
+	config                    RoomConfig
+	spineRuntime              spine.SpineRuntime
+	chibiActor                *chibi.ChibiActor
+	twitchChat                chatbot.ChatBotter
+	createdAt                 time.Time
+	nextGarbageCollectionTime time.Time
 }
 
 func NewRoom(
@@ -68,6 +69,10 @@ func (r *Room) CreatedAt() time.Time {
 	return r.createdAt
 }
 
+func (r *Room) GetNextGarbageCollectionTime() time.Time {
+	return r.nextGarbageCollectionTime
+}
+
 func (r *Room) Close() error {
 	log.Println("Closing room ", r.config.ChannelName)
 	// Disconnect the twitch chat
@@ -98,6 +103,8 @@ func (r *Room) garbageCollectOldChibis() {
 			r.chibiActor.RemoveUserChibi(username)
 		}
 	}
+
+	r.nextGarbageCollectionTime = time.Now().Add(interval)
 }
 
 func (r *Room) Run() {
@@ -107,9 +114,11 @@ func (r *Room) Run() {
 	log.Printf("Room %s is running\n", r.config.ChannelName)
 
 	if r.config.GarbageCollectionPeriodMins > 0 {
+		period := time.Duration(r.config.GarbageCollectionPeriodMins) * time.Minute
+		r.nextGarbageCollectionTime = time.Now().Add(period)
 		stopTimer := misc.StartTimer(
 			fmt.Sprintf("GarbageCollectOldChibis %s", r.config.ChannelName),
-			time.Duration(r.config.GarbageCollectionPeriodMins)*time.Minute,
+			period,
 			r.garbageCollectOldChibis,
 		)
 		defer stopTimer()

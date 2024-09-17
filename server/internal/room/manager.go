@@ -21,8 +21,9 @@ const (
 )
 
 type RoomsManager struct {
-	Rooms       map[string]*Room
-	rooms_mutex sync.Mutex
+	Rooms                     map[string]*Room
+	rooms_mutex               sync.Mutex
+	nextGarbageCollectionTime time.Time
 
 	assetService *spine.AssetService
 	spineService *spine.SpineService
@@ -59,6 +60,12 @@ func (r *RoomsManager) garbageCollectRooms() {
 		}
 	}
 	r.rooms_mutex.Unlock()
+
+	r.nextGarbageCollectionTime = time.Now().Add(period)
+}
+
+func (r *RoomsManager) GetNextGarbageCollectionTime() time.Time {
+	return r.nextGarbageCollectionTime
 }
 
 func (r *RoomsManager) RunLoop() {
@@ -66,9 +73,12 @@ func (r *RoomsManager) RunLoop() {
 	// defer misc.GoRunCounter.Add(-1)
 
 	if r.botConfig.RemoveUnusedRoomsAfterMinutes > 0 {
+		period := time.Duration(r.botConfig.RemoveUnusedRoomsAfterMinutes) * time.Minute
+		r.nextGarbageCollectionTime = time.Now().Add(period)
+
 		stopTimer := misc.StartTimer(
 			"garbageCollectRooms",
-			time.Duration(r.botConfig.RemoveUnusedRoomsAfterMinutes)*time.Minute,
+			period,
 			r.garbageCollectRooms,
 		)
 		defer stopTimer()
