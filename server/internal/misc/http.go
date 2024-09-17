@@ -11,6 +11,7 @@ import (
 // This prevents internal state that might be sensitive
 // being leaked to the outside world.
 type HumanReadableError interface {
+	error
 	HumanError() string
 	HTTPCode() int
 }
@@ -22,6 +23,13 @@ type HumanReadableWrapper struct {
 
 func (h HumanReadableWrapper) HumanError() string { return h.ToHuman }
 func (h HumanReadableWrapper) HTTPCode() int      { return h.Code }
+func NewHumanReadableError(toHuman string, code int, err error) HumanReadableError {
+	return HumanReadableWrapper{
+		error:   err,
+		ToHuman: toHuman,
+		Code:    code,
+	}
+}
 
 type HandlerWithErr func(http.ResponseWriter, *http.Request) error
 
@@ -51,8 +59,8 @@ func ErrorHandling(handler HandlerWithErr) http.Handler {
 			}
 
 			log.Println(err)
-			w.Write([]byte(errorString))
 			w.WriteHeader(errorCode)
+			w.Write([]byte(errorString))
 			return
 		}
 	})

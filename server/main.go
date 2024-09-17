@@ -15,6 +15,7 @@ import (
 	_ "github.com/lib/pq" // add this
 
 	"github.com/Stymphalian/ak_chibi_bot/server/internal/admin"
+	"github.com/Stymphalian/ak_chibi_bot/server/internal/api"
 	"github.com/Stymphalian/ak_chibi_bot/server/internal/misc"
 	"github.com/Stymphalian/ak_chibi_bot/server/internal/room"
 	"github.com/Stymphalian/ak_chibi_bot/server/internal/spine"
@@ -30,6 +31,7 @@ type MainStruct struct {
 	assetService *spine.AssetService
 	roomManager  *room.RoomsManager
 	adminServer  *admin.AdminServer
+	apiServer    *api.ApiServer
 }
 
 func NewMainStruct() *MainStruct {
@@ -57,6 +59,7 @@ func NewMainStruct() *MainStruct {
 	}
 	roomManager := room.NewRoomsManager(assetService, botConfig)
 	adminServer := admin.NewAdminServer(roomManager, botConfig, *staticAssetsDir)
+	apiServer := api.NewApiServer(roomManager)
 
 	return &MainStruct{
 		*imageAssetDir,
@@ -68,6 +71,7 @@ func NewMainStruct() *MainStruct {
 		assetService,
 		roomManager,
 		adminServer,
+		apiServer,
 	}
 }
 
@@ -83,10 +87,12 @@ func (s *MainStruct) run() {
 	log.Printf("Static Assets = %s\n", s.staticAssetDir)
 	http.Handle("/static/assets/", http.StripPrefix("/static/assets/", http.FileServer(http.Dir(s.imageAssetDir))))
 	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir(s.staticAssetDir))))
+	http.Handle("/rooms/settings/", http.StripPrefix("/rooms/settings/", http.FileServer(http.Dir(s.staticAssetDir+"/rooms"))))
 	http.Handle("/runtime/{$}", http.StripPrefix("/runtime/", http.FileServer(http.Dir(s.staticAssetDir+"/spine"))))
 	http.Handle("/room/", misc.Middleware(s.HandleRoom))
 	http.Handle("/ws/", misc.Middleware(s.HandleSpineWebSocket))
 	s.adminServer.RegisterAdmin()
+	s.apiServer.Register()
 
 	go func() {
 		sigint := make(chan os.Signal, 1)

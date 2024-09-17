@@ -28,7 +28,7 @@ type RoomsManager struct {
 	spineService *spine.SpineService
 
 	botConfig      *misc.BotConfig
-	twitchClient   *twitch_api.Client
+	twitchClient   twitch_api.TwitchApiClientInterface
 	shutdownDoneCh chan struct{}
 }
 
@@ -39,7 +39,7 @@ func NewRoomsManager(assets *spine.AssetService, botConfig *misc.BotConfig) *Roo
 		assetService: assets,
 		spineService: spineService,
 		botConfig:    botConfig,
-		twitchClient: twitch_api.NewClient(
+		twitchClient: twitch_api.NewTwitchApiClient(
 			botConfig.TwitchClientId,
 			botConfig.TwitchAccessToken,
 		),

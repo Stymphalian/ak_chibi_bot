@@ -7,21 +7,25 @@ import (
 	"time"
 )
 
-type Client struct {
+type TwitchApiClientInterface interface {
+	GetUsers(channel string) (*GetUsersResponse, error)
+}
+
+type TwitchApiClient struct {
 	ClientId    string
 	AccessToken string
 	httpClient  *http.Client
 }
 
-func NewClient(clientId string, accessToken string) *Client {
-	return &Client{
+func NewTwitchApiClient(clientId string, accessToken string) *TwitchApiClient {
+	return &TwitchApiClient{
 		ClientId:    clientId,
 		AccessToken: accessToken,
 		httpClient:  &http.Client{Timeout: time.Duration(5) * time.Second},
 	}
 }
 
-func (c *Client) GetUsers(channel string) (*GetUsersResponse, error) {
+func (c *TwitchApiClient) GetUsers(channel string) (*GetUsersResponse, error) {
 	req, err := http.NewRequest(
 		http.MethodGet,
 		"https://api.twitch.tv/helix/users",

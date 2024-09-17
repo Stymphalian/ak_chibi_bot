@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+	<!-- <link rel="stylesheet" type="text/css" href="/static/admin/css/style.css"> -->
+	<link rel="shortcut icon" href="/static/favicon.ico">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rooms Page</title>
+</head>
+<body>
+
+<style>
+    /* Chrome, Safari, Edge, Opera */
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+    input[type=number] {
+        -moz-appearance: textfield;
+    }
+
+    hr {
+       display: block;
+       position: relative;
+       padding: 0;
+       margin: 8px auto;
+       height: 0;
+       width: 100%;
+       max-height: 0;
+       font-size: 1px;
+       line-height: 0;
+       clear: both;
+       border: none;
+       border-top: 1px solid #aaaaaa;
+       border-bottom: 1px solid #ffffff;
+    }
+
+    #configuration_div {
+        max-width: 40vw;
+        border-radius: 8px;
+        border: 1px solid #000000;
+        padding: 10px;
+        max-width: 40vw;
+    }
+
+    #update-form {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    #update-form div.form-row {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        margin-bottom: 10px;
+    }
+    #update-form div.form-row label {
+        min-width: 10%;
+        width: 80%;
+        flex-grow: 1;
+        align-self: stretch;
+    }
+    #update-form div.form-row input {
+        min-width: 10%;
+        width: 20%;
+        align-self: flex-end;
+    }
+</style>
+
+<div id="configuration_div">
+    <p>
+        Update your channel's settings for animation speed (!chibi speed), velocity
+        (!chibi velocity) and chibi scaling (!chibi size). Fill in your Channel name
+        in the form below and click 'Save'. If it succeeds you should see a success message.
+    </p>
+    <hr>
+    <form id="update-form">
+        <div class="form-row">
+            <label for="channel_name">Channel Name</label>
+            <input name="channel_name" id="channel_name" required>
+        </div>
+        <div class="form-row">
+            <label for="min_animation_speed">min_animation_speed</label>
+            <input type="number" step="0.01" min="0" name="min_animation_speed" id="min_animation_speed" value=0.1>
+        </div>
+        <div class="form-row">
+            <label for="max_animation_speed">max_animation_speed</label>
+            <input type="number" step="0.01" min="0" name="max_animation_speed" id="max_animation_speed" value=3>
+        </div>
+        <div class="form-row">
+            <label for="min_velocity">min_velocity</label>
+            <input type="number" step="0.01" min="0" name="min_velocity" id="min_velocity" value=0.1>
+        </div>
+        <div class="form-row">
+            <label for="max_velocity">max_velocity</label>
+            <input type="number" step="0.01" min="0" name="max_velocity" id="max_velocity" value=3.0>
+        </div>
+        <div class="form-row">
+            <label for="min_sprite_scale">min_sprite_scale</label>
+            <input type="number" step="0.01" min="0" name="min_sprite_scale" id="min_sprite_scale" value=0.5>
+        </div>
+        <div class="form-row">
+            <label for="max_sprite_scale">max_sprite_scale</label>
+            <input type="number" step="0.01" min="0" name="max_sprite_scale" id="max_sprite_scale" value=2.0>
+        </div>
+        <div class="form-row">
+            <label for="max_sprite_pixel_size">max_sprite_pixel_size</label>
+            <input type="number" step="1" min="0" name="max_sprite_pixel_size" id="max_sprite_pixel_size" value=350>
+        </div>
+        <input type="submit" value="Save">
+    </form>
+    <div>
+        <div id="status"></div>
+    </div>
+</div>
+
+<script>
+    const form = document.getElementById("update-form");
+
+    function validateFormFields(json) {
+        if (!json.channel_name) {
+            return false;
+        }
+        // Check that all fields are numbers
+        if (isNaN(json.min_animation_speed) || isNaN(json.max_animation_speed)
+            || isNaN(json.min_velocity) || isNaN(json.max_velocity)
+            || isNaN(json.min_sprite_scale) || isNaN(json.max_sprite_scale)
+            || isNaN(json.max_sprite_pixel_size)) {
+            return false;
+        }
+        // Check min is greater than 0
+        if (json.min_animation_speed <= 0) {
+            return false;
+        }
+        if (json.min_velocity <= 0) {
+            return false;
+        }
+        if (json.min_sprite_scale <= 0) {
+            return false;
+        }
+        if (json.max_sprite_pixel_size <= 0) {
+            return false;
+        }
+
+        // Check min is less than max
+        if (json.min_animation_speed >= json.max_animation_speed) {
+            return false;
+        }
+        if (json.min_velocity >= json.max_velocity) {
+            return false;
+        }
+        if (json.min_sprite_scale >= json.max_sprite_scale) {
+            return false;
+        }
+        return true;
+    }
+    function setStatus(text) {
+        document.getElementById("status").innerHTML = text;
+        setTimeout(() => document.getElementById("status").innerHTML = "", 10000)
+    }
+    
+    form.addEventListener("submit", (e) => {
+
+        e.preventDefault();
+        const formData = new FormData(form);
+        const json = {};
+        for (const [key, value] of formData.entries()) {
+            json[key] = value;
+        }
+        if (!validateFormFields(json)) {
+            setStatus("Invalid form fields");
+            return;
+        }
+
+        reqJson = {
+            'channel_name': json['channel_name'],
+            'min_animation_speed': Number(json['min_animation_speed']),
+            'max_animation_speed': Number(json['max_animation_speed']),
+            'min_velocity': Number(json['min_velocity']),
+            'max_velocity': Number(json['max_velocity']),
+            'min_sprite_scale': Number(json['min_sprite_scale']),
+            'max_sprite_scale': Number(json['max_sprite_scale']),
+            'max_sprite_pixel_size': Number(json['max_sprite_pixel_size'])
+        }
+        // console.log("json", JSON.stringify(reqJson));
+        fetch("/api/rooms/update", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(reqJson)
+        }).then((res) => {
+            if (res.ok) {
+                setStatus("Saved successfully");
+            } else {
+                setStatus("Failed to save");
+            }
+        });
+    });
+</script>
+</body>
+</html>

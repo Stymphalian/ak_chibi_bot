@@ -54,7 +54,10 @@ by right clicking and selecting (open in command prompt/terminal).
 1. You can change the width/height of the `/room/` by providing extra query parameters in the URL.
    For example: `https://jellyfish-app-gseou.ondigitalocean.app/room/?channelName=REPLACE_ME&width=1080&height=720`
    will make the room have size 1080x720 pixels instead of the normal 1920x1080px
-
+2. You can change settings related to how your bot handles (!chibi size, !chibi speed, !chibi velocity) commands by going to `https://jellyfish-app-gseou.ondigitalocean.app/rooms/settings`.
+   On that page you can modify the min/max values which are accepted by the commands. The default values
+   on that page are the normal defaults. Be sure to visit `/room?channelName=REPLACE_ME` first before
+   trying to change your settings.
 
 # For Developers
 I develop using Docker, but as long as you have golang installed on your computer
