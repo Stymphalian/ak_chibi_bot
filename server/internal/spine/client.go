@@ -5,8 +5,11 @@ import (
 )
 
 const (
+	// Request Type Strings
 	SET_OPERATOR    = "SET_OPERATOR"
 	REMOVE_OPERATOR = "REMOVE_OPERATOR"
+	// Response Type Strings
+	RUNTIME_DEBUG_UPDATE = "RUNTIME_DEBUG_UPDATE"
 )
 
 type SpineResponse struct {
@@ -33,10 +36,21 @@ type RemoveOperatorResponse struct {
 	SpineResponse
 }
 
+// runtimeDebugUpdate
+type RuntimeDebugUpdateRequest struct {
+	TypeName   string  `json:"type_name"`
+	AverageFps float64 `json:"average_fps"`
+}
+
+type ClientRequestCallback func(connId string, typeName string, message []byte)
 type SpineRuntime interface {
 	Close() error
 	AddConnection(w http.ResponseWriter, r *http.Request, chatters []*ChatUser) error
 	NumConnections() int
+
+	// Add listeners for any incoming requests from the connected clients
+	// Returns a function which can be used to remove the listener
+	AddListenerToClientRequests(callback ClientRequestCallback) (func(), error)
 }
 
 type SpineClient interface {

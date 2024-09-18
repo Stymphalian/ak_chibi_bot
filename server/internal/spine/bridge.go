@@ -14,10 +14,14 @@ import (
 	"github.com/gorilla/websocket"
 )
 
+type WebSocketDebufInfo struct {
+	AverageFps *misc.RollingArray[float64]
+}
 type WebSocketConn struct {
-	conn   *websocket.Conn
-	done   chan struct{}
-	remove bool
+	conn      *websocket.Conn
+	done      chan struct{}
+	remove    bool
+	DebugInfo *WebSocketDebufInfo
 }
 
 type SpineBridge struct {
@@ -25,6 +29,9 @@ type SpineBridge struct {
 	WebSocketConnections  map[string]*WebSocketConn
 	websocketPingerTicker *time.Ticker
 	websocketPingerDone   chan bool
+
+	clientResponseCallbackListenersId int
+	clientResponseCallbackListeners   map[int]ClientRequestCallback
 	// TODO: Might want to add mutex locking for updating websocket connections
 }
 
@@ -32,6 +39,9 @@ func NewSpineBridge(spineService *SpineService) (*SpineBridge, error) {
 	s := &SpineBridge{
 		spineService:         spineService,
 		WebSocketConnections: make(map[string]*WebSocketConn, 0),
+
+		clientResponseCallbackListenersId: 0,
+		clientResponseCallbackListeners:   make(map[int]ClientRequestCallback, 0),
 	}
 	go s.pingWebSockets()
 	return s, nil
@@ -105,15 +115,39 @@ func (s *SpineBridge) clientConnected() bool {
 	return len(s.WebSocketConnections) > 0
 }
 
-func (s *SpineBridge) handleResponseMessages(message []byte) {
+func (s *SpineBridge) handleResponseMessages(connectionId string, message []byte) {
 	var data map[string]interface{}
-	log.Println("Received message", string(message))
+	// log.Println("Received message", string(message))
 	err := json.Unmarshal(message, &data)
 	if err != nil {
 		log.Printf("Error decoding JSON: %v", err)
 		return
 	}
-	log.Println("data", data)
+	if _, ok := data["type_name"]; !ok {
+		log.Printf("Invalid JSON: %v", data)
+		return
+	}
+	typeName, ok := data["type_name"].(string)
+	if !ok {
+		log.Printf("Invalid JSON: type_name is not a string: %v", data)
+		return
+	}
+
+	switch typeName {
+	case RUNTIME_DEBUG_UPDATE:
+		var debugUpdateReq RuntimeDebugUpdateRequest
+		err := json.Unmarshal(message, &debugUpdateReq)
+		if err != nil {
+			return
+		}
+		if _, ok := s.WebSocketConnections[connectionId]; ok {
+			s.WebSocketConnections[connectionId].DebugInfo.AverageFps.Add(debugUpdateReq.AverageFps)
+		}
+	}
+
+	for _, listener := range s.clientResponseCallbackListeners {
+		listener(connectionId, typeName, message)
+	}
 }
 
 func (s *SpineBridge) NumConnections() int {
@@ -140,6 +174,9 @@ func (s *SpineBridge) AddConnection(
 		conn:   c,
 		done:   make(chan struct{}),
 		remove: false,
+		DebugInfo: &WebSocketDebufInfo{
+			AverageFps: misc.NewRollingArray[float64](10),
+		},
 	}
 	// Get a uuid string
 	connectionName := uuid.New().String()
@@ -169,12 +206,12 @@ func (s *SpineBridge) AddConnection(
 			log.Println("read:", err)
 			break
 		}
-		log.Printf("recv: (%v)%v\n", messageType, string(message))
+		// log.Printf("recv: (%v)%v\n", messageType, string(message))
 
 		switch messageType {
 		case websocket.TextMessage:
-			log.Print("TextMessage")
-			s.handleResponseMessages(message)
+			// log.Print("TextMessage")
+			s.handleResponseMessages(connectionName, message)
 		case websocket.PingMessage:
 			log.Print("PingMessage")
 		case websocket.PongMessage:
@@ -188,6 +225,15 @@ func (s *SpineBridge) AddConnection(
 		}
 	}
 	return nil
+}
+
+func (s *SpineBridge) AddListenerToClientRequests(callback ClientRequestCallback) (func(), error) {
+	currentId := s.clientResponseCallbackListenersId
+	s.clientResponseCallbackListenersId += 1
+	s.clientResponseCallbackListeners[currentId] = callback
+	return func() {
+		delete(s.clientResponseCallbackListeners, currentId)
+	}, nil
 }
 
 func (s *SpineBridge) setInternalSpineOperator(

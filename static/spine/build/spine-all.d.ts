@@ -1943,6 +1943,7 @@ declare namespace spine {
             height: number;
         } | undefined;
         fullScreenBackgroundColor: string | undefined;
+        runtimeDebugInfoDumpIntervalSec: number;
     }
     class SpinePlayer {
         static HOVER_COLOR_INNER: Color;
@@ -1966,12 +1967,16 @@ declare namespace spine {
         private parent;
         private stopRequestAnimationFrame;
         private lastRequestAnimationFrameId;
+        private windowFpsFrameCount;
+        private webSocket;
         constructor(parent: HTMLElement | string, playerConfig: SpinePlayerConfig);
+        setWebsocket(webSocket: WebSocket): void;
         validatePlayerConfig(config: SpinePlayerConfig): SpinePlayerConfig;
         validateActorConfig(config: SpineActorConfig): SpineActorConfig;
         showError(actor: Actor, error: string): void;
         hideError(): void;
         setupDom(): HTMLElement;
+        callbackSendRuntimeUpdateInfo(): void;
         changeOrAddActor(actorName: string, config: SpineActorConfig): void;
         removeActor(actorName: string): void;
         setupActor(actor: Actor): void;

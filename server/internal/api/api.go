@@ -27,6 +27,14 @@ type RoomUpdateRequest struct {
 	MaxSpritePixelSize int `json:"max_sprite_pixel_size"`
 }
 
+type RoomAddOperatorRequest struct {
+	ChannelName     string `json:"channel_name"`
+	Username        string `json:"username"`
+	UserDisplayName string `json:"user_display_name"`
+	// OperatorId      string `json:"operator_id"`
+	// Faction         string `json:"faction"`
+}
+
 func NewApiServer(roomManager *room.RoomsManager) *ApiServer {
 	return &ApiServer{
 		roomsManager: roomManager,
@@ -46,6 +54,7 @@ func (s *ApiServer) middleware(h misc.HandlerWithErr) http.Handler {
 
 func (s *ApiServer) RegisterHandlers() {
 	http.Handle("POST /api/rooms/update", s.middleware(s.HandleRoomUpdate))
+	// http.Handle("POST /api/rooms/add_operator", s.middleware(s.HandleRoomAddOperator))
 }
 
 func (s *ApiServer) HandleRoomUpdate(w http.ResponseWriter, r *http.Request) error {
@@ -110,6 +119,44 @@ func (s *ApiServer) HandleRoomUpdate(w http.ResponseWriter, r *http.Request) err
 	if err != nil {
 		return err
 	}
+
+	return nil
+}
+
+func (s *ApiServer) HandleRoomAddOperator(w http.ResponseWriter, r *http.Request) error {
+	if r.Method != http.MethodPost {
+		http.NotFound(w, r)
+		return nil
+	}
+	decoder := json.NewDecoder(r.Body)
+	var reqBody RoomAddOperatorRequest
+	if err := decoder.Decode(&reqBody); err != nil {
+		return misc.NewHumanReadableError(
+			"Invalid request body",
+			http.StatusBadRequest,
+			fmt.Errorf("invalid request body: %w", err),
+		)
+	}
+
+	channelName := reqBody.ChannelName
+	if len(channelName) == 0 {
+		return misc.NewHumanReadableError(
+			"Channel name must be provided",
+			http.StatusBadRequest,
+			fmt.Errorf("channel name must be provided"),
+		)
+	}
+	if _, ok := s.roomsManager.Rooms[channelName]; !ok {
+		return fmt.Errorf("room %s does not exist", channelName)
+	}
+	room := s.roomsManager.Rooms[channelName]
+
+	room.GiveChibiToUser(reqBody.Username, reqBody.UserDisplayName)
+	// faction, err := spine.FactionEnum_Parse(reqBody.Faction)
+	// if err != nil {
+	// 	return err
+	// }
+	// room.AddOperatorToRoom(reqBody.Username, reqBody.Username, reqBody.OperatorId, faction)
 
 	return nil
 }

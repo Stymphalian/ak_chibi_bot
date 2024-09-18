@@ -11442,6 +11442,8 @@ var spine;
         parent;
         stopRequestAnimationFrame = false;
         lastRequestAnimationFrameId = 0;
+        windowFpsFrameCount = 0;
+        webSocket = null;
         constructor(parent, playerConfig) {
             if (typeof parent === "string") {
                 this.parent = document.getElementById(parent);
@@ -11451,6 +11453,9 @@ var spine;
             }
             this.playerConfig = this.validatePlayerConfig(playerConfig);
             this.parent.appendChild(this.setupDom());
+        }
+        setWebsocket(webSocket) {
+            this.webSocket = webSocket;
         }
         validatePlayerConfig(config) {
             if (!config)
@@ -11463,6 +11468,8 @@ var spine;
                 config.fullScreenBackgroundColor = config.backgroundColor;
             if (typeof config.showControls === "undefined")
                 config.showControls = true;
+            if (!config.runtimeDebugInfoDumpIntervalSec)
+                config.runtimeDebugInfoDumpIntervalSec = 60;
             return config;
         }
         validateActorConfig(config) {
@@ -11551,6 +11558,11 @@ var spine;
             }
             this.assetManager = new spine.webgl.AssetManager(this.context);
             this.lastRequestAnimationFrameId = requestAnimationFrame(() => this.drawFrame());
+            performance.mark('fps_window_start');
+            this.windowFpsFrameCount = 0;
+            if (this.playerConfig.runtimeDebugInfoDumpIntervalSec > 0) {
+                setInterval(() => this.callbackSendRuntimeUpdateInfo(), 1000 * this.playerConfig.runtimeDebugInfoDumpIntervalSec);
+            }
             this.playerControls = findWithClass(dom, "spine-player-controls")[0];
             let timeline = findWithClass(dom, "spine-player-timeline")[0];
             this.timelineSlider = new Slider();
@@ -11567,6 +11579,21 @@ var spine;
             };
             this.setupInput();
             return dom;
+        }
+        callbackSendRuntimeUpdateInfo() {
+            performance.mark('fps_window_end');
+            const totalTime = performance.measure('fps_window_time', 'fps_window_start', 'fps_window_end');
+            const averageFps = this.windowFpsFrameCount / (totalTime.duration / 1000);
+            if (this.webSocket != null) {
+                const payload = JSON.stringify({
+                    type_name: "RUNTIME_DEBUG_UPDATE",
+                    average_fps: averageFps,
+                });
+                this.webSocket.send(payload);
+                console.log("Sending debug update to server: ", payload);
+            }
+            performance.mark('fps_window_start');
+            this.windowFpsFrameCount = 0;
         }
         changeOrAddActor(actorName, config) {
             if (this.actors.has(actorName)) {
@@ -11713,6 +11740,7 @@ var spine;
                 this.assetManager.clearErrors();
                 this.hideError();
             }
+            this.windowFpsFrameCount += 1;
         }
         scale(sourceWidth, sourceHeight, targetWidth, targetHeight) {
             let targetRatio = targetHeight / targetWidth;
@@ -11976,6 +12004,7 @@ var stym;
                     backgroundImage: null,
                     textSize: 14,
                     textFont: "lato",
+                    runtimeDebugInfoDumpIntervalSec: 60,
                 };
                 console.log("Creating a new spine player");
                 this.spinePlayer = new spine.SpinePlayer("container", this.spinePlayerConfig);
@@ -11989,10 +12018,12 @@ var stym;
             this.socket.addEventListener("open", (event) => {
                 console.log("Socket opened");
                 this.backoffTimeMsec = this.defaultBackoffTimeMsec;
+                this.spinePlayer.setWebsocket(this.socket);
             });
             this.socket.addEventListener("message", this.messageHandler.bind(this));
             this.socket.addEventListener("close", (event) => {
                 console.log("Close received: ", event);
+                this.spinePlayer.setWebsocket(null);
                 this.backoffTimeMsec *= 2;
                 if (this.backoffTimeMsec < this.backOffMaxtimeMsec) {
                     console.log("Retrying in " + this.backoffTimeMsec + "ms");

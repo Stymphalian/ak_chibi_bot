@@ -33,6 +33,7 @@ type Room struct {
 	Chatters                []*Chatter
 	NextGCTime              string
 	NumWebsocketConnections int
+	ConnectionAverageFps    map[string]float64
 }
 
 type AdminInfo struct {
@@ -123,6 +124,7 @@ func (s *AdminServer) HandleList(w http.ResponseWriter, r *http.Request) error {
 			NumWebsocketConnections: roomVal.NumConnectedClients(),
 			CreatedAt:               roomVal.CreatedAt().Format(time.DateTime),
 			NextGCTime:              roomVal.GetNextGarbageCollectionTime().Format(time.DateTime),
+			ConnectionAverageFps:    make(map[string]float64),
 		}
 
 		roomVal.ForEachChatter(func(chatUser *spine.ChatUser) {

@@ -49,6 +49,64 @@ func Connect() (*sql.DB, error) {
 	)
 }
 
+func GetRoomFromChannelName(channelName string) (*Room, error) {
+	db, err := Connect()
+	if err != nil {
+		return nil, err
+	}
+	defer db.Close()
+
+	var roomId int64
+	var isActive bool
+	var createdAt time.Time
+	err = db.QueryRow(
+		"SELECT room_id, is_active, created_at FROM rooms WHERE channel_name = $1",
+		channelName,
+	).Scan(&roomId, &isActive, &createdAt)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return nil, nil
+		}
+		return nil, err
+	}
+
+	return &Room{
+		RoomId:      roomId,
+		ChannelName: channelName,
+		IsActive:    isActive,
+		CreatedAt:   createdAt,
+		UpdatedAt:   time.Now(),
+	}, nil
+}
+
+func InsertRoom(channelName string) (*Room, error) {
+	db, err := Connect()
+	if err != nil {
+		return nil, err
+	}
+	defer db.Close()
+
+	var roomId int64
+	var createdAt time.Time
+	var updatedAt time.Time
+	err = db.QueryRow(
+		"INSERT INTO rooms (channel_name, is_active) VALUES ($1, $2) RETURNING room_id, created_at, updated_at;",
+		channelName,
+		true,
+	).Scan(&roomId, &createdAt, &updatedAt)
+	if err != nil {
+		return nil, err
+	}
+
+	return &Room{
+		RoomId:      roomId,
+		ChannelName: channelName,
+		IsActive:    true,
+		CreatedAt:   createdAt,
+		UpdatedAt:   updatedAt,
+	}, nil
+}
+
 func Prepare() error {
 	db, err := Connect()
 	if err != nil {

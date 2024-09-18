@@ -121,6 +121,18 @@ func (r *RoomsManager) CreateRoomOrNoOp(channel string, ctx context.Context) err
 		return err
 	}
 
+	// dbRoom, err := akdb.GetRoomFromChannelName(channel)
+	// if err != nil {
+	// 	return err
+	// }
+	// if dbRoom == nil {
+	// 	dbRoom, err = akdb.InsertRoom(channel)
+	// 	if err != nil {
+	// 		return err
+	// 	}
+	// }
+	// log.Println("Room with ID used", dbRoom.RoomId)
+
 	r.rooms_mutex.Lock()
 	roomConfig := &RoomConfig{
 		ChannelName:                 channel,

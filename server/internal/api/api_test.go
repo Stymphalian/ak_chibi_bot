@@ -19,7 +19,10 @@ func Setup_TestApiServer() *ApiServer {
 func TestApiServer_HandleRoomUpdate_HappyPath(t *testing.T) {
 	assert := assert.New(t)
 	sut := Setup_TestApiServer()
-	sut.roomsManager.CreateRoomOrNoOp("test", context.TODO())
+	err := sut.roomsManager.CreateRoomOrNoOp("test", context.TODO())
+	if err != nil {
+		assert.Fail(err.Error())
+	}
 
 	jsonBody := `{
 	"channel_name":"test",
@@ -48,7 +51,10 @@ func TestApiServer_HandleRoomUpdate_HappyPath(t *testing.T) {
 func TestApiServer_HandleRoomUpdate_InvalidConfiguration(t *testing.T) {
 	assert := assert.New(t)
 	sut := Setup_TestApiServer()
-	sut.roomsManager.CreateRoomOrNoOp("test", context.TODO())
+	err := sut.roomsManager.CreateRoomOrNoOp("test", context.TODO())
+	if err != nil {
+		assert.Fail(err.Error())
+	}
 
 	// Missing channel name
 	jsonBody := `{

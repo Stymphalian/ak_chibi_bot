@@ -77,6 +77,12 @@ module spine {
 
 		/* Optional: the background color used in fullscreen mode. Must be given in the format #rrggbbaa. Default: backgroundColor. */
 		fullScreenBackgroundColor: string | undefined
+
+		/** Optional: 
+		 *  How often to send back runtime debug information to the server.
+		 *  This is to help debug performance issues. Default: 60 seconds.
+		 */
+		runtimeDebugInfoDumpIntervalSec: number
 	}
 
 	class Slider {
@@ -182,6 +188,8 @@ module spine {
 
 		private stopRequestAnimationFrame = false;
 		private lastRequestAnimationFrameId = 0;
+		private windowFpsFrameCount:number = 0;
+		private webSocket: WebSocket = null;
 
 		constructor(parent: HTMLElement | string, playerConfig: SpinePlayerConfig) {
 			if (typeof parent === "string") {
@@ -194,6 +202,10 @@ module spine {
 			this.parent.appendChild(this.setupDom());
 		}
 
+		setWebsocket(webSocket: WebSocket) {
+			this.webSocket = webSocket;
+		}
+
 		validatePlayerConfig(config: SpinePlayerConfig): SpinePlayerConfig {
 			if (!config) throw new Error("Please pass a configuration to new.spine.SpinePlayer().");
 			if (!config.alpha) config.alpha = false;
@@ -201,6 +213,7 @@ module spine {
 			if (!config.fullScreenBackgroundColor) config.fullScreenBackgroundColor = config.backgroundColor;
 			if (typeof config.showControls === "undefined")
 				config.showControls = true;
+			if (!config.runtimeDebugInfoDumpIntervalSec) config.runtimeDebugInfoDumpIntervalSec = 60;
 			return config;
 		}
 
@@ -305,6 +318,13 @@ module spine {
 			// Setup rendering loop
 			this.lastRequestAnimationFrameId = requestAnimationFrame(() => this.drawFrame());
 
+			// Setup FPS counter
+			performance.mark('fps_window_start');
+			this.windowFpsFrameCount = 0;
+			if (this.playerConfig.runtimeDebugInfoDumpIntervalSec > 0) {
+				setInterval(() => this.callbackSendRuntimeUpdateInfo(), 1000* this.playerConfig.runtimeDebugInfoDumpIntervalSec);
+			}
+
 			// Setup the event listeners for UI elements
 			this.playerControls = findWithClass(dom, "spine-player-controls")[0];
 			let timeline = findWithClass(dom, "spine-player-timeline")[0];
@@ -326,6 +346,26 @@ module spine {
 			this.setupInput();
 
 			return dom;
+		}
+
+		callbackSendRuntimeUpdateInfo() {
+			performance.mark('fps_window_end');
+			const totalTime = performance.measure('fps_window_time', 'fps_window_start', 'fps_window_end')
+			const averageFps = this.windowFpsFrameCount / (totalTime.duration  / 1000);
+
+			if (this.webSocket != null) {
+				const payload = JSON.stringify(
+					{
+						type_name: "RUNTIME_DEBUG_UPDATE",
+						average_fps: averageFps, 
+					}
+				)
+				this.webSocket.send(payload);
+				console.log("Sending debug update to server: ", payload);
+			}
+
+			performance.mark('fps_window_start');
+			this.windowFpsFrameCount = 0;
 		}
 
 		changeOrAddActor(actorName: string, config: SpineActorConfig) {
@@ -575,6 +615,7 @@ module spine {
 				this.assetManager.clearErrors();
 				this.hideError();
 			}
+			this.windowFpsFrameCount += 1;
 		}
 
 		scale(sourceWidth: number, sourceHeight: number, targetWidth: number, targetHeight: number): Vector2 {

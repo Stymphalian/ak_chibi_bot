@@ -23,7 +23,25 @@ function fillInRoomsTable(data) {
                 <p>NextGCTime: ${room.NextGCTime}</p>
             </td>
             
-            <td>${room.NumWebsocketConnections}</td>
+            <td>
+                <p>Num Connections: ${room.NumWebsocketConnections}</p>
+                <table class="sub-table">
+                    <thead>
+                        <tr>
+                            <th class="sub-th">ConnectionId</th>
+                            <th class="sub-th">Info</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${Object.entries(room.ConnectionAverageFps).map(([connId, avgFps]) => `
+                            <tr>
+                                <td class="sub-td">${connId}</td>
+                                <td class="sub-td">Average FPS: ${avgFps.toFixed(2)}</td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            </td>
             <td>
                 <p>Number Chatters: ${room.Chatters.length}</p>
                 <table class="sub-table">

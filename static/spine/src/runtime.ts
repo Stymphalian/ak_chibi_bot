@@ -45,6 +45,7 @@ module stym {
                     backgroundImage: null,
                     textSize: 14,
                     textFont: "lato",
+                    runtimeDebugInfoDumpIntervalSec: 60,
                 };
                 
                 console.log("Creating a new spine player");
@@ -61,12 +62,14 @@ module stym {
             this.socket.addEventListener("open", (event) => {
                 console.log("Socket opened");
                 this.backoffTimeMsec = this.defaultBackoffTimeMsec;
+                this.spinePlayer.setWebsocket(this.socket);
             });
             this.socket.addEventListener("message", 
                 this.messageHandler.bind(this)
             );
             this.socket.addEventListener("close", (event) => {
                 console.log("Close received: ",event);
+                this.spinePlayer.setWebsocket(null);
 
                 // if (event.code >= 1000 && event.code <= 1002) {
                 //     return

@@ -110,7 +110,7 @@ func (r *Room) garbageCollectOldChibis() {
 func (r *Room) Run() {
 	// misc.GoRunCounter.Add(1)
 	// defer misc.GoRunCounter.Add(-1)
-
+	var err error
 	log.Printf("Room %s is running\n", r.config.ChannelName)
 
 	if r.config.GarbageCollectionPeriodMins > 0 {
@@ -124,10 +124,11 @@ func (r *Room) Run() {
 		defer stopTimer()
 	}
 
-	err := r.twitchChat.ReadLoop()
+	err = r.twitchChat.ReadLoop()
 	if err != nil {
 		log.Printf("Room %s run error=", err)
 	}
+
 	log.Printf("Room %s run is done\n", r.config.ChannelName)
 }
 
@@ -158,6 +159,10 @@ func (r *Room) AddOperatorToRoom(
 		return err
 	}
 	return nil
+}
+
+func (r *Room) GiveChibiToUser(username string, usernameDisplay string) error {
+	return r.chibiActor.GiveChibiToUser(username, usernameDisplay)
 }
 
 func (s *Room) AddWebsocketConnection(w http.ResponseWriter, r *http.Request) error {
