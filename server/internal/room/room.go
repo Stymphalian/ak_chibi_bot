@@ -27,7 +27,7 @@ type RoomConfig struct {
 type Room struct {
 	SpineService *spine.SpineService
 
-	config                    RoomConfig
+	roomDb                    *RoomDb
 	spineRuntime              spine.SpineRuntime
 	chibiActor                *chibi.ChibiActor
 	twitchChat                chatbot.ChatBotter
@@ -36,14 +36,13 @@ type Room struct {
 }
 
 func NewRoom(
-	roomConfig *RoomConfig,
+	roomDb *RoomDb,
 	spineService *spine.SpineService,
 	spineRuntime spine.SpineRuntime,
 	chibiActor *chibi.ChibiActor,
-	twitchBot chatbot.ChatBotter,
-) *Room {
+	twitchBot chatbot.ChatBotter) *Room {
 	r := &Room{
-		config:       *roomConfig,
+		roomDb:       roomDb,
 		SpineService: spineService,
 		spineRuntime: spineRuntime,
 		chibiActor:   chibiActor,
@@ -51,14 +50,31 @@ func NewRoom(
 		createdAt:    misc.Clock.Now(),
 	}
 	r.chibiActor.SetToDefault(
-		r.config.ChannelName,
-		r.config.DefaultOperatorName,
-		r.config.DefaultOperatorConfig)
+		r.roomDb.ChannelName,
+		r.roomDb.DefaultOperatorName,
+		r.roomDb.DefaultOperatorConfig(),
+	)
 	return r
 }
 
+func GetOrNewRoom(
+	roomConfig *RoomConfig,
+	spineService *spine.SpineService,
+	spineRuntime spine.SpineRuntime,
+	chibiActor *chibi.ChibiActor,
+	twitchBot chatbot.ChatBotter,
+) (*Room, error) {
+	roomDb, err := GetOrInsertRoom(roomConfig)
+	if err != nil {
+		return nil, err
+	}
+	roomDb.IsActive = true
+	UpdateRoom(roomDb)
+	return NewRoom(roomDb, spineService, spineRuntime, chibiActor, twitchBot), nil
+}
+
 func (r *Room) GetChannelName() string {
-	return r.config.ChannelName
+	return r.roomDb.ChannelName
 }
 
 func (r *Room) GetLastChatterTime() time.Time {
@@ -73,8 +89,16 @@ func (r *Room) GetNextGarbageCollectionTime() time.Time {
 	return r.nextGarbageCollectionTime
 }
 
+func (r *Room) SetActive(isActive bool) {
+	r.roomDb.IsActive = isActive
+	UpdateRoom(r.roomDb)
+}
+
 func (r *Room) Close() error {
-	log.Println("Closing room ", r.config.ChannelName)
+	log.Println("Closing room ", r.GetChannelName())
+	// r.roomDb.IsActive = false
+	// UpdateRoom(r.roomDb)
+
 	// Disconnect the twitch chat
 	err := r.twitchChat.Close()
 	if err != nil {
@@ -86,15 +110,15 @@ func (r *Room) Close() error {
 	if err != nil {
 		return err
 	}
-	log.Println("Closed room ", r.config.ChannelName, "successfully")
+	log.Println("Closed room ", r.GetChannelName(), "successfully")
 	return nil
 }
 
 func (r *Room) garbageCollectOldChibis() {
-	log.Printf("Garbage collecting old chibis from room %s", r.config.ChannelName)
-	interval := time.Duration(r.config.GarbageCollectionPeriodMins) * time.Minute
+	log.Printf("Garbage collecting old chibis from room %s", r.GetChannelName())
+	interval := time.Duration(r.roomDb.GarbageCollectionPeriodMins) * time.Minute
 	for username, chatUser := range r.chibiActor.ChatUsers {
-		if username == r.config.ChannelName {
+		if username == r.GetChannelName() {
 			// Skip removing the broadcaster's chibi
 			continue
 		}
@@ -111,13 +135,13 @@ func (r *Room) Run() {
 	// misc.GoRunCounter.Add(1)
 	// defer misc.GoRunCounter.Add(-1)
 	var err error
-	log.Printf("Room %s is running\n", r.config.ChannelName)
+	log.Printf("Room %s is running\n", r.GetChannelName())
 
-	if r.config.GarbageCollectionPeriodMins > 0 {
-		period := time.Duration(r.config.GarbageCollectionPeriodMins) * time.Minute
+	if r.roomDb.GarbageCollectionPeriodMins > 0 {
+		period := time.Duration(r.roomDb.GarbageCollectionPeriodMins) * time.Minute
 		r.nextGarbageCollectionTime = time.Now().Add(period)
 		stopTimer := misc.StartTimer(
-			fmt.Sprintf("GarbageCollectOldChibis %s", r.config.ChannelName),
+			fmt.Sprintf("GarbageCollectOldChibis %s", r.GetChannelName()),
 			period,
 			r.garbageCollectOldChibis,
 		)
@@ -129,7 +153,7 @@ func (r *Room) Run() {
 		log.Printf("Room %s run error=", err)
 	}
 
-	log.Printf("Room %s run is done\n", r.config.ChannelName)
+	log.Printf("Room %s run is done\n", r.GetChannelName())
 }
 
 func (r *Room) GetChatters() []spine.ChatUser {
@@ -194,14 +218,14 @@ func (r *Room) RemoveUserChibi(username string) error {
 }
 
 func (r *Room) GetSpineRuntimeConfig() misc.SpineRuntimeConfig {
-	return *r.config.SpineRuntimeConfig
+	return r.roomDb.SpineRuntimeConfig()
 }
 
 func (r *Room) UpdateSpineRuntimeConfig(newConfig *misc.SpineRuntimeConfig) error {
 	if err := misc.ValidateSpineRuntimeConfig(newConfig); err != nil {
 		return err
 	}
-	runtimeConfig := r.config.SpineRuntimeConfig
+	runtimeConfig := r.roomDb.SpineRuntimeConfig()
 	if newConfig.MinAnimationSpeed > 0 {
 		runtimeConfig.MinAnimationSpeed = newConfig.MinAnimationSpeed
 	}
@@ -232,5 +256,7 @@ func (r *Room) UpdateSpineRuntimeConfig(newConfig *misc.SpineRuntimeConfig) erro
 	if newConfig.DefaultMovementSpeed > 0 {
 		runtimeConfig.DefaultMovementSpeed = newConfig.DefaultMovementSpeed
 	}
+	r.roomDb.SetSpineRuntimeConfig(&runtimeConfig)
+	UpdateRoom(r.roomDb)
 	return nil
 }

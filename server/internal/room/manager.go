@@ -9,7 +9,6 @@ import (
 	"sync"
 	"time"
 
-	"github.com/Stymphalian/ak_chibi_bot/server/internal/akdb"
 	"github.com/Stymphalian/ak_chibi_bot/server/internal/chatbot"
 	"github.com/Stymphalian/ak_chibi_bot/server/internal/chibi"
 	"github.com/Stymphalian/ak_chibi_bot/server/internal/misc"
@@ -49,6 +48,18 @@ func NewRoomsManager(assets *spine.AssetService, botConfig *misc.BotConfig) *Roo
 	}
 }
 
+func (r *RoomsManager) LoadExistingRooms() error {
+	roomDbs, err := GetActiveRooms()
+	if err != nil {
+		return err
+	}
+
+	for _, roomDb := range roomDbs {
+		r.InsertRoom(roomDb)
+	}
+	return nil
+}
+
 func (r *RoomsManager) garbageCollectRooms() {
 	log.Println("Garbage collecting unused chat rooms")
 	period := time.Duration(r.botConfig.RemoveUnusedRoomsAfterMinutes) * time.Minute
@@ -56,6 +67,8 @@ func (r *RoomsManager) garbageCollectRooms() {
 	for channel, room := range r.Rooms {
 		if !room.IsActive(period) {
 			log.Println("Removing unused room", channel)
+			room.SetActive(false)
+
 			room.Close()
 			delete(r.Rooms, channel)
 		}
@@ -98,6 +111,50 @@ func (r *RoomsManager) checkChannelValid(channel string) (bool, error) {
 	return true, nil
 }
 
+func (r *RoomsManager) GetRoomServices(channelName string) (*spine.SpineBridge, *chibi.ChibiActor, *chatbot.TwitchBot, error) {
+	spineBridge, err := spine.NewSpineBridge(r.spineService)
+	if err != nil {
+		return nil, nil, nil, err
+	}
+	chibiActor := chibi.NewChibiActor(r.spineService, spineBridge, r.botConfig.ExcludeNames)
+	twitchBot, err := chatbot.NewTwitchBot(
+		chibiActor,
+		channelName,
+		r.botConfig.TwitchBot,
+		r.botConfig.TwitchAccessToken,
+	)
+	if err != nil {
+		return nil, nil, nil, err
+	}
+	return spineBridge, chibiActor, twitchBot, nil
+}
+
+func (r *RoomsManager) InsertRoom(roomDb *RoomDb) error {
+	spineBridge, chibiActor, twitchBot, err := r.GetRoomServices(roomDb.ChannelName)
+	if err != nil {
+		return err
+	}
+	log.Println("Inserting room: ", roomDb.ChannelName)
+	room := NewRoom(
+		roomDb,
+		r.spineService,
+		spineBridge,
+		chibiActor,
+		twitchBot,
+	)
+	if err != nil {
+		return err
+	}
+
+	r.rooms_mutex.Lock()
+	r.Rooms[roomDb.ChannelName] = room
+	r.rooms_mutex.Unlock()
+
+	misc.Monitor.NumRoomsCreated += 1
+	go room.Run()
+	return nil
+}
+
 func (r *RoomsManager) CreateRoomOrNoOp(channel string, ctx context.Context) error {
 	// Check to see if channel is valid
 	if valid, err := r.checkChannelValid(channel); err != nil || !valid {
@@ -106,34 +163,11 @@ func (r *RoomsManager) CreateRoomOrNoOp(channel string, ctx context.Context) err
 	if _, ok := r.Rooms[channel]; ok {
 		return nil
 	}
-
-	spineBridge, err := spine.NewSpineBridge(r.spineService)
-	if err != nil {
-		return err
-	}
-	chibiActor := chibi.NewChibiActor(r.spineService, spineBridge, r.botConfig.ExcludeNames)
-	twitchBot, err := chatbot.NewTwitchBot(
-		chibiActor,
-		channel,
-		r.botConfig.TwitchBot,
-		r.botConfig.TwitchAccessToken,
-	)
+	spineBridge, chibiActor, twitchBot, err := r.GetRoomServices(channel)
 	if err != nil {
 		return err
 	}
 
-	dbRoom, err := akdb.GetRoomFromChannelName(channel)
-	if err != nil {
-		return err
-	}
-	if dbRoom == nil {
-		dbRoom, err = akdb.InsertRoom(channel)
-		if err != nil {
-			return err
-		}
-	}
-
-	r.rooms_mutex.Lock()
 	roomConfig := &RoomConfig{
 		ChannelName:                 channel,
 		DefaultOperatorName:         r.botConfig.InitialOperator,
@@ -141,13 +175,18 @@ func (r *RoomsManager) CreateRoomOrNoOp(channel string, ctx context.Context) err
 		GarbageCollectionPeriodMins: r.botConfig.RemoveChibiAfterMinutes,
 		SpineRuntimeConfig:          r.botConfig.SpineRuntimeConfig,
 	}
-	room := NewRoom(
+	room, err := GetOrNewRoom(
 		roomConfig,
 		r.spineService,
 		spineBridge,
 		chibiActor,
 		twitchBot,
 	)
+	if err != nil {
+		return err
+	}
+
+	r.rooms_mutex.Lock()
 	r.Rooms[channel] = room
 	r.rooms_mutex.Unlock()
 

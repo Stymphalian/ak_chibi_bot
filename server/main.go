@@ -82,6 +82,7 @@ func NewMainStruct() *MainStruct {
 
 func (s *MainStruct) run() {
 	go s.roomManager.RunLoop()
+	s.roomManager.LoadExistingRooms()
 	// s.roomManager.Restore()
 
 	log.Println("Starting server")
