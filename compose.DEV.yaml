@@ -19,6 +19,8 @@ services:
     depends_on:
       db:
         condition: service_healthy
+      migrations:
+        condition: service_completed_successfully
     secrets:
       - web-user-password.txt
     volumes:
@@ -26,6 +28,20 @@ services:
       - db-data:/var/lib/postgresql/data
     stdin_open: true
     tty: true
+
+  migrations:
+    image: migrate/migrate:4
+    volumes:
+      - .\\db\\migrations:/migrations
+    depends_on:
+      db:
+        condition: service_healthy
+    command:    [
+      "-database", "postgres://${MIGRATE_DB_USER}:${MIGRATE_DB_PASSWORD}@db:5432/akdb", 
+      "-path", "./migrations", 
+      "up" 
+    ]
+    env_file: .env
 
   db:
     build:

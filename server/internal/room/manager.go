@@ -9,6 +9,7 @@ import (
 	"sync"
 	"time"
 
+	"github.com/Stymphalian/ak_chibi_bot/server/internal/akdb"
 	"github.com/Stymphalian/ak_chibi_bot/server/internal/chatbot"
 	"github.com/Stymphalian/ak_chibi_bot/server/internal/chibi"
 	"github.com/Stymphalian/ak_chibi_bot/server/internal/misc"
@@ -121,17 +122,16 @@ func (r *RoomsManager) CreateRoomOrNoOp(channel string, ctx context.Context) err
 		return err
 	}
 
-	// dbRoom, err := akdb.GetRoomFromChannelName(channel)
-	// if err != nil {
-	// 	return err
-	// }
-	// if dbRoom == nil {
-	// 	dbRoom, err = akdb.InsertRoom(channel)
-	// 	if err != nil {
-	// 		return err
-	// 	}
-	// }
-	// log.Println("Room with ID used", dbRoom.RoomId)
+	dbRoom, err := akdb.GetRoomFromChannelName(channel)
+	if err != nil {
+		return err
+	}
+	if dbRoom == nil {
+		dbRoom, err = akdb.InsertRoom(channel)
+		if err != nil {
+			return err
+		}
+	}
 
 	r.rooms_mutex.Lock()
 	roomConfig := &RoomConfig{

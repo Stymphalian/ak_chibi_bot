@@ -1,4 +1,3 @@
-
 DROP TRIGGER IF EXISTS users_update ON Users;
 DROP TRIGGER IF EXISTS rooms_update ON Rooms;
 DROP TRIGGER IF EXISTS chatters_update ON Chatters;
