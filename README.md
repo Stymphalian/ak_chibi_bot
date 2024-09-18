@@ -33,22 +33,15 @@ Have the twich bot directly connect to your chat by using a hosted bot.
 5. A chibi should now be walking around.
 6. Open up your twitch chat and start typing in commands
 
-# Quick Start - Local
+# Quick Start - Local [BROKEN]
 Run the twitch bot locally on your own machine and attached to your own twitch account.
 
 1. Download this repository and open up a window to it
 2. Open up a command-prompt/terminal window in that directory (i.e C:/Users/Stymphalian/Downloads/ak_chibi_bot/)
 by right clicking and selecting (open in command prompt/terminal).
-3. Unzip the `release.zip` folder into a `release` folder.
 4. Download the chibi assets files from [here](https://f002.backblazeb2.com/file/ak-gamedata/assets_20240805.zip) and unzip into the `releases` folder with the name `assets`.
 5. You now need register the bot to your channel. Follow the instructions from [Authentication](#Authentication)
-6. Open up the `config.json` file in a text-editor. Update the `twitch_bot` field to your channel name, `twitch_client_id` to the clientId you registered your application with, and set the `twitch_access_token` field to what you created in the previous step.
-7. Run the server binary (`.\server_win386.exe -image_assetdir assets -static_dir static -address localhost:8080 -bot_config config.json`)
-8. Open up OBS and add a `Browser` source to your stream.
-9. Set the URL to http://localhost:8080/
-10. Set the width and height to 1920x1080
-11. A chibi should now be walking around.
-12. Open up your twitch chat and start typing in commands
+6. Follow the setting up Development environment instructions from [README_DEV.md](README_DEV.md)
 
 # Additional Notes
 1. You can change the width/height of the `/room/` by providing extra query parameters in the URL.
@@ -92,34 +85,6 @@ If you want to run your Bot under a special Bot twitch account just make sure
 to change the `twitch_bot` field in the config to your bot's name and make sure 
 to get the correct access token for your Bot and give them a moderator role in your own channel.
 
-### Building
-To build the image and start the docker container:
-```
-docker build -t ak-chibi-bot .
-docker run -it --rm -v .:/work -p 8080:8080 ak-chibi-bot
-```
-
-Once within the container:
-```
-/work
-cd /work/server
-go run main.go -spine_assetdir=../assets/spine-ts -address=:8080 -bot_config=config.json
-# This will start the HTTP server and connect to the twitch IRC
-```
-
-To hot-reload the spine-runtime typescript library:
-```
-/work
-cd /work/server/spine-ts
-tsc -w -p tsconfig.json
-```
-
-Now open http://localhost:8080/room/?channelName=REPLACE_ME in your web-browser.
-Replce the `REPLACE_ME` with your own twitch channel name and you should see 
-default operator walking around.
-
-### Releasing
-To build a release binary run the following within the container `./tools/build_release.sh`
 
 # Disclaimer
 1. All the art assets/chibis are owned by Arknights/Hypergryph. I claim no ownership and

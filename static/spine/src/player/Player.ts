@@ -361,7 +361,6 @@ module spine {
 					}
 				)
 				this.webSocket.send(payload);
-				console.log("Sending debug update to server: ", payload);
 			}
 
 			performance.mark('fps_window_start');
