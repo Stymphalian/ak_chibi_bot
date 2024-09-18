@@ -2247,11 +2247,11 @@ var spine;
                     }
                 }
                 else {
-                    error(request.status, request.responseText);
+                    error(request.status, request.response);
                 }
             };
             request.onerror = () => {
-                error(request.status, request.responseText);
+                error(request.status, request.response);
             };
             request.send();
         }
@@ -11625,13 +11625,16 @@ var spine;
                     this.assetManager.setRawDataURI(path, data);
                 }
             }
-            if (config.jsonUrl)
+            if (config.jsonUrl) {
                 this.assetManager.loadText(config.jsonUrl);
-            else
+            }
+            else {
                 this.assetManager.loadBinary(config.skelUrl);
+            }
             this.assetManager.loadTextureAtlas(config.atlasUrl);
-            if (config.backgroundImage && config.backgroundImage.url)
+            if (config.backgroundImage && config.backgroundImage.url) {
                 this.assetManager.loadTexture(config.backgroundImage.url);
+            }
         }
         drawText(text, xpx, ypx) {
             let viewport = this.playerConfig.viewport;

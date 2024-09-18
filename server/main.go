@@ -22,6 +22,10 @@ import (
 	"github.com/Stymphalian/ak_chibi_bot/server/internal/spine"
 )
 
+const (
+	DEFAULT_TIMEOUT = 5 * time.Second
+)
+
 type MainStruct struct {
 	imageAssetDir  string
 	staticAssetDir string
@@ -85,17 +89,42 @@ func (s *MainStruct) run() {
 		Addr:              *s.address,
 		ReadTimeout:       1 * time.Second,
 		ReadHeaderTimeout: 1 * time.Second,
-		WriteTimeout:      10 * time.Second,
+		WriteTimeout:      5 * time.Second,
+		IdleTimeout:       30 * time.Second,
 	}
 	server.RegisterOnShutdown(s.roomManager.Shutdown)
 
 	log.Printf("Images Assets = %s\n", s.imageAssetDir)
 	log.Printf("Static Assets = %s\n", s.staticAssetDir)
-	http.Handle("/static/assets/", http.StripPrefix("/static/assets/", http.FileServer(http.Dir(s.imageAssetDir))))
-	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir(s.staticAssetDir))))
-	http.Handle("/rooms/settings/", http.StripPrefix("/rooms/settings/", http.FileServer(http.Dir(s.staticAssetDir+"/rooms"))))
-	http.Handle("/runtime/{$}", http.StripPrefix("/runtime/", http.FileServer(http.Dir(s.staticAssetDir+"/spine"))))
-	http.Handle("/room/", misc.Middleware(s.HandleRoom))
+	http.Handle("/static/assets/",
+		http.TimeoutHandler(
+			http.StripPrefix("/static/assets/", http.FileServer(http.Dir(s.imageAssetDir))),
+			DEFAULT_TIMEOUT,
+			"",
+		),
+	)
+	http.Handle("/static/",
+		http.TimeoutHandler(
+			http.StripPrefix("/static/", http.FileServer(http.Dir(s.staticAssetDir))),
+			DEFAULT_TIMEOUT,
+			"",
+		),
+	)
+	http.Handle("/rooms/settings/",
+		http.TimeoutHandler(
+			http.StripPrefix("/rooms/settings/", http.FileServer(http.Dir(s.staticAssetDir+"/rooms"))),
+			DEFAULT_TIMEOUT,
+			"",
+		),
+	)
+	http.Handle("/runtime/{$}",
+		http.TimeoutHandler(
+			http.StripPrefix("/runtime/", http.FileServer(http.Dir(s.staticAssetDir+"/spine"))),
+			DEFAULT_TIMEOUT,
+			"",
+		),
+	)
+	http.Handle("/room/", misc.MiddlewareWithTimeout(s.HandleRoom, DEFAULT_TIMEOUT))
 	http.Handle("/ws/", misc.Middleware(s.HandleSpineWebSocket))
 	s.adminServer.RegisterHandlers()
 	s.apiServer.RegisterHandlers()

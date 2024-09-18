@@ -3,6 +3,7 @@ package misc
 import (
 	"log"
 	"net/http"
+	"time"
 )
 
 // HumanReadableError represents error information
@@ -68,4 +69,12 @@ func ErrorHandling(handler HandlerWithErr) http.Handler {
 
 func Middleware(h HandlerWithErr) http.Handler {
 	return ErrorHandling(AnnotateError(h))
+}
+
+func MiddlewareWithTimeout(h HandlerWithErr, timeout time.Duration) http.Handler {
+	return http.TimeoutHandler(
+		ErrorHandling(AnnotateError(h)),
+		timeout,
+		"",
+	)
 }

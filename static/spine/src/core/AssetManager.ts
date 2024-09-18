@@ -118,11 +118,13 @@ module spine {
 						success(new Uint8Array(request.response as ArrayBuffer));
 					}
 				} else {
-					error(request.status, request.responseText);
+					// error(request.status, request.responseText);
+					error(request.status, request.response);
 				}
 			}
 			request.onerror = () => {
-				error(request.status, request.responseText);
+				error(request.status, request.response);
+				// error(request.status, request.responseText);
 			}
 			request.send();
 		}

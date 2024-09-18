@@ -83,7 +83,7 @@ func (a *AdminServer) adminAuth(h misc.HandlerWithErr) misc.HandlerWithErr {
 }
 
 func (s *AdminServer) middleware(h misc.HandlerWithErr) http.Handler {
-	return misc.Middleware(s.adminAuth(h))
+	return misc.MiddlewareWithTimeout(s.adminAuth(h), 5*time.Second)
 }
 
 func (s *AdminServer) RegisterHandlers() {

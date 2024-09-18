@@ -403,11 +403,15 @@ module spine {
 					this.assetManager.setRawDataURI(path, data);
 				}
 			}
-			if (config.jsonUrl) this.assetManager.loadText(config.jsonUrl);
-			else this.assetManager.loadBinary(config.skelUrl);
+			if (config.jsonUrl) {
+				this.assetManager.loadText(config.jsonUrl);
+			} else {
+				this.assetManager.loadBinary(config.skelUrl);
+			}
 			this.assetManager.loadTextureAtlas(config.atlasUrl);
-			if (config.backgroundImage && config.backgroundImage.url)
+			if (config.backgroundImage && config.backgroundImage.url) {
 				this.assetManager.loadTexture(config.backgroundImage.url);
+			}
 
 			// Setup rendering loop
 			// this.lastRequestAnimationFrameId = requestAnimationFrame(() => this.drawFrame());

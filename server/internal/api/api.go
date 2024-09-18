@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"time"
 
 	"github.com/Stymphalian/ak_chibi_bot/server/internal/misc"
 	"github.com/Stymphalian/ak_chibi_bot/server/internal/room"
@@ -49,7 +50,7 @@ func (a *ApiServer) LoginAuth(h misc.HandlerWithErr) misc.HandlerWithErr {
 }
 
 func (s *ApiServer) middleware(h misc.HandlerWithErr) http.Handler {
-	return misc.Middleware(s.LoginAuth(h))
+	return misc.MiddlewareWithTimeout(s.LoginAuth(h), 5*time.Second)
 }
 
 func (s *ApiServer) RegisterHandlers() {
