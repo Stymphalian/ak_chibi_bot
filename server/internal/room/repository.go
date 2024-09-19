@@ -1,6 +1,7 @@
 package room
 
 import (
+	"context"
 	"time"
 
 	"github.com/Stymphalian/ak_chibi_bot/server/internal/akdb"
@@ -31,39 +32,32 @@ func (r *RoomDb) SetSpineRuntimeConfig(config *misc.SpineRuntimeConfig) {
 	r.SpineRuntimeConfig = *config
 }
 
-func GetOrInsertRoom(roomConfig *RoomConfig) (*RoomDb, bool, error) {
-	db := akdb.DefaultDB
+func GetOrInsertRoom(ctx context.Context, roomConfig *RoomConfig) (*RoomDb, bool, error) {
+	db := akdb.DefaultDB.WithContext(ctx)
 
 	var roomDb RoomDb
-	tx := db.Where("channel_name = ?", roomConfig.ChannelName).First(&roomDb)
-	if tx.Error != nil {
-		if tx.Error == gorm.ErrRecordNotFound {
-
-			roomDb.ChannelName = roomConfig.ChannelName
-			roomDb.IsActive = true
-
-			// TODO: default oeprator config should get updated for each new server reloading
-			// so that the new operators with each banner release can be the default op.
-			roomDb.DefaultOperatorName = roomConfig.DefaultOperatorName
-			roomDb.DefaultOperatorConfig = roomConfig.DefaultOperatorConfig
-			roomDb.SpineRuntimeConfig = *roomConfig.SpineRuntimeConfig
-			roomDb.GarbageCollectionPeriodMins = roomConfig.GarbageCollectionPeriodMins
-
-			tx := db.Create(&roomDb)
-			if tx.Error != nil {
-				return nil, false, tx.Error
-			}
-			return &roomDb, true, nil
-		} else {
-			return nil, false, tx.Error
-		}
-	} else {
+	result := db.Where("channel_name = ?", roomConfig.ChannelName).Attrs(
+		RoomDb{
+			ChannelName:                 roomConfig.ChannelName,
+			IsActive:                    true,
+			DefaultOperatorName:         roomConfig.DefaultOperatorName,
+			DefaultOperatorConfig:       roomConfig.DefaultOperatorConfig,
+			SpineRuntimeConfig:          *roomConfig.SpineRuntimeConfig,
+			GarbageCollectionPeriodMins: roomConfig.GarbageCollectionPeriodMins,
+		},
+	).FirstOrCreate(&roomDb)
+	if result.Error != nil {
+		return nil, false, result.Error
+	}
+	if result.RowsAffected == 0 {
 		return &roomDb, false, nil
+	} else {
+		return &roomDb, true, nil
 	}
 }
 
-func UpdateRoom(roomDb *RoomDb) error {
-	db := akdb.DefaultDB
+func UpdateRoom(ctx context.Context, roomDb *RoomDb) error {
+	db := akdb.DefaultDB.WithContext(ctx)
 	tx := db.Save(roomDb)
 	if tx.Error != nil {
 		return tx.Error
@@ -71,8 +65,8 @@ func UpdateRoom(roomDb *RoomDb) error {
 	return nil
 }
 
-func GetActiveRooms() ([]*RoomDb, error) {
-	db := akdb.DefaultDB
+func GetActiveRooms(ctx context.Context) ([]*RoomDb, error) {
+	db := akdb.DefaultDB.WithContext(ctx)
 	var roomDbs []*RoomDb
 	tx := db.Where("is_active = true").Find(&roomDbs)
 	if tx.Error != nil {

@@ -82,17 +82,6 @@ type BotConfig struct {
 	AdminSecret string `json:"admin_secret"`
 
 	// Optional
-	// Google Cloud Project Id used for creating/restore restore points during
-	// the production reloading of the server
-	GoogleCloudProjectId string `json:"google_cloud_project_id"`
-
-	// Optional
-	// Path to the Google Cloud Credential json file. Should be an absolute path
-	// If not provided then Save/Restore won't work. Which is fine unless this
-	// this is the production server.
-	GoogleCloudProjectCredentialsFilePath string `json:"google_cloud_project_credentials_file_path"`
-
-	// Optional
 	// Default settings for the spine runtime. Min/max/default values
 	SpineRuntimeConfig *SpineRuntimeConfig `json:"spine_runtime_config"`
 }

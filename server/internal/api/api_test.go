@@ -19,7 +19,7 @@ func Setup_TestApiServer() *ApiServer {
 func TestApiServer_HandleRoomUpdate_HappyPath(t *testing.T) {
 	assert := assert.New(t)
 	sut := Setup_TestApiServer()
-	err := sut.roomsManager.CreateRoomOrNoOp("test", context.TODO())
+	err := sut.roomsManager.CreateRoomOrNoOp(context.TODO(), "test")
 	if err != nil {
 		assert.Fail(err.Error())
 	}
@@ -51,7 +51,7 @@ func TestApiServer_HandleRoomUpdate_HappyPath(t *testing.T) {
 func TestApiServer_HandleRoomUpdate_InvalidConfiguration(t *testing.T) {
 	assert := assert.New(t)
 	sut := Setup_TestApiServer()
-	err := sut.roomsManager.CreateRoomOrNoOp("test", context.TODO())
+	err := sut.roomsManager.CreateRoomOrNoOp(context.TODO(), "test")
 	if err != nil {
 		assert.Fail(err.Error())
 	}

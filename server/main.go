@@ -82,7 +82,7 @@ func NewMainStruct() *MainStruct {
 
 func (s *MainStruct) run() {
 	go s.roomManager.RunLoop()
-	s.roomManager.LoadExistingRooms()
+	s.roomManager.LoadExistingRooms(context.Background())
 
 	log.Println("Starting server")
 	server := &http.Server{
@@ -153,7 +153,7 @@ func (s *MainStruct) HandleRoom(w http.ResponseWriter, r *http.Request) error {
 	channelName := r.URL.Query().Get("channelName")
 	channelName = strings.ToLower(channelName)
 
-	err := s.roomManager.CreateRoomOrNoOp(channelName, context.Background())
+	err := s.roomManager.CreateRoomOrNoOp(context.Background(), channelName)
 	if err != nil {
 		return err
 	}

@@ -1,6 +1,7 @@
 package chibi
 
 import (
+	"context"
 	"testing"
 	"time"
 
@@ -28,14 +29,16 @@ func setupActorTest() *ChibiActor {
 func TestGiveChibiToUserToExclude(t *testing.T) {
 	assert := assert.New(t)
 	sut := setupActorTest()
-	err := sut.GiveChibiToUser("exlude_user", "userDisplay")
+	ctx := context.TODO()
+	err := sut.GiveChibiToUser(ctx, "exlude_user", "userDisplay")
 	assert.Nil(err)
 }
 
 func TestGiveChibiToUserNormalFlow(t *testing.T) {
 	assert := assert.New(t)
 	sut := setupActorTest()
-	err := sut.GiveChibiToUser("user", "userDisplay")
+	ctx := context.TODO()
+	err := sut.GiveChibiToUser(ctx, "user", "userDisplay")
 
 	assert.Nil(err)
 	assert.Equal(len(sut.ChatUsers), 1)
@@ -44,11 +47,12 @@ func TestGiveChibiToUserNormalFlow(t *testing.T) {
 func TestRemoveUserNormal(t *testing.T) {
 	assert := assert.New(t)
 	sut := setupActorTest()
-	sut.GiveChibiToUser("user1", "userDisplay1")
-	sut.GiveChibiToUser("user2", "userDisplay2")
+	ctx := context.TODO()
+	sut.GiveChibiToUser(ctx, "user1", "userDisplay1")
+	sut.GiveChibiToUser(ctx, "user2", "userDisplay2")
 	assert.Equal(len(sut.ChatUsers), 2)
 
-	err := sut.RemoveUserChibi("user1")
+	err := sut.RemoveUserChibi(ctx, "user1")
 
 	assert.Nil(err)
 	assert.Equal(len(sut.ChatUsers), 1)
@@ -58,20 +62,22 @@ func TestRemoveUserNormal(t *testing.T) {
 func TestHasChibi(t *testing.T) {
 	assert := assert.New(t)
 	sut := setupActorTest()
-	sut.GiveChibiToUser("user1", "userDisplay1")
-	sut.GiveChibiToUser("user2", "userDisplay2")
+	ctx := context.TODO()
+	sut.GiveChibiToUser(ctx, "user1", "userDisplay1")
+	sut.GiveChibiToUser(ctx, "user2", "userDisplay2")
 	assert.Equal(len(sut.ChatUsers), 2)
 
-	assert.True(sut.HasChibi("user1"))
-	assert.True(sut.HasChibi("user2"))
-	assert.False(sut.HasChibi("user3"))
+	assert.True(sut.HasChibi(ctx, "user1"))
+	assert.True(sut.HasChibi(ctx, "user2"))
+	assert.False(sut.HasChibi(ctx, "user3"))
 }
 
 func TestSetToDefault(t *testing.T) {
 	assert := assert.New(t)
 	sut := setupActorTest()
+	ctx := context.TODO()
 
-	sut.SetToDefault("user1", "Amiya", misc.InitialOperatorDetails{
+	sut.SetToDefault(ctx, "user1", "Amiya", misc.InitialOperatorDetails{
 		Skin:       spine.DEFAULT_SKIN_NAME,
 		Stance:     string(spine.CHIBI_STANCE_ENUM_BASE),
 		Animations: []string{spine.DEFAULT_ANIM_BASE},
@@ -98,6 +104,7 @@ func TestChibiActorHandleMessage(t *testing.T) {
 func TestChibiActorUpdateChibi(t *testing.T) {
 	assert := assert.New(t)
 	sut := setupActorTest()
+	ctx := context.TODO()
 
 	opInfo := spine.NewOperatorInfo(
 		"Amiya",
@@ -113,7 +120,7 @@ func TestChibiActorUpdateChibi(t *testing.T) {
 		spine.ACTION_PLAY_ANIMATION,
 		spine.NewActionPlayAnimation([]string{"default"}),
 	)
-	sut.UpdateChibi("user1", "userDisplay", &opInfo)
+	sut.UpdateChibi(ctx, "user1", "userDisplay", &opInfo)
 	assert.Contains(sut.ChatUsers, "user1")
 	assert.Contains(sut.ChatUsers["user1"].GetOperatorInfo().Skin, "default")
 	assert.Equal(sut.ChatUsers["user1"].GetOperatorInfo().AvailableAnimations, []string{"Move", "base_front1", "base_front2"})
@@ -122,15 +129,17 @@ func TestChibiActorUpdateChibi(t *testing.T) {
 func TestActorCurrentInfoEmpty(t *testing.T) {
 	assert := assert.New(t)
 	sut := setupActorTest()
-	_, err := sut.CurrentInfo("user1")
+	ctx := context.TODO()
+	_, err := sut.CurrentInfo(ctx, "user1")
 	assert.Error(err)
 }
 
 func TestActorCurrentInfoExists(t *testing.T) {
 	assert := assert.New(t)
 	sut := setupActorTest()
-	sut.GiveChibiToUser("user1", "userDisplay1")
-	opInfo, err := sut.CurrentInfo("user1")
+	ctx := context.TODO()
+	sut.GiveChibiToUser(ctx, "user1", "userDisplay1")
+	opInfo, err := sut.CurrentInfo(ctx, "user1")
 	assert.Nil(err)
 	assert.Equal(opInfo.OperatorId, "char_002_amiya")
 }
@@ -138,8 +147,9 @@ func TestActorCurrentInfoExists(t *testing.T) {
 func TestUpdateChatter(t *testing.T) {
 	assert := assert.New(t)
 	sut := setupActorTest()
+	ctx := context.TODO()
 	opInfo := spine.EmptyOperatorInfo()
-	err := sut.UpdateChatter("user1", "userDisplay1", opInfo)
+	err := sut.UpdateChatter(ctx, "user1", "userDisplay1", opInfo)
 	if err != nil {
 		t.Error(err)
 	}

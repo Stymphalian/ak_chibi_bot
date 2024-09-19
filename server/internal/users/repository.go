@@ -1,7 +1,7 @@
 package users
 
 import (
-	"errors"
+	"context"
 	"time"
 
 	"github.com/Stymphalian/ak_chibi_bot/server/internal/akdb"
@@ -23,8 +23,8 @@ func (UserDb) TableName() string {
 	return "users"
 }
 
-func GetUserById(userId uint) (*UserDb, error) {
-	db := akdb.DefaultDB
+func GetUserById(ctx context.Context, userId uint) (*UserDb, error) {
+	db := akdb.DefaultDB.WithContext(ctx)
 
 	var userDb UserDb
 	result := db.First(&userDb, userId)
@@ -34,31 +34,29 @@ func GetUserById(userId uint) (*UserDb, error) {
 	return &userDb, nil
 }
 
-func GetOrInsertUser(username string, userDisplayName string) (*UserDb, error) {
-	db := akdb.DefaultDB
+func GetOrInsertUser(ctx context.Context, username string, userDisplayName string) (*UserDb, error) {
+	db := akdb.DefaultDB.WithContext(ctx)
 
 	var userDb UserDb
-	result := db.Where("username = ?", username).First(&userDb)
+	result := db.
+		Where("username = ?", username).
+		Attrs(
+			UserDb{
+				Username:        username,
+				UserDisplayName: userDisplayName,
+			},
+		).
+		FirstOrCreate(&userDb)
+
 	if result.Error != nil {
-		if errors.Is(result.Error, gorm.ErrRecordNotFound) {
-			// Row doesn't exist yet, so create the user
-			userDb.Username = username
-			userDb.UserDisplayName = username
-			result = db.Create(&userDb)
-			if result.Error != nil {
-				return nil, result.Error
-			}
-			return &userDb, nil
-		} else {
-			return nil, result.Error
-		}
+		return nil, result.Error
 	} else {
 		return &userDb, nil
 	}
 }
 
-func UpdateUser(user *UserDb) error {
-	db := akdb.DefaultDB
+func UpdateUser(ctx context.Context, user *UserDb) error {
+	db := akdb.DefaultDB.WithContext(ctx)
 	return db.Save(user).Error
 }
 
@@ -73,53 +71,59 @@ type ChatterDb struct {
 	CreatedAt time.Time      `gorm:"column:created_at"`
 	UpdatedAt time.Time      `gorm:"column:updated_at"`
 	DeletedAt gorm.DeletedAt `gorm:"index"`
-
-	// User         *UserDb            `gorm:"foreignKey:UserId;references:UserId"`
 }
 
 func (ChatterDb) TableName() string {
 	return "chatters"
 }
 
-func GetOrInsertChatter(roomId uint, user *UserDb, lastChatTime time.Time, operatorInfo *spine.OperatorInfo) (*ChatterDb, error) {
-	// func GetOrInsertChatter(roomId uint, user *UserDb) (*ChatterDb, error) {
-	db := akdb.DefaultDB
+func GetOrInsertChatter(ctx context.Context, roomId uint, user *UserDb, lastChatTime time.Time, operatorInfo *spine.OperatorInfo) (*ChatterDb, error) {
+	db := akdb.DefaultDB.WithContext(ctx)
 
 	var chatterDb ChatterDb
-	result := db.Where("room_id = ? AND user_id = ?", roomId, user.UserId).First(&chatterDb)
-	if result.Error != nil {
-		if errors.Is(result.Error, gorm.ErrRecordNotFound) {
-			// Row doesn't exist yet, so create the user
-			chatterDb.RoomId = roomId
-			chatterDb.UserId = user.UserId
-			chatterDb.IsActive = true
-			chatterDb.OperatorInfo = *operatorInfo
-			chatterDb.LastChatTime = lastChatTime
+	result := db.
+		Where("room_id = ? AND user_id = ?", roomId, user.UserId).
+		Attrs(
+			ChatterDb{
+				RoomId:       roomId,
+				UserId:       user.UserId,
+				IsActive:     true,
+				OperatorInfo: *operatorInfo,
+				LastChatTime: lastChatTime,
+			},
+		).
+		FirstOrCreate(&chatterDb)
 
-			result = db.Create(&chatterDb)
-			if result.Error != nil {
-				return nil, result.Error
-			}
-			return &chatterDb, nil
-		} else {
-			return nil, result.Error
-		}
+	if result.Error != nil {
+		return nil, result.Error
 	} else {
 		return &chatterDb, nil
 	}
 }
 
-func UpdateChatter(c *ChatterDb) error {
-	db := akdb.DefaultDB
+func UpdateChatter(ctx context.Context, c *ChatterDb) error {
+	db := akdb.DefaultDB.WithContext(ctx)
 	return db.Save(c).Error
 }
 
-func GetActiveChatters(roomId uint) ([]*ChatterDb, error) {
-	db := akdb.DefaultDB
-	var chatterDbs []*ChatterDb
-	tx := db.Where("room_id = ? AND is_active = true", roomId).Find(&chatterDbs)
+type UserChatterDb struct {
+	ChatterDb
+	User UserDb
+}
+
+func (UserChatterDb) TableName() string {
+	return "chatters"
+}
+
+func GetActiveChatters(ctx context.Context, roomId uint) ([]*UserChatterDb, error) {
+	db := akdb.DefaultDB.WithContext(ctx)
+	var chatUsers []*UserChatterDb
+	tx := db.
+		Where("room_id = ? AND is_active = true", roomId).
+		Preload("User").
+		Find(&chatUsers)
 	if tx.Error != nil {
 		return nil, tx.Error
 	}
-	return chatterDbs, nil
+	return chatUsers, nil
 }

@@ -1,6 +1,7 @@
 package room
 
 import (
+	"context"
 	"fmt"
 	"log"
 	"net/http"
@@ -55,24 +56,26 @@ func NewRoom(
 }
 
 func GetOrNewRoom(
+	ctx context.Context,
 	roomConfig *RoomConfig,
 	spineService *spine.SpineService,
 	spineRuntime spine.SpineRuntime,
 	chibiActor *chibi.ChibiActor,
 	twitchBot chatbot.ChatBotter,
 ) (*Room, error) {
-	roomDb, isNew, err := GetOrInsertRoom(roomConfig)
+	roomDb, isNew, err := GetOrInsertRoom(ctx, roomConfig)
 	if err != nil {
 		return nil, err
 	}
 	roomWasInactive := !roomDb.IsActive
 	roomDb.IsActive = true
-	UpdateRoom(roomDb)
+	UpdateRoom(ctx, roomDb)
 
 	roomObj := NewRoom(roomDb, spineService, spineRuntime, chibiActor, twitchBot)
 	if isNew || roomWasInactive {
 		log.Println("Adding default chibi for ", roomObj.roomDb.ChannelName)
 		roomObj.chibiActor.SetToDefault(
+			ctx,
 			roomObj.roomDb.ChannelName,
 			roomObj.roomDb.DefaultOperatorName,
 			roomObj.roomDb.DefaultOperatorConfig,
@@ -104,7 +107,7 @@ func (r *Room) IsRoomActive() bool {
 
 func (r *Room) SetActive(isActive bool) {
 	r.roomDb.IsActive = isActive
-	UpdateRoom(r.roomDb)
+	UpdateRoom(context.Background(), r.roomDb)
 }
 
 func (r *Room) Close() error {
@@ -136,6 +139,7 @@ func (r *Room) Close() error {
 func (r *Room) garbageCollectOldChibis() {
 	log.Printf("Garbage collecting old chibis from room %s", r.GetChannelName())
 	interval := time.Duration(r.roomDb.GarbageCollectionPeriodMins) * time.Minute
+	ctx := context.Background()
 	for username, chatUser := range r.chibiActor.ChatUsers {
 		if username == r.GetChannelName() {
 			// Skip removing the broadcaster's chibi
@@ -143,7 +147,7 @@ func (r *Room) garbageCollectOldChibis() {
 		}
 		if !chatUser.IsActiveChatter(interval) {
 			log.Println("Removing chibi for", username)
-			r.chibiActor.RemoveUserChibi(username)
+			r.chibiActor.RemoveUserChibi(ctx, username)
 		}
 	}
 
@@ -184,6 +188,7 @@ func (r *Room) GetChatters() []users.ChatUser {
 }
 
 func (r *Room) AddOperatorToRoom(
+	ctx context.Context,
 	username string,
 	usernameDisplay string,
 	operatorId string,
@@ -197,15 +202,15 @@ func (r *Room) AddOperatorToRoom(
 	opInfo.OperatorId = operatorId
 	opInfo.Faction = faction
 
-	err = r.chibiActor.UpdateChibi(username, usernameDisplay, opInfo)
+	err = r.chibiActor.UpdateChibi(ctx, username, usernameDisplay, opInfo)
 	if err != nil {
 		return err
 	}
 	return nil
 }
 
-func (r *Room) GiveChibiToUser(username string, usernameDisplay string) error {
-	return r.chibiActor.GiveChibiToUser(username, usernameDisplay)
+func (r *Room) GiveChibiToUser(ctx context.Context, username string, usernameDisplay string) error {
+	return r.chibiActor.GiveChibiToUser(ctx, username, usernameDisplay)
 }
 
 func (s *Room) AddWebsocketConnection(w http.ResponseWriter, r *http.Request) error {
@@ -235,18 +240,19 @@ func (r *Room) ForEachChatter(callback func(chatUser *users.ChatUser)) {
 	}
 }
 
-func (r *Room) LoadExistingChatters() error {
-	chatters, err := users.GetActiveChatters(r.GetRoomId())
+func (r *Room) LoadExistingChatters(ctx context.Context) error {
+	chatters, err := users.GetActiveChatters(ctx, r.GetRoomId())
 	if err != nil {
 		return err
 	}
 	for _, chatter := range chatters {
-		user, err := users.GetUserById(chatter.UserId)
+		user, err := users.GetUserById(ctx, chatter.UserId)
 		if err != nil {
 			continue
 		}
 		log.Printf("Reloading chatter %s in room %s with operator %s", user.Username, r.GetChannelName(), chatter.OperatorInfo.OperatorDisplayName)
 		r.chibiActor.UpdateChibi(
+			ctx,
 			user.Username,
 			user.UserDisplayName,
 			&chatter.OperatorInfo,
@@ -256,15 +262,15 @@ func (r *Room) LoadExistingChatters() error {
 }
 
 // TODO: Leaky interface. Exposing all the ChibiActor methods through the Room
-func (r *Room) RemoveUserChibi(username string) error {
-	return r.chibiActor.RemoveUserChibi(username)
+func (r *Room) RemoveUserChibi(ctx context.Context, username string) error {
+	return r.chibiActor.RemoveUserChibi(ctx, username)
 }
 
 func (r *Room) GetSpineRuntimeConfig() misc.SpineRuntimeConfig {
 	return r.roomDb.SpineRuntimeConfig
 }
 
-func (r *Room) UpdateSpineRuntimeConfig(newConfig *misc.SpineRuntimeConfig) error {
+func (r *Room) UpdateSpineRuntimeConfig(ctx context.Context, newConfig *misc.SpineRuntimeConfig) error {
 	if err := misc.ValidateSpineRuntimeConfig(newConfig); err != nil {
 		return err
 	}
@@ -300,7 +306,7 @@ func (r *Room) UpdateSpineRuntimeConfig(newConfig *misc.SpineRuntimeConfig) erro
 		runtimeConfig.DefaultMovementSpeed = newConfig.DefaultMovementSpeed
 	}
 	r.roomDb.SetSpineRuntimeConfig(&runtimeConfig)
-	UpdateRoom(r.roomDb)
+	UpdateRoom(ctx, r.roomDb)
 	return nil
 }
 

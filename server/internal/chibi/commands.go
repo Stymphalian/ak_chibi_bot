@@ -1,6 +1,7 @@
 package chibi
 
 import (
+	"context"
 	"fmt"
 	"strings"
 
@@ -30,7 +31,8 @@ type ChatCommandInfo struct {
 }
 
 func (c *ChatCommandInfo) Reply(chibiActor ChibiActorInterface) string {
-	current, err := chibiActor.CurrentInfo(c.username)
+	ctx := context.Background()
+	current, err := chibiActor.CurrentInfo(ctx, c.username)
 	if err != nil {
 		return ""
 	}
@@ -67,5 +69,6 @@ type ChatCommandUpdateActor struct {
 
 func (c *ChatCommandUpdateActor) Reply(a ChibiActorInterface) string { return c.replyMessage }
 func (c *ChatCommandUpdateActor) UpdateActor(a ChibiActorInterface) error {
-	return a.UpdateChibi(c.username, c.usernameDisplay, c.update)
+	ctx := context.Background()
+	return a.UpdateChibi(ctx, c.username, c.usernameDisplay, c.update)
 }

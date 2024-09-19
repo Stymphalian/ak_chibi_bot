@@ -1,6 +1,7 @@
 package users
 
 import (
+	"context"
 	"time"
 
 	"github.com/Stymphalian/ak_chibi_bot/server/internal/misc"
@@ -21,7 +22,7 @@ func NewChatUser(User *UserDb, Chatter *ChatterDb) (*ChatUser, error) {
 
 func (c *ChatUser) Close() error {
 	c.chatter.IsActive = false
-	return c.Save()
+	return c.Save(context.Background())
 }
 
 func (c *ChatUser) IsActiveChatter(period time.Duration) bool {
@@ -40,27 +41,27 @@ func (c *ChatUser) GetOperatorInfo() spine.OperatorInfo {
 }
 func (c *ChatUser) SetOperatorInfo(v *spine.OperatorInfo) {
 	c.chatter.OperatorInfo = *v
-	c.Save()
+	c.Save(context.Background())
 }
 func (c *ChatUser) GetLastChatTime() time.Time {
 	return c.chatter.LastChatTime
 }
 func (c *ChatUser) SetLastChatTime(v time.Time) {
 	c.chatter.LastChatTime = v
-	c.Save()
+	c.Save(context.Background())
 }
 
 func (c *ChatUser) SetActive(isActive bool) {
 	c.chatter.IsActive = isActive
-	c.Save()
+	c.Save(context.Background())
 }
 func (c *ChatUser) IsActive() bool {
 	return c.chatter.IsActive
 }
 
-func (c *ChatUser) Save() error {
-	if err := UpdateUser(c.user); err != nil {
+func (c *ChatUser) Save(ctx context.Context) error {
+	if err := UpdateUser(ctx, c.user); err != nil {
 		return err
 	}
-	return UpdateChatter(c.chatter)
+	return UpdateChatter(ctx, c.chatter)
 }

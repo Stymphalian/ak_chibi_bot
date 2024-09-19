@@ -1,6 +1,7 @@
 package api
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -116,7 +117,7 @@ func (s *ApiServer) HandleRoomUpdate(w http.ResponseWriter, r *http.Request) err
 			err,
 		)
 	}
-	err := room.UpdateSpineRuntimeConfig(&config)
+	err := room.UpdateSpineRuntimeConfig(context.Background(), &config)
 	if err != nil {
 		return err
 	}
@@ -152,7 +153,7 @@ func (s *ApiServer) HandleRoomAddOperator(w http.ResponseWriter, r *http.Request
 	}
 	room := s.roomsManager.Rooms[channelName]
 
-	room.GiveChibiToUser(reqBody.Username, reqBody.UserDisplayName)
+	room.GiveChibiToUser(context.Background(), reqBody.Username, reqBody.UserDisplayName)
 	// faction, err := spine.FactionEnum_Parse(reqBody.Faction)
 	// if err != nil {
 	// 	return err

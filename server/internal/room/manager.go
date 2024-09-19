@@ -48,9 +48,9 @@ func NewRoomsManager(assets *spine.AssetService, botConfig *misc.BotConfig) *Roo
 	}
 }
 
-func (r *RoomsManager) LoadExistingRooms() error {
+func (r *RoomsManager) LoadExistingRooms(ctx context.Context) error {
 	log.Println("Reloading Existing rooms")
-	roomDbs, err := GetActiveRooms()
+	roomDbs, err := GetActiveRooms(ctx)
 	if err != nil {
 		return err
 	}
@@ -59,7 +59,7 @@ func (r *RoomsManager) LoadExistingRooms() error {
 		log.Println("Reloading room", roomDb.ChannelName)
 		r.InsertRoom(roomDb)
 		room := r.Rooms[roomDb.ChannelName]
-		room.LoadExistingChatters()
+		room.LoadExistingChatters(ctx)
 	}
 	return nil
 }
@@ -155,7 +155,7 @@ func (r *RoomsManager) InsertRoom(roomDb *RoomDb) error {
 	return nil
 }
 
-func (r *RoomsManager) CreateRoomOrNoOp(channel string, ctx context.Context) error {
+func (r *RoomsManager) CreateRoomOrNoOp(ctx context.Context, channel string) error {
 	// Check to see if channel is valid
 	if valid, err := r.checkChannelValid(channel); err != nil || !valid {
 		return err
@@ -176,6 +176,7 @@ func (r *RoomsManager) CreateRoomOrNoOp(channel string, ctx context.Context) err
 		SpineRuntimeConfig:          r.botConfig.SpineRuntimeConfig,
 	}
 	room, err := GetOrNewRoom(
+		ctx,
 		roomConfig,
 		r.spineService,
 		spineBridge,

@@ -1,6 +1,8 @@
 package chibi
 
 import (
+	"context"
+
 	"github.com/Stymphalian/ak_chibi_bot/server/internal/chat"
 	"github.com/Stymphalian/ak_chibi_bot/server/internal/misc"
 	"github.com/Stymphalian/ak_chibi_bot/server/internal/spine"
@@ -8,13 +10,13 @@ import (
 
 type ChibiActorInterface interface {
 	chat.ChatMessageHandler
-	GiveChibiToUser(userName string, userNameDisplay string) error
-	RemoveUserChibi(userName string) error
-	HasChibi(userName string) bool
+	GiveChibiToUser(ctx context.Context, userName string, userNameDisplay string) error
+	RemoveUserChibi(ctx context.Context, userName string) error
+	HasChibi(ctx context.Context, userName string) bool
 
 	// TODO: Leaky interface
-	UpdateChibi(username string, userDisplayName string, opInfo *spine.OperatorInfo) error
-	CurrentInfo(userName string) (spine.OperatorInfo, error)
-	SetToDefault(broadcasterName string, opName string, details misc.InitialOperatorDetails)
-	UpdateChatter(userName string, usernameDisplay string, update *spine.OperatorInfo) error
+	UpdateChibi(ctx context.Context, username string, userDisplayName string, opInfo *spine.OperatorInfo) error
+	CurrentInfo(ctx context.Context, userName string) (spine.OperatorInfo, error)
+	SetToDefault(ctx context.Context, broadcasterName string, opName string, details misc.InitialOperatorDetails)
+	UpdateChatter(ctx context.Context, userName string, usernameDisplay string, update *spine.OperatorInfo) error
 }

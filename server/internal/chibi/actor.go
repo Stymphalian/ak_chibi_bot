@@ -1,6 +1,7 @@
 package chibi
 
 import (
+	"context"
 	"fmt"
 	"log"
 	"slices"
@@ -54,7 +55,7 @@ func (c *ChibiActor) SetRoomId(roomId uint) {
 	c.roomId = &roomId
 }
 
-func (c *ChibiActor) GiveChibiToUser(userName string, userNameDisplay string) error {
+func (c *ChibiActor) GiveChibiToUser(ctx context.Context, userName string, userNameDisplay string) error {
 	// Skip giving chibis to these Users
 	if slices.Contains(c.excludeNames, userName) {
 		return nil
@@ -75,7 +76,7 @@ func (c *ChibiActor) GiveChibiToUser(userName string, userNameDisplay string) er
 		log.Printf("Failed to set chibi (%s)", err.Error())
 		return nil
 	}
-	c.UpdateChatter(userName, userNameDisplay, operatorInfo)
+	c.UpdateChatter(ctx, userName, userNameDisplay, operatorInfo)
 
 	// _, err := c.chatCommandProcessor.addRandomChibi(userName, userNameDisplay)
 	if err == nil {
@@ -85,7 +86,7 @@ func (c *ChibiActor) GiveChibiToUser(userName string, userNameDisplay string) er
 	return err
 }
 
-func (c *ChibiActor) RemoveUserChibi(userName string) error {
+func (c *ChibiActor) RemoveUserChibi(ctx context.Context, userName string) error {
 	if slices.Contains(c.excludeNames, userName) {
 		return nil
 	}
@@ -96,14 +97,14 @@ func (c *ChibiActor) RemoveUserChibi(userName string) error {
 		log.Printf("Error removing chibi for %s: %s\n", userName, err)
 	}
 	c.ChatUsers[userName].SetActive(false)
-	c.ChatUsers[userName].Save()
+	c.ChatUsers[userName].Save(ctx)
 
 	delete(c.ChatUsers, userName)
 	return nil
 }
 
-func (c *ChibiActor) HasChibi(userName string) bool {
-	_, err := c.CurrentInfo(userName)
+func (c *ChibiActor) HasChibi(ctx context.Context, userName string) bool {
+	_, err := c.CurrentInfo(ctx, userName)
 	if err != nil {
 		_, ok := err.(*spine.UserNotFound)
 		return !ok
@@ -114,24 +115,26 @@ func (c *ChibiActor) HasChibi(userName string) bool {
 // TODO: Move this to command processor?
 // TODO: Leaking operatorDetails
 func (c *ChibiActor) SetToDefault(
+	ctx context.Context,
 	broadcasterName string,
 	opName string,
 	details misc.InitialOperatorDetails,
 ) {
 	opInfo := c.spineService.OperatorFromDefault(opName, details)
-	c.UpdateChatter(broadcasterName, broadcasterName, opInfo)
+	c.UpdateChatter(ctx, broadcasterName, broadcasterName, opInfo)
 }
 
 func (c *ChibiActor) HandleMessage(msg chat.ChatMessage) (string, error) {
-	if !c.HasChibi(msg.Username) {
-		c.GiveChibiToUser(msg.Username, msg.UserDisplayName)
+	ctx := context.Background()
+	if !c.HasChibi(ctx, msg.Username) {
+		c.GiveChibiToUser(ctx, msg.Username, msg.UserDisplayName)
 	}
 	if msg.Message[0] != '!' {
 		return "", nil
 	}
 	c.ChatUsers[msg.Username].SetLastChatTime(misc.Clock.Now())
 
-	current, err := c.CurrentInfo(msg.Username)
+	current, err := c.CurrentInfo(ctx, msg.Username)
 	if err != nil {
 		switch err.(type) {
 		case *spine.UserNotFound:
@@ -146,7 +149,7 @@ func (c *ChibiActor) HandleMessage(msg chat.ChatMessage) (string, error) {
 }
 
 // TODO: Leaky interface
-func (c *ChibiActor) UpdateChibi(username string, userDisplayName string, opInfo *spine.OperatorInfo) error {
+func (c *ChibiActor) UpdateChibi(ctx context.Context, username string, userDisplayName string, opInfo *spine.OperatorInfo) error {
 	c.spineService.ValidateUpdateSetDefaultOtherwise(opInfo)
 
 	_, err := c.client.SetOperator(
@@ -160,11 +163,11 @@ func (c *ChibiActor) UpdateChibi(username string, userDisplayName string, opInfo
 		return nil
 	}
 
-	c.UpdateChatter(username, userDisplayName, opInfo)
+	c.UpdateChatter(ctx, username, userDisplayName, opInfo)
 	return nil
 }
 
-func (c *ChibiActor) CurrentInfo(userName string) (spine.OperatorInfo, error) {
+func (c *ChibiActor) CurrentInfo(ctx context.Context, userName string) (spine.OperatorInfo, error) {
 	chatUser, ok := c.ChatUsers[userName]
 	if !ok {
 		return *spine.EmptyOperatorInfo(), spine.NewUserNotFound("User not found: " + userName)
@@ -174,28 +177,26 @@ func (c *ChibiActor) CurrentInfo(userName string) (spine.OperatorInfo, error) {
 }
 
 func (c *ChibiActor) UpdateChatter(
+	ctx context.Context,
 	username string,
 	usernameDisplay string,
 	update *spine.OperatorInfo,
 ) error {
 	_, ok := c.ChatUsers[username]
 	if !ok {
-		userDb, err := users.GetOrInsertUser(username, usernameDisplay)
+		userDb, err := users.GetOrInsertUser(ctx, username, usernameDisplay)
 		if err != nil {
 			return err
 		}
 		if c.roomId == nil {
 			return fmt.Errorf("roomId must be set in order to update a ChatUser")
 		}
-		chatterDb, err := users.GetOrInsertChatter(*c.roomId, userDb, misc.Clock.Now(), update)
+		chatterDb, err := users.GetOrInsertChatter(ctx, *c.roomId, userDb, misc.Clock.Now(), update)
 		if err != nil {
 			return err
 		}
 
-		chatUser, err := users.NewChatUser(
-			userDb,
-			chatterDb,
-		)
+		chatUser, err := users.NewChatUser(userDb, chatterDb)
 		if err != nil {
 			return err
 		}

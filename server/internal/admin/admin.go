@@ -1,6 +1,7 @@
 package admin
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -200,5 +201,5 @@ func (s *AdminServer) HandleRemoveUser(w http.ResponseWriter, r *http.Request) e
 	if len(userName) == 0 {
 		return nil
 	}
-	return room.RemoveUserChibi(userName)
+	return room.RemoveUserChibi(context.Background(), userName)
 }
