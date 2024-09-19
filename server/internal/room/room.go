@@ -27,8 +27,7 @@ type RoomConfig struct {
 // Model - chibiActor
 // View-Model/Controller - twitchChat
 type Room struct {
-	SpineService *spine.SpineService
-
+	SpineService              *spine.SpineService
 	roomDb                    *RoomDb
 	spineRuntime              spine.SpineRuntime
 	chibiActor                *chibi.ChibiActor
@@ -53,35 +52,6 @@ func NewRoom(
 	}
 	chibiActor.SetRoomId(r.roomDb.GetRoomId())
 	return r
-}
-
-func GetOrNewRoom(
-	ctx context.Context,
-	roomConfig *RoomConfig,
-	spineService *spine.SpineService,
-	spineRuntime spine.SpineRuntime,
-	chibiActor *chibi.ChibiActor,
-	twitchBot chatbot.ChatBotter,
-) (*Room, error) {
-	roomDb, isNew, err := GetOrInsertRoom(ctx, roomConfig)
-	if err != nil {
-		return nil, err
-	}
-	roomWasInactive := !roomDb.GetIsActive()
-	roomDb.SetIsActive(ctx, true)
-
-	roomObj := NewRoom(roomDb, spineService, spineRuntime, chibiActor, twitchBot)
-	if isNew || roomWasInactive {
-		log.Println("Adding default chibi for ", roomDb.GetChannelName())
-		roomObj.chibiActor.SetToDefault(
-			ctx,
-			roomDb.GetChannelName(),
-			roomDb.GetDefaultOperatorName(),
-			*roomDb.GetDefaultOperatorConfig(),
-		)
-	}
-
-	return roomObj, nil
 }
 
 func (r *Room) GetChannelName() string {

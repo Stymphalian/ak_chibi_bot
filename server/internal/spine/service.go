@@ -10,49 +10,73 @@ import (
 )
 
 type SpineService struct {
-	Assets *AssetService
-	config *misc.SpineRuntimeConfig
+	Assets       *AssetService
+	config       *misc.SpineRuntimeConfig
+	config_fetch ConfigFetcherFn
 }
+
+type ConfigFetcherFn func() (*misc.SpineRuntimeConfig, error)
 
 func NewSpineService(assets *AssetService, config *misc.SpineRuntimeConfig) *SpineService {
 	return &SpineService{
-		Assets: assets,
-		config: config,
+		Assets:       assets,
+		config:       config,
+		config_fetch: nil,
 	}
 }
 
+// HACK: TODO: Remove this hack. This is a symptom of bad dependency management
+func (s *SpineService) WithConfigFetcher(config_fetch ConfigFetcherFn) *SpineService {
+	return &SpineService{
+		Assets:       s.Assets,
+		config:       s.config,
+		config_fetch: config_fetch,
+	}
+}
+
+func (s *SpineService) getConfig() *misc.SpineRuntimeConfig {
+	if s.config_fetch != nil {
+		config, err := s.config_fetch()
+		if err != nil {
+			return s.config
+		}
+		return config
+	}
+	return s.config
+}
+
 func (s *SpineService) GetDefaultAnimationSpeed() float64 {
-	return s.config.DefaultAnimationSpeed
+	return s.getConfig().DefaultAnimationSpeed
 }
 func (s *SpineService) GetMinAnimationSpeed() float64 {
-	return s.config.MinAnimationSpeed
+	return s.getConfig().MinAnimationSpeed
 }
 func (s *SpineService) GetMaxAnimationSpeed() float64 {
-	return s.config.MaxAnimationSpeed
+	return s.getConfig().MaxAnimationSpeed
 }
 func (s *SpineService) GetDefaultScaleSize() float64 {
-	return s.config.DefaultScaleSize
+	return s.getConfig().DefaultScaleSize
 }
 func (s *SpineService) GetMinScaleSize() float64 {
-	return s.config.MinScaleSize
+	return s.getConfig().MinScaleSize
 }
 func (s *SpineService) GetMaxScaleSize() float64 {
-	return s.config.MaxScaleSize
+	return s.getConfig().MaxScaleSize
 }
 func (s *SpineService) GetReferenceMovementSpeedPx() int {
-	return s.config.ReferenceMovementSpeedPx
+	return s.getConfig().ReferenceMovementSpeedPx
 }
 func (s *SpineService) GetDefaultMovementSpeed() float64 {
-	return s.config.DefaultMovementSpeed
+	return s.getConfig().DefaultMovementSpeed
 }
 func (s *SpineService) GetMinMovementSpeed() float64 {
-	return s.config.MinMovementSpeed
+	return s.getConfig().MinMovementSpeed
 }
 func (s *SpineService) GetMaxMovementSpeed() float64 {
-	return s.config.MaxMovementSpeed
+	return s.getConfig().MaxMovementSpeed
 }
 func (s *SpineService) GetMaxSpritePixelSize() int {
-	return s.config.MaxSpritePixelSize
+	return s.getConfig().MaxSpritePixelSize
 }
 
 func (s *SpineService) ValidateOperatorRequest(info *OperatorInfo) error {
