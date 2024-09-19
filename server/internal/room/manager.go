@@ -49,13 +49,17 @@ func NewRoomsManager(assets *spine.AssetService, botConfig *misc.BotConfig) *Roo
 }
 
 func (r *RoomsManager) LoadExistingRooms() error {
+	log.Println("Reloading Existing rooms")
 	roomDbs, err := GetActiveRooms()
 	if err != nil {
 		return err
 	}
 
 	for _, roomDb := range roomDbs {
+		log.Println("Reloading room", roomDb.ChannelName)
 		r.InsertRoom(roomDb)
+		room := r.Rooms[roomDb.ChannelName]
+		room.LoadExistingChatters()
 	}
 	return nil
 }
@@ -65,10 +69,9 @@ func (r *RoomsManager) garbageCollectRooms() {
 	period := time.Duration(r.botConfig.RemoveUnusedRoomsAfterMinutes) * time.Minute
 	r.rooms_mutex.Lock()
 	for channel, room := range r.Rooms {
-		if !room.IsActive(period) {
+		if !room.HasActiveChatters(period) {
 			log.Println("Removing unused room", channel)
 			room.SetActive(false)
-
 			room.Close()
 			delete(r.Rooms, channel)
 		}
@@ -111,7 +114,7 @@ func (r *RoomsManager) checkChannelValid(channel string) (bool, error) {
 	return true, nil
 }
 
-func (r *RoomsManager) GetRoomServices(channelName string) (*spine.SpineBridge, *chibi.ChibiActor, *chatbot.TwitchBot, error) {
+func (r *RoomsManager) getRoomServices(channelName string) (*spine.SpineBridge, *chibi.ChibiActor, *chatbot.TwitchBot, error) {
 	spineBridge, err := spine.NewSpineBridge(r.spineService)
 	if err != nil {
 		return nil, nil, nil, err
@@ -130,7 +133,7 @@ func (r *RoomsManager) GetRoomServices(channelName string) (*spine.SpineBridge, 
 }
 
 func (r *RoomsManager) InsertRoom(roomDb *RoomDb) error {
-	spineBridge, chibiActor, twitchBot, err := r.GetRoomServices(roomDb.ChannelName)
+	spineBridge, chibiActor, twitchBot, err := r.getRoomServices(roomDb.ChannelName)
 	if err != nil {
 		return err
 	}
@@ -142,9 +145,6 @@ func (r *RoomsManager) InsertRoom(roomDb *RoomDb) error {
 		chibiActor,
 		twitchBot,
 	)
-	if err != nil {
-		return err
-	}
 
 	r.rooms_mutex.Lock()
 	r.Rooms[roomDb.ChannelName] = room
@@ -163,7 +163,7 @@ func (r *RoomsManager) CreateRoomOrNoOp(channel string, ctx context.Context) err
 	if _, ok := r.Rooms[channel]; ok {
 		return nil
 	}
-	spineBridge, chibiActor, twitchBot, err := r.GetRoomServices(channel)
+	spineBridge, chibiActor, twitchBot, err := r.getRoomServices(channel)
 	if err != nil {
 		return err
 	}
@@ -203,63 +203,8 @@ func (m *RoomsManager) HandleSpineWebSocket(channelName string, w http.ResponseW
 	return room.AddWebsocketConnection(w, r)
 }
 
-func (r *RoomsManager) Restore() error {
-	ctx := context.Background()
-	client, err := CreateFirestoreClient(
-		ctx,
-		r.botConfig.GoogleCloudProjectId,
-		r.botConfig.GoogleCloudProjectCredentialsFilePath)
-	if err != nil {
-		return err
-	}
-	defer client.Close()
-
-	ref := client.Collection("backup").Doc("rooms")
-	dsnap, err := ref.Get(ctx)
-	if err != nil {
-		return err
-	}
-	if !dsnap.Exists() {
-		return nil
-	}
-
-	var saveData SaveData
-	dsnap.DataTo(&saveData)
-	// fmt.Printf("Saved Data %#v\n", saveData)
-	RestoreSaveData(r, &saveData)
-
-	// Remove the restore point from firestore
-	_, err = ref.Delete(ctx)
-	if err != nil {
-		return err
-	}
-
-	return nil
-}
-
-func (r *RoomsManager) Save() error {
-	ctx := context.Background()
-
-	client, err := CreateFirestoreClient(
-		ctx,
-		r.botConfig.GoogleCloudProjectId,
-		r.botConfig.GoogleCloudProjectCredentialsFilePath)
-	if err != nil {
-		return err
-	}
-	defer client.Close()
-	saveData := CreateSaveData(r)
-
-	_, err = client.Collection("backup").Doc("rooms").Set(ctx, saveData)
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
 func (r *RoomsManager) Shutdown() {
 	log.Println("RoomsManager calling Shutdown")
-	r.Save()
 
 	go func() {
 		// misc.GoRunCounter.Add(1)
@@ -269,6 +214,7 @@ func (r *RoomsManager) Shutdown() {
 		r.rooms_mutex.Lock()
 		defer r.rooms_mutex.Unlock()
 		for _, room := range r.Rooms {
+			// close the room, but don't set it as inactive
 			err := room.Close()
 			if err != nil {
 				log.Println(err)
@@ -295,6 +241,7 @@ func (r *RoomsManager) RemoveRoom(channel string) error {
 	}
 	r.rooms_mutex.Lock()
 	defer r.rooms_mutex.Unlock()
+	r.Rooms[channel].SetActive(false)
 	r.Rooms[channel].Close()
 	delete(r.Rooms, channel)
 	return nil

@@ -6,7 +6,7 @@ tmp_dir = "tmp"
   args_bin = ["-image_assetdir=/ak_chibi_assets/assets", "-static_dir=static", "-address=:8080", "-bot_config=secrets/dev_config.json"]
   bin = "tmp/main"
   cmd = "go build -o ./tmp/main server/main.go"
-  delay = 1000
+  delay = 10000
   exclude_dir = ["assets", "tmp", "vendor", "testdata", "static/assets", "tools", "thirdparty", "static/spine", "static/rooms", "static/admin"]
   exclude_file = []
   exclude_regex = ["_test.go"]

@@ -1,7 +1,9 @@
 package misc
 
 import (
+	"database/sql/driver"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"os"
 	"strings"
@@ -100,6 +102,24 @@ type InitialOperatorDetails struct {
 	Stance     string   `json:"stance"`
 	Animations []string `json:"animations"`
 	PositionX  float64  `json:"position_x"`
+}
+
+func (oi *InitialOperatorDetails) Scan(value interface{}) error {
+	bytes, ok := value.([]byte)
+	if !ok {
+		return errors.New(fmt.Sprint("Failed to unmarshal InitialOperatorDetails value:", value))
+	}
+
+	err := json.Unmarshal(bytes, oi)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (oi InitialOperatorDetails) Value() (driver.Value, error) {
+	jsonData, err := json.Marshal(oi)
+	return string(jsonData), err
 }
 
 func LoadBotConfig(path string) (*BotConfig, error) {

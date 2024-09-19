@@ -10,6 +10,7 @@ import (
 	"github.com/Stymphalian/ak_chibi_bot/server/internal/chibi"
 	"github.com/Stymphalian/ak_chibi_bot/server/internal/misc"
 	"github.com/Stymphalian/ak_chibi_bot/server/internal/spine"
+	"github.com/Stymphalian/ak_chibi_bot/server/internal/users"
 )
 
 type RoomConfig struct {
@@ -49,11 +50,7 @@ func NewRoom(
 		twitchChat:   twitchBot,
 		createdAt:    misc.Clock.Now(),
 	}
-	r.chibiActor.SetToDefault(
-		r.roomDb.ChannelName,
-		r.roomDb.DefaultOperatorName,
-		r.roomDb.DefaultOperatorConfig(),
-	)
+	chibiActor.SetRoomId(r.roomDb.RoomId)
 	return r
 }
 
@@ -64,13 +61,25 @@ func GetOrNewRoom(
 	chibiActor *chibi.ChibiActor,
 	twitchBot chatbot.ChatBotter,
 ) (*Room, error) {
-	roomDb, err := GetOrInsertRoom(roomConfig)
+	roomDb, isNew, err := GetOrInsertRoom(roomConfig)
 	if err != nil {
 		return nil, err
 	}
+	roomWasInactive := !roomDb.IsActive
 	roomDb.IsActive = true
 	UpdateRoom(roomDb)
-	return NewRoom(roomDb, spineService, spineRuntime, chibiActor, twitchBot), nil
+
+	roomObj := NewRoom(roomDb, spineService, spineRuntime, chibiActor, twitchBot)
+	if isNew || roomWasInactive {
+		log.Println("Adding default chibi for ", roomObj.roomDb.ChannelName)
+		roomObj.chibiActor.SetToDefault(
+			roomObj.roomDb.ChannelName,
+			roomObj.roomDb.DefaultOperatorName,
+			roomObj.roomDb.DefaultOperatorConfig,
+		)
+	}
+
+	return roomObj, nil
 }
 
 func (r *Room) GetChannelName() string {
@@ -89,6 +98,10 @@ func (r *Room) GetNextGarbageCollectionTime() time.Time {
 	return r.nextGarbageCollectionTime
 }
 
+func (r *Room) IsRoomActive() bool {
+	return r.roomDb.IsActive
+}
+
 func (r *Room) SetActive(isActive bool) {
 	r.roomDb.IsActive = isActive
 	UpdateRoom(r.roomDb)
@@ -96,8 +109,14 @@ func (r *Room) SetActive(isActive bool) {
 
 func (r *Room) Close() error {
 	log.Println("Closing room ", r.GetChannelName())
-	// r.roomDb.IsActive = false
-	// UpdateRoom(r.roomDb)
+
+	if !r.IsRoomActive() {
+		// If the room is inactive, we can clear out all the chibis/chatters
+		err := r.chibiActor.Close()
+		if err != nil {
+			return err
+		}
+	}
 
 	// Disconnect the twitch chat
 	err := r.twitchChat.Close()
@@ -122,7 +141,7 @@ func (r *Room) garbageCollectOldChibis() {
 			// Skip removing the broadcaster's chibi
 			continue
 		}
-		if !chatUser.IsActive(interval) {
+		if !chatUser.IsActiveChatter(interval) {
 			log.Println("Removing chibi for", username)
 			r.chibiActor.RemoveUserChibi(username)
 		}
@@ -156,8 +175,8 @@ func (r *Room) Run() {
 	log.Printf("Room %s run is done\n", r.GetChannelName())
 }
 
-func (r *Room) GetChatters() []spine.ChatUser {
-	chatters := make([]spine.ChatUser, 0)
+func (r *Room) GetChatters() []users.ChatUser {
+	chatters := make([]users.ChatUser, 0)
 	for _, chatter := range r.chibiActor.ChatUsers {
 		chatters = append(chatters, *chatter)
 	}
@@ -191,14 +210,18 @@ func (r *Room) GiveChibiToUser(username string, usernameDisplay string) error {
 
 func (s *Room) AddWebsocketConnection(w http.ResponseWriter, r *http.Request) error {
 	// TODO: Maybe just pass in the map directly
-	chatters := make([]*spine.ChatUser, 0)
+	chatters := make([]*spine.ChatterInfo, 0)
 	for _, chatUser := range s.chibiActor.ChatUsers {
-		chatters = append(chatters, chatUser)
+		chatters = append(chatters, &spine.ChatterInfo{
+			Username:        chatUser.GetUsername(),
+			UsernameDisplay: chatUser.GetUsernameDisplay(),
+			OperatorInfo:    chatUser.GetOperatorInfo(),
+		})
 	}
 	return s.spineRuntime.AddConnection(w, r, chatters)
 }
 
-func (r *Room) IsActive(period time.Duration) bool {
+func (r *Room) HasActiveChatters(period time.Duration) bool {
 	return misc.Clock.Since(r.chibiActor.LastChatterTime) <= period
 }
 
@@ -206,10 +229,30 @@ func (r *Room) NumConnectedClients() int {
 	return r.spineRuntime.NumConnections()
 }
 
-func (r *Room) ForEachChatter(callback func(chatUser *spine.ChatUser)) {
+func (r *Room) ForEachChatter(callback func(chatUser *users.ChatUser)) {
 	for _, chatUser := range r.chibiActor.ChatUsers {
 		callback(chatUser)
 	}
+}
+
+func (r *Room) LoadExistingChatters() error {
+	chatters, err := users.GetActiveChatters(r.GetRoomId())
+	if err != nil {
+		return err
+	}
+	for _, chatter := range chatters {
+		user, err := users.GetUserById(chatter.UserId)
+		if err != nil {
+			continue
+		}
+		log.Printf("Reloading chatter %s in room %s with operator %s", user.Username, r.GetChannelName(), chatter.OperatorInfo.OperatorDisplayName)
+		r.chibiActor.UpdateChibi(
+			user.Username,
+			user.UserDisplayName,
+			&chatter.OperatorInfo,
+		)
+	}
+	return nil
 }
 
 // TODO: Leaky interface. Exposing all the ChibiActor methods through the Room
@@ -218,14 +261,14 @@ func (r *Room) RemoveUserChibi(username string) error {
 }
 
 func (r *Room) GetSpineRuntimeConfig() misc.SpineRuntimeConfig {
-	return r.roomDb.SpineRuntimeConfig()
+	return r.roomDb.SpineRuntimeConfig
 }
 
 func (r *Room) UpdateSpineRuntimeConfig(newConfig *misc.SpineRuntimeConfig) error {
 	if err := misc.ValidateSpineRuntimeConfig(newConfig); err != nil {
 		return err
 	}
-	runtimeConfig := r.roomDb.SpineRuntimeConfig()
+	runtimeConfig := r.roomDb.SpineRuntimeConfig
 	if newConfig.MinAnimationSpeed > 0 {
 		runtimeConfig.MinAnimationSpeed = newConfig.MinAnimationSpeed
 	}
@@ -259,4 +302,8 @@ func (r *Room) UpdateSpineRuntimeConfig(newConfig *misc.SpineRuntimeConfig) erro
 	r.roomDb.SetSpineRuntimeConfig(&runtimeConfig)
 	UpdateRoom(r.roomDb)
 	return nil
+}
+
+func (r *Room) GetRoomId() uint {
+	return r.roomDb.RoomId
 }

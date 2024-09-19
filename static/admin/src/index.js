@@ -135,12 +135,7 @@ function fillInRoomsTable(data) {
 
 function fillGeneralInfoTable(data) {
     const metricsTableBody = document.querySelector('#metricsTable tbody');
-    metricsTableBody.innerHTML = `
-        <tr>
-            <td>Restore</td>
-            <td><button class="restore-button normal-button">Restore</button></td>
-        </tr>
-    `;
+    metricsTableBody.innerHTML = ``;
     const row = document.createElement('tr');
     row.innerHTML = `
         <td> Next Rooms GC Time </td>
@@ -156,28 +151,6 @@ function fillGeneralInfoTable(data) {
         `;
         metricsTableBody.appendChild(row);
     }
-
-    // Add event listeners to all remove buttons
-    document.querySelectorAll('.restore-button').forEach(button => {
-        button.addEventListener('click', async (event) => {
-            try {
-                const response = await fetch(`/admin/rooms/restore?secret=${secret}`, {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                });
-
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-
-                // Optionally, refresh the room list after removal
-                loadRoomList();
-            } catch (error) {
-                console.error('Error removing room:', error);
-            }
-        });
-    });
-
 }
 
 async function loadRoomList() {

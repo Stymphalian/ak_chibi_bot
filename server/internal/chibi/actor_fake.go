@@ -80,6 +80,7 @@ func (f *FakeChibiActor) UpdateChatter(
 	username string,
 	usernameDisplay string,
 	update *spine.OperatorInfo,
-) {
+) error {
 	f.Users[username] = *update
+	return nil
 }

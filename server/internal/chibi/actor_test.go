@@ -19,6 +19,7 @@ func setupActorTest() *ChibiActor {
 		fakeSpineClient,
 		[]string{"exlude_user"},
 	)
+	sut.SetRoomId(5000)
 	return sut
 }
 
@@ -77,7 +78,7 @@ func TestSetToDefault(t *testing.T) {
 		PositionX:  0.5,
 	})
 	assert.Contains(sut.ChatUsers, "user1")
-	assert.Contains(sut.ChatUsers["user1"].CurrentOperator.Skin, "default")
+	assert.Contains(sut.ChatUsers["user1"].GetOperatorInfo().Skin, "default")
 }
 
 func TestChibiActorHandleMessage(t *testing.T) {
@@ -90,8 +91,8 @@ func TestChibiActorHandleMessage(t *testing.T) {
 	})
 
 	assert.Contains(sut.ChatUsers, "user1")
-	assert.Contains(sut.ChatUsers["user1"].CurrentOperator.Skin, "default")
-	assert.True(misc.Clock.Since(sut.ChatUsers["user1"].LastChatTime) < time.Duration(1)*time.Second)
+	assert.Contains(sut.ChatUsers["user1"].GetOperatorInfo().Skin, "default")
+	assert.True(misc.Clock.Since(sut.ChatUsers["user1"].GetLastChatTime()) < time.Duration(1)*time.Second)
 }
 
 func TestChibiActorUpdateChibi(t *testing.T) {
@@ -114,8 +115,8 @@ func TestChibiActorUpdateChibi(t *testing.T) {
 	)
 	sut.UpdateChibi("user1", "userDisplay", &opInfo)
 	assert.Contains(sut.ChatUsers, "user1")
-	assert.Contains(sut.ChatUsers["user1"].CurrentOperator.Skin, "default")
-	assert.Equal(sut.ChatUsers["user1"].CurrentOperator.AvailableAnimations, []string{"Move", "base_front1", "base_front2"})
+	assert.Contains(sut.ChatUsers["user1"].GetOperatorInfo().Skin, "default")
+	assert.Equal(sut.ChatUsers["user1"].GetOperatorInfo().AvailableAnimations, []string{"Move", "base_front1", "base_front2"})
 }
 
 func TestActorCurrentInfoEmpty(t *testing.T) {
@@ -138,9 +139,12 @@ func TestUpdateChatter(t *testing.T) {
 	assert := assert.New(t)
 	sut := setupActorTest()
 	opInfo := spine.EmptyOperatorInfo()
-	sut.UpdateChatter("user1", "userDisplay1", opInfo)
+	err := sut.UpdateChatter("user1", "userDisplay1", opInfo)
+	if err != nil {
+		t.Error(err)
+	}
 
 	assert.Equal(len(sut.ChatUsers), 1)
 	period := time.Duration(1) * time.Second
-	assert.True(misc.Clock.Since(sut.ChatUsers["user1"].LastChatTime) < period)
+	assert.True(misc.Clock.Since(sut.ChatUsers["user1"].GetLastChatTime()) < period)
 }

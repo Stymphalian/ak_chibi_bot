@@ -42,10 +42,17 @@ type RuntimeDebugUpdateRequest struct {
 	AverageFps float64 `json:"average_fps"`
 }
 
+type ChatterInfo struct {
+	Username        string
+	UsernameDisplay string
+	// TODO: Make this a pointer
+	OperatorInfo OperatorInfo
+}
+
 type ClientRequestCallback func(connId string, typeName string, message []byte)
 type SpineRuntime interface {
 	Close() error
-	AddConnection(w http.ResponseWriter, r *http.Request, chatters []*ChatUser) error
+	AddConnection(w http.ResponseWriter, r *http.Request, chatters []*ChatterInfo) error
 	NumConnections() int
 
 	// Add listeners for any incoming requests from the connected clients

@@ -1,6 +1,7 @@
 package chibi
 
 import (
+	"fmt"
 	"log"
 	"slices"
 	"time"
@@ -8,15 +9,19 @@ import (
 	"github.com/Stymphalian/ak_chibi_bot/server/internal/chat"
 	"github.com/Stymphalian/ak_chibi_bot/server/internal/misc"
 	"github.com/Stymphalian/ak_chibi_bot/server/internal/spine"
+	"github.com/Stymphalian/ak_chibi_bot/server/internal/users"
 )
 
 type ChibiActor struct {
 	spineService         *spine.SpineService
-	ChatUsers            map[string]*spine.ChatUser
+	ChatUsers            map[string]*users.ChatUser
 	LastChatterTime      time.Time
 	client               spine.SpineClient
 	chatCommandProcessor *ChatCommandProcessor
 	excludeNames         []string
+
+	// TODO: Find a better way to get the roomId into the ChibiActors/ChatUsers
+	roomId *uint
 }
 
 func NewChibiActor(
@@ -26,13 +31,27 @@ func NewChibiActor(
 ) *ChibiActor {
 	a := &ChibiActor{
 		spineService:         spineService,
-		ChatUsers:            make(map[string]*spine.ChatUser, 0),
+		ChatUsers:            make(map[string]*users.ChatUser, 0),
 		LastChatterTime:      misc.Clock.Now(),
 		client:               client,
 		chatCommandProcessor: &ChatCommandProcessor{spineService},
 		excludeNames:         excludeNames,
 	}
 	return a
+}
+
+func (c *ChibiActor) Close() error {
+	// No need to send the remove Operators to the clients.
+	// This room is going down on the server anyways and the WS connections
+	// will be closed.
+	for _, chatUser := range c.ChatUsers {
+		chatUser.Close()
+	}
+	return nil
+}
+
+func (c *ChibiActor) SetRoomId(roomId uint) {
+	c.roomId = &roomId
 }
 
 func (c *ChibiActor) GiveChibiToUser(userName string, userNameDisplay string) error {
@@ -76,6 +95,8 @@ func (c *ChibiActor) RemoveUserChibi(userName string) error {
 	if err != nil {
 		log.Printf("Error removing chibi for %s: %s\n", userName, err)
 	}
+	c.ChatUsers[userName].SetActive(false)
+	c.ChatUsers[userName].Save()
 
 	delete(c.ChatUsers, userName)
 	return nil
@@ -108,7 +129,7 @@ func (c *ChibiActor) HandleMessage(msg chat.ChatMessage) (string, error) {
 	if msg.Message[0] != '!' {
 		return "", nil
 	}
-	c.ChatUsers[msg.Username].LastChatTime = misc.Clock.Now()
+	c.ChatUsers[msg.Username].SetLastChatTime(misc.Clock.Now())
 
 	current, err := c.CurrentInfo(msg.Username)
 	if err != nil {
@@ -149,24 +170,43 @@ func (c *ChibiActor) CurrentInfo(userName string) (spine.OperatorInfo, error) {
 		return *spine.EmptyOperatorInfo(), spine.NewUserNotFound("User not found: " + userName)
 	}
 
-	return chatUser.CurrentOperator, nil
+	return chatUser.GetOperatorInfo(), nil
 }
 
 func (c *ChibiActor) UpdateChatter(
 	username string,
 	usernameDisplay string,
 	update *spine.OperatorInfo,
-) {
-	chatUser, ok := c.ChatUsers[username]
+) error {
+	_, ok := c.ChatUsers[username]
 	if !ok {
-		c.ChatUsers[username] = spine.NewChatUser(
-			username,
-			usernameDisplay,
-			misc.Clock.Now(),
+		userDb, err := users.GetOrInsertUser(username, usernameDisplay)
+		if err != nil {
+			return err
+		}
+		if c.roomId == nil {
+			return fmt.Errorf("roomId must be set in order to update a ChatUser")
+		}
+		chatterDb, err := users.GetOrInsertChatter(*c.roomId, userDb, misc.Clock.Now(), update)
+		if err != nil {
+			return err
+		}
+
+		chatUser, err := users.NewChatUser(
+			userDb,
+			chatterDb,
 		)
-		chatUser = c.ChatUsers[username]
+		if err != nil {
+			return err
+		}
+		c.ChatUsers[username] = chatUser
 	}
-	chatUser.UserNameDisplay = usernameDisplay
-	chatUser.LastChatTime = misc.Clock.Now()
-	chatUser.CurrentOperator = *update
+
+	chatUser := c.ChatUsers[username]
+	chatUser.SetLastChatTime(misc.Clock.Now())
+	chatUser.SetOperatorInfo(update)
+	chatUser.SetActive(true)
+	// TODO: Make this more efficient. no need to save to DB if things haven't changed
+	// chatUser.Save()
+	return nil
 }

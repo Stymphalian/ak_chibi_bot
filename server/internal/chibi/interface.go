@@ -16,5 +16,5 @@ type ChibiActorInterface interface {
 	UpdateChibi(username string, userDisplayName string, opInfo *spine.OperatorInfo) error
 	CurrentInfo(userName string) (spine.OperatorInfo, error)
 	SetToDefault(broadcasterName string, opName string, details misc.InitialOperatorDetails)
-	UpdateChatter(userName string, usernameDisplay string, update *spine.OperatorInfo)
+	UpdateChatter(userName string, usernameDisplay string, update *spine.OperatorInfo) error
 }

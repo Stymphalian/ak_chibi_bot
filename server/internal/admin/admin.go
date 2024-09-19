@@ -11,7 +11,7 @@ import (
 
 	"github.com/Stymphalian/ak_chibi_bot/server/internal/misc"
 	"github.com/Stymphalian/ak_chibi_bot/server/internal/room"
-	"github.com/Stymphalian/ak_chibi_bot/server/internal/spine"
+	"github.com/Stymphalian/ak_chibi_bot/server/internal/users"
 )
 
 type AdminServer struct {
@@ -20,33 +20,33 @@ type AdminServer struct {
 	assetDir     string
 }
 
-type Chatter struct {
+type chatter struct {
 	Username     string
 	Operator     string
 	LastChatTime string
 }
 
-type Room struct {
+type roomInfo struct {
 	ChannelName             string
 	CreatedAt               string
 	LastTimeUsed            string
-	Chatters                []*Chatter
+	Chatters                []*chatter
 	NextGCTime              string
 	NumWebsocketConnections int
 	ConnectionAverageFps    map[string]float64
 }
 
 type AdminInfo struct {
-	Rooms      []*Room
+	Rooms      []*roomInfo
 	NextGCTime string
 	Metrics    map[string]interface{}
 }
 
-type RemoveRoomRequest struct {
+type removeRoomRequest struct {
 	ChannelName string `json:"channel_name"`
 }
 
-type RemoveUserRequest struct {
+type removeUserRequest struct {
 	ChannelName string `json:"channel_name"`
 	Username    string `json:"username"`
 }
@@ -91,7 +91,6 @@ func (s *AdminServer) RegisterHandlers() {
 	http.Handle("GET /admin/list", s.middleware(s.HandleList))
 	http.Handle("POST /admin/room/remove", s.middleware(s.HandleRemoveRoom))
 	http.Handle("POST /admin/user/remove", s.middleware(s.HandleRemoveUser))
-	http.Handle("POST /admin/rooms/restore", s.middleware(s.HandleRestoreRooms))
 }
 
 func (s *AdminServer) HandleAdmin(w http.ResponseWriter, r *http.Request) error {
@@ -111,37 +110,37 @@ func (s *AdminServer) HandleList(w http.ResponseWriter, r *http.Request) error {
 	w.Header().Set("Content-Type", "application/json")
 
 	var adminInfo AdminInfo
-	adminInfo.Rooms = make([]*Room, 0)
+	adminInfo.Rooms = make([]*roomInfo, 0)
 	adminInfo.Metrics = make(map[string]interface{}, 0)
 	adminInfo.NextGCTime = s.roomsManager.GetNextGarbageCollectionTime().Format(time.DateTime)
 
 	for _, roomVal := range s.roomsManager.Rooms {
 
-		newRoom := &Room{
+		newRoom := &roomInfo{
 			ChannelName:             roomVal.GetChannelName(),
 			LastTimeUsed:            roomVal.GetLastChatterTime().Format(time.DateTime),
-			Chatters:                make([]*Chatter, 0),
+			Chatters:                make([]*chatter, 0),
 			NumWebsocketConnections: roomVal.NumConnectedClients(),
 			CreatedAt:               roomVal.CreatedAt().Format(time.DateTime),
 			NextGCTime:              roomVal.GetNextGarbageCollectionTime().Format(time.DateTime),
 			ConnectionAverageFps:    make(map[string]float64),
 		}
 
-		roomVal.ForEachChatter(func(chatUser *spine.ChatUser) {
-			newChatter := &Chatter{
-				Username:     chatUser.UserName,
-				Operator:     chatUser.CurrentOperator.OperatorDisplayName,
-				LastChatTime: chatUser.LastChatTime.Format(time.DateTime),
+		roomVal.ForEachChatter(func(chatUser *users.ChatUser) {
+			newChatter := &chatter{
+				Username:     chatUser.GetUsername(),
+				Operator:     chatUser.GetOperatorInfo().OperatorDisplayName,
+				LastChatTime: chatUser.GetLastChatTime().Format(time.DateTime),
 			}
 			newRoom.Chatters = append(newRoom.Chatters, newChatter)
 		})
 
-		slices.SortFunc(newRoom.Chatters, func(a, b *Chatter) int {
+		slices.SortFunc(newRoom.Chatters, func(a, b *chatter) int {
 			return strings.Compare(a.Username, b.Username)
 		})
 		adminInfo.Rooms = append(adminInfo.Rooms, newRoom)
 	}
-	slices.SortFunc(adminInfo.Rooms, func(a, b *Room) int {
+	slices.SortFunc(adminInfo.Rooms, func(a, b *roomInfo) int {
 		return strings.Compare(a.ChannelName, b.ChannelName)
 	})
 
@@ -161,7 +160,7 @@ func (s *AdminServer) HandleRemoveRoom(w http.ResponseWriter, r *http.Request) e
 		return nil
 	}
 	decoder := json.NewDecoder(r.Body)
-	var reqBody RemoveRoomRequest
+	var reqBody removeRoomRequest
 	if err := decoder.Decode(&reqBody); err != nil {
 		return err
 	}
@@ -183,7 +182,7 @@ func (s *AdminServer) HandleRemoveUser(w http.ResponseWriter, r *http.Request) e
 		return nil
 	}
 	decoder := json.NewDecoder(r.Body)
-	var reqBody RemoveUserRequest
+	var reqBody removeUserRequest
 	if err := decoder.Decode(&reqBody); err != nil {
 		return err
 	}
@@ -202,13 +201,4 @@ func (s *AdminServer) HandleRemoveUser(w http.ResponseWriter, r *http.Request) e
 		return nil
 	}
 	return room.RemoveUserChibi(userName)
-}
-
-func (s *AdminServer) HandleRestoreRooms(w http.ResponseWriter, r *http.Request) error {
-	if r.Method != http.MethodPost {
-		http.NotFound(w, r)
-		return nil
-	}
-	s.roomsManager.Restore()
-	return nil
 }

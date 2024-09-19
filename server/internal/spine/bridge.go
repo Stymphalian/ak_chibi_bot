@@ -157,7 +157,7 @@ func (s *SpineBridge) NumConnections() int {
 func (s *SpineBridge) AddConnection(
 	w http.ResponseWriter,
 	r *http.Request,
-	chatters []*ChatUser,
+	chatters []*ChatterInfo,
 ) error {
 	// misc.GoRunCounter.Add(1)
 	// defer misc.GoRunCounter.Add(-1)
@@ -192,11 +192,11 @@ func (s *SpineBridge) AddConnection(
 		delete(s.WebSocketConnections, connectionName)
 	}()
 
-	for _, chatUser := range chatters {
+	for _, chatterInfo := range chatters {
 		s.setInternalSpineOperator(
-			chatUser.UserName,
-			chatUser.UserNameDisplay,
-			chatUser.CurrentOperator,
+			chatterInfo.Username,
+			chatterInfo.UsernameDisplay,
+			chatterInfo.OperatorInfo,
 		)
 	}
 
@@ -337,7 +337,6 @@ func (s *SpineBridge) RemoveOperator(r *RemoveOperatorRequest) (*RemoveOperatorR
 		}
 	}
 
-	// delete(s.ChatUsers, r.UserName)
 	return successResp, nil
 }
 

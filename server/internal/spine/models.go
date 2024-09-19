@@ -1,7 +1,10 @@
 package spine
 
 import (
-	"time"
+	"database/sql/driver"
+	"encoding/json"
+	"errors"
+	"fmt"
 
 	"github.com/Stymphalian/ak_chibi_bot/server/internal/misc"
 )
@@ -22,6 +25,24 @@ type OperatorInfo struct {
 
 	CurrentAction ActionEnum  `json:"current_action"`
 	Action        ActionUnion `json:"action"`
+}
+
+func (oi *OperatorInfo) Scan(value interface{}) error {
+	bytes, ok := value.([]byte)
+	if !ok {
+		return errors.New(fmt.Sprint("Failed to unmarshal OperatorInfo value:", value))
+	}
+
+	err := json.Unmarshal(bytes, oi)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (oi OperatorInfo) Value() (driver.Value, error) {
+	jsonData, err := json.Marshal(oi)
+	return string(jsonData), err
 }
 
 func NewOperatorInfo(
@@ -103,27 +124,4 @@ func (r *GetOperatorResponse) GetSkinNames() []string {
 		i += 1
 	}
 	return skins
-}
-
-type ChatUser struct {
-	UserName        string
-	UserNameDisplay string
-	CurrentOperator OperatorInfo
-	LastChatTime    time.Time
-}
-
-func NewChatUser(
-	UserName string,
-	UserNameDisplay string,
-	LastChatTime time.Time,
-) *ChatUser {
-	return &ChatUser{
-		UserName:        UserName,
-		UserNameDisplay: UserNameDisplay,
-		LastChatTime:    LastChatTime,
-	}
-}
-
-func (c *ChatUser) IsActive(period time.Duration) bool {
-	return misc.Clock.Since(c.LastChatTime) < period
 }

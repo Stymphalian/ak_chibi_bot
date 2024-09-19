@@ -1,6 +1,8 @@
 package misc
 
-import "encoding/json"
+import (
+	"encoding/json"
+)
 
 // Option holds an optional value of type T.
 type Option[T any] struct {
@@ -55,4 +57,13 @@ func (o Option[T]) MarshalJSON() ([]byte, error) {
 		return []byte("null"), nil
 	}
 	return json.Marshal(o.value)
+}
+
+func (m *Option[T]) UnmarshalJSON(data []byte) error {
+	if string(data) == "null" {
+		m.has = false
+		return nil
+	}
+	m.has = true
+	return json.Unmarshal(data, &m.value)
 }

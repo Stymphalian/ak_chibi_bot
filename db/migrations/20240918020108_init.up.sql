@@ -1,3 +1,5 @@
+BEGIN;
+
 CREATE TABLE IF NOT EXISTS users (
 	user_id SERIAL PRIMARY KEY,
 	username VARCHAR(128) NOT NULL UNIQUE,
@@ -6,32 +8,18 @@ CREATE TABLE IF NOT EXISTS users (
 	updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	deleted_at TIMESTAMP NULL DEFAULT NULL
 );
+CREATE INDEX IF NOT EXISTS idx_users_username
+    ON users (username ASC);
+ALTER SEQUENCE users_user_id_seq RESTART WITH 100000;
 
 CREATE TABLE IF NOT EXISTS rooms (
 	room_id SERIAL PRIMARY KEY,
 	channel_name VARCHAR(128) NOT NULL UNIQUE,
 	is_active BOOLEAN NOT NULL DEFAULT FALSE,
-
 	default_operator_name VARCHAR(128),
-	default_operator_skin VARCHAR(128),
-	default_operator_stance  VARCHAR(128),
-	default_operator_animations TEXT[],
-	default_operator_position_x DOUBLE PRECISION,
-
+	default_operator_config JSON DEFAULT '{}',
+	spine_runtime_config JSON DEFAULT '{}',
 	garbage_collection_period_mins INT,
-
-	spine_runtime_config_default_animation_speed DOUBLE PRECISION,
-	spine_runtime_config_min_animation_speed DOUBLE PRECISION,
-	spine_runtime_config_max_animation_speed DOUBLE PRECISION,
-	spine_runtime_config_default_scale_size DOUBLE PRECISION,
-	spine_runtime_config_min_scale_size DOUBLE PRECISION,
-	spine_runtime_config_max_scale_size DOUBLE PRECISION,
-	spine_runtime_config_max_sprite_pixel_size INT,
-	spine_runtime_config_reference_movement_speed_px INT,
-	spine_runtime_config_default_movement_speed DOUBLE PRECISION,
-	spine_runtime_config_min_movement_speed DOUBLE PRECISION,
-	spine_runtime_config_max_movement_speed DOUBLE PRECISION,
-
 	created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	deleted_at TIMESTAMP NULL DEFAULT NULL
@@ -40,17 +28,20 @@ CREATE INDEX IF NOT EXISTS idx_rooms_channel_name
     ON rooms (channel_name ASC);
 ALTER SEQUENCE rooms_room_id_seq RESTART WITH 100000;
 
-
 CREATE TABLE IF NOT EXISTS chatters (
 	chatter_id SERIAL PRIMARY KEY,
-	room_id INT NOT NULL REFERENCES rooms(room_id),
-	user_id INT NOT NULL REFERENCES users(user_id),
-	operator_id VARCHAR(128),
+	room_id INT NOT NULL,
+	user_id INT NOT NULL,
+	is_active boolean NOT NULL DEFAULT TRUE,
+	operator_info JSON DEFAULT '{}',
 	last_chat_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	deleted_at TIMESTAMP NULL DEFAULT NULL
 );
+CREATE INDEX IF NOT EXISTS idx_chatters_room_id_user_id
+    ON chatters (room_id ASC, user_id ASC);
+ALTER SEQUENCE chatters_chatter_id_seq RESTART WITH 100000;	
 
 CREATE OR REPLACE FUNCTION update_updated_at()
 RETURNS TRIGGER AS $$
@@ -75,5 +66,6 @@ BEFORE UPDATE ON chatters
 FOR EACH ROW
 EXECUTE PROCEDURE update_updated_at();
 
+COMMIT;
 
 

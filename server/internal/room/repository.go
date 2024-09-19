@@ -5,34 +5,18 @@ import (
 
 	"github.com/Stymphalian/ak_chibi_bot/server/internal/akdb"
 	"github.com/Stymphalian/ak_chibi_bot/server/internal/misc"
-	"github.com/lib/pq"
 	"gorm.io/gorm"
 )
 
 // TODO: Fuck this. Too many columns
 type RoomDb struct {
-	RoomId                    uint           `gorm:"primarykey"`
-	ChannelName               string         `gorm:"column:channel_name"`
-	IsActive                  bool           `gorm:"column:is_active"`
-	DefaultOperatorName       string         `gorm:"column:default_operator_name"`
-	DefaultOperatorSkin       string         `gorm:"column:default_operator_skin"`
-	DefaultOperatorStance     string         `gorm:"column:default_operator_stance"`
-	DefaultOperatorAnimations pq.StringArray `gorm:"column:default_operator_animations;type:text[]"`
-	DefaultOperatorPositionX  float64        `gorm:"column:default_operator_position_x"`
-
-	GarbageCollectionPeriodMins int `gorm:"column:garbage_collection_period_mins"`
-
-	SpineRuntimeConfigDefaultAnimationSpeed    float64 `gorm:"spine_runtime_config_default_animation_speed"`
-	SpineRuntimeConfigMinAnimationSpeed        float64 `gorm:"spine_runtime_config_min_animation_speed"`
-	SpineRuntimeConfigMaxAnimationSpeed        float64 `gorm:"spine_runtime_config_max_animation_speed"`
-	SpineRuntimeConfigDefaultScaleSize         float64 `gorm:"spine_runtime_config_default_scale_size"`
-	SpineRuntimeConfigMinScaleSize             float64 `gorm:"spine_runtime_config_min_scale_size"`
-	SpineRuntimeConfigMaxScaleSize             float64 `gorm:"spine_runtime_config_max_scale_size"`
-	SpineRuntimeConfigMaxSpritePixelSize       int     `gorm:"spine_runtime_config_max_sprite_pixel_size"`
-	SpineRuntimeConfigReferenceMovementSpeedPx int     `gorm:"spine_runtime_config_reference_movement_speed_px"`
-	SpineRuntimeConfigDefaultMovementSpeed     float64 `gorm:"spine_runtime_config_default_movement_speed"`
-	SpineRuntimeConfigMinMovementSpeed         float64 `gorm:"spine_runtime_config_min_movement_speed"`
-	SpineRuntimeConfigMaxMovementSpeed         float64 `gorm:"spine_runtime_config_max_movement_speed"`
+	RoomId                      uint                        `gorm:"primarykey"`
+	ChannelName                 string                      `gorm:"column:channel_name"`
+	IsActive                    bool                        `gorm:"column:is_active"`
+	DefaultOperatorName         string                      `gorm:"column:default_operator_name"`
+	DefaultOperatorConfig       misc.InitialOperatorDetails `gorm:"column:default_operator_config;type:json"`
+	SpineRuntimeConfig          misc.SpineRuntimeConfig     `gorm:"column:spine_runtime_config;type:json"`
+	GarbageCollectionPeriodMins int                         `gorm:"column:garbage_collection_period_mins"`
 
 	CreatedAt time.Time      `gorm:"column:created_at"`
 	UpdatedAt time.Time      `gorm:"column:updated_at"`
@@ -43,51 +27,14 @@ func (RoomDb) TableName() string {
 	return "rooms"
 }
 
-func (r *RoomDb) DefaultOperatorConfig() misc.InitialOperatorDetails {
-	return misc.InitialOperatorDetails{
-		Skin:       r.DefaultOperatorSkin,
-		Stance:     r.DefaultOperatorStance,
-		Animations: r.DefaultOperatorAnimations,
-		PositionX:  r.DefaultOperatorPositionX,
-	}
-}
-
-func (r *RoomDb) SpineRuntimeConfig() misc.SpineRuntimeConfig {
-	return misc.SpineRuntimeConfig{
-		DefaultAnimationSpeed:    r.SpineRuntimeConfigDefaultAnimationSpeed,
-		MinAnimationSpeed:        r.SpineRuntimeConfigMinAnimationSpeed,
-		MaxAnimationSpeed:        r.SpineRuntimeConfigMaxAnimationSpeed,
-		DefaultScaleSize:         r.SpineRuntimeConfigDefaultScaleSize,
-		MinScaleSize:             r.SpineRuntimeConfigMinScaleSize,
-		MaxScaleSize:             r.SpineRuntimeConfigMaxScaleSize,
-		MaxSpritePixelSize:       r.SpineRuntimeConfigMaxSpritePixelSize,
-		ReferenceMovementSpeedPx: r.SpineRuntimeConfigReferenceMovementSpeedPx,
-		DefaultMovementSpeed:     r.SpineRuntimeConfigDefaultMovementSpeed,
-		MinMovementSpeed:         r.SpineRuntimeConfigMinMovementSpeed,
-		MaxMovementSpeed:         r.SpineRuntimeConfigMaxMovementSpeed,
-	}
-}
-
 func (r *RoomDb) SetSpineRuntimeConfig(config *misc.SpineRuntimeConfig) {
-	r.SpineRuntimeConfigDefaultAnimationSpeed = config.DefaultAnimationSpeed
-	r.SpineRuntimeConfigMinAnimationSpeed = config.MinAnimationSpeed
-	r.SpineRuntimeConfigMaxAnimationSpeed = config.MaxAnimationSpeed
-
-	r.SpineRuntimeConfigDefaultScaleSize = config.DefaultScaleSize
-	r.SpineRuntimeConfigMinScaleSize = config.MinScaleSize
-	r.SpineRuntimeConfigMaxScaleSize = config.MaxScaleSize
-	r.SpineRuntimeConfigMaxSpritePixelSize = config.MaxSpritePixelSize
-
-	r.SpineRuntimeConfigReferenceMovementSpeedPx = config.ReferenceMovementSpeedPx
-	r.SpineRuntimeConfigDefaultMovementSpeed = config.DefaultMovementSpeed
-	r.SpineRuntimeConfigMinMovementSpeed = config.MinMovementSpeed
-	r.SpineRuntimeConfigMaxMovementSpeed = config.MaxMovementSpeed
+	r.SpineRuntimeConfig = *config
 }
 
-func GetOrInsertRoom(roomConfig *RoomConfig) (*RoomDb, error) {
+func GetOrInsertRoom(roomConfig *RoomConfig) (*RoomDb, bool, error) {
 	db, err := akdb.Connect()
 	if err != nil {
-		return nil, err
+		return nil, false, err
 	}
 
 	var roomDb RoomDb
@@ -98,37 +45,23 @@ func GetOrInsertRoom(roomConfig *RoomConfig) (*RoomDb, error) {
 			roomDb.ChannelName = roomConfig.ChannelName
 			roomDb.IsActive = true
 
-			// This should get updated for each new server load.
+			// TODO: default oeprator config should get updated for each new server reloading
+			// so that the new operators with each banner release can be the default op.
 			roomDb.DefaultOperatorName = roomConfig.DefaultOperatorName
-			roomDb.DefaultOperatorSkin = roomConfig.DefaultOperatorConfig.Skin
-			roomDb.DefaultOperatorStance = roomConfig.DefaultOperatorConfig.Stance
-			roomDb.DefaultOperatorPositionX = roomConfig.DefaultOperatorConfig.PositionX
-			roomDb.DefaultOperatorAnimations = roomConfig.DefaultOperatorConfig.Animations
-
+			roomDb.DefaultOperatorConfig = roomConfig.DefaultOperatorConfig
+			roomDb.SpineRuntimeConfig = *roomConfig.SpineRuntimeConfig
 			roomDb.GarbageCollectionPeriodMins = roomConfig.GarbageCollectionPeriodMins
-
-			roomDb.SpineRuntimeConfigDefaultAnimationSpeed = roomConfig.SpineRuntimeConfig.DefaultAnimationSpeed
-			roomDb.SpineRuntimeConfigMinAnimationSpeed = roomConfig.SpineRuntimeConfig.MinAnimationSpeed
-			roomDb.SpineRuntimeConfigMaxAnimationSpeed = roomConfig.SpineRuntimeConfig.MaxAnimationSpeed
-			roomDb.SpineRuntimeConfigDefaultScaleSize = roomConfig.SpineRuntimeConfig.DefaultScaleSize
-			roomDb.SpineRuntimeConfigMinScaleSize = roomConfig.SpineRuntimeConfig.MinScaleSize
-			roomDb.SpineRuntimeConfigMaxScaleSize = roomConfig.SpineRuntimeConfig.MaxScaleSize
-			roomDb.SpineRuntimeConfigMaxSpritePixelSize = roomConfig.SpineRuntimeConfig.MaxSpritePixelSize
-			roomDb.SpineRuntimeConfigReferenceMovementSpeedPx = roomConfig.SpineRuntimeConfig.ReferenceMovementSpeedPx
-			roomDb.SpineRuntimeConfigDefaultMovementSpeed = roomConfig.SpineRuntimeConfig.DefaultMovementSpeed
-			roomDb.SpineRuntimeConfigMinMovementSpeed = roomConfig.SpineRuntimeConfig.MinMovementSpeed
-			roomDb.SpineRuntimeConfigMaxMovementSpeed = roomConfig.SpineRuntimeConfig.MaxMovementSpeed
 
 			tx := db.Create(&roomDb)
 			if tx.Error != nil {
-				return nil, tx.Error
+				return nil, false, tx.Error
 			}
-			return &roomDb, nil
+			return &roomDb, true, nil
 		} else {
-			return nil, tx.Error
+			return nil, false, tx.Error
 		}
 	} else {
-		return &roomDb, nil
+		return &roomDb, false, nil
 	}
 }
 

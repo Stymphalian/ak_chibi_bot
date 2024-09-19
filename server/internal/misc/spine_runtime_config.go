@@ -1,6 +1,11 @@
 package misc
 
-import "fmt"
+import (
+	"database/sql/driver"
+	"encoding/json"
+	"errors"
+	"fmt"
+)
 
 type SpineRuntimeConfig struct {
 	DefaultAnimationSpeed float64 `json:"default_animation_speed"`
@@ -65,4 +70,22 @@ func ValidateSpineRuntimeConfig(config *SpineRuntimeConfig) error {
 	}
 
 	return nil
+}
+
+func (oi *SpineRuntimeConfig) Scan(value interface{}) error {
+	bytes, ok := value.([]byte)
+	if !ok {
+		return errors.New(fmt.Sprint("Failed to unmarshal SpineRuntimeConfig value:", value))
+	}
+
+	err := json.Unmarshal(bytes, oi)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (oi SpineRuntimeConfig) Value() (driver.Value, error) {
+	jsonData, err := json.Marshal(oi)
+	return string(jsonData), err
 }
