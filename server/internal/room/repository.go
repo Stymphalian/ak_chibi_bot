@@ -32,10 +32,7 @@ func (r *RoomDb) SetSpineRuntimeConfig(config *misc.SpineRuntimeConfig) {
 }
 
 func GetOrInsertRoom(roomConfig *RoomConfig) (*RoomDb, bool, error) {
-	db, err := akdb.Connect()
-	if err != nil {
-		return nil, false, err
-	}
+	db := akdb.DefaultDB
 
 	var roomDb RoomDb
 	tx := db.Where("channel_name = ?", roomConfig.ChannelName).First(&roomDb)
@@ -66,10 +63,7 @@ func GetOrInsertRoom(roomConfig *RoomConfig) (*RoomDb, bool, error) {
 }
 
 func UpdateRoom(roomDb *RoomDb) error {
-	db, err := akdb.Connect()
-	if err != nil {
-		return err
-	}
+	db := akdb.DefaultDB
 	tx := db.Save(roomDb)
 	if tx.Error != nil {
 		return tx.Error
@@ -78,10 +72,7 @@ func UpdateRoom(roomDb *RoomDb) error {
 }
 
 func GetActiveRooms() ([]*RoomDb, error) {
-	db, err := akdb.Connect()
-	if err != nil {
-		return nil, err
-	}
+	db := akdb.DefaultDB
 	var roomDbs []*RoomDb
 	tx := db.Where("is_active = true").Find(&roomDbs)
 	if tx.Error != nil {

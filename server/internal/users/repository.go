@@ -24,10 +24,7 @@ func (UserDb) TableName() string {
 }
 
 func GetUserById(userId uint) (*UserDb, error) {
-	db, err := akdb.Connect()
-	if err != nil {
-		return nil, err
-	}
+	db := akdb.DefaultDB
 
 	var userDb UserDb
 	result := db.First(&userDb, userId)
@@ -38,10 +35,7 @@ func GetUserById(userId uint) (*UserDb, error) {
 }
 
 func GetOrInsertUser(username string, userDisplayName string) (*UserDb, error) {
-	db, err := akdb.Connect()
-	if err != nil {
-		return nil, err
-	}
+	db := akdb.DefaultDB
 
 	var userDb UserDb
 	result := db.Where("username = ?", username).First(&userDb)
@@ -64,10 +58,7 @@ func GetOrInsertUser(username string, userDisplayName string) (*UserDb, error) {
 }
 
 func UpdateUser(user *UserDb) error {
-	db, err := akdb.Connect()
-	if err != nil {
-		return err
-	}
+	db := akdb.DefaultDB
 	return db.Save(user).Error
 }
 
@@ -92,10 +83,7 @@ func (ChatterDb) TableName() string {
 
 func GetOrInsertChatter(roomId uint, user *UserDb, lastChatTime time.Time, operatorInfo *spine.OperatorInfo) (*ChatterDb, error) {
 	// func GetOrInsertChatter(roomId uint, user *UserDb) (*ChatterDb, error) {
-	db, err := akdb.Connect()
-	if err != nil {
-		return nil, err
-	}
+	db := akdb.DefaultDB
 
 	var chatterDb ChatterDb
 	result := db.Where("room_id = ? AND user_id = ?", roomId, user.UserId).First(&chatterDb)
@@ -122,18 +110,12 @@ func GetOrInsertChatter(roomId uint, user *UserDb, lastChatTime time.Time, opera
 }
 
 func UpdateChatter(c *ChatterDb) error {
-	db, err := akdb.Connect()
-	if err != nil {
-		return err
-	}
+	db := akdb.DefaultDB
 	return db.Save(c).Error
 }
 
 func GetActiveChatters(roomId uint) ([]*ChatterDb, error) {
-	db, err := akdb.Connect()
-	if err != nil {
-		return nil, err
-	}
+	db := akdb.DefaultDB
 	var chatterDbs []*ChatterDb
 	tx := db.Where("room_id = ? AND is_active = true", roomId).Find(&chatterDbs)
 	if tx.Error != nil {
