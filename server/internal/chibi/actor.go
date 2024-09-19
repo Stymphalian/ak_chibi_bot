@@ -18,7 +18,7 @@ type ChibiActor struct {
 	ChatUsers            map[string]*users.ChatUser
 	LastChatterTime      time.Time
 	client               spine.SpineClient
-	chatCommandProcessor *ChatCommandProcessor
+	chatCommandProcessor *chat.ChatCommandProcessor
 	excludeNames         []string
 
 	// TODO: Find a better way to get the roomId into the ChibiActors/ChatUsers
@@ -35,7 +35,7 @@ func NewChibiActor(
 		ChatUsers:            make(map[string]*users.ChatUser, 0),
 		LastChatterTime:      misc.Clock.Now(),
 		client:               client,
-		chatCommandProcessor: &ChatCommandProcessor{spineService},
+		chatCommandProcessor: chat.NewChatCommandProcessor(spineService),
 		excludeNames:         excludeNames,
 	}
 	return a

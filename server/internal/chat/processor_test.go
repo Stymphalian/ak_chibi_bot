@@ -1,4 +1,4 @@
-package chibi
+package chat
 
 import (
 	"context"
@@ -6,7 +6,6 @@ import (
 	"log"
 	"testing"
 
-	"github.com/Stymphalian/ak_chibi_bot/server/internal/chat"
 	"github.com/Stymphalian/ak_chibi_bot/server/internal/misc"
 	"github.com/Stymphalian/ak_chibi_bot/server/internal/spine"
 	"github.com/stretchr/testify/assert"
@@ -83,7 +82,18 @@ Manual Test Cases:
 !chibi walk 0.5
 */
 
-func setupCommandTest() (*spine.OperatorInfo, *ChatCommandProcessor) {
+type FakeActorUpdater struct {
+	opInfo spine.OperatorInfo
+}
+
+func (f *FakeActorUpdater) CurrentInfo(ctx context.Context, username string) (spine.OperatorInfo, error) {
+	return f.opInfo, nil
+}
+func (f *FakeActorUpdater) UpdateChibi(ctx context.Context, username string, usernameDisplay string, update *spine.OperatorInfo) error {
+	return nil
+}
+
+func setupCommandTest() (*spine.OperatorInfo, ActorUpdater, *ChatCommandProcessor) {
 	current := spine.NewOperatorInfo(
 		"Amiya",
 		spine.FACTION_ENUM_OPERATOR,
@@ -98,20 +108,22 @@ func setupCommandTest() (*spine.OperatorInfo, *ChatCommandProcessor) {
 		spine.ACTION_PLAY_ANIMATION,
 		spine.NewActionPlayAnimation([]string{spine.DEFAULT_ANIM_BASE}),
 	)
+	actor := &FakeActorUpdater{
+		opInfo: current,
+	}
 	assetManager := spine.NewTestAssetService()
 	spineService := spine.NewSpineService(assetManager, misc.DefaultSpineRuntimeConfig())
 	sut := &ChatCommandProcessor{
 		spineService: spineService,
 	}
-	return &current, sut
+	return &current, actor, sut
 }
 
 func TestCmdProcessorHandleMessage_NotChibiCommand(t *testing.T) {
-	actor := NewFakeChibiActor()
-	current, sut := setupCommandTest()
+	current, actor, sut := setupCommandTest()
 
 	assert := assert.New(t)
-	cmd, err := sut.HandleMessage(current, chat.ChatMessage{
+	cmd, err := sut.HandleMessage(current, ChatMessage{
 		Username:        "user1",
 		UserDisplayName: "user1DisplayName",
 		Message:         "hello world",
@@ -122,11 +134,10 @@ func TestCmdProcessorHandleMessage_NotChibiCommand(t *testing.T) {
 }
 
 func TestCmdProcessorHandleMessage_TooLongCommand(t *testing.T) {
-	actor := NewFakeChibiActor()
-	current, sut := setupCommandTest()
+	current, actor, sut := setupCommandTest()
 
 	assert := assert.New(t)
-	cmd, err := sut.HandleMessage(current, chat.ChatMessage{
+	cmd, err := sut.HandleMessage(current, ChatMessage{
 		Username:        "user1",
 		UserDisplayName: "user1DisplayName",
 		Message:         "!chibi 01234567890123456789012345678901234567890123456789 01234567890123456789012345678901234567890123456789",
@@ -136,11 +147,10 @@ func TestCmdProcessorHandleMessage_TooLongCommand(t *testing.T) {
 	assert.Empty(cmd.Reply(actor))
 }
 func TestCmdProcessorHandleMessage_NotChibiCommandExplicit(t *testing.T) {
-	actor := NewFakeChibiActor()
-	current, sut := setupCommandTest()
+	current, actor, sut := setupCommandTest()
 
 	assert := assert.New(t)
-	cmd, err := sut.HandleMessage(current, chat.ChatMessage{
+	cmd, err := sut.HandleMessage(current, ChatMessage{
 		Username:        "user1",
 		UserDisplayName: "user1DisplayName",
 		Message:         "!chibiextended",
@@ -150,11 +160,10 @@ func TestCmdProcessorHandleMessage_NotChibiCommandExplicit(t *testing.T) {
 	assert.Empty(cmd.Reply(actor))
 }
 func TestCmdProcessorHandleMessage_ChibiOnlyCommandShowHelp(t *testing.T) {
-	actor := NewFakeChibiActor()
-	current, sut := setupCommandTest()
+	current, actor, sut := setupCommandTest()
 
 	assert := assert.New(t)
-	cmd, err := sut.HandleMessage(current, chat.ChatMessage{
+	cmd, err := sut.HandleMessage(current, ChatMessage{
 		Username:        "user1",
 		UserDisplayName: "user1DisplayName",
 		Message:         "!chibi",
@@ -165,11 +174,10 @@ func TestCmdProcessorHandleMessage_ChibiOnlyCommandShowHelp(t *testing.T) {
 }
 
 func TestCmdProcessorHandleMessage_ChibiHelp(t *testing.T) {
-	actor := NewFakeChibiActor()
-	current, sut := setupCommandTest()
+	current, actor, sut := setupCommandTest()
 
 	assert := assert.New(t)
-	cmd, err := sut.HandleMessage(current, chat.ChatMessage{
+	cmd, err := sut.HandleMessage(current, ChatMessage{
 		Username:        "user1",
 		UserDisplayName: "user1DisplayName",
 		Message:         "!chibi help",
@@ -179,13 +187,10 @@ func TestCmdProcessorHandleMessage_ChibiHelp(t *testing.T) {
 	assert.Contains(cmd.Reply(actor), "!chibi to control your Arknights chibi.")
 }
 func TestCmdProcessorHandleMessage_ChibiSkins(t *testing.T) {
-	actor := NewFakeChibiActor()
-	current, sut := setupCommandTest()
-	ctx := context.TODO()
-	actor.UpdateChatter(ctx, "user1", "user1DisplayName", current)
+	current, actor, sut := setupCommandTest()
 
 	assert := assert.New(t)
-	cmd, err := sut.HandleMessage(current, chat.ChatMessage{
+	cmd, err := sut.HandleMessage(current, ChatMessage{
 		Username:        "user1",
 		UserDisplayName: "user1DisplayName",
 		Message:         "!chibi skins",
@@ -196,13 +201,10 @@ func TestCmdProcessorHandleMessage_ChibiSkins(t *testing.T) {
 }
 
 func TestCmdProcessorHandleMessage_ChibiAnims(t *testing.T) {
-	actor := NewFakeChibiActor()
-	current, sut := setupCommandTest()
-	ctx := context.TODO()
-	actor.UpdateChatter(ctx, "user1", "user1DisplayName", current)
+	current, actor, sut := setupCommandTest()
 
 	assert := assert.New(t)
-	cmd, err := sut.HandleMessage(current, chat.ChatMessage{
+	cmd, err := sut.HandleMessage(current, ChatMessage{
 		Username:        "user1",
 		UserDisplayName: "user1DisplayName",
 		Message:         "!chibi anims",
@@ -213,13 +215,10 @@ func TestCmdProcessorHandleMessage_ChibiAnims(t *testing.T) {
 }
 
 func TestCmdProcessorHandleMessage_ChibiInfo(t *testing.T) {
-	actor := NewFakeChibiActor()
-	current, sut := setupCommandTest()
-	ctx := context.TODO()
-	actor.UpdateChatter(ctx, "user1", "user1DisplayName", current)
+	current, actor, sut := setupCommandTest()
 
 	assert := assert.New(t)
-	cmd, err := sut.HandleMessage(current, chat.ChatMessage{
+	cmd, err := sut.HandleMessage(current, ChatMessage{
 		Username:        "user1",
 		UserDisplayName: "user1DisplayName",
 		Message:         "!chibi info",
@@ -230,13 +229,10 @@ func TestCmdProcessorHandleMessage_ChibiInfo(t *testing.T) {
 }
 
 func TestCmdProcessorHandleMessage_ChibiWhoFail(t *testing.T) {
-	actor := NewFakeChibiActor()
-	current, sut := setupCommandTest()
-	ctx := context.TODO()
-	actor.UpdateChatter(ctx, "user1", "user1DisplayName", current)
+	current, actor, sut := setupCommandTest()
 
 	assert := assert.New(t)
-	cmd, err := sut.HandleMessage(current, chat.ChatMessage{
+	cmd, err := sut.HandleMessage(current, ChatMessage{
 		Username:        "user1",
 		UserDisplayName: "user1DisplayName",
 		Message:         "!chibi who notanoperator",
@@ -247,13 +243,10 @@ func TestCmdProcessorHandleMessage_ChibiWhoFail(t *testing.T) {
 }
 
 func TestCmdProcessorHandleMessage_ChibiWhoSuccess(t *testing.T) {
-	actor := NewFakeChibiActor()
-	current, sut := setupCommandTest()
-	ctx := context.TODO()
-	actor.UpdateChatter(ctx, "user1", "user1DisplayName", current)
+	current, actor, sut := setupCommandTest()
 
 	assert := assert.New(t)
-	cmd, err := sut.HandleMessage(current, chat.ChatMessage{
+	cmd, err := sut.HandleMessage(current, ChatMessage{
 		Username:        "user1",
 		UserDisplayName: "user1DisplayName",
 		Message:         "!chibi who amiy",
@@ -264,13 +257,10 @@ func TestCmdProcessorHandleMessage_ChibiWhoSuccess(t *testing.T) {
 }
 
 func TestCmdProcessorHandleMessage_ChibiSetSkin(t *testing.T) {
-	actor := NewFakeChibiActor()
-	current, sut := setupCommandTest()
-	ctx := context.TODO()
-	actor.UpdateChatter(ctx, "user1", "user1DisplayName", current)
+	current, actor, sut := setupCommandTest()
 
 	assert := assert.New(t)
-	cmd, err := sut.HandleMessage(current, chat.ChatMessage{
+	cmd, err := sut.HandleMessage(current, ChatMessage{
 		Username:        "user1",
 		UserDisplayName: "user1DisplayName",
 		Message:         "!chibi skin1",
@@ -289,13 +279,10 @@ func TestCmdProcessorHandleMessage_ChibiSetSkin(t *testing.T) {
 }
 
 func TestCmdProcessorHandleMessage_ChibiPlayAnimation(t *testing.T) {
-	actor := NewFakeChibiActor()
-	current, sut := setupCommandTest()
-	ctx := context.TODO()
-	actor.UpdateChatter(ctx, "user1", "user1DisplayName", current)
+	current, actor, sut := setupCommandTest()
 
 	assert := assert.New(t)
-	cmd, err := sut.HandleMessage(current, chat.ChatMessage{
+	cmd, err := sut.HandleMessage(current, ChatMessage{
 		Username:        "user1",
 		UserDisplayName: "user1DisplayName",
 		Message:         "!chibi anim1",
@@ -315,13 +302,10 @@ func TestCmdProcessorHandleMessage_ChibiPlayAnimation(t *testing.T) {
 }
 
 func TestCmdProcessorHandleMessage_ChibiPlayMultpleAnimation(t *testing.T) {
-	actor := NewFakeChibiActor()
-	current, sut := setupCommandTest()
-	ctx := context.TODO()
-	actor.UpdateChatter(ctx, "user1", "user1DisplayName", current)
+	current, actor, sut := setupCommandTest()
 
 	assert := assert.New(t)
-	cmd, err := sut.HandleMessage(current, chat.ChatMessage{
+	cmd, err := sut.HandleMessage(current, ChatMessage{
 		Username:        "user1",
 		UserDisplayName: "user1DisplayName",
 		Message:         "!chibi play anim1 Idle",
@@ -341,14 +325,11 @@ func TestCmdProcessorHandleMessage_ChibiPlayMultpleAnimation(t *testing.T) {
 }
 
 func TestCmdProcessorHandleMessage_ChibiFace(t *testing.T) {
-	actor := NewFakeChibiActor()
-	current, sut := setupCommandTest()
+	current, actor, sut := setupCommandTest()
 	current.ChibiStance = spine.CHIBI_STANCE_ENUM_BATTLE
-	ctx := context.TODO()
-	actor.UpdateChatter(ctx, "user1", "user1DisplayName", current)
 
 	assert := assert.New(t)
-	cmd, err := sut.HandleMessage(current, chat.ChatMessage{
+	cmd, err := sut.HandleMessage(current, ChatMessage{
 		Username:        "user1",
 		UserDisplayName: "user1DisplayName",
 		Message:         "!chibi battle",
@@ -367,13 +348,10 @@ func TestCmdProcessorHandleMessage_ChibiFace(t *testing.T) {
 }
 
 func TestCmdProcessorHandleMessage_ChibiSetFaceOnlyForBattleStance(t *testing.T) {
-	actor := NewFakeChibiActor()
-	current, sut := setupCommandTest()
-	ctx := context.TODO()
-	actor.UpdateChatter(ctx, "user1", "user1DisplayName", current)
+	current, _, sut := setupCommandTest()
 
 	assert := assert.New(t)
-	_, err := sut.HandleMessage(current, chat.ChatMessage{
+	_, err := sut.HandleMessage(current, ChatMessage{
 		Username:        "user1",
 		UserDisplayName: "user1DisplayName",
 		Message:         "!chibi face back",
@@ -385,14 +363,11 @@ func TestCmdProcessorHandleMessage_ChibiSetFaceOnlyForBattleStance(t *testing.T)
 }
 
 func TestCmdProcessorHandleMessage_ChibiSetFaceOnly(t *testing.T) {
-	actor := NewFakeChibiActor()
-	current, sut := setupCommandTest()
+	current, actor, sut := setupCommandTest()
 	current.ChibiStance = spine.CHIBI_STANCE_ENUM_BATTLE
-	ctx := context.TODO()
-	actor.UpdateChatter(ctx, "user1", "user1DisplayName", current)
 
 	assert := assert.New(t)
-	cmd, err := sut.HandleMessage(current, chat.ChatMessage{
+	cmd, err := sut.HandleMessage(current, ChatMessage{
 		Username:        "user1",
 		UserDisplayName: "user1DisplayName",
 		Message:         "!chibi face back",
@@ -412,13 +387,10 @@ func TestCmdProcessorHandleMessage_ChibiSetFaceOnly(t *testing.T) {
 
 func TestCmdProcessorHandleMessage_ChibiEnemyNotEnoughArgs(t *testing.T) {
 	// TODO: Need to add enemy to AssetService in order to test enemy happy path
-	actor := NewFakeChibiActor()
-	current, sut := setupCommandTest()
-	ctx := context.TODO()
-	actor.UpdateChatter(ctx, "user1", "user1DisplayName", current)
+	current, actor, sut := setupCommandTest()
 
 	assert := assert.New(t)
-	cmd, err := sut.HandleMessage(current, chat.ChatMessage{
+	cmd, err := sut.HandleMessage(current, ChatMessage{
 		Username:        "user1",
 		UserDisplayName: "user1DisplayName",
 		Message:         "!chibi enemy",
@@ -435,16 +407,13 @@ func TestCmdProcessorHandleMessage_ChibiEnemyNotEnoughArgs(t *testing.T) {
 }
 
 func TestCmdProcessorHandleMessage_ChibiEnemyHappyPath(t *testing.T) {
-	actor := NewFakeChibiActor()
-	current, sut := setupCommandTest()
+	current, actor, sut := setupCommandTest()
 	current.MovementSpeed = misc.NewOption[misc.Vector2](
 		misc.Vector2{X: 160, Y: 0},
 	)
-	ctx := context.TODO()
-	actor.UpdateChatter(ctx, "user1", "user1DisplayName", current)
 
 	assert := assert.New(t)
-	cmd, err := sut.HandleMessage(current, chat.ChatMessage{
+	cmd, err := sut.HandleMessage(current, ChatMessage{
 		Username:        "user1",
 		UserDisplayName: "user1DisplayName",
 		Message:         "!chibi enemy Slug",
@@ -466,13 +435,10 @@ func TestCmdProcessorHandleMessage_ChibiEnemyHappyPath(t *testing.T) {
 }
 
 func TestCmdProcessorHandleMessage_ChibiWalk(t *testing.T) {
-	actor := NewFakeChibiActor()
-	current, sut := setupCommandTest()
-	ctx := context.TODO()
-	actor.UpdateChatter(ctx, "user1", "user1DisplayName", current)
+	current, actor, sut := setupCommandTest()
 
 	assert := assert.New(t)
-	cmd, err := sut.HandleMessage(current, chat.ChatMessage{
+	cmd, err := sut.HandleMessage(current, ChatMessage{
 		Username:        "user1",
 		UserDisplayName: "user1DisplayName",
 		Message:         "!chibi walk",
@@ -492,13 +458,10 @@ func TestCmdProcessorHandleMessage_ChibiWalk(t *testing.T) {
 }
 
 func TestCmdProcessorHandleMessage_ChibiWalkTo(t *testing.T) {
-	actor := NewFakeChibiActor()
-	current, sut := setupCommandTest()
-	ctx := context.TODO()
-	actor.UpdateChatter(ctx, "user1", "user1DisplayName", current)
+	current, actor, sut := setupCommandTest()
 
 	assert := assert.New(t)
-	cmd, err := sut.HandleMessage(current, chat.ChatMessage{
+	cmd, err := sut.HandleMessage(current, ChatMessage{
 		Username:        "user1",
 		UserDisplayName: "user1DisplayName",
 		Message:         "!chibi walk 0.5",
@@ -519,13 +482,10 @@ func TestCmdProcessorHandleMessage_ChibiWalkTo(t *testing.T) {
 }
 
 func TestCmdProcessorHandleMessage_ChibiAnimationSpeed(t *testing.T) {
-	actor := NewFakeChibiActor()
-	current, sut := setupCommandTest()
-	ctx := context.TODO()
-	actor.UpdateChatter(ctx, "user1", "user1DisplayName", current)
+	current, actor, sut := setupCommandTest()
 
 	assert := assert.New(t)
-	cmd, err := sut.HandleMessage(current, chat.ChatMessage{
+	cmd, err := sut.HandleMessage(current, ChatMessage{
 		Username:        "user1",
 		UserDisplayName: "user1DisplayName",
 		Message:         "!chibi speed 2.0",
@@ -543,13 +503,10 @@ func TestCmdProcessorHandleMessage_ChibiAnimationSpeed(t *testing.T) {
 }
 
 func TestCmdProcessorHandleMessage_ChibiAnimationSpeedMaxSpeed(t *testing.T) {
-	actor := NewFakeChibiActor()
-	current, sut := setupCommandTest()
-	ctx := context.TODO()
-	actor.UpdateChatter(ctx, "user1", "user1DisplayName", current)
+	current, _, sut := setupCommandTest()
 
 	assert := assert.New(t)
-	_, err := sut.HandleMessage(current, chat.ChatMessage{
+	_, err := sut.HandleMessage(current, ChatMessage{
 		Username:        "user1",
 		UserDisplayName: "user1DisplayName",
 		Message:         "!chibi speed 6.0",
@@ -560,16 +517,13 @@ func TestCmdProcessorHandleMessage_ChibiAnimationSpeedMaxSpeed(t *testing.T) {
 }
 
 func TestCmdProcessorHandleMessage_ChibiChibiModel(t *testing.T) {
-	actor := NewFakeChibiActor()
-	current, sut := setupCommandTest()
+	current, actor, sut := setupCommandTest()
 	current.MovementSpeed = misc.NewOption[misc.Vector2](
 		misc.Vector2{X: 160, Y: 0},
 	)
-	ctx := context.TODO()
-	actor.UpdateChatter(ctx, "user1", "user1DisplayName", current)
 
 	assert := assert.New(t)
-	cmd, err := sut.HandleMessage(current, chat.ChatMessage{
+	cmd, err := sut.HandleMessage(current, ChatMessage{
 		Username:        "user1",
 		UserDisplayName: "user1DisplayName",
 		Message:         "!chibi amiya",
@@ -577,7 +531,6 @@ func TestCmdProcessorHandleMessage_ChibiChibiModel(t *testing.T) {
 
 	assert.Nil(err)
 	assert.Empty(cmd.Reply(actor))
-	// cmd.UpdateActor(actor)
 	if updateActorCmd, ok := cmd.(*ChatCommandUpdateActor); ok {
 		assert.Equal(updateActorCmd.username, "user1")
 		assert.Equal(updateActorCmd.usernameDisplay, "user1DisplayName")
@@ -588,26 +541,22 @@ func TestCmdProcessorHandleMessage_ChibiChibiModel(t *testing.T) {
 	assert.Equal(spine.FACTION_ENUM_OPERATOR, current.Faction)
 	assert.Equal(1.0, current.AnimationSpeed)
 	assert.True(current.SpriteScale.IsNone())
-	// assert.True(current.MovementSpeed.IsNone())
 	assert.Equal(160.0, current.MovementSpeed.Unwrap().X)
 }
 
 func TestCmdProcessorHandleMessage_Regression_EnemyToOperatorShouldMaintainWanderAction(t *testing.T) {
-	actor := NewFakeChibiActor()
-	current, sut := setupCommandTest()
+	current, actor, sut := setupCommandTest()
 	current.OperatorDisplayName = "Slug"
 	current.OperatorId = "enemy_1007_slime_2"
 	current.Faction = spine.FACTION_ENUM_ENEMY
 	current.ChibiStance = spine.CHIBI_STANCE_ENUM_BATTLE
 	current.CurrentAction = spine.ACTION_WANDER
 	current.Action = spine.NewActionWander("Move")
-	ctx := context.TODO()
-	actor.UpdateChatter(ctx, "user1", "user1DisplayName", current)
 
 	log.Printf("%v\n", current)
 
 	assert := assert.New(t)
-	cmd, err := sut.HandleMessage(current, chat.ChatMessage{
+	cmd, err := sut.HandleMessage(current, ChatMessage{
 		Username:        "user1",
 		UserDisplayName: "user1DisplayName",
 		Message:         "!chibi amiya",
@@ -630,13 +579,10 @@ func TestCmdProcessorHandleMessage_Regression_EnemyToOperatorShouldMaintainWande
 }
 
 func TestCmdProcessorHandleMessage_ChibiScale(t *testing.T) {
-	actor := NewFakeChibiActor()
-	current, sut := setupCommandTest()
-	ctx := context.TODO()
-	actor.UpdateChatter(ctx, "user1", "user1DisplayName", current)
+	current, actor, sut := setupCommandTest()
 
 	assert := assert.New(t)
-	cmd, err := sut.HandleMessage(current, chat.ChatMessage{
+	cmd, err := sut.HandleMessage(current, ChatMessage{
 		Username:        "user1",
 		UserDisplayName: "user1DisplayName",
 		Message:         "!chibi size 0.5",
@@ -655,13 +601,10 @@ func TestCmdProcessorHandleMessage_ChibiScale(t *testing.T) {
 }
 
 func TestCmdProcessorHandleMessage_ChibiMoveSpeed(t *testing.T) {
-	actor := NewFakeChibiActor()
-	current, sut := setupCommandTest()
-	ctx := context.TODO()
-	actor.UpdateChatter(ctx, "user1", "user1DisplayName", current)
+	current, actor, sut := setupCommandTest()
 
 	assert := assert.New(t)
-	cmd, err := sut.HandleMessage(current, chat.ChatMessage{
+	cmd, err := sut.HandleMessage(current, ChatMessage{
 		Username:        "user1",
 		UserDisplayName: "user1DisplayName",
 		Message:         "!chibi move_speed 2",
@@ -680,13 +623,10 @@ func TestCmdProcessorHandleMessage_ChibiMoveSpeed(t *testing.T) {
 }
 
 func TestCmdProcessorHandleMessage_ChibiMoveSpeedOutOfRange(t *testing.T) {
-	actor := NewFakeChibiActor()
-	current, sut := setupCommandTest()
-	ctx := context.TODO()
-	actor.UpdateChatter(ctx, "user1", "user1DisplayName", current)
+	current, _, sut := setupCommandTest()
 
 	assert := assert.New(t)
-	_, err := sut.HandleMessage(current, chat.ChatMessage{
+	_, err := sut.HandleMessage(current, ChatMessage{
 		Username:        "user1",
 		UserDisplayName: "user1DisplayName",
 		Message:         fmt.Sprintf("!chibi move_speed %f", sut.spineService.GetMaxMovementSpeed()+1),

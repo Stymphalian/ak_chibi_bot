@@ -1,4 +1,4 @@
-package chibi
+package chat
 
 import (
 	"context"
@@ -8,29 +8,24 @@ import (
 	"github.com/Stymphalian/ak_chibi_bot/server/internal/spine"
 )
 
-type ChatCommand interface {
-	Reply(c ChibiActorInterface) string
-	UpdateActor(c ChibiActorInterface) error
-}
-
 type ChatCommandNoOp struct{}
 
-func (c *ChatCommandNoOp) Reply(a ChibiActorInterface) string      { return "" }
-func (c *ChatCommandNoOp) UpdateActor(a ChibiActorInterface) error { return nil }
+func (c *ChatCommandNoOp) Reply(a ActorUpdater) string      { return "" }
+func (c *ChatCommandNoOp) UpdateActor(a ActorUpdater) error { return nil }
 
 type ChatCommandSimpleMessage struct {
 	replyMessage string
 }
 
-func (c *ChatCommandSimpleMessage) Reply(a ChibiActorInterface) string      { return c.replyMessage }
-func (c *ChatCommandSimpleMessage) UpdateActor(a ChibiActorInterface) error { return nil }
+func (c *ChatCommandSimpleMessage) Reply(a ActorUpdater) string      { return c.replyMessage }
+func (c *ChatCommandSimpleMessage) UpdateActor(a ActorUpdater) error { return nil }
 
 type ChatCommandInfo struct {
 	username string
 	info     string
 }
 
-func (c *ChatCommandInfo) Reply(chibiActor ChibiActorInterface) string {
+func (c *ChatCommandInfo) Reply(chibiActor ActorUpdater) string {
 	ctx := context.Background()
 	current, err := chibiActor.CurrentInfo(ctx, c.username)
 	if err != nil {
@@ -58,7 +53,7 @@ func (c *ChatCommandInfo) Reply(chibiActor ChibiActorInterface) string {
 	}
 	return msg
 }
-func (c *ChatCommandInfo) UpdateActor(a ChibiActorInterface) error { return nil }
+func (c *ChatCommandInfo) UpdateActor(a ActorUpdater) error { return nil }
 
 type ChatCommandUpdateActor struct {
 	replyMessage    string
@@ -67,8 +62,8 @@ type ChatCommandUpdateActor struct {
 	update          *spine.OperatorInfo
 }
 
-func (c *ChatCommandUpdateActor) Reply(a ChibiActorInterface) string { return c.replyMessage }
-func (c *ChatCommandUpdateActor) UpdateActor(a ChibiActorInterface) error {
+func (c *ChatCommandUpdateActor) Reply(a ActorUpdater) string { return c.replyMessage }
+func (c *ChatCommandUpdateActor) UpdateActor(a ActorUpdater) error {
 	ctx := context.Background()
 	return a.UpdateChibi(ctx, c.username, c.usernameDisplay, c.update)
 }

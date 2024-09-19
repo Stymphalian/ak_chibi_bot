@@ -1,4 +1,4 @@
-package chibi
+package chat
 
 import (
 	"errors"
@@ -8,7 +8,6 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/Stymphalian/ak_chibi_bot/server/internal/chat"
 	"github.com/Stymphalian/ak_chibi_bot/server/internal/misc"
 	"github.com/Stymphalian/ak_chibi_bot/server/internal/spine"
 )
@@ -17,12 +16,18 @@ type ChatCommandProcessor struct {
 	spineService *spine.SpineService
 }
 
+func NewChatCommandProcessor(spineService *spine.SpineService) *ChatCommandProcessor {
+	return &ChatCommandProcessor{
+		spineService: spineService,
+	}
+}
+
 type ChatArgs struct {
-	chatMsg *chat.ChatMessage
+	chatMsg *ChatMessage
 	args    []string
 }
 
-func (c *ChatCommandProcessor) HandleMessage(current *spine.OperatorInfo, chatMsg chat.ChatMessage) (ChatCommand, error) {
+func (c *ChatCommandProcessor) HandleMessage(current *spine.OperatorInfo, chatMsg ChatMessage) (ChatCommand, error) {
 	if !strings.HasPrefix(chatMsg.Message, "!chibi") {
 		return &ChatCommandNoOp{}, nil
 	}
@@ -59,7 +64,8 @@ func (c *ChatCommandProcessor) HandleMessage(current *spine.OperatorInfo, chatMs
 	// !chibi speed 0.1
 	// !chibi size 0.5 [0.1 1.5]
 	// !chibi scale 0.5 [0.1 1.5]
-	// !chibi move_speed 160 [20, 320]
+	// !chibi velocity 2.0 [0.1 1.5]
+	// !chibi move_speed default
 
 	// var msg string
 	subCommand := strings.TrimSpace(args[1])
