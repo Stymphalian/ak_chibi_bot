@@ -219,7 +219,7 @@ func (s *Room) AddWebsocketConnection(w http.ResponseWriter, r *http.Request) er
 		chatters = append(chatters, &spine.ChatterInfo{
 			Username:        chatUser.GetUsername(),
 			UsernameDisplay: chatUser.GetUsernameDisplay(),
-			OperatorInfo:    chatUser.GetOperatorInfo(),
+			OperatorInfo:    *chatUser.GetOperatorInfo(),
 		})
 	}
 	return s.spineRuntime.AddConnection(w, r, chatters)
@@ -245,7 +245,7 @@ func (r *Room) LoadExistingChatters(ctx context.Context) error {
 		return err
 	}
 	for _, chatter := range chatters {
-		user, err := users.GetUserById(ctx, chatter.UserId)
+		user, err := users.GetUserById(ctx, chatter.GetUserId())
 		if err != nil {
 			continue
 		}
@@ -254,7 +254,7 @@ func (r *Room) LoadExistingChatters(ctx context.Context) error {
 			ctx,
 			user.Username,
 			user.UserDisplayName,
-			&chatter.OperatorInfo,
+			chatter.GetOperatorInfo(),
 		)
 	}
 	return nil

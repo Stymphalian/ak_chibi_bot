@@ -113,7 +113,7 @@ func (r *RoomDb) Refresh(ctx context.Context, fields ...string) error {
 
 func (r *RoomDb) Update(ctx context.Context, args ...string) error {
 	db := akdb.DefaultDB.WithContext(ctx)
-	result := db.Model(r).Select(args).Updates(*r)
+	result := db.Model(r).Where("room_id = ?", r.RoomId).Select(args).Updates(*r)
 	if result.Error != nil {
 		log.Println("Error updating room ", r.RoomId, result.Error)
 	}

@@ -97,8 +97,6 @@ func (c *ChibiActor) RemoveUserChibi(ctx context.Context, userName string) error
 		log.Printf("Error removing chibi for %s: %s\n", userName, err)
 	}
 	c.ChatUsers[userName].SetActive(false)
-	c.ChatUsers[userName].Save(ctx)
-
 	delete(c.ChatUsers, userName)
 	return nil
 }
@@ -173,7 +171,7 @@ func (c *ChibiActor) CurrentInfo(ctx context.Context, userName string) (spine.Op
 		return *spine.EmptyOperatorInfo(), spine.NewUserNotFound("User not found: " + userName)
 	}
 
-	return chatUser.GetOperatorInfo(), nil
+	return *chatUser.GetOperatorInfo(), nil
 }
 
 func (c *ChibiActor) UpdateChatter(

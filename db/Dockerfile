@@ -4,6 +4,7 @@ FROM postgres:16.4 AS base
 COPY ./configs/pg_hba.conf /opt/postgres/pg_hba.conf
 COPY ./configs/postgresql.conf /opt/postgres/postgresql.conf
 COPY ./configs/50-hba.sh /docker-entrypoint-initdb.d/50-hba.sh
+COPY ./configs/50-postgresql_conf.sh /docker-entrypoint-initdb.d/50-postgresql_conf.sh
 COPY ./configs/100-web_user.sql /docker-entrypoint-initdb.d/100-web_user.sql
 RUN chown postgres:postgres /opt/postgres/pg_hba.conf
 RUN chown postgres:postgres /opt/postgres/postgresql.conf

@@ -21,47 +21,41 @@ func NewChatUser(User *UserDb, Chatter *ChatterDb) (*ChatUser, error) {
 }
 
 func (c *ChatUser) Close() error {
-	c.chatter.IsActive = false
-	return c.Save(context.Background())
+	return c.chatter.SetIsActive(context.Background(), false)
 }
 
 func (c *ChatUser) IsActiveChatter(period time.Duration) bool {
-	return misc.Clock.Since(c.chatter.LastChatTime) < period
+	return misc.Clock.Since(c.chatter.GetLastChatTime()) < period
 }
 
 func (c *ChatUser) GetUsername() string {
 	return c.user.Username
 }
+
 func (c *ChatUser) GetUsernameDisplay() string {
 	return c.user.UserDisplayName
 }
 
-func (c *ChatUser) GetOperatorInfo() spine.OperatorInfo {
-	return c.chatter.OperatorInfo
+func (c *ChatUser) GetOperatorInfo() *spine.OperatorInfo {
+	return c.chatter.GetOperatorInfo()
 }
-func (c *ChatUser) SetOperatorInfo(v *spine.OperatorInfo) {
-	c.chatter.OperatorInfo = *v
-	c.Save(context.Background())
+
+func (c *ChatUser) SetOperatorInfo(v *spine.OperatorInfo) error {
+	return c.chatter.SetOperatorInfo(context.Background(), v)
 }
+
 func (c *ChatUser) GetLastChatTime() time.Time {
-	return c.chatter.LastChatTime
+	return c.chatter.GetLastChatTime()
 }
+
 func (c *ChatUser) SetLastChatTime(v time.Time) {
-	c.chatter.LastChatTime = v
-	c.Save(context.Background())
+	c.chatter.SetLastChatTime(context.Background(), v)
 }
 
 func (c *ChatUser) SetActive(isActive bool) {
-	c.chatter.IsActive = isActive
-	c.Save(context.Background())
-}
-func (c *ChatUser) IsActive() bool {
-	return c.chatter.IsActive
+	c.chatter.SetIsActive(context.Background(), isActive)
 }
 
-func (c *ChatUser) Save(ctx context.Context) error {
-	if err := UpdateUser(ctx, c.user); err != nil {
-		return err
-	}
-	return UpdateChatter(ctx, c.chatter)
+func (c *ChatUser) IsActive() bool {
+	return c.chatter.GetIsActive()
 }
