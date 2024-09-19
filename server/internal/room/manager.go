@@ -56,9 +56,9 @@ func (r *RoomsManager) LoadExistingRooms(ctx context.Context) error {
 	}
 
 	for _, roomDb := range roomDbs {
-		log.Println("Reloading room", roomDb.ChannelName)
+		log.Println("Reloading room", roomDb.GetChannelName())
 		r.InsertRoom(roomDb)
-		room := r.Rooms[roomDb.ChannelName]
+		room := r.Rooms[roomDb.GetChannelName()]
 		room.LoadExistingChatters(ctx)
 	}
 	return nil
@@ -133,11 +133,11 @@ func (r *RoomsManager) getRoomServices(channelName string) (*spine.SpineBridge, 
 }
 
 func (r *RoomsManager) InsertRoom(roomDb *RoomDb) error {
-	spineBridge, chibiActor, twitchBot, err := r.getRoomServices(roomDb.ChannelName)
+	spineBridge, chibiActor, twitchBot, err := r.getRoomServices(roomDb.GetChannelName())
 	if err != nil {
 		return err
 	}
-	log.Println("Inserting room: ", roomDb.ChannelName)
+	log.Println("Inserting room: ", roomDb.GetChannelName())
 	room := NewRoom(
 		roomDb,
 		r.spineService,
@@ -147,7 +147,7 @@ func (r *RoomsManager) InsertRoom(roomDb *RoomDb) error {
 	)
 
 	r.rooms_mutex.Lock()
-	r.Rooms[roomDb.ChannelName] = room
+	r.Rooms[roomDb.GetChannelName()] = room
 	r.rooms_mutex.Unlock()
 
 	misc.Monitor.NumRoomsCreated += 1
