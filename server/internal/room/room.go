@@ -29,7 +29,9 @@ type RoomConfig struct {
 // View-Model/Controller - twitchChat
 type Room struct {
 	SpineService              *operator.OperatorService
-	roomDb                    *RoomDb
+	roomId                    uint
+	channelName               string
+	roomRepo                  RoomRepository
 	spineRuntime              spine.SpineRuntime
 	chibiActor                *chibi.ChibiActor
 	twitchChat                chatbot.ChatBotter
@@ -38,25 +40,28 @@ type Room struct {
 }
 
 func NewRoom(
-	roomDb *RoomDb,
+	roomId uint,
+	chanelName string,
+	roomRepo RoomRepository,
 	spineService *operator.OperatorService,
 	spineRuntime spine.SpineRuntime,
 	chibiActor *chibi.ChibiActor,
 	twitchBot chatbot.ChatBotter) *Room {
 	r := &Room{
-		roomDb:       roomDb,
+		roomId:       roomId,
+		channelName:  chanelName,
+		roomRepo:     roomRepo,
 		SpineService: spineService,
 		spineRuntime: spineRuntime,
 		chibiActor:   chibiActor,
 		twitchChat:   twitchBot,
 		createdAt:    misc.Clock.Now(),
 	}
-	chibiActor.SetRoomId(r.roomDb.GetRoomId())
 	return r
 }
 
 func (r *Room) GetChannelName() string {
-	return r.roomDb.GetChannelName()
+	return r.channelName
 }
 
 func (r *Room) GetLastChatterTime() time.Time {
@@ -71,18 +76,14 @@ func (r *Room) GetNextGarbageCollectionTime() time.Time {
 	return r.nextGarbageCollectionTime
 }
 
-func (r *Room) IsRoomActive() bool {
-	return r.roomDb.GetIsActive()
-}
-
 func (r *Room) SetActive(isActive bool) {
-	r.roomDb.SetIsActive(context.Background(), isActive)
+	r.roomRepo.SetRoomActiveById(context.Background(), r.roomId, isActive)
 }
 
 func (r *Room) Close() error {
 	log.Println("Closing room ", r.GetChannelName())
 
-	if !r.IsRoomActive() {
+	if !r.roomRepo.IsRoomActiveById(context.Background(), r.roomId) {
 		// If the room is inactive, we can clear out all the chibis/chatters
 		err := r.chibiActor.Close()
 		if err != nil {
@@ -105,11 +106,11 @@ func (r *Room) Close() error {
 	return nil
 }
 
-func (r *Room) garbageCollectOldChibis() {
+func (r *Room) garbageCollectOldChibis(interval time.Duration) {
 	log.Printf("Garbage collecting old chibis from room %s", r.GetChannelName())
 
 	ctx := context.Background()
-	interval := time.Duration(r.roomDb.GetGarbageCollectionPeriodMins()) * time.Minute
+	// interval := time.Duration(r.roomDb.GetGarbageCollectionPeriodMins()) * time.Minute
 	for username, chatUser := range r.chibiActor.ChatUsers {
 		if username == r.GetChannelName() {
 			// Skip removing the broadcaster's chibi
@@ -130,13 +131,14 @@ func (r *Room) Run() {
 	var err error
 	log.Printf("Room %s is running\n", r.GetChannelName())
 
-	if r.roomDb.GetGarbageCollectionPeriodMins() > 0 {
-		period := time.Duration(r.roomDb.GetGarbageCollectionPeriodMins()) * time.Minute
+	GCPeriodMins := r.roomRepo.GetRoomGarbageCollectionPeriodMins(context.Background(), r.roomId)
+	if GCPeriodMins > 0 {
+		period := time.Duration(GCPeriodMins) * time.Minute
 		r.nextGarbageCollectionTime = time.Now().Add(period)
 		stopTimer := misc.StartTimer(
 			fmt.Sprintf("GarbageCollectOldChibis %s", r.GetChannelName()),
 			period,
-			r.garbageCollectOldChibis,
+			func() { r.garbageCollectOldChibis(period) },
 		)
 		defer stopTimer()
 	}
@@ -236,15 +238,18 @@ func (r *Room) RemoveUserChibi(ctx context.Context, username string) error {
 	return r.chibiActor.RemoveUserChibi(ctx, username)
 }
 
-func (r *Room) GetSpineRuntimeConfig() misc.SpineRuntimeConfig {
-	return *r.roomDb.GetSpineRuntimeConfig()
+func (r *Room) GetSpineRuntimeConfig(ctx context.Context) (*misc.SpineRuntimeConfig, error) {
+	return r.roomRepo.GetSpineRuntimeConfigById(ctx, r.roomId)
 }
 
 func (r *Room) UpdateSpineRuntimeConfig(ctx context.Context, newConfig *misc.SpineRuntimeConfig) error {
 	if err := misc.ValidateSpineRuntimeConfig(newConfig); err != nil {
 		return err
 	}
-	runtimeConfig := r.roomDb.GetSpineRuntimeConfig()
+	runtimeConfig, err := r.roomRepo.GetSpineRuntimeConfigById(ctx, r.roomId)
+	if err != nil {
+		return err
+	}
 	if newConfig.MinAnimationSpeed > 0 {
 		runtimeConfig.MinAnimationSpeed = newConfig.MinAnimationSpeed
 	}
@@ -275,10 +280,10 @@ func (r *Room) UpdateSpineRuntimeConfig(ctx context.Context, newConfig *misc.Spi
 	if newConfig.DefaultMovementSpeed > 0 {
 		runtimeConfig.DefaultMovementSpeed = newConfig.DefaultMovementSpeed
 	}
-	r.roomDb.SetSpineRuntimeConfig(ctx, runtimeConfig)
+	r.roomRepo.UpdateSpineRuntimeConfigForId(ctx, r.roomId, runtimeConfig)
 	return nil
 }
 
 func (r *Room) GetRoomId() uint {
-	return r.roomDb.GetRoomId()
+	return r.roomId
 }

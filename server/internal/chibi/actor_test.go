@@ -17,11 +17,11 @@ func setupActorTest() *ChibiActor {
 	spineService := operator.NewOperatorService(assetManager, misc.DefaultSpineRuntimeConfig())
 	fakeSpineClient := spine.NewFakeSpineClient()
 	sut := NewChibiActor(
+		5000,
 		spineService,
 		fakeSpineClient,
 		[]string{"exlude_user"},
 	)
-	sut.SetRoomId(5000)
 	return sut
 }
 

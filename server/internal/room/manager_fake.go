@@ -8,6 +8,7 @@ import (
 
 func NewFakeRoomsManager() *RoomsManager {
 	assetService := operator.NewTestAssetService()
+	roomRepo := NewPostgresRoomRepository()
 	botConfig := &misc.BotConfig{
 		TwitchClientId:     "test_client_id",
 		TwitchAccessToken:  "test_access_token",
@@ -25,6 +26,7 @@ func NewFakeRoomsManager() *RoomsManager {
 		Rooms:          make(map[string]*Room),
 		assetService:   assetService,
 		spineService:   spineService,
+		roomRepo:       roomRepo,
 		botConfig:      botConfig,
 		twitchClient:   twitch_api.NewFakeTwitchApiClient(),
 		shutdownDoneCh: make(chan struct{}),

@@ -2,7 +2,6 @@ package chibi
 
 import (
 	"context"
-	"fmt"
 	"log"
 	"slices"
 	"time"
@@ -23,10 +22,11 @@ type ChibiActor struct {
 	excludeNames         []string
 
 	// TODO: Find a better way to get the roomId into the ChibiActors/ChatUsers
-	roomId *uint
+	roomId uint
 }
 
 func NewChibiActor(
+	roomId uint,
 	spineService *operator.OperatorService,
 	client spine.SpineClient,
 	excludeNames []string,
@@ -38,6 +38,7 @@ func NewChibiActor(
 		client:               client,
 		chatCommandProcessor: chat.NewChatCommandProcessor(spineService),
 		excludeNames:         excludeNames,
+		roomId:               roomId,
 	}
 	return a
 }
@@ -52,9 +53,9 @@ func (c *ChibiActor) Close() error {
 	return nil
 }
 
-func (c *ChibiActor) SetRoomId(roomId uint) {
-	c.roomId = &roomId
-}
+// func (c *ChibiActor) SetRoomId(roomId uint) {
+// 	c.roomId = &roomId
+// }
 
 func (c *ChibiActor) GiveChibiToUser(ctx context.Context, userName string, userNameDisplay string) error {
 	// Skip giving chibis to these Users
@@ -187,10 +188,7 @@ func (c *ChibiActor) UpdateChatter(
 		if err != nil {
 			return err
 		}
-		if c.roomId == nil {
-			return fmt.Errorf("roomId must be set in order to update a ChatUser")
-		}
-		chatterDb, err := users.GetOrInsertChatter(ctx, *c.roomId, userDb, misc.Clock.Now(), update)
+		chatterDb, err := users.GetOrInsertChatter(ctx, c.roomId, userDb, misc.Clock.Now(), update)
 		if err != nil {
 			return err
 		}

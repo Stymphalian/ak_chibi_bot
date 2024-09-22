@@ -10,38 +10,26 @@ import (
 )
 
 type OperatorService struct {
-	Assets       *AssetService
-	config       *misc.SpineRuntimeConfig
-	config_fetch ConfigFetcherFn
+	Assets *AssetService
+	config *misc.SpineRuntimeConfig
 }
-
-type ConfigFetcherFn func() (*misc.SpineRuntimeConfig, error)
 
 func NewOperatorService(assets *AssetService, config *misc.SpineRuntimeConfig) *OperatorService {
 	return &OperatorService{
-		Assets:       assets,
-		config:       config,
-		config_fetch: nil,
+		Assets: assets,
+		config: config,
 	}
 }
 
 // HACK: TODO: Remove this hack. This is a symptom of bad dependency management
-func (s *OperatorService) WithConfigFetcher(config_fetch ConfigFetcherFn) *OperatorService {
+func (s *OperatorService) WithConfig(newConfig *misc.SpineRuntimeConfig) *OperatorService {
 	return &OperatorService{
-		Assets:       s.Assets,
-		config:       s.config,
-		config_fetch: config_fetch,
+		Assets: s.Assets,
+		config: newConfig,
 	}
 }
 
 func (s *OperatorService) getConfig() *misc.SpineRuntimeConfig {
-	if s.config_fetch != nil {
-		config, err := s.config_fetch()
-		if err != nil {
-			return s.config
-		}
-		return config
-	}
 	return s.config
 }
 

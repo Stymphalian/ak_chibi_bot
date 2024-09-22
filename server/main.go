@@ -33,10 +33,12 @@ type MainStruct struct {
 	botConfigPath  *string
 	botConfig      *misc.BotConfig
 
-	assetService *operator.AssetService
-	roomManager  *room.RoomsManager
-	adminServer  *admin.AdminServer
-	apiServer    *api.ApiServer
+	roomRepository room.RoomRepository
+	assetService   *operator.AssetService
+
+	roomManager *room.RoomsManager
+	adminServer *admin.AdminServer
+	apiServer   *api.ApiServer
 }
 
 func NewMainStruct() *MainStruct {
@@ -62,7 +64,9 @@ func NewMainStruct() *MainStruct {
 	if err != nil {
 		log.Fatal(err)
 	}
-	roomManager := room.NewRoomsManager(assetService, botConfig)
+
+	roomRepo := room.NewPostgresRoomRepository()
+	roomManager := room.NewRoomsManager(assetService, roomRepo, botConfig)
 	adminServer := admin.NewAdminServer(roomManager, botConfig, *staticAssetsDir)
 	apiServer := api.NewApiServer(roomManager)
 
@@ -73,6 +77,7 @@ func NewMainStruct() *MainStruct {
 		botConfigPath,
 		botConfig,
 
+		roomRepo,
 		assetService,
 		roomManager,
 		adminServer,

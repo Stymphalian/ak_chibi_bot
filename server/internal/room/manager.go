@@ -13,6 +13,7 @@ import (
 	"github.com/Stymphalian/ak_chibi_bot/server/internal/chibi"
 	"github.com/Stymphalian/ak_chibi_bot/server/internal/misc"
 	"github.com/Stymphalian/ak_chibi_bot/server/internal/operator"
+
 	spine "github.com/Stymphalian/ak_chibi_bot/server/internal/spine_runtime"
 	"github.com/Stymphalian/ak_chibi_bot/server/internal/twitch_api"
 )
@@ -28,18 +29,20 @@ type RoomsManager struct {
 
 	assetService *operator.AssetService
 	spineService *operator.OperatorService
+	roomRepo     RoomRepository
 
 	botConfig      *misc.BotConfig
 	twitchClient   twitch_api.TwitchApiClientInterface
 	shutdownDoneCh chan struct{}
 }
 
-func NewRoomsManager(assets *operator.AssetService, botConfig *misc.BotConfig) *RoomsManager {
+func NewRoomsManager(assets *operator.AssetService, roomRepo RoomRepository, botConfig *misc.BotConfig) *RoomsManager {
 	spineService := operator.NewOperatorService(assets, botConfig.SpineRuntimeConfig)
 	return &RoomsManager{
 		Rooms:        make(map[string]*Room, 0),
 		assetService: assets,
 		spineService: spineService,
+		roomRepo:     roomRepo,
 		botConfig:    botConfig,
 		twitchClient: twitch_api.NewTwitchApiClient(
 			botConfig.TwitchClientId,
@@ -51,15 +54,15 @@ func NewRoomsManager(assets *operator.AssetService, botConfig *misc.BotConfig) *
 
 func (r *RoomsManager) LoadExistingRooms(ctx context.Context) error {
 	log.Println("Reloading Existing rooms")
-	roomDbs, err := GetActiveRooms(ctx)
+	roomDbs, err := r.roomRepo.GetActiveRooms(ctx)
 	if err != nil {
 		return err
 	}
 
 	for _, roomDb := range roomDbs {
-		log.Println("Reloading room", roomDb.GetChannelName())
+		log.Println("Reloading room", roomDb.ChannelName)
 		r.InsertRoom(roomDb)
-		room := r.Rooms[roomDb.GetChannelName()]
+		room := r.Rooms[roomDb.ChannelName]
 		room.LoadExistingChatters(ctx)
 	}
 	return nil
@@ -116,18 +119,23 @@ func (r *RoomsManager) checkChannelValid(channel string) (bool, error) {
 }
 
 func (r *RoomsManager) getRoomServices(roomDb *RoomDb) (*operator.OperatorService, *spine.SpineBridge, *chibi.ChibiActor, *chatbot.TwitchBot, error) {
-	channelName := roomDb.GetChannelName()
-	newSpineService := r.spineService.WithConfigFetcher(
-		func() (*misc.SpineRuntimeConfig, error) {
-			return roomDb.GetSpineRuntimeConfig(), nil
-		},
-	)
+	channelName := roomDb.ChannelName
+	spineRuntimeConfig, err := r.roomRepo.GetSpineRuntimeConfigById(context.Background(), roomDb.RoomId)
+	if err != nil {
+		return nil, nil, nil, nil, err
+	}
+	newSpineService := r.spineService.WithConfig(spineRuntimeConfig)
 
 	spineBridge, err := spine.NewSpineBridge(newSpineService)
 	if err != nil {
 		return nil, nil, nil, nil, err
 	}
-	chibiActor := chibi.NewChibiActor(newSpineService, spineBridge, r.botConfig.ExcludeNames)
+	chibiActor := chibi.NewChibiActor(
+		roomDb.RoomId,
+		newSpineService,
+		spineBridge,
+		r.botConfig.ExcludeNames,
+	)
 	twitchBot, err := chatbot.NewTwitchBot(
 		chibiActor,
 		channelName,
@@ -145,9 +153,11 @@ func (r *RoomsManager) InsertRoom(roomDb *RoomDb) error {
 	if err != nil {
 		return err
 	}
-	log.Println("Inserting room: ", roomDb.GetChannelName())
+	log.Println("Inserting room: ", roomDb.ChannelName)
 	room := NewRoom(
-		roomDb,
+		roomDb.RoomId,
+		roomDb.ChannelName,
+		r.roomRepo,
 		spineService,
 		spineBridge,
 		chibiActor,
@@ -155,7 +165,7 @@ func (r *RoomsManager) InsertRoom(roomDb *RoomDb) error {
 	)
 
 	r.rooms_mutex.Lock()
-	r.Rooms[roomDb.GetChannelName()] = room
+	r.Rooms[roomDb.ChannelName] = room
 	r.rooms_mutex.Unlock()
 
 	misc.Monitor.NumRoomsCreated += 1
@@ -180,12 +190,16 @@ func (r *RoomsManager) CreateRoomOrNoOp(ctx context.Context, channel string) err
 		GarbageCollectionPeriodMins: r.botConfig.RemoveChibiAfterMinutes,
 		SpineRuntimeConfig:          r.botConfig.SpineRuntimeConfig,
 	}
-	roomDb, isNew, err := GetOrInsertRoom(ctx, roomConfig)
+	roomDb, isNew, err := r.roomRepo.GetOrInsertRoom(ctx, roomConfig)
 	if err != nil {
 		return err
 	}
-	roomWasInactive := !roomDb.GetIsActive()
-	roomDb.SetIsActive(ctx, true)
+	roomWasInactive := !roomDb.IsActive
+	roomDb.IsActive = true
+	err = r.roomRepo.SetRoomActiveById(ctx, roomDb.RoomId, true)
+	if err != nil {
+		return err
+	}
 
 	// Create the services needed by the room
 	spineService, spineBridge, chibiActor, twitchBot, err := r.getRoomServices(roomDb)
@@ -193,14 +207,22 @@ func (r *RoomsManager) CreateRoomOrNoOp(ctx context.Context, channel string) err
 		return err
 	}
 
-	roomObj := NewRoom(roomDb, spineService, spineBridge, chibiActor, twitchBot)
+	roomObj := NewRoom(
+		roomDb.RoomId,
+		roomDb.ChannelName,
+		r.roomRepo,
+		spineService,
+		spineBridge,
+		chibiActor,
+		twitchBot,
+	)
 	if isNew || roomWasInactive {
-		log.Println("Adding default chibi for ", roomDb.GetChannelName())
+		log.Println("Adding default chibi for ", roomDb.ChannelName)
 		roomObj.chibiActor.SetToDefault(
 			ctx,
-			roomDb.GetChannelName(),
-			roomDb.GetDefaultOperatorName(),
-			*roomDb.GetDefaultOperatorConfig(),
+			roomDb.ChannelName,
+			roomDb.DefaultOperatorName,
+			roomDb.DefaultOperatorConfig,
 		)
 	}
 

@@ -87,7 +87,12 @@ func (s *ApiServer) HandleRoomUpdate(w http.ResponseWriter, r *http.Request) err
 	}
 	room := s.roomsManager.Rooms[channelName]
 
-	config := room.GetSpineRuntimeConfig()
+	config, err := room.GetSpineRuntimeConfig(context.Background())
+	if err != nil {
+		return err
+	}
+	// repo := room.RoomRepositoryPsql{}
+	// config, err := room.GetSpineRuntimeConfigById(context.Background(), roomObj.GetRoomId())
 	if reqBody.MinAnimationSpeed > 0 {
 		config.MinAnimationSpeed = reqBody.MinAnimationSpeed
 	}
@@ -110,14 +115,14 @@ func (s *ApiServer) HandleRoomUpdate(w http.ResponseWriter, r *http.Request) err
 		config.MaxSpritePixelSize = reqBody.MaxSpritePixelSize
 	}
 
-	if err := misc.ValidateSpineRuntimeConfig(&config); err != nil {
+	if err := misc.ValidateSpineRuntimeConfig(config); err != nil {
 		return misc.NewHumanReadableError(
 			"Invalid configuration settings",
 			http.StatusBadRequest,
 			err,
 		)
 	}
-	err := room.UpdateSpineRuntimeConfig(context.Background(), &config)
+	err = room.UpdateSpineRuntimeConfig(context.Background(), config)
 	if err != nil {
 		return err
 	}

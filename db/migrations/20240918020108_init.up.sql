@@ -10,7 +10,6 @@ CREATE TABLE IF NOT EXISTS users (
 );
 CREATE INDEX IF NOT EXISTS idx_users_username
     ON users (username ASC);
-ALTER SEQUENCE users_user_id_seq RESTART WITH 100000;
 
 CREATE TABLE IF NOT EXISTS rooms (
 	room_id SERIAL PRIMARY KEY,
@@ -26,7 +25,7 @@ CREATE TABLE IF NOT EXISTS rooms (
 );
 CREATE INDEX IF NOT EXISTS idx_rooms_channel_name
     ON rooms (channel_name ASC);
-ALTER SEQUENCE rooms_room_id_seq RESTART WITH 100000;
+
 
 CREATE TABLE IF NOT EXISTS chatters (
 	chatter_id SERIAL PRIMARY KEY,
@@ -41,6 +40,9 @@ CREATE TABLE IF NOT EXISTS chatters (
 );
 CREATE INDEX IF NOT EXISTS idx_chatters_room_id_user_id
     ON chatters (room_id ASC, user_id ASC);
+	
+ALTER SEQUENCE users_user_id_seq RESTART WITH 100000;
+ALTER SEQUENCE rooms_room_id_seq RESTART WITH 100000;
 ALTER SEQUENCE chatters_chatter_id_seq RESTART WITH 100000;	
 
 CREATE OR REPLACE FUNCTION update_updated_at()
