@@ -1,12 +1,14 @@
 package spine
 
+import "github.com/Stymphalian/ak_chibi_bot/server/internal/operator"
+
 type FakeSpineClient struct {
-	Users map[string]OperatorInfo
+	Users map[string]operator.OperatorInfo
 }
 
 func NewFakeSpineClient() *FakeSpineClient {
 	return &FakeSpineClient{
-		Users: make(map[string]OperatorInfo, 0),
+		Users: make(map[string]operator.OperatorInfo, 0),
 	}
 }
 

@@ -9,14 +9,14 @@ import (
 	"strings"
 
 	"github.com/Stymphalian/ak_chibi_bot/server/internal/misc"
-	"github.com/Stymphalian/ak_chibi_bot/server/internal/spine"
+	"github.com/Stymphalian/ak_chibi_bot/server/internal/operator"
 )
 
 type ChatCommandProcessor struct {
-	spineService *spine.SpineService
+	spineService *operator.OperatorService
 }
 
-func NewChatCommandProcessor(spineService *spine.SpineService) *ChatCommandProcessor {
+func NewChatCommandProcessor(spineService *operator.OperatorService) *ChatCommandProcessor {
 	return &ChatCommandProcessor{
 		spineService: spineService,
 	}
@@ -27,7 +27,7 @@ type ChatArgs struct {
 	args    []string
 }
 
-func (c *ChatCommandProcessor) HandleMessage(current *spine.OperatorInfo, chatMsg ChatMessage) (ChatCommand, error) {
+func (c *ChatCommandProcessor) HandleMessage(current *operator.OperatorInfo, chatMsg ChatMessage) (ChatCommand, error) {
 	if !strings.HasPrefix(chatMsg.Message, "!chibi") {
 		return &ChatCommandNoOp{}, nil
 	}
@@ -156,7 +156,7 @@ func (c *ChatCommandProcessor) chibiHelp(args *ChatArgs) (ChatCommand, error) {
 	return &ChatCommandSimpleMessage{replyMessage: msg}, nil
 }
 
-func (c *ChatCommandProcessor) setSkin(args *ChatArgs, current *spine.OperatorInfo) (ChatCommand, error) {
+func (c *ChatCommandProcessor) setSkin(args *ChatArgs, current *operator.OperatorInfo) (ChatCommand, error) {
 	if len(args.args) < 3 {
 		return &ChatCommandNoOp{}, nil
 	}
@@ -175,7 +175,7 @@ func (c *ChatCommandProcessor) setSkin(args *ChatArgs, current *spine.OperatorIn
 	}, nil
 }
 
-func (c *ChatCommandProcessor) setAnimation(args *ChatArgs, current *spine.OperatorInfo) (ChatCommand, error) {
+func (c *ChatCommandProcessor) setAnimation(args *ChatArgs, current *operator.OperatorInfo) (ChatCommand, error) {
 	if len(args.args) < 3 {
 		return &ChatCommandNoOp{}, nil
 	}
@@ -184,8 +184,8 @@ func (c *ChatCommandProcessor) setAnimation(args *ChatArgs, current *spine.Opera
 	if !ok {
 		return &ChatCommandNoOp{}, nil
 	}
-	current.CurrentAction = spine.ACTION_PLAY_ANIMATION
-	current.Action = spine.NewActionPlayAnimation([]string{animation})
+	current.CurrentAction = operator.ACTION_PLAY_ANIMATION
+	current.Action = operator.NewActionPlayAnimation([]string{animation})
 
 	if len(args.args) >= 4 {
 		animations := make([]string, 0)
@@ -199,7 +199,7 @@ func (c *ChatCommandProcessor) setAnimation(args *ChatArgs, current *spine.Opera
 			animations = append(animations, anim)
 		}
 		if !skipAdding {
-			current.Action = spine.NewActionPlayAnimation(animations)
+			current.Action = operator.NewActionPlayAnimation(animations)
 		}
 	}
 
@@ -211,11 +211,11 @@ func (c *ChatCommandProcessor) setAnimation(args *ChatArgs, current *spine.Opera
 	}, nil
 }
 
-func (c *ChatCommandProcessor) setStance(args *ChatArgs, current *spine.OperatorInfo) (ChatCommand, error) {
+func (c *ChatCommandProcessor) setStance(args *ChatArgs, current *operator.OperatorInfo) (ChatCommand, error) {
 	if len(args.args) < 3 {
 		return &ChatCommandNoOp{}, errors.New("try something like !chibi stance battle")
 	}
-	stance, err := spine.ChibiStanceEnum_Parse(args.args[2])
+	stance, err := operator.ChibiStanceEnum_Parse(args.args[2])
 	if err != nil {
 		return &ChatCommandNoOp{}, errors.New("try something like !chibi stance battle")
 	}
@@ -230,15 +230,15 @@ func (c *ChatCommandProcessor) setStance(args *ChatArgs, current *spine.Operator
 	}, nil
 }
 
-func (c *ChatCommandProcessor) setFacing(args *ChatArgs, current *spine.OperatorInfo) (ChatCommand, error) {
+func (c *ChatCommandProcessor) setFacing(args *ChatArgs, current *operator.OperatorInfo) (ChatCommand, error) {
 	if len(args.args) < 3 {
 		return &ChatCommandNoOp{}, errors.New("try something like !chibi face back")
 	}
-	facing, err := spine.ChibiFacingEnum_Parse(args.args[2])
+	facing, err := operator.ChibiFacingEnum_Parse(args.args[2])
 	if err != nil {
 		return &ChatCommandNoOp{}, errors.New("try something like !chibi face back or !chibi face front")
 	}
-	if current.ChibiStance == spine.CHIBI_STANCE_ENUM_BASE && facing == spine.CHIBI_FACING_ENUM_BACK {
+	if current.ChibiStance == operator.CHIBI_STANCE_ENUM_BASE && facing == operator.CHIBI_FACING_ENUM_BACK {
 		return &ChatCommandNoOp{}, errors.New("base chibi's can't face backwards. Try setting to battle stance first")
 	}
 	current.Facing = facing
@@ -251,7 +251,7 @@ func (c *ChatCommandProcessor) setFacing(args *ChatArgs, current *spine.Operator
 	}, nil
 }
 
-func (c *ChatCommandProcessor) setEnemy(args *ChatArgs, current *spine.OperatorInfo) (ChatCommand, error) {
+func (c *ChatCommandProcessor) setEnemy(args *ChatArgs, current *operator.OperatorInfo) (ChatCommand, error) {
 	errMsg := errors.New("try something like !chibi enemy <enemyname or ID> (ie. !chibi enemy Avenger, !chibi enemy SM8")
 	if len(args.args) < 3 {
 		return &ChatCommandNoOp{}, errMsg
@@ -259,12 +259,12 @@ func (c *ChatCommandProcessor) setEnemy(args *ChatArgs, current *spine.OperatorI
 	trimmed := strings.Join(args.args[2:], " ")
 
 	mobName := strings.TrimSpace(trimmed)
-	operatorId, matches := c.spineService.GetOperatorIdFromName(mobName, spine.FACTION_ENUM_ENEMY)
+	operatorId, matches := c.spineService.GetOperatorIdFromName(mobName, operator.FACTION_ENUM_ENEMY)
 	if matches != nil {
 		return &ChatCommandNoOp{}, nil
 	}
 	current.OperatorId = operatorId
-	current.Faction = spine.FACTION_ENUM_ENEMY
+	current.Faction = operator.FACTION_ENUM_ENEMY
 	current.AnimationSpeed = c.spineService.GetDefaultAnimationSpeed()
 	current.SpriteScale = misc.EmptyOption[misc.Vector2]()
 	// current.MovementSpeed = misc.EmptyOption[misc.Vector2]()
@@ -277,16 +277,16 @@ func (c *ChatCommandProcessor) setEnemy(args *ChatArgs, current *spine.OperatorI
 	}, nil
 }
 
-func (c *ChatCommandProcessor) setWalk(args *ChatArgs, current *spine.OperatorInfo) (ChatCommand, error) {
-	if current.Faction == spine.FACTION_ENUM_OPERATOR {
-		current.ChibiStance = spine.CHIBI_STANCE_ENUM_BASE
+func (c *ChatCommandProcessor) setWalk(args *ChatArgs, current *operator.OperatorInfo) (ChatCommand, error) {
+	if current.Faction == operator.FACTION_ENUM_OPERATOR {
+		current.ChibiStance = operator.CHIBI_STANCE_ENUM_BASE
 	}
 
 	// Set the animation to "Move". If "Move" doesn't exist in the list of
 	// animations then try to find an animation with "Move" in its name
 	// Try to keep the current animation if it is already a "move" like animation
 	currentAnimations := current.Action.GetAnimations(current.CurrentAction)
-	moveAnimation := spine.DEFAULT_MOVE_ANIM_NAME
+	moveAnimation := operator.DEFAULT_MOVE_ANIM_NAME
 	for _, animation := range currentAnimations {
 		if strings.Contains(animation, "Move") {
 			moveAnimation = animation
@@ -301,8 +301,8 @@ func (c *ChatCommandProcessor) setWalk(args *ChatArgs, current *spine.OperatorIn
 			}
 		}
 	}
-	current.CurrentAction = spine.ACTION_WANDER
-	current.Action = spine.NewActionWander(moveAnimation)
+	current.CurrentAction = operator.ACTION_WANDER
+	current.Action = operator.NewActionWander(moveAnimation)
 	current.AnimationSpeed = c.spineService.GetDefaultAnimationSpeed()
 
 	if len(args.args) == 3 {
@@ -317,15 +317,15 @@ func (c *ChatCommandProcessor) setWalk(args *ChatArgs, current *spine.OperatorIn
 			desiredPosition = 1.0
 		}
 
-		current.CurrentAction = spine.ACTION_WALK_TO
+		current.CurrentAction = operator.ACTION_WALK_TO
 		animationAfterStance := ""
-		if current.ChibiStance == spine.CHIBI_STANCE_ENUM_BASE {
-			animationAfterStance = spine.DEFAULT_ANIM_BASE_RELAX
+		if current.ChibiStance == operator.CHIBI_STANCE_ENUM_BASE {
+			animationAfterStance = operator.DEFAULT_ANIM_BASE_RELAX
 		} else {
-			animationAfterStance = spine.DEFAULT_ANIM_BATTLE
+			animationAfterStance = operator.DEFAULT_ANIM_BATTLE
 		}
 
-		current.Action = spine.NewActionWalkTo(
+		current.Action = operator.NewActionWalkTo(
 			misc.Vector2{X: desiredPosition, Y: 0.0},
 			moveAnimation,
 			animationAfterStance,
@@ -340,7 +340,7 @@ func (c *ChatCommandProcessor) setWalk(args *ChatArgs, current *spine.OperatorIn
 	}, nil
 }
 
-func (c *ChatCommandProcessor) setAnimationSpeed(args *ChatArgs, current *spine.OperatorInfo) (ChatCommand, error) {
+func (c *ChatCommandProcessor) setAnimationSpeed(args *ChatArgs, current *operator.OperatorInfo) (ChatCommand, error) {
 	if len(args.args) < 3 {
 		return &ChatCommandNoOp{}, errors.New("try something like !chibi speed 0.5")
 	}
@@ -370,14 +370,14 @@ func (c *ChatCommandProcessor) getWhoInfo(args *ChatArgs) (ChatCommand, error) {
 	chibiName := strings.Join(args.args[2:], " ")
 	log.Printf("Searching for %s\n", chibiName)
 
-	operatorId, operatorMatches := c.spineService.GetOperatorIdFromName(chibiName, spine.FACTION_ENUM_OPERATOR)
-	enemyId, enemyMatches := c.spineService.GetOperatorIdFromName(chibiName, spine.FACTION_ENUM_ENEMY)
+	operatorId, operatorMatches := c.spineService.GetOperatorIdFromName(chibiName, operator.FACTION_ENUM_OPERATOR)
+	enemyId, enemyMatches := c.spineService.GetOperatorIdFromName(chibiName, operator.FACTION_ENUM_ENEMY)
 
 	opMat := make([]string, 0)
 	if operatorMatches != nil {
 		opMat = append(opMat, operatorMatches...)
 	} else {
-		resp, err := c.spineService.GetOperator(operatorId, spine.FACTION_ENUM_OPERATOR)
+		resp, err := c.spineService.GetOperator(operatorId, operator.FACTION_ENUM_OPERATOR)
 		if err != nil {
 			return &ChatCommandNoOp{}, nil
 		}
@@ -388,7 +388,7 @@ func (c *ChatCommandProcessor) getWhoInfo(args *ChatArgs) (ChatCommand, error) {
 	if enemyMatches != nil {
 		enemyMat = append(enemyMat, enemyMatches...)
 	} else {
-		resp, err := c.spineService.GetOperator(enemyId, spine.FACTION_ENUM_ENEMY)
+		resp, err := c.spineService.GetOperator(enemyId, operator.FACTION_ENUM_ENEMY)
 		if err != nil {
 			return &ChatCommandNoOp{}, nil
 		}
@@ -408,7 +408,7 @@ func (c *ChatCommandProcessor) getWhoInfo(args *ChatArgs) (ChatCommand, error) {
 	return &ChatCommandSimpleMessage{replyMessage: msg}, nil
 }
 
-func (c *ChatCommandProcessor) setChibiModel(chatArgs *ChatArgs, current *spine.OperatorInfo) (ChatCommand, error) {
+func (c *ChatCommandProcessor) setChibiModel(chatArgs *ChatArgs, current *operator.OperatorInfo) (ChatCommand, error) {
 	trimmed := chatArgs.chatMsg.Message
 	log.Printf("!chibi command triggered with %v\n", trimmed)
 	args := strings.Split(trimmed, " ")
@@ -422,23 +422,23 @@ func (c *ChatCommandProcessor) setChibiModel(chatArgs *ChatArgs, current *spine.
 		return &ChatCommandNoOp{}, errMsg
 	}
 	humanOperatorName := strings.TrimSpace(splitStrs[1])
-	operatorId, matches := c.spineService.GetOperatorIdFromName(humanOperatorName, spine.FACTION_ENUM_OPERATOR)
+	operatorId, matches := c.spineService.GetOperatorIdFromName(humanOperatorName, operator.FACTION_ENUM_OPERATOR)
 	if matches != nil {
 		return &ChatCommandNoOp{}, nil
 	}
 
 	prevFaction := current.Faction
-	if prevFaction == spine.FACTION_ENUM_ENEMY {
+	if prevFaction == operator.FACTION_ENUM_ENEMY {
 		// If changing from an enemy to an operator and the current action is
 		// "walking/wander" we need to set the stance to base in order to
 		// make the chibi continue to walk
-		if spine.IsWalkingAction(current.CurrentAction) {
-			current.ChibiStance = spine.CHIBI_STANCE_ENUM_BASE
+		if operator.IsWalkingAction(current.CurrentAction) {
+			current.ChibiStance = operator.CHIBI_STANCE_ENUM_BASE
 		}
 	}
 
 	current.OperatorId = operatorId
-	current.Faction = spine.FACTION_ENUM_OPERATOR
+	current.Faction = operator.FACTION_ENUM_OPERATOR
 	current.AnimationSpeed = c.spineService.GetDefaultAnimationSpeed()
 	current.SpriteScale = misc.EmptyOption[misc.Vector2]()
 	// current.MovementSpeed = misc.EmptyOption[misc.Vector2]()
@@ -457,7 +457,7 @@ func (c *ChatCommandProcessor) getChibiInfo(args *ChatArgs, subInfoName string) 
 	}, nil
 }
 
-func (c *ChatCommandProcessor) setScale(args *ChatArgs, current *spine.OperatorInfo) (ChatCommand, error) {
+func (c *ChatCommandProcessor) setScale(args *ChatArgs, current *operator.OperatorInfo) (ChatCommand, error) {
 	if len(args.args) < 3 {
 		return &ChatCommandNoOp{}, errors.New("try something like !chibi size 0.5")
 	}
@@ -481,7 +481,7 @@ func (c *ChatCommandProcessor) setScale(args *ChatArgs, current *spine.OperatorI
 	}, nil
 }
 
-func (c *ChatCommandProcessor) setMoveSpeed(args *ChatArgs, current *spine.OperatorInfo) (ChatCommand, error) {
+func (c *ChatCommandProcessor) setMoveSpeed(args *ChatArgs, current *operator.OperatorInfo) (ChatCommand, error) {
 	if len(args.args) < 3 {
 		return &ChatCommandNoOp{}, errors.New("try something like !chibi move_speed 120")
 	}

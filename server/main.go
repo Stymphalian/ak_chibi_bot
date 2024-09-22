@@ -18,8 +18,8 @@ import (
 	"github.com/Stymphalian/ak_chibi_bot/server/internal/admin"
 	"github.com/Stymphalian/ak_chibi_bot/server/internal/api"
 	"github.com/Stymphalian/ak_chibi_bot/server/internal/misc"
+	"github.com/Stymphalian/ak_chibi_bot/server/internal/operator"
 	"github.com/Stymphalian/ak_chibi_bot/server/internal/room"
-	"github.com/Stymphalian/ak_chibi_bot/server/internal/spine"
 )
 
 const (
@@ -33,7 +33,7 @@ type MainStruct struct {
 	botConfigPath  *string
 	botConfig      *misc.BotConfig
 
-	assetService *spine.AssetService
+	assetService *operator.AssetService
 	roomManager  *room.RoomsManager
 	adminServer  *admin.AdminServer
 	apiServer    *api.ApiServer
@@ -58,7 +58,7 @@ func NewMainStruct() *MainStruct {
 	if err != nil {
 		log.Fatal(err)
 	}
-	assetService, err := spine.NewAssetService(*imageAssetDir)
+	assetService, err := operator.NewAssetService(*imageAssetDir)
 	if err != nil {
 		log.Fatal(err)
 	}

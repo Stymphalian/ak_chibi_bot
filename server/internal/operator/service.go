@@ -1,4 +1,4 @@
-package spine
+package operator
 
 import (
 	"errors"
@@ -9,7 +9,7 @@ import (
 	"github.com/Stymphalian/ak_chibi_bot/server/internal/misc"
 )
 
-type SpineService struct {
+type OperatorService struct {
 	Assets       *AssetService
 	config       *misc.SpineRuntimeConfig
 	config_fetch ConfigFetcherFn
@@ -17,8 +17,8 @@ type SpineService struct {
 
 type ConfigFetcherFn func() (*misc.SpineRuntimeConfig, error)
 
-func NewSpineService(assets *AssetService, config *misc.SpineRuntimeConfig) *SpineService {
-	return &SpineService{
+func NewOperatorService(assets *AssetService, config *misc.SpineRuntimeConfig) *OperatorService {
+	return &OperatorService{
 		Assets:       assets,
 		config:       config,
 		config_fetch: nil,
@@ -26,15 +26,15 @@ func NewSpineService(assets *AssetService, config *misc.SpineRuntimeConfig) *Spi
 }
 
 // HACK: TODO: Remove this hack. This is a symptom of bad dependency management
-func (s *SpineService) WithConfigFetcher(config_fetch ConfigFetcherFn) *SpineService {
-	return &SpineService{
+func (s *OperatorService) WithConfigFetcher(config_fetch ConfigFetcherFn) *OperatorService {
+	return &OperatorService{
 		Assets:       s.Assets,
 		config:       s.config,
 		config_fetch: config_fetch,
 	}
 }
 
-func (s *SpineService) getConfig() *misc.SpineRuntimeConfig {
+func (s *OperatorService) getConfig() *misc.SpineRuntimeConfig {
 	if s.config_fetch != nil {
 		config, err := s.config_fetch()
 		if err != nil {
@@ -45,42 +45,42 @@ func (s *SpineService) getConfig() *misc.SpineRuntimeConfig {
 	return s.config
 }
 
-func (s *SpineService) GetDefaultAnimationSpeed() float64 {
+func (s *OperatorService) GetDefaultAnimationSpeed() float64 {
 	return s.getConfig().DefaultAnimationSpeed
 }
-func (s *SpineService) GetMinAnimationSpeed() float64 {
+func (s *OperatorService) GetMinAnimationSpeed() float64 {
 	return s.getConfig().MinAnimationSpeed
 }
-func (s *SpineService) GetMaxAnimationSpeed() float64 {
+func (s *OperatorService) GetMaxAnimationSpeed() float64 {
 	return s.getConfig().MaxAnimationSpeed
 }
-func (s *SpineService) GetDefaultScaleSize() float64 {
+func (s *OperatorService) GetDefaultScaleSize() float64 {
 	return s.getConfig().DefaultScaleSize
 }
-func (s *SpineService) GetMinScaleSize() float64 {
+func (s *OperatorService) GetMinScaleSize() float64 {
 	return s.getConfig().MinScaleSize
 }
-func (s *SpineService) GetMaxScaleSize() float64 {
+func (s *OperatorService) GetMaxScaleSize() float64 {
 	return s.getConfig().MaxScaleSize
 }
-func (s *SpineService) GetReferenceMovementSpeedPx() int {
+func (s *OperatorService) GetReferenceMovementSpeedPx() int {
 	return s.getConfig().ReferenceMovementSpeedPx
 }
-func (s *SpineService) GetDefaultMovementSpeed() float64 {
+func (s *OperatorService) GetDefaultMovementSpeed() float64 {
 	return s.getConfig().DefaultMovementSpeed
 }
-func (s *SpineService) GetMinMovementSpeed() float64 {
+func (s *OperatorService) GetMinMovementSpeed() float64 {
 	return s.getConfig().MinMovementSpeed
 }
-func (s *SpineService) GetMaxMovementSpeed() float64 {
+func (s *OperatorService) GetMaxMovementSpeed() float64 {
 	return s.getConfig().MaxMovementSpeed
 }
-func (s *SpineService) GetMaxSpritePixelSize() int {
+func (s *OperatorService) GetMaxSpritePixelSize() int {
 	return s.getConfig().MaxSpritePixelSize
 }
 
-func (s *SpineService) ValidateOperatorRequest(info *OperatorInfo) error {
-	assetMap := s.Assets.getAssetMapFromFaction(info.Faction)
+func (s *OperatorService) ValidateOperatorRequest(info *OperatorInfo) error {
+	assetMap := s.Assets.GetAssetMapFromFaction(info.Faction)
 
 	log.Println("Request setOperator", info.OperatorId, info.Faction,
 		info.Skin, info.ChibiStance, info.Facing, info.CurrentAction)
@@ -93,7 +93,7 @@ func (s *SpineService) ValidateOperatorRequest(info *OperatorInfo) error {
 	return nil
 }
 
-func (c *SpineService) ValidateUpdateSetDefaultOtherwise(update *OperatorInfo) error {
+func (c *OperatorService) ValidateUpdateSetDefaultOtherwise(update *OperatorInfo) error {
 	if len(update.Faction) == 0 {
 		update.Faction = FACTION_ENUM_OPERATOR
 	}
@@ -126,7 +126,7 @@ func (c *SpineService) ValidateUpdateSetDefaultOtherwise(update *OperatorInfo) e
 
 	// Validate animations
 	update.AvailableAnimations = currentOp.Skins[update.Skin].Stances[update.ChibiStance].Facings[update.Facing]
-	update.AvailableAnimations = FilterAnimations(update.AvailableAnimations)
+	update.AvailableAnimations = misc.FilterAnimations(update.AvailableAnimations)
 
 	// Validate animationSpeed
 	if update.AnimationSpeed == 0 {
@@ -276,13 +276,13 @@ func (c *SpineService) ValidateUpdateSetDefaultOtherwise(update *OperatorInfo) e
 	return nil
 }
 
-func (s *SpineService) GetSpineData(opeatorId string, faction FactionEnum, skin string, isBase bool, isFront bool) *SpineData {
-	assetMap := s.Assets.getAssetMapFromFaction(faction)
+func (s *OperatorService) GetSpineData(opeatorId string, faction FactionEnum, skin string, isBase bool, isFront bool) *SpineData {
+	assetMap := s.Assets.GetAssetMapFromFaction(faction)
 	return assetMap.Get(opeatorId, skin, isBase, isFront)
 }
 
-func (s *SpineService) GetOperatorIds(faction FactionEnum) ([]string, error) {
-	assetMap := s.Assets.getAssetMapFromFaction(faction)
+func (s *OperatorService) GetOperatorIds(faction FactionEnum) ([]string, error) {
+	assetMap := s.Assets.GetAssetMapFromFaction(faction)
 	operatorIds := make([]string, 0)
 	for operatorId := range assetMap.Data {
 		operatorIds = append(operatorIds, operatorId)
@@ -290,11 +290,11 @@ func (s *SpineService) GetOperatorIds(faction FactionEnum) ([]string, error) {
 	return operatorIds, nil
 }
 
-func (s *SpineService) GetOperator(
+func (s *OperatorService) GetOperator(
 	OperatorId string,
 	Faction FactionEnum,
 ) (*GetOperatorResponse, error) {
-	assetMap := s.Assets.getAssetMapFromFaction(Faction)
+	assetMap := s.Assets.GetAssetMapFromFaction(Faction)
 
 	operatorData, ok := assetMap.Data[OperatorId]
 	if !ok {
@@ -325,7 +325,7 @@ func (s *SpineService) GetOperator(
 		}
 	}
 
-	canonicalName := s.Assets.getCommonNamesFromFaction(Faction).GetCanonicalName(OperatorId)
+	canonicalName := s.Assets.GetCommonNamesFromFaction(Faction).GetCanonicalName(OperatorId)
 
 	return &GetOperatorResponse{
 		OperatorId:   OperatorId,
@@ -334,8 +334,8 @@ func (s *SpineService) GetOperator(
 	}, nil
 }
 
-func (s *SpineService) GetOperatorIdFromName(name string, faction FactionEnum) (string, []string) {
-	commonNames := s.Assets.getCommonNamesFromFaction(faction)
+func (s *OperatorService) GetOperatorIdFromName(name string, faction FactionEnum) (string, []string) {
+	commonNames := s.Assets.GetCommonNamesFromFaction(faction)
 
 	if operatorId, ok := commonNames.IsMatch(name); ok {
 		return operatorId, nil
@@ -344,12 +344,14 @@ func (s *SpineService) GetOperatorIdFromName(name string, faction FactionEnum) (
 	matches := commonNames.FindMatchs(name, 5)
 	humanMatches := make([]string, 0)
 	for _, match := range matches {
-		humanMatches = append(humanMatches, commonNames.operatorIdToNames[match][0])
+		// humanMatches = append(humanMatches, commonNames.operatorIdToNames[match][0])
+		humanMatches = append(humanMatches, commonNames.GetOperatorIdToName(match)[0])
+
 	}
 	return "", humanMatches
 }
 
-func (s *SpineService) GetRandomOperator() (*OperatorInfo, error) {
+func (s *OperatorService) GetRandomOperator() (*OperatorInfo, error) {
 	operatorIds, err := s.GetOperatorIds(FACTION_ENUM_OPERATOR)
 	if err != nil {
 		return nil, err
@@ -374,10 +376,10 @@ func (s *SpineService) GetRandomOperator() (*OperatorInfo, error) {
 	}
 	facing := CHIBI_FACING_ENUM_FRONT
 	availableAnimations := operatorData.Skins[skinName].Stances[chibiStance].Facings[facing]
-	availableAnimations = FilterAnimations(availableAnimations)
+	availableAnimations = misc.FilterAnimations(availableAnimations)
 	availableSkins := operatorData.GetSkinNames()
 
-	commonNames := s.Assets.getCommonNamesFromFaction(faction)
+	commonNames := s.Assets.GetCommonNamesFromFaction(faction)
 	operatorDisplayName := commonNames.GetCanonicalName(operatorId)
 
 	opInfo := NewOperatorInfo(
@@ -399,7 +401,7 @@ func (s *SpineService) GetRandomOperator() (*OperatorInfo, error) {
 	return &opInfo, nil
 }
 
-func (s *SpineService) OperatorFromDefault(
+func (s *OperatorService) OperatorFromDefault(
 	opName string,
 	details misc.InitialOperatorDetails,
 ) *OperatorInfo {
@@ -426,7 +428,7 @@ func (s *SpineService) OperatorFromDefault(
 		log.Panic("Failed to fetch operator info")
 	}
 	availableAnims := opResp.Skins[details.Skin].Stances[stance].Facings[CHIBI_FACING_ENUM_FRONT]
-	availableAnims = FilterAnimations(availableAnims)
+	availableAnims = misc.FilterAnimations(availableAnims)
 	availableSkins := opResp.GetSkinNames()
 
 	opInfo := NewOperatorInfo(

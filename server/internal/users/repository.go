@@ -6,7 +6,7 @@ import (
 	"time"
 
 	"github.com/Stymphalian/ak_chibi_bot/server/internal/akdb"
-	"github.com/Stymphalian/ak_chibi_bot/server/internal/spine"
+	"github.com/Stymphalian/ak_chibi_bot/server/internal/operator"
 
 	"gorm.io/gorm"
 )
@@ -103,13 +103,14 @@ func UpdateUser(ctx context.Context, user *UserDb) error {
 	return db.Save(user).Error
 }
 
+// TODO: A weird dependency on spine just for the OperatorInfo
 type ChatterDb struct {
-	ChatterId    uint               `gorm:"primarykey"`
-	RoomId       uint               `gorm:"column:room_id"`
-	UserId       uint               `gorm:"column:user_id"`
-	IsActive     bool               `gorm:"column:is_active"`
-	OperatorInfo spine.OperatorInfo `gorm:"operator_info;type:json"`
-	LastChatTime time.Time          `gorm:"column:last_chat_time"`
+	ChatterId    uint                  `gorm:"primarykey"`
+	RoomId       uint                  `gorm:"column:room_id"`
+	UserId       uint                  `gorm:"column:user_id"`
+	IsActive     bool                  `gorm:"column:is_active"`
+	OperatorInfo operator.OperatorInfo `gorm:"operator_info;type:json"`
+	LastChatTime time.Time             `gorm:"column:last_chat_time"`
 
 	CreatedAt time.Time      `gorm:"column:created_at"`
 	UpdatedAt time.Time      `gorm:"column:updated_at"`
@@ -150,12 +151,12 @@ func (r *ChatterDb) SetIsActive(ctx context.Context, isActive bool) error {
 	return r.Update(ctx, "is_active")
 }
 
-func (r *ChatterDb) GetOperatorInfo() *spine.OperatorInfo {
+func (r *ChatterDb) GetOperatorInfo() *operator.OperatorInfo {
 	r.Refresh(context.Background(), "operator_info")
 	return &r.OperatorInfo
 }
 
-func (r *ChatterDb) SetOperatorInfo(ctx context.Context, opInfo *spine.OperatorInfo) error {
+func (r *ChatterDb) SetOperatorInfo(ctx context.Context, opInfo *operator.OperatorInfo) error {
 	r.OperatorInfo = *opInfo
 	return r.Update(ctx, "operator_info")
 }
@@ -188,7 +189,13 @@ func (r *ChatterDb) Update(ctx context.Context, args ...string) error {
 	return result.Error
 }
 
-func GetOrInsertChatter(ctx context.Context, roomId uint, user *UserDb, lastChatTime time.Time, operatorInfo *spine.OperatorInfo) (*ChatterDb, error) {
+func GetOrInsertChatter(
+	ctx context.Context,
+	roomId uint,
+	user *UserDb,
+	lastChatTime time.Time,
+	operatorInfo *operator.OperatorInfo,
+) (*ChatterDb, error) {
 	db := akdb.DefaultDB.WithContext(ctx)
 
 	var chatterDb ChatterDb

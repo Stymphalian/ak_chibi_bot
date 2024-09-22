@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/Stymphalian/ak_chibi_bot/server/internal/spine"
+	"github.com/Stymphalian/ak_chibi_bot/server/internal/operator"
 )
 
 type ChatCommandNoOp struct{}
@@ -59,7 +59,7 @@ type ChatCommandUpdateActor struct {
 	replyMessage    string
 	username        string
 	usernameDisplay string
-	update          *spine.OperatorInfo
+	update          *operator.OperatorInfo
 }
 
 func (c *ChatCommandUpdateActor) Reply(a ActorUpdater) string { return c.replyMessage }

@@ -1,4 +1,4 @@
-package spine
+package misc
 
 import (
 	"slices"

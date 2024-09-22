@@ -10,7 +10,8 @@ import (
 	"github.com/Stymphalian/ak_chibi_bot/server/internal/chatbot"
 	"github.com/Stymphalian/ak_chibi_bot/server/internal/chibi"
 	"github.com/Stymphalian/ak_chibi_bot/server/internal/misc"
-	"github.com/Stymphalian/ak_chibi_bot/server/internal/spine"
+	"github.com/Stymphalian/ak_chibi_bot/server/internal/operator"
+	spine "github.com/Stymphalian/ak_chibi_bot/server/internal/spine_runtime"
 	"github.com/Stymphalian/ak_chibi_bot/server/internal/users"
 )
 
@@ -27,7 +28,7 @@ type RoomConfig struct {
 // Model - chibiActor
 // View-Model/Controller - twitchChat
 type Room struct {
-	SpineService              *spine.SpineService
+	SpineService              *operator.OperatorService
 	roomDb                    *RoomDb
 	spineRuntime              spine.SpineRuntime
 	chibiActor                *chibi.ChibiActor
@@ -38,7 +39,7 @@ type Room struct {
 
 func NewRoom(
 	roomDb *RoomDb,
-	spineService *spine.SpineService,
+	spineService *operator.OperatorService,
 	spineRuntime spine.SpineRuntime,
 	chibiActor *chibi.ChibiActor,
 	twitchBot chatbot.ChatBotter) *Room {
@@ -161,7 +162,7 @@ func (r *Room) AddOperatorToRoom(
 	username string,
 	usernameDisplay string,
 	operatorId string,
-	faction spine.FactionEnum,
+	faction operator.FactionEnum,
 ) error {
 	// TODO: Leaky interface. Need to move this into a Service or ChibiActor
 	opInfo, err := r.SpineService.GetRandomOperator()

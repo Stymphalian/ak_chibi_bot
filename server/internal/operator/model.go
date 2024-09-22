@@ -1,12 +1,21 @@
-package spine
+package operator
 
 import (
 	"database/sql/driver"
 	"encoding/json"
 	"errors"
 	"fmt"
+	"strings"
 
 	"github.com/Stymphalian/ak_chibi_bot/server/internal/misc"
+)
+
+const (
+	DEFAULT_ANIM_BASE_RELAX = "Relax"
+	DEFAULT_ANIM_BASE       = "Move"
+	DEFAULT_ANIM_BATTLE     = "Idle"
+	DEFAULT_SKIN_NAME       = "default"
+	DEFAULT_MOVE_ANIM_NAME  = "Move"
 )
 
 type OperatorInfo struct {
@@ -85,43 +94,64 @@ func EmptyOperatorInfo() *OperatorInfo {
 	}
 }
 
-type AnimationsList []string
-type FacingData struct {
-	Facings map[ChibiFacingEnum]AnimationsList `json:"facing"`
-}
+type ChibiFacingEnum string
 
-func (f *FacingData) HasFacing(facing ChibiFacingEnum) bool {
-	if _, ok := f.Facings[facing]; !ok {
-		return false
+const (
+	CHIBI_FACING_ENUM_FRONT ChibiFacingEnum = "Front"
+	CHIBI_FACING_ENUM_BACK  ChibiFacingEnum = "Back"
+)
+
+func ChibiFacingEnum_Parse(str string) (ChibiFacingEnum, error) {
+	switch strings.ToLower(str) {
+	case "front":
+		return CHIBI_FACING_ENUM_FRONT, nil
+	case "back":
+		return CHIBI_FACING_ENUM_BACK, nil
+	default:
+		return "", fmt.Errorf("invalid chibi facing (%s)", str)
 	}
-	animations := f.Facings[facing]
-	return len(animations) != 0
 }
 
-type SkinData struct {
-	Stances map[ChibiStanceEnum]FacingData `json:"stance"`
-}
+type ChibiStanceEnum string
 
-func (s *SkinData) HasChibiStance(chibiStance ChibiStanceEnum) bool {
-	if _, ok := s.Stances[chibiStance]; !ok {
-		return false
+const (
+	CHIBI_STANCE_ENUM_BATTLE ChibiStanceEnum = "battle"
+	CHIBI_STANCE_ENUM_BASE   ChibiStanceEnum = "base"
+)
+
+func ChibiStanceEnum_Parse(str string) (ChibiStanceEnum, error) {
+	switch strings.ToLower(str) {
+	case "battle":
+		return CHIBI_STANCE_ENUM_BATTLE, nil
+	case "base":
+		return CHIBI_STANCE_ENUM_BASE, nil
+	default:
+		return "", fmt.Errorf("invalid chibi type (%s)", str)
 	}
-	faceData := s.Stances[chibiStance]
-	return len(faceData.Facings) != 0
 }
 
-type GetOperatorResponse struct {
-	OperatorId   string              `json:"operator_id"` // char_002_amiya
-	OperatorName string              `json:"operator_name"`
-	Skins        map[string]SkinData `json:"skins"` // build_char_002_amiya
-}
+type FactionEnum string
 
-func (r *GetOperatorResponse) GetSkinNames() []string {
-	skins := make([]string, len(r.Skins))
-	i := 0
-	for skinName := range r.Skins {
-		skins[i] = skinName
-		i += 1
+const (
+	FACTION_ENUM_OPERATOR FactionEnum = "operator"
+	FACTION_ENUM_ENEMY    FactionEnum = "enemy"
+)
+
+func FactionEnum_Parse(str string) (FactionEnum, error) {
+	switch strings.ToLower(str) {
+	case "operator":
+		return FACTION_ENUM_OPERATOR, nil
+	case "enemy":
+		return FACTION_ENUM_ENEMY, nil
+	default:
+		return "", fmt.Errorf("invalid faction type (%s)", str)
 	}
-	return skins
+}
+
+func GetDefaultAnimForChibiStance(chibiStance ChibiStanceEnum) string {
+	if chibiStance == CHIBI_STANCE_ENUM_BASE {
+		return DEFAULT_ANIM_BASE
+	} else {
+		return DEFAULT_ANIM_BATTLE
+	}
 }

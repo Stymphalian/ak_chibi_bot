@@ -7,7 +7,7 @@ import (
 	"testing"
 
 	"github.com/Stymphalian/ak_chibi_bot/server/internal/misc"
-	"github.com/Stymphalian/ak_chibi_bot/server/internal/spine"
+	"github.com/Stymphalian/ak_chibi_bot/server/internal/operator"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -83,36 +83,36 @@ Manual Test Cases:
 */
 
 type FakeActorUpdater struct {
-	opInfo spine.OperatorInfo
+	opInfo operator.OperatorInfo
 }
 
-func (f *FakeActorUpdater) CurrentInfo(ctx context.Context, username string) (spine.OperatorInfo, error) {
+func (f *FakeActorUpdater) CurrentInfo(ctx context.Context, username string) (operator.OperatorInfo, error) {
 	return f.opInfo, nil
 }
-func (f *FakeActorUpdater) UpdateChibi(ctx context.Context, username string, usernameDisplay string, update *spine.OperatorInfo) error {
+func (f *FakeActorUpdater) UpdateChibi(ctx context.Context, username string, usernameDisplay string, update *operator.OperatorInfo) error {
 	return nil
 }
 
-func setupCommandTest() (*spine.OperatorInfo, ActorUpdater, *ChatCommandProcessor) {
-	current := spine.NewOperatorInfo(
+func setupCommandTest() (*operator.OperatorInfo, ActorUpdater, *ChatCommandProcessor) {
+	current := operator.NewOperatorInfo(
 		"Amiya",
-		spine.FACTION_ENUM_OPERATOR,
+		operator.FACTION_ENUM_OPERATOR,
 		"char_002_amiya",
-		spine.DEFAULT_SKIN_NAME,
-		spine.CHIBI_STANCE_ENUM_BASE,
-		spine.CHIBI_FACING_ENUM_FRONT,
-		[]string{spine.DEFAULT_SKIN_NAME, "skin1"},
-		[]string{spine.DEFAULT_ANIM_BASE, spine.DEFAULT_ANIM_BATTLE, "anim1"},
+		operator.DEFAULT_SKIN_NAME,
+		operator.CHIBI_STANCE_ENUM_BASE,
+		operator.CHIBI_FACING_ENUM_FRONT,
+		[]string{operator.DEFAULT_SKIN_NAME, "skin1"},
+		[]string{operator.DEFAULT_ANIM_BASE, operator.DEFAULT_ANIM_BATTLE, "anim1"},
 		1.0,
 		misc.EmptyOption[misc.Vector2](),
-		spine.ACTION_PLAY_ANIMATION,
-		spine.NewActionPlayAnimation([]string{spine.DEFAULT_ANIM_BASE}),
+		operator.ACTION_PLAY_ANIMATION,
+		operator.NewActionPlayAnimation([]string{operator.DEFAULT_ANIM_BASE}),
 	)
 	actor := &FakeActorUpdater{
 		opInfo: current,
 	}
-	assetManager := spine.NewTestAssetService()
-	spineService := spine.NewSpineService(assetManager, misc.DefaultSpineRuntimeConfig())
+	assetManager := operator.NewTestAssetService()
+	spineService := operator.NewOperatorService(assetManager, misc.DefaultSpineRuntimeConfig())
 	sut := &ChatCommandProcessor{
 		spineService: spineService,
 	}
@@ -296,7 +296,7 @@ func TestCmdProcessorHandleMessage_ChibiPlayAnimation(t *testing.T) {
 	} else {
 		assert.Fail("Command is not of type: ChatCommandUpdateActor")
 	}
-	assert.Equal(spine.ACTION_PLAY_ANIMATION, current.CurrentAction)
+	assert.Equal(operator.ACTION_PLAY_ANIMATION, current.CurrentAction)
 	assert.Equal([]string{"anim1"}, current.Action.GetAnimations(current.CurrentAction))
 	assert.Equal(1.0, current.AnimationSpeed)
 }
@@ -319,14 +319,14 @@ func TestCmdProcessorHandleMessage_ChibiPlayMultpleAnimation(t *testing.T) {
 	} else {
 		assert.Fail("Command is not of type: ChatCommandUpdateActor")
 	}
-	assert.Equal(spine.ACTION_PLAY_ANIMATION, current.CurrentAction)
+	assert.Equal(operator.ACTION_PLAY_ANIMATION, current.CurrentAction)
 	assert.Equal([]string{"anim1", "Idle"}, current.Action.GetAnimations(current.CurrentAction))
 	assert.Equal(1.0, current.AnimationSpeed)
 }
 
 func TestCmdProcessorHandleMessage_ChibiFace(t *testing.T) {
 	current, actor, sut := setupCommandTest()
-	current.ChibiStance = spine.CHIBI_STANCE_ENUM_BATTLE
+	current.ChibiStance = operator.CHIBI_STANCE_ENUM_BATTLE
 
 	assert := assert.New(t)
 	cmd, err := sut.HandleMessage(current, ChatMessage{
@@ -343,7 +343,7 @@ func TestCmdProcessorHandleMessage_ChibiFace(t *testing.T) {
 	} else {
 		assert.Fail("Command is not of type: ChatCommandUpdateActor")
 	}
-	assert.Equal(spine.CHIBI_STANCE_ENUM_BATTLE, current.ChibiStance)
+	assert.Equal(operator.CHIBI_STANCE_ENUM_BATTLE, current.ChibiStance)
 	assert.Equal(1.0, current.AnimationSpeed)
 }
 
@@ -364,7 +364,7 @@ func TestCmdProcessorHandleMessage_ChibiSetFaceOnlyForBattleStance(t *testing.T)
 
 func TestCmdProcessorHandleMessage_ChibiSetFaceOnly(t *testing.T) {
 	current, actor, sut := setupCommandTest()
-	current.ChibiStance = spine.CHIBI_STANCE_ENUM_BATTLE
+	current.ChibiStance = operator.CHIBI_STANCE_ENUM_BATTLE
 
 	assert := assert.New(t)
 	cmd, err := sut.HandleMessage(current, ChatMessage{
@@ -381,7 +381,7 @@ func TestCmdProcessorHandleMessage_ChibiSetFaceOnly(t *testing.T) {
 	} else {
 		assert.Fail("Command is not of type: ChatCommandUpdateActor")
 	}
-	assert.Equal(spine.CHIBI_FACING_ENUM_BACK, current.Facing)
+	assert.Equal(operator.CHIBI_FACING_ENUM_BACK, current.Facing)
 	assert.Equal(1.0, current.AnimationSpeed)
 }
 
@@ -428,7 +428,7 @@ func TestCmdProcessorHandleMessage_ChibiEnemyHappyPath(t *testing.T) {
 		assert.Fail("Command is not of type: ChatCommandUpdateActor")
 	}
 	assert.Equal("enemy_1007_slime_2", current.OperatorId)
-	assert.Equal(spine.FACTION_ENUM_ENEMY, current.Faction)
+	assert.Equal(operator.FACTION_ENUM_ENEMY, current.Faction)
 	assert.Equal(1.0, current.AnimationSpeed)
 	assert.True(current.SpriteScale.IsNone())
 	assert.Equal(160.0, current.MovementSpeed.Unwrap().X)
@@ -452,7 +452,7 @@ func TestCmdProcessorHandleMessage_ChibiWalk(t *testing.T) {
 	} else {
 		assert.Fail("Command is not of type: ChatCommandUpdateActor")
 	}
-	assert.Equal(spine.ACTION_WANDER, current.CurrentAction)
+	assert.Equal(operator.ACTION_WANDER, current.CurrentAction)
 	assert.Equal([]string{"Move"}, current.Action.GetAnimations(current.CurrentAction))
 	assert.Equal(1.0, current.AnimationSpeed)
 }
@@ -475,7 +475,7 @@ func TestCmdProcessorHandleMessage_ChibiWalkTo(t *testing.T) {
 	} else {
 		assert.Fail("Command is not of type: ChatCommandUpdateActor")
 	}
-	assert.Equal(spine.ACTION_WALK_TO, current.CurrentAction)
+	assert.Equal(operator.ACTION_WALK_TO, current.CurrentAction)
 	assert.Equal([]string{"Move", "Relax"}, current.Action.GetAnimations(current.CurrentAction))
 	assert.Equal(0.5, current.Action.TargetPos.Unwrap().X)
 	assert.Equal(1.0, current.AnimationSpeed)
@@ -538,7 +538,7 @@ func TestCmdProcessorHandleMessage_ChibiChibiModel(t *testing.T) {
 		assert.Fail("Command is not of type: ChatCommandUpdateActor")
 	}
 	assert.Equal("char_002_amiya", current.OperatorId)
-	assert.Equal(spine.FACTION_ENUM_OPERATOR, current.Faction)
+	assert.Equal(operator.FACTION_ENUM_OPERATOR, current.Faction)
 	assert.Equal(1.0, current.AnimationSpeed)
 	assert.True(current.SpriteScale.IsNone())
 	assert.Equal(160.0, current.MovementSpeed.Unwrap().X)
@@ -548,10 +548,10 @@ func TestCmdProcessorHandleMessage_Regression_EnemyToOperatorShouldMaintainWande
 	current, actor, sut := setupCommandTest()
 	current.OperatorDisplayName = "Slug"
 	current.OperatorId = "enemy_1007_slime_2"
-	current.Faction = spine.FACTION_ENUM_ENEMY
-	current.ChibiStance = spine.CHIBI_STANCE_ENUM_BATTLE
-	current.CurrentAction = spine.ACTION_WANDER
-	current.Action = spine.NewActionWander("Move")
+	current.Faction = operator.FACTION_ENUM_ENEMY
+	current.ChibiStance = operator.CHIBI_STANCE_ENUM_BATTLE
+	current.CurrentAction = operator.ACTION_WANDER
+	current.Action = operator.NewActionWander("Move")
 
 	log.Printf("%v\n", current)
 
@@ -571,11 +571,11 @@ func TestCmdProcessorHandleMessage_Regression_EnemyToOperatorShouldMaintainWande
 		assert.Fail("Command is not of type: ChatCommandUpdateActor")
 	}
 	assert.Equal("char_002_amiya", current.OperatorId)
-	assert.Equal(spine.FACTION_ENUM_OPERATOR, current.Faction)
+	assert.Equal(operator.FACTION_ENUM_OPERATOR, current.Faction)
 	assert.Equal(1.0, current.AnimationSpeed)
 	assert.True(current.SpriteScale.IsNone())
 	assert.True(current.MovementSpeed.IsNone())
-	assert.Equal(spine.CHIBI_STANCE_ENUM_BASE, current.ChibiStance)
+	assert.Equal(operator.CHIBI_STANCE_ENUM_BASE, current.ChibiStance)
 }
 
 func TestCmdProcessorHandleMessage_ChibiScale(t *testing.T) {

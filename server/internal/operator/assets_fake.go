@@ -1,4 +1,6 @@
-package spine
+package operator
+
+// import "github.com/Stymphalian/ak_chibi_bot/server/internal/operator"
 
 func NewTestAssetService() *AssetService {
 	a := &AssetService{

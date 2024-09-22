@@ -12,7 +12,8 @@ import (
 	"github.com/Stymphalian/ak_chibi_bot/server/internal/chatbot"
 	"github.com/Stymphalian/ak_chibi_bot/server/internal/chibi"
 	"github.com/Stymphalian/ak_chibi_bot/server/internal/misc"
-	"github.com/Stymphalian/ak_chibi_bot/server/internal/spine"
+	"github.com/Stymphalian/ak_chibi_bot/server/internal/operator"
+	spine "github.com/Stymphalian/ak_chibi_bot/server/internal/spine_runtime"
 	"github.com/Stymphalian/ak_chibi_bot/server/internal/twitch_api"
 )
 
@@ -25,16 +26,16 @@ type RoomsManager struct {
 	rooms_mutex               sync.Mutex
 	nextGarbageCollectionTime time.Time
 
-	assetService *spine.AssetService
-	spineService *spine.SpineService
+	assetService *operator.AssetService
+	spineService *operator.OperatorService
 
 	botConfig      *misc.BotConfig
 	twitchClient   twitch_api.TwitchApiClientInterface
 	shutdownDoneCh chan struct{}
 }
 
-func NewRoomsManager(assets *spine.AssetService, botConfig *misc.BotConfig) *RoomsManager {
-	spineService := spine.NewSpineService(assets, botConfig.SpineRuntimeConfig)
+func NewRoomsManager(assets *operator.AssetService, botConfig *misc.BotConfig) *RoomsManager {
+	spineService := operator.NewOperatorService(assets, botConfig.SpineRuntimeConfig)
 	return &RoomsManager{
 		Rooms:        make(map[string]*Room, 0),
 		assetService: assets,
@@ -114,7 +115,7 @@ func (r *RoomsManager) checkChannelValid(channel string) (bool, error) {
 	return true, nil
 }
 
-func (r *RoomsManager) getRoomServices(roomDb *RoomDb) (*spine.SpineService, *spine.SpineBridge, *chibi.ChibiActor, *chatbot.TwitchBot, error) {
+func (r *RoomsManager) getRoomServices(roomDb *RoomDb) (*operator.OperatorService, *spine.SpineBridge, *chibi.ChibiActor, *chatbot.TwitchBot, error) {
 	channelName := roomDb.GetChannelName()
 	newSpineService := r.spineService.WithConfigFetcher(
 		func() (*misc.SpineRuntimeConfig, error) {
@@ -171,6 +172,7 @@ func (r *RoomsManager) CreateRoomOrNoOp(ctx context.Context, channel string) err
 		return nil
 	}
 
+	// Get the Room database object
 	roomConfig := &RoomConfig{
 		ChannelName:                 channel,
 		DefaultOperatorName:         r.botConfig.InitialOperator,
@@ -185,6 +187,7 @@ func (r *RoomsManager) CreateRoomOrNoOp(ctx context.Context, channel string) err
 	roomWasInactive := !roomDb.GetIsActive()
 	roomDb.SetIsActive(ctx, true)
 
+	// Create the services needed by the room
 	spineService, spineBridge, chibiActor, twitchBot, err := r.getRoomServices(roomDb)
 	if err != nil {
 		return err

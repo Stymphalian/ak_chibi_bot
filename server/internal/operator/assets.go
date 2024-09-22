@@ -1,4 +1,4 @@
-package spine
+package operator
 
 import (
 	"encoding/json"
@@ -13,76 +13,6 @@ import (
 
 	"github.com/lithammer/fuzzysearch/fuzzy"
 )
-
-const (
-	DEFAULT_ANIM_BASE_RELAX = "Relax"
-	DEFAULT_ANIM_BASE       = "Move"
-	DEFAULT_ANIM_BATTLE     = "Idle"
-	DEFAULT_SKIN_NAME       = "default"
-	DEFAULT_MOVE_ANIM_NAME  = "Move"
-)
-
-type ChibiFacingEnum string
-
-const (
-	CHIBI_FACING_ENUM_FRONT ChibiFacingEnum = "Front"
-	CHIBI_FACING_ENUM_BACK  ChibiFacingEnum = "Back"
-)
-
-func ChibiFacingEnum_Parse(str string) (ChibiFacingEnum, error) {
-	switch strings.ToLower(str) {
-	case "front":
-		return CHIBI_FACING_ENUM_FRONT, nil
-	case "back":
-		return CHIBI_FACING_ENUM_BACK, nil
-	default:
-		return "", fmt.Errorf("invalid chibi facing (%s)", str)
-	}
-}
-
-type ChibiStanceEnum string
-
-const (
-	CHIBI_STANCE_ENUM_BATTLE ChibiStanceEnum = "battle"
-	CHIBI_STANCE_ENUM_BASE   ChibiStanceEnum = "base"
-)
-
-func ChibiStanceEnum_Parse(str string) (ChibiStanceEnum, error) {
-	switch strings.ToLower(str) {
-	case "battle":
-		return CHIBI_STANCE_ENUM_BATTLE, nil
-	case "base":
-		return CHIBI_STANCE_ENUM_BASE, nil
-	default:
-		return "", fmt.Errorf("invalid chibi type (%s)", str)
-	}
-}
-
-type FactionEnum string
-
-const (
-	FACTION_ENUM_OPERATOR FactionEnum = "operator"
-	FACTION_ENUM_ENEMY    FactionEnum = "enemy"
-)
-
-func FactionEnum_Parse(str string) (FactionEnum, error) {
-	switch strings.ToLower(str) {
-	case "operator":
-		return FACTION_ENUM_OPERATOR, nil
-	case "enemy":
-		return FACTION_ENUM_ENEMY, nil
-	default:
-		return "", fmt.Errorf("invalid faction type (%s)", str)
-	}
-}
-
-func GetDefaultAnimForChibiStance(chibiStance ChibiStanceEnum) string {
-	if chibiStance == CHIBI_STANCE_ENUM_BASE {
-		return DEFAULT_ANIM_BASE
-	} else {
-		return DEFAULT_ANIM_BATTLE
-	}
-}
 
 type SpineAssetMap struct {
 	// map[operatorId]*ChibiAssetPathEntry
@@ -334,6 +264,10 @@ func NewCommonNames() *CommonNames {
 	}
 }
 
+func (c *CommonNames) GetOperatorIdToName(operatorId string) []string {
+	return c.operatorIdToNames[operatorId]
+}
+
 func (s *CommonNames) Load(assetFilePath string) error {
 	savedNames := make(map[string]([]string))
 	data, err := os.ReadFile(assetFilePath)
@@ -477,7 +411,7 @@ func NewAssetService(assetDir string) (*AssetService, error) {
 	return s, nil
 }
 
-func (s *AssetService) getAssetMapFromFaction(faction FactionEnum) *SpineAssetMap {
+func (s *AssetService) GetAssetMapFromFaction(faction FactionEnum) *SpineAssetMap {
 	switch faction {
 	case FACTION_ENUM_OPERATOR:
 		return s.AssetMap
@@ -489,7 +423,7 @@ func (s *AssetService) getAssetMapFromFaction(faction FactionEnum) *SpineAssetMa
 	}
 }
 
-func (s *AssetService) getCommonNamesFromFaction(faction FactionEnum) *CommonNames {
+func (s *AssetService) GetCommonNamesFromFaction(faction FactionEnum) *CommonNames {
 	switch faction {
 	case FACTION_ENUM_OPERATOR:
 		return s.CommonNames

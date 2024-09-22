@@ -5,7 +5,7 @@ import (
 	"time"
 
 	"github.com/Stymphalian/ak_chibi_bot/server/internal/misc"
-	"github.com/Stymphalian/ak_chibi_bot/server/internal/spine"
+	"github.com/Stymphalian/ak_chibi_bot/server/internal/operator"
 )
 
 type ChatUser struct {
@@ -36,11 +36,11 @@ func (c *ChatUser) GetUsernameDisplay() string {
 	return c.user.UserDisplayName
 }
 
-func (c *ChatUser) GetOperatorInfo() *spine.OperatorInfo {
+func (c *ChatUser) GetOperatorInfo() *operator.OperatorInfo {
 	return c.chatter.GetOperatorInfo()
 }
 
-func (c *ChatUser) SetOperatorInfo(v *spine.OperatorInfo) error {
+func (c *ChatUser) SetOperatorInfo(v *operator.OperatorInfo) error {
 	return c.chatter.SetOperatorInfo(context.Background(), v)
 }
 

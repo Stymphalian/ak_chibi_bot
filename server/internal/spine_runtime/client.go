@@ -2,6 +2,8 @@ package spine
 
 import (
 	"net/http"
+
+	"github.com/Stymphalian/ak_chibi_bot/server/internal/operator"
 )
 
 const (
@@ -20,9 +22,9 @@ type SpineResponse struct {
 
 // SetOperator
 type SetOperatorRequest struct {
-	UserName        string       `json:"user_name"`         // chonkyking
-	UserNameDisplay string       `json:"user_name_display"` // ChonkyKing
-	Operator        OperatorInfo `json:"operator"`
+	UserName        string                `json:"user_name"`         // chonkyking
+	UserNameDisplay string                `json:"user_name_display"` // ChonkyKing
+	Operator        operator.OperatorInfo `json:"operator"`
 }
 type SetOperatorResponse struct {
 	SpineResponse
@@ -46,7 +48,7 @@ type ChatterInfo struct {
 	Username        string
 	UsernameDisplay string
 	// TODO: Make this a pointer
-	OperatorInfo OperatorInfo
+	OperatorInfo operator.OperatorInfo
 }
 
 type ClientRequestCallback func(connId string, typeName string, message []byte)

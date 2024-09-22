@@ -3,7 +3,7 @@ package chat
 import (
 	"context"
 
-	"github.com/Stymphalian/ak_chibi_bot/server/internal/spine"
+	"github.com/Stymphalian/ak_chibi_bot/server/internal/operator"
 )
 
 type ChatMessage struct {
@@ -17,8 +17,8 @@ type ChatMessageHandler interface {
 }
 
 type ActorUpdater interface {
-	CurrentInfo(ctx context.Context, username string) (spine.OperatorInfo, error)
-	UpdateChibi(ctx context.Context, username string, usernameDisplay string, update *spine.OperatorInfo) error
+	CurrentInfo(ctx context.Context, username string) (operator.OperatorInfo, error)
+	UpdateChibi(ctx context.Context, username string, usernameDisplay string, update *operator.OperatorInfo) error
 }
 
 type ChatCommand interface {

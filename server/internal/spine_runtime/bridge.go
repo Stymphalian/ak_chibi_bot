@@ -10,6 +10,7 @@ import (
 	"time"
 
 	"github.com/Stymphalian/ak_chibi_bot/server/internal/misc"
+	"github.com/Stymphalian/ak_chibi_bot/server/internal/operator"
 	"github.com/google/uuid"
 	"github.com/gorilla/websocket"
 )
@@ -25,7 +26,7 @@ type WebSocketConn struct {
 }
 
 type SpineBridge struct {
-	spineService          *SpineService
+	spineService          *operator.OperatorService
 	WebSocketConnections  map[string]*WebSocketConn
 	websocketPingerTicker *time.Ticker
 	websocketPingerDone   chan bool
@@ -35,7 +36,7 @@ type SpineBridge struct {
 	// TODO: Might want to add mutex locking for updating websocket connections
 }
 
-func NewSpineBridge(spineService *SpineService) (*SpineBridge, error) {
+func NewSpineBridge(spineService *operator.OperatorService) (*SpineBridge, error) {
 	s := &SpineBridge{
 		spineService:         spineService,
 		WebSocketConnections: make(map[string]*WebSocketConn, 0),
@@ -239,15 +240,15 @@ func (s *SpineBridge) AddListenerToClientRequests(callback ClientRequestCallback
 func (s *SpineBridge) setInternalSpineOperator(
 	UserName string,
 	userNameDisplay string,
-	info OperatorInfo,
+	info operator.OperatorInfo,
 ) error {
 	// Validate the setOperator Request
 	if err := s.spineService.ValidateOperatorRequest(&info); err != nil {
 		return err
 	}
 
-	isBase := info.ChibiStance == CHIBI_STANCE_ENUM_BASE
-	isFront := info.Facing == CHIBI_FACING_ENUM_FRONT
+	isBase := info.ChibiStance == operator.CHIBI_STANCE_ENUM_BASE
+	isFront := info.Facing == operator.CHIBI_FACING_ENUM_FRONT
 
 	atlasFile := ""
 	pngFile := ""

@@ -1,4 +1,4 @@
-package spine
+package operator
 
 import (
 	"slices"

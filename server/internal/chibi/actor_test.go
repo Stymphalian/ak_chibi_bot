@@ -7,13 +7,14 @@ import (
 
 	"github.com/Stymphalian/ak_chibi_bot/server/internal/chat"
 	"github.com/Stymphalian/ak_chibi_bot/server/internal/misc"
-	"github.com/Stymphalian/ak_chibi_bot/server/internal/spine"
+	"github.com/Stymphalian/ak_chibi_bot/server/internal/operator"
+	spine "github.com/Stymphalian/ak_chibi_bot/server/internal/spine_runtime"
 	"github.com/stretchr/testify/assert"
 )
 
 func setupActorTest() *ChibiActor {
-	assetManager := spine.NewTestAssetService()
-	spineService := spine.NewSpineService(assetManager, misc.DefaultSpineRuntimeConfig())
+	assetManager := operator.NewTestAssetService()
+	spineService := operator.NewOperatorService(assetManager, misc.DefaultSpineRuntimeConfig())
 	fakeSpineClient := spine.NewFakeSpineClient()
 	sut := NewChibiActor(
 		spineService,
@@ -78,9 +79,9 @@ func TestSetToDefault(t *testing.T) {
 	ctx := context.TODO()
 
 	sut.SetToDefault(ctx, "user1", "Amiya", misc.InitialOperatorDetails{
-		Skin:       spine.DEFAULT_SKIN_NAME,
-		Stance:     string(spine.CHIBI_STANCE_ENUM_BASE),
-		Animations: []string{spine.DEFAULT_ANIM_BASE},
+		Skin:       operator.DEFAULT_SKIN_NAME,
+		Stance:     string(operator.CHIBI_STANCE_ENUM_BASE),
+		Animations: []string{operator.DEFAULT_ANIM_BASE},
 		PositionX:  0.5,
 	})
 	assert.Contains(sut.ChatUsers, "user1")
@@ -106,19 +107,19 @@ func TestChibiActorUpdateChibi(t *testing.T) {
 	sut := setupActorTest()
 	ctx := context.TODO()
 
-	opInfo := spine.NewOperatorInfo(
+	opInfo := operator.NewOperatorInfo(
 		"Amiya",
-		spine.FACTION_ENUM_OPERATOR,
+		operator.FACTION_ENUM_OPERATOR,
 		"char_002_amiya",
 		"default",
-		spine.CHIBI_STANCE_ENUM_BASE,
-		spine.CHIBI_FACING_ENUM_FRONT,
+		operator.CHIBI_STANCE_ENUM_BASE,
+		operator.CHIBI_FACING_ENUM_FRONT,
 		[]string{"default"},
 		[]string{"Idle", "Relax"},
 		1.0,
 		misc.EmptyOption[misc.Vector2](),
-		spine.ACTION_PLAY_ANIMATION,
-		spine.NewActionPlayAnimation([]string{"default"}),
+		operator.ACTION_PLAY_ANIMATION,
+		operator.NewActionPlayAnimation([]string{"default"}),
 	)
 	sut.UpdateChibi(ctx, "user1", "userDisplay", &opInfo)
 	assert.Contains(sut.ChatUsers, "user1")
@@ -148,7 +149,7 @@ func TestUpdateChatter(t *testing.T) {
 	assert := assert.New(t)
 	sut := setupActorTest()
 	ctx := context.TODO()
-	opInfo := spine.EmptyOperatorInfo()
+	opInfo := operator.EmptyOperatorInfo()
 	err := sut.UpdateChatter(ctx, "user1", "userDisplay1", opInfo)
 	if err != nil {
 		t.Error(err)

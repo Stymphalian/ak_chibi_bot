@@ -9,12 +9,13 @@ import (
 
 	"github.com/Stymphalian/ak_chibi_bot/server/internal/chat"
 	"github.com/Stymphalian/ak_chibi_bot/server/internal/misc"
-	"github.com/Stymphalian/ak_chibi_bot/server/internal/spine"
+	"github.com/Stymphalian/ak_chibi_bot/server/internal/operator"
+	spine "github.com/Stymphalian/ak_chibi_bot/server/internal/spine_runtime"
 	"github.com/Stymphalian/ak_chibi_bot/server/internal/users"
 )
 
 type ChibiActor struct {
-	spineService         *spine.SpineService
+	spineService         *operator.OperatorService
 	ChatUsers            map[string]*users.ChatUser
 	LastChatterTime      time.Time
 	client               spine.SpineClient
@@ -26,7 +27,7 @@ type ChibiActor struct {
 }
 
 func NewChibiActor(
-	spineService *spine.SpineService,
+	spineService *operator.OperatorService,
 	client spine.SpineClient,
 	excludeNames []string,
 ) *ChibiActor {
@@ -147,7 +148,7 @@ func (c *ChibiActor) HandleMessage(msg chat.ChatMessage) (string, error) {
 }
 
 // TODO: Leaky interface
-func (c *ChibiActor) UpdateChibi(ctx context.Context, username string, userDisplayName string, opInfo *spine.OperatorInfo) error {
+func (c *ChibiActor) UpdateChibi(ctx context.Context, username string, userDisplayName string, opInfo *operator.OperatorInfo) error {
 	c.spineService.ValidateUpdateSetDefaultOtherwise(opInfo)
 
 	_, err := c.client.SetOperator(
@@ -165,10 +166,10 @@ func (c *ChibiActor) UpdateChibi(ctx context.Context, username string, userDispl
 	return nil
 }
 
-func (c *ChibiActor) CurrentInfo(ctx context.Context, userName string) (spine.OperatorInfo, error) {
+func (c *ChibiActor) CurrentInfo(ctx context.Context, userName string) (operator.OperatorInfo, error) {
 	chatUser, ok := c.ChatUsers[userName]
 	if !ok {
-		return *spine.EmptyOperatorInfo(), spine.NewUserNotFound("User not found: " + userName)
+		return *operator.EmptyOperatorInfo(), spine.NewUserNotFound("User not found: " + userName)
 	}
 
 	return *chatUser.GetOperatorInfo(), nil
@@ -178,7 +179,7 @@ func (c *ChibiActor) UpdateChatter(
 	ctx context.Context,
 	username string,
 	usernameDisplay string,
-	update *spine.OperatorInfo,
+	update *operator.OperatorInfo,
 ) error {
 	_, ok := c.ChatUsers[username]
 	if !ok {

@@ -7,21 +7,22 @@ import (
 
 	"github.com/Stymphalian/ak_chibi_bot/server/internal/chat"
 	"github.com/Stymphalian/ak_chibi_bot/server/internal/misc"
-	"github.com/Stymphalian/ak_chibi_bot/server/internal/spine"
+	"github.com/Stymphalian/ak_chibi_bot/server/internal/operator"
+	spine "github.com/Stymphalian/ak_chibi_bot/server/internal/spine_runtime"
 )
 
 type FakeChibiActor struct {
-	Users map[string]spine.OperatorInfo
+	Users map[string]operator.OperatorInfo
 }
 
 func NewFakeChibiActor() *FakeChibiActor {
 	return &FakeChibiActor{
-		Users: make(map[string]spine.OperatorInfo, 0),
+		Users: make(map[string]operator.OperatorInfo, 0),
 	}
 }
 
 func (f *FakeChibiActor) GiveChibiToUser(ctx context.Context, userName string, userNameDisplay string) error {
-	opInfo := *spine.EmptyOperatorInfo()
+	opInfo := *operator.EmptyOperatorInfo()
 	opInfo.OperatorId = userName
 	opInfo.OperatorDisplayName = userName
 	f.Users[userName] = opInfo
@@ -47,7 +48,7 @@ func (f *FakeChibiActor) SetToDefault(ctx context.Context, broadcasterName strin
 
 func (f *FakeChibiActor) HandleMessage(msg chat.ChatMessage) (string, error) {
 	if strings.HasPrefix(msg.Message, "!") {
-		opInfo := *spine.EmptyOperatorInfo()
+		opInfo := *operator.EmptyOperatorInfo()
 		opInfo.OperatorId = msg.Message
 		f.Users[msg.Username] = opInfo
 
@@ -57,21 +58,21 @@ func (f *FakeChibiActor) HandleMessage(msg chat.ChatMessage) (string, error) {
 			return "valid", nil
 		}
 	} else {
-		opInfo := *spine.EmptyOperatorInfo()
+		opInfo := *operator.EmptyOperatorInfo()
 		opInfo.OperatorId = "Invalid"
 		f.Users[msg.Username] = opInfo
 		return "invalid", errors.New("error message")
 	}
 }
 
-func (f *FakeChibiActor) UpdateChibi(ctx context.Context, username string, userDisplayName string, opInfo *spine.OperatorInfo) error {
+func (f *FakeChibiActor) UpdateChibi(ctx context.Context, username string, userDisplayName string, opInfo *operator.OperatorInfo) error {
 	f.Users[username] = *opInfo
 	return nil
 }
 
-func (f *FakeChibiActor) CurrentInfo(ctx context.Context, userName string) (spine.OperatorInfo, error) {
+func (f *FakeChibiActor) CurrentInfo(ctx context.Context, userName string) (operator.OperatorInfo, error) {
 	if _, ok := f.Users[userName]; !ok {
-		return *spine.EmptyOperatorInfo(), spine.NewUserNotFound("User not found: " + userName)
+		return *operator.EmptyOperatorInfo(), spine.NewUserNotFound("User not found: " + userName)
 	} else {
 		return f.Users[userName], nil
 	}
@@ -81,7 +82,7 @@ func (f *FakeChibiActor) UpdateChatter(
 	ctx context.Context,
 	username string,
 	usernameDisplay string,
-	update *spine.OperatorInfo,
+	update *operator.OperatorInfo,
 ) error {
 	f.Users[username] = *update
 	return nil
