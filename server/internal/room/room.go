@@ -28,7 +28,7 @@ type RoomConfig struct {
 // Model - chibiActor
 // View-Model/Controller - twitchChat
 type Room struct {
-	SpineService              *operator.OperatorService
+	operatorService           *operator.OperatorService
 	roomId                    uint
 	channelName               string
 	roomRepo                  RoomRepository
@@ -47,21 +47,21 @@ func NewRoom(
 	roomRepo RoomRepository,
 	usersRepo users.UserRepository,
 	chattersRepo users.ChatterRepository,
-	spineService *operator.OperatorService,
+	operatorService *operator.OperatorService,
 	spineRuntime spine.SpineRuntime,
 	chibiActor *chibi.ChibiActor,
 	twitchBot chatbot.ChatBotter) *Room {
 	r := &Room{
-		roomId:       roomId,
-		channelName:  chanelName,
-		roomRepo:     roomRepo,
-		usersRepo:    usersRepo,
-		chatterRepo:  chattersRepo,
-		SpineService: spineService,
-		spineRuntime: spineRuntime,
-		chibiActor:   chibiActor,
-		twitchChat:   twitchBot,
-		createdAt:    misc.Clock.Now(),
+		roomId:          roomId,
+		channelName:     chanelName,
+		roomRepo:        roomRepo,
+		usersRepo:       usersRepo,
+		chatterRepo:     chattersRepo,
+		operatorService: operatorService,
+		spineRuntime:    spineRuntime,
+		chibiActor:      chibiActor,
+		twitchChat:      twitchBot,
+		createdAt:       misc.Clock.Now(),
 	}
 	return r
 }
@@ -173,7 +173,7 @@ func (r *Room) AddOperatorToRoom(
 	faction operator.FactionEnum,
 ) error {
 	// TODO: Leaky interface. Need to move this into a Service or ChibiActor
-	opInfo, err := r.SpineService.GetRandomOperator()
+	opInfo, err := r.operatorService.GetRandomOperator()
 	if err != nil {
 		return err
 	}
@@ -292,4 +292,13 @@ func (r *Room) UpdateSpineRuntimeConfig(ctx context.Context, newConfig *misc.Spi
 
 func (r *Room) GetRoomId() uint {
 	return r.roomId
+}
+
+func (r *Room) RefreshConfigs(ctx context.Context) error {
+	newConfig, err := r.GetSpineRuntimeConfig(ctx)
+	if err != nil {
+		return err
+	}
+	r.operatorService.SetConfig(newConfig)
+	return nil
 }

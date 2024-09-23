@@ -124,9 +124,9 @@ func (s *MainStruct) run() {
 			"",
 		),
 	)
-	http.Handle("/rooms/settings/",
+	http.Handle("/room/settings/",
 		http.TimeoutHandler(
-			http.StripPrefix("/rooms/settings/", http.FileServer(http.Dir(s.staticAssetDir+"/rooms"))),
+			http.StripPrefix("/room/settings/", http.FileServer(http.Dir(s.staticAssetDir+"/rooms"))),
 			DEFAULT_TIMEOUT,
 			"",
 		),

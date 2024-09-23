@@ -196,6 +196,8 @@ func (r *RoomsManager) CreateRoomOrNoOp(ctx context.Context, channel string) err
 		return err
 	}
 	if _, ok := r.Rooms[channel]; ok {
+		// Refresh the room's configs, best effort
+		r.Rooms[channel].RefreshConfigs(ctx)
 		return nil
 	}
 

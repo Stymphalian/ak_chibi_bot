@@ -29,6 +29,10 @@ func (s *OperatorService) WithConfig(newConfig *misc.SpineRuntimeConfig) *Operat
 	}
 }
 
+func (s *OperatorService) SetConfig(newConfig *misc.SpineRuntimeConfig) {
+	s.config = newConfig
+}
+
 func (s *OperatorService) getConfig() *misc.SpineRuntimeConfig {
 	return s.config
 }
