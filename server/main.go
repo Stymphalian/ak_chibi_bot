@@ -20,6 +20,7 @@ import (
 	"github.com/Stymphalian/ak_chibi_bot/server/internal/misc"
 	"github.com/Stymphalian/ak_chibi_bot/server/internal/operator"
 	"github.com/Stymphalian/ak_chibi_bot/server/internal/room"
+	"github.com/Stymphalian/ak_chibi_bot/server/internal/users"
 )
 
 const (
@@ -33,8 +34,11 @@ type MainStruct struct {
 	botConfigPath  *string
 	botConfig      *misc.BotConfig
 
-	roomRepository room.RoomRepository
-	assetService   *operator.AssetService
+	roomsRepo    room.RoomRepository
+	usersRepo    users.UserRepository
+	chattersRepo users.ChatterRepository
+
+	assetService *operator.AssetService
 
 	roomManager *room.RoomsManager
 	adminServer *admin.AdminServer
@@ -65,23 +69,28 @@ func NewMainStruct() *MainStruct {
 		log.Fatal(err)
 	}
 
-	roomRepo := room.NewPostgresRoomRepository()
-	roomManager := room.NewRoomsManager(assetService, roomRepo, botConfig)
+	roomsRepo := room.NewPostgresRoomRepository()
+	usersRepo := users.NewUserRepositoryPsql()
+	chattersRepo := users.NewChatterRepositoryPsql()
+	roomManager := room.NewRoomsManager(assetService, roomsRepo, usersRepo, chattersRepo, botConfig)
 	adminServer := admin.NewAdminServer(roomManager, botConfig, *staticAssetsDir)
 	apiServer := api.NewApiServer(roomManager)
 
 	return &MainStruct{
-		*imageAssetDir,
-		*staticAssetsDir,
-		address,
-		botConfigPath,
-		botConfig,
+		imageAssetDir:  *imageAssetDir,
+		staticAssetDir: *staticAssetsDir,
+		address:        address,
+		botConfigPath:  botConfigPath,
+		botConfig:      botConfig,
 
-		roomRepo,
-		assetService,
-		roomManager,
-		adminServer,
-		apiServer,
+		roomsRepo:    roomsRepo,
+		usersRepo:    usersRepo,
+		chattersRepo: chattersRepo,
+
+		assetService: assetService,
+		roomManager:  roomManager,
+		adminServer:  adminServer,
+		apiServer:    apiServer,
 	}
 }
 

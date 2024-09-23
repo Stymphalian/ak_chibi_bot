@@ -75,12 +75,11 @@ func (r *RoomRepositoryPsql) UpdateSpineRuntimeConfigForId(
 	config *misc.SpineRuntimeConfig,
 ) error {
 	db := akdb.DefaultDB.WithContext(ctx)
-	roomDb := &RoomDb{RoomId: roomId, SpineRuntimeConfig: *config}
 	result := db.
-		Model(r).
+		Model(&RoomDb{}).
 		Where("room_id = ?", roomId).
 		Select("spine_runtime_config").
-		Updates(*roomDb)
+		Updates(&RoomDb{SpineRuntimeConfig: *config})
 	if result.Error != nil {
 		log.Println("Error updating room ", roomId, result.Error)
 	}
@@ -99,14 +98,14 @@ func (r *RoomRepositoryPsql) IsRoomActiveById(ctx context.Context, roomId uint) 
 
 func (r *RoomRepositoryPsql) SetRoomActiveById(ctx context.Context, roomId uint, isActive bool) error {
 	db := akdb.DefaultDB.WithContext(ctx)
-	roomDb := &RoomDb{RoomId: roomId, IsActive: isActive}
+	// roomDb := &RoomDb{RoomId: roomId, IsActive: isActive}
 	result := db.
-		Model(r).
-		Where("room_id = ?", roomDb.RoomId).
+		Model(&RoomDb{}).
+		Where("room_id = ?", roomId).
 		Select("is_active").
-		Updates(*roomDb)
+		Updates(&RoomDb{IsActive: isActive})
 	if result.Error != nil {
-		log.Println("Error updating room ", roomDb.RoomId, result.Error)
+		log.Println("Error updating room ", roomId, result.Error)
 	}
 	return result.Error
 }

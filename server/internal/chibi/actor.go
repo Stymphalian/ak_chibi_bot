@@ -14,9 +14,12 @@ import (
 )
 
 type ChibiActor struct {
-	spineService         *operator.OperatorService
+	spineService *operator.OperatorService
+	usersRepo    users.UserRepository
+	chattersRepo users.ChatterRepository
+
 	ChatUsers            map[string]*users.ChatUser
-	LastChatterTime      time.Time
+	lastChatterTime      time.Time
 	client               spine.SpineClient
 	chatCommandProcessor *chat.ChatCommandProcessor
 	excludeNames         []string
@@ -28,13 +31,18 @@ type ChibiActor struct {
 func NewChibiActor(
 	roomId uint,
 	spineService *operator.OperatorService,
+	usersRepo users.UserRepository,
+	chattersRepo users.ChatterRepository,
 	client spine.SpineClient,
 	excludeNames []string,
 ) *ChibiActor {
 	a := &ChibiActor{
-		spineService:         spineService,
+		spineService: spineService,
+		usersRepo:    usersRepo,
+		chattersRepo: chattersRepo,
+
 		ChatUsers:            make(map[string]*users.ChatUser, 0),
-		LastChatterTime:      misc.Clock.Now(),
+		lastChatterTime:      misc.Clock.Now(),
 		client:               client,
 		chatCommandProcessor: chat.NewChatCommandProcessor(spineService),
 		excludeNames:         excludeNames,
@@ -53,9 +61,9 @@ func (c *ChibiActor) Close() error {
 	return nil
 }
 
-// func (c *ChibiActor) SetRoomId(roomId uint) {
-// 	c.roomId = &roomId
-// }
+func (c *ChibiActor) GetLastChatterTime() time.Time {
+	return c.lastChatterTime
+}
 
 func (c *ChibiActor) GiveChibiToUser(ctx context.Context, userName string, userNameDisplay string) error {
 	// Skip giving chibis to these Users
@@ -80,11 +88,8 @@ func (c *ChibiActor) GiveChibiToUser(ctx context.Context, userName string, userN
 	}
 	c.UpdateChatter(ctx, userName, userNameDisplay, operatorInfo)
 
-	// _, err := c.chatCommandProcessor.addRandomChibi(userName, userNameDisplay)
-	if err == nil {
-		log.Println("User joined. Adding a chibi for them ", userName)
-		misc.Monitor.NumUsers += 1
-	}
+	log.Println("User joined. Adding a chibi for them ", userName)
+	misc.Monitor.NumUsers += 1
 	return err
 }
 
@@ -129,10 +134,10 @@ func (c *ChibiActor) HandleMessage(msg chat.ChatMessage) (string, error) {
 	if !c.HasChibi(ctx, msg.Username) {
 		c.GiveChibiToUser(ctx, msg.Username, msg.UserDisplayName)
 	}
+	c.ChatUsers[msg.Username].SetLastChatTime(misc.Clock.Now())
 	if msg.Message[0] != '!' {
 		return "", nil
 	}
-	c.ChatUsers[msg.Username].SetLastChatTime(misc.Clock.Now())
 
 	current, err := c.CurrentInfo(ctx, msg.Username)
 	if err != nil {
@@ -184,16 +189,21 @@ func (c *ChibiActor) UpdateChatter(
 ) error {
 	_, ok := c.ChatUsers[username]
 	if !ok {
-		userDb, err := users.GetOrInsertUser(ctx, username, usernameDisplay)
+		userDb, err := c.usersRepo.GetOrInsertUser(ctx, username, usernameDisplay)
 		if err != nil {
 			return err
 		}
-		chatterDb, err := users.GetOrInsertChatter(ctx, c.roomId, userDb, misc.Clock.Now(), update)
+		chatterDb, err := c.chattersRepo.GetOrInsertChatter(ctx, c.roomId, userDb, misc.Clock.Now(), update)
 		if err != nil {
 			return err
 		}
 
-		chatUser, err := users.NewChatUser(userDb, chatterDb)
+		chatUser, err := users.NewChatUser(
+			c.usersRepo,
+			c.chattersRepo,
+			userDb.UserId,
+			chatterDb.ChatterId,
+		)
 		if err != nil {
 			return err
 		}
@@ -201,9 +211,7 @@ func (c *ChibiActor) UpdateChatter(
 	}
 
 	chatUser := c.ChatUsers[username]
-	chatUser.SetLastChatTime(misc.Clock.Now())
-	chatUser.SetOperatorInfo(update)
-	chatUser.SetActive(true)
+	chatUser.UpdateWithLatestChat(update)
 	// TODO: Make this more efficient. no need to save to DB if things haven't changed
 	// chatUser.Save()
 	return nil

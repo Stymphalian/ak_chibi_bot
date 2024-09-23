@@ -13,6 +13,7 @@ import (
 	"github.com/Stymphalian/ak_chibi_bot/server/internal/chibi"
 	"github.com/Stymphalian/ak_chibi_bot/server/internal/misc"
 	"github.com/Stymphalian/ak_chibi_bot/server/internal/operator"
+	"github.com/Stymphalian/ak_chibi_bot/server/internal/users"
 
 	spine "github.com/Stymphalian/ak_chibi_bot/server/internal/spine_runtime"
 	"github.com/Stymphalian/ak_chibi_bot/server/internal/twitch_api"
@@ -30,20 +31,32 @@ type RoomsManager struct {
 	assetService *operator.AssetService
 	spineService *operator.OperatorService
 	roomRepo     RoomRepository
+	usersRepo    users.UserRepository
+	chattersRepo users.ChatterRepository
 
 	botConfig      *misc.BotConfig
 	twitchClient   twitch_api.TwitchApiClientInterface
 	shutdownDoneCh chan struct{}
 }
 
-func NewRoomsManager(assets *operator.AssetService, roomRepo RoomRepository, botConfig *misc.BotConfig) *RoomsManager {
+func NewRoomsManager(
+	assets *operator.AssetService,
+	roomRepo RoomRepository,
+	usersRepo users.UserRepository,
+	chattersRepo users.ChatterRepository,
+	botConfig *misc.BotConfig,
+) *RoomsManager {
 	spineService := operator.NewOperatorService(assets, botConfig.SpineRuntimeConfig)
 	return &RoomsManager{
 		Rooms:        make(map[string]*Room, 0),
 		assetService: assets,
 		spineService: spineService,
+
 		roomRepo:     roomRepo,
-		botConfig:    botConfig,
+		usersRepo:    usersRepo,
+		chattersRepo: chattersRepo,
+
+		botConfig: botConfig,
 		twitchClient: twitch_api.NewTwitchApiClient(
 			botConfig.TwitchClientId,
 			botConfig.TwitchAccessToken,
@@ -133,6 +146,8 @@ func (r *RoomsManager) getRoomServices(roomDb *RoomDb) (*operator.OperatorServic
 	chibiActor := chibi.NewChibiActor(
 		roomDb.RoomId,
 		newSpineService,
+		r.usersRepo,
+		r.chattersRepo,
 		spineBridge,
 		r.botConfig.ExcludeNames,
 	)
@@ -158,6 +173,8 @@ func (r *RoomsManager) InsertRoom(roomDb *RoomDb) error {
 		roomDb.RoomId,
 		roomDb.ChannelName,
 		r.roomRepo,
+		r.usersRepo,
+		r.chattersRepo,
 		spineService,
 		spineBridge,
 		chibiActor,
@@ -211,6 +228,8 @@ func (r *RoomsManager) CreateRoomOrNoOp(ctx context.Context, channel string) err
 		roomDb.RoomId,
 		roomDb.ChannelName,
 		r.roomRepo,
+		r.usersRepo,
+		r.chattersRepo,
 		spineService,
 		spineBridge,
 		chibiActor,

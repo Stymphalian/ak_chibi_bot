@@ -9,16 +9,21 @@ import (
 	"github.com/Stymphalian/ak_chibi_bot/server/internal/misc"
 	"github.com/Stymphalian/ak_chibi_bot/server/internal/operator"
 	spine "github.com/Stymphalian/ak_chibi_bot/server/internal/spine_runtime"
+	"github.com/Stymphalian/ak_chibi_bot/server/internal/users"
 	"github.com/stretchr/testify/assert"
 )
 
 func setupActorTest() *ChibiActor {
+	usersRepo := users.NewUserRepositoryPsql()
+	chattersRepo := users.NewChatterRepositoryPsql()
 	assetManager := operator.NewTestAssetService()
 	spineService := operator.NewOperatorService(assetManager, misc.DefaultSpineRuntimeConfig())
 	fakeSpineClient := spine.NewFakeSpineClient()
 	sut := NewChibiActor(
 		5000,
 		spineService,
+		usersRepo,
+		chattersRepo,
 		fakeSpineClient,
 		[]string{"exlude_user"},
 	)

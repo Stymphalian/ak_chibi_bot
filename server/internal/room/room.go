@@ -32,6 +32,8 @@ type Room struct {
 	roomId                    uint
 	channelName               string
 	roomRepo                  RoomRepository
+	usersRepo                 users.UserRepository
+	chatterRepo               users.ChatterRepository
 	spineRuntime              spine.SpineRuntime
 	chibiActor                *chibi.ChibiActor
 	twitchChat                chatbot.ChatBotter
@@ -43,6 +45,8 @@ func NewRoom(
 	roomId uint,
 	chanelName string,
 	roomRepo RoomRepository,
+	usersRepo users.UserRepository,
+	chattersRepo users.ChatterRepository,
 	spineService *operator.OperatorService,
 	spineRuntime spine.SpineRuntime,
 	chibiActor *chibi.ChibiActor,
@@ -51,6 +55,8 @@ func NewRoom(
 		roomId:       roomId,
 		channelName:  chanelName,
 		roomRepo:     roomRepo,
+		usersRepo:    usersRepo,
+		chatterRepo:  chattersRepo,
 		SpineService: spineService,
 		spineRuntime: spineRuntime,
 		chibiActor:   chibiActor,
@@ -65,7 +71,7 @@ func (r *Room) GetChannelName() string {
 }
 
 func (r *Room) GetLastChatterTime() time.Time {
-	return r.chibiActor.LastChatterTime
+	return r.chibiActor.GetLastChatterTime()
 }
 
 func (r *Room) CreatedAt() time.Time {
@@ -199,7 +205,7 @@ func (s *Room) AddWebsocketConnection(w http.ResponseWriter, r *http.Request) er
 }
 
 func (r *Room) HasActiveChatters(period time.Duration) bool {
-	return misc.Clock.Since(r.chibiActor.LastChatterTime) <= period
+	return misc.Clock.Since(r.chibiActor.GetLastChatterTime()) <= period
 }
 
 func (r *Room) NumConnectedClients() int {
@@ -213,12 +219,12 @@ func (r *Room) ForEachChatter(callback func(chatUser *users.ChatUser)) {
 }
 
 func (r *Room) LoadExistingChatters(ctx context.Context) error {
-	chatters, err := users.GetActiveChatters(ctx, r.GetRoomId())
+	chatters, err := r.chatterRepo.GetActiveChatters(ctx, r.GetRoomId())
 	if err != nil {
 		return err
 	}
 	for _, chatter := range chatters {
-		user, err := users.GetUserById(ctx, chatter.GetUserId())
+		user, err := r.usersRepo.GetById(ctx, chatter.UserId)
 		if err != nil {
 			continue
 		}
@@ -227,7 +233,7 @@ func (r *Room) LoadExistingChatters(ctx context.Context) error {
 			ctx,
 			user.Username,
 			user.UserDisplayName,
-			chatter.GetOperatorInfo(),
+			&chatter.OperatorInfo,
 		)
 	}
 	return nil
