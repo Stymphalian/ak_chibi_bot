@@ -9,6 +9,7 @@ import (
 // Call the returned function to Close the callback.
 func StartTimer(name string, interval time.Duration, callback func()) func() {
 	ticker := time.NewTicker(interval)
+	stop := make(chan bool)
 	done := make(chan bool)
 	go func() {
 		// GoRunCounter.Add(1)
@@ -16,8 +17,9 @@ func StartTimer(name string, interval time.Duration, callback func()) func() {
 
 		for {
 			select {
-			case <-done:
+			case <-stop:
 				log.Println("Stopping timer", name)
+				done <- true
 				return
 			case <-ticker.C:
 				callback()
@@ -27,6 +29,7 @@ func StartTimer(name string, interval time.Duration, callback func()) func() {
 
 	return func() {
 		ticker.Stop()
-		close(done)
+		close(stop)
+		<-done
 	}
 }

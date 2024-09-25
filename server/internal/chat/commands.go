@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/Stymphalian/ak_chibi_bot/server/internal/misc"
 	"github.com/Stymphalian/ak_chibi_bot/server/internal/operator"
 )
 
@@ -59,11 +60,16 @@ type ChatCommandUpdateActor struct {
 	replyMessage    string
 	username        string
 	usernameDisplay string
+	twitchUserId    string
 	update          *operator.OperatorInfo
 }
 
 func (c *ChatCommandUpdateActor) Reply(a ActorUpdater) string { return c.replyMessage }
 func (c *ChatCommandUpdateActor) UpdateActor(a ActorUpdater) error {
 	ctx := context.Background()
-	return a.UpdateChibi(ctx, c.username, c.usernameDisplay, c.update)
+	return a.UpdateChibi(ctx, misc.UserInfo{
+		Username:        c.username,
+		UsernameDisplay: c.usernameDisplay,
+		TwitchUserId:    c.twitchUserId,
+	}, c.update)
 }

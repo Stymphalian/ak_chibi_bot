@@ -24,7 +24,7 @@ func TestHandlePrivateMessageNormalMessage(t *testing.T) {
 	twitchBot, fakeChibiActor := setupTest()
 
 	testMsg := twitch.PrivateMessage{
-		User:    twitch.User{Name: "user"},
+		User:    twitch.User{Name: "user", DisplayName: "userDisplay", ID: "100"},
 		Message: "hello world",
 	}
 	twitchBot.HandlePrivateMessage(testMsg)
@@ -37,7 +37,7 @@ func TestHandlePrivateMessageChibiCommand(t *testing.T) {
 	twitchBot, fakeChibiActor := setupTest()
 
 	testMsg := twitch.PrivateMessage{
-		User:    twitch.User{Name: "user"},
+		User:    twitch.User{Name: "user", DisplayName: "userDisplay", ID: "100"},
 		Message: "!chibi help",
 	}
 	twitchBot.HandlePrivateMessage(testMsg)
@@ -50,7 +50,7 @@ func TestHandlePrivateMessageChibiCommandWithError(t *testing.T) {
 	twitchBot, fakeChibiActor := setupTest()
 
 	testMsg := twitch.PrivateMessage{
-		User:    twitch.User{Name: "user"},
+		User:    twitch.User{Name: "user", DisplayName: "userDisplay", ID: "100"},
 		Message: "!chibi help",
 	}
 	twitchBot.HandlePrivateMessage(testMsg)

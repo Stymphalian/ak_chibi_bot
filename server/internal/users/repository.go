@@ -4,6 +4,7 @@ import (
 	"context"
 	"time"
 
+	"github.com/Stymphalian/ak_chibi_bot/server/internal/misc"
 	"github.com/Stymphalian/ak_chibi_bot/server/internal/operator"
 
 	"gorm.io/gorm"
@@ -11,7 +12,7 @@ import (
 
 type UserRepository interface {
 	GetById(ctx context.Context, userId uint) (*UserDb, error)
-	GetOrInsertUser(ctx context.Context, username string, userDisplayName string) (*UserDb, error)
+	GetOrInsertUser(ctx context.Context, info misc.UserInfo) (*UserDb, error)
 }
 
 type ChatterRepository interface {
@@ -35,6 +36,7 @@ type UserDb struct {
 	UserId          uint           `gorm:"primarykey"`
 	Username        string         `gorm:"column:username"`
 	UserDisplayName string         `gorm:"column:user_display_name"`
+	TwitchUserId    string         `gorm:"column:twitch_user_id"`
 	CreatedAt       time.Time      `gorm:"column:created_at"`
 	UpdatedAt       time.Time      `gorm:"column:updated_at"`
 	DeletedAt       gorm.DeletedAt `gorm:"index"`

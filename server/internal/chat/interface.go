@@ -3,12 +3,14 @@ package chat
 import (
 	"context"
 
+	"github.com/Stymphalian/ak_chibi_bot/server/internal/misc"
 	"github.com/Stymphalian/ak_chibi_bot/server/internal/operator"
 )
 
 type ChatMessage struct {
 	Username        string
 	UserDisplayName string
+	TwitchUserId    string
 	Message         string
 }
 
@@ -18,7 +20,7 @@ type ChatMessageHandler interface {
 
 type ActorUpdater interface {
 	CurrentInfo(ctx context.Context, username string) (operator.OperatorInfo, error)
-	UpdateChibi(ctx context.Context, username string, usernameDisplay string, update *operator.OperatorInfo) error
+	UpdateChibi(ctx context.Context, userInfo misc.UserInfo, update *operator.OperatorInfo) error
 }
 
 type ChatCommand interface {

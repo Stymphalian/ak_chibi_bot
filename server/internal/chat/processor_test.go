@@ -89,7 +89,7 @@ type FakeActorUpdater struct {
 func (f *FakeActorUpdater) CurrentInfo(ctx context.Context, username string) (operator.OperatorInfo, error) {
 	return f.opInfo, nil
 }
-func (f *FakeActorUpdater) UpdateChibi(ctx context.Context, username string, usernameDisplay string, update *operator.OperatorInfo) error {
+func (f *FakeActorUpdater) UpdateChibi(ctx context.Context, userInfo misc.UserInfo, update *operator.OperatorInfo) error {
 	return nil
 }
 
@@ -126,6 +126,7 @@ func TestCmdProcessorHandleMessage_NotChibiCommand(t *testing.T) {
 	cmd, err := sut.HandleMessage(current, ChatMessage{
 		Username:        "user1",
 		UserDisplayName: "user1DisplayName",
+		TwitchUserId:    "100",
 		Message:         "hello world",
 	})
 
@@ -140,6 +141,7 @@ func TestCmdProcessorHandleMessage_TooLongCommand(t *testing.T) {
 	cmd, err := sut.HandleMessage(current, ChatMessage{
 		Username:        "user1",
 		UserDisplayName: "user1DisplayName",
+		TwitchUserId:    "100",
 		Message:         "!chibi 01234567890123456789012345678901234567890123456789 01234567890123456789012345678901234567890123456789",
 	})
 
@@ -153,6 +155,7 @@ func TestCmdProcessorHandleMessage_NotChibiCommandExplicit(t *testing.T) {
 	cmd, err := sut.HandleMessage(current, ChatMessage{
 		Username:        "user1",
 		UserDisplayName: "user1DisplayName",
+		TwitchUserId:    "100",
 		Message:         "!chibiextended",
 	})
 
@@ -166,6 +169,7 @@ func TestCmdProcessorHandleMessage_ChibiOnlyCommandShowHelp(t *testing.T) {
 	cmd, err := sut.HandleMessage(current, ChatMessage{
 		Username:        "user1",
 		UserDisplayName: "user1DisplayName",
+		TwitchUserId:    "100",
 		Message:         "!chibi",
 	})
 
@@ -180,6 +184,7 @@ func TestCmdProcessorHandleMessage_ChibiHelp(t *testing.T) {
 	cmd, err := sut.HandleMessage(current, ChatMessage{
 		Username:        "user1",
 		UserDisplayName: "user1DisplayName",
+		TwitchUserId:    "100",
 		Message:         "!chibi help",
 	})
 
@@ -193,6 +198,7 @@ func TestCmdProcessorHandleMessage_ChibiSkins(t *testing.T) {
 	cmd, err := sut.HandleMessage(current, ChatMessage{
 		Username:        "user1",
 		UserDisplayName: "user1DisplayName",
+		TwitchUserId:    "100",
 		Message:         "!chibi skins",
 	})
 
@@ -207,6 +213,7 @@ func TestCmdProcessorHandleMessage_ChibiAnims(t *testing.T) {
 	cmd, err := sut.HandleMessage(current, ChatMessage{
 		Username:        "user1",
 		UserDisplayName: "user1DisplayName",
+		TwitchUserId:    "100",
 		Message:         "!chibi anims",
 	})
 
@@ -221,6 +228,7 @@ func TestCmdProcessorHandleMessage_ChibiInfo(t *testing.T) {
 	cmd, err := sut.HandleMessage(current, ChatMessage{
 		Username:        "user1",
 		UserDisplayName: "user1DisplayName",
+		TwitchUserId:    "100",
 		Message:         "!chibi info",
 	})
 
@@ -235,6 +243,7 @@ func TestCmdProcessorHandleMessage_ChibiWhoFail(t *testing.T) {
 	cmd, err := sut.HandleMessage(current, ChatMessage{
 		Username:        "user1",
 		UserDisplayName: "user1DisplayName",
+		TwitchUserId:    "100",
 		Message:         "!chibi who notanoperator",
 	})
 
@@ -249,6 +258,7 @@ func TestCmdProcessorHandleMessage_ChibiWhoSuccess(t *testing.T) {
 	cmd, err := sut.HandleMessage(current, ChatMessage{
 		Username:        "user1",
 		UserDisplayName: "user1DisplayName",
+		TwitchUserId:    "100",
 		Message:         "!chibi who amiy",
 	})
 
@@ -263,6 +273,7 @@ func TestCmdProcessorHandleMessage_ChibiSetSkin(t *testing.T) {
 	cmd, err := sut.HandleMessage(current, ChatMessage{
 		Username:        "user1",
 		UserDisplayName: "user1DisplayName",
+		TwitchUserId:    "100",
 		Message:         "!chibi skin1",
 	})
 
@@ -285,6 +296,7 @@ func TestCmdProcessorHandleMessage_ChibiPlayAnimation(t *testing.T) {
 	cmd, err := sut.HandleMessage(current, ChatMessage{
 		Username:        "user1",
 		UserDisplayName: "user1DisplayName",
+		TwitchUserId:    "100",
 		Message:         "!chibi anim1",
 	})
 
@@ -308,6 +320,7 @@ func TestCmdProcessorHandleMessage_ChibiPlayMultpleAnimation(t *testing.T) {
 	cmd, err := sut.HandleMessage(current, ChatMessage{
 		Username:        "user1",
 		UserDisplayName: "user1DisplayName",
+		TwitchUserId:    "100",
 		Message:         "!chibi play anim1 Idle",
 	})
 
@@ -332,6 +345,7 @@ func TestCmdProcessorHandleMessage_ChibiFace(t *testing.T) {
 	cmd, err := sut.HandleMessage(current, ChatMessage{
 		Username:        "user1",
 		UserDisplayName: "user1DisplayName",
+		TwitchUserId:    "100",
 		Message:         "!chibi battle",
 	})
 
@@ -354,6 +368,7 @@ func TestCmdProcessorHandleMessage_ChibiSetFaceOnlyForBattleStance(t *testing.T)
 	_, err := sut.HandleMessage(current, ChatMessage{
 		Username:        "user1",
 		UserDisplayName: "user1DisplayName",
+		TwitchUserId:    "100",
 		Message:         "!chibi face back",
 	})
 
@@ -370,6 +385,7 @@ func TestCmdProcessorHandleMessage_ChibiSetFaceOnly(t *testing.T) {
 	cmd, err := sut.HandleMessage(current, ChatMessage{
 		Username:        "user1",
 		UserDisplayName: "user1DisplayName",
+		TwitchUserId:    "100",
 		Message:         "!chibi face back",
 	})
 
@@ -393,6 +409,7 @@ func TestCmdProcessorHandleMessage_ChibiEnemyNotEnoughArgs(t *testing.T) {
 	cmd, err := sut.HandleMessage(current, ChatMessage{
 		Username:        "user1",
 		UserDisplayName: "user1DisplayName",
+		TwitchUserId:    "100",
 		Message:         "!chibi enemy",
 	})
 
@@ -416,6 +433,7 @@ func TestCmdProcessorHandleMessage_ChibiEnemyHappyPath(t *testing.T) {
 	cmd, err := sut.HandleMessage(current, ChatMessage{
 		Username:        "user1",
 		UserDisplayName: "user1DisplayName",
+		TwitchUserId:    "100",
 		Message:         "!chibi enemy Slug",
 	})
 
@@ -441,6 +459,7 @@ func TestCmdProcessorHandleMessage_ChibiWalk(t *testing.T) {
 	cmd, err := sut.HandleMessage(current, ChatMessage{
 		Username:        "user1",
 		UserDisplayName: "user1DisplayName",
+		TwitchUserId:    "100",
 		Message:         "!chibi walk",
 	})
 
@@ -464,6 +483,7 @@ func TestCmdProcessorHandleMessage_ChibiWalkTo(t *testing.T) {
 	cmd, err := sut.HandleMessage(current, ChatMessage{
 		Username:        "user1",
 		UserDisplayName: "user1DisplayName",
+		TwitchUserId:    "100",
 		Message:         "!chibi walk 0.5",
 	})
 
@@ -488,6 +508,7 @@ func TestCmdProcessorHandleMessage_ChibiAnimationSpeed(t *testing.T) {
 	cmd, err := sut.HandleMessage(current, ChatMessage{
 		Username:        "user1",
 		UserDisplayName: "user1DisplayName",
+		TwitchUserId:    "100",
 		Message:         "!chibi speed 2.0",
 	})
 
@@ -509,6 +530,7 @@ func TestCmdProcessorHandleMessage_ChibiAnimationSpeedMaxSpeed(t *testing.T) {
 	_, err := sut.HandleMessage(current, ChatMessage{
 		Username:        "user1",
 		UserDisplayName: "user1DisplayName",
+		TwitchUserId:    "100",
 		Message:         "!chibi speed 6.0",
 	})
 
@@ -526,6 +548,7 @@ func TestCmdProcessorHandleMessage_ChibiChibiModel(t *testing.T) {
 	cmd, err := sut.HandleMessage(current, ChatMessage{
 		Username:        "user1",
 		UserDisplayName: "user1DisplayName",
+		TwitchUserId:    "100",
 		Message:         "!chibi amiya",
 	})
 
@@ -559,6 +582,7 @@ func TestCmdProcessorHandleMessage_Regression_EnemyToOperatorShouldMaintainWande
 	cmd, err := sut.HandleMessage(current, ChatMessage{
 		Username:        "user1",
 		UserDisplayName: "user1DisplayName",
+		TwitchUserId:    "100",
 		Message:         "!chibi amiya",
 	})
 
@@ -585,6 +609,7 @@ func TestCmdProcessorHandleMessage_ChibiScale(t *testing.T) {
 	cmd, err := sut.HandleMessage(current, ChatMessage{
 		Username:        "user1",
 		UserDisplayName: "user1DisplayName",
+		TwitchUserId:    "100",
 		Message:         "!chibi size 0.5",
 	})
 
@@ -607,6 +632,7 @@ func TestCmdProcessorHandleMessage_ChibiMoveSpeed(t *testing.T) {
 	cmd, err := sut.HandleMessage(current, ChatMessage{
 		Username:        "user1",
 		UserDisplayName: "user1DisplayName",
+		TwitchUserId:    "100",
 		Message:         "!chibi move_speed 2",
 	})
 
@@ -629,6 +655,7 @@ func TestCmdProcessorHandleMessage_ChibiMoveSpeedOutOfRange(t *testing.T) {
 	_, err := sut.HandleMessage(current, ChatMessage{
 		Username:        "user1",
 		UserDisplayName: "user1DisplayName",
+		TwitchUserId:    "100",
 		Message:         fmt.Sprintf("!chibi move_speed %f", sut.spineService.GetMaxMovementSpeed()+1),
 	})
 

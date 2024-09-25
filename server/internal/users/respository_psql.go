@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/Stymphalian/ak_chibi_bot/server/internal/akdb"
+	"github.com/Stymphalian/ak_chibi_bot/server/internal/misc"
 	"github.com/Stymphalian/ak_chibi_bot/server/internal/operator"
 )
 
@@ -26,16 +27,18 @@ func (r *UserRepositoryPsql) GetById(ctx context.Context, userId uint) (*UserDb,
 	return &userDb, nil
 }
 
-func (r *UserRepositoryPsql) GetOrInsertUser(ctx context.Context, username string, userDisplayName string) (*UserDb, error) {
+func (r *UserRepositoryPsql) GetOrInsertUser(ctx context.Context, userinfo misc.UserInfo) (*UserDb, error) {
 	db := akdb.DefaultDB.WithContext(ctx)
 
+	// TODO: Should check via twitchUserId instead of just username
 	var userDb UserDb
 	result := db.
-		Where("username = ?", username).
+		Where("username = ?", userinfo.Username).
 		Attrs(
 			UserDb{
-				Username:        username,
-				UserDisplayName: userDisplayName,
+				Username:        userinfo.Username,
+				UserDisplayName: userinfo.UsernameDisplay,
+				TwitchUserId:    userinfo.TwitchUserId,
 			},
 		).
 		FirstOrCreate(&userDb)

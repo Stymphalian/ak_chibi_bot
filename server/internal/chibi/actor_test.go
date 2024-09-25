@@ -36,7 +36,12 @@ func TestGiveChibiToUserToExclude(t *testing.T) {
 	assert := assert.New(t)
 	sut := setupActorTest()
 	ctx := context.TODO()
-	err := sut.GiveChibiToUser(ctx, "exlude_user", "userDisplay")
+	userinfo := misc.UserInfo{
+		Username:        "exlude_user",
+		UsernameDisplay: "userDisplay",
+		TwitchUserId:    "100",
+	}
+	err := sut.GiveChibiToUser(ctx, userinfo)
 	assert.Nil(err)
 }
 
@@ -44,7 +49,12 @@ func TestGiveChibiToUserNormalFlow(t *testing.T) {
 	assert := assert.New(t)
 	sut := setupActorTest()
 	ctx := context.TODO()
-	err := sut.GiveChibiToUser(ctx, "user", "userDisplay")
+	userinfo := misc.UserInfo{
+		Username:        "user",
+		UsernameDisplay: "userDisplay",
+		TwitchUserId:    "100",
+	}
+	err := sut.GiveChibiToUser(ctx, userinfo)
 
 	assert.Nil(err)
 	assert.Equal(len(sut.ChatUsers), 1)
@@ -54,8 +64,18 @@ func TestRemoveUserNormal(t *testing.T) {
 	assert := assert.New(t)
 	sut := setupActorTest()
 	ctx := context.TODO()
-	sut.GiveChibiToUser(ctx, "user1", "userDisplay1")
-	sut.GiveChibiToUser(ctx, "user2", "userDisplay2")
+	userinfo := misc.UserInfo{
+		Username:        "user1",
+		UsernameDisplay: "userDisplay1",
+		TwitchUserId:    "100",
+	}
+	userinfo2 := misc.UserInfo{
+		Username:        "user2",
+		UsernameDisplay: "userDisplay2",
+		TwitchUserId:    "100",
+	}
+	sut.GiveChibiToUser(ctx, userinfo)
+	sut.GiveChibiToUser(ctx, userinfo2)
 	assert.Equal(len(sut.ChatUsers), 2)
 
 	err := sut.RemoveUserChibi(ctx, "user1")
@@ -69,8 +89,18 @@ func TestHasChibi(t *testing.T) {
 	assert := assert.New(t)
 	sut := setupActorTest()
 	ctx := context.TODO()
-	sut.GiveChibiToUser(ctx, "user1", "userDisplay1")
-	sut.GiveChibiToUser(ctx, "user2", "userDisplay2")
+	userinfo := misc.UserInfo{
+		Username:        "user1",
+		UsernameDisplay: "userDisplay1",
+		TwitchUserId:    "100",
+	}
+	userinfo2 := misc.UserInfo{
+		Username:        "user2",
+		UsernameDisplay: "userDisplay2",
+		TwitchUserId:    "100",
+	}
+	sut.GiveChibiToUser(ctx, userinfo)
+	sut.GiveChibiToUser(ctx, userinfo2)
 	assert.Equal(len(sut.ChatUsers), 2)
 
 	assert.True(sut.HasChibi(ctx, "user1"))
@@ -82,8 +112,13 @@ func TestSetToDefault(t *testing.T) {
 	assert := assert.New(t)
 	sut := setupActorTest()
 	ctx := context.TODO()
+	userinfo := misc.UserInfo{
+		Username:        "user1",
+		UsernameDisplay: "userDisplay1",
+		TwitchUserId:    "100",
+	}
 
-	sut.SetToDefault(ctx, "user1", "Amiya", misc.InitialOperatorDetails{
+	sut.SetToDefault(ctx, userinfo, "Amiya", misc.InitialOperatorDetails{
 		Skin:       operator.DEFAULT_SKIN_NAME,
 		Stance:     string(operator.CHIBI_STANCE_ENUM_BASE),
 		Animations: []string{operator.DEFAULT_ANIM_BASE},
@@ -99,6 +134,7 @@ func TestChibiActorHandleMessage(t *testing.T) {
 	sut.HandleMessage(chat.ChatMessage{
 		Username:        "user1",
 		UserDisplayName: "userDisplay",
+		TwitchUserId:    "100",
 		Message:         "!chibi Amiya",
 	})
 
@@ -126,7 +162,12 @@ func TestChibiActorUpdateChibi(t *testing.T) {
 		operator.ACTION_PLAY_ANIMATION,
 		operator.NewActionPlayAnimation([]string{"default"}),
 	)
-	sut.UpdateChibi(ctx, "user1", "userDisplay", &opInfo)
+	userinfo := misc.UserInfo{
+		Username:        "user1",
+		UsernameDisplay: "userDisplay1",
+		TwitchUserId:    "100",
+	}
+	sut.UpdateChibi(ctx, userinfo, &opInfo)
 	assert.Contains(sut.ChatUsers, "user1")
 	assert.Contains(sut.ChatUsers["user1"].GetOperatorInfo().Skin, "default")
 	assert.Equal(sut.ChatUsers["user1"].GetOperatorInfo().AvailableAnimations, []string{"Move", "base_front1", "base_front2"})
@@ -144,7 +185,12 @@ func TestActorCurrentInfoExists(t *testing.T) {
 	assert := assert.New(t)
 	sut := setupActorTest()
 	ctx := context.TODO()
-	sut.GiveChibiToUser(ctx, "user1", "userDisplay1")
+	userinfo := misc.UserInfo{
+		Username:        "user1",
+		UsernameDisplay: "userDisplay1",
+		TwitchUserId:    "100",
+	}
+	sut.GiveChibiToUser(ctx, userinfo)
 	opInfo, err := sut.CurrentInfo(ctx, "user1")
 	assert.Nil(err)
 	assert.Equal(opInfo.OperatorId, "char_002_amiya")
@@ -155,7 +201,12 @@ func TestUpdateChatter(t *testing.T) {
 	sut := setupActorTest()
 	ctx := context.TODO()
 	opInfo := operator.EmptyOperatorInfo()
-	err := sut.UpdateChatter(ctx, "user1", "userDisplay1", opInfo)
+	userinfo := misc.UserInfo{
+		Username:        "user1",
+		UsernameDisplay: "userDisplay1",
+		TwitchUserId:    "100",
+	}
+	err := sut.UpdateChatter(ctx, userinfo, opInfo)
 	if err != nil {
 		t.Error(err)
 	}

@@ -64,6 +64,7 @@ func (t *TwitchBot) HandlePrivateMessage(m twitch.PrivateMessage) {
 	chatMessage := chat.ChatMessage{
 		Username:        m.User.Name,
 		UserDisplayName: m.User.DisplayName,
+		TwitchUserId:    m.User.ID,
 		Message:         trimmed,
 	}
 	outputMsg, err := t.chatMessageHandler.HandleMessage(chatMessage)

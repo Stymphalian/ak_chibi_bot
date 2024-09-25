@@ -65,9 +65,9 @@ func (c *ChibiActor) GetLastChatterTime() time.Time {
 	return c.lastChatterTime
 }
 
-func (c *ChibiActor) GiveChibiToUser(ctx context.Context, userName string, userNameDisplay string) error {
+func (c *ChibiActor) GiveChibiToUser(ctx context.Context, userInfo misc.UserInfo) error {
 	// Skip giving chibis to these Users
-	if slices.Contains(c.excludeNames, userName) {
+	if slices.Contains(c.excludeNames, userInfo.Username) {
 		return nil
 	}
 
@@ -75,20 +75,20 @@ func (c *ChibiActor) GiveChibiToUser(ctx context.Context, userName string, userN
 	if err != nil {
 		return err
 	}
-	log.Printf("Giving %s the chibi %s\n", userName, operatorInfo.OperatorId)
+	log.Printf("Giving %s the chibi %s\n", userInfo.Username, operatorInfo.OperatorId)
 	_, err = c.client.SetOperator(
 		&spine.SetOperatorRequest{
-			UserName:        userName,
-			UserNameDisplay: userNameDisplay,
+			UserName:        userInfo.Username,
+			UserNameDisplay: userInfo.UsernameDisplay,
 			Operator:        *operatorInfo,
 		})
 	if err != nil {
 		log.Printf("Failed to set chibi (%s)", err.Error())
 		return nil
 	}
-	c.UpdateChatter(ctx, userName, userNameDisplay, operatorInfo)
+	c.UpdateChatter(ctx, userInfo, operatorInfo)
 
-	log.Println("User joined. Adding a chibi for them ", userName)
+	log.Println("User joined. Adding a chibi for them ", userInfo.Username)
 	misc.Monitor.NumUsers += 1
 	return err
 }
@@ -121,18 +121,22 @@ func (c *ChibiActor) HasChibi(ctx context.Context, userName string) bool {
 // TODO: Leaking operatorDetails
 func (c *ChibiActor) SetToDefault(
 	ctx context.Context,
-	broadcasterName string,
+	userInfo misc.UserInfo,
 	opName string,
 	details misc.InitialOperatorDetails,
 ) {
 	opInfo := c.spineService.OperatorFromDefault(opName, details)
-	c.UpdateChatter(ctx, broadcasterName, broadcasterName, opInfo)
+	c.UpdateChatter(ctx, userInfo, opInfo)
 }
 
 func (c *ChibiActor) HandleMessage(msg chat.ChatMessage) (string, error) {
 	ctx := context.Background()
 	if !c.HasChibi(ctx, msg.Username) {
-		c.GiveChibiToUser(ctx, msg.Username, msg.UserDisplayName)
+		c.GiveChibiToUser(ctx, misc.UserInfo{
+			Username:        msg.Username,
+			UsernameDisplay: msg.UserDisplayName,
+			TwitchUserId:    msg.TwitchUserId,
+		})
 	}
 	c.ChatUsers[msg.Username].SetLastChatTime(misc.Clock.Now())
 	if msg.Message[0] != '!' {
@@ -154,13 +158,13 @@ func (c *ChibiActor) HandleMessage(msg chat.ChatMessage) (string, error) {
 }
 
 // TODO: Leaky interface
-func (c *ChibiActor) UpdateChibi(ctx context.Context, username string, userDisplayName string, opInfo *operator.OperatorInfo) error {
+func (c *ChibiActor) UpdateChibi(ctx context.Context, userinfo misc.UserInfo, opInfo *operator.OperatorInfo) error {
 	c.spineService.ValidateUpdateSetDefaultOtherwise(opInfo)
 
 	_, err := c.client.SetOperator(
 		&spine.SetOperatorRequest{
-			UserName:        username,
-			UserNameDisplay: userDisplayName,
+			UserName:        userinfo.Username,
+			UserNameDisplay: userinfo.UsernameDisplay,
 			Operator:        *opInfo,
 		})
 	if err != nil {
@@ -168,7 +172,7 @@ func (c *ChibiActor) UpdateChibi(ctx context.Context, username string, userDispl
 		return nil
 	}
 
-	c.UpdateChatter(ctx, username, userDisplayName, opInfo)
+	c.UpdateChatter(ctx, userinfo, opInfo)
 	return nil
 }
 
@@ -183,13 +187,12 @@ func (c *ChibiActor) CurrentInfo(ctx context.Context, userName string) (operator
 
 func (c *ChibiActor) UpdateChatter(
 	ctx context.Context,
-	username string,
-	usernameDisplay string,
+	userInfo misc.UserInfo,
 	update *operator.OperatorInfo,
 ) error {
-	_, ok := c.ChatUsers[username]
+	_, ok := c.ChatUsers[userInfo.Username]
 	if !ok {
-		userDb, err := c.usersRepo.GetOrInsertUser(ctx, username, usernameDisplay)
+		userDb, err := c.usersRepo.GetOrInsertUser(ctx, userInfo)
 		if err != nil {
 			return err
 		}
@@ -207,10 +210,10 @@ func (c *ChibiActor) UpdateChatter(
 		if err != nil {
 			return err
 		}
-		c.ChatUsers[username] = chatUser
+		c.ChatUsers[userInfo.Username] = chatUser
 	}
 
-	chatUser := c.ChatUsers[username]
+	chatUser := c.ChatUsers[userInfo.Username]
 	chatUser.UpdateWithLatestChat(update)
 	// TODO: Make this more efficient. no need to save to DB if things haven't changed
 	// chatUser.Save()

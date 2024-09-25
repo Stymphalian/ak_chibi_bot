@@ -167,8 +167,7 @@ func (r *Room) GetChatters() []users.ChatUser {
 
 func (r *Room) AddOperatorToRoom(
 	ctx context.Context,
-	username string,
-	usernameDisplay string,
+	userinfo misc.UserInfo,
 	operatorId string,
 	faction operator.FactionEnum,
 ) error {
@@ -180,15 +179,15 @@ func (r *Room) AddOperatorToRoom(
 	opInfo.OperatorId = operatorId
 	opInfo.Faction = faction
 
-	err = r.chibiActor.UpdateChibi(ctx, username, usernameDisplay, opInfo)
+	err = r.chibiActor.UpdateChibi(ctx, userinfo, opInfo)
 	if err != nil {
 		return err
 	}
 	return nil
 }
 
-func (r *Room) GiveChibiToUser(ctx context.Context, username string, usernameDisplay string) error {
-	return r.chibiActor.GiveChibiToUser(ctx, username, usernameDisplay)
+func (r *Room) GiveChibiToUser(ctx context.Context, userInfo misc.UserInfo) error {
+	return r.chibiActor.GiveChibiToUser(ctx, userInfo)
 }
 
 func (s *Room) AddWebsocketConnection(w http.ResponseWriter, r *http.Request) error {
@@ -231,8 +230,11 @@ func (r *Room) LoadExistingChatters(ctx context.Context) error {
 		log.Printf("Reloading chatter %s in room %s with operator %s", user.Username, r.GetChannelName(), chatter.OperatorInfo.OperatorDisplayName)
 		r.chibiActor.UpdateChibi(
 			ctx,
-			user.Username,
-			user.UserDisplayName,
+			misc.UserInfo{
+				Username:        user.Username,
+				UsernameDisplay: user.UserDisplayName,
+				TwitchUserId:    user.TwitchUserId,
+			},
 			&chatter.OperatorInfo,
 		)
 	}

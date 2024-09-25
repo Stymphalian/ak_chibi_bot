@@ -158,7 +158,12 @@ func (s *ApiServer) HandleRoomAddOperator(w http.ResponseWriter, r *http.Request
 	}
 	room := s.roomsManager.Rooms[channelName]
 
-	room.GiveChibiToUser(context.Background(), reqBody.Username, reqBody.UserDisplayName)
+	// TODO: TwitchUserId is not real?
+	room.GiveChibiToUser(context.Background(), misc.UserInfo{
+		Username:        reqBody.Username,
+		UsernameDisplay: reqBody.UserDisplayName,
+		TwitchUserId:    "0",
+	})
 	// faction, err := spine.FactionEnum_Parse(reqBody.Faction)
 	// if err != nil {
 	// 	return err

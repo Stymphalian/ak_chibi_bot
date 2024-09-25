@@ -1,5 +1,5 @@
 ## BASE
-FROM golang:1.22.3 AS base
+FROM golang:1.23 AS base
 RUN mkdir /ak_chibi_assets
 COPY ./static /ak_chibi_assets
 RUN rm -rf /ak_chibi_assets/spine/src
@@ -15,7 +15,7 @@ RUN mkdir -p /node
 RUN cd /node
 RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
 RUN export NVM_DIR="$HOME/.nvm" && \. $NVM_DIR/nvm.sh && nvm install node && npm install typescript -g
-RUN go install github.com/air-verse/air@latest
+RUN go install github.com/air-verse/air@6403f4d1e069e4a6eeb49639c8cafb168c28a523
 
 WORKDIR /app
 COPY go.mod go.sum ./

@@ -19,10 +19,6 @@ import (
 	"github.com/Stymphalian/ak_chibi_bot/server/internal/twitch_api"
 )
 
-const (
-	forcefulShutdownDuration = time.Duration(30) * time.Second
-)
-
 type RoomsManager struct {
 	Rooms                     map[string]*Room
 	rooms_mutex               sync.Mutex
@@ -120,15 +116,19 @@ func (r *RoomsManager) RunLoop() {
 	<-r.shutdownDoneCh
 }
 
-func (r *RoomsManager) checkChannelValid(channel string) (bool, error) {
+func (r *RoomsManager) checkChannelValid(channel string) (*misc.UserInfo, error) {
 	resp, err := r.twitchClient.GetUsers(channel)
 	if err != nil {
-		return false, err
+		return nil, err
 	}
 	if len(resp.Data) == 0 {
-		return false, fmt.Errorf("channel does not exist")
+		return nil, fmt.Errorf("channel does not exist")
 	}
-	return true, nil
+	return &misc.UserInfo{
+		Username:        resp.Data[0].Login,
+		UsernameDisplay: resp.Data[0].DisplayName,
+		TwitchUserId:    resp.Data[0].Id,
+	}, nil
 }
 
 func (r *RoomsManager) getRoomServices(roomDb *RoomDb) (*operator.OperatorService, *spine.SpineBridge, *chibi.ChibiActor, *chatbot.TwitchBot, error) {
@@ -192,9 +192,12 @@ func (r *RoomsManager) InsertRoom(roomDb *RoomDb) error {
 
 func (r *RoomsManager) CreateRoomOrNoOp(ctx context.Context, channel string) error {
 	// Check to see if channel is valid
-	if valid, err := r.checkChannelValid(channel); err != nil || !valid {
+	var userinfo *misc.UserInfo
+	userinfo, err := r.checkChannelValid(channel)
+	if err != nil {
 		return err
 	}
+
 	if _, ok := r.Rooms[channel]; ok {
 		// Refresh the room's configs, best effort
 		r.Rooms[channel].RefreshConfigs(ctx)
@@ -241,7 +244,7 @@ func (r *RoomsManager) CreateRoomOrNoOp(ctx context.Context, channel string) err
 		log.Println("Adding default chibi for ", roomDb.ChannelName)
 		roomObj.chibiActor.SetToDefault(
 			ctx,
-			roomDb.ChannelName,
+			*userinfo,
 			roomDb.DefaultOperatorName,
 			roomDb.DefaultOperatorConfig,
 		)
@@ -284,16 +287,8 @@ func (r *RoomsManager) Shutdown() {
 	}()
 }
 
-func (r *RoomsManager) WaitForShutdownWithTimeout() {
-	log.Println("RoomsManager: Waiting for shutdown")
-	select {
-	case <-time.After(forcefulShutdownDuration):
-		log.Printf("RoomsManager: Shutting down forcefully after %v", forcefulShutdownDuration)
-	case <-r.shutdownDoneCh:
-		log.Println("RoomsManager: Shutting down gracefully")
-	}
-
-	// log.Println("Number of running gorountines:", misc.GoRunCounter.Load())
+func (r *RoomsManager) GetShutdownChan() chan struct{} {
+	return r.shutdownDoneCh
 }
 
 func (r *RoomsManager) RemoveRoom(channel string) error {

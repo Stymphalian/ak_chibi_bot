@@ -171,6 +171,7 @@ func (c *ChatCommandProcessor) setSkin(args *ChatArgs, current *operator.Operato
 		replyMessage:    "",
 		username:        args.chatMsg.Username,
 		usernameDisplay: args.chatMsg.UserDisplayName,
+		twitchUserId:    args.chatMsg.TwitchUserId,
 		update:          current,
 	}, nil
 }
@@ -207,6 +208,7 @@ func (c *ChatCommandProcessor) setAnimation(args *ChatArgs, current *operator.Op
 		replyMessage:    "",
 		username:        args.chatMsg.Username,
 		usernameDisplay: args.chatMsg.UserDisplayName,
+		twitchUserId:    args.chatMsg.TwitchUserId,
 		update:          current,
 	}, nil
 }
@@ -226,6 +228,7 @@ func (c *ChatCommandProcessor) setStance(args *ChatArgs, current *operator.Opera
 		replyMessage:    "",
 		username:        args.chatMsg.Username,
 		usernameDisplay: args.chatMsg.UserDisplayName,
+		twitchUserId:    args.chatMsg.TwitchUserId,
 		update:          current,
 	}, nil
 }
@@ -247,6 +250,7 @@ func (c *ChatCommandProcessor) setFacing(args *ChatArgs, current *operator.Opera
 		replyMessage:    "",
 		username:        args.chatMsg.Username,
 		usernameDisplay: args.chatMsg.UserDisplayName,
+		twitchUserId:    args.chatMsg.TwitchUserId,
 		update:          current,
 	}, nil
 }
@@ -273,6 +277,7 @@ func (c *ChatCommandProcessor) setEnemy(args *ChatArgs, current *operator.Operat
 		replyMessage:    "",
 		username:        args.chatMsg.Username,
 		usernameDisplay: args.chatMsg.UserDisplayName,
+		twitchUserId:    args.chatMsg.TwitchUserId,
 		update:          current,
 	}, nil
 }
@@ -336,6 +341,7 @@ func (c *ChatCommandProcessor) setWalk(args *ChatArgs, current *operator.Operato
 		replyMessage:    "",
 		username:        args.chatMsg.Username,
 		usernameDisplay: args.chatMsg.UserDisplayName,
+		twitchUserId:    args.chatMsg.TwitchUserId,
 		update:          current,
 	}, nil
 }
@@ -358,6 +364,7 @@ func (c *ChatCommandProcessor) setAnimationSpeed(args *ChatArgs, current *operat
 		replyMessage:    "",
 		username:        args.chatMsg.Username,
 		usernameDisplay: args.chatMsg.UserDisplayName,
+		twitchUserId:    args.chatMsg.TwitchUserId,
 		update:          current,
 	}, nil
 }
@@ -446,6 +453,7 @@ func (c *ChatCommandProcessor) setChibiModel(chatArgs *ChatArgs, current *operat
 		replyMessage:    "",
 		username:        chatArgs.chatMsg.Username,
 		usernameDisplay: chatArgs.chatMsg.UserDisplayName,
+		twitchUserId:    chatArgs.chatMsg.TwitchUserId,
 		update:          current,
 	}, nil
 }
@@ -477,6 +485,7 @@ func (c *ChatCommandProcessor) setScale(args *ChatArgs, current *operator.Operat
 		replyMessage:    "",
 		username:        args.chatMsg.Username,
 		usernameDisplay: args.chatMsg.UserDisplayName,
+		twitchUserId:    args.chatMsg.TwitchUserId,
 		update:          current,
 	}, nil
 }
@@ -507,6 +516,7 @@ func (c *ChatCommandProcessor) setMoveSpeed(args *ChatArgs, current *operator.Op
 		replyMessage:    "",
 		username:        args.chatMsg.Username,
 		usernameDisplay: args.chatMsg.UserDisplayName,
+		twitchUserId:    args.chatMsg.TwitchUserId,
 		update:          current,
 	}, nil
 }
