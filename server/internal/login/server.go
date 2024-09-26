@@ -58,6 +58,9 @@ func (s *LoginServer) RegisterHandlers() error {
 func (s *LoginServer) HandleLoginPage(w http.ResponseWriter, r *http.Request) error {
 	// TODO: User is already logged in. Just redirect to the other page
 	// Check if User is already logged in. Redirect to other pages
+	if s.authService.IsAuthorized(w, r) {
+		http.Redirect(w, r, "/login/in/", http.StatusFound)
+	}
 
 	t, err := template.ParseFiles(fmt.Sprintf("%s/login/index.html", s.assetDir))
 	if err != nil {
@@ -215,6 +218,10 @@ func (s *LoginServer) HandleLogout(w http.ResponseWriter, r *http.Request) error
 		}
 	}()
 
+	if oldToken, ok := session.Values[auth.OAUTH_TOKEN_KEY].(*oauth2.Token); ok {
+		// If there was already an old token in the session just revoke that one.
+		s.authService.RevokeToken(oldToken)
+	}
 	delete(session.Values, auth.OAUTH_TOKEN_KEY)
 	w.Write([]byte("Logged OUT"))
 	return nil

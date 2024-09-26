@@ -3,6 +3,7 @@ package twitch_api
 import (
 	"encoding/json"
 	"fmt"
+	"io"
 	"net/http"
 	"strings"
 	"time"
@@ -160,7 +161,11 @@ func (c *TwitchApiClient) ValidateToken(token string) (*ValidateTokenResponse, e
 	}
 	defer resp.Body.Close()
 	if resp.StatusCode != http.StatusOK {
-		return nil, fmt.Errorf("request failed with status %v", resp.StatusCode)
+		bodyString, err := io.ReadAll(resp.Body)
+		if err != nil {
+			bodyString = []byte("unable to read body")
+		}
+		return nil, fmt.Errorf("request failed with status %v:%s", resp.StatusCode, string(bodyString))
 	}
 
 	decoder := json.NewDecoder(resp.Body)

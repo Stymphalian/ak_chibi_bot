@@ -91,7 +91,6 @@ func NewMainStruct() *MainStruct {
 			botConfig.TwitchClientId,
 			botConfig.TwitchAccessToken,
 		),
-		authRepo,
 	)
 	if err != nil {
 		log.Fatal(err)

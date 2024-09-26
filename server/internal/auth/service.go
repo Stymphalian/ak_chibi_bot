@@ -35,25 +35,20 @@ const (
 	OAUTH_TOKEN_KEY              = "oauth-token"
 	CONTEXT_TWITCH_USER_ID       = "twitch-user-id"
 	VALIDATE_OAUTH_TOKENS_PERIOD = 1 * time.Hour
+	COOKIE_MAX_AGE               = 6 * time.Hour
 )
 
 type AuthService struct {
-	authRepo       AuthRepository
+	// authRepo       AuthRepository
 	twitchClientId string
 	twitchSecret   string
 	cookieSecret   string
-
-	twitchClient twitch_api.TwitchApiClientInterface
-	Oauth2Config *oauth2.Config
-
-	// CookieStore  *sessions.CookieStore
-	CookieStore     *pgstore.PGStore
-	cookieStoreQuit chan<- struct{}
-	cookieStoreDone <-chan struct{}
-
-	provider     *oidc.Provider
-	Verifier     *oidc.IDTokenVerifier
-	shutdownChan chan struct{}
+	twitchClient   twitch_api.TwitchApiClientInterface
+	Oauth2Config   *oauth2.Config
+	CookieStore    *pgstore.PGStore
+	provider       *oidc.Provider
+	Verifier       *oidc.IDTokenVerifier
+	shutdownChan   chan struct{}
 }
 
 func NewAuthService(
@@ -62,11 +57,9 @@ func NewAuthService(
 	cookieSecret string,
 	redirectUrl string,
 	twitchClient twitch_api.TwitchApiClientInterface,
-	authRepo AuthRepository,
 ) (*AuthService, error) {
 	gob.Register(&oauth2.Token{})
 
-	// cookieStore := sessions.NewCookieStore([]byte(cookieSecret))
 	dbPool, err := akdb.DefaultDB.DB()
 	if err != nil {
 		return nil, err
@@ -75,10 +68,11 @@ func NewAuthService(
 		dbPool,
 		[]byte(cookieSecret),
 	)
+	cookieStore.Options.MaxAge = int(COOKIE_MAX_AGE.Seconds())
+	cookieStore.Options.Secure = true
 	if err != nil {
 		return nil, err
 	}
-	quit, done := cookieStore.Cleanup(time.Minute * 30)
 	// TODO: how to turn this option on?
 	// cookieStore.Options.SameSite = http.SameSiteStrictMode
 
@@ -98,23 +92,20 @@ func NewAuthService(
 	}
 
 	return &AuthService{
-		twitchClientId:  twitchClientId,
-		twitchSecret:    twitchSecret,
-		cookieSecret:    cookieSecret,
-		twitchClient:    twitchClient,
-		Oauth2Config:    oauth2Config,
-		CookieStore:     cookieStore,
-		cookieStoreQuit: quit,
-		cookieStoreDone: done,
-		provider:        provider,
-		Verifier:        verifier,
-		shutdownChan:    make(chan struct{}),
+		twitchClientId: twitchClientId,
+		twitchSecret:   twitchSecret,
+		cookieSecret:   cookieSecret,
+		twitchClient:   twitchClient,
+		Oauth2Config:   oauth2Config,
+		CookieStore:    cookieStore,
+		provider:       provider,
+		Verifier:       verifier,
+		shutdownChan:   make(chan struct{}),
 	}, nil
 }
 
 func (s *AuthService) Shutdown() {
 	log.Println("AuthService calling Shutdown")
-	s.CookieStore.StopCleanup(s.cookieStoreQuit, s.cookieStoreDone)
 	close(s.shutdownChan)
 }
 
@@ -124,10 +115,11 @@ func (r *AuthService) GetShutdownChan() chan struct{} {
 
 func (s *AuthService) RunLoop() {
 	stopTimer := misc.StartTimer(
-		"ValidateOAuthTokens",
+		"CleanAndValidateSessions",
 		VALIDATE_OAUTH_TOKENS_PERIOD,
 		func() {
 			s.validateAndRefreshOauthTokens()
+			s.cleanupExpiredSessions()
 		},
 	)
 	defer stopTimer()
@@ -198,6 +190,7 @@ func (s *AuthService) validateAndRefreshOauthTokens() error {
 			numAuthTokensFailedRefresh += 1
 			continue
 		}
+
 		if *newToken != *token {
 			// The token has been refreshed, reencode into the cookies
 			cookieValues[OAUTH_TOKEN_KEY] = newToken
@@ -227,6 +220,71 @@ func (s *AuthService) validateAndRefreshOauthTokens() error {
 	log.Println("  NumAuthTokensValid:", numAuthTokensValid)
 	log.Println("  NumAuthTokensInvalid:", numAuthTokensInvalid)
 	return nil
+}
+
+func (s *AuthService) cleanupExpiredSessions() error {
+	log.Println("Cleaning expired sessions")
+	db := akdb.DefaultDB
+
+	httpSessions := make([]*HttpSessionDb, 0)
+	tx := db.Where("expires_on < ?", time.Now()).Find(&httpSessions)
+	if tx.Error != nil {
+		return tx.Error
+	}
+
+	name := string(OAUTH_SESSION_NAME)
+	codecs := s.CookieStore.Codecs
+	for _, httpSession := range httpSessions {
+		data := httpSession.Data
+		// Decode the data
+		// If there is an OAUTH token then revoke it
+		var cookieValues map[interface{}]interface{}
+		err := securecookie.DecodeMulti(name, data, &cookieValues, codecs...)
+		if err != nil {
+			continue
+		}
+		token, ok := cookieValues[OAUTH_TOKEN_KEY].(*oauth2.Token)
+		if ok {
+			s.RevokeToken(token)
+		}
+	}
+
+	result, err := db.ConnPool.ExecContext(
+		context.Background(),
+		"DELETE FROM http_sessions WHERE expires_on < now()",
+	)
+	if err != nil {
+		return err
+	}
+	rowsAffected, err := result.RowsAffected()
+	if err != nil {
+		log.Printf("Finished cleaning expired sessions %d", rowsAffected)
+		return err
+	} else {
+		log.Println("Finished cleaning expired sessions")
+		return nil
+	}
+}
+
+func (s *AuthService) IsAuthorized(w http.ResponseWriter, r *http.Request) bool {
+	session, err := s.CookieStore.Get(r, OAUTH_SESSION_NAME)
+	if err != nil {
+		return false
+	}
+	if session.IsNew {
+		return false
+	}
+	token, ok := session.Values[OAUTH_TOKEN_KEY].(*oauth2.Token)
+	if !ok {
+		return false
+	}
+	// Verify the tokens
+	if token.Expiry.Before(time.Now().UTC()) {
+		return false
+	}
+	_, err = s.twitchClient.ValidateToken(token.AccessToken)
+
+	return err == nil
 }
 
 func (s *AuthService) CheckAuth(h misc.HandlerWithErr) misc.HandlerWithErr {
