@@ -12,7 +12,8 @@ module stym {
         public channelName: string;
     
         constructor(channelName: string, width: number, height: number) {
-            let font = new FontFace("lato", "url(/static/fonts/Lato/Lato-Black.ttf)");
+            // TODO: Make the fonts configurable
+            let font = new FontFace("lato", "url(/public/fonts/Lato/Lato-Black.ttf)");
             font.load().then(() => {document.fonts.add(font);})
     
             this.channelName = channelName;

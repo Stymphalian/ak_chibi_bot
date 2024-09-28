@@ -3,7 +3,7 @@
 # docker compose -f compose.PROD.yaml logs
 name: ak-services
 services:
-  web:
+  bot:
     image: ak-chibi-bot:prod
     ports:
       - "8080:8080"

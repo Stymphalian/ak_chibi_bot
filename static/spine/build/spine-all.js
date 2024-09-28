@@ -11590,7 +11590,6 @@ var spine;
                     average_fps: averageFps,
                 });
                 this.webSocket.send(payload);
-                console.log("Sending debug update to server: ", payload);
             }
             performance.mark('fps_window_start');
             this.windowFpsFrameCount = 0;
@@ -11978,7 +11977,7 @@ var stym;
         backOffMaxtimeMsec;
         channelName;
         constructor(channelName, width, height) {
-            let font = new FontFace("lato", "url(/static/fonts/Lato/Lato-Black.ttf)");
+            let font = new FontFace("lato", "url(/public/fonts/Lato/Lato-Black.ttf)");
             font.load().then(() => { document.fonts.add(font); });
             this.channelName = channelName;
             this.socket = null;

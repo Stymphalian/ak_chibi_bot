@@ -9,6 +9,7 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
+	"path"
 	"strings"
 	"sync"
 	"syscall"
@@ -142,39 +143,75 @@ func (s *MainStruct) run() {
 
 	log.Printf("Images Assets = %s\n", s.imageAssetDir)
 	log.Printf("Static Assets = %s\n", s.staticAssetDir)
-	http.Handle("/static/assets/",
+
+	// Main web app
+	webAppFilePath := s.staticAssetDir + "/web_app/build/"
+	webAppFileServer := http.FileServer(http.Dir(webAppFilePath))
+	http.Handle("/",
 		http.TimeoutHandler(
-			http.StripPrefix("/static/assets/", http.FileServer(http.Dir(s.imageAssetDir))),
+			http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+				if r.URL.Path != "/" {
+					fullPath := webAppFilePath + strings.TrimPrefix(path.Clean(r.URL.Path), "/")
+					_, err := os.Stat(fullPath)
+					if err != nil {
+						if !os.IsNotExist(err) {
+							panic(err)
+						}
+						// Requested file does not exist so we return the default (resolves to index.html)
+						r.URL.Path = "/"
+					}
+				}
+				webAppFileServer.ServeHTTP(w, r)
+			}),
 			DEFAULT_TIMEOUT,
 			"",
 		),
 	)
-	http.Handle("/static/",
+
+	// Image File Server
+	http.Handle("/image/assets/",
 		http.TimeoutHandler(
-			http.StripPrefix("/static/", http.FileServer(http.Dir(s.staticAssetDir))),
+			http.StripPrefix("/image/assets/", http.FileServer(http.Dir(s.imageAssetDir))),
 			DEFAULT_TIMEOUT,
 			"",
 		),
 	)
-	http.Handle("/room/settings/",
+
+	// Public File Server
+	http.Handle("/public/",
 		http.TimeoutHandler(
-			http.StripPrefix("/room/settings/", http.FileServer(http.Dir(s.staticAssetDir+"/rooms"))),
+			http.StripPrefix("/public/", http.FileServer(http.Dir(s.staticAssetDir+"/public"))),
 			DEFAULT_TIMEOUT,
 			"",
 		),
 	)
-	http.Handle("/runtime/{$}",
+
+	// Spine File Server
+	spineMux := http.NewServeMux()
+	spineFileServer := http.FileServer(http.Dir(s.staticAssetDir + "/spine"))
+	spineMux.Handle("/spine/runtime/{$}",
 		http.TimeoutHandler(
-			http.StripPrefix("/runtime/", http.FileServer(http.Dir(s.staticAssetDir+"/spine"))),
+			http.StripPrefix("/spine/runtime/", spineFileServer),
 			DEFAULT_TIMEOUT,
 			"",
 		),
 	)
+	spineMux.Handle("/spine/static/",
+		http.TimeoutHandler(
+			http.StripPrefix("/spine/static/", spineFileServer),
+			DEFAULT_TIMEOUT,
+			"",
+		),
+	)
+	http.Handle("/spine/", spineMux)
+
+	// Bot Server
 	http.Handle("/room/", misc.MiddlewareWithTimeout(s.HandleRoom, DEFAULT_TIMEOUT))
 	http.Handle("/ws/", misc.Middleware(s.HandleSpineWebSocket))
-	s.adminServer.RegisterHandlers()
-	s.apiServer.RegisterHandlers()
-	s.loginServer.RegisterHandlers()
+
+	// s.adminServer.RegisterHandlers()
+	// s.apiServer.RegisterHandlers()
+	// s.loginServer.RegisterHandlers()
 
 	go func() {
 		sigint := make(chan os.Signal, 1)
@@ -238,7 +275,7 @@ func (s *MainStruct) HandleRoom(w http.ResponseWriter, r *http.Request) error {
 	if err != nil {
 		return err
 	}
-	http.Redirect(w, r, fmt.Sprintf("/runtime/?channelName=%s", channelName), http.StatusSeeOther)
+	http.Redirect(w, r, fmt.Sprintf("/spine/runtime/?channelName=%s", channelName), http.StatusSeeOther)
 	return nil
 }
 

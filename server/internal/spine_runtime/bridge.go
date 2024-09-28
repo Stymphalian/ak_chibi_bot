@@ -257,8 +257,10 @@ func (s *SpineBridge) setInternalSpineOperator(
 	atlasFile = spineData.AtlasFilepath
 	pngFile = spineData.PngFilepath
 	skelFile = spineData.SkelFilepath
+	// TODO: Make the image/assets path a configurable variable
 	formatPathFn := func(path string) string {
-		return "/static/assets/" + strings.ReplaceAll(path, string(os.PathSeparator), "/")
+		// return "/static/assets/" + strings.ReplaceAll(path, string(os.PathSeparator), "/")
+		return "/image/assets/" + strings.ReplaceAll(path, string(os.PathSeparator), "/")
 	}
 
 	data := map[string]interface{}{
