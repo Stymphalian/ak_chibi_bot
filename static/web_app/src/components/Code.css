@@ -1,0 +1,21 @@
+.code-block {
+  display: inline-block;
+
+  margin-left: 4px;
+  margin-right: 4px;
+  margin-top: 0px;
+  margin-bottom: 0px;
+
+  padding-left: 4px;
+  padding-right: 4px;
+  padding-top: 0px;
+  padding-bottom: 0px;
+
+  /* border: 1px solid #6a727d1f; */
+  border-radius: 2px;
+
+  font-size: 85%;
+  white-space: break-spaces;
+  background-color: #7f89961f;
+  font-family: 'Courier New', Courier, monospace;
+}

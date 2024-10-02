@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"strconv"
 	"time"
 
 	"github.com/Stymphalian/ak_chibi_bot/server/internal/akdb"
@@ -28,12 +27,16 @@ type TwitchClaims struct {
 	Email string `json:"email"`
 }
 
+type ContextTwitchUserId string
+type ContextTwitchUserName string
+
 const (
 	STATE_CALLBACK_KEY           = "oauth-state-callback"
 	STATE_JWT_NONCE_KEY          = "oauth-state-jwt-nonce"
 	OAUTH_SESSION_NAME           = "oauth-oidc-session"
 	OAUTH_TOKEN_KEY              = "oauth-token"
-	CONTEXT_TWITCH_USER_ID       = "twitch-user-id"
+	CONTEXT_TWITCH_USER_ID       = ContextTwitchUserId("twitch-user-id")
+	CONTEXT_TWITCH_USER_NAME     = ContextTwitchUserName("twitch-user-name")
 	VALIDATE_OAUTH_TOKENS_PERIOD = 1 * time.Hour
 	COOKIE_MAX_AGE               = 6 * time.Hour
 )
@@ -266,76 +269,91 @@ func (s *AuthService) cleanupExpiredSessions() error {
 	}
 }
 
-func (s *AuthService) IsAuthorized(w http.ResponseWriter, r *http.Request) bool {
+type AuthorizedInfo struct {
+	Authenticated bool
+	Username      string
+	TwitchUserId  string
+}
+
+func (s *AuthService) IsAuthorized(w http.ResponseWriter, r *http.Request) (*AuthorizedInfo, error) {
 	session, err := s.CookieStore.Get(r, OAUTH_SESSION_NAME)
 	if err != nil {
-		return false
+		return nil, err
 	}
 	if session.IsNew {
-		return false
+		return nil, fmt.Errorf("session not found")
 	}
 	token, ok := session.Values[OAUTH_TOKEN_KEY].(*oauth2.Token)
 	if !ok {
-		return false
+		return nil, fmt.Errorf("token not found")
 	}
 	// Verify the tokens
 	if token.Expiry.Before(time.Now().UTC()) {
-		return false
+		return nil, fmt.Errorf("token expired")
 	}
-	_, err = s.twitchClient.ValidateToken(token.AccessToken)
+	resp, err := s.twitchClient.ValidateToken(token.AccessToken)
+	if err != nil {
+		return nil, err
+	}
 
-	return err == nil
+	return &AuthorizedInfo{
+		Authenticated: true,
+		Username:      resp.Login,
+		TwitchUserId:  resp.UserId,
+	}, nil
 }
 
-func (s *AuthService) CheckAuth(h misc.HandlerWithErr) misc.HandlerWithErr {
-	return func(w http.ResponseWriter, r *http.Request) (err error) {
-		session, err := s.CookieStore.Get(r, OAUTH_SESSION_NAME)
-		if err != nil {
-			http.Redirect(w, r, "/login/", http.StatusTemporaryRedirect)
-			return nil
-		}
-		if session.IsNew {
-			http.Redirect(w, r, "/login/", http.StatusTemporaryRedirect)
-			return nil
-		}
+// func (s *AuthService) CheckAuth(h misc.HandlerWithErr) misc.HandlerWithErr {
+// 	return func(w http.ResponseWriter, r *http.Request) (err error) {
+// 		session, err := s.CookieStore.Get(r, OAUTH_SESSION_NAME)
+// 		if err != nil {
+// 			http.Redirect(w, r, "/login/", http.StatusTemporaryRedirect)
+// 			return nil
+// 		}
+// 		if session.IsNew {
+// 			http.Redirect(w, r, "/login/", http.StatusTemporaryRedirect)
+// 			return nil
+// 		}
 
-		defer func() {
-			if err := session.Save(r, w); err != nil {
-				log.Printf("error saving session: %s", err)
-			}
-		}()
+// 		defer func() {
+// 			if err := session.Save(r, w); err != nil {
+// 				log.Printf("error saving session: %s", err)
+// 			}
+// 		}()
 
-		token, ok := session.Values[OAUTH_TOKEN_KEY].(*oauth2.Token)
-		if !ok {
-			delete(session.Values, OAUTH_TOKEN_KEY)
-			http.Redirect(w, r, "/login/", http.StatusTemporaryRedirect)
-			return nil
-		}
+// 		token, ok := session.Values[OAUTH_TOKEN_KEY].(*oauth2.Token)
+// 		if !ok {
+// 			delete(session.Values, OAUTH_TOKEN_KEY)
+// 			http.Redirect(w, r, "/login/", http.StatusTemporaryRedirect)
+// 			return nil
+// 		}
 
-		// Verify the tokens
-		if token.Expiry.Before(time.Now().UTC()) {
-			delete(session.Values, OAUTH_TOKEN_KEY)
-			http.Redirect(w, r, "/login/", http.StatusTemporaryRedirect)
-			return nil
-		}
+// 		// Verify the tokens
+// 		if token.Expiry.Before(time.Now().UTC()) {
+// 			delete(session.Values, OAUTH_TOKEN_KEY)
+// 			http.Redirect(w, r, "/login/", http.StatusTemporaryRedirect)
+// 			return nil
+// 		}
 
-		validateTokenResp, err := s.twitchClient.ValidateToken(token.AccessToken)
-		if err != nil {
-			delete(session.Values, OAUTH_TOKEN_KEY)
-			http.Redirect(w, r, "/login/", http.StatusTemporaryRedirect)
-			return nil
-		}
-		twitchUserIdInt, err := strconv.Atoi(validateTokenResp.UserId)
-		if err != nil {
-			delete(session.Values, OAUTH_TOKEN_KEY)
-			http.Redirect(w, r, "/login/", http.StatusTemporaryRedirect)
-			return nil
-		}
+// 		validateTokenResp, err := s.twitchClient.ValidateToken(token.AccessToken)
+// 		if err != nil {
+// 			delete(session.Values, OAUTH_TOKEN_KEY)
+// 			http.Redirect(w, r, "/login/", http.StatusTemporaryRedirect)
+// 			return nil
+// 		}
+// 		twitchUserIdInt, err := strconv.Atoi(validateTokenResp.UserId)
+// 		if err != nil {
+// 			delete(session.Values, OAUTH_TOKEN_KEY)
+// 			http.Redirect(w, r, "/login/", http.StatusTemporaryRedirect)
+// 			return nil
+// 		}
 
-		*r = *r.WithContext(context.WithValue(r.Context(), CONTEXT_TWITCH_USER_ID, twitchUserIdInt))
-		return h(w, r)
-	}
-}
+// 		newContext := context.WithValue(r.Context(), CONTEXT_TWITCH_USER_ID, twitchUserIdInt)
+// 		newContext = context.WithValue(newContext, CONTEXT_TWITCH_USER_NAME, validateTokenResp.Login)
+// 		*r = *r.WithContext(newContext)
+// 		return h(w, r)
+// 	}
+// }
 
 func (s *AuthService) GetUserFromTwitchId(twitchUserIdStr string) (*misc.UserInfo, error) {
 	users, err := s.twitchClient.GetUsersById(twitchUserIdStr)

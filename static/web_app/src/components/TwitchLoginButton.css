@@ -1,0 +1,30 @@
+.btn-twitch {
+  /* layouts */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-grow: 1;
+
+  /* Content  */
+  background-color: #9146ff !important;
+  border-color: #9146ff !important;
+  color: white;
+  
+  /* Padding and margins */
+  border-style: none;
+  border-radius: 5px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  gap: 4px;
+  min-width: 200px;
+  /* width: 100%; */
+}
+
+.btn-twitch-logo {
+  background-image: url(../assets/twitch-tile.svg);
+  background-size: contain;
+  background-repeat: no-repeat;
+  width: 20px;
+  height: 20px;
+  display: inline-block;
+}

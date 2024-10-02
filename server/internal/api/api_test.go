@@ -8,14 +8,47 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/Stymphalian/ak_chibi_bot/server/internal/auth"
 	"github.com/Stymphalian/ak_chibi_bot/server/internal/room"
 	"github.com/stretchr/testify/assert"
 )
 
 func Setup_TestApiServer() *ApiServer {
 	roomManager := room.NewFakeRoomsManager()
-	return NewApiServer(roomManager)
+	authService := auth.NewFakeAuthService()
+	authService.IsAuthenticated = true
+	authService.Username = "test"
+	return NewApiServer(roomManager, authService)
 }
+
+func TestApiServer_HandleRoomUpdate_NoAuth(t *testing.T) {
+	assert := assert.New(t)
+	sut := Setup_TestApiServer()
+	err := sut.roomsManager.CreateRoomOrNoOp(context.TODO(), "test")
+	if err != nil {
+		assert.Fail(err.Error())
+	}
+
+	jsonBody := `{
+	"channel_name":"test2",
+	"min_animation_speed":0.1,
+	"max_animation_speed":3,
+	"min_velocity":0.1,
+	"max_velocity":3,
+	"min_sprite_scale":0.5,
+	"max_sprite_scale":2,
+	"max_sprite_pixel_size":300
+	}`
+	reqBody := strings.NewReader(jsonBody)
+
+	req := httptest.NewRequest("POST", "http://example.com/api/rooms/settings/", reqBody)
+	w := httptest.NewRecorder()
+	sut.middleware(sut.HandleUpdateRoomSettings).ServeHTTP(w, req)
+
+	resp := w.Result()
+	assert.Equal(401, resp.StatusCode)
+}
+
 func TestApiServer_HandleRoomUpdate_HappyPath(t *testing.T) {
 	assert := assert.New(t)
 	sut := Setup_TestApiServer()
@@ -36,9 +69,9 @@ func TestApiServer_HandleRoomUpdate_HappyPath(t *testing.T) {
 	}`
 	reqBody := strings.NewReader(jsonBody)
 
-	req := httptest.NewRequest("POST", "http://example.com/api/rooms/update", reqBody)
+	req := httptest.NewRequest("POST", "http://example.com/api/rooms/settings/", reqBody)
 	w := httptest.NewRecorder()
-	sut.middleware(sut.HandleRoomUpdate).ServeHTTP(w, req)
+	sut.middleware(sut.HandleUpdateRoomSettings).ServeHTTP(w, req)
 
 	resp := w.Result()
 	assert.Equal(200, resp.StatusCode)
@@ -68,9 +101,9 @@ func TestApiServer_HandleRoomUpdate_InvalidConfiguration(t *testing.T) {
 	"max_sprite_pixel_size":300
 	}`
 	reqBody := strings.NewReader(jsonBody)
-	req := httptest.NewRequest("POST", "http://example.com/api/rooms/update", reqBody)
+	req := httptest.NewRequest("POST", "http://example.com/api/rooms/settings/", reqBody)
 	w := httptest.NewRecorder()
-	sut.middleware(sut.HandleRoomUpdate).ServeHTTP(w, req)
+	sut.middleware(sut.HandleUpdateRoomSettings).ServeHTTP(w, req)
 	resp := w.Result()
 	assert.Equal(resp.StatusCode, 400)
 	body, _ := io.ReadAll(resp.Body)
@@ -88,9 +121,9 @@ func TestApiServer_HandleRoomUpdate_InvalidConfiguration(t *testing.T) {
 	"max_sprite_pixel_size":300
 	}`
 	reqBody = strings.NewReader(jsonBody)
-	req = httptest.NewRequest("POST", "http://example.com/api/rooms/update", reqBody)
+	req = httptest.NewRequest("POST", "http://example.com/api/rooms/settings/", reqBody)
 	w = httptest.NewRecorder()
-	sut.middleware(sut.HandleRoomUpdate).ServeHTTP(w, req)
+	sut.middleware(sut.HandleUpdateRoomSettings).ServeHTTP(w, req)
 	resp = w.Result()
 	assert.Equal(resp.StatusCode, 400)
 	body, _ = io.ReadAll(resp.Body)
@@ -108,9 +141,9 @@ func TestApiServer_HandleRoomUpdate_InvalidConfiguration(t *testing.T) {
 	"max_sprite_pixel_size":300
 	}`
 	reqBody = strings.NewReader(jsonBody)
-	req = httptest.NewRequest("POST", "http://example.com/api/rooms/update", reqBody)
+	req = httptest.NewRequest("POST", "http://example.com/api/rooms/settings/", reqBody)
 	w = httptest.NewRecorder()
-	sut.middleware(sut.HandleRoomUpdate).ServeHTTP(w, req)
+	sut.middleware(sut.HandleUpdateRoomSettings).ServeHTTP(w, req)
 	resp = w.Result()
 	assert.Equal(resp.StatusCode, 400)
 	body, _ = io.ReadAll(resp.Body)
@@ -133,9 +166,9 @@ func TestApiServer_HandleRoomUpdate_RoomDoesNotExist(t *testing.T) {
 	"max_sprite_pixel_size":300
 	}`
 	reqBody := strings.NewReader(jsonBody)
-	req := httptest.NewRequest("POST", "http://example.com/api/rooms/update", reqBody)
+	req := httptest.NewRequest("POST", "http://example.com/api/rooms/settings/", reqBody)
 	w := httptest.NewRecorder()
-	sut.middleware(sut.HandleRoomUpdate).ServeHTTP(w, req)
+	sut.middleware(sut.HandleUpdateRoomSettings).ServeHTTP(w, req)
 	resp := w.Result()
 	assert.Equal(resp.StatusCode, 500)
 	body, _ := io.ReadAll(resp.Body)

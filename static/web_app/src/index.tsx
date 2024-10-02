@@ -2,80 +2,67 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import {
   createBrowserRouter,
+  createRoutesFromElements,
+  Route,
   RouterProvider,
 } from "react-router-dom";
 import './index.css';
-// import App from './App';
-import Root, {
-  loader as rootLoader,
-  action as rootAction,
-} from './routes/root';
-import Contact, {
-  loader as contactLoader,
-  action as contactAction,
-} from './routes/contact';
-import EditContact, {
-  action as editAction,
-} from './routes/edit';
-import { action as destroyAction } from './routes/destroy';
-import Index from "./routes/index";
-import Dashboard from './routes/dashboard';
 
+import { Layout, loader as rootLoader, action as rootAction} from './pages/Layout';
+import { HomePage } from './pages/Home';
+import { SettingsPage, action as settingsAction } from './pages/Settings';
+import { AuthProvider, RequireAuth } from './contexts/auth';
+import { LoginPage } from './pages/Login';
 import ErrorPage from './error-page';
-// import RoomSettings from './RoomSettings';
+
 import reportWebVitals from './reportWebVitals';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { DocsPage } from './pages/Docs';
 
 
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <Root />,
-    errorElement: <ErrorPage />,
-    loader: rootLoader,
-    action: rootAction,
-    children: [{
-      errorElement: <ErrorPage />,
-      children: [
-        { index: true, element: <Index /> },
-        {
-          path: "contacts/:contactId",
-          element: <Contact />,
-          loader: contactLoader,
-          action: contactAction,
-        },
-        {
-          path: "contacts/:contactId/edit",
-          element: <EditContact />,
-          loader: contactLoader,
-          action: editAction,
-        },
-        {
-          path: "contacts/:contactId/destroy",
-          action: destroyAction,
-          errorElement: <div>Oops! There was an error.</div>,
-        },
-        {
-          path: "dashboard",
-          element: <Dashboard />,
-          errorElement: <ErrorPage />,
-        },
-        {
-          path: "elements",
-          element: <Dashboard />,
-          errorElement: <ErrorPage />,
+const router = createBrowserRouter(
+  createRoutesFromElements(
+    <Route
+      path="/"
+      element={<Layout />}
+      errorElement={<ErrorPage />}
+      loader={rootLoader}
+      action={rootAction}
+    >
+      <Route
+        index
+        element={<HomePage />}
+      />
+      <Route
+        path="/settings"
+        action = {settingsAction}
+        element={
+          <RequireAuth>
+            <SettingsPage />
+          </RequireAuth>
         }
-      ],
-    }]
-  },
-  
-])
+      />
+      <Route
+        path="/docs"
+        element={<DocsPage />}
+      />
+      <Route
+        path="/login"
+        element={<LoginPage />}
+        errorElement={<ErrorPage />}
+      />
+    </Route>
+  )
+)
+
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <AuthProvider>
+      <RouterProvider router={router} />
+    </AuthProvider>
   </React.StrictMode>
 );
 

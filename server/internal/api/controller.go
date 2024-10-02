@@ -7,12 +7,14 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/Stymphalian/ak_chibi_bot/server/internal/auth"
 	"github.com/Stymphalian/ak_chibi_bot/server/internal/misc"
 	"github.com/Stymphalian/ak_chibi_bot/server/internal/room"
 )
 
 type ApiServer struct {
 	roomsManager *room.RoomsManager
+	authService  auth.AuthServiceInterface
 }
 
 type RoomUpdateRequest struct {
@@ -37,33 +39,85 @@ type RoomAddOperatorRequest struct {
 	// Faction         string `json:"faction"`
 }
 
-func NewApiServer(roomManager *room.RoomsManager) *ApiServer {
+type GetRoomSettingsRequest struct {
+	ChannelName string `json:"channel_name"`
+}
+
+type GetRoomSettingsResponse struct {
+	MinAnimationSpeed  float64 `json:"min_animation_speed"`
+	MaxAnimationSpeed  float64 `json:"max_animation_speed"`
+	MinMovementSpeed   float64 `json:"min_movement_speed"`
+	MaxMovementSpeed   float64 `json:"max_movement_speed"`
+	MinSpriteSize      float64 `json:"min_sprite_size"`
+	MaxSpriteSize      float64 `json:"max_sprite_size"`
+	MaxSpritePixelSize int     `json:"max_sprite_pixel_size"`
+}
+
+func NewApiServer(roomManager *room.RoomsManager, authService auth.AuthServiceInterface) *ApiServer {
 	return &ApiServer{
 		roomsManager: roomManager,
+		authService:  authService,
 	}
 }
 
-func (a *ApiServer) LoginAuth(h misc.HandlerWithErr) misc.HandlerWithErr {
-	return func(w http.ResponseWriter, r *http.Request) (err error) {
-		// TODO
+func (s *ApiServer) CheckAuth(h misc.HandlerWithErr) misc.HandlerWithErr {
+	return func(w http.ResponseWriter, r *http.Request) error {
+		info, err := s.authService.IsAuthorized(w, r)
+		if err != nil || !info.Authenticated {
+			return misc.NewHumanReadableError(
+				"not authorized",
+				http.StatusUnauthorized,
+				err,
+			)
+		}
+
+		newContext := context.WithValue(r.Context(), auth.CONTEXT_TWITCH_USER_ID, info.TwitchUserId)
+		newContext = context.WithValue(newContext, auth.CONTEXT_TWITCH_USER_NAME, info.Username)
+		*r = *r.WithContext(newContext)
 		return h(w, r)
 	}
 }
 
 func (s *ApiServer) middleware(h misc.HandlerWithErr) http.Handler {
-	return misc.MiddlewareWithTimeout(s.LoginAuth(h), 5*time.Second)
+	return misc.MiddlewareWithTimeout(
+		s.CheckAuth(h),
+		5*time.Second,
+	)
 }
 
 func (s *ApiServer) RegisterHandlers() {
-	http.Handle("POST /api/rooms/update", s.middleware(s.HandleRoomUpdate))
+	mux := http.NewServeMux()
+	mux.Handle("GET  /api/rooms/settings/{$}", s.middleware(s.HandleGetRoomSettings))
+	mux.Handle("POST /api/rooms/settings/{$}", s.middleware(s.HandleUpdateRoomSettings))
+	http.Handle("/api/", mux)
 	// http.Handle("POST /api/rooms/add_operator", s.middleware(s.HandleRoomAddOperator))
 }
 
-func (s *ApiServer) HandleRoomUpdate(w http.ResponseWriter, r *http.Request) error {
+func (s *ApiServer) matchRequestChannel(r *http.Request, channelName string) error {
+	twitchUserName := r.Context().Value(auth.CONTEXT_TWITCH_USER_NAME)
+	if twitchUserName == nil {
+		return misc.NewHumanReadableError(
+			"Cannot modify ",
+			http.StatusBadRequest,
+			fmt.Errorf("channel name must be provided"),
+		)
+	}
+	if channelName != twitchUserName.(string) {
+		return misc.NewHumanReadableError(
+			"Cannot modify other user's room",
+			http.StatusBadRequest,
+			fmt.Errorf("channel name must be provided"),
+		)
+	}
+	return nil
+}
+
+func (s *ApiServer) HandleUpdateRoomSettings(w http.ResponseWriter, r *http.Request) error {
 	if r.Method != http.MethodPost {
 		http.NotFound(w, r)
 		return nil
 	}
+
 	decoder := json.NewDecoder(r.Body)
 	var reqBody RoomUpdateRequest
 	if err := decoder.Decode(&reqBody); err != nil {
@@ -82,12 +136,16 @@ func (s *ApiServer) HandleRoomUpdate(w http.ResponseWriter, r *http.Request) err
 			fmt.Errorf("channel name must be provided"),
 		)
 	}
+	if err := s.matchRequestChannel(r, channelName); err != nil {
+		return err
+	}
+
 	if _, ok := s.roomsManager.Rooms[channelName]; !ok {
 		return fmt.Errorf("room %s does not exist", channelName)
 	}
 	room := s.roomsManager.Rooms[channelName]
 
-	config, err := room.GetSpineRuntimeConfig(context.Background())
+	config, err := room.GetSpineRuntimeConfig(r.Context())
 	if err != nil {
 		return err
 	}
@@ -122,12 +180,51 @@ func (s *ApiServer) HandleRoomUpdate(w http.ResponseWriter, r *http.Request) err
 			err,
 		)
 	}
-	err = room.UpdateSpineRuntimeConfig(context.Background(), config)
+	err = room.UpdateSpineRuntimeConfig(r.Context(), config)
 	if err != nil {
 		return err
 	}
 
 	return nil
+}
+
+func (s *ApiServer) HandleGetRoomSettings(w http.ResponseWriter, r *http.Request) error {
+	if r.Method != http.MethodGet {
+		http.NotFound(w, r)
+		return nil
+	}
+
+	channelName := r.URL.Query().Get("channel_name")
+	if len(channelName) == 0 {
+		return misc.NewHumanReadableError(
+			"Channel name must be provided",
+			http.StatusBadRequest,
+			fmt.Errorf("channel name must be provided"),
+		)
+	}
+	if err := s.matchRequestChannel(r, channelName); err != nil {
+		return err
+	}
+
+	if _, ok := s.roomsManager.Rooms[channelName]; !ok {
+		return fmt.Errorf("room %s does not exist", channelName)
+	}
+	room := s.roomsManager.Rooms[channelName]
+	config, err := room.GetSpineRuntimeConfig(r.Context())
+	if err != nil {
+		return err
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	return json.NewEncoder(w).Encode(GetRoomSettingsResponse{
+		MinAnimationSpeed:  config.MinAnimationSpeed,
+		MaxAnimationSpeed:  config.MaxAnimationSpeed,
+		MinMovementSpeed:   config.MinMovementSpeed,
+		MaxMovementSpeed:   config.MaxMovementSpeed,
+		MinSpriteSize:      config.MinScaleSize,
+		MaxSpriteSize:      config.MaxScaleSize,
+		MaxSpritePixelSize: config.MaxSpritePixelSize,
+	})
 }
 
 func (s *ApiServer) HandleRoomAddOperator(w http.ResponseWriter, r *http.Request) error {

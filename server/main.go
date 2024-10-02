@@ -102,7 +102,7 @@ func NewMainStruct() *MainStruct {
 	}
 	roomManager := room.NewRoomsManager(assetService, roomsRepo, usersRepo, chattersRepo, botConfig)
 	adminServer := admin.NewAdminServer(roomManager, botConfig, *staticAssetsDir)
-	apiServer := api.NewApiServer(roomManager)
+	apiServer := api.NewApiServer(roomManager, authService)
 
 	return &MainStruct{
 		imageAssetDir:  *imageAssetDir,
@@ -210,8 +210,8 @@ func (s *MainStruct) run() {
 	http.Handle("/ws/", misc.Middleware(s.HandleSpineWebSocket))
 
 	// s.adminServer.RegisterHandlers()
-	// s.apiServer.RegisterHandlers()
-	// s.loginServer.RegisterHandlers()
+	s.apiServer.RegisterHandlers()
+	s.loginServer.RegisterHandlers()
 
 	go func() {
 		sigint := make(chan os.Signal, 1)

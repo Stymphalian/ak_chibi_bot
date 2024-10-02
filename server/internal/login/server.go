@@ -4,11 +4,11 @@ import (
 	"context"
 	"crypto/rand"
 	"encoding/hex"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"log"
 	"net/http"
-	"text/template"
 	"time"
 
 	"github.com/Stymphalian/ak_chibi_bot/server/internal/auth"
@@ -36,37 +36,18 @@ func NewLoginServer(
 	}, nil
 }
 
-func (s *LoginServer) middlewareWithAuthCheck(h misc.HandlerWithErr) http.Handler {
-	return misc.MiddlewareWithTimeout(s.authService.CheckAuth(h), 5*time.Second)
-}
-
 func (s *LoginServer) middlewareNoAuthCheck(h misc.HandlerWithErr) http.Handler {
 	return misc.MiddlewareWithTimeout(h, 5*time.Second)
 }
 
 func (s *LoginServer) RegisterHandlers() error {
-	http.Handle("GET /login/{$}", s.middlewareNoAuthCheck(s.HandleLoginPage))
-	http.Handle("GET /login/twitch/{$}", s.middlewareNoAuthCheck(s.HandleLoginTwitch))
-	http.Handle("GET /login/oauth/cb/{$}", s.middlewareNoAuthCheck(s.HandleOAuthCallback))
-	http.Handle("GET /logout/{$}", s.middlewareWithAuthCheck(s.HandleLogout))
-
-	// Test login AuthCheck
-	http.Handle("GET /login/in/{$}", s.middlewareWithAuthCheck(s.HandleLoggedIn))
-	return nil
-}
-
-func (s *LoginServer) HandleLoginPage(w http.ResponseWriter, r *http.Request) error {
-	// TODO: User is already logged in. Just redirect to the other page
-	// Check if User is already logged in. Redirect to other pages
-	if s.authService.IsAuthorized(w, r) {
-		http.Redirect(w, r, "/login/in/", http.StatusFound)
-	}
-
-	t, err := template.ParseFiles(fmt.Sprintf("%s/login/index.html", s.assetDir))
-	if err != nil {
-		return err
-	}
-	t.Execute(w, nil)
+	mux := http.NewServeMux()
+	// mux.Handle("GET /auth/login/{$}", s.middlewareNoAuthCheck(s.HandleLoginPage))
+	mux.Handle("GET /auth/login/twitch/{$}", s.middlewareNoAuthCheck(s.HandleLoginTwitch))
+	mux.Handle("GET /auth/twitch/callback/{$}", s.middlewareNoAuthCheck(s.HandleOAuthCallback))
+	mux.Handle("GET /auth/logout/{$}", s.middlewareNoAuthCheck(s.HandleLogout))
+	mux.Handle("GET /auth/check/{$}", s.middlewareNoAuthCheck(s.HandleAuthCheck))
+	http.Handle("/auth/", mux)
 	return nil
 }
 
@@ -81,11 +62,11 @@ func (s *LoginServer) HandleLoginTwitch(w http.ResponseWriter, r *http.Request) 
 	// client session cookie
 	var tokenBytes [128]byte
 	if _, err := rand.Read(tokenBytes[:]); err != nil {
-		return fmt.Errorf("Couldn't generate a session! %s", err)
+		return fmt.Errorf("couldn't generate a session! %s", err)
 	}
 	var jwtNonceBytes [128]byte
 	if _, err := rand.Read(jwtNonceBytes[:]); err != nil {
-		return fmt.Errorf("Couldn't generate a session! %s", err)
+		return fmt.Errorf("couldn't generate a session! %s", err)
 	}
 	state := hex.EncodeToString(tokenBytes[:])
 	jwtNonce := hex.EncodeToString(jwtNonceBytes[:])
@@ -98,7 +79,8 @@ func (s *LoginServer) HandleLoginTwitch(w http.ResponseWriter, r *http.Request) 
 	// Redirect to the oauthService issuer URL
 	claims := oauth2.SetAuthURLParam("claims", `{"id_token":{}}`)
 	nonce := oauth2.SetAuthURLParam("nonce", jwtNonce)
-	http.Redirect(w, r, s.authService.Oauth2Config.AuthCodeURL(state, claims, nonce), http.StatusTemporaryRedirect)
+	forceVerify := oauth2.SetAuthURLParam("force_verify", "true")
+	http.Redirect(w, r, s.authService.Oauth2Config.AuthCodeURL(state, claims, nonce, forceVerify), http.StatusTemporaryRedirect)
 	return nil
 }
 
@@ -125,11 +107,11 @@ func (s *LoginServer) HandleOAuthCallback(w http.ResponseWriter, r *http.Request
 		err = fmt.Errorf("invalid oauth state, expected '%s', got '%s'", state, stateChallenge[0])
 	}
 	if err != nil {
-		return fmt.Errorf("Couldn't verify your confirmation, please try again. %s", err)
+		return fmt.Errorf("couldn't verify your confirmation, please try again. %s", err)
 	}
 
 	if r.FormValue("error") != "" {
-		return fmt.Errorf("Couldn't verify your confirmation, please try again. %s", r.FormValue("error"))
+		return fmt.Errorf("couldn't verify your confirmation, please try again. %s", r.FormValue("error"))
 	}
 
 	// Use the code to exchange for the OAUTH access token
@@ -165,7 +147,7 @@ func (s *LoginServer) HandleOAuthCallback(w http.ResponseWriter, r *http.Request
 	}
 	if err != nil {
 		log.Println(err)
-		return fmt.Errorf("Couldn't verify your confirmation, please try again. %s", err)
+		return fmt.Errorf("couldn't verify your confirmation, please try again. %s", err)
 	}
 
 	// Create the User if they don't exists in our DB
@@ -183,7 +165,8 @@ func (s *LoginServer) HandleOAuthCallback(w http.ResponseWriter, r *http.Request
 	// Set the tokens into the session. These are the credentials needed
 	// to know if the User is logged in, and which User they are logged in as
 	session.Values[auth.OAUTH_TOKEN_KEY] = token
-	http.Redirect(w, r, "/login/in/", http.StatusTemporaryRedirect)
+	// TODO: Redirect back to redirect_url
+	http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
 
 	return nil
 }
@@ -201,9 +184,28 @@ func (s *LoginServer) createOrInsertUser(ctx context.Context, twitchUserIdStr st
 	return nil
 }
 
-func (s *LoginServer) HandleLoggedIn(w http.ResponseWriter, r *http.Request) error {
-	w.Write([]byte("Logged IN"))
-	return nil
+type LoggedInResponse struct {
+	Authenticated bool   `json:"authenticated"`
+	Username      string `json:"username"`
+	TwitchUserId  string `json:"userId"`
+}
+
+func (s *LoginServer) HandleAuthCheck(w http.ResponseWriter, r *http.Request) error {
+	info, err := s.authService.IsAuthorized(w, r)
+	w.Header().Set("Content-Type", "application/json")
+	if err != nil {
+		return json.NewEncoder(w).Encode(&LoggedInResponse{
+			Authenticated: false,
+			Username:      "",
+			TwitchUserId:  "",
+		})
+	} else {
+		return json.NewEncoder(w).Encode(&LoggedInResponse{
+			Authenticated: info.Authenticated,
+			Username:      info.Username,
+			TwitchUserId:  info.TwitchUserId,
+		})
+	}
 }
 
 func (s *LoginServer) HandleLogout(w http.ResponseWriter, r *http.Request) error {
@@ -223,6 +225,5 @@ func (s *LoginServer) HandleLogout(w http.ResponseWriter, r *http.Request) error
 		s.authService.RevokeToken(oldToken)
 	}
 	delete(session.Values, auth.OAUTH_TOKEN_KEY)
-	w.Write([]byte("Logged OUT"))
 	return nil
 }

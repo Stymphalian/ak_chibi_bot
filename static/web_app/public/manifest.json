@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "ak_chibi_bot",
+  "name": "Arknights Chibi Twitch Bot",
   "icons": [
     {
       "src": "favicon.ico",
