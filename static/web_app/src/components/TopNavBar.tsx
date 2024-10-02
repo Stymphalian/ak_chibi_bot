@@ -1,5 +1,5 @@
 
-import { useLocation } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import { AuthStatus } from "../contexts/auth";
 
 export function TopNavBar() {
@@ -9,9 +9,9 @@ export function TopNavBar() {
     return (
         <nav id="topnavbar" className="navbar navbar-light bg-light">
             <div className="container-fluid">
-                <a className="navbar-brand" href="/">Home</a>
-                <a className="nav-link me-2" href="/docs">Docs</a>
-                <a className="nav-link me-auto" href="/settings">Settings</a>
+                <NavLink className="navbar-brand" to="/">Home</NavLink>
+                <NavLink className="nav-link me-2" to="/docs">Docs</NavLink>
+                <NavLink className="nav-link me-auto" to="/settings">Settings</NavLink>
                 
                 {isNotLoginPage && 
                 <div className="nav-item">
