@@ -11,6 +11,7 @@ import (
 	"github.com/Stymphalian/ak_chibi_bot/server/internal/akdb"
 	"github.com/Stymphalian/ak_chibi_bot/server/internal/misc"
 	"github.com/Stymphalian/ak_chibi_bot/server/internal/twitch_api"
+	"github.com/Stymphalian/ak_chibi_bot/server/internal/users"
 	"github.com/antonlindstrom/pgstore"
 	"github.com/coreos/go-oidc"
 	"github.com/gorilla/securecookie"
@@ -43,6 +44,7 @@ const (
 
 type AuthService struct {
 	// authRepo       AuthRepository
+	userRepo       users.UserRepository
 	twitchClientId string
 	twitchSecret   string
 	cookieSecret   string
@@ -60,6 +62,7 @@ func NewAuthService(
 	cookieSecret string,
 	redirectUrl string,
 	twitchClient twitch_api.TwitchApiClientInterface,
+	userRepo users.UserRepository,
 ) (*AuthService, error) {
 	gob.Register(&oauth2.Token{})
 
@@ -95,6 +98,7 @@ func NewAuthService(
 	}
 
 	return &AuthService{
+		userRepo:       userRepo,
 		twitchClientId: twitchClientId,
 		twitchSecret:   twitchSecret,
 		cookieSecret:   cookieSecret,
@@ -269,10 +273,14 @@ func (s *AuthService) cleanupExpiredSessions() error {
 	}
 }
 
+type AuthUserInfo struct {
+	Username     string
+	TwitchUserId string
+	IsAdmin      bool
+}
 type AuthorizedInfo struct {
 	Authenticated bool
-	Username      string
-	TwitchUserId  string
+	User          AuthUserInfo
 }
 
 func (s *AuthService) IsAuthorized(w http.ResponseWriter, r *http.Request) (*AuthorizedInfo, error) {
@@ -296,10 +304,18 @@ func (s *AuthService) IsAuthorized(w http.ResponseWriter, r *http.Request) (*Aut
 		return nil, err
 	}
 
+	user, err := s.userRepo.GetByTwitchId(r.Context(), resp.UserId)
+	if err != nil {
+		return nil, err
+	}
+
 	return &AuthorizedInfo{
 		Authenticated: true,
-		Username:      resp.Login,
-		TwitchUserId:  resp.UserId,
+		User: AuthUserInfo{
+			Username:     resp.Login,
+			TwitchUserId: resp.UserId,
+			IsAdmin:      user.IsAdmin(),
+		},
 	}, nil
 }
 

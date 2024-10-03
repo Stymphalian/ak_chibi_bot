@@ -1,0 +1,15 @@
+.sub-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+.sub-table, .sub-th, .sub-td {
+    border: 1px solid #ddd;
+}
+.sub-th, .sub-td {
+    padding: 5px;
+    text-align: left;
+}
+.sub-th {
+    background-color: #f9f9f9;
+}

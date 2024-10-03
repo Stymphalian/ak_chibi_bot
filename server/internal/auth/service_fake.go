@@ -24,8 +24,11 @@ func (s *FakeAuthService) IsAuthorized(w http.ResponseWriter, r *http.Request) (
 	} else {
 		return &AuthorizedInfo{
 			Authenticated: s.IsAuthenticated,
-			Username:      s.Username,
-			TwitchUserId:  s.TwitchUserId,
+			User: AuthUserInfo{
+				Username:     s.Username,
+				TwitchUserId: s.TwitchUserId,
+				IsAdmin:      false,
+			},
 		}, nil
 	}
 }

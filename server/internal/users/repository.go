@@ -2,6 +2,7 @@ package users
 
 import (
 	"context"
+	"database/sql"
 	"time"
 
 	"github.com/Stymphalian/ak_chibi_bot/server/internal/misc"
@@ -10,8 +11,12 @@ import (
 	"gorm.io/gorm"
 )
 
+const USER_ROLE_ADMIN = "admin"
+const USER_ROLE_USER = "user"
+
 type UserRepository interface {
 	GetById(ctx context.Context, userId uint) (*UserDb, error)
+	GetByTwitchId(ctx context.Context, twitchUserId string) (*UserDb, error)
 	GetOrInsertUser(ctx context.Context, info misc.UserInfo) (*UserDb, error)
 }
 
@@ -37,6 +42,7 @@ type UserDb struct {
 	Username        string         `gorm:"column:username"`
 	UserDisplayName string         `gorm:"column:user_display_name"`
 	TwitchUserId    string         `gorm:"column:twitch_user_id"`
+	UserRole        sql.NullString `gorm:"column:user_role"`
 	CreatedAt       time.Time      `gorm:"column:created_at"`
 	UpdatedAt       time.Time      `gorm:"column:updated_at"`
 	DeletedAt       gorm.DeletedAt `gorm:"index"`
@@ -44,6 +50,13 @@ type UserDb struct {
 
 func (UserDb) TableName() string {
 	return "users"
+}
+
+func (u *UserDb) IsAdmin() bool {
+	if !u.UserRole.Valid {
+		return false
+	}
+	return u.UserRole.String == USER_ROLE_ADMIN
 }
 
 type ChatterDb struct {

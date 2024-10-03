@@ -17,7 +17,6 @@ import (
 
 	_ "github.com/lib/pq" // add this
 
-	"github.com/Stymphalian/ak_chibi_bot/server/internal/admin"
 	"github.com/Stymphalian/ak_chibi_bot/server/internal/akdb"
 	"github.com/Stymphalian/ak_chibi_bot/server/internal/api"
 	"github.com/Stymphalian/ak_chibi_bot/server/internal/auth"
@@ -50,7 +49,6 @@ type MainStruct struct {
 	authService  *auth.AuthService
 
 	roomManager *room.RoomsManager
-	adminServer *admin.AdminServer
 	apiServer   *api.ApiServer
 	loginServer *login.LoginServer
 }
@@ -92,6 +90,7 @@ func NewMainStruct() *MainStruct {
 			botConfig.TwitchClientId,
 			botConfig.TwitchAccessToken,
 		),
+		usersRepo,
 	)
 	if err != nil {
 		log.Fatal(err)
@@ -101,7 +100,6 @@ func NewMainStruct() *MainStruct {
 		log.Fatal(err)
 	}
 	roomManager := room.NewRoomsManager(assetService, roomsRepo, usersRepo, chattersRepo, botConfig)
-	adminServer := admin.NewAdminServer(roomManager, botConfig, *staticAssetsDir)
 	apiServer := api.NewApiServer(roomManager, authService)
 
 	return &MainStruct{
@@ -119,7 +117,6 @@ func NewMainStruct() *MainStruct {
 		assetService: assetService,
 		authService:  authService,
 		roomManager:  roomManager,
-		adminServer:  adminServer,
 		apiServer:    apiServer,
 		loginServer:  loginServer,
 	}
@@ -209,7 +206,6 @@ func (s *MainStruct) run() {
 	http.Handle("/room/", misc.MiddlewareWithTimeout(s.HandleRoom, DEFAULT_TIMEOUT))
 	http.Handle("/ws/", misc.Middleware(s.HandleSpineWebSocket))
 
-	// s.adminServer.RegisterHandlers()
 	s.apiServer.RegisterHandlers()
 	s.loginServer.RegisterHandlers()
 

@@ -196,6 +196,7 @@ type LoggedInResponse struct {
 	Authenticated bool   `json:"authenticated"`
 	Username      string `json:"username"`
 	TwitchUserId  string `json:"userId"`
+	IsAdmin       bool   `json:"is_admin"`
 }
 
 func (s *LoginServer) HandleAuthCheck(w http.ResponseWriter, r *http.Request) error {
@@ -204,14 +205,16 @@ func (s *LoginServer) HandleAuthCheck(w http.ResponseWriter, r *http.Request) er
 	if err != nil {
 		return json.NewEncoder(w).Encode(&LoggedInResponse{
 			Authenticated: false,
+			IsAdmin:       false,
 			Username:      "",
 			TwitchUserId:  "",
 		})
 	} else {
 		return json.NewEncoder(w).Encode(&LoggedInResponse{
 			Authenticated: info.Authenticated,
-			Username:      info.Username,
-			TwitchUserId:  info.TwitchUserId,
+			Username:      info.User.Username,
+			IsAdmin:       info.User.IsAdmin,
+			TwitchUserId:  info.User.TwitchUserId,
 		})
 	}
 }

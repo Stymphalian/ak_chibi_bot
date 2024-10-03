@@ -1,0 +1,68 @@
+package api
+
+type chatter struct {
+	Username     string `json:"username"`
+	Operator     string `json:"operator"`
+	LastChatTime string `json:"last_chat_time"`
+}
+
+type roomInfo struct {
+	ChannelName             string             `json:"channel_name"`
+	CreatedAt               string             `json:"created_at"`
+	LastTimeUsed            string             `json:"last_time_used"`
+	Chatters                []*chatter         `json:"chatters"`
+	NextGCTime              string             `json:"next_gc_time"`
+	NumWebsocketConnections int                `json:"num_websocket_connections"`
+	ConnectionAverageFps    map[string]float64 `json:"connection_average_fps"`
+}
+
+type AdminInfo struct {
+	Rooms      []*roomInfo            `json:"rooms"`
+	NextGCTime string                 `json:"next_gc_time"`
+	Metrics    map[string]interface{} `json:"metrics"`
+}
+
+type removeRoomRequest struct {
+	ChannelName string `json:"channel_name"`
+}
+
+type removeUserRequest struct {
+	ChannelName string `json:"channel_name"`
+	Username    string `json:"username"`
+}
+
+type RoomUpdateRequest struct {
+	ChannelName       string  `json:"channel_name"`
+	MinAnimationSpeed float64 `json:"min_animation_speed"`
+	MaxAnimationSpeed float64 `json:"max_animation_speed"`
+	// DefaultAnimationSpeed float64 `json:"default_animation_speed"`
+	MinVelocity float64 `json:"min_velocity"`
+	MaxVelocity float64 `json:"max_velocity"`
+	// DefaultVelocity       float64 `json:"default_velocity"`
+	MinSpriteScale float64 `json:"min_sprite_scale"`
+	MaxSpriteScale float64 `json:"max_sprite_scale"`
+	// DefaultSpriteScale    float64 `json:"default_sprite_scale"`
+	MaxSpritePixelSize int `json:"max_sprite_pixel_size"`
+}
+
+type RoomAddOperatorRequest struct {
+	ChannelName     string `json:"channel_name"`
+	Username        string `json:"username"`
+	UserDisplayName string `json:"user_display_name"`
+	// OperatorId      string `json:"operator_id"`
+	// Faction         string `json:"faction"`
+}
+
+type GetRoomSettingsRequest struct {
+	ChannelName string `json:"channel_name"`
+}
+
+type GetRoomSettingsResponse struct {
+	MinAnimationSpeed  float64 `json:"min_animation_speed"`
+	MaxAnimationSpeed  float64 `json:"max_animation_speed"`
+	MinMovementSpeed   float64 `json:"min_movement_speed"`
+	MaxMovementSpeed   float64 `json:"max_movement_speed"`
+	MinSpriteSize      float64 `json:"min_sprite_size"`
+	MaxSpriteSize      float64 `json:"max_sprite_size"`
+	MaxSpritePixelSize int     `json:"max_sprite_pixel_size"`
+}

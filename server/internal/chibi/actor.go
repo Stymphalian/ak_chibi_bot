@@ -103,6 +103,7 @@ func (c *ChibiActor) RemoveUserChibi(ctx context.Context, userName string) error
 	if err != nil {
 		log.Printf("Error removing chibi for %s: %s\n", userName, err)
 	}
+	// TODO : Need to check that user exists in chatUsers before removing.
 	c.ChatUsers[userName].SetActive(false)
 	delete(c.ChatUsers, userName)
 	return nil
@@ -139,6 +140,7 @@ func (c *ChibiActor) HandleMessage(msg chat.ChatMessage) (string, error) {
 		})
 	}
 	c.ChatUsers[msg.Username].SetLastChatTime(misc.Clock.Now())
+	c.lastChatterTime = misc.Clock.Now()
 	if msg.Message[0] != '!' {
 		return "", nil
 	}

@@ -6,58 +6,68 @@ import {
   Route,
   RouterProvider,
 } from "react-router-dom";
+import reportWebVitals from './reportWebVitals';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import './index.css';
 
-import { Layout, loader as rootLoader, action as rootAction} from './pages/Layout';
+import ErrorPage from './error-page';
+import { Layout, loader as rootLoader, action as rootAction } from './pages/Layout';
 import { HomePage } from './pages/Home';
 import { SettingsPage, action as settingsAction } from './pages/Settings';
 import { AuthProvider, RequireAuth } from './contexts/auth';
 import { LoginPage } from './pages/Login';
-import ErrorPage from './error-page';
-
-import reportWebVitals from './reportWebVitals';
-import 'bootstrap/dist/css/bootstrap.min.css';
 import { DocsPage } from './pages/Docs';
 import { LoginCallbackPage } from './pages/LoginCallback';
-
+import { AdminPage } from './pages/Admin'
 
 const router = createBrowserRouter(
   createRoutesFromElements(
-    <Route
-      path="/"
-      element={<Layout />}
-      errorElement={<ErrorPage />}
-      loader={rootLoader}
-      action={rootAction}
-    >
+    <>
       <Route
-        index
-        element={<HomePage />}
-      />
-      <Route
-        path="/settings"
-        action = {settingsAction}
-        element={
-          <RequireAuth>
-            <SettingsPage />
-          </RequireAuth>
-        }
-      />
-      <Route
-        path="/docs"
-        element={<DocsPage />}
-      />
-      <Route
-        path="/login"
-        element={<LoginPage />}
+        path="/"
+        element={<Layout />}
         errorElement={<ErrorPage />}
-      />
-      <Route
-        path="/login/callback"
-        element={<LoginCallbackPage />}
-        errorElement={<ErrorPage />}
-      />
-    </Route>
+        loader={rootLoader}
+        action={rootAction}
+      >
+        <Route
+          index
+          element={<HomePage />}
+        />
+        <Route
+          path="/docs"
+          element={<DocsPage />}
+        />
+        <Route
+          path="/settings"
+          action={settingsAction}
+          element={
+            <RequireAuth>
+              <SettingsPage />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/admin"
+          element={
+            <RequireAuth checkAdmin>
+              <AdminPage />
+            </RequireAuth>
+          }
+          errorElement={<ErrorPage />}
+        />
+        <Route
+          path="/login"
+          element={<LoginPage />}
+          errorElement={<ErrorPage />}
+        />
+        <Route
+          path="/login/callback"
+          element={<LoginCallbackPage />}
+          errorElement={<ErrorPage />}
+        />
+      </Route>
+    </>
   )
 )
 

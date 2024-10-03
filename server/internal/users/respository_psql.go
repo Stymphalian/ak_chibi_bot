@@ -27,6 +27,17 @@ func (r *UserRepositoryPsql) GetById(ctx context.Context, userId uint) (*UserDb,
 	return &userDb, nil
 }
 
+func (r *UserRepositoryPsql) GetByTwitchId(ctx context.Context, twitchUserId string) (*UserDb, error) {
+	db := akdb.DefaultDB.WithContext(ctx)
+
+	var userDb UserDb
+	result := db.First(&userDb, "twitch_user_id = ?", twitchUserId)
+	if result.Error != nil {
+		return nil, result.Error
+	}
+	return &userDb, nil
+}
+
 func (r *UserRepositoryPsql) GetOrInsertUser(ctx context.Context, userinfo misc.UserInfo) (*UserDb, error) {
 	db := akdb.DefaultDB.WithContext(ctx)
 

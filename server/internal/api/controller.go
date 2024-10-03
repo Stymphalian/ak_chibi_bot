@@ -5,52 +5,19 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"slices"
+	"strings"
 	"time"
 
 	"github.com/Stymphalian/ak_chibi_bot/server/internal/auth"
 	"github.com/Stymphalian/ak_chibi_bot/server/internal/misc"
 	"github.com/Stymphalian/ak_chibi_bot/server/internal/room"
+	"github.com/Stymphalian/ak_chibi_bot/server/internal/users"
 )
 
 type ApiServer struct {
 	roomsManager *room.RoomsManager
 	authService  auth.AuthServiceInterface
-}
-
-type RoomUpdateRequest struct {
-	ChannelName       string  `json:"channel_name"`
-	MinAnimationSpeed float64 `json:"min_animation_speed"`
-	MaxAnimationSpeed float64 `json:"max_animation_speed"`
-	// DefaultAnimationSpeed float64 `json:"default_animation_speed"`
-	MinVelocity float64 `json:"min_velocity"`
-	MaxVelocity float64 `json:"max_velocity"`
-	// DefaultVelocity       float64 `json:"default_velocity"`
-	MinSpriteScale float64 `json:"min_sprite_scale"`
-	MaxSpriteScale float64 `json:"max_sprite_scale"`
-	// DefaultSpriteScale    float64 `json:"default_sprite_scale"`
-	MaxSpritePixelSize int `json:"max_sprite_pixel_size"`
-}
-
-type RoomAddOperatorRequest struct {
-	ChannelName     string `json:"channel_name"`
-	Username        string `json:"username"`
-	UserDisplayName string `json:"user_display_name"`
-	// OperatorId      string `json:"operator_id"`
-	// Faction         string `json:"faction"`
-}
-
-type GetRoomSettingsRequest struct {
-	ChannelName string `json:"channel_name"`
-}
-
-type GetRoomSettingsResponse struct {
-	MinAnimationSpeed  float64 `json:"min_animation_speed"`
-	MaxAnimationSpeed  float64 `json:"max_animation_speed"`
-	MinMovementSpeed   float64 `json:"min_movement_speed"`
-	MaxMovementSpeed   float64 `json:"max_movement_speed"`
-	MinSpriteSize      float64 `json:"min_sprite_size"`
-	MaxSpriteSize      float64 `json:"max_sprite_size"`
-	MaxSpritePixelSize int     `json:"max_sprite_pixel_size"`
 }
 
 func NewApiServer(roomManager *room.RoomsManager, authService auth.AuthServiceInterface) *ApiServer {
@@ -60,7 +27,7 @@ func NewApiServer(roomManager *room.RoomsManager, authService auth.AuthServiceIn
 	}
 }
 
-func (s *ApiServer) CheckAuth(h misc.HandlerWithErr) misc.HandlerWithErr {
+func (s *ApiServer) CheckAuth(h misc.HandlerWithErr, checkAdmin bool) misc.HandlerWithErr {
 	return func(w http.ResponseWriter, r *http.Request) error {
 		info, err := s.authService.IsAuthorized(w, r)
 		if err != nil || !info.Authenticated {
@@ -70,9 +37,20 @@ func (s *ApiServer) CheckAuth(h misc.HandlerWithErr) misc.HandlerWithErr {
 				err,
 			)
 		}
+		if checkAdmin {
+			if !info.User.IsAdmin {
+				return misc.NewHumanReadableError(
+					"not authorized",
+					http.StatusUnauthorized,
+					err,
+				)
+			}
+		}
 
-		newContext := context.WithValue(r.Context(), auth.CONTEXT_TWITCH_USER_ID, info.TwitchUserId)
-		newContext = context.WithValue(newContext, auth.CONTEXT_TWITCH_USER_NAME, info.Username)
+		newContext := context.WithValue(
+			r.Context(), auth.CONTEXT_TWITCH_USER_ID, info.User.TwitchUserId)
+		newContext = context.WithValue(
+			newContext, auth.CONTEXT_TWITCH_USER_NAME, info.User.Username)
 		*r = *r.WithContext(newContext)
 		return h(w, r)
 	}
@@ -80,7 +58,14 @@ func (s *ApiServer) CheckAuth(h misc.HandlerWithErr) misc.HandlerWithErr {
 
 func (s *ApiServer) middleware(h misc.HandlerWithErr) http.Handler {
 	return misc.MiddlewareWithTimeout(
-		s.CheckAuth(h),
+		s.CheckAuth(h, false),
+		5*time.Second,
+	)
+}
+
+func (s *ApiServer) middlewareAdmin(h misc.HandlerWithErr) http.Handler {
+	return misc.MiddlewareWithTimeout(
+		s.CheckAuth(h, true),
 		5*time.Second,
 	)
 }
@@ -89,8 +74,12 @@ func (s *ApiServer) RegisterHandlers() {
 	mux := http.NewServeMux()
 	mux.Handle("GET  /api/rooms/settings/{$}", s.middleware(s.HandleGetRoomSettings))
 	mux.Handle("POST /api/rooms/settings/{$}", s.middleware(s.HandleUpdateRoomSettings))
+	mux.Handle("POST /api/rooms/remove/{$}", s.middlewareAdmin(s.HandleRemoveRoom))
+	mux.Handle("POST /api/rooms/users/remove/{$}", s.middlewareAdmin(s.HandleRemoveUser))
+	mux.Handle("GET  /api/admin/info/{$}", s.middlewareAdmin(s.HandleAdminInfo))
+
 	http.Handle("/api/", mux)
-	// http.Handle("POST /api/rooms/add_operator", s.middleware(s.HandleRoomAddOperator))
+	// http.Handle("POST /api/rooms/users/add/{$}", s.middleware(s.HandleRoomAddOperator))
 }
 
 func (s *ApiServer) matchRequestChannel(r *http.Request, channelName string) error {
@@ -268,4 +257,105 @@ func (s *ApiServer) HandleRoomAddOperator(w http.ResponseWriter, r *http.Request
 	// room.AddOperatorToRoom(reqBody.Username, reqBody.Username, reqBody.OperatorId, faction)
 
 	return nil
+}
+
+func (s *ApiServer) HandleAdminInfo(w http.ResponseWriter, r *http.Request) error {
+	if r.Method != http.MethodGet {
+		http.NotFound(w, r)
+		return nil
+	}
+	w.Header().Set("Content-Type", "application/json")
+
+	var adminInfo AdminInfo
+	adminInfo.Rooms = make([]*roomInfo, 0)
+	adminInfo.Metrics = make(map[string]interface{}, 0)
+	adminInfo.NextGCTime = s.roomsManager.GetNextGarbageCollectionTime().Format(time.DateTime)
+
+	for _, roomVal := range s.roomsManager.Rooms {
+
+		newRoom := &roomInfo{
+			ChannelName:             roomVal.GetChannelName(),
+			LastTimeUsed:            roomVal.GetLastChatterTime().Format(time.DateTime),
+			Chatters:                make([]*chatter, 0),
+			NumWebsocketConnections: roomVal.NumConnectedClients(),
+			CreatedAt:               roomVal.CreatedAt().Format(time.DateTime),
+			NextGCTime:              roomVal.GetNextGarbageCollectionTime().Format(time.DateTime),
+			ConnectionAverageFps:    make(map[string]float64),
+		}
+
+		roomVal.ForEachChatter(func(chatUser *users.ChatUser) {
+			newChatter := &chatter{
+				Username:     chatUser.GetUsername(),
+				Operator:     chatUser.GetOperatorInfo().OperatorDisplayName,
+				LastChatTime: chatUser.GetLastChatTime().Format(time.DateTime),
+			}
+			newRoom.Chatters = append(newRoom.Chatters, newChatter)
+		})
+
+		slices.SortFunc(newRoom.Chatters, func(a, b *chatter) int {
+			return strings.Compare(a.Username, b.Username)
+		})
+		adminInfo.Rooms = append(adminInfo.Rooms, newRoom)
+	}
+	slices.SortFunc(adminInfo.Rooms, func(a, b *roomInfo) int {
+		return strings.Compare(a.ChannelName, b.ChannelName)
+	})
+
+	adminInfo.Metrics["NumRoomsCreated"] = misc.Monitor.NumRoomsCreated
+	adminInfo.Metrics["NumWebsocketConnections"] = misc.Monitor.NumWebsocketConnections
+	adminInfo.Metrics["NumUsers"] = misc.Monitor.NumUsers
+	adminInfo.Metrics["NumCommands"] = misc.Monitor.NumCommands
+	adminInfo.Metrics["Datetime"] = misc.Clock.Now().Format(time.DateTime)
+
+	json.NewEncoder(w).Encode(adminInfo)
+	return nil
+}
+
+func (s *ApiServer) HandleRemoveRoom(w http.ResponseWriter, r *http.Request) error {
+	if r.Method != http.MethodPost {
+		http.NotFound(w, r)
+		return nil
+	}
+	decoder := json.NewDecoder(r.Body)
+	var reqBody removeRoomRequest
+	if err := decoder.Decode(&reqBody); err != nil {
+		return err
+	}
+
+	channelName := reqBody.ChannelName
+	if len(channelName) == 0 {
+		return nil
+	}
+	if _, ok := s.roomsManager.Rooms[channelName]; !ok {
+		return nil
+	}
+
+	return s.roomsManager.RemoveRoom(channelName)
+}
+
+func (s *ApiServer) HandleRemoveUser(w http.ResponseWriter, r *http.Request) error {
+	if r.Method != http.MethodPost {
+		http.NotFound(w, r)
+		return nil
+	}
+	decoder := json.NewDecoder(r.Body)
+	var reqBody removeUserRequest
+	if err := decoder.Decode(&reqBody); err != nil {
+		return err
+	}
+
+	channelName := reqBody.ChannelName
+	if len(channelName) == 0 {
+		return nil
+	}
+	if _, ok := s.roomsManager.Rooms[channelName]; !ok {
+		return nil
+	}
+	room := s.roomsManager.Rooms[channelName]
+
+	userName := reqBody.Username
+	if len(userName) == 0 {
+		return nil
+	}
+	return room.RemoveUserChibi(context.Background(), userName)
 }

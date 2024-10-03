@@ -9,6 +9,7 @@ interface AuthDataContext {
     isAuthenticated: boolean
     loading: boolean
     userName: string
+    isAdmin: boolean
     Login: () => void
     Logout: (callback: VoidFunction) => void
 }
@@ -16,6 +17,7 @@ export const AuthContext = React.createContext<AuthDataContext>({
     isAuthenticated: false,
     loading: true,
     userName: "",
+    isAdmin: false,
     Login: () => {},
     Logout: (callback: VoidFunction) => {},
 })
@@ -26,10 +28,10 @@ export const AuthProvider = (props: {
     const [isAuthenticated, setIsAuthenticated] = React.useState(false)
     const [loading, setLoading] = React.useState(true)
     const [userName, setUserName] = React.useState("")
+    const [isAdmin, setIsAdmin] = React.useState(false)
     
     const checkAuthenticated = async () => {
         try {
-            console.log("check authenticated");
             const url = "/auth/check/"
             const options = {method: "GET"}
             const response = await fetch(url, options);
@@ -40,9 +42,9 @@ export const AuthProvider = (props: {
             }
             
             const jsonBody = await response.json();
-            console.log(jsonBody);
             setIsAuthenticated(jsonBody.authenticated);
             setUserName(jsonBody.username);
+            setIsAdmin(jsonBody.is_admin);
             setLoading(false);
         } catch (err) {
             console.log(err);
@@ -63,7 +65,7 @@ export const AuthProvider = (props: {
         })
     };
 
-    let value = {isAuthenticated, loading, userName, Login, Logout}
+    let value = {isAuthenticated, loading, userName, isAdmin, Login, Logout}
     return (
         <AuthContext.Provider value={value}>
             {props.children}
@@ -94,17 +96,20 @@ export function AuthStatus() {
     }
 }
 
-export function RequireAuth({ children }: { children: JSX.Element }) {
+export function RequireAuth({ children, checkAdmin }: { children: JSX.Element, checkAdmin ?: boolean }) {
     const auth = React.useContext(AuthContext)
     const location = useLocation();
 
     if (auth.loading) {
         return <div>Loading...</div>
-    } else if (!auth.isAuthenticated) {
-        return <Navigate to="/login" state={{from: location }} replace />
-    } else {
-        return children
+    } else if (auth.isAuthenticated) {
+        if (checkAdmin && !auth.isAdmin) {
+            <Navigate to="/login" state={{from: location }} replace />
+        } else {
+            return children
+        }
     }
+    return <Navigate to="/login" state={{from: location }} replace />
 }
 
 export function useAuth() {

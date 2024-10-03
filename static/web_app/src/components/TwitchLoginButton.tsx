@@ -11,14 +11,13 @@ export function TwitchLoginButton(props: {
 }) {
   const auth = useAuth();
   const [cookies, setCookie, removeCookie] = useCookies(['redirect_to']);
-  
+
   const handleClick = () => {
-    console.log("@@@@ from = ", props.redirect_to);
     setCookie('redirect_to', props.redirect_to, {
       path: '/',
       expires: new Date(Date.now() + 5 * 60 * 1000),
       secure: true,
-      sameSite: true,
+      sameSite: 'strict',
     });
     auth.Login();
   }
