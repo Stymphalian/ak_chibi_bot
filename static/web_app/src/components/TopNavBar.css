@@ -1,0 +1,4 @@
+#topnavbar .nav-link.active {
+    border-bottom: .25rem solid #9146ff;
+    font-weight: 400;
+}

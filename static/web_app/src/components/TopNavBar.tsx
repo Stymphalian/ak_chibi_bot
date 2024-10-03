@@ -1,6 +1,7 @@
 
 import { NavLink, useLocation } from "react-router-dom";
 import { AuthStatus } from "../contexts/auth";
+import "./TopNavBar.css";
 
 export function TopNavBar() {
     const location = useLocation();
