@@ -27,34 +27,31 @@ Command Name | Description
 # Quick Start - Hosted
 Have the twich bot directly connect to your chat by using a hosted bot.
 1. Open up OBS and add a `Browser` source to your stream.
-2. Set the URL to `https://jellyfish-app-gseou.ondigitalocean.app/room/?channelName=REPLACE_ME`
+2. Set the URL to `https://akchibibot.stymphalian.top/room/?channelName=REPLACE_ME`
 3. Change the `REPLACE_ME` part of the channelName (lowercase) to your own channel (ie. `?channelName=stymphalian2__`). 
 4. Set the width and height to 1920x1080
 5. A chibi should now be walking around.
 6. Open up your twitch chat and start typing in commands
 
-# Quick Start - Local [BROKEN]
+# Quick Start - Development 
 Run the twitch bot locally on your own machine and attached to your own twitch account.
 
 1. Download this repository and open up a window to it
 2. Open up a command-prompt/terminal window in that directory (i.e C:/Users/Stymphalian/Downloads/ak_chibi_bot/)
 by right clicking and selecting (open in command prompt/terminal).
-4. Download the chibi assets files from [here](https://f002.backblazeb2.com/file/ak-gamedata/assets_20240805.zip) and unzip into the `releases` folder with the name `assets`.
 5. You now need register the bot to your channel. Follow the instructions from [Authentication](#Authentication)
 6. Follow the setting up Development environment instructions from [README_DEV.md](README_DEV.md)
 
 # Additional Notes
 1. You can change the width/height of the `/room/` by providing extra query parameters in the URL.
-   For example: `https://jellyfish-app-gseou.ondigitalocean.app/room/?channelName=REPLACE_ME&width=1080&height=720`
+   For example: `https://akchibibot.stymphalian.top/room/?channelName=REPLACE_ME&width=1080&height=720`
    will make the room have size 1080x720 pixels instead of the normal 1920x1080px
-2. You can change settings related to how your bot handles (!chibi size, !chibi speed, !chibi velocity) commands by going to `https://jellyfish-app-gseou.ondigitalocean.app/rooms/settings`.
-   On that page you can modify the min/max values which are accepted by the commands. The default values
-   on that page are the normal defaults. Be sure to visit `/room?channelName=REPLACE_ME` first before
-   trying to change your settings.
+2. You can change settings related to how your bot handles (!chibi size, !chibi speed, !chibi velocity) 
+   commands by going to `https://akchibibot.stymphalian.top/settings/`.
+   On that page you can modify the min/max values which are accepted by the commands.
 
 # For Developers
-I develop using Docker, but as long as you have golang installed on your computer
-you can run this locally as well. 
+I develop using Docker and Docker compose.
 For some commentary on the architecture and layout of the program see [README_DEV.md](README_DEV.md)
 
 ### Downloading
@@ -79,8 +76,6 @@ Also make sure you have a `localhost:8080` server running (`python -m http.serve
 so that the redirect of the OAUTH has somewhere to go. You can also run step 7 in the [Quickstart](#Quick-Start-Local)
 
 Once you get that token enter it into `twitch_access_token` field in the `config.json` file.
-Also change the `broadcaster` and `channel_name` fields to match your own Name and Channel.
-(i.e stymphalian__ is my username, and my channel is called Stymphalian__)
 If you want to run your Bot under a special Bot twitch account just make sure
 to change the `twitch_bot` field in the config to your bot's name and make sure 
 to get the correct access token for your Bot and give them a moderator role in your own channel.

@@ -1,19 +1,16 @@
 # Developer Documentation
 
-There are 4 major components to the twitch bot.
-1. The Twitch IRC client which connects to the Twitch chat channel.
-2. The Chibi module which provides an abstraction for dealing with rendering the
- Chibis.
-3. The Spine Runtime (web/typescript) which renders and plays the chibi/spine 
-animations in a web browser.
-4. The Spine Bridge which parses the `!chibi` commands from chat IRC messages and
-forwards instructions to the Runtime via websockets. It acts as a client between
-`Chibi` component and the `Runtime`.
-5. The HTTP [Server](server/main.go) which glues everything together. It is the
-entry point of the program. It connects the Twitch IRC client, and also serves
-the web files required to show the Browser spine runtime webpage. It also contains
-the spine Bridge to facilitate communication between the `Chibi` and 
-the `Runtime` components.
+The AK Chibi Bot system components
+Component | Description
+----------| ------------
+Spine Runtime | The Web/Typescript component which renders and plays the chibi spine animations in a browser window/OBS browser source.
+Spine Bridge | A server-side component connects to the Spine Runtime via websockets in order to forward instructions on what chibis to display and what animations should be played.
+Twitch Chat | Twitch IRC client which connects to the User's Twitch chat. This component parses the text `!chibi` commands and converts them into `Commands` to be processed by the `ChibiActor`.
+Chibi Actor | The chibi component provides an abstraction for dealing with rendering Chibis. It provides methods for setting the current operator, choosing which animations are being played, etc. This component also holds the list of viewers/chatters and keeps the mapping/state between a viewer and their current chosen chibi. This component uses the spine-bridge to communicate to the User's browser (ie. Spine Runtime) for displaying the Chibi.
+Rooms/Rooms Manager | A Room encapsulates a twitch chat, spine bridge/runtime and a chibi actor into a single object. Each time a Streamer creates a new Browser Source by hitting `HTTP GET /room` a new Room entry is added to the Rooms Manager. This abstraction keeps all the logic isolated between different streams/sessions.
+Web App | A frontend web application avaialable at the top-level domain. It provides a front facing website for the Bot as well as provides a `/settings/` page for Streamers to customize the Bots settings (i.e min/max values for `!chibi` commands). We login via Twitch OAUTH in order to authorize changes to a channel's settings.
+Database (postgres) | A database to hold persistent state for the the active rooms/chatters, as well as to store the twitch oauth tokens/session cookies. Mainly needed to allow for persistent user preferences saving, and to allow for seamless server restarts.
+Bot Server | The HTTP [server](server/main.go) which glues everthhing together. It serves all the HTML/JS for the web_app/spine_runtime, as well as provides the HTTP endpoints for connecting to the Rooms (i.e `/room`) and the Spine Bridge websocket connections (`/ws`). It holds all the state within the Rooms Manager, and provides the connection to the DB.
 
 
 ## Arknights Assets
@@ -62,14 +59,14 @@ which have done this work for you, but not all of them are up to date.
 I got these assets myself through other means, but in order to not bloat
 the repo I have not included them here.
 
-## Setup your Development environment
+## Setup Local Development Environment
 1. Make the `./secrets` folder. It should contain:
     ```
     dev_config.json
     postgres-password.txt
     web-user-password.txt
     ```
-3. `dev_config.json` should be a `misc.BotConfig` json file.
+3. `dev_config.json` should be a [misc.BotConfig](server/internal/misc/config.go) json file.
 4. `*-password.txt` files should contain the passwords for the `postgres` and `web_user` database users.
    The `postgres` user will have the `postgres-password.txt` set upon first DB creation.
    But `web_user` will need to be updated with the new password manually.
@@ -91,11 +88,12 @@ the repo I have not included them here.
     MIGRATE_DB_USER=postgres
     MIGRATE_DB_PASSWORD=password
     ``` 
-5. Bring up all the containers. `docker compose -f compose.DEV.yaml up`
+1. Download the chibi assets files from [here](https://f002.backblazeb2.com/file/ak-gamedata/assets_20240805.zip) and extract into the `static/assets` folder.
+5. Bring up all the containers. `docker compose -f compose.DEV.yaml up --build`
 6. This should bring up the postgres DB, run any schema migrations and then spin
-   up the `web` AKChibiBot server.
+   up the `bot` AKChibiBot server.
 7. Login to your Database and run `ALTER USER web_user WITH ENCRYPTED PASSWORD 'REPLACE_ME'` to set your `web_users` password. It should match the contents of `web-user-password.txt`
-10. Restart the containers so that the `web` service can pick up the new DB password.
+10. Restart the containers so that the `bot` service can pick up the new DB password.
 
 ### Schema Updates
 1. DB schema migrations are under `db/migrations`. We use [golang-migrate](https://github.com/golang-migrate/migrate) to
@@ -110,23 +108,38 @@ manage all our DB schema migrations/updates.
 4. To downgrade the migrations. You can explicitly run the `migrate down` command.
     ```
     docker run -it -v .\\migrations:/migrations --network ak-services_default migrate/migrate \
-    -database postgres://postgres:db_password@db:5432/akdb  -path ./migrations down
+    -database postgres://postgres:<REPLACE_ME_WITH_DB_PASSWORD>@db:5432/akdb  -path ./migrations down
     ```
 
 ### Hot Reloading
+
+#### Reload the HTTP Server
 To hot-reload the `ak-chibi-bot` server:
 Running the `compose.DEV.yaml` services will bring up the `ak-chibi-bot` server 
-to be hot-reloaded using `air`. It will pick up any `golang` changes automatically
-and reload the service.
+to be hot-reloaded using [air-verse](https://github.com/air-verse/air). 
+It will pick up any `golang` changes automatically and reload the service.
 
+#### Reload the Spine Runtime Typescript Library
 To hot-reload the spine-runtime typescript library:
 ```
-docker exec -it ak-services-web-1 base
+$ docker exec -it ak-services-bot-1 bash
 /app
 cd /app/static/spine
 tsc -w -p tsconfig.json
 ```
 
-Now open http://localhost:8080/room/?channelName=REPLACE_ME in your web-browser.
-Replce the `REPLACE_ME` with your own twitch channel name and you should see 
-default operator walking around.
+#### Reloading the Web App (React)
+Several pages in the React App required OAUTH to access the pages and view data
+so in order to correctly edit those pages we need to serve the HTML/JS directly
+from the server. This means we need to run a full build for each edit to the files.
+```
+cd static/web_app
+npm run watch
+```
+
+If you are _only_ editting the HTML/JS you might be able to get away with
+a local development server and use React's normal dev tools
+```
+cd static/web_app
+npm run start
+```

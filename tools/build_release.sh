@@ -1,4 +1,7 @@
 #!/bin/sh
+## This script is obsolete. I need to figure out how to just run the bot server
+## without using a database.
+exit 0
 cd /work
 mkdir -p release
 

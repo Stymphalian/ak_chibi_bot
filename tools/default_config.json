@@ -1,16 +1,18 @@
 {
     "twitch_bot": "",
-    "twitch_client_id": "replace_me",
-    "twitch_access_token": "replace_me",
+    "twitch_client_id": "",
+    "twitch_client_secret": "",
+    "twitch_access_token": "",
+    "twitch_oauth_redirect_url": "http://localhost:8080/auth/twitch/callback/",
     "exclude_names": ["streamelements", "nightbot"],
-    "remove_unused_rooms_after_minutes": 360,
-    "remove_chibi_after_minutes": 40,
-    "initial_operator": "Ray",
+    "remove_unused_rooms_after_minutes": 30,
+    "remove_chibi_after_minutes": 15,
+    "initial_operator": "Ela",
     "operator_details": {
-        "skin": "default",
+        "skin": "rainbow6",
         "stance": "base",
-        "animations":  ["Relax"],
+        "animations":  ["Sit"],
         "position_x": 0.5
     },
-    "admin_secret": ""
+    "cookie_secret": ""
 }
