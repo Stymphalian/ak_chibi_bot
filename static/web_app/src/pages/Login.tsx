@@ -1,11 +1,15 @@
-import React from "react";
-import { Button, Container, Form } from "react-bootstrap";
-import { TwitchLoginButton } from "../components/TwitchLoginButton";
-import './Login.css';
-import yato_img from './../assets/yato.png';
+
 import { Banner } from "../components/Banner";
+import { useLocation } from "react-router-dom";
+
+import { TwitchLoginButton } from "../components/TwitchLoginButton";
+import yato_img from './../assets/yato.png';
+import './Login.css';
 
 export function LoginPage() {
+  const location = useLocation();
+  const from = location.state?.from?.pathname || "/";
+
   return (
     <>
     <Banner />
@@ -25,7 +29,7 @@ export function LoginPage() {
         </p>
         <hr className="opacity-10"/>
         <div>
-          <TwitchLoginButton />
+          <TwitchLoginButton redirect_to={from}/>
         </div>
       </div>
 

@@ -4,8 +4,7 @@ import { AuthStatus } from "../contexts/auth";
 
 export function TopNavBar() {
     const location = useLocation();
-    const isNotLoginPage = location.pathname !== "/login";
-    console.log(location);
+    const isNotLoginPage = !location.pathname.startsWith("/login");
     return (
         <nav id="topnavbar" className="navbar navbar-light bg-light">
             <div className="container-fluid">

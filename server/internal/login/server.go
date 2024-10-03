@@ -93,6 +93,8 @@ func (s *LoginServer) HandleOAuthCallback(w http.ResponseWriter, r *http.Request
 
 	// ensure we flush the csrf challenge even if the request is ultimately unsuccessful
 	defer func() {
+		session.Flashes(auth.STATE_CALLBACK_KEY)
+		session.Flashes(auth.STATE_JWT_NONCE_KEY)
 		if err := session.Save(r, w); err != nil {
 			log.Printf("error saving session: %s", err)
 		}
@@ -107,10 +109,12 @@ func (s *LoginServer) HandleOAuthCallback(w http.ResponseWriter, r *http.Request
 		err = fmt.Errorf("invalid oauth state, expected '%s', got '%s'", state, stateChallenge[0])
 	}
 	if err != nil {
+		http.Redirect(w, r, "/login/callback?status=failed", http.StatusTemporaryRedirect)
 		return fmt.Errorf("couldn't verify your confirmation, please try again. %s", err)
 	}
 
 	if r.FormValue("error") != "" {
+		http.Redirect(w, r, "/login/callback?status=failed", http.StatusTemporaryRedirect)
 		return fmt.Errorf("couldn't verify your confirmation, please try again. %s", r.FormValue("error"))
 	}
 
@@ -118,6 +122,7 @@ func (s *LoginServer) HandleOAuthCallback(w http.ResponseWriter, r *http.Request
 	token, err := s.authService.Oauth2Config.Exchange(context.Background(), r.FormValue("code"))
 	if err != nil {
 		log.Println("Failed to exchange token")
+		http.Redirect(w, r, "/login/callback?status=failed", http.StatusTemporaryRedirect)
 		return err
 	}
 
@@ -125,16 +130,19 @@ func (s *LoginServer) HandleOAuthCallback(w http.ResponseWriter, r *http.Request
 	rawIDToken, ok := token.Extra("id_token").(string)
 	if !ok {
 		log.Println("can't extract id token from access token")
+		http.Redirect(w, r, "/login/callback?status=failed", http.StatusTemporaryRedirect)
 		return fmt.Errorf("can't extract id token from access token")
 	}
 	idToken, err := s.authService.Verifier.Verify(context.Background(), rawIDToken)
 	if err != nil {
 		log.Println("can't verify ID token")
+		http.Redirect(w, r, "/login/callback?status=failed", http.StatusTemporaryRedirect)
 		return fmt.Errorf("can't verify ID token")
 	}
 	var claims auth.TwitchClaims
 	if err := idToken.Claims(&claims); err != nil {
 		log.Println("claims are invalid")
+		http.Redirect(w, r, "/login/callback?status=failed", http.StatusTemporaryRedirect)
 		return err
 	}
 	// Validate the ID token's nonce
@@ -147,6 +155,7 @@ func (s *LoginServer) HandleOAuthCallback(w http.ResponseWriter, r *http.Request
 	}
 	if err != nil {
 		log.Println(err)
+		http.Redirect(w, r, "/login/callback?status=failed", http.StatusTemporaryRedirect)
 		return fmt.Errorf("couldn't verify your confirmation, please try again. %s", err)
 	}
 
@@ -154,6 +163,7 @@ func (s *LoginServer) HandleOAuthCallback(w http.ResponseWriter, r *http.Request
 	err = s.createOrInsertUser(r.Context(), claims.Sub)
 	if err != nil {
 		log.Println(err)
+		http.Redirect(w, r, "/login/callback?status=failed", http.StatusTemporaryRedirect)
 		return err
 	}
 
@@ -165,9 +175,7 @@ func (s *LoginServer) HandleOAuthCallback(w http.ResponseWriter, r *http.Request
 	// Set the tokens into the session. These are the credentials needed
 	// to know if the User is logged in, and which User they are logged in as
 	session.Values[auth.OAUTH_TOKEN_KEY] = token
-	// TODO: Redirect back to redirect_url
-	http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
-
+	http.Redirect(w, r, "/login/callback?status=success", http.StatusTemporaryRedirect)
 	return nil
 }
 

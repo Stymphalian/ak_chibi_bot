@@ -51,7 +51,6 @@ export const AuthProvider = (props: {
     React.useEffect(() => {checkAuthenticated();}, [])
 
     let Login = () => {
-        console.log("Login");
         window.location.assign("/auth/login/twitch/");
     };
 
@@ -75,6 +74,9 @@ export const AuthProvider = (props: {
 export function AuthStatus() {
     const auth = React.useContext(AuthContext)
     const navigate = useNavigate()
+    const location = useLocation();
+    const from = location.state?.from?.pathname || location.pathname;
+
     if (auth.isAuthenticated) {
         return (
             <div>
@@ -87,9 +89,7 @@ export function AuthStatus() {
         )
     } else {
         return (
-            
-            <TwitchLoginButton />
-
+            <TwitchLoginButton redirect_to={from} />
         )       
     }
 }

@@ -14,7 +14,6 @@ export async function getUserChannelSettings(channelName:string) {
             return null;
         }
         const jsonBody = await response.json();
-        console.log(jsonBody);
         return {
             channelName: channelName,
             minAnimationSpeed: jsonBody["min_animation_speed"],

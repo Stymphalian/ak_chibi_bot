@@ -18,6 +18,7 @@ import ErrorPage from './error-page';
 import reportWebVitals from './reportWebVitals';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { DocsPage } from './pages/Docs';
+import { LoginCallbackPage } from './pages/LoginCallback';
 
 
 const router = createBrowserRouter(
@@ -49,6 +50,11 @@ const router = createBrowserRouter(
       <Route
         path="/login"
         element={<LoginPage />}
+        errorElement={<ErrorPage />}
+      />
+      <Route
+        path="/login/callback"
+        element={<LoginCallbackPage />}
         errorElement={<ErrorPage />}
       />
     </Route>
