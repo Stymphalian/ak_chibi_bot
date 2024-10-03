@@ -1,8 +1,15 @@
 ## BASE
 FROM golang:1.23 AS base
-RUN mkdir /ak_chibi_assets
-COPY ./static /ak_chibi_assets
+RUN mkdir -p /ak_chibi_assets
+RUN mkdir -p /ak_chibi_assets/assets
+RUN mkdir -p /ak_chibi_assets/public
+RUN mkdir -p /ak_chibi_assets/spine
+RUN mkdir -p /ak_chibi_assets/web_app/build
+COPY ./static/assets /ak_chibi_assets/assets
+COPY ./static/public /ak_chibi_assets/public
+COPY ./static/spine /ak_chibi_assets/spine
 RUN rm -rf /ak_chibi_assets/spine/src
+COPY ./static/web_app/build /ak_chibi_assets/web_app/build
 
 ## DEVELOPMENT
 ## ----------------

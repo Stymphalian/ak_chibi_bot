@@ -51,21 +51,16 @@ type BotConfig struct {
 
 	// Option
 	// The interval in minutes to check when to garbage collect unused
-	// chat rooms. Set to -1 to never cleanup rooms
+	// chat rooms
 	// Default: 360 (6 hours)
 	RemoveUnusedRoomsAfterMinutes int `json:"remove_unused_rooms_after_minutes"`
-
-	// Option
-	// Secret key used to give access to /admin endpoints.
-	// I can't be bothered with an proper ACL system right now
-	AdminSecret string `json:"admin_secret"`
 
 	// Optional
 	// Default settings for the spine runtime. Min/max/default values
 	SpineRuntimeConfig *SpineRuntimeConfig `json:"spine_runtime_config"`
 
 	// Required.
-	// Session cookie secret
+	// A secret key used for encrypting session cookies.
 	CookieSecret string `json:"cookie_secret"`
 }
 

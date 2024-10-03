@@ -93,20 +93,20 @@ func (r *Room) Close() error {
 		// If the room is inactive, we can clear out all the chibis/chatters
 		err := r.chibiActor.Close()
 		if err != nil {
-			return err
+			log.Println("Failed to close ChibiActor", err)
 		}
 	}
 
 	// Disconnect the twitch chat
 	err := r.twitchChat.Close()
 	if err != nil {
-		return err
+		log.Println("Failed to close TwitchChat", err)
 	}
 
 	// Disconnect all websockets
 	err = r.spineRuntime.Close()
 	if err != nil {
-		return err
+		log.Println("Failed to close SpineRuntime", err)
 	}
 	log.Println("Closed room ", r.GetChannelName(), "successfully")
 	return nil
