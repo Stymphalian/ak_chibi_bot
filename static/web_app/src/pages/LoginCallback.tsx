@@ -1,13 +1,12 @@
-import { useCookies } from "react-cookie";
+
 import { Navigate, useLocation } from "react-router-dom";
 import { TwitchLoginButton } from "../components/TwitchLoginButton";
-
+import Cookies from "js-cookie";
 export function LoginCallbackPage() {
     const location = useLocation();
-    const [cookies, setCookie, removeCookie] = useCookies(['redirect_to']);
-    const redirect_to = cookies.redirect_to || "/";    
     const query = new URLSearchParams(location.search);
     const status = query.get('status') || "unknown";
+    const redirect_to = Cookies.get('redirect_to') || "/";
     
     if (status !== "success") {
         return (
@@ -20,7 +19,11 @@ export function LoginCallbackPage() {
             </div>
         )
     } else {
-        removeCookie('redirect_to');
+        Cookies.remove('redirect_to', {
+            path: '/',
+            secure: true,
+            sameSite : 'Strict'
+        });
         return (
             <Navigate to={redirect_to} replace/>
         )

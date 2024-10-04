@@ -74,13 +74,12 @@ func NewAuthService(
 		dbPool,
 		[]byte(cookieSecret),
 	)
-	cookieStore.Options.MaxAge = int(COOKIE_MAX_AGE.Seconds())
-	cookieStore.Options.Secure = true
 	if err != nil {
 		return nil, err
 	}
-	// TODO: how to turn this option on?
-	// cookieStore.Options.SameSite = http.SameSiteStrictMode
+	cookieStore.Options.MaxAge = int(COOKIE_MAX_AGE.Seconds())
+	cookieStore.Options.Secure = true
+	cookieStore.Options.SameSite = http.SameSiteLaxMode
 
 	provider, err := oidc.NewProvider(context.Background(), "https://id.twitch.tv/oauth2")
 	if err != nil {
