@@ -539,9 +539,10 @@ module spine {
 			let actorsZOrder = Array.from(this.actors.keys()).sort((a:string,b:string ) => {
 				let a1 = this.actors.get(a);
 				let a2 = this.actors.get(b);
-				let r = a1.getPositionZ() - a2.getPositionZ()
+				let r = a2.getPositionZ() - a1.getPositionZ()
 				// To ensure stable sort
 				if (r == 0) {return a1.loadedWhen - a2.loadedWhen;}
+				return r;
 			});
 
 			let all_actors_loaded = true;
