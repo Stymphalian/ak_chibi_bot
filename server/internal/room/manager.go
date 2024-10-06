@@ -33,6 +33,7 @@ type RoomsManager struct {
 	botConfig      *misc.BotConfig
 	twitchClient   twitch_api.TwitchApiClientInterface
 	shutdownDoneCh chan struct{}
+	removeRoomCh   chan string
 }
 
 func NewRoomsManager(
@@ -58,6 +59,7 @@ func NewRoomsManager(
 			botConfig.TwitchAccessToken,
 		),
 		shutdownDoneCh: make(chan struct{}),
+		removeRoomCh:   make(chan string, 10),
 	}
 }
 
@@ -80,6 +82,8 @@ func (r *RoomsManager) LoadExistingRooms(ctx context.Context) error {
 func (r *RoomsManager) garbageCollectRooms() {
 	log.Println("Garbage collecting unused chat rooms")
 	period := time.Duration(r.botConfig.RemoveUnusedRoomsAfterMinutes) * time.Minute
+
+	roomsRemoved := 0
 	r.rooms_mutex.Lock()
 	for channel, room := range r.Rooms {
 		if !room.HasActiveChatters(period) {
@@ -87,11 +91,13 @@ func (r *RoomsManager) garbageCollectRooms() {
 			room.SetActive(false)
 			room.Close()
 			delete(r.Rooms, channel)
+			roomsRemoved += 1
 		}
 	}
 	r.rooms_mutex.Unlock()
 
 	r.nextGarbageCollectionTime = time.Now().Add(period)
+	log.Printf("Finished garbage collecting unused chat rooms: %d removed\n", roomsRemoved)
 }
 
 func (r *RoomsManager) GetNextGarbageCollectionTime() time.Time {
@@ -113,6 +119,14 @@ func (r *RoomsManager) RunLoop() {
 		)
 		defer stopTimer()
 	}
+	go func() {
+		for channel := range r.removeRoomCh {
+			log.Println("Removing room", channel, "from manager")
+			r.rooms_mutex.Lock()
+			delete(r.Rooms, channel)
+			r.rooms_mutex.Unlock()
+		}
+	}()
 	<-r.shutdownDoneCh
 }
 
@@ -179,6 +193,7 @@ func (r *RoomsManager) InsertRoom(roomDb *RoomDb) error {
 		spineBridge,
 		chibiActor,
 		twitchBot,
+		r.removeRoomCh,
 	)
 
 	r.rooms_mutex.Lock()
@@ -239,6 +254,7 @@ func (r *RoomsManager) CreateRoomOrNoOp(ctx context.Context, channel string) err
 		spineBridge,
 		chibiActor,
 		twitchBot,
+		r.removeRoomCh,
 	)
 	if isNew || roomWasInactive {
 		log.Println("Adding default chibi for ", roomDb.ChannelName)

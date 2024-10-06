@@ -47,10 +47,28 @@ export function HomePage() {
                         <li className="list-group-item">
                             Open up your twitch chat and start typing <Code>!chibi</Code> commands. <br />
                             You can use <Code>!chibi help</Code> to see the list of commands. <br />
-                            A full list of command can be seen in the <NavLink to="/docs">Docs</NavLink> page.
+                            A full list of commands can be seen in the <NavLink to="/docs">Docs</NavLink> page.
                         </li>
                     </ul>
                     
+                </div>
+            </div>
+
+            <div className="card mt-3">
+                <div className="card-body">
+                    <h3 className="card-header">Disclaimer</h3>
+                    <ul className="list-group list-group-flush">
+                        <li className="list-group-item">
+                            All the art assets/chibis are owned by Arknights/Hypergryph. <br />
+                            I claim no ownership and the use of their assets <br />
+                            are purely for personal enjoyment and entertainment.
+                        </li>
+                        <li className="list-group-item">
+                            The software used for rendering the chibis (i.e Spine models) <br />
+                            use the Esoteric runtime libraries which is under <a href="http://esotericsoftware.com/spine-editor-license">License</a>. <br />
+                            Strictly speaking use of this software requires each individual to have purchased their own software license.
+                        </li>
+                    </ul>
                 </div>
             </div>
 

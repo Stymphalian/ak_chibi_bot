@@ -35,5 +35,6 @@ func NewFakeRoomsManager() *RoomsManager {
 		botConfig:      botConfig,
 		twitchClient:   twitch_api.NewFakeTwitchApiClient(),
 		shutdownDoneCh: make(chan struct{}),
+		removeRoomCh:   make(chan string),
 	}
 }

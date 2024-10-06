@@ -59,6 +59,7 @@ func (s *SpineBridge) pingWebSockets() {
 		select {
 		case <-s.websocketPingerDone:
 			log.Println("Closing websocket pinger")
+			s.websocketPingerDone = nil
 			return
 		case <-s.websocketPingerTicker.C:
 			for _, websocketConn := range s.WebSocketConnections {
@@ -77,7 +78,10 @@ func (s *SpineBridge) pingWebSockets() {
 
 func (s *SpineBridge) Close() error {
 	log.Println("SpineBridge::Close() called")
-	close(s.websocketPingerDone)
+	if (s.websocketPingerDone) != nil {
+		close(s.websocketPingerDone)
+	}
+	// Close
 
 	var wg sync.WaitGroup
 	for roomName, websocketConn := range s.WebSocketConnections {

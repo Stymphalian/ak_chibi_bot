@@ -2,6 +2,7 @@ package users
 
 import (
 	"context"
+	"log"
 	"time"
 
 	"github.com/Stymphalian/ak_chibi_bot/server/internal/misc"
@@ -79,6 +80,7 @@ func (c *ChatUser) GetLastChatTime() time.Time {
 func (c *ChatUser) SetLastChatTime(v time.Time) (err error) {
 	err = c.chatterRepo.SetLastChatTimeById(context.Background(), c.chatterId, v)
 	if err != nil {
+		log.Printf("failed to set last chat time for chatter %d: %s\n", c.chatterId, err)
 		return
 	}
 	c.chatter.LastChatTime = v

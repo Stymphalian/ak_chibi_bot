@@ -55,8 +55,9 @@ func (c *ChibiActor) Close() error {
 	// No need to send the remove Operators to the clients.
 	// This room is going down on the server anyways and the WS connections
 	// will be closed.
-	for _, chatUser := range c.ChatUsers {
+	for key, chatUser := range c.ChatUsers {
 		chatUser.Close()
+		delete(c.ChatUsers, key)
 	}
 	return nil
 }
@@ -83,10 +84,14 @@ func (c *ChibiActor) GiveChibiToUser(ctx context.Context, userInfo misc.UserInfo
 			Operator:        *operatorInfo,
 		})
 	if err != nil {
-		log.Printf("Failed to set chibi (%s)", err.Error())
+		log.Printf("Failed to set chibi (%s)\n", err.Error())
 		return nil
 	}
-	c.UpdateChatter(ctx, userInfo, operatorInfo)
+	err = c.UpdateChatter(ctx, userInfo, operatorInfo)
+	if err != nil {
+		log.Printf("Failed to update chatter: %s\n", err.Error())
+		return err
+	}
 
 	log.Println("User joined. Adding a chibi for them ", userInfo.Username)
 	misc.Monitor.NumUsers += 1
@@ -104,6 +109,10 @@ func (c *ChibiActor) RemoveUserChibi(ctx context.Context, userName string) error
 		log.Printf("Error removing chibi for %s: %s\n", userName, err)
 	}
 	// TODO : Need to check that user exists in chatUsers before removing.
+	if _, ok := c.ChatUsers[userName]; !ok {
+		log.Printf("Error removing chibi for %s. User not found\n", userName)
+		return nil
+	}
 	c.ChatUsers[userName].SetActive(false)
 	delete(c.ChatUsers, userName)
 	return nil
@@ -127,7 +136,10 @@ func (c *ChibiActor) SetToDefault(
 	details misc.InitialOperatorDetails,
 ) {
 	opInfo := c.spineService.OperatorFromDefault(opName, details)
-	c.UpdateChatter(ctx, userInfo, opInfo)
+	err := c.UpdateChatter(ctx, userInfo, opInfo)
+	if err != nil {
+		log.Printf("Failed to SetToDefault for %s: %s\n", userInfo.Username, err)
+	}
 }
 
 func (c *ChibiActor) HandleMessage(msg chat.ChatMessage) (string, error) {
@@ -139,7 +151,9 @@ func (c *ChibiActor) HandleMessage(msg chat.ChatMessage) (string, error) {
 			TwitchUserId:    msg.TwitchUserId,
 		})
 	}
-	c.ChatUsers[msg.Username].SetLastChatTime(misc.Clock.Now())
+	if cu, ok := c.ChatUsers[msg.Username]; ok {
+		cu.SetLastChatTime(misc.Clock.Now())
+	}
 	c.lastChatterTime = misc.Clock.Now()
 	if msg.Message[0] != '!' {
 		return "", nil
@@ -170,12 +184,11 @@ func (c *ChibiActor) UpdateChibi(ctx context.Context, userinfo misc.UserInfo, op
 			Operator:        *opInfo,
 		})
 	if err != nil {
-		log.Printf("Failed to set chibi (%s)", err.Error())
+		log.Printf("Failed to set chibi (%s)\n", err.Error())
 		return nil
 	}
 
-	c.UpdateChatter(ctx, userinfo, opInfo)
-	return nil
+	return c.UpdateChatter(ctx, userinfo, opInfo)
 }
 
 func (c *ChibiActor) CurrentInfo(ctx context.Context, userName string) (operator.OperatorInfo, error) {
@@ -216,7 +229,10 @@ func (c *ChibiActor) UpdateChatter(
 	}
 
 	chatUser := c.ChatUsers[userInfo.Username]
-	chatUser.UpdateWithLatestChat(update)
+	err := chatUser.UpdateWithLatestChat(update)
+	if err != nil {
+		return err
+	}
 	// TODO: Make this more efficient. no need to save to DB if things haven't changed
 	// chatUser.Save()
 	return nil

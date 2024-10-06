@@ -39,6 +39,8 @@ type Room struct {
 	twitchChat                chatbot.ChatBotter
 	createdAt                 time.Time
 	nextGarbageCollectionTime time.Time
+	isClosed                  bool
+	removeRoomCh              chan string
 }
 
 func NewRoom(
@@ -50,7 +52,8 @@ func NewRoom(
 	operatorService *operator.OperatorService,
 	spineRuntime spine.SpineRuntime,
 	chibiActor *chibi.ChibiActor,
-	twitchBot chatbot.ChatBotter) *Room {
+	twitchBot chatbot.ChatBotter,
+	removeRoomCh chan string) *Room {
 	r := &Room{
 		roomId:          roomId,
 		channelName:     chanelName,
@@ -62,6 +65,8 @@ func NewRoom(
 		chibiActor:      chibiActor,
 		twitchChat:      twitchBot,
 		createdAt:       misc.Clock.Now(),
+		isClosed:        false,
+		removeRoomCh:    removeRoomCh,
 	}
 	return r
 }
@@ -88,6 +93,7 @@ func (r *Room) SetActive(isActive bool) {
 
 func (r *Room) Close() error {
 	log.Println("Closing room ", r.GetChannelName())
+	r.isClosed = true
 
 	if !r.roomRepo.IsRoomActiveById(context.Background(), r.roomId) {
 		// If the room is inactive, we can clear out all the chibis/chatters
@@ -108,6 +114,10 @@ func (r *Room) Close() error {
 	if err != nil {
 		log.Println("Failed to close SpineRuntime", err)
 	}
+
+	if r.removeRoomCh != nil {
+		r.removeRoomCh <- r.GetChannelName()
+	}
 	log.Println("Closed room ", r.GetChannelName(), "successfully")
 	return nil
 }
@@ -116,7 +126,8 @@ func (r *Room) garbageCollectOldChibis(interval time.Duration) {
 	log.Printf("Garbage collecting old chibis from room %s", r.GetChannelName())
 
 	ctx := context.Background()
-	// interval := time.Duration(r.roomDb.GetGarbageCollectionPeriodMins()) * time.Minute
+	numRemoved := 0
+	numRemovedErr := 0
 	for username, chatUser := range r.chibiActor.ChatUsers {
 		if username == r.GetChannelName() {
 			// Skip removing the broadcaster's chibi
@@ -124,11 +135,20 @@ func (r *Room) garbageCollectOldChibis(interval time.Duration) {
 		}
 		if !chatUser.IsActiveChatter(interval) {
 			log.Println("Removing chibi for", username)
-			r.chibiActor.RemoveUserChibi(ctx, username)
+			err := r.chibiActor.RemoveUserChibi(ctx, username)
+			if err != nil {
+				numRemovedErr += 1
+			} else {
+				numRemoved += 1
+			}
 		}
 	}
 
 	r.nextGarbageCollectionTime = time.Now().Add(interval)
+	log.Printf(
+		"Finished garbage collecting old chibis from room %s, %d removed, %d errors\n",
+		r.GetChannelName(), numRemoved, numRemovedErr,
+	)
 }
 
 func (r *Room) Run() {
@@ -154,6 +174,11 @@ func (r *Room) Run() {
 		log.Printf("Room %s run error=", err)
 	}
 
+	if !r.isClosed {
+		log.Printf("Closing room %s due to Readloop finishing early\n", r.channelName)
+		r.SetActive(false)
+		r.Close()
+	}
 	log.Printf("Room %s run is done\n", r.GetChannelName())
 }
 
@@ -228,7 +253,7 @@ func (r *Room) LoadExistingChatters(ctx context.Context) error {
 			continue
 		}
 		log.Printf("Reloading chatter %s in room %s with operator %s", user.Username, r.GetChannelName(), chatter.OperatorInfo.OperatorDisplayName)
-		r.chibiActor.UpdateChibi(
+		err = r.chibiActor.UpdateChibi(
 			ctx,
 			misc.UserInfo{
 				Username:        user.Username,
@@ -237,6 +262,9 @@ func (r *Room) LoadExistingChatters(ctx context.Context) error {
 			},
 			&chatter.OperatorInfo,
 		)
+		if err != nil {
+			log.Printf("Failed to reload chatter %s in room %s: %s\n", user.Username, r.GetChannelName(), err)
+		}
 	}
 	return nil
 }

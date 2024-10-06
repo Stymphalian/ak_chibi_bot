@@ -16,6 +16,7 @@ services:
       - DATABASE_HOST=db
       - DATABASE_PORT=5432
       - DATABASE_PASSWORD_FILE=/run/secrets/web-user-password.txt
+    restart: on-failure:3
     depends_on:
       db:
         condition: service_healthy
