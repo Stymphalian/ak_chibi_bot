@@ -9,7 +9,7 @@ import demo_img from '../assets/demo1.png';
 export function HomePage() {
     const auth = useAuth();
     let channelName = auth.userName || "REPLACE_ME";
-    let url = `https://akchibibot.stymphalian.top/rooms?channelName=${channelName}`
+    let url = `https://akchibibot.stymphalian.top/room?channelName=${channelName}`
 
     return (
         <Container className="px-3">

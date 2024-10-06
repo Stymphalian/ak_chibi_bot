@@ -5,7 +5,7 @@ import { useAuth } from "../contexts/auth";
 export function DocsPage() {
     const auth = useAuth();
     let channelName = auth.userName || "REPLACE_ME";
-    let url = `https://akchibibot.stymphalian.top/rooms?channelName=${channelName}`
+    let url = `https://akchibibot.stymphalian.top/room?channelName=${channelName}`
 
     return (
         <>
