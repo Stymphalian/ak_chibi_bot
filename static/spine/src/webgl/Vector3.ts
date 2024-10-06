@@ -122,5 +122,9 @@ module spine.webgl {
 			let c = v.z - this.z;
 			return Math.sqrt(a * a + b * b + c * c);
 		}
+
+		copy(): Vector3 {
+			return new Vector3(this.x, this.y, this.z);
+		}
 	}
 }

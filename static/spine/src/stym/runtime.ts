@@ -11,7 +11,7 @@ namespace stym {
         public backOffMaxtimeMsec: number;
         public channelName: string;
     
-        constructor(channelName: string, width: number, height: number) {
+        constructor(channelName: string, width: number, height: number, debugMode: boolean) {
             // TODO: Make the fonts configurable
             let font = new FontFace("lato", "url(/public/fonts/Lato/Lato-Black.ttf)");
             font.load().then(() => {document.fonts.add(font);})
@@ -38,7 +38,7 @@ namespace stym {
                         padRight: 0,
                         padTop: 0,
                         padBottom: 0,
-                        debugRender: false,
+                        debugRender: debugMode,
                     },
                     fullScreenBackgroundColor: null,
                     backgroundImage: null,
@@ -119,20 +119,27 @@ namespace stym {
 
             let referenceMovementSpeedPx = 80;
             let referenceMovementSpeedPy = 80;
+            let referenceMovementSpeedPz = 80;
             if (requestData["movement_speed_px"] != null) {
                 referenceMovementSpeedPx = requestData["movement_speed_px"];
             }
             if (requestData["movement_speed_py"] != null) {
                 referenceMovementSpeedPx = requestData["movement_speed_py"];
             }
+            if (requestData["movement_speed_pz"] != null) {
+                referenceMovementSpeedPz = requestData["movement_speed_pz"];
+            }
             let movementSpeedPxX = null;
             let movementSpeedPxY = null;
+            let movementSpeedPxZ = referenceMovementSpeedPz;
             if (requestData["movement_speed"] != null) {
                 movementSpeedPxX = Math.floor(requestData["movement_speed"]["x"] * referenceMovementSpeedPx);
                 movementSpeedPxY = Math.floor(requestData["movement_speed"]["y"] * referenceMovementSpeedPy);
+                // movementSpeedPxZ = Math.floor(requestData["movement_speed"]["z"] * referenceMovementSpeedPz);
             }
             let defaultMovementSpeedPxX = referenceMovementSpeedPx;
             let defaultMovementSpeedPxY = referenceMovementSpeedPy;
+            let defaultMovementSpeedPxZ = referenceMovementSpeedPz;
     
             this.actorConfig = {
                 chibiId: requestData["operator_id"],
@@ -144,8 +151,10 @@ namespace stym {
                 startPosY: startPosY,
                 defaultMovementSpeedPxX: defaultMovementSpeedPxX,
                 defaultMovementSpeedPxY: defaultMovementSpeedPxY,
+                defaultMovementSpeedPxZ: defaultMovementSpeedPxZ,
                 movementSpeedPxX: movementSpeedPxX,
                 movementSpeedPxY: movementSpeedPxY,
+                movementSpeedPxZ: movementSpeedPxZ,
 
                 configScaleX: configScaleX,
                 configScaleY: configScaleY,
@@ -166,7 +175,7 @@ namespace stym {
                 error: (widget, actor: spine.Actor, error) => {
                     actor.load_attempts += 1;
                     if (actor.load_attempts > actor.max_load_attempts) {
-                        actor.load_failed = true;
+                        actor.load_perma_failed = true;
                     }
                     console.log(this);
                     console.log(error);

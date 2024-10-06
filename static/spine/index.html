@@ -57,8 +57,9 @@
 		const queryString = window.location.search;
 		const searchParams = new URLSearchParams(queryString);
 		const channelName = searchParams.get('channelName');
+		const debugMode = searchParams.get('debug') === 'true';
 		const [containerWidth, containerHeight] = setContainerSizeFromQuery();
-		window.SpineRuntime = new stym.Runtime(channelName, containerWidth, containerHeight);
+		window.SpineRuntime = new stym.Runtime(channelName, containerWidth, containerHeight, debugMode);
 		// window.ControlCam = new stym.ControlCam(
 		// 	"custom_container", 
 		// 	containerWidth, 

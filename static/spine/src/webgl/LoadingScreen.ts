@@ -87,10 +87,13 @@ module spine.webgl {
 
 			renderer.resize(ResizeMode.Stretch);
 
-			let oldX = renderer.camera.position.x, oldY = renderer.camera.position.y;
-			renderer.camera.position.set(canvas.width / 2, canvas.height / 2, 0);
-			renderer.camera.viewportWidth = canvas.width;
-			renderer.camera.viewportHeight = canvas.height;
+			let cam = renderer.camera;
+			// let oldX = cam.position.x;
+			// let oldY = cam.position.y;
+			// let oldZ = cam.position.z;
+			// cam.position.set(canvas.width / 2, canvas.height / 2, 0);
+			// cam.viewportWidth = canvas.width;
+			// cam.viewportHeight = canvas.height;
 
 			if (!complete) {
 				gl.clearColor(this.backgroundColor.r, this.backgroundColor.g, this.backgroundColor.b, this.backgroundColor.a);
@@ -99,15 +102,26 @@ module spine.webgl {
 			} else {
 				this.fadeOut += this.timeKeeper.delta * (this.timeKeeper.totalTime < 1 ? 2 : 1);
 				if (this.fadeOut > LoadingScreen.FADE_SECONDS) {
-					renderer.camera.position.set(oldX, oldY, 0);
+					// cam.position.set(oldX, oldY, oldZ);
 					return;
 				}
 				a = 1 - this.fadeOut / LoadingScreen.FADE_SECONDS;
 				this.tempColor.setFromColor(this.backgroundColor);
 				this.tempColor.a = 1 - (a - 1) * (a - 1);
 				renderer.begin();
-				renderer.quad(true, 0, 0, canvas.width, 0, canvas.width, canvas.height, 0, canvas.height,
+				let x = canvas.width / 2;
+				renderer.quad(true, 
+					0-x, 0, 
+					canvas.width-x, 0, 
+					canvas.width-x, canvas.height, 
+					0-x, canvas.height,
 					this.tempColor, this.tempColor, this.tempColor, this.tempColor);
+				// renderer.quad(true, 
+				// 	0, 0, 
+				// 	canvas.width, 0, 
+				// 	canvas.width, canvas.height, 
+				// 	0, canvas.height,
+				// 	this.tempColor, this.tempColor, this.tempColor, this.tempColor);
 				renderer.end();
 			}
 			this.tempColor.set(1, 1, 1, this.tempColor.a);
@@ -127,11 +141,26 @@ module spine.webgl {
 
 			renderer.batcher.setBlendMode(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
 			renderer.begin();
-			renderer.drawTexture(this.logo, (canvas.width - logoWidth) / 2, (canvas.height - logoHeight) / 2, logoWidth, logoHeight, this.tempColor);
-			renderer.drawTextureRotated(this.spinner, (canvas.width - spinnerWidth) / 2, (canvas.height - spinnerHeight) / 2, spinnerWidth, spinnerHeight, spinnerWidth / 2, spinnerHeight / 2, this.angle, this.tempColor);
+			renderer.drawTexture(this.logo,
+				// (canvas.width - logoWidth) / 2,
+				(-logoWidth) / 2,
+				(canvas.height - logoHeight) / 2,
+				logoWidth, logoHeight,
+				this.tempColor
+			);
+			renderer.drawTextureRotated(
+				this.spinner, 
+				// (canvas.width - spinnerWidth) / 2, 
+				(-spinnerWidth) / 2, 
+				(canvas.height - spinnerHeight) / 2, 
+				spinnerWidth, spinnerHeight, 
+				spinnerWidth / 2, spinnerHeight / 2,
+				this.angle, 
+				this.tempColor
+			);
 			renderer.end();
 
-			renderer.camera.position.set(oldX, oldY, 0);
+			// cam.position.set(oldX, oldY, oldZ);
 		}
 	}
 }

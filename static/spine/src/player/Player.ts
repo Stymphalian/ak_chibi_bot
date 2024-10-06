@@ -316,6 +316,9 @@ module spine {
 				return dom;
 			}
 
+			// configure the camera
+			this.configurePerspectiveCamera(this.playerConfig.viewport);
+
 			// Load the assets
 			this.assetManager = new spine.webgl.AssetManager(this.context);
 
@@ -470,7 +473,7 @@ module spine {
 			return w;
 		}
 
-		updateCameraSettings(actor: Actor, viewport: BoundingBox) {
+		configurePerspectiveCamera(viewport: BoundingBox) {
 			let cam = this.sceneRenderer.camera;
 			cam.near = this.playerConfig.cameraPerspectiveNear;
 			cam.far = this.playerConfig.cameraPerspectiveFar;
@@ -481,15 +484,23 @@ module spine {
 			cam.position.z = -this.getPerspectiveCameraZOffset(
 				viewport, cam.near, cam.far, cam.fov
 			);
+			cam.direction = new spine.webgl.Vector3(0, 0, -1);
+			cam.update();
+		}
 
-			if (cam.position.z != 0) {
-				let origin = new spine.webgl.Vector3(0,0,0);
-				let pos = new spine.webgl.Vector3(0,0,cam.position.z)
-				let dir = origin.sub(pos).normalize();
-				cam.direction = dir;
-			} else {
-				cam.direction = new spine.webgl.Vector3(0, 0, -1);
-			}
+		updateCameraSettings(actor: Actor, viewport: BoundingBox) {
+			let cam = this.sceneRenderer.camera;
+			cam.position.x = 0;
+			cam.position.y = viewport.height/2;
+			// TODO: Negative so that the view is not flipped?
+			cam.position.z = -this.getPerspectiveCameraZOffset(
+				viewport, cam.near, cam.far, cam.fov
+			) + actor.getPositionZ();
+			cam.direction = new spine.webgl.Vector3(0, 0, -1);
+			// let origin = new spine.webgl.Vector3(0,0,0);
+			// let pos = new spine.webgl.Vector3(0,0,cam.position.z)
+			// let dir = origin.sub(pos).normalize();
+			// cam.direction = dir;
 			cam.update();
 		}
 
@@ -517,16 +528,26 @@ module spine {
 			this.textCanvas.height = this.textCanvas.clientHeight;
 			this.textCanvasContext.clearRect(0,0, this.textCanvas.width, this.textCanvas.height);
 
-			// Display loading screen
-			this.loadingScreen.backgroundColor.setFromColor(bg);
-			this.loadingScreen.draw(this.assetManager.isLoadingComplete());
+			// // Display loading screen
+			// this.loadingScreen.backgroundColor.setFromColor(bg);
+			// this.loadingScreen.draw(this.assetManager.isLoadingComplete());
 
 			// Resize the canvas
 			this.sceneRenderer.resize(webgl.ResizeMode.Expand);
 
+			// Order the actors to draw based on their z-order
+			let actorsZOrder = Array.from(this.actors.keys()).sort((a:string,b:string ) => {
+				let a1 = this.actors.get(a);
+				let a2 = this.actors.get(b);
+				let r = a1.getPositionZ() - a2.getPositionZ()
+				// To ensure stable sort
+				if (r == 0) {return a1.loadedWhen - a2.loadedWhen;}
+			});
+
 			let all_actors_loaded = true;
-			for (let [key,actor] of this.actors) {
-				if (actor.load_failed) {
+			for (let key of actorsZOrder) {
+				let actor = this.actors.get(key);
+				if (actor.load_perma_failed) {
 					// Permanant failure trying to load this actor. Just skip it.
 					continue;
 				}
@@ -654,7 +675,7 @@ module spine {
 		}
 
 		loadSkeleton (actor: Actor) {
-			if (actor.loaded || actor.load_failed) return;
+			if (actor.loaded || actor.load_perma_failed) return;
 
 			if (this.assetManager.hasErrors()) {
 				this.showError(actor, "Error: assets could not be loaded.<br><br>" + escapeHtml(JSON.stringify(this.assetManager.getErrors())));

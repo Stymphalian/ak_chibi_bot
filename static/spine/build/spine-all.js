@@ -8696,10 +8696,7 @@ var spine;
                 let canvas = renderer.canvas;
                 let gl = renderer.context.gl;
                 renderer.resize(webgl.ResizeMode.Stretch);
-                let oldX = renderer.camera.position.x, oldY = renderer.camera.position.y;
-                renderer.camera.position.set(canvas.width / 2, canvas.height / 2, 0);
-                renderer.camera.viewportWidth = canvas.width;
-                renderer.camera.viewportHeight = canvas.height;
+                let cam = renderer.camera;
                 if (!complete) {
                     gl.clearColor(this.backgroundColor.r, this.backgroundColor.g, this.backgroundColor.b, this.backgroundColor.a);
                     gl.clear(gl.COLOR_BUFFER_BIT);
@@ -8708,14 +8705,14 @@ var spine;
                 else {
                     this.fadeOut += this.timeKeeper.delta * (this.timeKeeper.totalTime < 1 ? 2 : 1);
                     if (this.fadeOut > LoadingScreen.FADE_SECONDS) {
-                        renderer.camera.position.set(oldX, oldY, 0);
                         return;
                     }
                     a = 1 - this.fadeOut / LoadingScreen.FADE_SECONDS;
                     this.tempColor.setFromColor(this.backgroundColor);
                     this.tempColor.a = 1 - (a - 1) * (a - 1);
                     renderer.begin();
-                    renderer.quad(true, 0, 0, canvas.width, 0, canvas.width, canvas.height, 0, canvas.height, this.tempColor, this.tempColor, this.tempColor, this.tempColor);
+                    let x = canvas.width / 2;
+                    renderer.quad(true, 0 - x, 0, canvas.width - x, 0, canvas.width - x, canvas.height, 0 - x, canvas.height, this.tempColor, this.tempColor, this.tempColor, this.tempColor);
                     renderer.end();
                 }
                 this.tempColor.set(1, 1, 1, this.tempColor.a);
@@ -8733,10 +8730,9 @@ var spine;
                 let spinnerHeight = this.spinner.getImage().height;
                 renderer.batcher.setBlendMode(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
                 renderer.begin();
-                renderer.drawTexture(this.logo, (canvas.width - logoWidth) / 2, (canvas.height - logoHeight) / 2, logoWidth, logoHeight, this.tempColor);
-                renderer.drawTextureRotated(this.spinner, (canvas.width - spinnerWidth) / 2, (canvas.height - spinnerHeight) / 2, spinnerWidth, spinnerHeight, spinnerWidth / 2, spinnerHeight / 2, this.angle, this.tempColor);
+                renderer.drawTexture(this.logo, (-logoWidth) / 2, (canvas.height - logoHeight) / 2, logoWidth, logoHeight, this.tempColor);
+                renderer.drawTextureRotated(this.spinner, (-spinnerWidth) / 2, (canvas.height - spinnerHeight) / 2, spinnerWidth, spinnerHeight, spinnerWidth / 2, spinnerHeight / 2, this.angle, this.tempColor);
                 renderer.end();
-                renderer.camera.position.set(oldX, oldY, 0);
             }
         }
         webgl.LoadingScreen = LoadingScreen;
@@ -10900,6 +10896,9 @@ var spine;
                 let c = v.z - this.z;
                 return Math.sqrt(a * a + b * b + c * c);
             }
+            copy() {
+                return new Vector3(this.x, this.y, this.z);
+            }
         }
         webgl.Vector3 = Vector3;
     })(webgl = spine.webgl || (spine.webgl = {}));
@@ -11035,8 +11034,7 @@ var spine;
         }
         UpdatePhysics(actor, deltaSecs, viewport) {
             if (!this.currentAnimation.includes("Move")) {
-                actor.velocity.x = 0;
-                actor.velocity.y = 0;
+                actor.setVelocity(0, 0, 0);
             }
             else {
                 if (this.endPosition == null) {
@@ -11045,12 +11043,12 @@ var spine;
                 }
                 let dir = this.endPosition.subtract(actor.getPosition());
                 if (dir.length() < 5) {
-                    actor.setPosition(this.endPosition.x, this.endPosition.y);
+                    actor.setPosition(this.endPosition.x, this.endPosition.y, 0);
                     this.startPosition = actor.getPosition();
                     this.endPosition = this.getRandomPosition(actor.getPosition(), viewport);
                 }
                 dir.normalize();
-                actor.velocity = new spine.Vector2(dir.x * actor.getMovementSpeedX() * deltaSecs, dir.y * actor.getMovementSpeedY() * deltaSecs);
+                actor.setVelocity(dir.x * actor.getMovementSpeedX() * deltaSecs, dir.y * actor.getMovementSpeedY() * deltaSecs, 0);
             }
         }
     }
@@ -11081,12 +11079,12 @@ var spine;
             }
             let dir = this.endPosition.subtract(actor.getPosition());
             if (dir.length() < 5) {
-                actor.setPosition(this.endPosition.x, this.endPosition.y);
+                actor.setPosition(this.endPosition.x, this.endPosition.y, 0);
                 this.startPosition = actor.getPosition();
                 this.endPosition = this.getRandomPosition(actor.getPosition(), viewport);
             }
             dir.normalize();
-            actor.velocity = new spine.Vector2(dir.x * actor.getMovementSpeedX() * deltaSecs, dir.y * actor.getMovementSpeedY() * deltaSecs);
+            actor.setVelocity(dir.x * actor.getMovementSpeedX() * deltaSecs, dir.y * actor.getMovementSpeedY() * deltaSecs, 0);
         }
     }
     spine.WanderAction = WanderAction;
@@ -11132,15 +11130,14 @@ var spine;
             let angle = this.startDir.angle(dir);
             let reached = Math.abs(Math.PI - angle) < 0.001;
             if (reached || this.reachedDestination) {
-                actor.setPosition(this.endPosition.x, this.endPosition.y);
+                actor.setPosition(this.endPosition.x, this.endPosition.y, 0);
                 this.startPosition = actor.getPosition();
-                actor.velocity.x = 0;
-                actor.velocity.y = 0;
+                actor.setVelocity(0, 0, 0);
                 this.reachedDestination = true;
                 actor.InitAnimationState();
             }
             else {
-                actor.velocity = new spine.Vector2(dir.x * actor.getMovementSpeedX() * deltaSecs, dir.y * actor.getMovementSpeedY() * deltaSecs);
+                actor.setVelocity(dir.x * actor.getMovementSpeedX() * deltaSecs, dir.y * actor.getMovementSpeedY() * deltaSecs, 0);
             }
         }
     }
@@ -11149,13 +11146,11 @@ var spine;
         actionData;
         startPosition = null;
         endPosition = null;
-        startDir = null;
         reachedDestination;
         constructor(actionData) {
             this.actionData = actionData;
             this.startPosition = null;
             this.endPosition = null;
-            this.startDir = null;
             this.reachedDestination = false;
         }
         SetAnimation(actor, animation, viewport) {
@@ -11173,24 +11168,26 @@ var spine;
                 return;
             }
             if (this.endPosition == null) {
-                let start = new spine.Vector2(this.actionData["pace_start_pos"]["x"], this.actionData["pace_start_pos"]["x"]);
-                let target = new spine.Vector2(this.actionData["pace_end_pos"]["x"], this.actionData["pace_end_pos"]["x"]);
-                this.startPosition = new spine.Vector2(start.x * viewport.width - (viewport.width / 2), start.y * viewport.height);
-                this.endPosition = new spine.Vector2(target.x * viewport.width - (viewport.width / 2), target.y * viewport.height);
-                if (this.endPosition.subtract(actor.getPosition()).length() < 10) {
+                let z1 = Math.random() * 20;
+                let z2 = Math.random() * 20;
+                let start = new spine.webgl.Vector3(this.actionData["pace_start_pos"]["x"], this.actionData["pace_start_pos"]["y"], z1);
+                let target = new spine.webgl.Vector3(this.actionData["pace_end_pos"]["x"], this.actionData["pace_end_pos"]["y"], z2);
+                this.startPosition = new spine.webgl.Vector3(start.x * viewport.width - (viewport.width / 2), start.y * viewport.height, start.z);
+                this.endPosition = new spine.webgl.Vector3(target.x * viewport.width - (viewport.width / 2), target.y * viewport.height, target.z);
+                let temp = this.endPosition.copy();
+                if (temp.sub(actor.getPosition3()).length() < 10) {
                     this.reachedDestination = true;
                 }
             }
-            let dir = this.endPosition.subtract(actor.getPosition()).normalize();
-            let dist_to = this.endPosition.subtract(actor.getPosition()).length();
+            let dir = this.endPosition.copy().sub(actor.getPosition3()).normalize();
+            let dist_to = this.endPosition.copy().sub(actor.getPosition3()).length();
             if (dist_to < 10 || this.reachedDestination) {
-                actor.setPosition(this.endPosition.x, this.endPosition.y);
-                actor.velocity.x = 0;
-                actor.velocity.y = 0;
+                actor.setPosition(this.endPosition.x, this.endPosition.y, this.endPosition.z);
+                actor.setVelocity(0, 0, 0);
                 this.reachedDestination = true;
             }
             else {
-                actor.velocity = new spine.Vector2(dir.x * actor.getMovementSpeedX() * deltaSecs, dir.y * actor.getMovementSpeedY() * deltaSecs);
+                actor.setVelocity(dir.x * actor.getMovementSpeedX() * deltaSecs, dir.y * actor.getMovementSpeedY() * deltaSecs, dir.z * actor.getMovementSpeedZ() * deltaSecs);
             }
         }
     }
@@ -11212,26 +11209,32 @@ var spine;
         animViewport = null;
         prevAnimViewport = null;
         defaultBB = null;
-        movementSpeed = new spine.Vector2();
-        position = new spine.Vector2();
+        movementSpeed = new spine.webgl.Vector3();
+        position = new spine.webgl.Vector3();
         scale = new spine.Vector2(1, 1);
-        velocity = new spine.Vector2(0, 0);
+        velocity = new spine.webgl.Vector3(0, 0, 0);
         startPosition = null;
         currentAction = null;
         load_attempts = 0;
         max_load_attempts = 10;
-        load_failed = false;
+        load_perma_failed = false;
+        loadedWhen = new Date().getTime();
         constructor(config, viewport) {
+            this.loadedWhen = new Date().getTime();
             this.viewport = viewport;
             this.ResetWithConfig(config);
             let x = Math.random() * viewport.width - (viewport.width / 2);
-            this.position = new spine.Vector2(x, 0);
+            let z = 0;
+            this.position = new spine.webgl.Vector3(x, 0, z);
             if (config.startPosX || config.startPosY) {
-                this.position = new spine.Vector2((config.startPosX * viewport.width) - (viewport.width / 2), config.startPosY * viewport.height);
+                this.position = new spine.webgl.Vector3((config.startPosX * viewport.width) - (viewport.width / 2), config.startPosY * viewport.height, z);
             }
         }
         getPosition() {
             return new spine.Vector2(this.position.x, this.position.y);
+        }
+        getPosition3() {
+            return new spine.webgl.Vector3(this.position.x, this.position.y, this.position.z);
         }
         getPositionX() {
             return this.position.x;
@@ -11239,21 +11242,28 @@ var spine;
         getPositionY() {
             return this.position.y;
         }
+        getPositionZ() {
+            return this.position.z;
+        }
         setPositionX(x) {
             this.position.x = x;
         }
         setPositionY(y) {
             this.position.y = y;
         }
-        setPosition(x, y) {
+        setPositionZ(z) {
+            this.position.z = z;
+        }
+        setPosition(x, y, z) {
             this.position.x = x;
             this.position.y = y;
-        }
-        setPositionV(pos) {
-            this.position = pos;
+            this.position.z = z !== undefined ? z : 0;
         }
         getMovmentSpeed() {
             return new spine.Vector2(this.movementSpeed.x, this.movementSpeed.y);
+        }
+        getMovmentSpeed3() {
+            return new spine.webgl.Vector3(this.movementSpeed.x, this.movementSpeed.y, this.movementSpeed.z);
         }
         getMovementSpeedX() {
             return this.movementSpeed.x;
@@ -11261,18 +11271,31 @@ var spine;
         getMovementSpeedY() {
             return this.movementSpeed.y;
         }
+        getMovementSpeedZ() {
+            return this.movementSpeed.z;
+        }
         setMovementSpeedX(x) {
             this.movementSpeed.x = x;
         }
         setMovementSpeedY(y) {
             this.movementSpeed.y = y;
         }
-        setMovementSpeed(x, y) {
+        setMovementSpeedZ(z) {
+            this.movementSpeed.z = z;
+        }
+        setMovementSpeed(x, y, z) {
             this.movementSpeed.x = x;
             this.movementSpeed.y = y;
+            this.movementSpeed.z = z !== undefined ? z : this.config.defaultMovementSpeedPxZ;
         }
-        setMovementSpeedV(speed) {
-            this.movementSpeed = speed;
+        getVelocity() {
+            return new spine.Vector2(this.velocity.x, this.velocity.y);
+        }
+        getVelocity3() {
+            return new spine.webgl.Vector3(this.velocity.x, this.velocity.y, this.velocity.z);
+        }
+        setVelocity(x, y, z) {
+            this.velocity = new spine.webgl.Vector3(x != undefined ? x : this.velocity.x, y != undefined ? y : this.velocity.y, z != undefined ? z : this.velocity.z);
         }
         InitAnimations() {
             this.initAnimationsInternal(this.currentAction.GetAnimations());
@@ -11282,7 +11305,7 @@ var spine;
         }
         ResetWithConfig(config) {
             this.load_attempts = 0;
-            this.load_failed = false;
+            this.load_perma_failed = false;
             this.loaded = false;
             this.skeleton = null;
             this.animationState = null;
@@ -11294,11 +11317,13 @@ var spine;
             this.animViewport = null;
             this.prevAnimViewport = null;
             this.defaultBB = null;
-            if (config.movementSpeedPxX !== null && config.movementSpeedPxY !== null) {
-                this.movementSpeed = new spine.Vector2(config.movementSpeedPxX, config.movementSpeedPxY);
+            if (config.movementSpeedPxX !== null
+                && config.movementSpeedPxY !== null
+                && config.movementSpeedPxZ !== null) {
+                this.movementSpeed = new spine.webgl.Vector3(config.movementSpeedPxX, config.movementSpeedPxY, config.movementSpeedPxZ);
             }
             else {
-                this.movementSpeed = new spine.Vector2(config.defaultMovementSpeedPxX + Math.random() * config.defaultMovementSpeedPxX / 2, config.defaultMovementSpeedPxY);
+                this.movementSpeed = new spine.webgl.Vector3(config.defaultMovementSpeedPxX + Math.random() * config.defaultMovementSpeedPxX / 2, config.defaultMovementSpeedPxY, config.defaultMovementSpeedPxZ);
             }
             this.scale.x = Math.sign(this.scale.x) * config.scaleX;
             this.scale.y = Math.sign(this.scale.y) * config.scaleY;
@@ -11308,6 +11333,7 @@ var spine;
             this.currentAction.UpdatePhysics(this, deltaSecs, viewport);
             this.position.x += this.velocity.x;
             this.position.y += this.velocity.y;
+            this.position.z += this.velocity.z;
             if (this.velocity.x != 0) {
                 if (this.velocity.x > 0) {
                     this.scale.x = this.config.scaleX;
@@ -11731,6 +11757,7 @@ var spine;
                 console.log("Sorry, your browser does not support WebGL.<br><br>Please use the latest version of Firefox, Chrome, Edge, or Safari.");
                 return dom;
             }
+            this.configurePerspectiveCamera(this.playerConfig.viewport);
             this.assetManager = new spine.webgl.AssetManager(this.context);
             this.lastRequestAnimationFrameId = requestAnimationFrame(() => this.drawFrame());
             performance.mark('fps_window_start');
@@ -11850,7 +11877,7 @@ var spine;
             let w = -a * (width / 2);
             return w;
         }
-        updateCameraSettings(actor, viewport) {
+        configurePerspectiveCamera(viewport) {
             let cam = this.sceneRenderer.camera;
             cam.near = this.playerConfig.cameraPerspectiveNear;
             cam.far = this.playerConfig.cameraPerspectiveFar;
@@ -11858,15 +11885,15 @@ var spine;
             cam.position.x = 0;
             cam.position.y = viewport.height / 2;
             cam.position.z = -this.getPerspectiveCameraZOffset(viewport, cam.near, cam.far, cam.fov);
-            if (cam.position.z != 0) {
-                let origin = new spine.webgl.Vector3(0, 0, 0);
-                let pos = new spine.webgl.Vector3(0, 0, cam.position.z);
-                let dir = origin.sub(pos).normalize();
-                cam.direction = dir;
-            }
-            else {
-                cam.direction = new spine.webgl.Vector3(0, 0, -1);
-            }
+            cam.direction = new spine.webgl.Vector3(0, 0, -1);
+            cam.update();
+        }
+        updateCameraSettings(actor, viewport) {
+            let cam = this.sceneRenderer.camera;
+            cam.position.x = 0;
+            cam.position.y = viewport.height / 2;
+            cam.position.z = -this.getPerspectiveCameraZOffset(viewport, cam.near, cam.far, cam.fov) + actor.getPositionZ();
+            cam.direction = new spine.webgl.Vector3(0, 0, -1);
             cam.update();
         }
         drawFrame(requestNextFrame = true) {
@@ -11885,12 +11912,19 @@ var spine;
             this.textCanvas.width = this.textCanvas.clientWidth;
             this.textCanvas.height = this.textCanvas.clientHeight;
             this.textCanvasContext.clearRect(0, 0, this.textCanvas.width, this.textCanvas.height);
-            this.loadingScreen.backgroundColor.setFromColor(bg);
-            this.loadingScreen.draw(this.assetManager.isLoadingComplete());
             this.sceneRenderer.resize(spine.webgl.ResizeMode.Expand);
+            let actorsZOrder = Array.from(this.actors.keys()).sort((a, b) => {
+                let a1 = this.actors.get(a);
+                let a2 = this.actors.get(b);
+                let r = a1.getPositionZ() - a2.getPositionZ();
+                if (r == 0) {
+                    return a1.loadedWhen - a2.loadedWhen;
+                }
+            });
             let all_actors_loaded = true;
-            for (let [key, actor] of this.actors) {
-                if (actor.load_failed) {
+            for (let key of actorsZOrder) {
+                let actor = this.actors.get(key);
+                if (actor.load_perma_failed) {
                     continue;
                 }
                 if (this.assetManager.isLoadingComplete() && actor.skeleton == null) {
@@ -11961,7 +11995,7 @@ var spine;
             return temp;
         }
         loadSkeleton(actor) {
-            if (actor.loaded || actor.load_failed)
+            if (actor.loaded || actor.load_perma_failed)
                 return;
             if (this.assetManager.hasErrors()) {
                 this.showError(actor, "Error: assets could not be loaded.<br><br>" + escapeHtml(JSON.stringify(this.assetManager.getErrors())));
@@ -12499,7 +12533,7 @@ var stym;
         backoffTimeMsec;
         backOffMaxtimeMsec;
         channelName;
-        constructor(channelName, width, height) {
+        constructor(channelName, width, height, debugMode) {
             let font = new FontFace("lato", "url(/public/fonts/Lato/Lato-Black.ttf)");
             font.load().then(() => { document.fonts.add(font); });
             this.channelName = channelName;
@@ -12523,7 +12557,7 @@ var stym;
                         padRight: 0,
                         padTop: 0,
                         padBottom: 0,
-                        debugRender: false,
+                        debugRender: debugMode,
                     },
                     fullScreenBackgroundColor: null,
                     backgroundImage: null,
@@ -12591,20 +12625,26 @@ var stym;
             }
             let referenceMovementSpeedPx = 80;
             let referenceMovementSpeedPy = 80;
+            let referenceMovementSpeedPz = 80;
             if (requestData["movement_speed_px"] != null) {
                 referenceMovementSpeedPx = requestData["movement_speed_px"];
             }
             if (requestData["movement_speed_py"] != null) {
                 referenceMovementSpeedPx = requestData["movement_speed_py"];
             }
+            if (requestData["movement_speed_pz"] != null) {
+                referenceMovementSpeedPz = requestData["movement_speed_pz"];
+            }
             let movementSpeedPxX = null;
             let movementSpeedPxY = null;
+            let movementSpeedPxZ = referenceMovementSpeedPz;
             if (requestData["movement_speed"] != null) {
                 movementSpeedPxX = Math.floor(requestData["movement_speed"]["x"] * referenceMovementSpeedPx);
                 movementSpeedPxY = Math.floor(requestData["movement_speed"]["y"] * referenceMovementSpeedPy);
             }
             let defaultMovementSpeedPxX = referenceMovementSpeedPx;
             let defaultMovementSpeedPxY = referenceMovementSpeedPy;
+            let defaultMovementSpeedPxZ = referenceMovementSpeedPz;
             this.actorConfig = {
                 chibiId: requestData["operator_id"],
                 userDisplayName: requestData['user_name_display'],
@@ -12614,8 +12654,10 @@ var stym;
                 startPosY: startPosY,
                 defaultMovementSpeedPxX: defaultMovementSpeedPxX,
                 defaultMovementSpeedPxY: defaultMovementSpeedPxY,
+                defaultMovementSpeedPxZ: defaultMovementSpeedPxZ,
                 movementSpeedPxX: movementSpeedPxX,
                 movementSpeedPxY: movementSpeedPxY,
+                movementSpeedPxZ: movementSpeedPxZ,
                 configScaleX: configScaleX,
                 configScaleY: configScaleY,
                 scaleX: 0.45 * configScaleX,
@@ -12632,7 +12674,7 @@ var stym;
                 error: (widget, actor, error) => {
                     actor.load_attempts += 1;
                     if (actor.load_attempts > actor.max_load_attempts) {
-                        actor.load_failed = true;
+                        actor.load_perma_failed = true;
                     }
                     console.log(this);
                     console.log(error);

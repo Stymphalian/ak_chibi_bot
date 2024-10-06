@@ -1801,6 +1801,7 @@ declare namespace spine.webgl {
         dot(v: Vector3): number;
         length(): number;
         distance(v: Vector3): number;
+        copy(): Vector3;
     }
 }
 declare namespace spine.webgl {
@@ -1873,9 +1874,8 @@ declare namespace spine {
     }
     class PaceAroundAction implements ActorAction {
         actionData: any;
-        startPosition: Vector2;
-        endPosition: Vector2;
-        startDir: Vector2;
+        startPosition: spine.webgl.Vector3;
+        endPosition: spine.webgl.Vector3;
         reachedDestination: boolean;
         constructor(actionData: any);
         SetAnimation(actor: Actor, animation: string, viewport: BoundingBox): void;
@@ -1912,8 +1912,10 @@ declare namespace spine {
         extraOffsetY: number;
         defaultMovementSpeedPxX: number;
         defaultMovementSpeedPxY: number;
+        defaultMovementSpeedPxZ: number;
         movementSpeedPxX: number;
         movementSpeedPxY: number;
+        movementSpeedPxZ: number;
         defaultScaleX?: number;
         defaultScaleY?: number;
         backgroundImage?: {
@@ -1948,27 +1950,35 @@ declare namespace spine {
         private movementSpeed;
         private position;
         scale: spine.Vector2;
-        velocity: spine.Vector2;
+        private velocity;
         startPosition: spine.Vector2;
         currentAction: ActorAction;
         load_attempts: number;
         max_load_attempts: number;
-        load_failed: boolean;
+        load_perma_failed: boolean;
+        loadedWhen: number;
         constructor(config: SpineActorConfig, viewport: BoundingBox);
         getPosition(): spine.Vector2;
+        getPosition3(): spine.webgl.Vector3;
         getPositionX(): number;
         getPositionY(): number;
+        getPositionZ(): number;
         setPositionX(x: number): void;
         setPositionY(y: number): void;
-        setPosition(x: number, y: number): void;
-        setPositionV(pos: spine.Vector2): void;
+        setPositionZ(z: number): void;
+        setPosition(x: number, y: number, z?: number): void;
         getMovmentSpeed(): spine.Vector2;
+        getMovmentSpeed3(): spine.webgl.Vector3;
         getMovementSpeedX(): number;
         getMovementSpeedY(): number;
+        getMovementSpeedZ(): number;
         setMovementSpeedX(x: number): void;
         setMovementSpeedY(y: number): void;
-        setMovementSpeed(x: number, y: number): void;
-        setMovementSpeedV(speed: spine.Vector2): void;
+        setMovementSpeedZ(z: number): void;
+        setMovementSpeed(x: number, y: number, z?: number): void;
+        getVelocity(): spine.Vector2;
+        getVelocity3(): spine.webgl.Vector3;
+        setVelocity(x?: number, y?: number, z?: number): void;
         InitAnimations(): void;
         GetAnimations(): string[];
         ResetWithConfig(config: SpineActorConfig): void;
@@ -2057,6 +2067,7 @@ declare namespace spine {
         setupActor(actor: Actor): void;
         drawText(text: string, xpx: number, ypx: number): void;
         getPerspectiveCameraZOffset(viewport: BoundingBox, near: number, far: number, fovY: number): number;
+        configurePerspectiveCamera(viewport: BoundingBox): void;
         updateCameraSettings(actor: Actor, viewport: BoundingBox): void;
         drawFrame(requestNextFrame?: boolean): void;
         scale(sourceWidth: number, sourceHeight: number, targetWidth: number, targetHeight: number): Vector2;
@@ -2102,7 +2113,7 @@ declare namespace stym {
         backoffTimeMsec: number;
         backOffMaxtimeMsec: number;
         channelName: string;
-        constructor(channelName: string, width: number, height: number);
+        constructor(channelName: string, width: number, height: number, debugMode: boolean);
         openWebSocket(channelName: string): void;
         messageHandler(event: MessageEvent): void;
         swapCharacter(requestData: any): void;

@@ -81,8 +81,10 @@ module spine {
 
 		defaultMovementSpeedPxX: number,
 		defaultMovementSpeedPxY: number,
+		defaultMovementSpeedPxZ: number,
 		movementSpeedPxX: number,
 		movementSpeedPxY: number,
+		movementSpeedPxZ: number,
 
 		// Unused?
 		defaultScaleX?: number
@@ -145,32 +147,41 @@ module spine {
 		public defaultBB: BoundingBox = null;
 
 		// Velocity is in world coordinates (pixels/second)
-		private movementSpeed: spine.Vector2 = new spine.Vector2();
+		// TODO: Abstract out this position/movement/speed data into a seperate class
+		// TODO: Create our own vector3 class
+		private movementSpeed: spine.webgl.Vector3 = new spine.webgl.Vector3();
 		// Position is in world coordinates (with dimensions same as viewport)
 		//   x-axis is 0 in center of the screen
 		//   and y-axis is 0 at the bottom of the screen.
 		// We use these coordinates compared to top-left corner.
-		private position: spine.Vector2 = new spine.Vector2();
+		private position: spine.webgl.Vector3 = new spine.webgl.Vector3();
 		public scale: spine.Vector2 = new spine.Vector2(1,1);
-		public velocity: spine.Vector2 = new spine.Vector2(0, 0);
+		private velocity: spine.webgl.Vector3 = new spine.webgl.Vector3(0, 0, 0);
 		public startPosition: spine.Vector2 = null;
 		public currentAction: ActorAction = null;
 
 		// Actor loading retry logic
 		public load_attempts: number = 0;
 		public max_load_attempts: number = 10;
-		public load_failed: boolean = false;
+		public load_perma_failed: boolean = false;
+		// Record the timestamp when the actor was first loaded. We use this
+		// to keep a stable sort order when rendering actors. Actors created
+		// first should be rendered first, newer actors are rendered on top.
+		public loadedWhen: number = new Date().getTime();
 
 		constructor(config: SpineActorConfig, viewport: BoundingBox) {
+			this.loadedWhen = new Date().getTime();
 			this.viewport = viewport;
 			this.ResetWithConfig(config);
 			let x = Math.random()*viewport.width - (viewport.width/2)
-			this.position = new spine.Vector2(x, 0);
+			let z = 0;
+			this.position = new spine.webgl.Vector3(x, 0, z);
 
 			if (config.startPosX || config.startPosY) {
-				this.position = new spine.Vector2(
+				this.position = new spine.webgl.Vector3(
 					(config.startPosX* viewport.width) - (viewport.width/2),
-					config.startPosY * viewport.height
+					config.startPosY * viewport.height,
+					z
 				);
 			}
 		}
@@ -181,11 +192,21 @@ module spine {
 				this.position.y
 			);
 		}
+		public getPosition3(): spine.webgl.Vector3 {
+			return new spine.webgl.Vector3(
+				this.position.x,
+				this.position.y,
+				this.position.z
+			);
+		}
 		public getPositionX(): number {
 			return this.position.x;
 		}
 		public getPositionY(): number {
 			return this.position.y;
+		}
+		public getPositionZ(): number {
+			return this.position.z;
 		}
 		public setPositionX(x: number) {
 			this.position.x = x;
@@ -193,12 +214,13 @@ module spine {
 		public setPositionY(y: number) {
 			this.position.y = y;
 		}
-		public setPosition(x: number, y: number) {
+		public setPositionZ(z: number) {
+			this.position.z = z;
+		}
+		public setPosition(x: number, y: number, z ?:number) {
 			this.position.x = x;
 			this.position.y = y;
-		}
-		public setPositionV(pos: spine.Vector2) {
-			this.position = pos;
+			this.position.z = z !== undefined ? z : 0;
 		}
 
 		public getMovmentSpeed(): spine.Vector2 {
@@ -207,11 +229,21 @@ module spine {
 				this.movementSpeed.y
 			);
 		}
+		public getMovmentSpeed3(): spine.webgl.Vector3 {
+			return new spine.webgl.Vector3(
+				this.movementSpeed.x,
+				this.movementSpeed.y,
+				this.movementSpeed.z
+			);
+		}
 		public getMovementSpeedX(): number {
 			return this.movementSpeed.x;
 		}
 		public getMovementSpeedY(): number {
 			return this.movementSpeed.y;
+		}
+		public getMovementSpeedZ(): number {
+			return this.movementSpeed.z;
 		}
 		public setMovementSpeedX(x: number) {
 			this.movementSpeed.x = x;
@@ -219,12 +251,34 @@ module spine {
 		public setMovementSpeedY(y: number) {
 			this.movementSpeed.y = y;
 		}
-		public setMovementSpeed(x: number, y: number) {
+		public setMovementSpeedZ(z: number) {
+			this.movementSpeed.z = z;
+		}
+		public setMovementSpeed(x: number, y: number, z ?: number) {			
 			this.movementSpeed.x = x;
 			this.movementSpeed.y = y;
+			this.movementSpeed.z = z !== undefined ? z : this.config.defaultMovementSpeedPxZ;
 		}
-		public setMovementSpeedV(speed: spine.Vector2) {
-			this.movementSpeed = speed;
+
+		public getVelocity(): spine.Vector2 {
+			return new spine.Vector2(
+				this.velocity.x,
+				this.velocity.y
+			)
+		}
+		public getVelocity3(): spine.webgl.Vector3 {
+			return new spine.webgl.Vector3(
+				this.velocity.x,
+				this.velocity.y,
+				this.velocity.z
+			)
+		}
+		public setVelocity(x?: number, y ?: number, z ?: number) {
+			this.velocity = new spine.webgl.Vector3(
+				x != undefined ? x : this.velocity.x,
+				y != undefined ? y : this.velocity.y,
+				z != undefined ? z : this.velocity.z
+			);
 		}
 
 		public InitAnimations() {
@@ -237,7 +291,7 @@ module spine {
 
 		public ResetWithConfig(config: SpineActorConfig) {
 			this.load_attempts = 0;
-			this.load_failed = false;
+			this.load_perma_failed = false;
 
 			this.loaded = false;
 			this.skeleton = null;
@@ -253,14 +307,19 @@ module spine {
 			this.defaultBB = null;
 
 			// Update movement speed from config
-			if (config.movementSpeedPxX !== null && config.movementSpeedPxY !== null) {
-				this.movementSpeed = new spine.Vector2(
-					config.movementSpeedPxX, config.movementSpeedPxY
+			if (config.movementSpeedPxX !== null 
+				&& config.movementSpeedPxY !== null
+				&& config.movementSpeedPxZ !== null) {
+				this.movementSpeed = new spine.webgl.Vector3(
+					config.movementSpeedPxX, 
+					config.movementSpeedPxY,
+					config.movementSpeedPxZ,
 				);
 			} else {
-				this.movementSpeed = new spine.Vector2(
+				this.movementSpeed = new spine.webgl.Vector3(
 					config.defaultMovementSpeedPxX + Math.random()*config.defaultMovementSpeedPxX/2,
-					config.defaultMovementSpeedPxY
+					config.defaultMovementSpeedPxY,
+					config.defaultMovementSpeedPxZ,
 				);
 			}
 			
@@ -279,6 +338,7 @@ module spine {
 			this.currentAction.UpdatePhysics(this, deltaSecs, viewport);
 			this.position.x += this.velocity.x;
 			this.position.y += this.velocity.y;
+			this.position.z += this.velocity.z;
 
 			// Make the Actor face right or left depending on velocity
 			if (this.velocity.x != 0) {
