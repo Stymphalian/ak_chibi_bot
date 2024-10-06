@@ -36,11 +36,11 @@ type RoomUpdateRequest struct {
 	MinAnimationSpeed float64 `json:"min_animation_speed"`
 	MaxAnimationSpeed float64 `json:"max_animation_speed"`
 	// DefaultAnimationSpeed float64 `json:"default_animation_speed"`
-	MinVelocity float64 `json:"min_velocity"`
-	MaxVelocity float64 `json:"max_velocity"`
+	MinVelocity float64 `json:"min_movement_speed"`
+	MaxVelocity float64 `json:"max_movement_speed"`
 	// DefaultVelocity       float64 `json:"default_velocity"`
-	MinSpriteScale float64 `json:"min_sprite_scale"`
-	MaxSpriteScale float64 `json:"max_sprite_scale"`
+	MinSpriteScale float64 `json:"min_sprite_size"`
+	MaxSpriteScale float64 `json:"max_sprite_size"`
 	// DefaultSpriteScale    float64 `json:"default_sprite_scale"`
 	MaxSpritePixelSize int `json:"max_sprite_pixel_size"`
 }
