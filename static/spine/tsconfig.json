@@ -13,6 +13,7 @@
 		"src/core/**/*",
 		"src/webgl/**/*",
 		"src/player/**/*",
+		"src/stym/**/*",
 		"src/*",
 	],
 	"exclude": [

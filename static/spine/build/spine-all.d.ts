@@ -1347,12 +1347,13 @@ declare namespace spine.webgl {
     }
 }
 declare namespace spine.webgl {
-    class OrthoCamera {
+    interface Camera {
         position: Vector3;
         direction: Vector3;
         up: Vector3;
         near: number;
         far: number;
+        fov: number;
         zoom: number;
         viewportWidth: number;
         viewportHeight: number;
@@ -1360,11 +1361,54 @@ declare namespace spine.webgl {
         inverseProjectionView: Matrix4;
         projection: Matrix4;
         view: Matrix4;
+        is_perspective: boolean;
+        update(): void;
+        screenToWorld(screenCoords: Vector3, screenWidth: number, screenHeight: number): Vector3;
+        worldToScreen(worldCoords: spine.webgl.Vector3): spine.webgl.Vector3;
+        setViewport(viewportWidth: number, viewportHeight: number): void;
+    }
+    class OrthoCamera {
+        position: Vector3;
+        direction: Vector3;
+        up: Vector3;
+        near: number;
+        far: number;
+        fov: number;
+        zoom: number;
+        viewportWidth: number;
+        viewportHeight: number;
+        projectionView: Matrix4;
+        inverseProjectionView: Matrix4;
+        projection: Matrix4;
+        view: Matrix4;
+        is_perspective: boolean;
         private tmp;
         constructor(viewportWidth: number, viewportHeight: number);
         update(): void;
         screenToWorld(screenCoords: Vector3, screenWidth: number, screenHeight: number): Vector3;
-        worldToScreen(worldCoords: Vector2): spine.Vector2;
+        worldToScreen(worldCoords: spine.webgl.Vector3): spine.webgl.Vector3;
+        setViewport(viewportWidth: number, viewportHeight: number): void;
+    }
+    class PerspectiveCamera {
+        position: Vector3;
+        direction: Vector3;
+        up: Vector3;
+        near: number;
+        far: number;
+        zoom: number;
+        fov: number;
+        viewportWidth: number;
+        viewportHeight: number;
+        projectionView: Matrix4;
+        inverseProjectionView: Matrix4;
+        projection: Matrix4;
+        view: Matrix4;
+        is_perspective: boolean;
+        private tmp;
+        constructor(viewportWidth: number, viewportHeight: number);
+        update(if_throw?: boolean): void;
+        screenToWorld(screenCoords: Vector3, screenWidth: number, screenHeight: number): Vector3;
+        worldToScreen(worldCoords: spine.webgl.Vector3): spine.webgl.Vector3;
         setViewport(viewportWidth: number, viewportHeight: number): void;
     }
 }
@@ -1466,7 +1510,7 @@ declare namespace spine.webgl {
         determinant(): number;
         translate(x: number, y: number, z: number): Matrix4;
         copy(): Matrix4;
-        projection(near: number, far: number, fovy: number, aspectRatio: number): Matrix4;
+        projection(front: number, back: number, fovy: number, aspectRatio: number): Matrix4;
         ortho2d(x: number, y: number, width: number, height: number): Matrix4;
         ortho(left: number, right: number, bottom: number, top: number, near: number, far: number): Matrix4;
         multiply(matrix: Matrix4): Matrix4;
@@ -1560,7 +1604,9 @@ declare namespace spine.webgl {
     class SceneRenderer implements Disposable {
         context: ManagedWebGLRenderingContext;
         canvas: HTMLCanvasElement;
-        camera: OrthoCamera;
+        orthoCamera: OrthoCamera;
+        perspectiveCamera: PerspectiveCamera;
+        camera: Camera;
         batcher: PolygonBatcher;
         private twoColorTint;
         private batcherShader;
@@ -1741,6 +1787,7 @@ declare namespace spine.webgl {
         x: number;
         y: number;
         z: number;
+        w: number;
         constructor(x?: number, y?: number, z?: number);
         setFrom(v: Vector3): Vector3;
         set(x: number, y: number, z: number): Vector3;
@@ -1784,6 +1831,7 @@ declare namespace spine {
         static PLAY_ANIMATION: string;
         static WANDER: string;
         static WALK_TO: string;
+        static PACE_AROUND: string;
     }
     interface ActorAction {
         SetAnimation(actor: Actor, animation: string, viewport: BoundingBox): void;
@@ -1823,6 +1871,17 @@ declare namespace spine {
         GetAnimations(): string[];
         UpdatePhysics(actor: Actor, deltaSecs: number, viewport: BoundingBox): void;
     }
+    class PaceAroundAction implements ActorAction {
+        actionData: any;
+        startPosition: Vector2;
+        endPosition: Vector2;
+        startDir: Vector2;
+        reachedDestination: boolean;
+        constructor(actionData: any);
+        SetAnimation(actor: Actor, animation: string, viewport: BoundingBox): void;
+        GetAnimations(): string[];
+        UpdatePhysics(actor: Actor, deltaSecs: number, viewport: BoundingBox): void;
+    }
 }
 declare namespace spine {
     interface ActorUpdateConfig {
@@ -1849,14 +1908,14 @@ declare namespace spine {
         maxSizePx: number;
         startPosX: number;
         startPosY: number;
+        extraOffsetX: number;
+        extraOffsetY: number;
         defaultMovementSpeedPxX: number;
         defaultMovementSpeedPxY: number;
         movementSpeedPxX: number;
         movementSpeedPxY: number;
         defaultScaleX?: number;
         defaultScaleY?: number;
-        extraOffsetX: number;
-        extraOffsetY: number;
         backgroundImage?: {
             url: string;
             x: number;
@@ -1886,8 +1945,8 @@ declare namespace spine {
         animViewport: BoundingBox;
         prevAnimViewport: BoundingBox;
         defaultBB: BoundingBox;
-        movementSpeed: spine.Vector2;
-        position: spine.Vector2;
+        private movementSpeed;
+        private position;
         scale: spine.Vector2;
         velocity: spine.Vector2;
         startPosition: spine.Vector2;
@@ -1896,6 +1955,20 @@ declare namespace spine {
         max_load_attempts: number;
         load_failed: boolean;
         constructor(config: SpineActorConfig, viewport: BoundingBox);
+        getPosition(): spine.Vector2;
+        getPositionX(): number;
+        getPositionY(): number;
+        setPositionX(x: number): void;
+        setPositionY(y: number): void;
+        setPosition(x: number, y: number): void;
+        setPositionV(pos: spine.Vector2): void;
+        getMovmentSpeed(): spine.Vector2;
+        getMovementSpeedX(): number;
+        getMovementSpeedY(): number;
+        setMovementSpeedX(x: number): void;
+        setMovementSpeedY(y: number): void;
+        setMovementSpeed(x: number, y: number): void;
+        setMovementSpeedV(speed: spine.Vector2): void;
         InitAnimations(): void;
         GetAnimations(): string[];
         ResetWithConfig(config: SpineActorConfig): void;
@@ -1944,6 +2017,8 @@ declare namespace spine {
         } | undefined;
         fullScreenBackgroundColor: string | undefined;
         runtimeDebugInfoDumpIntervalSec: number;
+        cameraPerspectiveNear: number;
+        cameraPerspectiveFar: number;
     }
     class SpinePlayer {
         static HOVER_COLOR_INNER: Color;
@@ -1981,6 +2056,8 @@ declare namespace spine {
         removeActor(actorName: string): void;
         setupActor(actor: Actor): void;
         drawText(text: string, xpx: number, ypx: number): void;
+        getPerspectiveCameraZOffset(viewport: BoundingBox, near: number, far: number, fovY: number): number;
+        updateCameraSettings(actor: Actor, viewport: BoundingBox): void;
         drawFrame(requestNextFrame?: boolean): void;
         scale(sourceWidth: number, sourceHeight: number, targetWidth: number, targetHeight: number): Vector2;
         loadSkeleton(actor: Actor): void;
@@ -1988,6 +2065,31 @@ declare namespace spine {
         private setupInput;
         private play;
         private pause;
+        getSceneRenderer(): spine.webgl.SceneRenderer;
+    }
+}
+declare namespace stym {
+    class ControlCam {
+        private dom;
+        private parent;
+        private width;
+        private height;
+        private runtime;
+        constructor(parent: HTMLElement | string, width: number, height: number, runtime: Runtime);
+        private getElementById;
+        private findWithId;
+        private findWithClass;
+        createElement(html: string): HTMLElement;
+        setupDom(): HTMLElement;
+        private getCorrectCameraPerspectiveZ;
+        private addListeners;
+    }
+}
+declare namespace stym {
+    class linear {
+        solve(A: number[][], b: number[]): any;
+        identity(n: number): any[];
+        invert(A: number[][]): any;
     }
 }
 declare namespace stym {

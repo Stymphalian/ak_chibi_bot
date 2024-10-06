@@ -59,6 +59,7 @@ Manual Test Cases:
 !chibi size 1.5
 !chibi scale 0.5
 !chibi move_speed 160
+!chibi pace 0.2 0.5
 
 // Change from enemy to operator during a walk/wander
 // and then transitioning to a battle stance would cause the operator
@@ -661,4 +662,24 @@ func TestCmdProcessorHandleMessage_ChibiMoveSpeedOutOfRange(t *testing.T) {
 
 	assert.Nil(err)
 	assert.Equal(float64(sut.spineService.GetMaxMovementSpeed()), current.MovementSpeed.Unwrap().X)
+}
+
+func TestCmdProcessorHandleMessage_ChibiPaceAround(t *testing.T) {
+	current, actor, sut := setupCommandTest()
+
+	assert := assert.New(t)
+	cmd, err := sut.HandleMessage(current, ChatMessage{
+		Username:        "user1",
+		UserDisplayName: "user1DisplayName",
+		TwitchUserId:    "100",
+		Message:         "!chibi pace 0.1 0.5",
+	})
+
+	assert.Nil(err)
+	assert.Empty(cmd.Reply(actor))
+	assert.Equal(operator.ACTION_PACE_AROUND, current.CurrentAction)
+	assert.Equal([]string{"Move"}, current.Action.GetAnimations(current.CurrentAction))
+	assert.Equal(0.1, current.Action.PaceStartPos.Unwrap().X)
+	assert.Equal(0.5, current.Action.PaceEndPos.Unwrap().X)
+	assert.Equal(1.0, current.AnimationSpeed)
 }

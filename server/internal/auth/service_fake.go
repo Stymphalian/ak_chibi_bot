@@ -19,7 +19,7 @@ func NewFakeAuthService() *FakeAuthService {
 }
 
 func (s *FakeAuthService) IsAuthorized(w http.ResponseWriter, r *http.Request) (*AuthorizedInfo, error) {
-	if s.IsAuthenticated {
+	if !s.IsAuthenticated {
 		return nil, fmt.Errorf("not authorized")
 	} else {
 		return &AuthorizedInfo{

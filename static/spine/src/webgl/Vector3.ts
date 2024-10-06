@@ -32,6 +32,7 @@ module spine.webgl {
 		x = 0;
 		y = 0;
 		z = 0;
+		w = 0;
 
 		constructor (x: number = 0, y: number = 0, z: number = 0) {
 			this.x = x;
@@ -90,15 +91,19 @@ module spine.webgl {
 
 		multiply (matrix: Matrix4): Vector3 {
 			let l_mat = matrix.values;
-			return this.set(this.x * l_mat[M00] + this.y * l_mat[M01] + this.z * l_mat[M02] + l_mat[M03],
+			this.w = this.x * l_mat[M30] + this.y * l_mat[M31] + this.z * l_mat[M32] + l_mat[M33];
+			return this.set(
+				this.x * l_mat[M00] + this.y * l_mat[M01] + this.z * l_mat[M02] + l_mat[M03],
 				this.x * l_mat[M10] + this.y * l_mat[M11] + this.z * l_mat[M12] + l_mat[M13],
 				this.x * l_mat[M20] + this.y * l_mat[M21] + this.z * l_mat[M22] + l_mat[M23]);
 		}
 
 		project (matrix: Matrix4): Vector3 {
 			let l_mat = matrix.values;
-			let l_w = 1 / (this.x * l_mat[M30] + this.y * l_mat[M31] + this.z * l_mat[M32] + l_mat[M33]);
-			return this.set((this.x * l_mat[M00] + this.y * l_mat[M01] + this.z * l_mat[M02] + l_mat[M03]) * l_w,
+			this.w = (this.x * l_mat[M30] + this.y * l_mat[M31] + this.z * l_mat[M32] + l_mat[M33]);
+			let l_w = 1 / this.w;
+			return this.set(
+				(this.x * l_mat[M00] + this.y * l_mat[M01] + this.z * l_mat[M02] + l_mat[M03]) * l_w,
 				(this.x * l_mat[M10] + this.y * l_mat[M11] + this.z * l_mat[M12] + l_mat[M13]) * l_w,
 				(this.x * l_mat[M20] + this.y * l_mat[M21] + this.z * l_mat[M22] + l_mat[M23]) * l_w);
 		}

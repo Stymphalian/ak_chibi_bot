@@ -8250,6 +8250,7 @@ var spine;
             up = new webgl.Vector3(0, 1, 0);
             near = 0;
             far = 100;
+            fov = 0.0;
             zoom = 1;
             viewportWidth = 0;
             viewportHeight = 0;
@@ -8257,6 +8258,7 @@ var spine;
             inverseProjectionView = new webgl.Matrix4();
             projection = new webgl.Matrix4();
             view = new webgl.Matrix4();
+            is_perspective = false;
             tmp = new webgl.Vector3();
             constructor(viewportWidth, viewportHeight) {
                 this.viewportWidth = viewportWidth;
@@ -8276,21 +8278,23 @@ var spine;
                 inverseProjectionView.set(projectionView.values).invert();
             }
             screenToWorld(screenCoords, screenWidth, screenHeight) {
-                let x = screenCoords.x, y = screenHeight - screenCoords.y - 1;
+                let x = screenCoords.x;
+                let y = screenCoords.y;
+                let z = screenCoords.z;
                 let tmp = this.tmp;
-                tmp.x = (2 * x) / screenWidth - 1;
-                tmp.y = (2 * y) / screenHeight - 1;
-                tmp.z = (2 * screenCoords.z) - 1;
+                tmp.x = (2 * (x / screenWidth)) - 1;
+                tmp.y = (2 * (y / screenHeight)) - 1;
+                tmp.z = z;
                 tmp.project(this.inverseProjectionView);
                 screenCoords.set(tmp.x, tmp.y, tmp.z);
                 return screenCoords;
             }
             worldToScreen(worldCoords) {
-                let tmp = new spine.webgl.Vector3(worldCoords.x, worldCoords.y, 0);
+                let tmp = new spine.webgl.Vector3(worldCoords.x, worldCoords.y, worldCoords.z);
                 tmp.multiply(this.projectionView);
                 tmp.x = ((tmp.x + 1) / 2) * (this.viewportWidth);
                 tmp.y = ((tmp.y + 1) / 2) * (this.viewportHeight);
-                return new spine.Vector2(tmp.x, tmp.y);
+                return new spine.webgl.Vector3(tmp.x, tmp.y, 0);
             }
             setViewport(viewportWidth, viewportHeight) {
                 this.viewportWidth = viewportWidth;
@@ -8298,6 +8302,72 @@ var spine;
             }
         }
         webgl.OrthoCamera = OrthoCamera;
+        class PerspectiveCamera {
+            position = new webgl.Vector3(0, 0, 0);
+            direction = new webgl.Vector3(0, 0, -1);
+            up = new webgl.Vector3(0, 1, 0);
+            near = 1;
+            far = 1000;
+            zoom = 1;
+            fov = 45;
+            viewportWidth = 0;
+            viewportHeight = 0;
+            projectionView = new webgl.Matrix4();
+            inverseProjectionView = new webgl.Matrix4();
+            projection = new webgl.Matrix4();
+            view = new webgl.Matrix4();
+            is_perspective = true;
+            tmp = new webgl.Vector3();
+            constructor(viewportWidth, viewportHeight) {
+                this.viewportWidth = viewportWidth;
+                this.viewportHeight = viewportHeight;
+                this.update();
+            }
+            update(if_throw = false) {
+                let projection = this.projection;
+                let view = this.view;
+                let projectionView = this.projectionView;
+                let inverseProjectionView = this.inverseProjectionView;
+                try {
+                    projection.projection(this.near, this.far, this.fov, this.viewportWidth / this.viewportHeight);
+                    view.lookAt(this.position, this.direction, this.up);
+                    projectionView.set(projection.values);
+                    projectionView.multiply(view);
+                    inverseProjectionView.set(projectionView.values).invert();
+                }
+                catch (e) {
+                    if (if_throw) {
+                        throw e;
+                    }
+                }
+            }
+            screenToWorld(screenCoords, screenWidth, screenHeight) {
+                let x = screenCoords.x;
+                let y = screenCoords.y;
+                let z = screenCoords.z;
+                let tmp = this.tmp;
+                tmp.x = (2 * (x / screenWidth)) - 1;
+                tmp.y = (2 * (y / screenHeight)) - 1;
+                tmp.z = z;
+                tmp.project(this.inverseProjectionView);
+                screenCoords.set(tmp.x, tmp.y, tmp.z);
+                return screenCoords;
+            }
+            worldToScreen(worldCoords) {
+                let tmp = new spine.webgl.Vector3(worldCoords.x, worldCoords.y, worldCoords.z);
+                tmp.project(this.projectionView);
+                tmp.x = ((tmp.x + 1) / 2) * (this.viewportWidth);
+                tmp.y = ((tmp.y + 1) / 2) * (this.viewportHeight);
+                let ret = new spine.webgl.Vector3(tmp.x, tmp.y, tmp.z);
+                ret.w = tmp.w;
+                return ret;
+            }
+            setViewport(viewportWidth, viewportHeight) {
+                this.viewportWidth = viewportWidth;
+                this.viewportHeight = viewportHeight;
+            }
+        }
+        webgl.PerspectiveCamera = PerspectiveCamera;
     })(webgl = spine.webgl || (spine.webgl = {}));
 })(spine || (spine = {}));
 var spine;
@@ -8701,6 +8771,7 @@ var spine;
             static tmpMatrix = new Matrix4();
             constructor() {
                 let v = this.values;
+                this.identity();
                 v[webgl.M00] = 1;
                 v[webgl.M11] = 1;
                 v[webgl.M22] = 1;
@@ -8836,27 +8907,29 @@ var spine;
             copy() {
                 return new Matrix4().set(this.values);
             }
-            projection(near, far, fovy, aspectRatio) {
+            projection(front, back, fovy, aspectRatio) {
                 this.identity();
-                let l_fd = (1.0 / Math.tan((fovy * (Math.PI / 180)) / 2.0));
-                let l_a1 = (far + near) / (near - far);
-                let l_a2 = (2 * far * near) / (near - far);
+                let fovy_rad = fovy * (Math.PI / 180);
+                let tangent = Math.tan(fovy_rad / 2.0);
+                let itangent = 1.0 / tangent;
+                let top = front * itangent;
+                let right = top * aspectRatio;
                 let v = this.values;
-                v[webgl.M00] = l_fd / aspectRatio;
+                v[webgl.M00] = front / right;
                 v[webgl.M10] = 0;
                 v[webgl.M20] = 0;
                 v[webgl.M30] = 0;
                 v[webgl.M01] = 0;
-                v[webgl.M11] = l_fd;
+                v[webgl.M11] = front / top;
                 v[webgl.M21] = 0;
                 v[webgl.M31] = 0;
                 v[webgl.M02] = 0;
                 v[webgl.M12] = 0;
-                v[webgl.M22] = l_a1;
+                v[webgl.M22] = -(back + front) / (back - front);
                 v[webgl.M32] = -1;
                 v[webgl.M03] = 0;
                 v[webgl.M13] = 0;
-                v[webgl.M23] = l_a2;
+                v[webgl.M23] = -(2 * back * front) / (back - front);
                 v[webgl.M33] = 0;
                 return this;
             }
@@ -9259,6 +9332,8 @@ var spine;
         class SceneRenderer {
             context;
             canvas;
+            orthoCamera;
+            perspectiveCamera;
             camera;
             batcher;
             twoColorTint = false;
@@ -9280,7 +9355,9 @@ var spine;
                 this.canvas = canvas;
                 this.context = context instanceof webgl.ManagedWebGLRenderingContext ? context : new webgl.ManagedWebGLRenderingContext(context);
                 this.twoColorTint = twoColorTint;
-                this.camera = new webgl.OrthoCamera(canvas.width, canvas.height);
+                this.orthoCamera = new webgl.OrthoCamera(canvas.width, canvas.height);
+                this.perspectiveCamera = new webgl.PerspectiveCamera(canvas.width, canvas.height);
+                this.camera = this.perspectiveCamera;
                 this.batcherShader = twoColorTint ? webgl.Shader.newTwoColoredTextured(this.context) : webgl.Shader.newColoredTextured(this.context);
                 this.batcher = new webgl.PolygonBatcher(this.context, twoColorTint);
                 this.shapesShader = webgl.Shader.newColored(this.context);
@@ -9756,6 +9833,7 @@ var spine;
                     this.program = this.compileProgram(this.vs, this.fs);
                 }
                 catch (e) {
+                    console.log("Shader compilation error", e);
                     this.dispose();
                     throw e;
                 }
@@ -10750,6 +10828,7 @@ var spine;
             x = 0;
             y = 0;
             z = 0;
+            w = 0;
             constructor(x = 0, y = 0, z = 0) {
                 this.x = x;
                 this.y = y;
@@ -10800,11 +10879,13 @@ var spine;
             }
             multiply(matrix) {
                 let l_mat = matrix.values;
+                this.w = this.x * l_mat[webgl.M30] + this.y * l_mat[webgl.M31] + this.z * l_mat[webgl.M32] + l_mat[webgl.M33];
                 return this.set(this.x * l_mat[webgl.M00] + this.y * l_mat[webgl.M01] + this.z * l_mat[webgl.M02] + l_mat[webgl.M03], this.x * l_mat[webgl.M10] + this.y * l_mat[webgl.M11] + this.z * l_mat[webgl.M12] + l_mat[webgl.M13], this.x * l_mat[webgl.M20] + this.y * l_mat[webgl.M21] + this.z * l_mat[webgl.M22] + l_mat[webgl.M23]);
             }
             project(matrix) {
                 let l_mat = matrix.values;
-                let l_w = 1 / (this.x * l_mat[webgl.M30] + this.y * l_mat[webgl.M31] + this.z * l_mat[webgl.M32] + l_mat[webgl.M33]);
+                this.w = (this.x * l_mat[webgl.M30] + this.y * l_mat[webgl.M31] + this.z * l_mat[webgl.M32] + l_mat[webgl.M33]);
+                let l_w = 1 / this.w;
                 return this.set((this.x * l_mat[webgl.M00] + this.y * l_mat[webgl.M01] + this.z * l_mat[webgl.M02] + l_mat[webgl.M03]) * l_w, (this.x * l_mat[webgl.M10] + this.y * l_mat[webgl.M11] + this.z * l_mat[webgl.M12] + l_mat[webgl.M13]) * l_w, (this.x * l_mat[webgl.M20] + this.y * l_mat[webgl.M21] + this.z * l_mat[webgl.M22] + l_mat[webgl.M23]) * l_w);
             }
             dot(v) {
@@ -10901,6 +10982,7 @@ var spine;
         static PLAY_ANIMATION = "PLAY_ANIMATION";
         static WANDER = "WANDER";
         static WALK_TO = "WALK_TO";
+        static PACE_AROUND = "PACE_AROUND";
     }
     spine.ActionName = ActionName;
     function ParseActionNameToAction(actionName, actionData) {
@@ -10911,6 +10993,8 @@ var spine;
                 return new WanderAction(actionData);
             case ActionName.WALK_TO:
                 return new WalkToAction(actionData);
+            case ActionName.PACE_AROUND:
+                return new PaceAroundAction(actionData);
             default:
                 console.log("Unknown action name ", actionName);
                 return null;
@@ -10935,10 +11019,10 @@ var spine;
         SetAnimation(actor, animation, viewport) {
             const startPosYScaled = actor.config.startPosY * viewport.y;
             if (animation == "Sit") {
-                actor.position.y = startPosYScaled + Math.abs(actor.animViewport.y);
+                actor.setPositionY(startPosYScaled + Math.abs(actor.animViewport.y));
             }
             else {
-                actor.position.y = startPosYScaled;
+                actor.setPositionY(startPosYScaled);
             }
             this.currentAnimation = animation;
             if (this.currentAnimation.includes("Move")) {
@@ -10956,18 +11040,17 @@ var spine;
             }
             else {
                 if (this.endPosition == null) {
-                    this.startPosition = actor.position;
-                    this.endPosition = this.getRandomPosition(actor.position, viewport);
+                    this.startPosition = actor.getPosition();
+                    this.endPosition = this.getRandomPosition(actor.getPosition(), viewport);
                 }
-                let dir = this.endPosition.subtract(actor.position);
+                let dir = this.endPosition.subtract(actor.getPosition());
                 if (dir.length() < 5) {
-                    actor.position.x = this.endPosition.x;
-                    actor.position.y = this.endPosition.y;
-                    this.startPosition = actor.position;
-                    this.endPosition = this.getRandomPosition(actor.position, viewport);
+                    actor.setPosition(this.endPosition.x, this.endPosition.y);
+                    this.startPosition = actor.getPosition();
+                    this.endPosition = this.getRandomPosition(actor.getPosition(), viewport);
                 }
                 dir.normalize();
-                actor.velocity = new spine.Vector2(dir.x * actor.movementSpeed.x * deltaSecs, dir.y * actor.movementSpeed.y * deltaSecs);
+                actor.velocity = new spine.Vector2(dir.x * actor.getMovementSpeedX() * deltaSecs, dir.y * actor.getMovementSpeedY() * deltaSecs);
             }
         }
     }
@@ -10986,25 +11069,24 @@ var spine;
             return new spine.Vector2(Math.random() * viewport.width - half, currentPos.y);
         }
         SetAnimation(actor, animation, viewport) {
-            actor.position.y = actor.config.startPosY * viewport.y;
+            actor.setPositionY(actor.config.startPosY * viewport.y);
         }
         GetAnimations() {
             return [this.actionData["wander_animation"]];
         }
         UpdatePhysics(actor, deltaSecs, viewport) {
             if (this.endPosition == null) {
-                this.startPosition = actor.position;
-                this.endPosition = this.getRandomPosition(actor.position, viewport);
+                this.startPosition = actor.getPosition();
+                this.endPosition = this.getRandomPosition(actor.getPosition(), viewport);
             }
-            let dir = this.endPosition.subtract(actor.position);
+            let dir = this.endPosition.subtract(actor.getPosition());
             if (dir.length() < 5) {
-                actor.position.x = this.endPosition.x;
-                actor.position.y = this.endPosition.y;
-                this.startPosition = actor.position;
-                this.endPosition = this.getRandomPosition(actor.position, viewport);
+                actor.setPosition(this.endPosition.x, this.endPosition.y);
+                this.startPosition = actor.getPosition();
+                this.endPosition = this.getRandomPosition(actor.getPosition(), viewport);
             }
             dir.normalize();
-            actor.velocity = new spine.Vector2(dir.x * actor.movementSpeed.x * deltaSecs, dir.y * actor.movementSpeed.y * deltaSecs);
+            actor.velocity = new spine.Vector2(dir.x * actor.getMovementSpeedX() * deltaSecs, dir.y * actor.getMovementSpeedY() * deltaSecs);
         }
     }
     spine.WanderAction = WanderAction;
@@ -11022,7 +11104,7 @@ var spine;
             this.reachedDestination = false;
         }
         SetAnimation(actor, animation, viewport) {
-            actor.position.y = actor.config.startPosY * viewport.y;
+            actor.setPositionY(actor.config.startPosY * viewport.y);
         }
         GetAnimations() {
             if (this.reachedDestination) {
@@ -11037,7 +11119,7 @@ var spine;
                 return;
             }
             if (this.endPosition == null) {
-                this.startPosition = actor.position;
+                this.startPosition = actor.getPosition();
                 let target = new spine.Vector2(this.actionData["target_pos"]["x"], this.actionData["target_pos"]["y"]);
                 this.endPosition = new spine.Vector2(target.x * viewport.width - (viewport.width / 2), 0);
                 this.startDir = this.endPosition.subtract(this.startPosition);
@@ -11046,24 +11128,73 @@ var spine;
                 }
                 this.startDir = this.startDir.normalize();
             }
-            let dir = this.endPosition.subtract(actor.position).normalize();
+            let dir = this.endPosition.subtract(actor.getPosition()).normalize();
             let angle = this.startDir.angle(dir);
             let reached = Math.abs(Math.PI - angle) < 0.001;
             if (reached || this.reachedDestination) {
-                actor.position.x = this.endPosition.x;
-                actor.position.y = this.endPosition.y;
-                this.startPosition = actor.position;
+                actor.setPosition(this.endPosition.x, this.endPosition.y);
+                this.startPosition = actor.getPosition();
                 actor.velocity.x = 0;
                 actor.velocity.y = 0;
                 this.reachedDestination = true;
                 actor.InitAnimationState();
             }
             else {
-                actor.velocity = new spine.Vector2(dir.x * actor.movementSpeed.x * deltaSecs, dir.y * actor.movementSpeed.y * deltaSecs);
+                actor.velocity = new spine.Vector2(dir.x * actor.getMovementSpeedX() * deltaSecs, dir.y * actor.getMovementSpeedY() * deltaSecs);
             }
         }
     }
     spine.WalkToAction = WalkToAction;
+    class PaceAroundAction {
+        actionData;
+        startPosition = null;
+        endPosition = null;
+        startDir = null;
+        reachedDestination;
+        constructor(actionData) {
+            this.actionData = actionData;
+            this.startPosition = null;
+            this.endPosition = null;
+            this.startDir = null;
+            this.reachedDestination = false;
+        }
+        SetAnimation(actor, animation, viewport) {
+            actor.setPositionY(actor.config.startPosY * viewport.y);
+        }
+        GetAnimations() {
+            return [this.actionData["pace_around_animation"]];
+        }
+        UpdatePhysics(actor, deltaSecs, viewport) {
+            if (this.reachedDestination) {
+                this.reachedDestination = false;
+                let tempPosition = this.startPosition;
+                this.startPosition = this.endPosition;
+                this.endPosition = tempPosition;
+                return;
+            }
+            if (this.endPosition == null) {
+                let start = new spine.Vector2(this.actionData["pace_start_pos"]["x"], this.actionData["pace_start_pos"]["x"]);
+                let target = new spine.Vector2(this.actionData["pace_end_pos"]["x"], this.actionData["pace_end_pos"]["x"]);
+                this.startPosition = new spine.Vector2(start.x * viewport.width - (viewport.width / 2), start.y * viewport.height);
+                this.endPosition = new spine.Vector2(target.x * viewport.width - (viewport.width / 2), target.y * viewport.height);
+                if (this.endPosition.subtract(actor.getPosition()).length() < 10) {
+                    this.reachedDestination = true;
+                }
+            }
+            let dir = this.endPosition.subtract(actor.getPosition()).normalize();
+            let dist_to = this.endPosition.subtract(actor.getPosition()).length();
+            if (dist_to < 10 || this.reachedDestination) {
+                actor.setPosition(this.endPosition.x, this.endPosition.y);
+                actor.velocity.x = 0;
+                actor.velocity.y = 0;
+                this.reachedDestination = true;
+            }
+            else {
+                actor.velocity = new spine.Vector2(dir.x * actor.getMovementSpeedX() * deltaSecs, dir.y * actor.getMovementSpeedY() * deltaSecs);
+            }
+        }
+    }
+    spine.PaceAroundAction = PaceAroundAction;
 })(spine || (spine = {}));
 var spine;
 (function (spine) {
@@ -11091,13 +11222,57 @@ var spine;
         max_load_attempts = 10;
         load_failed = false;
         constructor(config, viewport) {
+            this.viewport = viewport;
             this.ResetWithConfig(config);
             let x = Math.random() * viewport.width - (viewport.width / 2);
             this.position = new spine.Vector2(x, 0);
-            this.viewport = viewport;
             if (config.startPosX || config.startPosY) {
                 this.position = new spine.Vector2((config.startPosX * viewport.width) - (viewport.width / 2), config.startPosY * viewport.height);
             }
+        }
+        getPosition() {
+            return new spine.Vector2(this.position.x, this.position.y);
+        }
+        getPositionX() {
+            return this.position.x;
+        }
+        getPositionY() {
+            return this.position.y;
+        }
+        setPositionX(x) {
+            this.position.x = x;
+        }
+        setPositionY(y) {
+            this.position.y = y;
+        }
+        setPosition(x, y) {
+            this.position.x = x;
+            this.position.y = y;
+        }
+        setPositionV(pos) {
+            this.position = pos;
+        }
+        getMovmentSpeed() {
+            return new spine.Vector2(this.movementSpeed.x, this.movementSpeed.y);
+        }
+        getMovementSpeedX() {
+            return this.movementSpeed.x;
+        }
+        getMovementSpeedY() {
+            return this.movementSpeed.y;
+        }
+        setMovementSpeedX(x) {
+            this.movementSpeed.x = x;
+        }
+        setMovementSpeedY(y) {
+            this.movementSpeed.y = y;
+        }
+        setMovementSpeed(x, y) {
+            this.movementSpeed.x = x;
+            this.movementSpeed.y = y;
+        }
+        setMovementSpeedV(speed) {
+            this.movementSpeed = speed;
         }
         InitAnimations() {
             this.initAnimationsInternal(this.currentAction.GetAnimations());
@@ -11637,7 +11812,8 @@ var spine;
         }
         drawText(text, xpx, ypx) {
             let viewport = this.playerConfig.viewport;
-            let textpos = this.sceneRenderer.camera.worldToScreen(new spine.Vector2(xpx, ypx));
+            let tt = this.sceneRenderer.camera.worldToScreen(new spine.webgl.Vector3(xpx, ypx, 0));
+            let textpos = new spine.Vector2(tt.x, tt.y);
             textpos.y = viewport.height - textpos.y;
             xpx = textpos.x;
             ypx = textpos.y;
@@ -11657,6 +11833,41 @@ var spine;
             ctx.fillStyle = "white";
             ctx.fillText(text, -width / 2, 0);
             ctx.restore();
+        }
+        getPerspectiveCameraZOffset(viewport, near, far, fovY) {
+            let width = viewport.width;
+            let height = viewport.height;
+            let cam = new spine.webgl.PerspectiveCamera(width, height);
+            cam.near = near;
+            cam.far = far;
+            cam.fov = fovY;
+            cam.zoom = 1;
+            cam.position.x = 0.0;
+            cam.position.y = 0.0;
+            cam.position.z = 0.0;
+            cam.update();
+            let a = cam.projectionView.values[spine.webgl.M00];
+            let w = -a * (width / 2);
+            return w;
+        }
+        updateCameraSettings(actor, viewport) {
+            let cam = this.sceneRenderer.camera;
+            cam.near = this.playerConfig.cameraPerspectiveNear;
+            cam.far = this.playerConfig.cameraPerspectiveFar;
+            cam.zoom = 1;
+            cam.position.x = 0;
+            cam.position.y = viewport.height / 2;
+            cam.position.z = -this.getPerspectiveCameraZOffset(viewport, cam.near, cam.far, cam.fov);
+            if (cam.position.z != 0) {
+                let origin = new spine.webgl.Vector3(0, 0, 0);
+                let pos = new spine.webgl.Vector3(0, 0, cam.position.z);
+                let dir = origin.sub(pos).normalize();
+                cam.direction = dir;
+            }
+            else {
+                cam.direction = new spine.webgl.Vector3(0, 0, -1);
+            }
+            cam.update();
         }
         drawFrame(requestNextFrame = true) {
             if (requestNextFrame && !this.stopRequestAnimationFrame) {
@@ -11706,11 +11917,7 @@ var spine;
                     actor.animationState.apply(actor.skeleton);
                 }
                 actor.skeleton.updateWorldTransform();
-                let viewportSize = this.scale(viewport.width, viewport.height, this.canvas.width, this.canvas.height);
-                this.sceneRenderer.camera.zoom = viewport.width / viewportSize.x;
-                this.sceneRenderer.camera.position.x = viewport.x;
-                this.sceneRenderer.camera.position.y = viewport.y + viewport.height / 2;
-                this.sceneRenderer.camera.position.z = 0;
+                this.updateCameraSettings(actor, viewport);
                 this.sceneRenderer.begin();
                 if (actor.config.backgroundImage && actor.config.backgroundImage.url) {
                     let bgImage = this.assetManager.get(actor.config.backgroundImage.url);
@@ -11722,21 +11929,21 @@ var spine;
                     }
                 }
                 this.sceneRenderer.drawSkeleton(actor.skeleton, actor.config.premultipliedAlpha);
-                this.drawText(actor.config.userDisplayName, actor.position.x, actor.position.y + actor.GetUsernameHeaderHeight());
+                this.drawText(actor.config.userDisplayName, actor.getPositionX(), actor.getPositionY() - Math.abs(actor.animViewport.y) + actor.GetUsernameHeaderHeight());
                 this.sceneRenderer.end();
                 if (this.playerConfig.viewport.debugRender) {
                     this.sceneRenderer.begin();
+                    let actor_pos = actor.getPosition();
                     if (actor.scale.x > 0) {
-                        this.sceneRenderer.rect(false, actor.position.x + actor.animViewport.x, actor.position.y + actor.animViewport.y, actor.animViewport.width, actor.animViewport.height, spine.Color.BLUE);
+                        this.sceneRenderer.rect(false, actor_pos.x + actor.animViewport.x, actor_pos.y + actor.animViewport.y, actor.animViewport.width, actor.animViewport.height, spine.Color.BLUE);
                     }
                     else {
-                        this.sceneRenderer.rect(false, actor.position.x - (actor.animViewport.width + actor.animViewport.x), actor.position.y + actor.animViewport.y, actor.animViewport.width, actor.animViewport.height, spine.Color.GREEN);
+                        this.sceneRenderer.rect(false, actor_pos.x - (actor.animViewport.width + actor.animViewport.x), actor_pos.y + actor.animViewport.y, actor.animViewport.width, actor.animViewport.height, spine.Color.GREEN);
                     }
-                    this.sceneRenderer.rect(false, actor.position.x + actor.defaultBB.x, actor.position.y + actor.defaultBB.y, actor.defaultBB.width, actor.defaultBB.height, spine.Color.ORANGE);
-                    this.sceneRenderer.circle(true, actor.position.x, actor.position.y, 10, spine.Color.RED);
+                    this.sceneRenderer.rect(false, actor_pos.x + actor.defaultBB.x, actor_pos.y + actor.defaultBB.y, actor.defaultBB.width, actor.defaultBB.height, spine.Color.ORANGE);
+                    this.sceneRenderer.circle(true, actor_pos.x, actor_pos.y, 10, spine.Color.RED);
                     this.sceneRenderer.end();
                 }
-                this.sceneRenderer.camera.zoom = 0;
             }
             if (all_actors_loaded) {
                 this.assetManager.clearErrors();
@@ -11901,6 +12108,9 @@ var spine;
                 actor.paused = true;
             }
         }
+        getSceneRenderer() {
+            return this.sceneRenderer;
+        }
     }
     spine.SpinePlayer = SpinePlayer;
     function isContained(dom, needle) {
@@ -11967,6 +12177,319 @@ var spine;
 })(spine || (spine = {}));
 var stym;
 (function (stym) {
+    class ControlCam {
+        dom;
+        parent;
+        width;
+        height;
+        runtime;
+        constructor(parent, width, height, runtime) {
+            if (typeof parent === "string") {
+                this.parent = document.getElementById(parent);
+            }
+            else {
+                this.parent = parent;
+            }
+            this.parent?.appendChild(this.setupDom());
+            this.width = width;
+            this.height = height;
+            this.runtime = runtime;
+        }
+        getElementById(dom, id) {
+            return this.findWithId(this.dom, id)[0];
+        }
+        findWithId(dom, id) {
+            let found = new Array();
+            let findRecursive = (dom, id, found) => {
+                for (var i = 0; i < dom.children.length; i++) {
+                    let child = dom.children[i];
+                    if (child.id === id)
+                        found.push(child);
+                    findRecursive(child, id, found);
+                }
+            };
+            findRecursive(dom, id, found);
+            return found;
+        }
+        findWithClass(dom, className) {
+            let found = new Array();
+            let findRecursive = (dom, className, found) => {
+                for (var i = 0; i < dom.children.length; i++) {
+                    let child = dom.children[i];
+                    if (child.classList.contains(className))
+                        found.push(child);
+                    findRecursive(child, className, found);
+                }
+            };
+            findRecursive(dom, className, found);
+            return found;
+        }
+        createElement(html) {
+            let dom = document.createElement("div");
+            dom.innerHTML = html;
+            return dom.children[0];
+        }
+        setupDom() {
+            let dom = this.dom = this.createElement(`
+				<div>
+                    <label class="large_font">Camera Near/Far</label>
+                    <input class="cam_input watch" id="near-value" type="number" value="100" step="0.00001" size="10"></input>
+                    <input class="cam_input watch" id="far-value" type="number" value="600" step="100" size="10"></input>
+                    <br />
+                    <label class="large_font">Camera X,Y,Z</label>
+                    <input class="cam_input watch" id="cam-x" type="number" value="0" step="0.01" size="10"></input>
+                    <input class="cam_input watch" id="cam-y" type="number" value="0" step="1" size="10"></input>
+                    <input class="cam_input watch" id="cam-z" type="number" value="0" step="1" size="10"></input>
+                    <br />
+                    <label class="large_font">Camera FOV</label>
+                    <input class="cam_input watch" id="fov" type="number" value="45" step="5" size="10"></input>
+                    <div>
+                        <label class="large_font" id="camera_type_label">Camera Type</label>
+                        <select id="camera_type">
+                            <option value="orthographic">Orthographic</option>
+                            <option value="perspective" selected="selected">Perspective</option>
+                        </select>
+                    </div>
+
+                    <hr />
+                    <input class="cam_input watch" id="test_x" type="number" value="0" step="0.01" size="10"></input>
+                    <input class="cam_input watch" id="test_y" type="number" value="0" step="0.01" size="10"></input>
+                    <input class="cam_input watch" id="test_z" type="number" value="0" step="1" size="10"></input>
+                    <hr />
+                    <div>
+                        <label class="large_font" id="transform_dir_label">Coordinate System</label>
+                        <select class="cam_input watch" id="transform_dir">
+                            <option value="world">World</option>
+                            <option value="screen">Screen</option>
+                        </select>
+                        <br />
+
+                        <label class="large_font" id="camera_choice_label">Perspective</label>
+                        <select class="cam_input watch" id="camera_choice">
+                            <option value="perspective" selected="selected">Perspective</option>
+                            <option value="orthographic">Orthographic</option>
+                        </select>
+                        <br />
+
+                        <label class="large_font" id="correct_cam_z">Correct Cam Z: </label>
+                    </div>
+                    <div>
+                        <label class="large_font">World to Screen</label>
+                        <p class="cam_input" id="world_to_screen"></p>
+                    </div>
+                    <div>
+                        <label class="large_font">Screen To World</label>
+                        <p class="cam_input" id="screen_to_world"></p>
+                    </div>
+                    <div>
+                        <label class="large_font">Output</label>
+                        <p class="cam_input" id="output1"></p>
+                        <p class="cam_input" id="outpu2"></p>
+                        <p class="cam_input" id="output3"></p>
+                    </div>
+                </div>
+			`);
+            document.body.appendChild(this.dom);
+            this.addListeners(this.dom);
+            return dom;
+        }
+        getCorrectCameraPerspectiveZ(near, far, fovY) {
+            let cam = new spine.webgl.PerspectiveCamera(this.width, this.height);
+            cam.near = near;
+            cam.far = far;
+            cam.fov = fovY;
+            cam.zoom = 1;
+            cam.position.x = 0.0;
+            cam.position.y = 0.0;
+            cam.position.z = 0.0;
+            cam.update();
+            let a = cam.projectionView.values[spine.webgl.M00];
+            let w = -a * (this.width / 2);
+            return w;
+        }
+        addListeners(dom) {
+            this.findWithClass(dom, "watch").forEach(input => {
+                input.addEventListener("change", (event) => {
+                    try {
+                        let width = this.width;
+                        let height = this.height;
+                        let cam = null;
+                        if (this.getElementById(dom, "camera_choice").selectedIndex == 0) {
+                            cam = new spine.webgl.PerspectiveCamera(width, height);
+                            cam.near = this.getElementById(dom, "near-value").valueAsNumber;
+                            cam.far = this.getElementById(dom, "far-value").valueAsNumber;
+                            cam.fov = this.getElementById(dom, "fov").valueAsNumber;
+                            cam.zoom = 1;
+                            cam.position.x = this.getElementById(dom, "cam-x").valueAsNumber;
+                            cam.position.y = this.getElementById(dom, "cam-y").valueAsNumber;
+                            cam.position.z = this.getElementById(dom, "cam-z").valueAsNumber;
+                            let origin = new spine.webgl.Vector3(0, 0, 0);
+                            let pos = new spine.webgl.Vector3(0, 0, cam.position.z);
+                            let dir = origin.sub(pos).normalize();
+                            cam.direction = new spine.webgl.Vector3(0, 0, -1);
+                            cam.update(true);
+                        }
+                        else {
+                            cam = new spine.webgl.OrthoCamera(width, height);
+                            cam.near = 0;
+                            cam.far = 200;
+                            cam.direction = new spine.webgl.Vector3(0, 0, -1);
+                            cam.zoom = 1.0;
+                            cam.position.x = 0;
+                            cam.position.y = height / 2;
+                            cam.position.z = 0;
+                            cam.update();
+                        }
+                        if (this.runtime) {
+                            this.runtime.spinePlayer.getSceneRenderer().camera = cam;
+                            this.runtime.spinePlayer.updateCameraSettings = () => {
+                            };
+                        }
+                        const x = this.getElementById(dom, "test_x").valueAsNumber;
+                        const y = this.getElementById(dom, "test_y").valueAsNumber;
+                        const z = this.getElementById(dom, "test_z").valueAsNumber;
+                        const world_to_screen = this.getElementById(dom, "world_to_screen");
+                        const screen_to_world = this.getElementById(dom, "screen_to_world");
+                        let w = this.getCorrectCameraPerspectiveZ(cam.near, cam.far, cam.fov);
+                        this.getElementById(dom, "correct_cam_z").innerText = `Correct Cam Z: ${w}`;
+                        if (this.getElementById(dom, "transform_dir").selectedIndex == 0) {
+                            let r1 = cam.worldToScreen(new spine.webgl.Vector3(x, y, z));
+                            let r2 = cam.screenToWorld(new spine.webgl.Vector3(r1.x, r1.y, r1.z), width, height);
+                            world_to_screen.innerText = `${r1.x}, ${r1.y}, ${r1.z}`;
+                            screen_to_world.innerText = `${r2.x}, ${r2.y}, ${r2.z}`;
+                        }
+                        else {
+                            let r2 = cam.screenToWorld(new spine.webgl.Vector3(x, y, z), width, height);
+                            let r1 = cam.worldToScreen(new spine.webgl.Vector3(r2.x, r2.y, r2.z));
+                            world_to_screen.innerText = `${r1.x}, ${r1.y}, ${r1.z}`;
+                            screen_to_world.innerText = `${r2.x}, ${r2.y}, ${r2.z}`;
+                        }
+                    }
+                    catch (e) {
+                        console.log(e);
+                        const world_to_screen = this.getElementById(dom, "world_to_screen");
+                        world_to_screen.innerText = "Error: " + e;
+                    }
+                });
+            });
+        }
+    }
+    stym.ControlCam = ControlCam;
+})(stym || (stym = {}));
+var stym;
+(function (stym) {
+    class Mat {
+        data;
+        mirror;
+        constructor(data, mirror) {
+            this.data = new Array(data.length);
+            for (var i = 0, cols = data[0].length; i < data.length; i++) {
+                this.data[i] = new Array(cols);
+                for (var j = 0; j < cols; j++) {
+                    this.data[i][j] = data[i][j];
+                }
+            }
+            if (mirror) {
+                if (typeof mirror[0] !== "object") {
+                    for (var i = 0; i < mirror.length; i++) {
+                        mirror[i] = [mirror[i]];
+                    }
+                }
+                this.mirror = new Mat(mirror);
+            }
+            return this;
+        }
+        swap(i, j) {
+            if (this.mirror)
+                this.mirror.swap(i, j);
+            var tmp = this.data[i];
+            this.data[i] = this.data[j];
+            this.data[j] = tmp;
+        }
+        multline(i, l) {
+            if (this.mirror)
+                this.mirror.multline(i, l);
+            var line = this.data[i];
+            for (var k = line.length - 1; k >= 0; k--) {
+                line[k] *= l;
+            }
+        }
+        addmul(i, j, l) {
+            if (this.mirror)
+                this.mirror.addmul(i, j, l);
+            var lineI = this.data[i], lineJ = this.data[j];
+            for (var k = lineI.length - 1; k >= 0; k--) {
+                lineI[k] = lineI[k] + l * lineJ[k];
+            }
+        }
+        hasNullLine(i) {
+            for (var j = 0; j < this.data[i].length; j++) {
+                if (this.data[i][j] !== 0) {
+                    return false;
+                }
+            }
+            return true;
+        }
+        gauss() {
+            var pivot = 0, lines = this.data.length, columns = this.data[0].length, nullLines = [];
+            for (var j = 0; j < columns; j++) {
+                var maxValue = 0, maxLine = 0;
+                for (var k = pivot; k < lines; k++) {
+                    var val = this.data[k][j];
+                    if (Math.abs(val) > Math.abs(maxValue)) {
+                        maxLine = k;
+                        maxValue = val;
+                    }
+                }
+                if (maxValue === 0) {
+                    nullLines.push(pivot);
+                }
+                else {
+                    this.multline(maxLine, 1 / maxValue);
+                    this.swap(maxLine, pivot);
+                    for (var i = 0; i < lines; i++) {
+                        if (i !== pivot) {
+                            this.addmul(i, pivot, -this.data[i][j]);
+                        }
+                    }
+                }
+                pivot++;
+            }
+            for (var i = 0; i < nullLines.length; i++) {
+                if (!this.mirror.hasNullLine(nullLines[i])) {
+                    throw new Error("singular matrix");
+                }
+            }
+            return this.mirror.data;
+        }
+    }
+    class linear {
+        solve(A, b) {
+            var result = new Mat(A, b).gauss();
+            if (result.length > 0 && result[0].length === 1) {
+                for (var i = 0; i < result.length; i++)
+                    result[i] = result[i][0];
+            }
+            return result;
+        }
+        identity(n) {
+            var id = new Array(n);
+            for (var i = 0; i < n; i++) {
+                id[i] = new Array(n);
+                for (var j = 0; j < n; j++) {
+                    id[i][j] = (i === j) ? 1 : 0;
+                }
+            }
+            return id;
+        }
+        invert(A) {
+            return new Mat(A, this.identity(A.length)).gauss();
+        }
+    }
+    stym.linear = linear;
+})(stym || (stym = {}));
+var stym;
+(function (stym) {
     class Runtime {
         socket;
         spinePlayer;
@@ -12007,6 +12530,8 @@ var stym;
                     textSize: 14,
                     textFont: "lato",
                     runtimeDebugInfoDumpIntervalSec: 60,
+                    cameraPerspectiveNear: 1,
+                    cameraPerspectiveFar: 2000,
                 };
                 console.log("Creating a new spine player");
                 this.spinePlayer = new spine.SpinePlayer("container", this.spinePlayerConfig);
@@ -12065,17 +12590,21 @@ var stym;
                 configMaxPixelSize = requestData["max_sprite_pixel_size"];
             }
             let referenceMovementSpeedPx = 80;
+            let referenceMovementSpeedPy = 80;
             if (requestData["movement_speed_px"] != null) {
                 referenceMovementSpeedPx = requestData["movement_speed_px"];
+            }
+            if (requestData["movement_speed_py"] != null) {
+                referenceMovementSpeedPx = requestData["movement_speed_py"];
             }
             let movementSpeedPxX = null;
             let movementSpeedPxY = null;
             if (requestData["movement_speed"] != null) {
                 movementSpeedPxX = Math.floor(requestData["movement_speed"]["x"] * referenceMovementSpeedPx);
-                movementSpeedPxY = Math.floor(requestData["movement_speed"]["y"] * referenceMovementSpeedPx);
+                movementSpeedPxY = Math.floor(requestData["movement_speed"]["y"] * referenceMovementSpeedPy);
             }
             let defaultMovementSpeedPxX = referenceMovementSpeedPx;
-            let defaultMovementSpeedPxY = 0;
+            let defaultMovementSpeedPxY = referenceMovementSpeedPy;
             this.actorConfig = {
                 chibiId: requestData["operator_id"],
                 userDisplayName: requestData['user_name_display'],

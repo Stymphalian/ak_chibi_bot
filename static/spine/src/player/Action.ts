@@ -3,6 +3,7 @@ module spine {
 		static PLAY_ANIMATION = "PLAY_ANIMATION";
 		static WANDER = "WANDER";
 		static WALK_TO = "WALK_TO";
+        static PACE_AROUND = "PACE_AROUND";
     }
 
     export interface ActorAction {
@@ -20,6 +21,8 @@ module spine {
                 return new WanderAction(actionData);
             case ActionName.WALK_TO:
                 return new WalkToAction(actionData);
+            case ActionName.PACE_AROUND:
+                return new PaceAroundAction(actionData);
             default:
                 console.log("Unknown action name ", actionName);
                 return null;
@@ -47,9 +50,9 @@ module spine {
         SetAnimation(actor:Actor, animation:string, viewport: BoundingBox) {
             const startPosYScaled = actor.config.startPosY * viewport.y;
             if (animation == "Sit") {
-				actor.position.y = startPosYScaled + Math.abs(actor.animViewport.y)
+				actor.setPositionY(startPosYScaled + Math.abs(actor.animViewport.y));
 			} else {
-				actor.position.y = startPosYScaled;
+				actor.setPositionY(startPosYScaled);
 			}
             this.currentAnimation = animation;
             if (this.currentAnimation.includes("Move")) {
@@ -68,22 +71,21 @@ module spine {
                 actor.velocity.y = 0;
             } else {
                 if (this.endPosition == null) {
-                    this.startPosition = actor.position;
-                    this.endPosition = this.getRandomPosition(actor.position, viewport);
+                    this.startPosition = actor.getPosition();
+                    this.endPosition = this.getRandomPosition(actor.getPosition(), viewport);
                 }
     
-                let dir = this.endPosition.subtract(actor.position);
+                let dir = this.endPosition.subtract(actor.getPosition());
                 if (dir.length() < 5) {
                     // We have reached the target position. Find a new destination
-                    actor.position.x = this.endPosition.x;
-                    actor.position.y = this.endPosition.y;
-                    this.startPosition = actor.position;
-                    this.endPosition = this.getRandomPosition(actor.position, viewport);
+                    actor.setPosition(this.endPosition.x, this.endPosition.y);
+                    this.startPosition = actor.getPosition();
+                    this.endPosition = this.getRandomPosition(actor.getPosition(), viewport);
                 }    
                 dir.normalize();
                 actor.velocity =  new Vector2(
-                    dir.x * actor.movementSpeed.x * deltaSecs,
-                    dir.y * actor.movementSpeed.y * deltaSecs
+                    dir.x * actor.getMovementSpeedX() * deltaSecs,
+                    dir.y * actor.getMovementSpeedY() * deltaSecs
                 )
             }
         }
@@ -106,7 +108,9 @@ module spine {
         }
 
         SetAnimation(actor:Actor, animation:string, viewport: BoundingBox) {
-            actor.position.y = actor.config.startPosY * viewport.y;
+            // TODO: Figure out what this for walking, wander, pace-around actions
+            // I know for playAnimation it is used to reset from a sit position
+            actor.setPositionY(actor.config.startPosY * viewport.y);
         }
 
         GetAnimations(): string[] {
@@ -115,22 +119,21 @@ module spine {
 
         UpdatePhysics(actor: Actor, deltaSecs: number, viewport: BoundingBox){
             if (this.endPosition == null) {
-                this.startPosition = actor.position;
-                this.endPosition = this.getRandomPosition(actor.position, viewport);
+                this.startPosition = actor.getPosition();
+                this.endPosition = this.getRandomPosition(actor.getPosition(), viewport);
             }
 
-            let dir = this.endPosition.subtract(actor.position);
+            let dir = this.endPosition.subtract(actor.getPosition());
             if (dir.length() < 5) {
                 // We have reached the target position. Find a new destination
-                actor.position.x = this.endPosition.x;
-                actor.position.y = this.endPosition.y;
-                this.startPosition = actor.position;
-                this.endPosition = this.getRandomPosition(actor.position, viewport);
+                actor.setPosition(this.endPosition.x, this.endPosition.y);
+                this.startPosition = actor.getPosition();
+                this.endPosition = this.getRandomPosition(actor.getPosition(), viewport);
             }    
             dir.normalize();
             actor.velocity =  new Vector2(
-                dir.x * actor.movementSpeed.x * deltaSecs,
-                dir.y * actor.movementSpeed.y * deltaSecs
+                dir.x * actor.getMovementSpeedX() * deltaSecs,
+                dir.y * actor.getMovementSpeedY() * deltaSecs
             )
         }
     }
@@ -152,7 +155,7 @@ module spine {
         }
 
         SetAnimation(actor:Actor, animation:string, viewport: BoundingBox) {
-            actor.position.y = actor.config.startPosY * viewport.y;
+            actor.setPositionY(actor.config.startPosY * viewport.y);
         }
 
         GetAnimations(): string[] {
@@ -169,7 +172,7 @@ module spine {
             }
 
             if (this.endPosition == null) {
-                this.startPosition = actor.position;
+                this.startPosition = actor.getPosition();
                 let target = new Vector2(
                     this.actionData["target_pos"]["x"],
                     this.actionData["target_pos"]["y"],
@@ -185,22 +188,98 @@ module spine {
                 this.startDir = this.startDir.normalize()
             }
 
-            let dir = this.endPosition.subtract(actor.position).normalize();
+            let dir = this.endPosition.subtract(actor.getPosition()).normalize();
             let angle = this.startDir.angle(dir);
             let reached = Math.abs(Math.PI - angle) < 0.001;
             if (reached || this.reachedDestination) {
                 // We have reached the target destination
-                actor.position.x = this.endPosition.x;
-                actor.position.y = this.endPosition.y;
-                this.startPosition = actor.position;
+                actor.setPosition(this.endPosition.x, this.endPosition.y);
+                this.startPosition = actor.getPosition();
                 actor.velocity.x = 0;
                 actor.velocity.y = 0;
                 this.reachedDestination = true;
                 actor.InitAnimationState();
             } else {
                 actor.velocity =  new Vector2(
-                    dir.x * actor.movementSpeed.x * deltaSecs,
-                    dir.y * actor.movementSpeed.y * deltaSecs
+                    dir.x * actor.getMovementSpeedX() * deltaSecs,
+                    dir.y * actor.getMovementSpeedY() * deltaSecs
+                );
+            }
+        }
+    }
+
+    export class PaceAroundAction implements ActorAction{
+        public actionData: any
+        public startPosition: Vector2 = null;
+        public endPosition: Vector2 = null;
+        public startDir: Vector2 = null;
+        public reachedDestination: boolean;
+
+        constructor(actionData: any) {
+            this.actionData = actionData;
+            this.startPosition = null;
+            this.endPosition = null;
+            this.startDir = null;
+            this.reachedDestination = false;
+        }
+
+        SetAnimation(actor:Actor, animation:string, viewport: BoundingBox) {
+            actor.setPositionY(actor.config.startPosY * viewport.y);
+        }
+
+        GetAnimations(): string[] {
+            return [this.actionData["pace_around_animation"]];
+        }
+
+        UpdatePhysics(actor: Actor, deltaSecs: number, viewport: BoundingBox) {
+            if (this.reachedDestination) {
+                this.reachedDestination = false;
+
+                // Swap the positions
+                let tempPosition = this.startPosition;
+                this.startPosition = this.endPosition;
+                this.endPosition = tempPosition;
+                return;
+            }
+
+            if (this.endPosition == null) {
+                let start = new Vector2(
+                    this.actionData["pace_start_pos"]["x"],
+                    this.actionData["pace_start_pos"]["x"],
+                    // this.actionData["pace_start_pos"]["y"],
+                )
+                let target = new Vector2(
+                    this.actionData["pace_end_pos"]["x"],
+                    this.actionData["pace_end_pos"]["x"],
+                    // this.actionData["pace_end_pos"]["y"],
+                );
+                this.startPosition = new spine.Vector2(
+                    start.x * viewport.width - (viewport.width/2),
+                    start.y * viewport.height,
+                )
+                this.endPosition = new spine.Vector2(
+                    target.x * viewport.width - (viewport.width/2),
+                    target.y * viewport.height,
+                );
+                if (this.endPosition.subtract(actor.getPosition()).length() < 10) {
+                    this.reachedDestination = true;
+                }
+            }
+            // TODO: Figure out a better way of handling if we have reached an end position.
+
+            let dir = this.endPosition.subtract(actor.getPosition()).normalize();
+            let dist_to = this.endPosition.subtract(actor.getPosition()).length();
+            if (dist_to < 10 || this.reachedDestination) {
+                // We have reached the target destination
+                actor.setPosition(this.endPosition.x, this.endPosition.y);
+                actor.velocity.x = 0;
+                actor.velocity.y = 0;
+                this.reachedDestination = true;
+                // actor.InitAnimationState();
+            } else {
+                actor.velocity =  new Vector2(
+                    dir.x * actor.getMovementSpeedX() * deltaSecs,
+                    dir.y * actor.getMovementSpeedY() * deltaSecs
                 );
             }
         }

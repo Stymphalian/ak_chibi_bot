@@ -75,6 +75,9 @@ module spine {
 		maxSizePx: number
 		startPosX : number
 		startPosY : number
+		// Specify extra offset in Pixel for X and Y to fit the chibi on the screen
+		extraOffsetX: number,
+		extraOffsetY: number,
 
 		defaultMovementSpeedPxX: number,
 		defaultMovementSpeedPxY: number,
@@ -84,8 +87,6 @@ module spine {
 		// Unused?
 		defaultScaleX?: number
 		defaultScaleY?: number
-		extraOffsetX: number,
-		extraOffsetY: number,
 
 		/* Optional: the background image. Default: none. */
 		backgroundImage?: {
@@ -143,9 +144,13 @@ module spine {
 		public prevAnimViewport: BoundingBox = null;
 		public defaultBB: BoundingBox = null;
 
-		// Velcity in world coordinates space (units/second)
-		public movementSpeed: spine.Vector2 = new spine.Vector2();
-		public position: spine.Vector2 = new spine.Vector2();
+		// Velocity is in world coordinates (pixels/second)
+		private movementSpeed: spine.Vector2 = new spine.Vector2();
+		// Position is in world coordinates (with dimensions same as viewport)
+		//   x-axis is 0 in center of the screen
+		//   and y-axis is 0 at the bottom of the screen.
+		// We use these coordinates compared to top-left corner.
+		private position: spine.Vector2 = new spine.Vector2();
 		public scale: spine.Vector2 = new spine.Vector2(1,1);
 		public velocity: spine.Vector2 = new spine.Vector2(0, 0);
 		public startPosition: spine.Vector2 = null;
@@ -157,10 +162,10 @@ module spine {
 		public load_failed: boolean = false;
 
 		constructor(config: SpineActorConfig, viewport: BoundingBox) {
+			this.viewport = viewport;
 			this.ResetWithConfig(config);
 			let x = Math.random()*viewport.width - (viewport.width/2)
 			this.position = new spine.Vector2(x, 0);
-			this.viewport = viewport;
 
 			if (config.startPosX || config.startPosY) {
 				this.position = new spine.Vector2(
@@ -168,6 +173,58 @@ module spine {
 					config.startPosY * viewport.height
 				);
 			}
+		}
+
+		public getPosition(): spine.Vector2 {
+			return new spine.Vector2(
+				this.position.x,
+				this.position.y
+			);
+		}
+		public getPositionX(): number {
+			return this.position.x;
+		}
+		public getPositionY(): number {
+			return this.position.y;
+		}
+		public setPositionX(x: number) {
+			this.position.x = x;
+		}
+		public setPositionY(y: number) {
+			this.position.y = y;
+		}
+		public setPosition(x: number, y: number) {
+			this.position.x = x;
+			this.position.y = y;
+		}
+		public setPositionV(pos: spine.Vector2) {
+			this.position = pos;
+		}
+
+		public getMovmentSpeed(): spine.Vector2 {
+			return new spine.Vector2(
+				this.movementSpeed.x,
+				this.movementSpeed.y
+			);
+		}
+		public getMovementSpeedX(): number {
+			return this.movementSpeed.x;
+		}
+		public getMovementSpeedY(): number {
+			return this.movementSpeed.y;
+		}
+		public setMovementSpeedX(x: number) {
+			this.movementSpeed.x = x;
+		}
+		public setMovementSpeedY(y: number) {
+			this.movementSpeed.y = y;
+		}
+		public setMovementSpeed(x: number, y: number) {
+			this.movementSpeed.x = x;
+			this.movementSpeed.y = y;
+		}
+		public setMovementSpeedV(speed: spine.Vector2) {
+			this.movementSpeed = speed;
 		}
 
 		public InitAnimations() {
@@ -206,7 +263,7 @@ module spine {
 					config.defaultMovementSpeedPxY
 				);
 			}
-
+			
 			// current bearing should be kept the same, event as we change
 			// the configuration/animation
 			this.scale.x = Math.sign(this.scale.x) * config.scaleX;

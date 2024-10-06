@@ -263,6 +263,24 @@ func (c *OperatorService) ValidateUpdateSetDefaultOtherwise(update *OperatorInfo
 				defaultIdleAnimation,
 			)[0]
 		}
+
+	case ACTION_PACE_AROUND:
+		availableMoves := GetAvailableMoveAnimations(update.AvailableAnimations)
+		defaultMoveAnim := GetDefaultAnimForChibiStance(update.ChibiStance)
+		if len(availableMoves) > 0 {
+			defaultMoveAnim = availableMoves[0]
+		}
+		update.Action.PaceAroundAnimation = getValidAnimations(
+			update.AvailableAnimations,
+			[]string{update.Action.PaceAroundAnimation},
+			defaultMoveAnim,
+		)[0]
+		if update.Action.PaceStartPos.IsNone() {
+			update.Action.PaceStartPos = misc.NewOption(misc.Vector2{X: 0.1, Y: 0.0})
+		}
+		if update.Action.PaceEndPos.IsNone() {
+			update.Action.PaceEndPos = misc.NewOption(misc.Vector2{X: 0.5, Y: 0.0})
+		}
 	}
 
 	return nil

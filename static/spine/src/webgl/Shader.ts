@@ -67,6 +67,7 @@ module spine.webgl {
 				this.fs = this.compileShader(gl.FRAGMENT_SHADER, this.fragmentShader);
 				this.program = this.compileProgram(this.vs, this.fs);
 			} catch (e) {
+				console.log("Shader compilation error", e);
 				this.dispose();
 				throw e;
 			}

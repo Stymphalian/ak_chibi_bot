@@ -1,5 +1,5 @@
 
-module stym {
+namespace stym {
     export class Runtime {
 
         public socket: WebSocket;
@@ -32,8 +32,6 @@ module stym {
                     viewport: {
                         x: 0,
                         y: 0,
-                        // width: 1920,
-                        // height: 1080,
                         width: width,
                         height: height,
                         padLeft: 0,
@@ -47,6 +45,9 @@ module stym {
                     textSize: 14,
                     textFont: "lato",
                     runtimeDebugInfoDumpIntervalSec: 60,
+
+                    cameraPerspectiveNear: 1,
+                    cameraPerspectiveFar: 2000,
                 };
                 
                 console.log("Creating a new spine player");
@@ -117,17 +118,21 @@ module stym {
             }
 
             let referenceMovementSpeedPx = 80;
+            let referenceMovementSpeedPy = 80;
             if (requestData["movement_speed_px"] != null) {
                 referenceMovementSpeedPx = requestData["movement_speed_px"];
+            }
+            if (requestData["movement_speed_py"] != null) {
+                referenceMovementSpeedPx = requestData["movement_speed_py"];
             }
             let movementSpeedPxX = null;
             let movementSpeedPxY = null;
             if (requestData["movement_speed"] != null) {
                 movementSpeedPxX = Math.floor(requestData["movement_speed"]["x"] * referenceMovementSpeedPx);
-                movementSpeedPxY = Math.floor(requestData["movement_speed"]["y"] * referenceMovementSpeedPx);
+                movementSpeedPxY = Math.floor(requestData["movement_speed"]["y"] * referenceMovementSpeedPy);
             }
             let defaultMovementSpeedPxX = referenceMovementSpeedPx;
-            let defaultMovementSpeedPxY = 0;
+            let defaultMovementSpeedPxY = referenceMovementSpeedPy;
     
             this.actorConfig = {
                 chibiId: requestData["operator_id"],
@@ -177,7 +182,6 @@ module stym {
             }
         }
     }
-
 }
 
 

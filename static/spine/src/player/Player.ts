@@ -83,6 +83,10 @@ module spine {
 		 *  This is to help debug performance issues. Default: 60 seconds.
 		 */
 		runtimeDebugInfoDumpIntervalSec: number
+
+		// Camera Near and Far customization
+		cameraPerspectiveNear: number
+		cameraPerspectiveFar: number
 	}
 
 	class Slider {
@@ -418,9 +422,11 @@ module spine {
 
 		drawText(text: string, xpx: number, ypx: number) {
 			let viewport = this.playerConfig.viewport;
-			let textpos = this.sceneRenderer.camera.worldToScreen(
-				new spine.Vector2(xpx, ypx)
+			// TODO: I don't understand why this is worldToScreen.
+			let tt = this.sceneRenderer.camera.worldToScreen(
+				new spine.webgl.Vector3(xpx,ypx,0)
 			);
+			let textpos = new Vector2(tt.x, tt.y);
 			textpos.y = viewport.height - textpos.y;
 			xpx = textpos.x;
 			ypx = textpos.y;
@@ -444,6 +450,47 @@ module spine {
 			ctx.fillStyle = "white";
 			ctx.fillText(text, -width/2, 0);
 			ctx.restore();
+		}
+
+		getPerspectiveCameraZOffset(viewport: BoundingBox, near: number, far: number, fovY:number): number {
+			let width = viewport.width;
+			let height = viewport.height;
+			let cam = new spine.webgl.PerspectiveCamera(width, height);
+			cam.near = near;
+			cam.far = far;
+			cam.fov = fovY;
+			cam.zoom = 1;
+			cam.position.x = 0.0;
+			cam.position.y = 0.0;
+			cam.position.z = 0.0;
+			cam.update();
+
+			let a = cam.projectionView.values[spine.webgl.M00];
+			let w = -a * (width/2);
+			return w;
+		}
+
+		updateCameraSettings(actor: Actor, viewport: BoundingBox) {
+			let cam = this.sceneRenderer.camera;
+			cam.near = this.playerConfig.cameraPerspectiveNear;
+			cam.far = this.playerConfig.cameraPerspectiveFar;
+			cam.zoom = 1;
+			cam.position.x = 0;
+			cam.position.y = viewport.height/2;
+			// TODO: Negative so that the view is not flipped?
+			cam.position.z = -this.getPerspectiveCameraZOffset(
+				viewport, cam.near, cam.far, cam.fov
+			);
+
+			if (cam.position.z != 0) {
+				let origin = new spine.webgl.Vector3(0,0,0);
+				let pos = new spine.webgl.Vector3(0,0,cam.position.z)
+				let dir = origin.sub(pos).normalize();
+				cam.direction = dir;
+			} else {
+				cam.direction = new spine.webgl.Vector3(0, 0, -1);
+			}
+			cam.update();
 		}
 
 		drawFrame (requestNextFrame = true) {
@@ -523,25 +570,7 @@ module spine {
 				actor.skeleton.updateWorldTransform();
 
 				// Update the camera
-				let viewportSize = this.scale(viewport.width, viewport.height, this.canvas.width, this.canvas.height);
-				this.sceneRenderer.camera.zoom = viewport.width / viewportSize.x;
-				this.sceneRenderer.camera.position.x = viewport.x;
-				this.sceneRenderer.camera.position.y = viewport.y + viewport.height / 2;
-				this.sceneRenderer.camera.position.z = 0;
-				
-				// HACK: Code for using projection perspetive for the camera	
-				// this.sceneRenderer.camera.near = 1;
-				// this.sceneRenderer.camera.near = 10000;
-				// this.sceneRenderer.camera.position.z = 1320;
-				// let origin = new spine.webgl.Vector3(0,0,0);
-				// let pos = new spine.webgl.Vector3(
-				// 	this.sceneRenderer.camera.position.x,
-				// 	0,
-				// 	this.sceneRenderer.camera.position.z,
-				// );
-				// let dir = origin.sub(pos).normalize();
-				// this.sceneRenderer.camera.direction = dir;
-				
+				this.updateCameraSettings(actor, viewport);
 
 				this.sceneRenderer.begin();
 				// // Draw background image if given
@@ -557,10 +586,14 @@ module spine {
 				this.sceneRenderer.drawSkeleton(actor.skeleton, actor.config.premultipliedAlpha);
 
 				// Render the user's name above the chibi
+				// TODO: Need to figure out if the actor.animViewport.y has any breaking changes
+				// The subtraction of animViewport is to account for the fact the 
+				// character could be sitting and we offset the actors.postion.y 
+				// to make them "sit" in the air.
 				this.drawText(
 					actor.config.userDisplayName,
-					actor.position.x,
-					actor.position.y + actor.GetUsernameHeaderHeight(),
+					actor.getPositionX(),
+					actor.getPositionY() - Math.abs(actor.animViewport.y) + actor.GetUsernameHeaderHeight(),
 				)
 				this.sceneRenderer.end();
 
@@ -568,11 +601,12 @@ module spine {
 				if (this.playerConfig.viewport.debugRender) {
 					this.sceneRenderer.begin();
 
+					let actor_pos = actor.getPosition();
 					if (actor.scale.x > 0) {
 						this.sceneRenderer.rect(
 							false, 
-							actor.position.x + actor.animViewport.x,
-							actor.position.y + actor.animViewport.y,
+							actor_pos.x + actor.animViewport.x,
+							actor_pos.y + actor.animViewport.y,
 							actor.animViewport.width,
 							actor.animViewport.height,
 							Color.BLUE
@@ -580,8 +614,8 @@ module spine {
 					} else {
 						this.sceneRenderer.rect(
 							false, 
-							actor.position.x - (actor.animViewport.width + actor.animViewport.x),
-							actor.position.y + actor.animViewport.y,
+							actor_pos.x - (actor.animViewport.width + actor.animViewport.x),
+							actor_pos.y + actor.animViewport.y,
 							actor.animViewport.width,
 							actor.animViewport.height,
 							Color.GREEN
@@ -590,28 +624,16 @@ module spine {
 
 					this.sceneRenderer.rect(
 						false,
-						actor.position.x + actor.defaultBB.x,
-						actor.position.y + actor.defaultBB.y,
+						actor_pos.x + actor.defaultBB.x,
+						actor_pos.y + actor.defaultBB.y,
 						actor.defaultBB.width,
 						actor.defaultBB.height,
 						Color.ORANGE
 					)
 					
-					// if (actor.endPosition) {
-					// 	this.sceneRenderer.line(actor.endPosition.x, 0, actor.endPosition.x, 2000, Color.WHITE);
-					// }
-					this.sceneRenderer.circle(true, actor.position.x, actor.position.y, 10, Color.RED);
-					// this.sceneRenderer.circle(true, actor.position.x + actor.defaultBB.x, actor.position.y + actor.defaultBB.y, 5, Color.BLUE);
-
-					// this.sceneRenderer.line(0, 0, 0, 2000, Color.RED);
-					// this.sceneRenderer.line(0, 540, 1920, 540, Color.RED);
-					// this.sceneRenderer.line(0, 270, 1920, 270, Color.RED);
-					// this.sceneRenderer.line(0, actor.animViewport.height, 1920, actor.animViewport.height, Color.RED);
+					this.sceneRenderer.circle(true, actor_pos.x, actor_pos.y, 10, Color.RED);
 					this.sceneRenderer.end();
 				}
-
-				
-				this.sceneRenderer.camera.zoom = 0;
 			}
 
 			if (all_actors_loaded) {
@@ -793,6 +815,11 @@ module spine {
 			for(let [key, actor] of this.actors) {
 				actor.paused = true;
 			}
+		}
+
+		// Exposed only for testing.
+		public getSceneRenderer() : spine.webgl.SceneRenderer {
+			return this.sceneRenderer;
 		}
 	}
 

@@ -1,5 +1,6 @@
 <!doctype html>
 <html>
+
 <head>
 	<meta charset="utf-8">
 	<script type="text/javascript" src="/spine/static/build/spine-all.js"></script>
@@ -9,49 +10,64 @@
 </head>
 
 <style>
-body {
-	background: gray;
-	margin: 0px;
-}
+	body {
+		background: gray;
+		margin: 0px;
+	}
 </style>
 
 <body>
 	<div id="container" style="width: 960px; height: 540px;"></div>
+	<div id="custom_container"></div>
 </body>
+
 <script type="text/javascript">
 
 	function setContainerSizeFromQuery() {
 		const queryString = window.location.search;
 		const searchParams = new URLSearchParams(queryString);
-		let containerWidth = searchParams.has('width') 
+		let containerWidth = searchParams.has('width')
 			? Number.parseInt(searchParams.get('width'))
 			: 1920;
-		let containerHeight = searchParams.has('height') 
+		let containerHeight = searchParams.has('height')
 			? Number.parseInt(searchParams.get('height'))
 			: 1080;
 		let container = document.getElementById("container")
-		if(!Number.isInteger(containerWidth)) {
+		if (!Number.isInteger(containerWidth)) {
 			containerWidth = 1920;
 		}
-		if(!Number.isInteger(containerHeight)){ 
+		if (!Number.isInteger(containerHeight)) {
 			containerHeight = 1080;
 		}
 		containerWidth = Math.max(containerWidth, 0)
 		containerHeight = Math.max(containerHeight, 0)
+
+		// const windowWidth = window.screen.availWidth;
+		// const windowHeight = window.screen.availHeight;
+		// containerWidth = Math.min(containerWidth, windowWidth);
+		// containerHeight = Math.min(containerHeight, windowHeight);
+
 		console.log(containerWidth, containerHeight);
 		container.style.width = `${containerWidth}px`
 		container.style.height = `${containerHeight}px`
 		return [containerWidth, containerHeight];
 	}
-	
+
 	window.addEventListener("load", () => {
 		const queryString = window.location.search;
 		const searchParams = new URLSearchParams(queryString);
 		const channelName = searchParams.get('channelName');
 		const [containerWidth, containerHeight] = setContainerSizeFromQuery();
 		window.SpineRuntime = new stym.Runtime(channelName, containerWidth, containerHeight);
+		// window.ControlCam = new stym.ControlCam(
+		// 	"custom_container", 
+		// 	containerWidth, 
+		// 	containerHeight,
+		// 	window.SpineRuntime
+		// );
 	});
 </script>
 
 </body>
+
 </html>

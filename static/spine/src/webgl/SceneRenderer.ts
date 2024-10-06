@@ -31,7 +31,10 @@ module spine.webgl {
 	export class SceneRenderer implements Disposable {
 		context: ManagedWebGLRenderingContext;
 		canvas: HTMLCanvasElement;
-		camera: OrthoCamera;
+		// camera: OrthoCamera;
+		orthoCamera: OrthoCamera;
+		perspectiveCamera: PerspectiveCamera;
+		camera: Camera;
 		batcher: PolygonBatcher;
 		private twoColorTint = false;
 		private batcherShader: Shader;
@@ -53,7 +56,11 @@ module spine.webgl {
 			this.canvas = canvas;
 			this.context = context instanceof ManagedWebGLRenderingContext? context : new ManagedWebGLRenderingContext(context);
 			this.twoColorTint = twoColorTint;
-			this.camera = new OrthoCamera(canvas.width, canvas.height);
+			// this.camera = new OrthoCamera(canvas.width, canvas.height);
+			this.orthoCamera = new OrthoCamera(canvas.width, canvas.height);
+			this.perspectiveCamera = new PerspectiveCamera(canvas.width, canvas.height);
+			this.camera = this.perspectiveCamera;
+
 			this.batcherShader = twoColorTint ? Shader.newTwoColoredTextured(this.context) : Shader.newColoredTextured(this.context);
 			this.batcher = new PolygonBatcher(this.context, twoColorTint);
 			this.shapesShader = Shader.newColored(this.context);

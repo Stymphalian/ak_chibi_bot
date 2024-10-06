@@ -56,6 +56,7 @@ module spine.webgl {
 
 		constructor () {
 			let v = this.values;
+			this.identity();
 			v[M00] = 1;
 			v[M11] = 1;
 			v[M22] = 1;
@@ -198,28 +199,53 @@ module spine.webgl {
 			return new Matrix4().set(this.values);
 		}
 
-		projection (near: number, far: number, fovy: number, aspectRatio: number): Matrix4 {
+		projection (front: number, back: number, fovy: number, aspectRatio: number): Matrix4 {
 			this.identity();
-			let l_fd = (1.0 / Math.tan((fovy * (Math.PI / 180)) / 2.0));
-			let l_a1 = (far + near) / (near - far);
-			let l_a2 = (2 * far * near) / (near - far);
+			let fovy_rad = fovy * (Math.PI / 180);
+			let tangent = Math.tan(fovy_rad / 2.0);
+			let itangent = 1.0 / tangent;
+			let top = front * itangent;
+			let right = top * aspectRatio;
+			
 			let v = this.values;
-			v[M00] = l_fd / aspectRatio;
+			v[M00] = front / right
 			v[M10] = 0;
 			v[M20] = 0;
 			v[M30] = 0;
 			v[M01] = 0;
-			v[M11] = l_fd;
+			v[M11] = front / top;
 			v[M21] = 0;
 			v[M31] = 0;
 			v[M02] = 0;
 			v[M12] = 0;
-			v[M22] = l_a1;
+			v[M22] = -(back +front) / (back - front);
 			v[M32] = -1;
 			v[M03] = 0;
 			v[M13] = 0;
-			v[M23] = l_a2;
+			v[M23] = -(2*back*front) / (back - front);
 			v[M33] = 0;
+
+			// let fovy_rad = fovy * (Math.PI / 180);
+			// let l_fd = (1.0 / Math.tan(fovy_rad / 2.0));
+			// let l_a1 = (far + near) / (near - far);
+			// let l_a2 = (2 * far * near) / (near - far);
+			// let v = this.values;
+			// v[M00] = l_fd / aspectRatio;
+			// v[M10] = 0;
+			// v[M20] = 0;
+			// v[M30] = 0;
+			// v[M01] = 0;
+			// v[M11] = l_fd;
+			// v[M21] = 0;
+			// v[M31] = 0;
+			// v[M02] = 0;
+			// v[M12] = 0;
+			// v[M22] = l_a1;
+			// v[M32] = -1;
+			// v[M03] = 0;
+			// v[M13] = 0;
+			// v[M23] = l_a2;
+			// v[M33] = 0;
 			return this;
 		}
 

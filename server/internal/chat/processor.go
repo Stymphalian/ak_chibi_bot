@@ -65,6 +65,7 @@ func (c *ChatCommandProcessor) HandleMessage(current *operator.OperatorInfo, cha
 	// !chibi size 0.5 [0.1 1.5]
 	// !chibi scale 0.5 [0.1 1.5]
 	// !chibi velocity 2.0 [0.1 1.5]
+	// !chibi pace 0.1 0.5
 	// !chibi move_speed default
 
 	// var msg string
@@ -125,6 +126,8 @@ func (c *ChatCommandProcessor) HandleMessage(current *operator.OperatorInfo, cha
 		return c.setMoveSpeed(chatArgs, current)
 	case "velocity":
 		return c.setMoveSpeed(chatArgs, current)
+	case "pace":
+		return c.setPace(chatArgs, current)
 	default:
 		if _, ok := misc.MatchesKeywords(subCommand, current.AvailableAnimations); ok {
 			chatArgs.args = []string{"!chibi", "play", subCommand}
@@ -282,14 +285,7 @@ func (c *ChatCommandProcessor) setEnemy(args *ChatArgs, current *operator.Operat
 	}, nil
 }
 
-func (c *ChatCommandProcessor) setWalk(args *ChatArgs, current *operator.OperatorInfo) (ChatCommand, error) {
-	if current.Faction == operator.FACTION_ENUM_OPERATOR {
-		current.ChibiStance = operator.CHIBI_STANCE_ENUM_BASE
-	}
-
-	// Set the animation to "Move". If "Move" doesn't exist in the list of
-	// animations then try to find an animation with "Move" in its name
-	// Try to keep the current animation if it is already a "move" like animation
+func (c *ChatCommandProcessor) getMoveAnimFromCurrent(current *operator.OperatorInfo) string {
 	currentAnimations := current.Action.GetAnimations(current.CurrentAction)
 	moveAnimation := operator.DEFAULT_MOVE_ANIM_NAME
 	for _, animation := range currentAnimations {
@@ -306,6 +302,18 @@ func (c *ChatCommandProcessor) setWalk(args *ChatArgs, current *operator.Operato
 			}
 		}
 	}
+	return moveAnimation
+}
+
+func (c *ChatCommandProcessor) setWalk(args *ChatArgs, current *operator.OperatorInfo) (ChatCommand, error) {
+	if current.Faction == operator.FACTION_ENUM_OPERATOR {
+		current.ChibiStance = operator.CHIBI_STANCE_ENUM_BASE
+	}
+
+	// Set the animation to "Move". If "Move" doesn't exist in the list of
+	// animations then try to find an animation with "Move" in its name
+	// Try to keep the current animation if it is already a "move" like animation
+	moveAnimation := c.getMoveAnimFromCurrent(current)
 	current.CurrentAction = operator.ACTION_WANDER
 	current.Action = operator.NewActionWander(moveAnimation)
 	current.AnimationSpeed = c.spineService.GetDefaultAnimationSpeed()
@@ -334,6 +342,27 @@ func (c *ChatCommandProcessor) setWalk(args *ChatArgs, current *operator.Operato
 			misc.Vector2{X: desiredPosition, Y: 0.0},
 			moveAnimation,
 			animationAfterStance,
+		)
+		current.AnimationSpeed = c.spineService.GetDefaultAnimationSpeed()
+	} else if len(args.args) == 4 {
+		startPos, err := strconv.ParseFloat(args.args[2], 64)
+		if err != nil {
+			return &ChatCommandNoOp{}, errors.New("try something like !chibi walk 0.1 0.5")
+		}
+		endPos, err := strconv.ParseFloat(args.args[3], 64)
+		if err != nil {
+			return &ChatCommandNoOp{}, errors.New("try something like !chibi walk 0.1 0.5")
+		}
+		if startPos < 0 || startPos > 1 || endPos < 0 || endPos > 1 {
+			return &ChatCommandNoOp{}, errors.New("try something like !chibi walk 0.1 0.5")
+		}
+
+		moveAnimation := c.getMoveAnimFromCurrent(current)
+		current.CurrentAction = operator.ACTION_PACE_AROUND
+		current.Action = operator.NewActionPaceAround(
+			misc.Vector2{X: startPos, Y: 0},
+			misc.Vector2{X: endPos, Y: 0},
+			moveAnimation,
 		)
 		current.AnimationSpeed = c.spineService.GetDefaultAnimationSpeed()
 	}
@@ -511,6 +540,44 @@ func (c *ChatCommandProcessor) setMoveSpeed(args *ChatArgs, current *operator.Op
 			misc.Vector2{X: moveSpeed, Y: 0},
 		)
 	}
+
+	return &ChatCommandUpdateActor{
+		replyMessage:    "",
+		username:        args.chatMsg.Username,
+		usernameDisplay: args.chatMsg.UserDisplayName,
+		twitchUserId:    args.chatMsg.TwitchUserId,
+		update:          current,
+	}, nil
+}
+
+func (c *ChatCommandProcessor) setPace(args *ChatArgs, current *operator.OperatorInfo) (ChatCommand, error) {
+	if len(args.args) < 4 {
+		return &ChatCommandNoOp{}, errors.New("try something like !chibi pace 0.1 0.5")
+	}
+	if current.Faction == operator.FACTION_ENUM_OPERATOR {
+		current.ChibiStance = operator.CHIBI_STANCE_ENUM_BASE
+	}
+
+	startPos, err := strconv.ParseFloat(args.args[2], 64)
+	if err != nil {
+		return &ChatCommandNoOp{}, errors.New("try something like !chibi pace 0.1 0.5")
+	}
+	endPos, err := strconv.ParseFloat(args.args[3], 64)
+	if err != nil {
+		return &ChatCommandNoOp{}, errors.New("try something like !chibi pace 0.1 0.5")
+	}
+	if startPos < 0 || startPos > 1 || endPos < 0 || endPos > 1 {
+		return &ChatCommandNoOp{}, errors.New("try something like !chibi pace 0.1 0.5")
+	}
+
+	moveAnimation := c.getMoveAnimFromCurrent(current)
+	current.CurrentAction = operator.ACTION_PACE_AROUND
+	current.Action = operator.NewActionPaceAround(
+		misc.Vector2{X: startPos, Y: 0},
+		misc.Vector2{X: endPos, Y: 0},
+		moveAnimation,
+	)
+	current.AnimationSpeed = c.spineService.GetDefaultAnimationSpeed()
 
 	return &ChatCommandUpdateActor{
 		replyMessage:    "",

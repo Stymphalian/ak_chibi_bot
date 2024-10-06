@@ -10,6 +10,7 @@ import (
 	"os"
 	"os/signal"
 	"path"
+	"strconv"
 	"strings"
 	"sync"
 	"syscall"
@@ -266,12 +267,27 @@ func (s *MainStruct) HandleRoom(w http.ResponseWriter, r *http.Request) error {
 	}
 	channelName := r.URL.Query().Get("channelName")
 	channelName = strings.ToLower(channelName)
+	width := r.URL.Query().Get("width")
+	height := r.URL.Query().Get("height")
+	extraQueryArgs := ""
+	if len(width) > 0 {
+		widthInt, err := strconv.Atoi(width)
+		if err == nil {
+			extraQueryArgs += fmt.Sprintf("&width=%d", widthInt)
+		}
+	}
+	if len(height) > 0 {
+		heightInt, err := strconv.Atoi(height)
+		if err == nil {
+			extraQueryArgs += fmt.Sprintf("&height=%d", heightInt)
+		}
+	}
 
 	err := s.roomManager.CreateRoomOrNoOp(r.Context(), channelName)
 	if err != nil {
 		return err
 	}
-	http.Redirect(w, r, fmt.Sprintf("/spine/runtime/?channelName=%s", channelName), http.StatusSeeOther)
+	http.Redirect(w, r, fmt.Sprintf("/spine/runtime/?channelName=%s%s", channelName, extraQueryArgs), http.StatusSeeOther)
 	return nil
 }
 
