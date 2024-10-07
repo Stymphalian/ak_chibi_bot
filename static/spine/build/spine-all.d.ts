@@ -2104,7 +2104,13 @@ declare namespace stym {
     }
 }
 declare namespace stym {
-    class Runtime {
+    interface RuntimeConfig {
+        width: number;
+        height: number;
+        debugMode: boolean;
+        chibiScale: number;
+    }
+    export class Runtime {
         socket: WebSocket;
         spinePlayer: spine.SpinePlayer;
         spinePlayerConfig: spine.SpinePlayerConfig;
@@ -2113,10 +2119,12 @@ declare namespace stym {
         backoffTimeMsec: number;
         backOffMaxtimeMsec: number;
         channelName: string;
-        constructor(channelName: string, width: number, height: number, debugMode: boolean);
+        runtimeConfig: RuntimeConfig;
+        constructor(channelName: string, config: RuntimeConfig);
         openWebSocket(channelName: string): void;
         messageHandler(event: MessageEvent): void;
         swapCharacter(requestData: any): void;
         removeCharacter(requestData: any): void;
     }
+    export {};
 }

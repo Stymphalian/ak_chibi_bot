@@ -1,5 +1,12 @@
 
 namespace stym {
+    interface RuntimeConfig {
+        width: number,
+        height: number
+        debugMode: boolean
+        chibiScale: number
+    }
+
     export class Runtime {
 
         public socket: WebSocket;
@@ -10,8 +17,12 @@ namespace stym {
         public backoffTimeMsec: number;
         public backOffMaxtimeMsec: number;
         public channelName: string;
+        public runtimeConfig: RuntimeConfig;
     
-        constructor(channelName: string, width: number, height: number, debugMode: boolean) {
+        constructor(channelName: string, config: RuntimeConfig) {
+            this.runtimeConfig = config;
+            const {width, height, debugMode, chibiScale} = config;
+
             // TODO: Make the fonts configurable
             let font = new FontFace("lato", "url(/public/fonts/Lato/Lato-Black.ttf)");
             font.load().then(() => {document.fonts.add(font);})
@@ -158,8 +169,8 @@ namespace stym {
 
                 configScaleX: configScaleX,
                 configScaleY: configScaleY,
-                scaleX: 0.45 * configScaleX,
-                scaleY: 0.45 * configScaleY,
+                scaleX: 0.45 * this.runtimeConfig.chibiScale * configScaleX,
+                scaleY: 0.45 * this.runtimeConfig.chibiScale * configScaleY,
                 maxSizePx: configMaxPixelSize,
                 premultipliedAlpha: true,
                 animationPlaySpeed: requestData["animation_speed"] ?  requestData["animation_speed"] : 1.0,

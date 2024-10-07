@@ -13,6 +13,7 @@ import (
 	"github.com/Stymphalian/ak_chibi_bot/server/internal/misc"
 	"github.com/Stymphalian/ak_chibi_bot/server/internal/room"
 	"github.com/Stymphalian/ak_chibi_bot/server/internal/users"
+	"github.com/google/uuid"
 )
 
 type ApiServer struct {
@@ -76,6 +77,7 @@ func (s *ApiServer) RegisterHandlers() {
 	mux.Handle("POST /api/rooms/settings/{$}", s.middleware(s.HandleUpdateRoomSettings))
 	mux.Handle("POST /api/rooms/remove/{$}", s.middlewareAdmin(s.HandleRemoveRoom))
 	mux.Handle("POST /api/rooms/users/remove/{$}", s.middlewareAdmin(s.HandleRemoveUser))
+	mux.Handle("POST /api/rooms/users/add/{$}", s.middlewareAdmin(s.HandleRoomAddOperator))
 	mux.Handle("GET  /api/admin/info/{$}", s.middlewareAdmin(s.HandleAdminInfo))
 
 	http.Handle("/api/", mux)
@@ -245,10 +247,11 @@ func (s *ApiServer) HandleRoomAddOperator(w http.ResponseWriter, r *http.Request
 	room := s.roomsManager.Rooms[channelName]
 
 	// TODO: TwitchUserId is not real?
+	id := uuid.New().String()
 	room.GiveChibiToUser(context.Background(), misc.UserInfo{
 		Username:        reqBody.Username,
 		UsernameDisplay: reqBody.UserDisplayName,
-		TwitchUserId:    "0",
+		TwitchUserId:    id,
 	})
 	// faction, err := spine.FactionEnum_Parse(reqBody.Faction)
 	// if err != nil {

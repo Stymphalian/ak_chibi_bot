@@ -267,19 +267,26 @@ func (s *MainStruct) HandleRoom(w http.ResponseWriter, r *http.Request) error {
 	}
 	channelName := r.URL.Query().Get("channelName")
 	channelName = strings.ToLower(channelName)
-	width := r.URL.Query().Get("width")
-	height := r.URL.Query().Get("height")
 	extraQueryArgs := ""
+	width := r.URL.Query().Get("width")
 	if len(width) > 0 {
 		widthInt, err := strconv.Atoi(width)
 		if err == nil {
 			extraQueryArgs += fmt.Sprintf("&width=%d", widthInt)
 		}
 	}
+	height := r.URL.Query().Get("height")
 	if len(height) > 0 {
 		heightInt, err := strconv.Atoi(height)
 		if err == nil {
 			extraQueryArgs += fmt.Sprintf("&height=%d", heightInt)
+		}
+	}
+	chibiScale := r.URL.Query().Get("scale")
+	if len(chibiScale) > 0 {
+		chibiScaleInt, err := strconv.Atoi(chibiScale)
+		if err == nil {
+			extraQueryArgs += fmt.Sprintf("&scale=%d", chibiScaleInt)
 		}
 	}
 

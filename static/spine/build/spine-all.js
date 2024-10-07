@@ -12534,7 +12534,10 @@ var stym;
         backoffTimeMsec;
         backOffMaxtimeMsec;
         channelName;
-        constructor(channelName, width, height, debugMode) {
+        runtimeConfig;
+        constructor(channelName, config) {
+            this.runtimeConfig = config;
+            const { width, height, debugMode, chibiScale } = config;
             let font = new FontFace("lato", "url(/public/fonts/Lato/Lato-Black.ttf)");
             font.load().then(() => { document.fonts.add(font); });
             this.channelName = channelName;
@@ -12661,8 +12664,8 @@ var stym;
                 movementSpeedPxZ: movementSpeedPxZ,
                 configScaleX: configScaleX,
                 configScaleY: configScaleY,
-                scaleX: 0.45 * configScaleX,
-                scaleY: 0.45 * configScaleY,
+                scaleX: 0.45 * this.runtimeConfig.chibiScale * configScaleX,
+                scaleY: 0.45 * this.runtimeConfig.chibiScale * configScaleY,
                 maxSizePx: configMaxPixelSize,
                 premultipliedAlpha: true,
                 animationPlaySpeed: requestData["animation_speed"] ? requestData["animation_speed"] : 1.0,
