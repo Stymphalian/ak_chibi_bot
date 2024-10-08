@@ -12,6 +12,7 @@ type RoomRepository interface {
 	GetActiveRooms(ctx context.Context) ([]*RoomDb, error)
 	GetOrInsertRoom(ctx context.Context, roomConfig *RoomConfig) (
 		roomDb *RoomDb, isNew bool, err error)
+	GetRoomByChannelName(ctx context.Context, channelName string) (*RoomDb, error)
 
 	GetRoomGarbageCollectionPeriodMins(ctx context.Context, roomId uint) int
 

@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"regexp"
 	"strings"
 )
 
@@ -59,4 +60,14 @@ func (oi *InitialOperatorDetails) Scan(value interface{}) error {
 func (oi InitialOperatorDetails) Value() (driver.Value, error) {
 	jsonData, err := json.Marshal(oi)
 	return string(jsonData), err
+}
+
+var channelRegex = regexp.MustCompile(`^[a-zA-Z0-9_]{1,100}$`)
+
+func ValidateChannelName(channelName string) error {
+	channelName = strings.TrimSpace(channelName)
+	if !channelRegex.MatchString(channelName) {
+		return fmt.Errorf("channel name must be alphanumeric and between 1 and 100 characters, was '%s'", channelName)
+	}
+	return nil
 }

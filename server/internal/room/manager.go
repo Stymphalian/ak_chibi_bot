@@ -318,3 +318,45 @@ func (r *RoomsManager) RemoveRoom(channel string) error {
 	delete(r.Rooms, channel)
 	return nil
 }
+
+func (r *RoomsManager) UpdateSpineRuntimeConfig(ctx context.Context, roomId uint, newConfig *misc.SpineRuntimeConfig) error {
+	if err := misc.ValidateSpineRuntimeConfig(newConfig); err != nil {
+		return err
+	}
+	runtimeConfig, err := r.roomRepo.GetSpineRuntimeConfigById(ctx, roomId)
+	if err != nil {
+		return err
+	}
+	if newConfig.MinAnimationSpeed > 0 {
+		runtimeConfig.MinAnimationSpeed = newConfig.MinAnimationSpeed
+	}
+	if newConfig.MaxAnimationSpeed > 0 {
+		runtimeConfig.MaxAnimationSpeed = newConfig.MaxAnimationSpeed
+	}
+	if newConfig.MinMovementSpeed > 0 {
+		runtimeConfig.MinMovementSpeed = newConfig.MinMovementSpeed
+	}
+	if newConfig.MaxMovementSpeed > 0 {
+		runtimeConfig.MaxMovementSpeed = newConfig.MaxMovementSpeed
+	}
+	if newConfig.MinScaleSize > 0 {
+		runtimeConfig.MinScaleSize = newConfig.MinScaleSize
+	}
+	if newConfig.MaxScaleSize > 0 {
+		runtimeConfig.MaxScaleSize = newConfig.MaxScaleSize
+	}
+	if newConfig.MaxSpritePixelSize > 0 {
+		runtimeConfig.MaxSpritePixelSize = newConfig.MaxSpritePixelSize
+	}
+	if newConfig.ReferenceMovementSpeedPx > 0 {
+		runtimeConfig.ReferenceMovementSpeedPx = newConfig.ReferenceMovementSpeedPx
+	}
+	if newConfig.DefaultAnimationSpeed > 0 {
+		runtimeConfig.DefaultAnimationSpeed = newConfig.DefaultAnimationSpeed
+	}
+	if newConfig.DefaultMovementSpeed > 0 {
+		runtimeConfig.DefaultMovementSpeed = newConfig.DefaultMovementSpeed
+	}
+	r.roomRepo.UpdateSpineRuntimeConfigForId(ctx, roomId, runtimeConfig)
+	return nil
+}

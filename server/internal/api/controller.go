@@ -19,12 +19,20 @@ import (
 type ApiServer struct {
 	roomsManager *room.RoomsManager
 	authService  auth.AuthServiceInterface
+	roomRepo     room.RoomRepository
 }
 
-func NewApiServer(roomManager *room.RoomsManager, authService auth.AuthServiceInterface) *ApiServer {
+// TODO: Refactor the API handlers. More of the logic should be moved into
+// services instead of being handled directly in the handlers
+func NewApiServer(
+	roomManager *room.RoomsManager,
+	authService auth.AuthServiceInterface,
+	roomRepo room.RoomRepository,
+) *ApiServer {
 	return &ApiServer{
 		roomsManager: roomManager,
 		authService:  authService,
+		roomRepo:     roomRepo,
 	}
 }
 
@@ -127,56 +135,18 @@ func (s *ApiServer) HandleUpdateRoomSettings(w http.ResponseWriter, r *http.Requ
 			fmt.Errorf("channel name must be provided"),
 		)
 	}
+	if (misc.ValidateChannelName(channelName)) != nil {
+		return misc.NewHumanReadableError(
+			"Invalid channel name",
+			http.StatusBadRequest,
+			fmt.Errorf("channel name must be alphanumeric and between 1 and 100 characters, was '%s'", channelName),
+		)
+	}
 	if err := s.matchRequestChannel(r, channelName); err != nil {
 		return err
 	}
 
-	if _, ok := s.roomsManager.Rooms[channelName]; !ok {
-		return fmt.Errorf("room %s does not exist", channelName)
-	}
-	room := s.roomsManager.Rooms[channelName]
-
-	config, err := room.GetSpineRuntimeConfig(r.Context())
-	if err != nil {
-		return err
-	}
-	// repo := room.RoomRepositoryPsql{}
-	// config, err := room.GetSpineRuntimeConfigById(context.Background(), roomObj.GetRoomId())
-	if reqBody.MinAnimationSpeed > 0 {
-		config.MinAnimationSpeed = reqBody.MinAnimationSpeed
-	}
-	if reqBody.MaxAnimationSpeed > 0 {
-		config.MaxAnimationSpeed = reqBody.MaxAnimationSpeed
-	}
-	if reqBody.MinVelocity > 0 {
-		config.MinMovementSpeed = reqBody.MinVelocity
-	}
-	if reqBody.MaxVelocity > 0 {
-		config.MaxMovementSpeed = reqBody.MaxVelocity
-	}
-	if reqBody.MinSpriteScale > 0 {
-		config.MinScaleSize = reqBody.MinSpriteScale
-	}
-	if reqBody.MaxSpriteScale > 0 {
-		config.MaxScaleSize = reqBody.MaxSpriteScale
-	}
-	if reqBody.MaxSpritePixelSize > 0 {
-		config.MaxSpritePixelSize = reqBody.MaxSpritePixelSize
-	}
-
-	if err := misc.ValidateSpineRuntimeConfig(config); err != nil {
-		return misc.NewHumanReadableError(
-			"Invalid configuration settings",
-			http.StatusBadRequest,
-			err,
-		)
-	}
-	err = room.UpdateSpineRuntimeConfig(r.Context(), config)
-	if err != nil {
-		return err
-	}
-
-	return nil
+	return s.updateRoomSettings(r.Context(), channelName, reqBody)
 }
 
 func (s *ApiServer) HandleGetRoomSettings(w http.ResponseWriter, r *http.Request) error {
@@ -193,29 +163,23 @@ func (s *ApiServer) HandleGetRoomSettings(w http.ResponseWriter, r *http.Request
 			fmt.Errorf("channel name must be provided"),
 		)
 	}
+	if (misc.ValidateChannelName(channelName)) != nil {
+		return misc.NewHumanReadableError(
+			"Invalid channel name",
+			http.StatusBadRequest,
+			fmt.Errorf("channel name must be alphanumeric and between 1 and 100 characters, was '%s'", channelName),
+		)
+	}
 	if err := s.matchRequestChannel(r, channelName); err != nil {
 		return err
 	}
-
-	if _, ok := s.roomsManager.Rooms[channelName]; !ok {
-		return fmt.Errorf("room %s does not exist", channelName)
-	}
-	room := s.roomsManager.Rooms[channelName]
-	config, err := room.GetSpineRuntimeConfig(r.Context())
+	resp, err := s.getRoomSettings(r.Context(), channelName)
 	if err != nil {
 		return err
 	}
 
 	w.Header().Set("Content-Type", "application/json")
-	return json.NewEncoder(w).Encode(GetRoomSettingsResponse{
-		MinAnimationSpeed:  config.MinAnimationSpeed,
-		MaxAnimationSpeed:  config.MaxAnimationSpeed,
-		MinMovementSpeed:   config.MinMovementSpeed,
-		MaxMovementSpeed:   config.MaxMovementSpeed,
-		MinSpriteSize:      config.MinScaleSize,
-		MaxSpriteSize:      config.MaxScaleSize,
-		MaxSpritePixelSize: config.MaxSpritePixelSize,
-	})
+	return json.NewEncoder(w).Encode(resp)
 }
 
 func (s *ApiServer) HandleRoomAddOperator(w http.ResponseWriter, r *http.Request) error {
@@ -361,4 +325,71 @@ func (s *ApiServer) HandleRemoveUser(w http.ResponseWriter, r *http.Request) err
 		return nil
 	}
 	return room.RemoveUserChibi(context.Background(), userName)
+}
+
+// TODO: Move these methods into a separate service
+func (s *ApiServer) updateRoomSettings(ctx context.Context, channelName string, reqBody RoomUpdateRequest) error {
+	roomDb, err := s.roomRepo.GetRoomByChannelName(ctx, channelName)
+	if err != nil {
+		return misc.NewHumanReadableError(
+			"Room not found",
+			http.StatusNotFound,
+			fmt.Errorf("room not found: %w", err),
+		)
+	}
+	config := roomDb.SpineRuntimeConfig
+
+	if reqBody.MinAnimationSpeed > 0 {
+		config.MinAnimationSpeed = reqBody.MinAnimationSpeed
+	}
+	if reqBody.MaxAnimationSpeed > 0 {
+		config.MaxAnimationSpeed = reqBody.MaxAnimationSpeed
+	}
+	if reqBody.MinVelocity > 0 {
+		config.MinMovementSpeed = reqBody.MinVelocity
+	}
+	if reqBody.MaxVelocity > 0 {
+		config.MaxMovementSpeed = reqBody.MaxVelocity
+	}
+	if reqBody.MinSpriteScale > 0 {
+		config.MinScaleSize = reqBody.MinSpriteScale
+	}
+	if reqBody.MaxSpriteScale > 0 {
+		config.MaxScaleSize = reqBody.MaxSpriteScale
+	}
+	if reqBody.MaxSpritePixelSize > 0 {
+		config.MaxSpritePixelSize = reqBody.MaxSpritePixelSize
+	}
+	if err := misc.ValidateSpineRuntimeConfig(&config); err != nil {
+		return misc.NewHumanReadableError(
+			"Invalid configuration settings",
+			http.StatusBadRequest,
+			err,
+		)
+	}
+
+	err = s.roomsManager.UpdateSpineRuntimeConfig(ctx, roomDb.RoomId, &config)
+	return err
+}
+
+func (s *ApiServer) getRoomSettings(ctx context.Context, channelName string) (*GetRoomSettingsResponse, error) {
+	roomDb, err := s.roomRepo.GetRoomByChannelName(ctx, channelName)
+	if err != nil {
+		return nil, misc.NewHumanReadableError(
+			"Room not found",
+			http.StatusNotFound,
+			fmt.Errorf("room not found: %w", err),
+		)
+	}
+	config := roomDb.SpineRuntimeConfig
+	resp := &GetRoomSettingsResponse{
+		MinAnimationSpeed:  config.MinAnimationSpeed,
+		MaxAnimationSpeed:  config.MaxAnimationSpeed,
+		MinMovementSpeed:   config.MinMovementSpeed,
+		MaxMovementSpeed:   config.MaxMovementSpeed,
+		MinSpriteSize:      config.MinScaleSize,
+		MaxSpriteSize:      config.MaxScaleSize,
+		MaxSpritePixelSize: config.MaxSpritePixelSize,
+	}
+	return resp, nil
 }

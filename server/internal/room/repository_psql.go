@@ -49,6 +49,16 @@ func (r *RoomRepositoryPsql) GetActiveRooms(ctx context.Context) ([]*RoomDb, err
 	return roomDbs, nil
 }
 
+func (r *RoomRepositoryPsql) GetRoomByChannelName(ctx context.Context, channelName string) (*RoomDb, error) {
+	db := akdb.DefaultDB.WithContext(ctx)
+	var roomDb RoomDb
+	result := db.Where("channel_name = ?", channelName).First(&roomDb)
+	if result.Error != nil {
+		return nil, result.Error
+	}
+	return &roomDb, nil
+}
+
 func (r *RoomRepositoryPsql) GetRoomGarbageCollectionPeriodMins(ctx context.Context, roomId uint) int {
 	db := akdb.DefaultDB.WithContext(ctx)
 	var roomDb RoomDb

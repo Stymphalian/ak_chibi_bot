@@ -101,7 +101,7 @@ func NewMainStruct() *MainStruct {
 		log.Fatal(err)
 	}
 	roomManager := room.NewRoomsManager(assetService, roomsRepo, usersRepo, chattersRepo, botConfig)
-	apiServer := api.NewApiServer(roomManager, authService)
+	apiServer := api.NewApiServer(roomManager, authService, roomsRepo)
 
 	return &MainStruct{
 		imageAssetDir:  *imageAssetDir,

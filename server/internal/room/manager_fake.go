@@ -16,6 +16,7 @@ func NewFakeRoomsManager() *RoomsManager {
 		TwitchClientId:     "test_client_id",
 		TwitchAccessToken:  "test_access_token",
 		SpineRuntimeConfig: misc.DefaultSpineRuntimeConfig(),
+		InitialOperator:    "Amiya",
 		OperatorDetails: misc.InitialOperatorDetails{
 			Skin:       "default",
 			Stance:     "base",
