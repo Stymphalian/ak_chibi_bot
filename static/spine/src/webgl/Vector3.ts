@@ -27,7 +27,9 @@
  * THE SPINE RUNTIMES, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *****************************************************************************/
 
-module spine.webgl {
+import { Matrix4, M30, M31, M32, M33, M00, M01, M02, M03, M10, M11, M12, M13, M20, M21, M22, M23 } from "./Matrix4";
+
+// module spine.webgl {
 	export class Vector3 {
 		x = 0;
 		y = 0;
@@ -127,4 +129,4 @@ module spine.webgl {
 			return new Vector3(this.x, this.y, this.z);
 		}
 	}
-}
+// }

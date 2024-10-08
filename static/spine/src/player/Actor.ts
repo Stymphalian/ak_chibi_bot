@@ -27,11 +27,20 @@
  * THE SPINE RUNTIMES, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *****************************************************************************/
 
-module spine {
+import { AnimationStateListener, AnimationState, TrackEntry } from "../core/AnimationState"
+import { AnimationStateData } from "../core/AnimationStateData"
+import { Skeleton } from "../core/Skeleton"
+import { Vector2, TimeKeeper, Map } from "../core/Utils"
+import { Vector3 } from "../webgl/Vector3"
+import { ActorAction, ParseActionNameToAction } from "./Action"
+import { SpinePlayer, BoundingBox } from "./Player"
+import { Event } from "../core/Event"
+
+// // module spine {
 
     export interface ActorUpdateConfig {
-        start_pos: spine.Vector2
-        dest_pos: spine.Vector2
+        start_pos: Vector2
+        dest_pos: Vector2
         loop_positions: boolean
         wander: boolean
         animation: string
@@ -115,7 +124,7 @@ module spine {
 		error?: (widget: SpinePlayer, actor: Actor, msg: string) => void
 
 		/** Optional: Callbacks for the animations */
-		animation_listener?: spine.AnimationStateListener
+		animation_listener?: AnimationStateListener
 
 		userDisplayName: string,
 
@@ -149,15 +158,15 @@ module spine {
 		// Velocity is in world coordinates (pixels/second)
 		// TODO: Abstract out this position/movement/speed data into a seperate class
 		// TODO: Create our own vector3 class
-		private movementSpeed: spine.webgl.Vector3 = new spine.webgl.Vector3();
+		private movementSpeed: Vector3 = new Vector3();
 		// Position is in world coordinates (with dimensions same as viewport)
 		//   x-axis is 0 in center of the screen
 		//   and y-axis is 0 at the bottom of the screen.
 		// We use these coordinates compared to top-left corner.
-		private position: spine.webgl.Vector3 = new spine.webgl.Vector3();
-		public scale: spine.Vector2 = new spine.Vector2(1,1);
-		private velocity: spine.webgl.Vector3 = new spine.webgl.Vector3(0, 0, 0);
-		public startPosition: spine.Vector2 = null;
+		private position: Vector3 = new Vector3();
+		public scale: Vector2 = new Vector2(1,1);
+		private velocity: Vector3 = new Vector3(0, 0, 0);
+		public startPosition: Vector2 = null;
 		public currentAction: ActorAction = null;
 
 		// Actor loading retry logic
@@ -175,10 +184,10 @@ module spine {
 			this.ResetWithConfig(config);
 			let x = Math.random()*viewport.width - (viewport.width/2)
 			let z = 0;
-			this.position = new spine.webgl.Vector3(x, 0, z);
+			this.position = new Vector3(x, 0, z);
 
 			if (config.startPosX || config.startPosY) {
-				this.position = new spine.webgl.Vector3(
+				this.position = new Vector3(
 					(config.startPosX* viewport.width) - (viewport.width/2),
 					config.startPosY * viewport.height,
 					z
@@ -186,14 +195,14 @@ module spine {
 			}
 		}
 
-		public getPosition(): spine.Vector2 {
-			return new spine.Vector2(
+		public getPosition(): Vector2 {
+			return new Vector2(
 				this.position.x,
 				this.position.y
 			);
 		}
-		public getPosition3(): spine.webgl.Vector3 {
-			return new spine.webgl.Vector3(
+		public getPosition3(): Vector3 {
+			return new Vector3(
 				this.position.x,
 				this.position.y,
 				this.position.z
@@ -223,14 +232,14 @@ module spine {
 			this.position.z = z !== undefined ? z : 0;
 		}
 
-		public getMovmentSpeed(): spine.Vector2 {
-			return new spine.Vector2(
+		public getMovmentSpeed(): Vector2 {
+			return new Vector2(
 				this.movementSpeed.x,
 				this.movementSpeed.y
 			);
 		}
-		public getMovmentSpeed3(): spine.webgl.Vector3 {
-			return new spine.webgl.Vector3(
+		public getMovmentSpeed3(): Vector3 {
+			return new Vector3(
 				this.movementSpeed.x,
 				this.movementSpeed.y,
 				this.movementSpeed.z
@@ -260,21 +269,21 @@ module spine {
 			this.movementSpeed.z = z !== undefined ? z : this.config.defaultMovementSpeedPxZ;
 		}
 
-		public getVelocity(): spine.Vector2 {
-			return new spine.Vector2(
+		public getVelocity(): Vector2 {
+			return new Vector2(
 				this.velocity.x,
 				this.velocity.y
 			)
 		}
-		public getVelocity3(): spine.webgl.Vector3 {
-			return new spine.webgl.Vector3(
+		public getVelocity3(): Vector3 {
+			return new Vector3(
 				this.velocity.x,
 				this.velocity.y,
 				this.velocity.z
 			)
 		}
 		public setVelocity(x?: number, y ?: number, z ?: number) {
-			this.velocity = new spine.webgl.Vector3(
+			this.velocity = new Vector3(
 				x != undefined ? x : this.velocity.x,
 				y != undefined ? y : this.velocity.y,
 				z != undefined ? z : this.velocity.z
@@ -310,13 +319,13 @@ module spine {
 			if (config.movementSpeedPxX !== null 
 				&& config.movementSpeedPxY !== null
 				&& config.movementSpeedPxZ !== null) {
-				this.movementSpeed = new spine.webgl.Vector3(
+				this.movementSpeed = new Vector3(
 					config.movementSpeedPxX, 
 					config.movementSpeedPxY,
 					config.movementSpeedPxZ,
 				);
 			} else {
-				this.movementSpeed = new spine.webgl.Vector3(
+				this.movementSpeed = new Vector3(
 					config.defaultMovementSpeedPxX + Math.random()*config.defaultMovementSpeedPxX/2,
 					config.defaultMovementSpeedPxY,
 					config.defaultMovementSpeedPxZ,
@@ -493,8 +502,8 @@ module spine {
 		private getDefaultBoundingBox() {
 			let animations = this.skeleton.data.animations;
 
-			let offsetAvg = new spine.Vector2();
-			let sizeAvg = new spine.Vector2();
+			let offsetAvg = new Vector2();
+			let sizeAvg = new Vector2();
 			let num_processed = 0;
 			for (let i = 0, n = animations.length; i < n; i++) {
 				let animationName = animations[i].name;
@@ -515,8 +524,8 @@ module spine {
 				this.animationState.update(0);
 				this.animationState.apply(this.skeleton);
 				this.skeleton.updateWorldTransform();
-				let offset = new spine.Vector2();
-				let size = new spine.Vector2();
+				let offset = new Vector2();
+				let size = new Vector2();
 				this.skeleton.getBounds(offset, size);
 
 				this.skeleton.x = savedX;
@@ -570,8 +579,8 @@ module spine {
 			let maxX = -100000000;
 			let minY = 100000000;
 			let maxY = -100000000;
-			let offset = new spine.Vector2();
-			let size = new spine.Vector2();
+			let offset = new Vector2();
+			let size = new Vector2();
 
 			let savedX = this.skeleton.x;
 			let savedY = this.skeleton.y;
@@ -610,4 +619,4 @@ module spine {
 			};
 		}
 	}
- }
+//  }

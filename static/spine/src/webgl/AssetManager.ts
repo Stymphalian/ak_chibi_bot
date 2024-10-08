@@ -27,12 +27,15 @@
  * THE SPINE RUNTIMES, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *****************************************************************************/
 
-module spine.webgl {
-	export class AssetManager extends spine.AssetManager {
+import { AssetManager as spineAssetManager } from "../core/AssetManager";
+import { GLTexture } from "./GLTexture";
+import { ManagedWebGLRenderingContext } from "./WebGL";
+// module spine.webgl {
+	export class AssetManager extends spineAssetManager {
 		constructor (context: ManagedWebGLRenderingContext | WebGLRenderingContext, pathPrefix: string = "") {
 			super((image: HTMLImageElement) => {
-				return new spine.webgl.GLTexture(context, image);
+				return new GLTexture(context, image);
 			}, pathPrefix);
 		}
 	}
-}
+// }

@@ -27,7 +27,11 @@
  * THE SPINE RUNTIMES, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *****************************************************************************/
 
-module spine {
+import { BoundingBoxAttachment } from "./attachments/BoundingBoxAttachment";
+import { Skeleton } from "./Skeleton";
+import { Pool, Utils } from "./Utils";
+
+// module spine {
 	/** Collects each visible {@link BoundingBoxAttachment} and computes the world vertices for its polygon. The polygon vertices are
 	 * provided along with convenience methods for doing hit detection. */
 	export class SkeletonBounds {
@@ -228,4 +232,4 @@ module spine {
 		}
 	}
 
-}
+// }

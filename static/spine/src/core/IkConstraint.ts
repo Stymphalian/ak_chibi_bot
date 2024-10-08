@@ -27,7 +27,14 @@
  * THE SPINE RUNTIMES, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *****************************************************************************/
 
-module spine {
+import { Bone } from "./Bone";
+import { TransformMode } from "./BoneData";
+import { IkConstraintData } from "./IkConstraintData";
+import { Skeleton } from "./Skeleton";
+import { Updatable } from "./Updatable";
+import { MathUtils } from "./Utils";
+
+// module spine {
 
 	/** Stores the current pose for an IK constraint. An IK constraint adjusts the rotation of 1 or 2 constrained bones so the tip of
 	 * the last bone is as close to the target bone as possible.
@@ -292,4 +299,4 @@ module spine {
 			child.updateWorldTransformWith(cx, cy, rotation + a2 * alpha, child.ascaleX, child.ascaleY, child.ashearX, child.ashearY);
 		}
 	}
-}
+// }

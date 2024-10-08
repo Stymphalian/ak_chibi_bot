@@ -27,10 +27,13 @@
  * THE SPINE RUNTIMES, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *****************************************************************************/
 
-module spine {
+import { Skeleton } from "./Skeleton";
+import { Vector2, Color } from "./Utils";
+
+// module spine {
 	export interface VertexEffect {
 		begin(skeleton: Skeleton): void;
 		transform(position: Vector2, uv: Vector2, light: Color, dark: Color): void;
 		end(): void;
 	}
-}
+// }

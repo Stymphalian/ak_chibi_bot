@@ -27,7 +27,15 @@
  * THE SPINE RUNTIMES, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *****************************************************************************/
 
-module spine {
+import { PathAttachment } from "./attachments/PathAttachment";
+import { Bone } from "./Bone";
+import { PathConstraintData, SpacingMode, RotateMode, PositionMode } from "./PathConstraintData";
+import { Skeleton } from "./Skeleton";
+import { Slot } from "./Slot";
+import { Updatable } from "./Updatable";
+import { Utils, MathUtils } from "./Utils";
+
+// module spine {
 
 	/** Stores the current pose for a path constraint. A path constraint adjusts the rotation, translation, and scale of the
 	 * constrained bones so they follow a {@link PathAttachment}.
@@ -446,4 +454,4 @@ module spine {
 			}
 		}
 	}
-}
+// }

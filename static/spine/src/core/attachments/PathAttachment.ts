@@ -27,7 +27,10 @@
  * THE SPINE RUNTIMES, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *****************************************************************************/
 
-module spine {
+import { Color, Utils } from "../Utils";
+import { VertexAttachment, Attachment } from "./Attachment";
+
+// module spine {
 
 	/** An attachment whose vertices make up a composite Bezier curve.
 	 *
@@ -63,4 +66,4 @@ module spine {
 			return copy;
 		}
 	}
-}
+// }

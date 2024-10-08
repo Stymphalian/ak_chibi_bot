@@ -27,7 +27,21 @@
  * THE SPINE RUNTIMES, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *****************************************************************************/
 
-module spine {
+import { Attachment } from "./attachments/Attachment";
+import { MeshAttachment } from "./attachments/MeshAttachment";
+import { PathAttachment } from "./attachments/PathAttachment";
+import { RegionAttachment } from "./attachments/RegionAttachment";
+import { Bone } from "./Bone";
+import { IkConstraint } from "./IkConstraint";
+import { PathConstraint } from "./PathConstraint";
+import { SkeletonData } from "./SkeletonData";
+import { Skin } from "./Skin";
+import { Slot } from "./Slot";
+import { TransformConstraint } from "./TransformConstraint";
+import { Updatable } from "./Updatable";
+import { Color, Utils, Vector2 } from "./Utils";
+
+// module spine {
 
 	/** Stores the current pose for a skeleton.
 	 *
@@ -609,4 +623,4 @@ module spine {
 			this.time += delta;
 		}
 	}
-}
+// }

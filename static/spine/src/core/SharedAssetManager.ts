@@ -27,7 +27,8 @@
  * THE SPINE RUNTIMES, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *****************************************************************************/
 
-module spine {
+import {Map, Disposable } from "./Utils";
+// module spine {
 	class Assets {
 		clientId: string;
 		toLoad = new Array<string>();
@@ -184,4 +185,4 @@ module spine {
 			return this.errors;
 		}
 	}
-}
+//}

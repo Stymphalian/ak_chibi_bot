@@ -27,7 +27,7 @@
  * THE SPINE RUNTIMES, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *****************************************************************************/
 
-module spine {
+// module spine {
 	/** Stores the setup pose values for an {@link Event}.
 	 *
 	 * See [Events](http://esotericsoftware.com/spine-events) in the Spine User Guide. */
@@ -44,4 +44,4 @@ module spine {
 			this.name = name;
 		}
 	}
-}
+// }

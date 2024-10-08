@@ -27,7 +27,13 @@
  * THE SPINE RUNTIMES, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *****************************************************************************/
 
-module spine {
+import { Attachment } from "./attachments/Attachment";
+import { Bone } from "./Bone";
+import { Skeleton } from "./Skeleton";
+import { SlotData } from "./SlotData";
+import { Color } from "./Utils";
+
+// module spine {
 
 	/** Stores a slot's current pose. Slots organize attachments for {@link Skeleton#drawOrder} purposes and provide a place to store
 	 * state for an attachment. State cannot be stored in an attachment itself because attachments are stateless and may be shared
@@ -110,4 +116,4 @@ module spine {
 			}
 		}
 	}
-}
+// }

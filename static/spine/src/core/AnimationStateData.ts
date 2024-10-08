@@ -27,7 +27,11 @@
  * THE SPINE RUNTIMES, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *****************************************************************************/
 
-module spine {
+import { SkeletonData } from "./SkeletonData";
+import {Animation } from "./Animation";
+import {Map } from "./Utils";
+
+// module spine {
 
 	/** Stores mix (crossfade) durations to be applied when {@link AnimationState} animations are changed. */
 	export class AnimationStateData {
@@ -73,4 +77,4 @@ module spine {
 			return value === undefined ? this.defaultMix : value;
 		}
 	}
-}
+// }

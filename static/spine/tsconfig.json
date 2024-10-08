@@ -1,13 +1,14 @@
 {
 	"compilerOptions": {
-		"module": "none",
+		"module": "es6",
+		"target": "ES2022",
 		"noImplicitAny": true,
 		"removeComments": true,
 		"preserveConstEnums": true,
-		"outFile": "build/spine-all.js",
+		"esModuleInterop": true,
+		"outDir": "dist",
 		"sourceMap": true,
-		"declaration": true,
-		"target": "ES2022",
+		"declaration": false
 	},
 	"include": [
 		"src/core/**/*",
@@ -17,6 +18,7 @@
 		"src/*",
 	],
 	"exclude": [
-		"build"
+		"build",
+		"dist"
 	]
 }

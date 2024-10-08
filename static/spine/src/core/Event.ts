@@ -27,7 +27,9 @@
  * THE SPINE RUNTIMES, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *****************************************************************************/
 
-module spine {
+import { EventData } from "./EventData";
+
+// module spine {
 
 	/** Stores the current pose values for an {@link Event}.
 	 *
@@ -49,4 +51,4 @@ module spine {
 			this.data = data;
 		}
 	}
-}
+// }

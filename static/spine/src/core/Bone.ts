@@ -27,7 +27,12 @@
  * THE SPINE RUNTIMES, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *****************************************************************************/
 
-module spine {
+import { BoneData, TransformMode } from "./BoneData";
+import { Skeleton } from "./Skeleton";
+import { Updatable } from "./Updatable";
+import { MathUtils, Vector2 } from "./Utils";
+
+// module spine {
 
 	/** Stores a bone's current pose.
 	 *
@@ -386,4 +391,4 @@ module spine {
 			this.appliedValid = false;
 		}
 	}
-}
+// }

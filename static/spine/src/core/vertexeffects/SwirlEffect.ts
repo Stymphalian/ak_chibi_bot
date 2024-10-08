@@ -27,7 +27,11 @@
  * THE SPINE RUNTIMES, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *****************************************************************************/
 
-module spine {
+import { Skeleton } from "../Skeleton";
+import { PowOut, Vector2, Color, MathUtils } from "../Utils";
+import { VertexEffect } from "../VertexEffect";
+
+// module spine {
 	export class SwirlEffect implements VertexEffect {
 		static interpolation = new PowOut(2);
 		centerX = 0;
@@ -63,4 +67,4 @@ module spine {
 		end(): void {
 		}
 	}
-}
+// }

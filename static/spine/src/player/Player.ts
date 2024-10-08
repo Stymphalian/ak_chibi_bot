@@ -27,7 +27,23 @@
  * THE SPINE RUNTIMES, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *****************************************************************************/
 
-module spine {
+import {AssetManager } from "../webgl/AssetManager";
+import { AtlasAttachmentLoader } from "../core/AtlasAttachmentLoader"
+import { Skeleton } from "../core/Skeleton"
+import { SkeletonBinary } from "../core/SkeletonBinary"
+import { SkeletonData } from "../core/SkeletonData"
+import { SkeletonJson } from "../core/SkeletonJson"
+import { Vector2, Color } from "../core/Utils"
+import { PerspectiveCamera } from "../webgl/Camera"
+import { Input } from "../webgl/Input"
+import { LoadingScreen } from "../webgl/LoadingScreen"
+import { M00 } from "../webgl/Matrix4"
+import { ResizeMode, SceneRenderer } from "../webgl/SceneRenderer"
+import { Vector3 } from "../webgl/Vector3"
+import { ManagedWebGLRenderingContext } from "../webgl/WebGL"
+import { Actor, SpineActorConfig } from "./Actor"
+
+// // module spine {
 	export interface Viewport {
 		x: number,
 		y: number,
@@ -108,7 +124,7 @@ module spine {
 			// this.knob = findWithClass(this.slider, "spine-player-slider-knob")[0];
 			this.setValue(0);
 
-			let input = new spine.webgl.Input(this.slider);
+			let input = new Input(this.slider);
 			var dragging = false;
 			input.addListener({
 				down: (x, y) => {
@@ -161,17 +177,20 @@ module spine {
 		}
 	}
 
+	type RenderCallbackFn = (context: ManagedWebGLRenderingContext) => void;
+	type RemoveCallbackFn = () => void;
+
 	export class SpinePlayer {
-		static HOVER_COLOR_INNER = new spine.Color(0.478, 0, 0, 0.25);
-		static HOVER_COLOR_OUTER = new spine.Color(1, 1, 1, 1);
-		static NON_HOVER_COLOR_INNER = new spine.Color(0.478, 0, 0, 0.5);
-		static NON_HOVER_COLOR_OUTER = new spine.Color(1, 0, 0, 0.8);
+		static HOVER_COLOR_INNER = new Color(0.478, 0, 0, 0.25);
+		static HOVER_COLOR_OUTER = new Color(1, 1, 1, 1);
+		static NON_HOVER_COLOR_INNER = new Color(0.478, 0, 0, 0.5);
+		static NON_HOVER_COLOR_OUTER = new Color(1, 0, 0, 0.8);
 
 		// private average_width = 0;
 		// private average_height = 0;
 		// private average_count = 0;
 
-		private sceneRenderer: spine.webgl.SceneRenderer;
+		private sceneRenderer: SceneRenderer;
 		private dom: HTMLElement;
 		private playerControls: HTMLElement;
 		private canvas: HTMLCanvasElement;
@@ -180,11 +199,11 @@ module spine {
 		private timelineSlider: Slider;
 		private playButton: HTMLElement;
 
-		private context: spine.webgl.ManagedWebGLRenderingContext;
-		private loadingScreen: spine.webgl.LoadingScreen;
-		private assetManager: spine.webgl.AssetManager;
+		private context: ManagedWebGLRenderingContext;
+		private loadingScreen: LoadingScreen;
+		private assetManager: AssetManager;
 
-		private paused = true;
+		private paused = false;
 		private actors = new Map<string, Actor>();
 		private playerConfig: SpinePlayerConfig = null;
 		
@@ -194,6 +213,7 @@ module spine {
 		private lastRequestAnimationFrameId = 0;
 		private windowFpsFrameCount:number = 0;
 		private webSocket: WebSocket = null;
+		private renderCallbacks: RenderCallbackFn[] = [];
 
 		constructor(parent: HTMLElement | string, playerConfig: SpinePlayerConfig) {
 			if (typeof parent === "string") {
@@ -211,7 +231,7 @@ module spine {
 		}
 
 		validatePlayerConfig(config: SpinePlayerConfig): SpinePlayerConfig {
-			if (!config) throw new Error("Please pass a configuration to new.spine.SpinePlayer().");
+			if (!config) throw new Error("Please pass a configuration to new.SpinePlayer().");
 			if (!config.alpha) config.alpha = false;
 			if (!config.backgroundColor) config.backgroundColor = "#000000";
 			if (!config.fullScreenBackgroundColor) config.fullScreenBackgroundColor = config.backgroundColor;
@@ -222,7 +242,7 @@ module spine {
 		}
 
 		validateActorConfig(config: SpineActorConfig): SpineActorConfig {
-			if (!config) throw new Error("Please pass a configuration to new.spine.SpinePlayer().");
+			if (!config) throw new Error("Please pass a configuration to new.SpinePlayer().");
 			if (!config.jsonUrl && !config.skelUrl) throw new Error("Please specify the URL of the skeleton JSON or .skel file.");
 			if (!config.atlasUrl) throw new Error("Please specify the URL of the atlas file.");
 			// if (!config.alpha) config.alpha = false;
@@ -241,7 +261,7 @@ module spine {
 						// console.log("Event on track " + trackIndex + ": " + JSON.stringify(event));
 					},
 					complete: function(trackIndex) {
-						// console.log("Animation on track " + trackIndex + " completed, loop count: " + loopCount);
+						// console.log("Animation on track " + trackIndex + " completed");
 					},
 					start: function(trackIndex) {
 						// console.log("Animation on track " + trackIndex + " started");
@@ -306,10 +326,10 @@ module spine {
 				this.textCanvasContext = this.textCanvas.getContext("2d");
 				// var webglConfig = { alpha: config.alpha };
 				var webglConfig = { alpha: this.playerConfig.alpha};
-				this.context = new spine.webgl.ManagedWebGLRenderingContext(this.canvas, webglConfig);
+				this.context = new ManagedWebGLRenderingContext(this.canvas, webglConfig);
 				// Setup the scene renderer and loading screen
-				this.sceneRenderer = new spine.webgl.SceneRenderer(this.canvas, this.context, true);
-				this.loadingScreen = new spine.webgl.LoadingScreen(this.sceneRenderer);
+				this.sceneRenderer = new SceneRenderer(this.canvas, this.context, true);
+				this.loadingScreen = new LoadingScreen(this.sceneRenderer);
 			} catch (e) {
 				// this.showError("Sorry, your browser does not support WebGL.<br><br>Please use the latest version of Firefox, Chrome, Edge, or Safari.");
 				console.log("Sorry, your browser does not support WebGL.<br><br>Please use the latest version of Firefox, Chrome, Edge, or Safari.");
@@ -320,7 +340,7 @@ module spine {
 			this.configurePerspectiveCamera(this.playerConfig.viewport);
 
 			// Load the assets
-			this.assetManager = new spine.webgl.AssetManager(this.context);
+			this.assetManager = new AssetManager(this.context);
 
 			// Setup rendering loop
 			this.lastRequestAnimationFrameId = requestAnimationFrame(() => this.drawFrame());
@@ -386,6 +406,14 @@ module spine {
 			}
 		}
 
+		public getActor(actorName: string) : Actor {
+			return this.actors.get(actorName);
+		}
+
+		public getActorNames() : Array<string> {
+			return Array.from(this.actors.keys());
+		}
+
 		removeActor(actorName: string) {
 			this.actors.delete(actorName)
 		}
@@ -427,7 +455,7 @@ module spine {
 			let viewport = this.playerConfig.viewport;
 			// TODO: I don't understand why this is worldToScreen.
 			let tt = this.sceneRenderer.camera.worldToScreen(
-				new spine.webgl.Vector3(xpx,ypx,0)
+				new Vector3(xpx,ypx,0)
 			);
 			let textpos = new Vector2(tt.x, tt.y);
 			textpos.y = viewport.height - textpos.y;
@@ -458,7 +486,7 @@ module spine {
 		getPerspectiveCameraZOffset(viewport: BoundingBox, near: number, far: number, fovY:number): number {
 			let width = viewport.width;
 			let height = viewport.height;
-			let cam = new spine.webgl.PerspectiveCamera(width, height);
+			let cam = new PerspectiveCamera(width, height);
 			cam.near = near;
 			cam.far = far;
 			cam.fov = fovY;
@@ -468,7 +496,7 @@ module spine {
 			cam.position.z = 0.0;
 			cam.update();
 
-			let a = cam.projectionView.values[spine.webgl.M00];
+			let a = cam.projectionView.values[M00];
 			let w = -a * (width/2);
 			return w;
 		}
@@ -484,7 +512,7 @@ module spine {
 			cam.position.z = -this.getPerspectiveCameraZOffset(
 				viewport, cam.near, cam.far, cam.fov
 			);
-			cam.direction = new spine.webgl.Vector3(0, 0, -1);
+			cam.direction = new Vector3(0, 0, -1);
 			cam.update();
 		}
 
@@ -496,9 +524,9 @@ module spine {
 			cam.position.z = -this.getPerspectiveCameraZOffset(
 				viewport, cam.near, cam.far, cam.fov
 			) + actor.getPositionZ();
-			cam.direction = new spine.webgl.Vector3(0, 0, -1);
-			// let origin = new spine.webgl.Vector3(0,0,0);
-			// let pos = new spine.webgl.Vector3(0,0,cam.position.z)
+			cam.direction = new Vector3(0, 0, -1);
+			// let origin = new Vector3(0,0,0);
+			// let pos = new Vector3(0,0,cam.position.z)
 			// let dir = origin.sub(pos).normalize();
 			// cam.direction = dir;
 			cam.update();
@@ -533,7 +561,7 @@ module spine {
 			// this.loadingScreen.draw(this.assetManager.isLoadingComplete());
 
 			// Resize the canvas
-			this.sceneRenderer.resize(webgl.ResizeMode.Expand);
+			this.sceneRenderer.resize(ResizeMode.Expand);
 
 			// Order the actors to draw based on their z-order
 			let actorsZOrder = Array.from(this.actors.keys()).sort((a:string,b:string ) => {
@@ -658,6 +686,8 @@ module spine {
 				}
 			}
 
+			this.broadcastRenderCallback();
+
 			if (all_actors_loaded) {
 				this.assetManager.clearErrors();
 				this.hideError();
@@ -665,11 +695,25 @@ module spine {
 			this.windowFpsFrameCount += 1;
 		}
 
+
+		public registerRenderCallback(callback: RenderCallbackFn) : RemoveCallbackFn{
+			this.renderCallbacks.push(callback);
+			return () => {
+				this.renderCallbacks = this.renderCallbacks.filter(c => c !== callback);
+			}
+		}
+
+		broadcastRenderCallback() {
+			for (let i = 0; i < this.renderCallbacks.length; i++) {
+				this.renderCallbacks[i](this.context);;
+			}
+		}
+
 		scale(sourceWidth: number, sourceHeight: number, targetWidth: number, targetHeight: number): Vector2 {
 			let targetRatio = targetHeight / targetWidth;
 			let sourceRatio = sourceHeight / sourceWidth;
 			let scale = targetRatio > sourceRatio ? targetWidth / sourceWidth : targetHeight / sourceHeight;
-			let temp = new spine.Vector2();
+			let temp = new Vector2();
 			temp.x = sourceWidth * scale;
 			temp.y = sourceHeight * scale;
 			return temp;
@@ -736,10 +780,10 @@ module spine {
 			actor.loaded = true;
 		}
 
-		private cancelId = 0;
+		private cancelId: any = 0;
 		private setupInput () {
 			let canvas = this.canvas;
-			let input = new spine.webgl.Input(canvas);
+			let input = new Input(canvas);
 			input.addListener({
 				down: (x, y) => {},
 				dragged: (x, y) => {},
@@ -840,7 +884,7 @@ module spine {
 		}
 
 		// Exposed only for testing.
-		public getSceneRenderer() : spine.webgl.SceneRenderer {
+		public getSceneRenderer() : SceneRenderer {
 			return this.sceneRenderer;
 		}
 	}
@@ -905,4 +949,4 @@ module spine {
 			 .replace(/"/g, "&#34;")
 			 .replace(/'/g, "&#39;");
 	 }
- }
+//  }

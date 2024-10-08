@@ -27,7 +27,11 @@
  * THE SPINE RUNTIMES, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *****************************************************************************/
 
-module spine {
+import { BlendMode } from "./BlendMode";
+import { BoneData } from "./BoneData";
+import { Color } from "./Utils";
+
+// module spine {
 
 	/** Stores the setup pose for a {@link Slot}. */
 	export class SlotData {
@@ -64,4 +68,4 @@ module spine {
 			this.boneData = boneData;
 		}
 	}
-}
+// }

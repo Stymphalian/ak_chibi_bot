@@ -27,7 +27,9 @@
  * THE SPINE RUNTIMES, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *****************************************************************************/
 
-module spine.webgl {
+import { Vector3 } from "./Vector3";
+
+// module spine.webgl {
 	export const M00 = 0;
 	export const M01 = 4;
 	export const M02 = 8;
@@ -363,4 +365,4 @@ module spine.webgl {
 			if (Matrix4.zAxis === null) Matrix4.zAxis = new Vector3();
 		}
 	}
-}
+// }

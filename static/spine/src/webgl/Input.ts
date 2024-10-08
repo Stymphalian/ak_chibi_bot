@@ -27,15 +27,17 @@
  * THE SPINE RUNTIMES, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *****************************************************************************/
 
-module spine.webgl {
+import { Pool } from "../core/Utils";
+
+// module spine.webgl {
 	export class Input {
 		element: HTMLElement;
 		lastX = 0;
 		lastY = 0;
 		buttonDown = false;
 		currTouch: Touch = null;
-		touchesPool = new Pool<spine.webgl.Touch>(() => {
-			return new spine.webgl.Touch(0, 0, 0);
+		touchesPool = new Pool<Touch>(() => {
+			return new Touch(0, 0, 0);
 		});
 
 		private listeners = new Array<InputListener>();
@@ -229,4 +231,4 @@ module spine.webgl {
 		moved(x: number, y: number): void;
 		dragged(x: number, y: number): void;
 	}
-}
+// }

@@ -27,7 +27,14 @@
  * THE SPINE RUNTIMES, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *****************************************************************************/
 
-module spine {
+import { Attachment } from "./attachments/Attachment";
+import { MeshAttachment } from "./attachments/MeshAttachment";
+import { BoneData } from "./BoneData";
+import { ConstraintData } from "./ConstraintData";
+import { Skeleton } from "./Skeleton";
+import { Map } from "./Utils";
+
+// module spine {
 	/** Stores an entry in the skin consisting of the slot index, name, and attachment **/
 	export class SkinEntry {
 		constructor(public slotIndex: number, public name: string, public attachment: Attachment) { }
@@ -199,4 +206,4 @@ module spine {
 			}
 		}
 	}
-}
+// }

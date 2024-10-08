@@ -27,7 +27,20 @@
  * THE SPINE RUNTIMES, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *****************************************************************************/
 
-module spine.webgl {
+import { ClippingAttachment } from "../core/attachments/ClippingAttachment";
+import { MeshAttachment } from "../core/attachments/MeshAttachment";
+import { RegionAttachment } from "../core/attachments/RegionAttachment";
+import { BlendMode } from "../core/BlendMode";
+import { Skeleton } from "../core/Skeleton";
+import { SkeletonClipping } from "../core/SkeletonClipping";
+import { TextureAtlasRegion } from "../core/TextureAtlas";
+import { Color, Vector2, Utils, ArrayLike } from "../core/Utils";
+import { VertexEffect } from "../core/VertexEffect";
+import { GLTexture } from "./GLTexture";
+import { PolygonBatcher } from "./PolygonBatcher";
+import { ManagedWebGLRenderingContext, WebGLBlendModeConverter } from "./WebGL";
+
+// module spine.webgl {
 	class Renderable {
 		constructor(public vertices: ArrayLike<number>, public numVertices: number, public numFloats: number) {}
 	};
@@ -115,7 +128,7 @@ module spine.webgl {
 					renderable.numVertices = (mesh.worldVerticesLength >> 1);
 					renderable.numFloats = renderable.numVertices * clippedVertexSize;
 					if (renderable.numFloats > renderable.vertices.length) {
-						renderable.vertices = this.vertices = spine.Utils.newFloatArray(renderable.numFloats);
+						renderable.vertices = this.vertices = Utils.newFloatArray(renderable.numFloats);
 					}
 					mesh.computeWorldVertices(slot, 0, mesh.worldVerticesLength, renderable.vertices, 0, clippedVertexSize);
 					triangles = mesh.triangles;
@@ -293,4 +306,4 @@ module spine.webgl {
 			clipper.clipEnd();
 		}
 	}
-}
+// }

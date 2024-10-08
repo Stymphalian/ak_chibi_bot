@@ -27,7 +27,7 @@
  * THE SPINE RUNTIMES, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *****************************************************************************/
 
-module spine {
+// module spine {
 	export abstract class Texture {
 		protected _image: HTMLImageElement;
 
@@ -97,4 +97,4 @@ module spine {
 		setWraps(uWrap: TextureWrap, vWrap: TextureWrap) { }
 		dispose() { }
 	}
-}
+// }

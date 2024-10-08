@@ -27,7 +27,11 @@
  * THE SPINE RUNTIMES, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *****************************************************************************/
 
-module spine {
+import { Bone } from "../Bone";
+import { Color, Vector2, MathUtils } from "../Utils";
+import { VertexAttachment, Attachment } from "./Attachment";
+
+// module spine {
 	/** An attachment which is a single point and a rotation. This can be used to spawn projectiles, particles, etc. A bone can be
 	 * used in similar ways, but a PointAttachment is slightly less expensive to compute and can be hidden, shown, and placed in a
 	 * skin.
@@ -66,4 +70,4 @@ module spine {
 			return copy;
 		}
 	}
-}
+// }

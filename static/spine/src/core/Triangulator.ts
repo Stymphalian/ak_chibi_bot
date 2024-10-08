@@ -27,7 +27,9 @@
  * THE SPINE RUNTIMES, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *****************************************************************************/
 
-module spine {
+import { Pool } from "./Utils";
+
+// module spine {
 	export class Triangulator {
 		private convexPolygons = new Array<Array<number>>();
 		private convexPolygonsIndices = new Array<Array<number>>();
@@ -266,4 +268,4 @@ module spine {
 			return p3x * py - p3y * px + px * p1y - p1x * py >= 0 ? 1 : -1;
 		}
 	}
-}
+// }

@@ -27,7 +27,12 @@
  * THE SPINE RUNTIMES, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *****************************************************************************/
 
-module spine {
+import { ClippingAttachment } from "./attachments/ClippingAttachment";
+import { Slot } from "./Slot";
+import { Triangulator } from "./Triangulator";
+import { Utils, Color, ArrayLike } from "./Utils";
+
+// module spine {
 	export class SkeletonClipping {
 		private triangulator = new Triangulator();
 		private clippingPolygon = new Array<number>();
@@ -344,4 +349,4 @@ module spine {
 			}
 		}
 	}
-}
+// }

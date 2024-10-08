@@ -27,7 +27,10 @@
  * THE SPINE RUNTIMES, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *****************************************************************************/
 
-module spine.webgl {
+import { Restorable, Disposable } from "../core/Utils";
+import { ManagedWebGLRenderingContext } from "./WebGL";
+
+// module spine.webgl {
 	export class Shader implements Disposable, Restorable {
 		public static MVP_MATRIX = "u_projTrans";
 		public static POSITION = "a_position";
@@ -291,4 +294,4 @@ module spine.webgl {
 			return new Shader(context, vs, fs);
 		}
 	}
-}
+// }

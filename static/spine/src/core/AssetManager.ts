@@ -27,7 +27,11 @@
  * THE SPINE RUNTIMES, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *****************************************************************************/
 
-module spine {
+import { FakeTexture } from "./Texture";
+import { TextureAtlas } from "./TextureAtlas";
+import {Map, Disposable} from "./Utils";
+
+// module spine {
 	export class AssetManager implements Disposable {
 		private pathPrefix: string;
 		private textureLoader: (image: HTMLImageElement) => any;
@@ -330,4 +334,4 @@ module spine {
 			this.errors = {};
 		}
 	}
-}
+// }

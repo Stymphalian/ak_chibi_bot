@@ -27,7 +27,12 @@
  * THE SPINE RUNTIMES, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *****************************************************************************/
 
-module spine {
+import { TextureRegion } from "../Texture";
+import { TextureAtlasRegion } from "../TextureAtlas";
+import { Color, Utils, ArrayLike } from "../Utils";
+import { VertexAttachment, Attachment } from "./Attachment";
+
+// module spine {
 	/** An attachment that displays a textured mesh. A mesh has hull vertices and internal vertices within the hull. Holes are not
 	 * supported. Each vertex has UVs (texture coordinates) and triangles are used to map an image on to the mesh.
 	 *
@@ -195,4 +200,4 @@ module spine {
 		}
 	}
 
-}
+// }

@@ -27,7 +27,9 @@
  * THE SPINE RUNTIMES, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *****************************************************************************/
 
-module spine {
+import { Color } from "./Utils";
+
+// module spine {
 
 	/** Stores the setup pose for a {@link Bone}. */
 	export class BoneData {
@@ -89,4 +91,4 @@ module spine {
 	export enum TransformMode {
 		Normal, OnlyTranslation, NoRotationOrReflection, NoScale, NoScaleOrReflection
 	}
-}
+// }

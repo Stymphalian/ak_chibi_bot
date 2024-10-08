@@ -27,7 +27,10 @@
  * THE SPINE RUNTIMES, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *****************************************************************************/
 
-module spine {
+import { Slot } from "../Slot";
+import { Utils, ArrayLike } from "../Utils";
+
+// module spine {
 	/** The base class for all attachments. */
 	export abstract class Attachment {
 		name: string;
@@ -156,4 +159,4 @@ module spine {
 			attachment.deformAttachment = this.deformAttachment;
 		}
 	}
-}
+// }

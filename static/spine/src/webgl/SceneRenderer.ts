@@ -27,7 +27,19 @@
  * THE SPINE RUNTIMES, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *****************************************************************************/
 
-module spine.webgl {
+import { Skeleton } from "../core/Skeleton";
+import { TextureAtlasRegion } from "../core/TextureAtlas";
+import { Color, MathUtils, Disposable } from "../core/Utils";
+import { OrthoCamera, PerspectiveCamera, Camera } from "./Camera";
+import { GLTexture } from "./GLTexture";
+import { PolygonBatcher } from "./PolygonBatcher";
+import { Shader } from "./Shader";
+import { ShapeRenderer } from "./ShapeRenderer";
+import { SkeletonDebugRenderer } from "./SkeletonDebugRenderer";
+import { SkeletonRenderer } from "./SkeletonRenderer";
+import { ManagedWebGLRenderingContext } from "./WebGL";
+
+// module spine.webgl {
 	export class SceneRenderer implements Disposable {
 		context: ManagedWebGLRenderingContext;
 		canvas: HTMLCanvasElement;
@@ -514,4 +526,4 @@ module spine.webgl {
 		Expand,
 		Fit
 	}
-}
+// }

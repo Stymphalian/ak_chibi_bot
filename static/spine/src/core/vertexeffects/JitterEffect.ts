@@ -27,7 +27,11 @@
  * THE SPINE RUNTIMES, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *****************************************************************************/
 
-module spine {
+import { Skeleton } from "../Skeleton";
+import { Vector2, Color, MathUtils } from "../Utils";
+import { VertexEffect } from "../VertexEffect";
+
+// module spine {
 	export class JitterEffect implements VertexEffect {
 		jitterX = 0;
 		jitterY = 0;
@@ -48,4 +52,4 @@ module spine {
 		end(): void {
 		}
 	}
-}
+// }

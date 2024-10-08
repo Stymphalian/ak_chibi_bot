@@ -27,7 +27,10 @@
  * THE SPINE RUNTIMES, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *****************************************************************************/
 
-module spine.webgl {
+import { BlendMode } from "../core/BlendMode";
+import { Restorable } from "../core/Utils";
+
+// module spine.webgl {
 	export class ManagedWebGLRenderingContext {
 		public canvas: HTMLCanvasElement | OffscreenCanvas;
 		public gl: WebGLRenderingContext;
@@ -97,4 +100,4 @@ module spine.webgl {
 			}
 		}
 	}
-}
+// }

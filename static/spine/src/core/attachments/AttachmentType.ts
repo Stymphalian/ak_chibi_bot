@@ -27,8 +27,8 @@
  * THE SPINE RUNTIMES, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *****************************************************************************/
 
-module spine {
+// module spine {
 	export enum AttachmentType {
 		Region, BoundingBox, Mesh, LinkedMesh, Path, Point, Clipping
 	}
-}
+// }

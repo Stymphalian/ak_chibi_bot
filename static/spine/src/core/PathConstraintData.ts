@@ -27,7 +27,11 @@
  * THE SPINE RUNTIMES, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *****************************************************************************/
 
-module spine {
+import { BoneData } from "./BoneData";
+import { ConstraintData } from "./ConstraintData";
+import { SlotData } from "./SlotData";
+
+// module spine {
 
 	/** Stores the setup pose for a {@link PathConstraint}.
 	 *
@@ -89,4 +93,4 @@ module spine {
 	export enum RotateMode {
 		Tangent, Chain, ChainScale
 	}
-}
+// }

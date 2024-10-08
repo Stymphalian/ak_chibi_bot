@@ -27,7 +27,10 @@
  * THE SPINE RUNTIMES, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *****************************************************************************/
 
-module spine {
+import { MixBlend } from "./Animation";
+import { Skeleton } from "./Skeleton";
+
+// module spine {
 	export interface Map<T> {
 		[key: string]: T;
 	}
@@ -440,4 +443,4 @@ module spine {
 			}
 		}
 	}
-}
+// }

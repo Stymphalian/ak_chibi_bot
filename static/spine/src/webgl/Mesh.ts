@@ -27,7 +27,11 @@
  * THE SPINE RUNTIMES, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *****************************************************************************/
 
-module spine.webgl {
+import { Restorable, Disposable } from "../core/Utils";
+import { Shader } from "./Shader";
+import { ManagedWebGLRenderingContext } from "./WebGL";
+
+// module spine.webgl {
 	export class Mesh implements Disposable, Restorable {
 		private context: ManagedWebGLRenderingContext;
 		private vertices:Float32Array;
@@ -205,4 +209,4 @@ module spine.webgl {
 	export enum VertexAttributeType {
 		Float
 	}
-}
+// }

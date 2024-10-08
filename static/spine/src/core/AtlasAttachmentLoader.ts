@@ -27,7 +27,17 @@
  * THE SPINE RUNTIMES, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *****************************************************************************/
 
-module spine {
+import { AttachmentLoader } from "./attachments/AttachmentLoader";
+import { BoundingBoxAttachment } from "./attachments/BoundingBoxAttachment";
+import { ClippingAttachment } from "./attachments/ClippingAttachment";
+import { MeshAttachment } from "./attachments/MeshAttachment";
+import { PathAttachment } from "./attachments/PathAttachment";
+import { PointAttachment } from "./attachments/PointAttachment";
+import { RegionAttachment } from "./attachments/RegionAttachment";
+import { Skin } from "./Skin";
+import { TextureAtlas } from "./TextureAtlas";
+
+// module spine {
 	/** An {@link AttachmentLoader} that configures attachments using texture regions from an {@link TextureAtlas}.
 	 *
 	 * See [Loading skeleton data](http://esotericsoftware.com/spine-loading-skeleton-data#JSON-and-binary-data) in the
@@ -73,4 +83,4 @@ module spine {
 			return new ClippingAttachment(name);
 		}
 	}
-}
+// }

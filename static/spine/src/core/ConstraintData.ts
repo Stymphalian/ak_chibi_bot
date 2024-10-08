@@ -27,9 +27,9 @@
  * THE SPINE RUNTIMES, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *****************************************************************************/
 
-module spine {
+// module spine {
 	/** The base class for all constraint datas. */
 	export abstract class ConstraintData {
 		constructor(public name: string, public order: number, public skinRequired: boolean) { }
 	}
-}
+// }

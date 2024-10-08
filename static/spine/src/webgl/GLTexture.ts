@@ -27,7 +27,11 @@
  * THE SPINE RUNTIMES, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *****************************************************************************/
 
-module spine.webgl {
+import { Texture, TextureFilter, TextureWrap } from "../core/Texture";
+import { Restorable, Disposable } from "../core/Utils";
+import { ManagedWebGLRenderingContext } from "./WebGL";
+
+// module spine.webgl {
 	export class GLTexture extends Texture implements Disposable, Restorable {
 		private context: ManagedWebGLRenderingContext;
 		private texture: WebGLTexture = null;
@@ -110,4 +114,4 @@ module spine.webgl {
 			gl.deleteTexture(this.texture);
 		}
 	}
-}
+// }

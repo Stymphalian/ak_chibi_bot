@@ -27,7 +27,15 @@
  * THE SPINE RUNTIMES, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *****************************************************************************/
 
-module spine {
+import { Skin } from "../Skin";
+import { BoundingBoxAttachment } from "./BoundingBoxAttachment";
+import { ClippingAttachment } from "./ClippingAttachment";
+import { MeshAttachment } from "./MeshAttachment";
+import { PathAttachment } from "./PathAttachment";
+import { PointAttachment } from "./PointAttachment";
+import { RegionAttachment } from "./RegionAttachment";
+
+// module spine {
 
 	/** The interface which can be implemented to customize creating and populating attachments.
 	 *
@@ -52,4 +60,4 @@ module spine {
 		/** @return May be null to not load an attachment */
 		newClippingAttachment(skin: Skin, name: string): ClippingAttachment;
 	}
-}
+// }

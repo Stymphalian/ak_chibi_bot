@@ -1,0 +1,20 @@
+#custom_container div.cam_container .cam_input {
+    font-size: 50px;
+}
+
+#custom_container div.cam_container button {
+    font-size: 50px;
+}
+
+#custom_container div.cam_container #error_message {
+    font-size: 50px;
+    color: aliceblue;
+}
+
+#custom_container div.cam_container .large_font {
+    font-size: 50px;
+}
+
+#custom_container div.save_canvas_container .hidden {
+    display: none;
+}

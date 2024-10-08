@@ -27,7 +27,10 @@
  * THE SPINE RUNTIMES, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *****************************************************************************/
 
-module spine {
+import { Texture, TextureWrap, TextureFilter, TextureRegion } from "./Texture";
+import { Disposable} from "./Utils";
+
+// module spine {
 	export class TextureAtlas implements Disposable {
 		pages = new Array<TextureAtlasPage>();
 		regions = new Array<TextureAtlasRegion>();
@@ -217,4 +220,4 @@ module spine {
 		degrees: number;
 		texture: Texture;
 	}
-}
+// }

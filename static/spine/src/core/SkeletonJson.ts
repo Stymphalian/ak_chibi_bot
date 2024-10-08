@@ -27,7 +27,24 @@
  * THE SPINE RUNTIMES, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *****************************************************************************/
 
-module spine {
+import { Timeline, AttachmentTimeline, ColorTimeline, TwoColorTimeline, RotateTimeline, TranslateTimeline, ScaleTimeline, ShearTimeline, IkConstraintTimeline, TransformConstraintTimeline, PathConstraintPositionTimeline, PathConstraintSpacingTimeline, PathConstraintMixTimeline, DeformTimeline, DrawOrderTimeline, EventTimeline, CurveTimeline } from "./Animation";
+import { VertexAttachment, Attachment } from "./attachments/Attachment";
+import { AttachmentLoader } from "./attachments/AttachmentLoader";
+import { MeshAttachment } from "./attachments/MeshAttachment";
+import { Event } from "./Event";
+import { BlendMode } from "./BlendMode";
+import { BoneData, TransformMode } from "./BoneData";
+import { EventData } from "./EventData";
+import { IkConstraintData } from "./IkConstraintData";
+import { PathConstraintData, PositionMode, SpacingMode, RotateMode } from "./PathConstraintData";
+import { SkeletonData } from "./SkeletonData";
+import { Skin } from "./Skin";
+import { SlotData } from "./SlotData";
+import { TransformConstraintData } from "./TransformConstraintData";
+import { Color, Utils, ArrayLike } from "./Utils";
+import { Animation } from "./Animation";
+
+// module spine {
 
 	/** Loads skeleton data in the Spine JSON format.
 	 *
@@ -856,4 +873,4 @@ module spine {
 			this.inheritDeform = inheritDeform;
 		}
 	}
-}
+// }

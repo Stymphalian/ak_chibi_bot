@@ -27,7 +27,13 @@
  * THE SPINE RUNTIMES, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *****************************************************************************/
 
-module spine.webgl {
+import { GLTexture } from "./GLTexture";
+import { Mesh, Position2Attribute, ColorAttribute, TexCoordAttribute, Color2Attribute } from "./Mesh";
+import { Shader } from "./Shader";
+import { ManagedWebGLRenderingContext } from "./WebGL";
+import { Disposable } from "../core/Utils";
+
+// module spine.webgl {
 	export class PolygonBatcher implements Disposable {
 		private context: ManagedWebGLRenderingContext;
 		private drawCalls: number;
@@ -125,4 +131,4 @@ module spine.webgl {
 			this.mesh.dispose();
 		}
 	}
-}
+// }

@@ -27,7 +27,12 @@
  * THE SPINE RUNTIMES, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *****************************************************************************/
 
-module spine.webgl {
+import { Color, Vector2, MathUtils, Disposable } from "../core/Utils";
+import { Mesh, Position2Attribute, ColorAttribute } from "./Mesh";
+import { Shader } from "./Shader";
+import { ManagedWebGLRenderingContext } from "./WebGL";
+
+// module spine.webgl {
 	export class ShapeRenderer implements Disposable {
 		private context: ManagedWebGLRenderingContext;
 		private isDrawing = false;
@@ -341,4 +346,4 @@ module spine.webgl {
 		Line = 0x0001,
 		Filled = 0x0004
 	}
-}
+// }

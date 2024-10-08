@@ -1,5 +1,12 @@
  # spine-ts
 
+ ### Building and Running
+```
+npm install
+# auto rebuild the dist folder upon changes
+npm run watch 
+```
+
 The spine-ts runtime provides functionality to load and manipulate [Spine](http://esotericsoftware.com) skeletal animation data using TypeScript and JavaScript. spine-ts is split
 up into multiple modules:
 
@@ -130,3 +137,4 @@ var shader = Shader.newColoredTextured();
 
 ### Using the Player
 Please see the documentation for the [Spine Web Player](https://esotericsoftware.com/spine-player)
+

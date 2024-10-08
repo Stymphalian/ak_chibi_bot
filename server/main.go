@@ -186,7 +186,7 @@ func (s *MainStruct) run() {
 
 	// Spine File Server
 	spineMux := http.NewServeMux()
-	spineFileServer := http.FileServer(http.Dir(s.staticAssetDir + "/spine"))
+	spineFileServer := http.FileServer(http.Dir(s.staticAssetDir + "/spine/dist"))
 	spineMux.Handle("/spine/runtime/{$}",
 		http.TimeoutHandler(
 			http.StripPrefix("/spine/runtime/", spineFileServer),

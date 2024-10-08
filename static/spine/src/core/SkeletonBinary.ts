@@ -27,7 +27,25 @@
  * THE SPINE RUNTIMES, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *****************************************************************************/
 
-module spine {
+import { Timeline, AttachmentTimeline, ColorTimeline, TwoColorTimeline, RotateTimeline, ScaleTimeline, ShearTimeline, TranslateTimeline, IkConstraintTimeline, TransformConstraintTimeline, PathConstraintSpacingTimeline, PathConstraintPositionTimeline, PathConstraintMixTimeline, DeformTimeline, DrawOrderTimeline, EventTimeline, CurveTimeline } from "./Animation";
+import { VertexAttachment, Attachment } from "./attachments/Attachment";
+import { AttachmentLoader } from "./attachments/AttachmentLoader";
+import { AttachmentType } from "./attachments/AttachmentType";
+import { MeshAttachment } from "./attachments/MeshAttachment";
+import {Animation} from "./Animation";
+import { BlendMode } from "./BlendMode";
+import { TransformMode, BoneData } from "./BoneData";
+import {Event } from "./Event";
+import { EventData } from "./EventData";
+import { IkConstraintData } from "./IkConstraintData";
+import { PositionMode, SpacingMode, RotateMode, PathConstraintData } from "./PathConstraintData";
+import { SkeletonData } from "./SkeletonData";
+import { Skin } from "./Skin";
+import { SlotData } from "./SlotData";
+import { TransformConstraintData } from "./TransformConstraintData";
+import { Color, Utils } from "./Utils";
+
+// module spine {
 	/** Loads skeleton data in the Spine binary format.
 	 *
 	 * See [Spine binary format](http://esotericsoftware.com/spine-binary-format) and
@@ -899,4 +917,4 @@ module spine {
 	class Vertices {
 		constructor(public bones: Array<number> = null, public vertices: Array<number> | Float32Array = null) { }
 	}
-}
+// }

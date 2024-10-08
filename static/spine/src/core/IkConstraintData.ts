@@ -27,7 +27,10 @@
  * THE SPINE RUNTIMES, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *****************************************************************************/
 
-module spine {
+import { BoneData } from "./BoneData";
+import { ConstraintData } from "./ConstraintData";
+
+// module spine {
 
 	/** Stores the setup pose for an {@link IkConstraint}.
 	 * <p>
@@ -63,4 +66,4 @@ module spine {
 			super(name, 0, false);
 		}
 	}
-}
+// }

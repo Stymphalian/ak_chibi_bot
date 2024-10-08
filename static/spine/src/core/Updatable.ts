@@ -27,7 +27,7 @@
  * THE SPINE RUNTIMES, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *****************************************************************************/
 
-module spine {
+// module spine {
 
 	/** The interface for items updated by {@link Skeleton#updateWorldTransform()}. */
 	export interface Updatable {
@@ -39,4 +39,4 @@ module spine {
 		 * @see Skin#getConstraints() */
 		isActive(): boolean;
 	}
-}
+// }

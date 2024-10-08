@@ -27,7 +27,14 @@
  * THE SPINE RUNTIMES, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *****************************************************************************/
 
-module spine {
+import { MixBlend, AttachmentTimeline, MixDirection, RotateTimeline, DrawOrderTimeline, Timeline, EventTimeline, Animation } from "./Animation";
+import { AnimationStateData } from "./AnimationStateData";
+import { Skeleton } from "./Skeleton";
+import { Slot } from "./Slot";
+import { IntSet, Pool, Utils, MathUtils } from "./Utils";
+import {Event } from "./Event";
+
+// module spine {
 
 	/** Applies animations over time, queues animations for later playback, mixes (crossfading) between animations, and applies
 	 * multiple animations on top of each other (layering).
@@ -1167,4 +1174,4 @@ module spine {
 		event (entry: TrackEntry, event: Event) {
 		}
 	}
-}
+// }

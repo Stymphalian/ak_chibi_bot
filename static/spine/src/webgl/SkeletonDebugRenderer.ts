@@ -27,7 +27,17 @@
  * THE SPINE RUNTIMES, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *****************************************************************************/
 
-module spine.webgl {
+import { ClippingAttachment } from "../core/attachments/ClippingAttachment";
+import { MeshAttachment } from "../core/attachments/MeshAttachment";
+import { PathAttachment } from "../core/attachments/PathAttachment";
+import { RegionAttachment } from "../core/attachments/RegionAttachment";
+import { Skeleton } from "../core/Skeleton";
+import { SkeletonBounds } from "../core/SkeletonBounds";
+import { Color, Utils, Disposable } from "../core/Utils";
+import { ShapeRenderer } from "./ShapeRenderer";
+import { ManagedWebGLRenderingContext } from "./WebGL";
+
+// module spine.webgl {
 	export class SkeletonDebugRenderer implements Disposable {
 		boneLineColor = new Color(1, 0, 0, 1);
 		boneOriginColor = new Color(0, 1, 0, 1);
@@ -222,4 +232,4 @@ module spine.webgl {
 		dispose () {
 		}
 	}
-}
+// }

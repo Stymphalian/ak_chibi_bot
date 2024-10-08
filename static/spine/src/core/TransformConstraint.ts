@@ -27,7 +27,13 @@
  * THE SPINE RUNTIMES, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *****************************************************************************/
 
-module spine {
+import { Bone } from "./Bone";
+import { Skeleton } from "./Skeleton";
+import { TransformConstraintData } from "./TransformConstraintData";
+import { Updatable } from "./Updatable";
+import { Vector2, MathUtils } from "./Utils";
+
+// module spine {
 
 	/** Stores the current pose for a transform constraint. A transform constraint adjusts the world transform of the constrained
 	 * bones to match that of the target bone.
@@ -297,4 +303,4 @@ module spine {
 			}
 		}
 	}
-}
+// }

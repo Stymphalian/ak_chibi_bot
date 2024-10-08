@@ -1,4 +1,9 @@
-module spine {
+import { Vector2 } from "../core/Utils";
+import { Vector3 } from "../webgl/Vector3";
+import { Actor } from "./Actor";
+import { BoundingBox } from "./Player";
+
+// // module spine {
     export class ActionName {
 		static PLAY_ANIMATION = "PLAY_ANIMATION";
 		static WANDER = "WANDER";
@@ -44,7 +49,7 @@ module spine {
         getRandomPosition(currentPos: Vector2, viewport: BoundingBox): Vector2 {
             let half = viewport.width / 2;
             let rand = Math.random();
-			return new spine.Vector2(rand*viewport.width - half, currentPos.y);
+			return new Vector2(rand*viewport.width - half, currentPos.y);
         }
 
         SetAnimation(actor:Actor, animation:string, viewport: BoundingBox) {
@@ -104,7 +109,7 @@ module spine {
 
         getRandomPosition(currentPos: Vector2, viewport: BoundingBox): Vector2 {
             let half = viewport.width / 2;
-			return new spine.Vector2(Math.random()*viewport.width - half, currentPos.y);
+			return new Vector2(Math.random()*viewport.width - half, currentPos.y);
         }
 
         SetAnimation(actor:Actor, animation:string, viewport: BoundingBox) {
@@ -178,7 +183,7 @@ module spine {
                     this.actionData["target_pos"]["x"],
                     this.actionData["target_pos"]["y"],
                 );
-                this.endPosition = new spine.Vector2(
+                this.endPosition = new Vector2(
                     target.x * viewport.width - (viewport.width/2),
                     0,
                 );
@@ -211,8 +216,8 @@ module spine {
 
     export class PaceAroundAction implements ActorAction{
         public actionData: any
-        public startPosition: spine.webgl.Vector3 = null;
-        public endPosition: spine.webgl.Vector3 = null;
+        public startPosition: Vector3 = null;
+        public endPosition: Vector3 = null;
         public reachedDestination: boolean;
 
         constructor(actionData: any) {
@@ -245,22 +250,22 @@ module spine {
                 // TODO: Make the z range configurable
                 let z1 = Math.random()*20;
                 let z2 = Math.random()*20;
-                let start = new spine.webgl.Vector3(
+                let start = new Vector3(
                     this.actionData["pace_start_pos"]["x"],
                     this.actionData["pace_start_pos"]["y"],
                     z1
                 )
-                let target = new spine.webgl.Vector3(
+                let target = new Vector3(
                     this.actionData["pace_end_pos"]["x"],
                     this.actionData["pace_end_pos"]["y"],
                     z2
                 );
-                this.startPosition = new spine.webgl.Vector3(
+                this.startPosition = new Vector3(
                     start.x * viewport.width - (viewport.width/2),
                     start.y * viewport.height,
                     start.z
                 )
-                this.endPosition = new spine.webgl.Vector3(
+                this.endPosition = new Vector3(
                     target.x * viewport.width - (viewport.width/2),
                     target.y * viewport.height,
                     target.z
@@ -287,4 +292,4 @@ module spine {
             }
         }
     }
-}
+// }

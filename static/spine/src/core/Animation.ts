@@ -27,7 +27,16 @@
  * THE SPINE RUNTIMES, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *****************************************************************************/
 
-module spine {
+import { VertexAttachment, Attachment } from "./attachments/Attachment";
+import { IkConstraint } from "./IkConstraint";
+import { PathConstraint } from "./PathConstraint";
+import { Skeleton } from "./Skeleton";
+import { Slot } from "./Slot";
+import { TransformConstraint } from "./TransformConstraint";
+import { Utils, MathUtils, ArrayLike } from "./Utils";
+import { Event } from "./Event";
+
+// module spine {
 
 	/** A simple container for a list of timelines and a name. */
 	export class Animation {
@@ -1553,4 +1562,4 @@ module spine {
 			}
 		}
 	}
-}
+// }

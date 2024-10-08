@@ -27,7 +27,16 @@
  * THE SPINE RUNTIMES, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *****************************************************************************/
 
-module spine {
+import { BoneData } from "./BoneData";
+import { EventData } from "./EventData";
+import { IkConstraintData } from "./IkConstraintData";
+import { PathConstraintData } from "./PathConstraintData";
+import { Skin } from "./Skin";
+import { SlotData } from "./SlotData";
+import {Animation } from "./Animation";
+import { TransformConstraintData } from "./TransformConstraintData";
+
+// module spine {
 	/** Stores the setup pose and all of the stateless data for a skeleton.
 	 *
 	 * See [Data objects](http://esotericsoftware.com/spine-runtime-architecture#Data-objects) in the Spine Runtimes
@@ -221,4 +230,4 @@ module spine {
 			return -1;
 		}
 	}
-}
+// }

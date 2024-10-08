@@ -27,7 +27,10 @@
  * THE SPINE RUNTIMES, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *****************************************************************************/
 
-module spine.webgl {
+import { Matrix4 } from "./Matrix4";
+import { Vector3 } from "./Vector3";
+
+// module spine.webgl {
 
 	export interface Camera {
 		position: Vector3;
@@ -47,7 +50,7 @@ module spine.webgl {
 
 		update() : void;
 		screenToWorld (screenCoords: Vector3, screenWidth: number, screenHeight: number) : Vector3;
-		worldToScreen(worldCoords: spine.webgl.Vector3): spine.webgl.Vector3;
+		worldToScreen(worldCoords: Vector3): Vector3;
 		setViewport(viewportWidth: number, viewportHeight: number): void;
 	}
 
@@ -104,8 +107,8 @@ module spine.webgl {
 			return screenCoords;
 		}
 
-		worldToScreen(worldCoords: spine.webgl.Vector3): spine.webgl.Vector3 {
-			let tmp = new spine.webgl.Vector3(
+		worldToScreen(worldCoords: Vector3): Vector3 {
+			let tmp = new Vector3(
 				worldCoords.x,
 				worldCoords.y,
 				worldCoords.z,
@@ -114,7 +117,7 @@ module spine.webgl {
 			tmp.x = ((tmp.x + 1)/2) * (this.viewportWidth);
 			// tmp.y = (1.0 - (tmp.y + 1)/2) * (this.viewportHeight);
 			tmp.y = ((tmp.y + 1)/2) * (this.viewportHeight);
-			return new spine.webgl.Vector3(tmp.x, tmp.y, 0);
+			return new Vector3(tmp.x, tmp.y, 0);
 		}
 
 		// screenToWorld (screenCoords: Vector3, screenWidth: number, screenHeight: number) {
@@ -129,7 +132,7 @@ module spine.webgl {
 		// }
 
 		// worldToScreen(worldCoords: Vector2): spine.Vector2 {
-		// 	let tmp = new spine.webgl.Vector3(
+		// 	let tmp = new Vector3(
 		// 		worldCoords.x,
 		// 		worldCoords.y,
 		// 		0,
@@ -208,8 +211,8 @@ module spine.webgl {
 			return screenCoords;
 		}
 
-		worldToScreen(worldCoords: spine.webgl.Vector3): spine.webgl.Vector3 {
-			let tmp = new spine.webgl.Vector3(
+		worldToScreen(worldCoords: Vector3): Vector3 {
+			let tmp = new Vector3(
 				worldCoords.x,
 				worldCoords.y,
 				worldCoords.z,
@@ -219,7 +222,7 @@ module spine.webgl {
 			tmp.x = ((tmp.x + 1)/2) * (this.viewportWidth);
 			tmp.y = ((tmp.y + 1)/2) * (this.viewportHeight);
 			// tmp.y = (1.0 - ((tmp.y + 1)/2)) * (this.viewportHeight); old
-			let ret =  new spine.webgl.Vector3(tmp.x, tmp.y, tmp.z);
+			let ret =  new Vector3(tmp.x, tmp.y, tmp.z);
 			ret.w = tmp.w;
 			return ret;
 		}
@@ -229,4 +232,4 @@ module spine.webgl {
 			this.viewportHeight = viewportHeight;
 		}
 	}
-}
+// }

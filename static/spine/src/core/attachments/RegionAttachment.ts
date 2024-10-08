@@ -27,7 +27,12 @@
  * THE SPINE RUNTIMES, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *****************************************************************************/
 
-module spine {
+import { Bone } from "../Bone";
+import { TextureRegion } from "../Texture";
+import { Color, Utils, ArrayLike } from "../Utils";
+import { Attachment } from "./Attachment";
+
+// module spine {
 
 	/** An attachment that displays a textured quadrilateral.
 	 *
@@ -231,4 +236,4 @@ module spine {
 			return copy;
 		}
 	}
-}
+// }
