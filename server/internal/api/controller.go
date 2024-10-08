@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"log"
 	"net/http"
 	"slices"
 	"strings"
@@ -29,6 +30,7 @@ func NewApiServer(
 	authService auth.AuthServiceInterface,
 	roomRepo room.RoomRepository,
 ) *ApiServer {
+	log.Println("NewApiServer created")
 	return &ApiServer{
 		roomsManager: roomManager,
 		authService:  authService,

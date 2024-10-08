@@ -56,6 +56,22 @@ type AuthService struct {
 	shutdownChan   chan struct{}
 }
 
+func ProvideAuthService(
+	botConfig *misc.BotConfig,
+	twitchClient twitch_api.TwitchApiClientInterface,
+	usersRepo users.UserRepository,
+) (*AuthService, error) {
+	log.Println("ProvideAuthService")
+	return NewAuthService(
+		botConfig.TwitchClientId,
+		botConfig.TwitchClientSecret,
+		botConfig.CookieSecret,
+		botConfig.TwitchOauthRedirectUrl,
+		twitchClient,
+		usersRepo,
+	)
+}
+
 func NewAuthService(
 	twitchClientId string,
 	twitchSecret string,

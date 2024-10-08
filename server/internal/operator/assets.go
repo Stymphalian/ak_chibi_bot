@@ -11,6 +11,7 @@ import (
 	"sort"
 	"strings"
 
+	"github.com/Stymphalian/ak_chibi_bot/server/internal/misc"
 	"github.com/lithammer/fuzzysearch/fuzzy"
 )
 
@@ -371,7 +372,9 @@ type AssetService struct {
 	EnemyCommonNames *CommonNames
 }
 
-func NewAssetService(assetDir string) (*AssetService, error) {
+func NewAssetService(assetDirArg misc.ImageAssetDirString) (*AssetService, error) {
+	log.Println("NewAssetService created")
+	assetDir := string(assetDirArg)
 	s := &AssetService{
 		AssetMap:         NewSpineAssetMap(),
 		CommonNames:      NewCommonNames(),

@@ -15,6 +15,7 @@ type OperatorService struct {
 }
 
 func NewOperatorService(assets *AssetService, config *misc.SpineRuntimeConfig) *OperatorService {
+	log.Println("NewOperatorService created")
 	return &OperatorService{
 		Assets: assets,
 		config: config,

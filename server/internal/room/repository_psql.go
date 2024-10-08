@@ -11,7 +11,7 @@ import (
 type RoomRepositoryPsql struct {
 }
 
-func NewPostgresRoomRepository() RoomRepository {
+func NewRoomRepositoryPsql() *RoomRepositoryPsql {
 	return &RoomRepositoryPsql{}
 }
 

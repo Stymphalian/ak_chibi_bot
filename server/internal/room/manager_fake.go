@@ -9,7 +9,7 @@ import (
 
 func NewFakeRoomsManager() *RoomsManager {
 	assetService := operator.NewTestAssetService()
-	roomRepo := NewPostgresRoomRepository()
+	roomRepo := NewRoomRepositoryPsql()
 	usersRepo := users.NewUserRepositoryPsql()
 	chattersRepo := users.NewChatterRepositoryPsql()
 	botConfig := &misc.BotConfig{

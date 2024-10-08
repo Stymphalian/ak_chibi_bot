@@ -4,9 +4,12 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"log"
 	"net/http"
 	"strings"
 	"time"
+
+	"github.com/Stymphalian/ak_chibi_bot/server/internal/misc"
 )
 
 type TwitchApiClientInterface interface {
@@ -22,6 +25,14 @@ type TwitchApiClient struct {
 	ClientId    string
 	AccessToken string
 	httpClient  *http.Client
+}
+
+func ProvideTwitchApiClient(botConfig *misc.BotConfig) *TwitchApiClient {
+	log.Println("ProvideTwitchApiClient")
+	return NewTwitchApiClient(
+		botConfig.TwitchClientId,
+		botConfig.TwitchAccessToken,
+	)
 }
 
 func NewTwitchApiClient(clientId string, accessToken string) *TwitchApiClient {

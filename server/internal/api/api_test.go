@@ -17,7 +17,7 @@ import (
 func Setup_TestApiServer() (*ApiServer, *auth.FakeAuthService) {
 	roomManager := room.NewFakeRoomsManager()
 	authService := auth.NewFakeAuthService()
-	roomsRepo := room.NewPostgresRoomRepository()
+	roomsRepo := room.NewRoomRepositoryPsql()
 	authService.IsAuthenticated = true
 	authService.Username = "test"
 	return NewApiServer(roomManager, authService, roomsRepo), authService

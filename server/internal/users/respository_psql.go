@@ -64,7 +64,7 @@ func (r *UserRepositoryPsql) GetOrInsertUser(ctx context.Context, userinfo misc.
 type ChatterRepositoryPsql struct {
 }
 
-func NewChatterRepositoryPsql() ChatterRepository {
+func NewChatterRepositoryPsql() *ChatterRepositoryPsql {
 	return &ChatterRepositoryPsql{}
 }
 

@@ -24,13 +24,13 @@ type LoginServer struct {
 }
 
 func NewLoginServer(
-	assetDir string,
+	assetDir misc.StaticAssetDirString,
 	authService *auth.AuthService,
 	usersRepo users.UserRepository,
 ) (*LoginServer, error) {
-
+	log.Println("NewLoginServer created")
 	return &LoginServer{
-		assetDir:    assetDir,
+		assetDir:    string(assetDir),
 		authService: authService,
 		usersRepo:   usersRepo,
 	}, nil
