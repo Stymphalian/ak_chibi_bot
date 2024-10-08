@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"slices"
 	"strings"
 	"sync"
 	"time"
@@ -19,10 +20,11 @@ type WebSocketDebufInfo struct {
 	AverageFps *misc.RollingArray[float64]
 }
 type WebSocketConn struct {
-	conn      *websocket.Conn
-	done      chan struct{}
-	remove    bool
-	DebugInfo *WebSocketDebufInfo
+	connectionName string
+	conn           *websocket.Conn
+	done           chan struct{}
+	remove         bool
+	DebugInfo      *WebSocketDebufInfo
 }
 
 type SpineBridge struct {
@@ -175,16 +177,17 @@ func (s *SpineBridge) AddConnection(
 	}
 	misc.Monitor.NumWebsocketConnections += 1
 
+	// Get a uuid string
+	connectionName := uuid.New().String()
 	websocketConn := &WebSocketConn{
-		conn:   c,
-		done:   make(chan struct{}),
-		remove: false,
+		connectionName: connectionName,
+		conn:           c,
+		done:           make(chan struct{}),
+		remove:         false,
 		DebugInfo: &WebSocketDebufInfo{
 			AverageFps: misc.NewRollingArray[float64](10),
 		},
 	}
-	// Get a uuid string
-	connectionName := uuid.New().String()
 	s.WebSocketConnections[connectionName] = websocketConn
 
 	// Track that something has connected to the client
@@ -202,6 +205,7 @@ func (s *SpineBridge) AddConnection(
 			chatterInfo.Username,
 			chatterInfo.UsernameDisplay,
 			chatterInfo.OperatorInfo,
+			[]string{connectionName},
 		)
 	}
 
@@ -245,6 +249,7 @@ func (s *SpineBridge) setInternalSpineOperator(
 	UserName string,
 	userNameDisplay string,
 	info operator.OperatorInfo,
+	connectionIds []string,
 ) error {
 	// Validate the setOperator Request
 	if err := s.spineService.ValidateOperatorRequest(&info); err != nil {
@@ -291,9 +296,13 @@ func (s *SpineBridge) setInternalSpineOperator(
 	log.Println("setInternalSpineOperator sending: ", string(data_json))
 
 	for _, websocketConn := range s.WebSocketConnections {
-		if websocketConn.conn != nil {
-			websocketConn.conn.WriteJSON(data)
+		if websocketConn.conn == nil {
+			continue
 		}
+		if connectionIds != nil && !slices.Contains(connectionIds, websocketConn.connectionName) {
+			continue
+		}
+		websocketConn.conn.WriteJSON(data)
 	}
 
 	return nil
@@ -306,6 +315,7 @@ func (s *SpineBridge) SetOperator(req *SetOperatorRequest) (*SetOperatorResponse
 		req.UserName,
 		req.UserNameDisplay,
 		req.Operator,
+		nil,
 	)
 	if err != nil {
 		return nil, err
