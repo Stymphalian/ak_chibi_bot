@@ -14,9 +14,10 @@ import (
 )
 
 type ChibiActor struct {
-	spineService *operator.OperatorService
-	usersRepo    users.UserRepository
-	chattersRepo users.ChatterRepository
+	spineService  *operator.OperatorService
+	usersRepo     users.UserRepository
+	chattersRepo  users.ChatterRepository
+	userPrefsRepo users.UserPreferencesRepository
 
 	ChatUsers            map[string]*users.ChatUser
 	lastChatterTime      time.Time
@@ -32,14 +33,16 @@ func NewChibiActor(
 	roomId uint,
 	spineService *operator.OperatorService,
 	usersRepo users.UserRepository,
+	userPrefsRepo users.UserPreferencesRepository,
 	chattersRepo users.ChatterRepository,
 	client spine.SpineClient,
 	excludeNames []string,
 ) *ChibiActor {
 	a := &ChibiActor{
-		spineService: spineService,
-		usersRepo:    usersRepo,
-		chattersRepo: chattersRepo,
+		spineService:  spineService,
+		usersRepo:     usersRepo,
+		userPrefsRepo: userPrefsRepo,
+		chattersRepo:  chattersRepo,
 
 		ChatUsers:            make(map[string]*users.ChatUser, 0),
 		lastChatterTime:      misc.Clock.Now(),
@@ -198,6 +201,37 @@ func (c *ChibiActor) CurrentInfo(ctx context.Context, userName string) (operator
 	}
 
 	return *chatUser.GetOperatorInfo(), nil
+}
+
+func (c *ChibiActor) SaveUserPreferences(ctx context.Context, userInfo misc.UserInfo, update *operator.OperatorInfo) error {
+	userDb, err := c.usersRepo.GetByTwitchId(ctx, userInfo.TwitchUserId)
+	if err != nil {
+		return err
+	}
+	return c.userPrefsRepo.SetByUserId(ctx, userDb.UserId, update)
+}
+
+func (c *ChibiActor) ClearUserPreferences(ctx context.Context, userInfo misc.UserInfo) error {
+	userDb, err := c.usersRepo.GetByTwitchId(ctx, userInfo.TwitchUserId)
+	if err != nil {
+		return err
+	}
+	return c.userPrefsRepo.DeleteByUserId(ctx, userDb.UserId)
+}
+
+func (c *ChibiActor) GetUserPreferences(ctx context.Context, userInfo misc.UserInfo) (*operator.OperatorInfo, error) {
+	userDb, err := c.usersRepo.GetByTwitchId(ctx, userInfo.TwitchUserId)
+	if err != nil {
+		return nil, err
+	}
+	val, err := c.userPrefsRepo.GetByUserIdOrNil(ctx, userDb.UserId)
+	if err != nil {
+		return nil, err
+	}
+	if val == nil {
+		return nil, nil
+	}
+	return &val.OperatorInfo, nil
 }
 
 func (c *ChibiActor) UpdateChatter(

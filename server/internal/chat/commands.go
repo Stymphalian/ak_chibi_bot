@@ -73,3 +73,35 @@ func (c *ChatCommandUpdateActor) UpdateActor(a ActorUpdater) error {
 		TwitchUserId:    c.twitchUserId,
 	}, c.update)
 }
+
+type ChatCommandSavePrefsAction int
+
+const (
+	ChatCommandSaveChibi_Save   = ChatCommandSavePrefsAction(0)
+	ChatCommandSaveChibi_Remove = ChatCommandSavePrefsAction(1)
+)
+
+type ChatCommandSavePrefs struct {
+	replyMessage    string
+	username        string
+	usernameDisplay string
+	twitchUserId    string
+	update          *operator.OperatorInfo
+	action          ChatCommandSavePrefsAction
+}
+
+func (c *ChatCommandSavePrefs) Reply(a ActorUpdater) string { return c.replyMessage }
+func (c *ChatCommandSavePrefs) UpdateActor(a ActorUpdater) error {
+	ctx := context.Background()
+	ui := misc.UserInfo{
+		Username:        c.username,
+		UsernameDisplay: c.usernameDisplay,
+		TwitchUserId:    c.twitchUserId,
+	}
+
+	if c.action == ChatCommandSaveChibi_Save {
+		return a.SaveUserPreferences(ctx, ui, c.update)
+	} else {
+		return a.ClearUserPreferences(ctx, ui)
+	}
+}

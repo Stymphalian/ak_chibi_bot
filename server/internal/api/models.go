@@ -1,5 +1,7 @@
 package api
 
+import "github.com/Stymphalian/ak_chibi_bot/server/internal/operator"
+
 type chatter struct {
 	Username     string `json:"username"`
 	Operator     string `json:"operator"`
@@ -65,4 +67,18 @@ type GetRoomSettingsResponse struct {
 	MinSpriteSize      float64 `json:"min_sprite_size"`
 	MaxSpriteSize      float64 `json:"max_sprite_size"`
 	MaxSpritePixelSize int     `json:"max_sprite_pixel_size"`
+}
+
+type GetUserPreferencesRequest struct {
+	UserId uint `json:"user_id"`
+}
+type GetUserPreferencesResponse struct {
+	OperatorInfo operator.OperatorInfo `json:"operator_info"`
+}
+type UpdateUserPreferencesRequest struct {
+	UserId       uint                  `json:"user_id"`
+	OperatorInfo operator.OperatorInfo `json:"operator_info"`
+}
+type DeleteUserPreferencesRquest struct {
+	UserId uint `json:"user_id"`
 }

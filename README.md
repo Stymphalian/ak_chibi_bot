@@ -23,6 +23,7 @@ Command Name | Description
 !chibi who Rock | Ask the bot for operators/enemies which match the given name.
 !chibi size 0.5 | Change the size/scale of the chibi. (min 0.5, max 1.5). There is still a maximum pixel size limitation on the chibi (350px)
 !chibi velocity 1.2 | For when the chibi is walking around change the movement speed of the chibi (min 0.1, max 2). Use !chibi velocity default to change back to a default speed.
+!chibi <save, unsave> | Save the current chibi as your preferred chibi. When you join a stream the saved chibi will be loaded with the same skin, animation, etc. Use `!chibi unsave` to clear out your preferences.
 
 # Quick Start - Hosted
 Have the twich bot directly connect to your chat by using a hosted bot.

@@ -2,11 +2,13 @@ package users
 
 import (
 	"context"
+	"errors"
 	"time"
 
 	"github.com/Stymphalian/ak_chibi_bot/server/internal/akdb"
 	"github.com/Stymphalian/ak_chibi_bot/server/internal/misc"
 	"github.com/Stymphalian/ak_chibi_bot/server/internal/operator"
+	"gorm.io/gorm"
 )
 
 type UserRepositoryPsql struct {
@@ -192,5 +194,52 @@ func (r *ChatterRepositoryPsql) UpdateLatestChat(ctx context.Context, chatterId 
 			IsActive:     true,
 			LastChatTime: lastChatTime,
 		})
+	return result.Error
+}
+
+type UserPreferencesRepositoryPsql struct{}
+
+func NewUserPreferencesRepositoryPsql() *UserPreferencesRepositoryPsql {
+	return &UserPreferencesRepositoryPsql{}
+}
+
+func (r *UserPreferencesRepositoryPsql) GetByUserIdOrNil(ctx context.Context, userId uint) (*UserPreferencesDb, error) {
+	db := akdb.DefaultDB.WithContext(ctx)
+
+	var userDb UserPreferencesDb
+	result := db.
+		Where("user_id = ?", userId).
+		First(&userDb)
+	if result.Error != nil {
+		if errors.Is(result.Error, gorm.ErrRecordNotFound) {
+			return nil, nil
+		}
+		return nil, result.Error
+	}
+	return &userDb, nil
+}
+
+func (r *UserPreferencesRepositoryPsql) SetByUserId(ctx context.Context, userId uint, opInfo *operator.OperatorInfo) error {
+	db := akdb.DefaultDB.WithContext(ctx)
+
+	var prefDb UserPreferencesDb
+	result := db.
+		Where("user_id = ?", userId).
+		Assign(
+			UserPreferencesDb{
+				UserId:       userId,
+				OperatorInfo: *opInfo,
+			},
+		).
+		FirstOrCreate(&prefDb)
+	return result.Error
+}
+
+func (r *UserPreferencesRepositoryPsql) DeleteByUserId(ctx context.Context, userId uint) error {
+	db := akdb.DefaultDB.WithContext(ctx)
+
+	result := db.
+		Where("user_id = ?", userId).
+		Delete(&UserPreferencesDb{})
 	return result.Error
 }

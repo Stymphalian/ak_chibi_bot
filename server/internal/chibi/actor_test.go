@@ -2,6 +2,7 @@ package chibi
 
 import (
 	"context"
+	"log"
 	"testing"
 	"time"
 
@@ -13,8 +14,24 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+var amiyaOpInfo = operator.NewOperatorInfo(
+	"Amiya",
+	operator.FACTION_ENUM_OPERATOR,
+	"char_002_amiya",
+	operator.DEFAULT_SKIN_NAME,
+	operator.CHIBI_STANCE_ENUM_BASE,
+	operator.CHIBI_FACING_ENUM_FRONT,
+	[]string{operator.DEFAULT_SKIN_NAME, "skin1"},
+	[]string{operator.DEFAULT_ANIM_BASE, operator.DEFAULT_ANIM_BATTLE, "anim1"},
+	1.0,
+	misc.EmptyOption[misc.Vector2](),
+	operator.ACTION_PLAY_ANIMATION,
+	operator.NewActionPlayAnimation([]string{operator.DEFAULT_ANIM_BASE}),
+)
+
 func setupActorTest() *ChibiActor {
 	usersRepo := users.NewUserRepositoryPsql()
+	userPrefsRepo := users.NewUserPreferencesRepositoryPsql()
 	chattersRepo := users.NewChatterRepositoryPsql()
 	assetManager := operator.NewTestAssetService()
 	spineService := operator.NewOperatorService(assetManager, misc.DefaultSpineRuntimeConfig())
@@ -23,6 +40,7 @@ func setupActorTest() *ChibiActor {
 		5000,
 		spineService,
 		usersRepo,
+		userPrefsRepo,
 		chattersRepo,
 		fakeSpineClient,
 		[]string{"exlude_user"},
@@ -214,4 +232,89 @@ func TestUpdateChatter(t *testing.T) {
 	assert.Equal(len(sut.ChatUsers), 1)
 	period := time.Duration(1) * time.Second
 	assert.True(misc.Clock.Since(sut.ChatUsers["user1"].GetLastChatTime()) < period)
+}
+
+func TestChibiActor_GetUserPreferences_HappyPath(t *testing.T) {
+	assert := assert.New(t)
+	sut := setupActorTest()
+	// Insert user preferences
+	ctx := context.TODO()
+	username := "test-chibi-actor"
+	userinfo := misc.UserInfo{
+		Username:        username,
+		UsernameDisplay: "display-" + username,
+		TwitchUserId:    "twitch-" + username,
+	}
+	userDb, _ := sut.usersRepo.GetOrInsertUser(ctx, userinfo)
+	sut.userPrefsRepo.SetByUserId(ctx, userDb.UserId, &amiyaOpInfo)
+
+	pref, err := sut.GetUserPreferences(ctx, userinfo)
+	if err != nil {
+		t.Error(err)
+	}
+	assert.NotNil(pref)
+}
+
+func TestChibiActor_GetUserPreferences_UserDoesNotExist_ShouldFail(t *testing.T) {
+	assert := assert.New(t)
+	sut := setupActorTest()
+	// Insert user preferences
+	ctx := context.TODO()
+	username := "test-chibi-actor-does-not-exist"
+	userinfo := misc.UserInfo{
+		Username:        username,
+		UsernameDisplay: "display-" + username,
+		TwitchUserId:    "twitch-" + username,
+	}
+	_, err := sut.GetUserPreferences(ctx, userinfo)
+	assert.Error(err)
+}
+
+func TestChibiActor_SaveUserPreferences_HappyPath(t *testing.T) {
+	assert := assert.New(t)
+	sut := setupActorTest()
+	ctx := context.TODO()
+	opInfo := amiyaOpInfo
+	username := "test-chibi-actor-3"
+	userinfo := misc.UserInfo{
+		Username:        username,
+		UsernameDisplay: "display-" + username,
+		TwitchUserId:    "twitch-" + username,
+	}
+	sut.usersRepo.GetOrInsertUser(context.TODO(), userinfo)
+
+	err := sut.SaveUserPreferences(ctx, userinfo, &opInfo)
+	if err != nil {
+		t.Error(err)
+	}
+
+	saved, err := sut.GetUserPreferences(ctx, userinfo)
+	log.Println(saved.CurrentAction)
+	log.Println(opInfo.CurrentAction)
+	assert.Nil(err)
+	assert.Equal(opInfo, *saved)
+}
+
+func TestChibiActor_ClearUserPreferences_HappyPath(t *testing.T) {
+	assert := assert.New(t)
+	sut := setupActorTest()
+	// Set user preferences
+	ctx := context.TODO()
+	username := "test-chibi-actor-4"
+	userinfo := misc.UserInfo{
+		Username:        username,
+		UsernameDisplay: "display-" + username,
+		TwitchUserId:    "twitch-" + username,
+	}
+	userDb, _ := sut.usersRepo.GetOrInsertUser(context.TODO(), userinfo)
+	sut.userPrefsRepo.SetByUserId(ctx, userDb.UserId, &amiyaOpInfo)
+
+	err := sut.ClearUserPreferences(ctx, userinfo)
+	if err != nil {
+		t.Error(err)
+	}
+
+	saved, err := sut.GetUserPreferences(ctx, userinfo)
+	assert.Nil(err)
+	assert.Nil(saved)
 }

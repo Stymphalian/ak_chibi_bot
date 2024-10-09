@@ -48,8 +48,10 @@ func InitializeMainStruct() (*MainStruct, error) {
 	if err != nil {
 		return nil, err
 	}
-	roomsManager := room.NewRoomsManager(assetService, roomRepositoryPsql, userRepositoryPsql, chatterRepositoryPsql, botConfig)
-	apiServer := api.NewApiServer(roomsManager, authService, roomRepositoryPsql)
+	userPreferencesRepositoryPsql := users.NewUserPreferencesRepositoryPsql()
+	roomsManager := room.NewRoomsManager(assetService, roomRepositoryPsql, userRepositoryPsql, userPreferencesRepositoryPsql, chatterRepositoryPsql, botConfig)
+	operatorService := operator.NewDefaultOperatorService(assetService)
+	apiServer := api.NewApiServer(roomsManager, authService, roomRepositoryPsql, userRepositoryPsql, userPreferencesRepositoryPsql, operatorService)
 	mainStruct := NewMainStruct(commandLineArgs, botConfig, assetService, roomRepositoryPsql, userRepositoryPsql, chatterRepositoryPsql, authRepositoryPsql, twitchApiClient, authService, loginServer, roomsManager, apiServer)
 	return mainStruct, nil
 }

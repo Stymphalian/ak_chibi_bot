@@ -30,6 +30,7 @@ type TwitchClaims struct {
 
 type ContextTwitchUserId string
 type ContextTwitchUserName string
+type ContextUserId string
 
 const (
 	STATE_CALLBACK_KEY           = "oauth-state-callback"
@@ -38,6 +39,7 @@ const (
 	OAUTH_TOKEN_KEY              = "oauth-token"
 	CONTEXT_TWITCH_USER_ID       = ContextTwitchUserId("twitch-user-id")
 	CONTEXT_TWITCH_USER_NAME     = ContextTwitchUserName("twitch-user-name")
+	CONTEXT_USER_ID              = ContextUserId("user-id")
 	VALIDATE_OAUTH_TOKENS_PERIOD = 1 * time.Hour
 	COOKIE_MAX_AGE               = 6 * time.Hour
 )

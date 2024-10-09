@@ -55,8 +55,8 @@ type ActionUnion struct {
 	ActionWander
 	ActionWalkTo
 	ActionPaceAround
-	IsSet         bool
-	currentAction ActionEnum
+	IsSet         bool       `json:"is_set"`
+	CurrentAction ActionEnum `json:"current_action"`
 }
 
 func (a *ActionUnion) GetAnimations(action ActionEnum) []string {
@@ -89,13 +89,13 @@ func GetAvailableMoveAnimations(availableAnimations []string) []string {
 func NewActionPlayAnimation(animations []string) (r ActionUnion) {
 	r.Animations = animations
 	r.IsSet = true
-	r.currentAction = ACTION_PLAY_ANIMATION
+	r.CurrentAction = ACTION_PLAY_ANIMATION
 	return r
 }
 func NewActionWander(animation string) (r ActionUnion) {
 	r.WanderAnimation = animation
 	r.IsSet = true
-	r.currentAction = ACTION_WANDER
+	r.CurrentAction = ACTION_WANDER
 	return r
 }
 func NewActionWalkTo(TargetPos misc.Vector2, walkAnimation string, finalAnimation string) (r ActionUnion) {
@@ -103,7 +103,7 @@ func NewActionWalkTo(TargetPos misc.Vector2, walkAnimation string, finalAnimatio
 	r.WalkToAnimation = walkAnimation
 	r.WalkToFinalAnimation = finalAnimation
 	r.IsSet = true
-	r.currentAction = ACTION_WALK_TO
+	r.CurrentAction = ACTION_WALK_TO
 	return r
 }
 
@@ -112,6 +112,6 @@ func NewActionPaceAround(startPos misc.Vector2, endPos misc.Vector2, animation s
 	r.PaceEndPos = misc.NewOption(endPos)
 	r.PaceAroundAnimation = animation
 	r.IsSet = true
-	r.currentAction = ACTION_PACE_AROUND
+	r.CurrentAction = ACTION_PACE_AROUND
 	return r
 }

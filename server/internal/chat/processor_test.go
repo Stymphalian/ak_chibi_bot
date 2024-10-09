@@ -94,6 +94,13 @@ func (f *FakeActorUpdater) UpdateChibi(ctx context.Context, userInfo misc.UserIn
 	return nil
 }
 
+func (f *FakeActorUpdater) SaveUserPreferences(ctx context.Context, userInfo misc.UserInfo, update *operator.OperatorInfo) error {
+	return nil
+}
+func (f *FakeActorUpdater) ClearUserPreferences(ctx context.Context, userInfo misc.UserInfo) error {
+	return nil
+}
+
 func setupCommandTest() (*operator.OperatorInfo, ActorUpdater, *ChatCommandProcessor) {
 	current := operator.NewOperatorInfo(
 		"Amiya",
@@ -682,4 +689,46 @@ func TestCmdProcessorHandleMessage_ChibiPaceAround(t *testing.T) {
 	assert.Equal(0.1, current.Action.PaceStartPos.Unwrap().X)
 	assert.Equal(0.5, current.Action.PaceEndPos.Unwrap().X)
 	assert.Equal(1.0, current.AnimationSpeed)
+}
+
+func TestCmdProcesorHandleMessage_ChibiSave(t *testing.T) {
+	current, actor, sut := setupCommandTest()
+	assert := assert.New(t)
+	cmd, err := sut.HandleMessage(current, ChatMessage{
+		Username:        "user1",
+		UserDisplayName: "user1DisplayName",
+		TwitchUserId:    "100",
+		Message:         "!chibi save",
+	})
+
+	assert.Nil(err)
+	assert.Empty(cmd.Reply(actor))
+	if saveCmd, ok := cmd.(*ChatCommandSavePrefs); ok {
+		assert.Equal(saveCmd.username, "user1")
+		assert.Equal(saveCmd.usernameDisplay, "user1DisplayName")
+		assert.Equal(saveCmd.action, ChatCommandSaveChibi_Save)
+	} else {
+		assert.Fail("Command is not of type: ChatCommandSavePrefs")
+	}
+}
+
+func TestCmdProcesorHandleMessage_ChibiUnSave(t *testing.T) {
+	current, actor, sut := setupCommandTest()
+	assert := assert.New(t)
+	cmd, err := sut.HandleMessage(current, ChatMessage{
+		Username:        "user1",
+		UserDisplayName: "user1DisplayName",
+		TwitchUserId:    "100",
+		Message:         "!chibi unsave",
+	})
+
+	assert.Nil(err)
+	assert.Empty(cmd.Reply(actor))
+	if saveCmd, ok := cmd.(*ChatCommandSavePrefs); ok {
+		assert.Equal(saveCmd.username, "user1")
+		assert.Equal(saveCmd.usernameDisplay, "user1DisplayName")
+		assert.Equal(saveCmd.action, ChatCommandSaveChibi_Remove)
+	} else {
+		assert.Fail("Command is not of type: ChatCommandSavePrefs")
+	}
 }

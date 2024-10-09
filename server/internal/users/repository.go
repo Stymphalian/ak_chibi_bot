@@ -37,6 +37,12 @@ type ChatterRepository interface {
 	GetActiveChatters(ctx context.Context, roomId uint) ([]*UserChatterDb, error)
 }
 
+type UserPreferencesRepository interface {
+	GetByUserIdOrNil(ctx context.Context, userId uint) (*UserPreferencesDb, error)
+	SetByUserId(ctx context.Context, userId uint, opInfo *operator.OperatorInfo) error
+	DeleteByUserId(ctx context.Context, userId uint) error
+}
+
 type UserDb struct {
 	UserId          uint           `gorm:"primarykey"`
 	Username        string         `gorm:"column:username"`
@@ -83,4 +89,17 @@ type UserChatterDb struct {
 
 func (UserChatterDb) TableName() string {
 	return "chatters"
+}
+
+type UserPreferencesDb struct {
+	UserPreferenceId uint                  `gorm:"primarykey"`
+	UserId           uint                  `gorm:"column:user_id"`
+	OperatorInfo     operator.OperatorInfo `gorm:"operator_info;type:json"`
+	CreatedAt        time.Time             `gorm:"column:created_at"`
+	UpdatedAt        time.Time             `gorm:"column:updated_at"`
+	// DeletedAt        gorm.DeletedAt        `gorm:"index"`
+}
+
+func (UserPreferencesDb) TableName() string {
+	return "user_preferences"
 }

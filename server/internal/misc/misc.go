@@ -62,7 +62,7 @@ func (oi InitialOperatorDetails) Value() (driver.Value, error) {
 	return string(jsonData), err
 }
 
-var channelRegex = regexp.MustCompile(`^[a-zA-Z0-9_]{1,100}$`)
+var channelRegex = regexp.MustCompile(`^[a-zA-Z0-9_-]{1,100}$`)
 
 func ValidateChannelName(channelName string) error {
 	channelName = strings.TrimSpace(channelName)

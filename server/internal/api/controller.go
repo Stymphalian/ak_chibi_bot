@@ -7,20 +7,25 @@ import (
 	"log"
 	"net/http"
 	"slices"
+	"strconv"
 	"strings"
 	"time"
 
 	"github.com/Stymphalian/ak_chibi_bot/server/internal/auth"
 	"github.com/Stymphalian/ak_chibi_bot/server/internal/misc"
+	"github.com/Stymphalian/ak_chibi_bot/server/internal/operator"
 	"github.com/Stymphalian/ak_chibi_bot/server/internal/room"
 	"github.com/Stymphalian/ak_chibi_bot/server/internal/users"
 	"github.com/google/uuid"
 )
 
 type ApiServer struct {
-	roomsManager *room.RoomsManager
-	authService  auth.AuthServiceInterface
-	roomRepo     room.RoomRepository
+	roomsManager     *room.RoomsManager
+	authService      auth.AuthServiceInterface
+	roomRepo         room.RoomRepository
+	usersRepo        users.UserRepository
+	userPrefsRepo    users.UserPreferencesRepository
+	operatorsService *operator.OperatorService
 }
 
 // TODO: Refactor the API handlers. More of the logic should be moved into
@@ -29,13 +34,36 @@ func NewApiServer(
 	roomManager *room.RoomsManager,
 	authService auth.AuthServiceInterface,
 	roomRepo room.RoomRepository,
+	usersRepo users.UserRepository,
+	userPrefsRepo users.UserPreferencesRepository,
+	operatorService *operator.OperatorService,
 ) *ApiServer {
 	log.Println("NewApiServer created")
 	return &ApiServer{
-		roomsManager: roomManager,
-		authService:  authService,
-		roomRepo:     roomRepo,
+		roomsManager:     roomManager,
+		authService:      authService,
+		roomRepo:         roomRepo,
+		usersRepo:        usersRepo,
+		userPrefsRepo:    userPrefsRepo,
+		operatorsService: operatorService,
 	}
+}
+
+func (s *ApiServer) RegisterHandlers() {
+	mux := http.NewServeMux()
+	mux.Handle("GET  /api/rooms/settings/{$}", s.middleware(s.HandleGetRoomSettings))
+	mux.Handle("POST /api/rooms/settings/{$}", s.middleware(s.HandleUpdateRoomSettings))
+	mux.Handle("POST /api/rooms/remove/{$}", s.middlewareAdmin(s.HandleRemoveRoom))
+	mux.Handle("POST /api/rooms/users/remove/{$}", s.middlewareAdmin(s.HandleRemoveUser))
+	mux.Handle("POST /api/rooms/users/add/{$}", s.middlewareAdmin(s.HandleRoomAddOperator))
+
+	mux.Handle("GET /api/users/preferences/{$}", s.middleware(s.HandleGetUserPreferences))
+	mux.Handle("POST /api/users/preferences/{$}", s.middleware(s.HandleUpdateUserPreferences))
+	mux.Handle("DELETE /api/users/preferences/{$}", s.middleware(s.HandleDeleteUserPreferences))
+	mux.Handle("GET  /api/admin/info/{$}", s.middlewareAdmin(s.HandleAdminInfo))
+
+	http.Handle("/api/", mux)
+	// http.Handle("POST /api/rooms/users/add/{$}", s.middleware(s.HandleRoomAddOperator))
 }
 
 func (s *ApiServer) CheckAuth(h misc.HandlerWithErr, checkAdmin bool) misc.HandlerWithErr {
@@ -57,11 +85,21 @@ func (s *ApiServer) CheckAuth(h misc.HandlerWithErr, checkAdmin bool) misc.Handl
 				)
 			}
 		}
+		userDb, err := s.usersRepo.GetByTwitchId(r.Context(), info.User.TwitchUserId)
+		if err != nil {
+			return misc.NewHumanReadableError(
+				"user does not exist",
+				http.StatusUnauthorized,
+				err,
+			)
+		}
 
 		newContext := context.WithValue(
 			r.Context(), auth.CONTEXT_TWITCH_USER_ID, info.User.TwitchUserId)
 		newContext = context.WithValue(
 			newContext, auth.CONTEXT_TWITCH_USER_NAME, info.User.Username)
+		newContext = context.WithValue(
+			newContext, auth.CONTEXT_USER_ID, userDb.UserId)
 		*r = *r.WithContext(newContext)
 		return h(w, r)
 	}
@@ -79,19 +117,6 @@ func (s *ApiServer) middlewareAdmin(h misc.HandlerWithErr) http.Handler {
 		s.CheckAuth(h, true),
 		5*time.Second,
 	)
-}
-
-func (s *ApiServer) RegisterHandlers() {
-	mux := http.NewServeMux()
-	mux.Handle("GET  /api/rooms/settings/{$}", s.middleware(s.HandleGetRoomSettings))
-	mux.Handle("POST /api/rooms/settings/{$}", s.middleware(s.HandleUpdateRoomSettings))
-	mux.Handle("POST /api/rooms/remove/{$}", s.middlewareAdmin(s.HandleRemoveRoom))
-	mux.Handle("POST /api/rooms/users/remove/{$}", s.middlewareAdmin(s.HandleRemoveUser))
-	mux.Handle("POST /api/rooms/users/add/{$}", s.middlewareAdmin(s.HandleRoomAddOperator))
-	mux.Handle("GET  /api/admin/info/{$}", s.middlewareAdmin(s.HandleAdminInfo))
-
-	http.Handle("/api/", mux)
-	// http.Handle("POST /api/rooms/users/add/{$}", s.middleware(s.HandleRoomAddOperator))
 }
 
 func (s *ApiServer) matchRequestChannel(r *http.Request, channelName string) error {
@@ -329,6 +354,99 @@ func (s *ApiServer) HandleRemoveUser(w http.ResponseWriter, r *http.Request) err
 	return room.RemoveUserChibi(context.Background(), userName)
 }
 
+func (s *ApiServer) HandleGetUserPreferences(w http.ResponseWriter, r *http.Request) error {
+	if r.Method != http.MethodGet {
+		http.NotFound(w, r)
+		return nil
+	}
+
+	userIdStr := r.FormValue("user_id")
+	userId64, err := strconv.ParseUint(userIdStr, 10, 32)
+	if err != nil {
+		return fmt.Errorf("user_id must be a number: %w", err)
+	}
+	userId := uint(userId64)
+	currentUserId := r.Context().Value(auth.CONTEXT_USER_ID).(uint)
+	if currentUserId != userId {
+		return fmt.Errorf("user_id must match the current user")
+	}
+
+	prefsDb, err := s.userPrefsRepo.GetByUserIdOrNil(r.Context(), userId)
+	if err != nil {
+		http.NotFound(w, r)
+		return nil
+	}
+	if prefsDb == nil {
+		http.NotFound(w, r)
+		return nil
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(GetUserPreferencesResponse{
+		OperatorInfo: prefsDb.OperatorInfo,
+	})
+	return nil
+}
+
+func (s *ApiServer) HandleUpdateUserPreferences(w http.ResponseWriter, r *http.Request) error {
+	if r.Method != http.MethodPost {
+		http.NotFound(w, r)
+		return nil
+	}
+
+	decoder := json.NewDecoder(r.Body)
+	var reqBody UpdateUserPreferencesRequest
+	if err := decoder.Decode(&reqBody); err != nil {
+		return misc.NewHumanReadableError(
+			"Invalid request body",
+			http.StatusBadRequest,
+			fmt.Errorf("invalid request body: %w", err),
+		)
+	}
+	userId := reqBody.UserId
+	currentUserId := r.Context().Value(auth.CONTEXT_USER_ID).(uint)
+	if currentUserId != userId {
+		return fmt.Errorf("user_id must match the current user")
+	}
+
+	err := s.operatorsService.ValidateUpdateSetDefaultOtherwise(&(reqBody.OperatorInfo))
+	if err != nil {
+		return err
+	}
+	err = s.userPrefsRepo.SetByUserId(r.Context(), userId, &reqBody.OperatorInfo)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (s *ApiServer) HandleDeleteUserPreferences(w http.ResponseWriter, r *http.Request) error {
+	if r.Method != http.MethodDelete {
+		http.NotFound(w, r)
+		return nil
+	}
+
+	decoder := json.NewDecoder(r.Body)
+	var reqBody DeleteUserPreferencesRquest
+	if err := decoder.Decode(&reqBody); err != nil {
+		return misc.NewHumanReadableError(
+			"Invalid request body",
+			http.StatusBadRequest,
+			fmt.Errorf("invalid request body: %w", err),
+		)
+	}
+	userId := reqBody.UserId
+	currentUserId := r.Context().Value(auth.CONTEXT_USER_ID).(uint)
+	if currentUserId != userId {
+		return fmt.Errorf("user_id must match the current user")
+	}
+
+	err := s.userPrefsRepo.DeleteByUserId(r.Context(), userId)
+	return err
+}
+
+// INTERNAL
+// ----------------------------------------------
 // TODO: Move these methods into a separate service
 func (s *ApiServer) updateRoomSettings(ctx context.Context, channelName string, reqBody RoomUpdateRequest) error {
 	roomDb, err := s.roomRepo.GetRoomByChannelName(ctx, channelName)

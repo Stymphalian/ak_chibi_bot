@@ -24,11 +24,12 @@ type RoomsManager struct {
 	rooms_mutex               sync.Mutex
 	nextGarbageCollectionTime time.Time
 
-	assetService *operator.AssetService
-	spineService *operator.OperatorService
-	roomRepo     RoomRepository
-	usersRepo    users.UserRepository
-	chattersRepo users.ChatterRepository
+	assetService  *operator.AssetService
+	spineService  *operator.OperatorService
+	roomRepo      RoomRepository
+	usersRepo     users.UserRepository
+	userPrefsRepo users.UserPreferencesRepository
+	chattersRepo  users.ChatterRepository
 
 	botConfig      *misc.BotConfig
 	twitchClient   twitch_api.TwitchApiClientInterface
@@ -40,6 +41,7 @@ func NewRoomsManager(
 	assets *operator.AssetService,
 	roomRepo RoomRepository,
 	usersRepo users.UserRepository,
+	userPrefsRepo users.UserPreferencesRepository,
 	chattersRepo users.ChatterRepository,
 	botConfig *misc.BotConfig,
 ) *RoomsManager {
@@ -49,9 +51,10 @@ func NewRoomsManager(
 		assetService: assets,
 		spineService: spineService,
 
-		roomRepo:     roomRepo,
-		usersRepo:    usersRepo,
-		chattersRepo: chattersRepo,
+		roomRepo:      roomRepo,
+		usersRepo:     usersRepo,
+		userPrefsRepo: userPrefsRepo,
+		chattersRepo:  chattersRepo,
 
 		botConfig: botConfig,
 		twitchClient: twitch_api.NewTwitchApiClient(
@@ -161,6 +164,7 @@ func (r *RoomsManager) getRoomServices(roomDb *RoomDb) (*operator.OperatorServic
 		roomDb.RoomId,
 		newSpineService,
 		r.usersRepo,
+		r.userPrefsRepo,
 		r.chattersRepo,
 		spineBridge,
 		r.botConfig.ExcludeNames,

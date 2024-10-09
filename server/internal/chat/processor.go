@@ -67,6 +67,8 @@ func (c *ChatCommandProcessor) HandleMessage(current *operator.OperatorInfo, cha
 	// !chibi velocity 2.0 [0.1 1.5]
 	// !chibi pace 0.1 0.5
 	// !chibi move_speed default
+	// !chibi save
+	// !chibi unsave
 
 	// var msg string
 	subCommand := strings.TrimSpace(args[1])
@@ -128,6 +130,10 @@ func (c *ChatCommandProcessor) HandleMessage(current *operator.OperatorInfo, cha
 		return c.setMoveSpeed(chatArgs, current)
 	case "pace":
 		return c.setPace(chatArgs, current)
+	case "save":
+		return c.setSaveUserPrefs(chatArgs, current)
+	case "unsave":
+		return c.setClearUserPrefs(chatArgs, current)
 	default:
 		if _, ok := misc.MatchesKeywords(subCommand, current.AvailableAnimations); ok {
 			chatArgs.args = []string{"!chibi", "play", subCommand}
@@ -585,5 +591,39 @@ func (c *ChatCommandProcessor) setPace(args *ChatArgs, current *operator.Operato
 		usernameDisplay: args.chatMsg.UserDisplayName,
 		twitchUserId:    args.chatMsg.TwitchUserId,
 		update:          current,
+	}, nil
+}
+
+func (c *ChatCommandProcessor) setSaveUserPrefs(
+	args *ChatArgs,
+	current *operator.OperatorInfo,
+) (ChatCommand, error) {
+	if len(args.args) != 2 {
+		return &ChatCommandNoOp{}, errors.New("try something like !chibi save")
+	}
+	return &ChatCommandSavePrefs{
+		replyMessage:    "",
+		username:        args.chatMsg.Username,
+		usernameDisplay: args.chatMsg.UserDisplayName,
+		twitchUserId:    args.chatMsg.TwitchUserId,
+		action:          ChatCommandSaveChibi_Save,
+		update:          current,
+	}, nil
+}
+
+func (c *ChatCommandProcessor) setClearUserPrefs(
+	args *ChatArgs,
+	_ *operator.OperatorInfo,
+) (ChatCommand, error) {
+	if len(args.args) != 2 {
+		return &ChatCommandNoOp{}, errors.New("try something like !chibi unsave")
+	}
+	return &ChatCommandSavePrefs{
+		replyMessage:    "",
+		username:        args.chatMsg.Username,
+		usernameDisplay: args.chatMsg.UserDisplayName,
+		twitchUserId:    args.chatMsg.TwitchUserId,
+		action:          ChatCommandSaveChibi_Remove,
+		update:          nil,
 	}, nil
 }

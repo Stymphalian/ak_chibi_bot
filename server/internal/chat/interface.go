@@ -21,6 +21,8 @@ type ChatMessageHandler interface {
 type ActorUpdater interface {
 	CurrentInfo(ctx context.Context, username string) (operator.OperatorInfo, error)
 	UpdateChibi(ctx context.Context, userInfo misc.UserInfo, update *operator.OperatorInfo) error
+	SaveUserPreferences(ctx context.Context, userInfo misc.UserInfo, update *operator.OperatorInfo) error
+	ClearUserPreferences(ctx context.Context, userInfo misc.UserInfo) error
 }
 
 type ChatCommand interface {

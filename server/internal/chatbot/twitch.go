@@ -58,7 +58,10 @@ func (t *TwitchBot) HandlePrivateMessage(m twitch.PrivateMessage) {
 		return
 	}
 	if trimmed[0] == '!' {
-		log.Printf("PRIVMSG message %v\n", m)
+		log.Printf(
+			"PRIVMSG message (%v,%v,%v):%v\n",
+			m.User.ID, m.User.DisplayName, m.Channel, m.Message,
+		)
 	}
 
 	chatMessage := chat.ChatMessage{

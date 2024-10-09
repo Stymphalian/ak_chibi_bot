@@ -32,11 +32,14 @@ func InitializeMainStruct() (*MainStruct, error) {
 		wire.Bind(new(users.UserRepository), new(*users.UserRepositoryPsql)),
 		users.NewChatterRepositoryPsql,
 		wire.Bind(new(users.ChatterRepository), new(*users.ChatterRepositoryPsql)),
+		users.NewUserPreferencesRepositoryPsql,
+		wire.Bind(new(users.UserPreferencesRepository), new(*users.UserPreferencesRepositoryPsql)),
 		auth.NewAuthRepositoryPsql,
 		wire.Bind(new(auth.AuthRepository), new(*auth.AuthRepositoryPsql)),
 
 		// Services
 		operator.NewAssetService,
+		operator.NewDefaultOperatorService,
 		twitch_api.ProvideTwitchApiClient,
 		wire.Bind(new(twitch_api.TwitchApiClientInterface), new(*twitch_api.TwitchApiClient)),
 		auth.ProvideAuthService,

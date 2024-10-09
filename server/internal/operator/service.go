@@ -14,6 +14,14 @@ type OperatorService struct {
 	config *misc.SpineRuntimeConfig
 }
 
+func NewDefaultOperatorService(assets *AssetService) *OperatorService {
+	log.Println("NewDefaultOperatorService created")
+	return &OperatorService{
+		Assets: assets,
+		config: misc.DefaultSpineRuntimeConfig(),
+	}
+}
+
 func NewOperatorService(assets *AssetService, config *misc.SpineRuntimeConfig) *OperatorService {
 	log.Println("NewOperatorService created")
 	return &OperatorService{
