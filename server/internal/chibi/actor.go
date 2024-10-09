@@ -75,12 +75,20 @@ func (c *ChibiActor) GiveChibiToUser(ctx context.Context, userInfo misc.UserInfo
 		return nil
 	}
 
-	operatorInfo, err := c.spineService.GetRandomOperator()
-	if err != nil {
-		return err
+	userPrefs, _ := c.userPrefsRepo.GetByTwitchIdOrNil(ctx, userInfo.TwitchUserId)
+	var operatorInfo *operator.OperatorInfo
+	if userPrefs != nil {
+		operatorInfo = &userPrefs.OperatorInfo
+	} else {
+		var err error
+		operatorInfo, err = c.spineService.GetRandomOperator()
+		if err != nil {
+			return err
+		}
 	}
+
 	log.Printf("Giving %s the chibi %s\n", userInfo.Username, operatorInfo.OperatorId)
-	_, err = c.client.SetOperator(
+	_, err := c.client.SetOperator(
 		&spine.SetOperatorRequest{
 			UserName:        userInfo.Username,
 			UserNameDisplay: userInfo.UsernameDisplay,

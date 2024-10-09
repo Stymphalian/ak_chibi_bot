@@ -39,6 +39,7 @@ type ChatterRepository interface {
 
 type UserPreferencesRepository interface {
 	GetByUserIdOrNil(ctx context.Context, userId uint) (*UserPreferencesDb, error)
+	GetByTwitchIdOrNil(ctx context.Context, twitchUserId string) (*UserPreferencesDb, error)
 	SetByUserId(ctx context.Context, userId uint, opInfo *operator.OperatorInfo) error
 	DeleteByUserId(ctx context.Context, userId uint) error
 }

@@ -1,6 +1,7 @@
 package twitch_api
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -162,6 +163,8 @@ func (c *TwitchApiClient) ValidateToken(token string) (*ValidateTokenResponse, e
 		"https://id.twitch.tv/oauth2/validate",
 		nil,
 	)
+	ctx, _ := context.WithTimeout(req.Context(), 5*time.Second)
+	req = req.WithContext(ctx)
 	if err != nil {
 		return nil, err
 	}

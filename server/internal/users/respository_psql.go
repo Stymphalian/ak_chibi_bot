@@ -219,6 +219,25 @@ func (r *UserPreferencesRepositoryPsql) GetByUserIdOrNil(ctx context.Context, us
 	return &userDb, nil
 }
 
+func (r *UserPreferencesRepositoryPsql) GetByTwitchIdOrNil(ctx context.Context, twitchUserId string) (*UserPreferencesDb, error) {
+	db := akdb.DefaultDB.WithContext(ctx)
+
+	var prefDb UserPreferencesDb
+	result := db.
+		Table("user_preferences as p").
+		Select("p.*").
+		Joins("LEFT JOIN users as u ON u.user_id = p.user_id").
+		Where("u.twitch_user_id = ?", twitchUserId).
+		First(&prefDb)
+	if result.Error != nil {
+		if errors.Is(result.Error, gorm.ErrRecordNotFound) {
+			return nil, nil
+		}
+		return nil, result.Error
+	}
+	return &prefDb, nil
+}
+
 func (r *UserPreferencesRepositoryPsql) SetByUserId(ctx context.Context, userId uint, opInfo *operator.OperatorInfo) error {
 	db := akdb.DefaultDB.WithContext(ctx)
 
