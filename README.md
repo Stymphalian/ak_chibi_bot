@@ -2,7 +2,9 @@
 This is a twitch bot to allow viewers to play with an Arknights chibi on the screen by 
 issuing `!chibi` commands in chat. You can use a hosted bot `StymTwitchBot` or you
 can run the bot locally on your machine so that all network requests only happen
-on your own machine. `hello`
+on your own machine.
+
+Visit https://akchibibot.stymphalian.top/ to get started.
 
 ![Demo Image](readme_assets/demo1.png)
 

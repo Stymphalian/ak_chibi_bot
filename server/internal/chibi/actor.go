@@ -88,17 +88,7 @@ func (c *ChibiActor) GiveChibiToUser(ctx context.Context, userInfo misc.UserInfo
 	}
 
 	log.Printf("Giving %s the chibi %s\n", userInfo.Username, operatorInfo.OperatorId)
-	_, err := c.client.SetOperator(
-		&spine.SetOperatorRequest{
-			UserName:        userInfo.Username,
-			UserNameDisplay: userInfo.UsernameDisplay,
-			Operator:        *operatorInfo,
-		})
-	if err != nil {
-		log.Printf("Failed to set chibi (%s)\n", err.Error())
-		return nil
-	}
-	err = c.UpdateChatter(ctx, userInfo, operatorInfo)
+	err := c.UpdateChibi(ctx, userInfo, operatorInfo)
 	if err != nil {
 		log.Printf("Failed to update chatter: %s\n", err.Error())
 		return err

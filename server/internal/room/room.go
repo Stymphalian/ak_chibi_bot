@@ -190,26 +190,26 @@ func (r *Room) GetChatters() []users.ChatUser {
 	return chatters
 }
 
-func (r *Room) AddOperatorToRoom(
-	ctx context.Context,
-	userinfo misc.UserInfo,
-	operatorId string,
-	faction operator.FactionEnum,
-) error {
-	// TODO: Leaky interface. Need to move this into a Service or ChibiActor
-	opInfo, err := r.operatorService.GetRandomOperator()
-	if err != nil {
-		return err
-	}
-	opInfo.OperatorId = operatorId
-	opInfo.Faction = faction
+// func (r *Room) AddOperatorToRoom(
+// 	ctx context.Context,
+// 	userinfo misc.UserInfo,
+// 	operatorId string,
+// 	faction operator.FactionEnum,
+// ) error {
+// 	// TODO: Leaky interface. Need to move this into a Service or ChibiActor
+// 	opInfo, err := r.operatorService.GetRandomOperator()
+// 	if err != nil {
+// 		return err
+// 	}
+// 	opInfo.OperatorId = operatorId
+// 	opInfo.Faction = faction
 
-	err = r.chibiActor.UpdateChibi(ctx, userinfo, opInfo)
-	if err != nil {
-		return err
-	}
-	return nil
-}
+// 	err = r.chibiActor.UpdateChibi(ctx, userinfo, opInfo)
+// 	if err != nil {
+// 		return err
+// 	}
+// 	return nil
+// }
 
 func (r *Room) GiveChibiToUser(ctx context.Context, userInfo misc.UserInfo) error {
 	return r.chibiActor.GiveChibiToUser(ctx, userInfo)
