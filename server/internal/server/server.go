@@ -34,9 +34,10 @@ const (
 )
 
 type MainStruct struct {
-	misc.CommandLineArgs
+	args      misc.CommandLineArgs
 	botConfig *misc.BotConfig
 
+	akDb         *akdb.DatbaseConn
 	roomsRepo    room.RoomRepository
 	usersRepo    users.UserRepository
 	chattersRepo users.ChatterRepository
@@ -63,11 +64,13 @@ func NewMainStruct(
 	loginServer *login.LoginServer,
 	roomsManager *room.RoomsManager,
 	apiServer *api.ApiServer,
+	akDb *akdb.DatbaseConn,
 ) *MainStruct {
 	return &MainStruct{
-		CommandLineArgs: *args,
-		botConfig:       botConfig,
+		args:      *args,
+		botConfig: botConfig,
 
+		akDb:         akDb,
 		roomsRepo:    roomsRepo,
 		usersRepo:    usersRepo,
 		chattersRepo: chattersRepo,
@@ -88,7 +91,7 @@ func (s *MainStruct) Run() {
 
 	log.Println("Starting server")
 	server := &http.Server{
-		Addr:              s.Address,
+		Addr:              s.args.Address,
 		ReadTimeout:       1 * time.Second,
 		ReadHeaderTimeout: 1 * time.Second,
 		WriteTimeout:      5 * time.Second,
@@ -97,11 +100,11 @@ func (s *MainStruct) Run() {
 	server.RegisterOnShutdown(s.roomManager.Shutdown)
 	server.RegisterOnShutdown(s.authService.Shutdown)
 
-	log.Printf("Images Assets = %s\n", s.ImageAssetDir)
-	log.Printf("Static Assets = %s\n", s.StaticAssetDir)
+	log.Printf("Images Assets = %s\n", s.args.ImageAssetDir)
+	log.Printf("Static Assets = %s\n", s.args.StaticAssetDir)
 
 	// Main web app
-	webAppFilePath := s.StaticAssetDir + "/web_app/build/"
+	webAppFilePath := s.args.StaticAssetDir + "/web_app/build/"
 	webAppFileServer := http.FileServer(http.Dir(webAppFilePath))
 	http.Handle("/",
 		http.TimeoutHandler(
@@ -127,7 +130,7 @@ func (s *MainStruct) Run() {
 	// Image File Server
 	http.Handle("/image/assets/",
 		http.TimeoutHandler(
-			http.StripPrefix("/image/assets/", http.FileServer(http.Dir(s.ImageAssetDir))),
+			http.StripPrefix("/image/assets/", http.FileServer(http.Dir(s.args.ImageAssetDir))),
 			DEFAULT_TIMEOUT,
 			"",
 		),
@@ -136,7 +139,7 @@ func (s *MainStruct) Run() {
 	// Public File Server
 	http.Handle("/public/",
 		http.TimeoutHandler(
-			http.StripPrefix("/public/", http.FileServer(http.Dir(s.StaticAssetDir+"/public"))),
+			http.StripPrefix("/public/", http.FileServer(http.Dir(s.args.StaticAssetDir+"/public"))),
 			DEFAULT_TIMEOUT,
 			"",
 		),
@@ -144,7 +147,7 @@ func (s *MainStruct) Run() {
 
 	// Spine File Server
 	spineMux := http.NewServeMux()
-	spineFileServer := http.FileServer(http.Dir(s.StaticAssetDir + "/spine/dist"))
+	spineFileServer := http.FileServer(http.Dir(s.args.StaticAssetDir + "/spine/dist"))
 	spineMux.Handle("/spine/runtime/{$}",
 		http.TimeoutHandler(
 			http.StripPrefix("/spine/runtime/", spineFileServer),
@@ -204,7 +207,7 @@ func (s *MainStruct) WaitForShutdownsWithTimeout(shutdownChans ...chan struct{})
 		wg.Wait()
 
 		// close the default DB, after everythign else is closed.
-		sqldb, err := akdb.DefaultDB.DB()
+		sqldb, err := s.akDb.DefaultDB.DB()
 		if err == nil {
 			sqldb.Close()
 		}

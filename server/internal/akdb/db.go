@@ -13,52 +13,88 @@ import (
 	"gorm.io/gorm"
 )
 
-func GetConnectionString() (string, error) {
-	dbpassWordFile, ok := os.LookupEnv("DATABASE_PASSWORD_FILE")
+const (
+	DATABASE_PASSFILE_FILE_ENV = "DATABASE_PASSWORD_FILE"
+	DATABASE_PASSWORD_ENV      = "DATABASE_PASSWORD"
+	DATABASE_HOST_ENV          = "DATABASE_HOST"
+	DATABASE_PORT_ENV          = "DATABASE_PORT"
+	DATABASE_USER_ENV          = "DATABASE_USER"
+	DATABASE_DB_ENV            = "DATABASE_DB"
+)
+
+type databaseConnInfo struct {
+	password string
+	hostname string
+	port     string
+	username string
+	dbname   string
+}
+
+func getConnectionParamsFromEnv() (*databaseConnInfo, error) {
+	dbpassWordFile, ok := os.LookupEnv(DATABASE_PASSFILE_FILE_ENV)
+	var password string
 	if !ok {
-		return "", fmt.Errorf("DATABASE_PASSWORD_FILE not set")
-	}
-	bin, err := os.ReadFile(dbpassWordFile)
-	if err != nil {
-		return "", err
-	}
-	hostname, ok := os.LookupEnv("DATABASE_HOST")
-	if !ok {
-		return "", fmt.Errorf("DATABASE_HOST not set")
-	}
-	port, ok := os.LookupEnv("DATABASE_PORT")
-	if !ok {
-		return "", fmt.Errorf("DATABASE_PORT not set")
-	}
-	username, ok := os.LookupEnv("DATABASE_USER")
-	if !ok {
-		return "", fmt.Errorf("DATABASE_USER not set")
-	}
-	dbname, ok := os.LookupEnv("DATABASE_DB")
-	if !ok {
-		return "", fmt.Errorf("DATABASE_DB not set")
+		log.Printf("%s not set", DATABASE_PASSFILE_FILE_ENV)
+		log.Printf("Trying to get password from %s", DATABASE_PASSWORD_ENV)
+		// Try to get password from env
+		password, ok = os.LookupEnv(DATABASE_PASSWORD_ENV)
+		if !ok {
+			return nil, fmt.Errorf("%s not set", DATABASE_PASSWORD_ENV)
+		}
+	} else {
+		bin, err := os.ReadFile(dbpassWordFile)
+		if err != nil {
+			return nil, err
+		}
+		password = string(bin)
 	}
 
+	hostname, ok := os.LookupEnv(DATABASE_HOST_ENV)
+	if !ok {
+		return nil, fmt.Errorf("%s not set", DATABASE_HOST_ENV)
+	}
+	port, ok := os.LookupEnv(DATABASE_PORT_ENV)
+	if !ok {
+		return nil, fmt.Errorf("%s not set", DATABASE_PORT_ENV)
+	}
+	username, ok := os.LookupEnv(DATABASE_USER_ENV)
+	if !ok {
+		return nil, fmt.Errorf("%s not set", DATABASE_USER_ENV)
+	}
+	dbname, ok := os.LookupEnv(DATABASE_DB_ENV)
+	if !ok {
+		return nil, fmt.Errorf("%s not set", DATABASE_DB_ENV)
+	}
+	return &databaseConnInfo{
+		password: password,
+		hostname: hostname,
+		port:     port,
+		username: username,
+		dbname:   dbname,
+	}, nil
+}
+
+func GetConnectionString(connInfo *databaseConnInfo) (string, error) {
 	return fmt.Sprint(
-		fmt.Sprintf(" host=%s", hostname),
-		fmt.Sprintf(" port=%s", port),
-		fmt.Sprintf(" user=%s", username),
-		fmt.Sprintf(" dbname=%s", dbname),
-		fmt.Sprintf(" password=%s", string(bin)),
+		fmt.Sprintf(" host=%s", connInfo.hostname),
+		fmt.Sprintf(" port=%s", connInfo.port),
+		fmt.Sprintf(" user=%s", connInfo.username),
+		fmt.Sprintf(" dbname=%s", connInfo.dbname),
+		fmt.Sprintf(" password=%s", connInfo.password),
 		" connect_timeout=10",
 	), nil
 }
 
-func ConnectWithSql() (*sql.DB, error) {
-	connStr, err := GetConnectionString()
+func ConnectWithSql(connInfo *databaseConnInfo) (*sql.DB, error) {
+	connStr, err := GetConnectionString(connInfo)
 	if err != nil {
 		return nil, err
 	}
 	return sql.Open("postgres", connStr)
 }
 
-func Connect() (*gorm.DB, error) {
-	connStr, err := GetConnectionString()
+func Connect(connInfo *databaseConnInfo) (*gorm.DB, error) {
+	connStr, err := GetConnectionString(connInfo)
 	if err != nil {
 		return nil, err
 	}
@@ -84,12 +120,39 @@ func Connect() (*gorm.DB, error) {
 	return gormDb, err
 }
 
-var DefaultDB *gorm.DB
+type DatbaseConn struct {
+	DefaultDB *gorm.DB
+}
 
-func init() {
-	db, err := Connect()
+func ProvideDatabaseConn() (*DatbaseConn, error) {
+	connInfo, err := getConnectionParamsFromEnv()
+	if err != nil {
+		return nil, err
+	}
+	db, err := Connect(connInfo)
 	if err != nil {
 		log.Fatal(err)
 	}
-	DefaultDB = db
+	return &DatbaseConn{
+		DefaultDB: db,
+	}, nil
+}
+
+// TODO: Find a way to setup a test database cleanly that works well with go test
+func ProvideTestDatabaseConn() (*DatbaseConn, error) {
+	return ProvideDatabaseConn()
+	// connInfo := &databaseConnInfo{
+	// 	password: "test_user_password",
+	// 	hostname: "db",
+	// 	port:     "5432",
+	// 	username: "test_user",
+	// 	dbname:   "test_db",
+	// }
+	// db, err := Connect(connInfo)
+	// if err != nil {
+	// 	log.Fatal(err)
+	// }
+	// return &DatbaseConn{
+	// 	DefaultDB: db,
+	// }, nil
 }

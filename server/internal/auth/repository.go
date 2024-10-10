@@ -3,7 +3,7 @@ package auth
 import (
 	"time"
 
-	"github.com/Stymphalian/ak_chibi_bot/server/internal/akdb"
+	"gorm.io/gorm"
 )
 
 type AuthRepository interface {
@@ -22,7 +22,6 @@ func (h *HttpSessionDb) TableName() string {
 	return "http_sessions"
 }
 
-func (h *HttpSessionDb) Save() error {
-	db := akdb.DefaultDB
+func (h *HttpSessionDb) Save(db *gorm.DB) error {
 	return db.Save(h).Error
 }

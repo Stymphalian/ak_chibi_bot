@@ -9,6 +9,7 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/Stymphalian/ak_chibi_bot/server/internal/akdb"
 	"github.com/Stymphalian/ak_chibi_bot/server/internal/auth"
 	"github.com/Stymphalian/ak_chibi_bot/server/internal/misc"
 	"github.com/Stymphalian/ak_chibi_bot/server/internal/operator"
@@ -26,11 +27,12 @@ func createTestUser(username string, usersRepo users.UserRepository) {
 }
 
 func Setup_TestApiServer(username string) (*ApiServer, *auth.FakeAuthService) {
+	db, _ := akdb.ProvideTestDatabaseConn()
 	roomManager := room.NewFakeRoomsManager()
 	authService := auth.NewFakeAuthService()
-	roomsRepo := room.NewRoomRepositoryPsql()
-	usersRepo := users.NewUserRepositoryPsql()
-	userPrefsRepo := users.NewUserPreferencesRepositoryPsql()
+	roomsRepo := room.NewRoomRepositoryPsql(db)
+	usersRepo := users.NewUserRepositoryPsql(db)
+	userPrefsRepo := users.NewUserPreferencesRepositoryPsql(db)
 	assetsService := operator.NewTestAssetService()
 	operatorService := operator.NewDefaultOperatorService(assetsService)
 	authService.IsAuthenticated = true
@@ -264,3 +266,9 @@ func TestApiServer_HandleGetRoomSettings_RoomExistsButNotActiveInManager(t *test
 	assert.NoError(err, string(body))
 	assert.Equal(respObj, gotObj)
 }
+
+// func TestMain(m *testing.M) {
+// 	log.Println("@@@@ runninng api_test.go TestMain")
+// 	os.Setenv(akdb.DATABASE_PASSFILE_FILE_ENV, "ak_chibi_bot_api_test")
+// 	m.Run()
+// }

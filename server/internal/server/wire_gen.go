@@ -7,6 +7,7 @@
 package server
 
 import (
+	"github.com/Stymphalian/ak_chibi_bot/server/internal/akdb"
 	"github.com/Stymphalian/ak_chibi_bot/server/internal/api"
 	"github.com/Stymphalian/ak_chibi_bot/server/internal/auth"
 	"github.com/Stymphalian/ak_chibi_bot/server/internal/login"
@@ -34,12 +35,16 @@ func InitializeMainStruct() (*MainStruct, error) {
 	if err != nil {
 		return nil, err
 	}
-	roomRepositoryPsql := room.NewRoomRepositoryPsql()
-	userRepositoryPsql := users.NewUserRepositoryPsql()
-	chatterRepositoryPsql := users.NewChatterRepositoryPsql()
-	authRepositoryPsql := auth.NewAuthRepositoryPsql()
+	datbaseConn, err := akdb.ProvideDatabaseConn()
+	if err != nil {
+		return nil, err
+	}
+	roomRepositoryPsql := room.NewRoomRepositoryPsql(datbaseConn)
+	userRepositoryPsql := users.NewUserRepositoryPsql(datbaseConn)
+	chatterRepositoryPsql := users.NewChatterRepositoryPsql(datbaseConn)
+	authRepositoryPsql := auth.NewAuthRepositoryPsql(datbaseConn)
 	twitchApiClient := twitch_api.ProvideTwitchApiClient(botConfig)
-	authService, err := auth.ProvideAuthService(botConfig, twitchApiClient, userRepositoryPsql)
+	authService, err := auth.ProvideAuthService(botConfig, twitchApiClient, userRepositoryPsql, datbaseConn)
 	if err != nil {
 		return nil, err
 	}
@@ -48,10 +53,10 @@ func InitializeMainStruct() (*MainStruct, error) {
 	if err != nil {
 		return nil, err
 	}
-	userPreferencesRepositoryPsql := users.NewUserPreferencesRepositoryPsql()
+	userPreferencesRepositoryPsql := users.NewUserPreferencesRepositoryPsql(datbaseConn)
 	roomsManager := room.NewRoomsManager(assetService, roomRepositoryPsql, userRepositoryPsql, userPreferencesRepositoryPsql, chatterRepositoryPsql, botConfig)
 	operatorService := operator.NewDefaultOperatorService(assetService)
 	apiServer := api.NewApiServer(roomsManager, authService, roomRepositoryPsql, userRepositoryPsql, userPreferencesRepositoryPsql, operatorService)
-	mainStruct := NewMainStruct(commandLineArgs, botConfig, assetService, roomRepositoryPsql, userRepositoryPsql, chatterRepositoryPsql, authRepositoryPsql, twitchApiClient, authService, loginServer, roomsManager, apiServer)
+	mainStruct := NewMainStruct(commandLineArgs, botConfig, assetService, roomRepositoryPsql, userRepositoryPsql, chatterRepositoryPsql, authRepositoryPsql, twitchApiClient, authService, loginServer, roomsManager, apiServer, datbaseConn)
 	return mainStruct, nil
 }

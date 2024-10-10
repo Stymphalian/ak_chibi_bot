@@ -6,6 +6,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/Stymphalian/ak_chibi_bot/server/internal/akdb"
 	"github.com/Stymphalian/ak_chibi_bot/server/internal/chat"
 	"github.com/Stymphalian/ak_chibi_bot/server/internal/misc"
 	"github.com/Stymphalian/ak_chibi_bot/server/internal/operator"
@@ -30,9 +31,10 @@ var amiyaOpInfo = operator.NewOperatorInfo(
 )
 
 func setupActorTest() *ChibiActor {
-	usersRepo := users.NewUserRepositoryPsql()
-	userPrefsRepo := users.NewUserPreferencesRepositoryPsql()
-	chattersRepo := users.NewChatterRepositoryPsql()
+	akDB, _ := akdb.ProvideTestDatabaseConn()
+	usersRepo := users.NewUserRepositoryPsql(akDB)
+	userPrefsRepo := users.NewUserPreferencesRepositoryPsql(akDB)
+	chattersRepo := users.NewChatterRepositoryPsql(akDB)
 	assetManager := operator.NewTestAssetService()
 	spineService := operator.NewOperatorService(assetManager, misc.DefaultSpineRuntimeConfig())
 	fakeSpineClient := spine.NewFakeSpineClient()

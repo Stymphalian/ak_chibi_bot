@@ -45,8 +45,8 @@ const (
 )
 
 type AuthService struct {
-	// authRepo       AuthRepository
 	userRepo       users.UserRepository
+	akDb           *akdb.DatbaseConn
 	twitchClientId string
 	twitchSecret   string
 	cookieSecret   string
@@ -62,6 +62,7 @@ func ProvideAuthService(
 	botConfig *misc.BotConfig,
 	twitchClient twitch_api.TwitchApiClientInterface,
 	usersRepo users.UserRepository,
+	akDb *akdb.DatbaseConn,
 ) (*AuthService, error) {
 	log.Println("ProvideAuthService")
 	return NewAuthService(
@@ -71,6 +72,7 @@ func ProvideAuthService(
 		botConfig.TwitchOauthRedirectUrl,
 		twitchClient,
 		usersRepo,
+		akDb,
 	)
 }
 
@@ -81,10 +83,11 @@ func NewAuthService(
 	redirectUrl string,
 	twitchClient twitch_api.TwitchApiClientInterface,
 	userRepo users.UserRepository,
+	akDb *akdb.DatbaseConn,
 ) (*AuthService, error) {
 	gob.Register(&oauth2.Token{})
 
-	dbPool, err := akdb.DefaultDB.DB()
+	dbPool, err := akDb.DefaultDB.DB()
 	if err != nil {
 		return nil, err
 	}
@@ -116,6 +119,7 @@ func NewAuthService(
 
 	return &AuthService{
 		userRepo:       userRepo,
+		akDb:           akDb,
 		twitchClientId: twitchClientId,
 		twitchSecret:   twitchSecret,
 		cookieSecret:   cookieSecret,
@@ -152,7 +156,7 @@ func (s *AuthService) RunLoop() {
 
 func (s *AuthService) validateAndRefreshOauthTokens() error {
 	log.Println("Validating oauth tokens")
-	db := akdb.DefaultDB
+	db := s.akDb.DefaultDB
 	httpSessions := make([]*HttpSessionDb, 0)
 	result := db.Where("expires_on > ?", time.Now()).Find(&httpSessions)
 	if result.Error != nil {
@@ -174,7 +178,7 @@ func (s *AuthService) validateAndRefreshOauthTokens() error {
 		}
 		httpSession.Data = newEncodedData
 		httpSession.ModifiedOn = time.Now()
-		if err = httpSession.Save(); err != nil {
+		if err = httpSession.Save(db); err != nil {
 			return err
 		}
 		return nil
@@ -248,7 +252,7 @@ func (s *AuthService) validateAndRefreshOauthTokens() error {
 
 func (s *AuthService) cleanupExpiredSessions() error {
 	log.Println("Cleaning expired sessions")
-	db := akdb.DefaultDB
+	db := s.akDb.DefaultDB
 
 	httpSessions := make([]*HttpSessionDb, 0)
 	tx := db.Where("expires_on < ?", time.Now()).Find(&httpSessions)
@@ -258,6 +262,9 @@ func (s *AuthService) cleanupExpiredSessions() error {
 
 	name := string(OAUTH_SESSION_NAME)
 	codecs := s.CookieStore.Codecs
+	numSessionsCleaned := 0
+	numTokensRevoked := 0
+	numTokensFailedRevoke := 0
 	for _, httpSession := range httpSessions {
 		data := httpSession.Data
 		// Decode the data
@@ -269,9 +276,18 @@ func (s *AuthService) cleanupExpiredSessions() error {
 		}
 		token, ok := cookieValues[OAUTH_TOKEN_KEY].(*oauth2.Token)
 		if ok {
-			s.RevokeToken(token)
+
+			if err := s.RevokeToken(token); err != nil {
+				numTokensRevoked += 1
+			} else {
+				numTokensFailedRevoke += 1
+			}
 		}
+		numSessionsCleaned += 1
 	}
+	log.Println("  NumSessionsCleaned:", numSessionsCleaned)
+	log.Println("  NumTokensRevoked:", numTokensRevoked)
+	log.Println("  NumTokensFailedRevoke:", numTokensFailedRevoke)
 
 	result, err := db.ConnPool.ExecContext(
 		context.Background(),

@@ -1,6 +1,7 @@
 package room
 
 import (
+	"github.com/Stymphalian/ak_chibi_bot/server/internal/akdb"
 	"github.com/Stymphalian/ak_chibi_bot/server/internal/misc"
 	"github.com/Stymphalian/ak_chibi_bot/server/internal/operator"
 	"github.com/Stymphalian/ak_chibi_bot/server/internal/twitch_api"
@@ -9,9 +10,10 @@ import (
 
 func NewFakeRoomsManager() *RoomsManager {
 	assetService := operator.NewTestAssetService()
-	roomRepo := NewRoomRepositoryPsql()
-	usersRepo := users.NewUserRepositoryPsql()
-	chattersRepo := users.NewChatterRepositoryPsql()
+	akDB, _ := akdb.ProvideTestDatabaseConn()
+	roomRepo := NewRoomRepositoryPsql(akDB)
+	usersRepo := users.NewUserRepositoryPsql(akDB)
+	chattersRepo := users.NewChatterRepositoryPsql(akDB)
 	botConfig := &misc.BotConfig{
 		TwitchClientId:     "test_client_id",
 		TwitchAccessToken:  "test_access_token",

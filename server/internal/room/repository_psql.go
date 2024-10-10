@@ -9,14 +9,17 @@ import (
 )
 
 type RoomRepositoryPsql struct {
+	*akdb.DatbaseConn
 }
 
-func NewRoomRepositoryPsql() *RoomRepositoryPsql {
-	return &RoomRepositoryPsql{}
+func NewRoomRepositoryPsql(akDb *akdb.DatbaseConn) *RoomRepositoryPsql {
+	return &RoomRepositoryPsql{
+		DatbaseConn: akDb,
+	}
 }
 
 func (r *RoomRepositoryPsql) GetOrInsertRoom(ctx context.Context, roomConfig *RoomConfig) (*RoomDb, bool, error) {
-	db := akdb.DefaultDB.WithContext(ctx)
+	db := r.DefaultDB.WithContext(ctx)
 
 	var roomDb RoomDb
 	result := db.Where("channel_name = ?", roomConfig.ChannelName).Attrs(
@@ -40,7 +43,7 @@ func (r *RoomRepositoryPsql) GetOrInsertRoom(ctx context.Context, roomConfig *Ro
 }
 
 func (r *RoomRepositoryPsql) GetActiveRooms(ctx context.Context) ([]*RoomDb, error) {
-	db := akdb.DefaultDB.WithContext(ctx)
+	db := r.DefaultDB.WithContext(ctx)
 	var roomDbs []*RoomDb
 	tx := db.Where("is_active = true").Find(&roomDbs)
 	if tx.Error != nil {
@@ -50,7 +53,7 @@ func (r *RoomRepositoryPsql) GetActiveRooms(ctx context.Context) ([]*RoomDb, err
 }
 
 func (r *RoomRepositoryPsql) GetRoomByChannelName(ctx context.Context, channelName string) (*RoomDb, error) {
-	db := akdb.DefaultDB.WithContext(ctx)
+	db := r.DefaultDB.WithContext(ctx)
 	var roomDb RoomDb
 	result := db.Where("channel_name = ?", channelName).First(&roomDb)
 	if result.Error != nil {
@@ -60,7 +63,7 @@ func (r *RoomRepositoryPsql) GetRoomByChannelName(ctx context.Context, channelNa
 }
 
 func (r *RoomRepositoryPsql) GetRoomGarbageCollectionPeriodMins(ctx context.Context, roomId uint) int {
-	db := akdb.DefaultDB.WithContext(ctx)
+	db := r.DefaultDB.WithContext(ctx)
 	var roomDb RoomDb
 	result := db.First(&roomDb, roomId)
 	if result.Error != nil {
@@ -70,7 +73,7 @@ func (r *RoomRepositoryPsql) GetRoomGarbageCollectionPeriodMins(ctx context.Cont
 }
 
 func (r *RoomRepositoryPsql) GetSpineRuntimeConfigById(ctx context.Context, roomId uint) (*misc.SpineRuntimeConfig, error) {
-	db := akdb.DefaultDB.WithContext(ctx)
+	db := r.DefaultDB.WithContext(ctx)
 	var roomDb RoomDb
 	result := db.First(&roomDb, roomId)
 	if result.Error != nil {
@@ -84,7 +87,7 @@ func (r *RoomRepositoryPsql) UpdateSpineRuntimeConfigForId(
 	roomId uint,
 	config *misc.SpineRuntimeConfig,
 ) error {
-	db := akdb.DefaultDB.WithContext(ctx)
+	db := r.DefaultDB.WithContext(ctx)
 	result := db.
 		Model(&RoomDb{}).
 		Where("room_id = ?", roomId).
@@ -97,7 +100,7 @@ func (r *RoomRepositoryPsql) UpdateSpineRuntimeConfigForId(
 }
 
 func (r *RoomRepositoryPsql) IsRoomActiveById(ctx context.Context, roomId uint) bool {
-	db := akdb.DefaultDB.WithContext(ctx)
+	db := r.DefaultDB.WithContext(ctx)
 	var roomDb RoomDb
 	result := db.First(&roomDb, roomId)
 	if result.Error != nil {
@@ -107,7 +110,7 @@ func (r *RoomRepositoryPsql) IsRoomActiveById(ctx context.Context, roomId uint) 
 }
 
 func (r *RoomRepositoryPsql) SetRoomActiveById(ctx context.Context, roomId uint, isActive bool) error {
-	db := akdb.DefaultDB.WithContext(ctx)
+	db := r.DefaultDB.WithContext(ctx)
 	// roomDb := &RoomDb{RoomId: roomId, IsActive: isActive}
 	result := db.
 		Model(&RoomDb{}).

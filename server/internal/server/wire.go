@@ -4,6 +4,7 @@
 package server
 
 import (
+	"github.com/Stymphalian/ak_chibi_bot/server/internal/akdb"
 	"github.com/Stymphalian/ak_chibi_bot/server/internal/api"
 	"github.com/Stymphalian/ak_chibi_bot/server/internal/auth"
 	"github.com/Stymphalian/ak_chibi_bot/server/internal/login"
@@ -26,6 +27,7 @@ func InitializeMainStruct() (*MainStruct, error) {
 		misc.ProvideBotConfig,
 
 		// Repositories
+		akdb.ProvideDatabaseConn,
 		room.NewRoomRepositoryPsql,
 		wire.Bind(new(room.RoomRepository), new(*room.RoomRepositoryPsql)),
 		users.NewUserRepositoryPsql,
