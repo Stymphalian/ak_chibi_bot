@@ -4,16 +4,19 @@ from collections import defaultdict
 from pathlib import Path
                       
 def process_character_table(character_table_path: Path, saved_names):
+    existing_saved_names = set(saved_names.keys())
+    output_dict = defaultdict(list)
     with character_table_path.open("r", encoding="utf-8") as f:
         character_json = json.load(f)
-        output_dict = defaultdict(list)
+        
         for key, operator in character_json.items():
             if not key.startswith("char_"):
                 continue
 
             if key in saved_names:
-                print(saved_names[key])
+                # print(saved_names[key])
                 output_dict[key] = saved_names[key]
+                existing_saved_names.remove(key)
                 continue
 
             try:
@@ -31,8 +34,11 @@ def process_character_table(character_table_path: Path, saved_names):
                 # output_dict[operator_id] = (unicodedata
                 #     .normalize("NFKD", operator["name"])
                 #     .encode('ascii', "ignore")
-                #     .decode())            
-        return output_dict
+                #     .decode())  
+
+    for key in existing_saved_names:
+        output_dict[key] = saved_names[key]
+    return output_dict
 
 
 def main():

@@ -3144,6 +3144,86 @@
         "Mateos Bodyguard",
         "R36"
     ],
+    "enemy_1410_mmelee": [
+        "Flying Boots Mercenary",
+        "SMN1"
+    ],
+    "enemy_1410_mmelee_2": [
+        "Flying Boots Elite Mercenary",
+        "SMN2"
+    ],
+    "enemy_1411_mmrnge": [
+        "Pothelm Marksman",
+        "SMN3"
+    ],
+    "enemy_1411_mmrnge_2": [
+        "Pothelm Arbalest",
+        "SMN4"
+    ],
+    "enemy_1412_mmjump": [
+        "Scrap Assembler",
+        "SMN5"
+    ],
+    "enemy_1412_mmjump_2": [
+        "Scrap Inventor",
+        "SMN6"
+    ],
+    "enemy_1413_mmstck": [
+        "Bounty Hunter Knight",
+        "SMN7"
+    ],
+    "enemy_1413_mmstck_2": [
+        "Bounty Hunter Grand Knight",
+        "SMN8"
+    ],
+    "enemy_1414_mmleak": [
+        "Spatula Giant",
+        "SMN9"
+    ],
+    "enemy_1414_mmleak_2": [
+        "Enraged Spatula Giant",
+        "SMN10"
+    ],
+    "enemy_1415_mmkabi": [
+        "Armored Burdenbeast",
+        "SMN11"
+    ],
+    "enemy_1415_mmkabi_2": [
+        "Greater Armored Burdenbeast",
+        "SMN12"
+    ],
+    "enemy_1416_mmfarm": [
+        "Shearclaws",
+        "SMN13"
+    ],
+    "enemy_1416_mmfarm_2": [
+        "Weaver",
+        "SMN14"
+    ],
+    "enemy_1417_mmdudu": [
+        "Rogue Mercenary Bass",
+        "SMN15"
+    ],
+    "enemy_1417_mmdudu_2": [
+        "Rogue Mercenary Lead Guitar",
+        "SMN16"
+    ],
+    "enemy_1418_mmkonm": [
+        "Tinkerer",
+        "SMN17"
+    ],
+    "enemy_1418_mmkonm_2": [
+        "Mechanic",
+        "SMN18"
+    ],
+    "enemy_1419_mmcike": [
+        "Deathveil Assassin",
+        "UDF1"
+    ],
+    "enemy_3006_tersia": [
+        "Theresa, King of Sarkaz",
+        "THA1"
+    ],
     "enemy_2001_duckmi": [
         "Duck Lord",
         "DLD"
@@ -3465,6 +3545,10 @@
         "Captain Mateo",
         "EC"
     ],
+    "enemy_1552_mmamiy": [
+        "Amiya",
+        "THA2"
+    ],
     "enemy_2003_rockman": [
         "Lost Colossus",
         "WDG"
@@ -3697,6 +3781,18 @@
         "Aged Mead",
         "DL21"
     ],
+    "enemy_6022_m2cnt": [
+        "Count Grimscore",
+        "DL22"
+    ],
+    "enemy_6023_crane": [
+        "Greedy Catcher",
+        "DL23"
+    ],
+    "enemy_6024_crnbug": [
+        "Really Unruly Creature",
+        "DL24"
+    ],
     "enemy_7001_blwzad": [
         "Tribal Shaman",
         "SD1"
@@ -3858,6 +3954,18 @@
     "enemy_7034_xbmsn": [
         "Diligent Laborer",
         "SD38"
+    ],
+    "enemy_7044_xblbug": [
+        "Flying Originium Slug",
+        "SD39"
+    ],
+    "enemy_7045_xbtd": [
+        "Charging Originium Slug",
+        "SD40"
+    ],
+    "enemy_7046_xbslug": [
+        "Armored Originium Slug",
+        "SD41"
     ],
     "enemy_1037_lunsabr": [
         "Spec Ops Soldier",

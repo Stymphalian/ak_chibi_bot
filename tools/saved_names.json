@@ -243,6 +243,10 @@
     "char_381_bubble": [
         "Bubble"
     ],
+    "char_4130_luton": [
+        "Lutonada",
+        "Luto"
+    ],
     "char_196_sunbr": [
         "Gummy"
     ],
@@ -403,6 +407,9 @@
     "char_486_takila": [
         "Tequila"
     ],
+    "char_4131_odda": [
+        "Odda"
+    ],
     "char_129_bluep": [
         "Blue Poison"
     ],
@@ -443,7 +450,8 @@
         "Aosta"
     ],
     "char_002_amiya": [
-        "Amiya"
+        "Amiya",
+        "Caster Amiya"
     ],
     "char_405_absin": [
         "Absinthe"
@@ -494,6 +502,9 @@
     ],
     "char_489_serum": [
         "Corroserum"
+    ],
+    "char_446_aroma": [
+        "Aroma"
     ],
     "char_4013_kjera": [
         "Kjera"
@@ -908,6 +919,9 @@
     "char_437_mizuki": [
         "Mizuki"
     ],
+    "char_4132_ascln": [
+        "Ascalon"
+    ],
     "char_1023_ghost2": [
         "Specter Alter",
         "Specter the Unchained",
@@ -1082,5 +1096,12 @@
     ],
     "char_263_skadi": [
         "Skadi"
+    ],
+    "char_1001_amiya2": [
+        "Guard Amiya",
+        "Gaurd Amiya"
+    ],
+    "char_1037_amiya3": [
+        "Medic Amiya"
     ]
 }

@@ -56,6 +56,8 @@ func (s *ApiServer) RegisterHandlers() {
 	mux.Handle("POST /api/rooms/remove/{$}", s.middlewareAdmin(s.HandleRemoveRoom))
 	mux.Handle("POST /api/rooms/users/remove/{$}", s.middlewareAdmin(s.HandleRemoveUser))
 	mux.Handle("POST /api/rooms/users/add/{$}", s.middlewareAdmin(s.HandleRoomAddOperator))
+	// mux.Handle("GET  /api/vul/get/{$}", s.middleware(s.HandleVulGet))
+	// mux.Handle("POST /api/vul/{$}", s.middleware(s.HandleVul))
 
 	mux.Handle("GET /api/users/preferences/{$}", s.middleware(s.HandleGetUserPreferences))
 	mux.Handle("POST /api/users/preferences/{$}", s.middleware(s.HandleUpdateUserPreferences))
@@ -137,6 +139,30 @@ func (s *ApiServer) matchRequestChannel(r *http.Request, channelName string) err
 	}
 	return nil
 }
+
+// func (s *ApiServer) HandleVulGet(w http.ResponseWriter, r *http.Request) error {
+// 	w.Write([]byte("hello"))
+// 	w.Header().Set("Set-Cookie", "CSRF_token="+"csrf_token"+"; Secure; Path=/;")
+// 	return nil
+// }
+
+// func (s *ApiServer) HandleVul(w http.ResponseWriter, r *http.Request) error {
+// 	log.Println("@@@@ handle vul")
+// 	log.Println("@@@@ r.Header", r.Header)
+// 	log.Println("@@@@ r.Referer", r.Referer())
+// 	log.Println("@@@@ r.UserAgent", r.UserAgent())
+// 	csrfToken, err := r.Cookie("CSRF_token")
+// 	if err != nil {
+// 		log.Println("@@@@ error getting csrf token", err)
+// 		return misc.NewHumanReadableError(
+// 			"CSRF token missing",
+// 			http.StatusBadRequest,
+// 			fmt.Errorf("CSRF token missing"),
+// 		)
+// 	}
+// 	log.Println("@@@@ csrf token: ", csrfToken.Value)
+// 	return nil
+// }
 
 func (s *ApiServer) HandleUpdateRoomSettings(w http.ResponseWriter, r *http.Request) error {
 	if r.Method != http.MethodPost {

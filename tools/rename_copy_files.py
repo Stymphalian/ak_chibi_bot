@@ -47,7 +47,7 @@ def reduce_json_size(directory):
 
     print("Udpated json for {}/{} files".format(num_updated, num_of_files))
 
-rename_copy_files(Path('../server/assets/characters'))
-reduce_json_size(Path('../server/assets/characters'))
-rename_copy_files(Path('../server/assets/enemies'))
-reduce_json_size(Path('../server/assets/enemies'))
+rename_copy_files(Path('../static/assets/characters'))
+reduce_json_size(Path('../static/assets/characters'))
+rename_copy_files(Path('../static/assets/enemies'))
+reduce_json_size(Path('../static/assets/enemies'))
