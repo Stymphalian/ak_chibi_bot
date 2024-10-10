@@ -50,9 +50,9 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD_FILE=/run/secrets/postgres-password.txt
     ports:
-      - "5432:5432"
+      - "55443:5432"
     expose:
-      - 5432
+      - 55443
     healthcheck:
       test: [ "CMD", "pg_isready" ]
       start_period: 5s

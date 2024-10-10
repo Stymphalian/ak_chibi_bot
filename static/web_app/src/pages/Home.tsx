@@ -49,6 +49,11 @@ export function HomePage() {
                             You can use <Code>!chibi help</Code> to see the list of commands. <br />
                             A full list of commands can be seen in the <NavLink to="/docs">Docs</NavLink> page.
                         </li>
+                        <li className="list-group-item">
+                            Make <Code>StymTwitchBot</Code> a moderator<br />
+                            This way the Bot won't when sending messages into the chat<br />
+                            <Code>/mod StymTwitchBot</Code>
+                        </li>
                     </ul>
                     
                 </div>
