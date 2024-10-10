@@ -24,7 +24,7 @@ import (
 
 // Injectors from wire.go:
 
-func InitializeMainStruct() (*MainStruct, error) {
+func InitializeMainServer() (*MainServer, error) {
 	commandLineArgs, err := misc.ProvideCommandLineArgs()
 	if err != nil {
 		return nil, err
@@ -57,6 +57,6 @@ func InitializeMainStruct() (*MainStruct, error) {
 	roomsManager := room.NewRoomsManager(assetService, roomRepositoryPsql, userRepositoryPsql, userPreferencesRepositoryPsql, chatterRepositoryPsql, botConfig)
 	operatorService := operator.NewDefaultOperatorService(assetService)
 	apiServer := api.NewApiServer(roomsManager, authService, roomRepositoryPsql, userRepositoryPsql, userPreferencesRepositoryPsql, operatorService)
-	mainStruct := NewMainStruct(commandLineArgs, botConfig, assetService, roomRepositoryPsql, userRepositoryPsql, chatterRepositoryPsql, authRepositoryPsql, twitchApiClient, authService, loginServer, roomsManager, apiServer, datbaseConn)
-	return mainStruct, nil
+	mainServer := NewMainServer(commandLineArgs, botConfig, assetService, roomRepositoryPsql, userRepositoryPsql, chatterRepositoryPsql, authRepositoryPsql, twitchApiClient, authService, loginServer, roomsManager, apiServer, datbaseConn)
+	return mainServer, nil
 }

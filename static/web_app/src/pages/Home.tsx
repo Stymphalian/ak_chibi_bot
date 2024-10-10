@@ -16,7 +16,6 @@ export function HomePage() {
             <Banner />
 
             <div className="card">
-                {/* <img src={demo_img} className="card-img-top" width="600px" height="400px" /> */}
                 <div className="container d-flex justify-content-center card-img-top">
                     <img src={demo_img} className="col-6" width="100%" />
                 </div>

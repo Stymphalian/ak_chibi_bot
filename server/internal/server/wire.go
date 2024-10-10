@@ -16,8 +16,8 @@ import (
 	"github.com/google/wire"
 )
 
-func InitializeMainStruct() (*MainStruct, error) {
-	wire.Build(NewMainStruct,
+func InitializeMainServer() (*MainServer, error) {
+	wire.Build(NewMainServer,
 		// Arguments and Constants
 		misc.ProvideCommandLineArgs,
 		misc.ProvideStaticAssetDirString,
@@ -52,5 +52,5 @@ func InitializeMainStruct() (*MainStruct, error) {
 		login.NewLoginServer,
 		api.NewApiServer,
 	)
-	return &MainStruct{}, nil
+	return &MainServer{}, nil
 }

@@ -126,10 +126,9 @@ import { Event } from "../core/Event"
 		/** Optional: Callbacks for the animations */
 		animation_listener?: AnimationStateListener
 
-		userDisplayName: string,
-
 		/** char_002_amiya, enemy_1526_sfsui, etc */
 		chibiId: string,
+		userDisplayName: string,
 
 		/** Required: action name */
 		action: string

@@ -238,6 +238,10 @@ import { Actor, SpineActorConfig } from "./Actor"
 			if (typeof config.showControls === "undefined")
 				config.showControls = true;
 			if (!config.runtimeDebugInfoDumpIntervalSec) config.runtimeDebugInfoDumpIntervalSec = 60;
+			if (!config.textSize) config.textSize = 14;
+			if (!config.textFont) config.textFont = "lato";
+			if (!config.cameraPerspectiveNear) config.cameraPerspectiveNear = 1.0;
+			if (!config.cameraPerspectiveFar) config.cameraPerspectiveFar = 1000.0;
 			return config;
 		}
 
@@ -279,10 +283,45 @@ import { Actor, SpineActorConfig } from "./Actor"
 			}
 
 			if (config.skins && config.skin) {
-				if (config.skins.indexOf(config.skin) < 0) throw new Error("Default skin '" + config.skin + "' is not contained in the list of selectable skins " + escapeHtml(JSON.stringify(config.skins)) + ".");
+				if (config.skins.indexOf(config.skin) < 0) {
+					throw new Error("Default skin '" + 
+						config.skin + 
+						"' is not contained in the list of selectable skins " + 
+						escapeHtml(JSON.stringify(config.skins)) + 
+						"."
+					);
+				}
 			}
 			if (typeof config.defaultMix === "undefined")
 				config.defaultMix = 0.25;
+
+			if (config.configScaleX == undefined) {config.configScaleX = 1.0;}
+			if (config.configScaleY == undefined) {config.configScaleY = 1.0;}
+			if (config.scaleX == undefined) {config.scaleX = 0.45;}
+			if (config.scaleY == undefined) {config.scaleY = 0.45;}
+			if (config.maxSizePx == undefined) {config.maxSizePx = 350;}
+			if (config.startPosX == undefined) {config.startPosX = null;}
+			if (config.startPosY == undefined) {config.startPosY = null;}
+			if (config.extraOffsetX == undefined) {config.extraOffsetX = 0;}
+			if (config.extraOffsetY == undefined) {config.extraOffsetY = 0;}
+			if (config.defaultMovementSpeedPxX == undefined) {config.defaultMovementSpeedPxX = 80;}
+			if (config.defaultMovementSpeedPxY == undefined) {config.defaultMovementSpeedPxY = 80;}
+			if (config.defaultMovementSpeedPxZ == undefined) {config.defaultMovementSpeedPxZ = 80;}
+			if (config.movementSpeedPxX == undefined) {config.movementSpeedPxX = null;}
+			if (config.movementSpeedPxY == undefined) {config.movementSpeedPxY = null;}
+			if (config.movementSpeedPxZ == undefined) {config.movementSpeedPxZ = config.defaultMovementSpeedPxZ;}
+
+			if (config.chibiId == undefined) {config.chibiId = crypto.randomUUID();}
+			if (config.userDisplayName == undefined) {config.userDisplayName = crypto.randomUUID();}
+			if (!isAlphanumeric(config.chibiId)) {
+				throw Error("ChibiId is not valid");
+			}
+			if (!isAlphanumeric(config.userDisplayName)) {
+				throw Error("userDisplayName is not valid");
+			}
+			if (config.action == undefined) {
+				throw Error("config.action must be set");
+			}
 
 			return config;
 		}
@@ -521,9 +560,8 @@ import { Actor, SpineActorConfig } from "./Actor"
 			cam.position.x = 0;
 			cam.position.y = viewport.height/2;
 			// TODO: Negative so that the view is not flipped?
-			cam.position.z = -this.getPerspectiveCameraZOffset(
-				viewport, cam.near, cam.far, cam.fov
-			) + actor.getPositionZ();
+			cam.position.z = -this.getPerspectiveCameraZOffset(viewport, cam.near, cam.far, cam.fov);
+			cam.position.z += actor.getPositionZ();
 			cam.direction = new Vector3(0, 0, -1);
 			// let origin = new Vector3(0,0,0);
 			// let pos = new Vector3(0,0,cam.position.z)
@@ -949,4 +987,8 @@ import { Actor, SpineActorConfig } from "./Actor"
 			 .replace(/"/g, "&#34;")
 			 .replace(/'/g, "&#39;");
 	 }
+
+	function isAlphanumeric(str: string): boolean {
+		return /^[a-zA-Z0-9_-]{1,100}$/.test(str)
+	}
 //  }

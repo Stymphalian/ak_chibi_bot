@@ -114,7 +114,7 @@ export function DocsPage() {
                 <li className="list-group-item">
                     You can add additional query argument to scale the chibis in the browser <br />
                     For example: <br />
-                    <Code>{url + "&scale=2"}</Code>                    
+                    <Code>{url + "&scale=2"}</Code>           
                 </li>
                 <li className="list-group-item">
                     You can change settings related to how your bot handles 

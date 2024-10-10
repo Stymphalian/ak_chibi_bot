@@ -33,7 +33,7 @@ const (
 	FORCEFUL_SHUTDOWN_DELAY = 10 * time.Second
 )
 
-type MainStruct struct {
+type MainServer struct {
 	args      misc.CommandLineArgs
 	botConfig *misc.BotConfig
 
@@ -51,7 +51,7 @@ type MainStruct struct {
 	loginServer *login.LoginServer
 }
 
-func NewMainStruct(
+func NewMainServer(
 	args *misc.CommandLineArgs,
 	botConfig *misc.BotConfig,
 	assetService *operator.AssetService,
@@ -65,8 +65,8 @@ func NewMainStruct(
 	roomsManager *room.RoomsManager,
 	apiServer *api.ApiServer,
 	akDb *akdb.DatbaseConn,
-) *MainStruct {
-	return &MainStruct{
+) *MainServer {
+	return &MainServer{
 		args:      *args,
 		botConfig: botConfig,
 
@@ -84,7 +84,7 @@ func NewMainStruct(
 	}
 }
 
-func (s *MainStruct) Run() {
+func (s *MainServer) Run() {
 	go s.roomManager.RunLoop()
 	go s.authService.RunLoop()
 	s.roomManager.LoadExistingRooms(context.Background())
@@ -191,7 +191,7 @@ func (s *MainStruct) Run() {
 	)
 }
 
-func (s *MainStruct) WaitForShutdownsWithTimeout(shutdownChans ...chan struct{}) {
+func (s *MainServer) WaitForShutdownsWithTimeout(shutdownChans ...chan struct{}) {
 	log.Println("Waiting for shutdown")
 	allChanDones := make(chan struct{})
 
@@ -222,7 +222,7 @@ func (s *MainStruct) WaitForShutdownsWithTimeout(shutdownChans ...chan struct{})
 	}
 }
 
-func (s *MainStruct) HandleRoom(w http.ResponseWriter, r *http.Request) error {
+func (s *MainServer) HandleRoom(w http.ResponseWriter, r *http.Request) error {
 	if !r.URL.Query().Has("channelName") {
 		return errors.New("invalid connection. Requires channelName query argument")
 	}
@@ -259,7 +259,7 @@ func (s *MainStruct) HandleRoom(w http.ResponseWriter, r *http.Request) error {
 	return nil
 }
 
-func (s *MainStruct) HandleSpineWebSocket(w http.ResponseWriter, r *http.Request) error {
+func (s *MainServer) HandleSpineWebSocket(w http.ResponseWriter, r *http.Request) error {
 	if !r.URL.Query().Has("channelName") {
 		return errors.New("invalid connection. Requires channelName query argument")
 	}

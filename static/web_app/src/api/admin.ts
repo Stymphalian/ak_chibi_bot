@@ -1,4 +1,5 @@
 import { AdminInfo } from "../models/models";
+import { validateChannelName, validateTwitchUserName } from "./utils";
 
 export async function getAdminInfo() : Promise<AdminInfo|null> {
     try {
@@ -20,6 +21,10 @@ export async function getAdminInfo() : Promise<AdminInfo|null> {
 
 export async function removeRoom(channelName: string) {
     try {
+        if (!validateChannelName(channelName)) {
+            throw Error("invalid channel name");
+        }
+
         const url = '/api/rooms/remove/';
         const response = await fetch(
             url, 
@@ -45,6 +50,13 @@ export async function removeRoom(channelName: string) {
 
 export async function removeUserFromRoom(channelName: string, userName: string) {
     try {
+        if (!validateChannelName(channelName)) {
+            throw Error("invalid channel name");
+        }
+        if (!validateTwitchUserName(userName)) {
+            throw Error("invalid twitch username");
+        }
+
         const url = '/api/rooms/users/remove/';
         const response = await fetch(
             url, 

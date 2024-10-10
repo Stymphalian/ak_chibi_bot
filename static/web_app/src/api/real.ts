@@ -1,4 +1,5 @@
 import { ChannelSettings } from "../models/models";
+import { validateChannelName } from "./utils";
 
 export async function getUserChannelSettings(channelName:string) {
     try {
@@ -14,6 +15,10 @@ export async function getUserChannelSettings(channelName:string) {
             return null;
         }
         const jsonBody = await response.json();
+
+        if (!validateChannelName(channelName)) {
+            throw Error("Invalid channel name");
+        }
         return {
             channelName: channelName,
             minAnimationSpeed: jsonBody["min_animation_speed"],
@@ -32,6 +37,10 @@ export async function getUserChannelSettings(channelName:string) {
 
 export async function updateUserChannelSettings(channelName:string, updates:ChannelSettings) {
     try {
+        if (!validateChannelName(channelName)) {
+            throw Error("Invalid channel name");
+        }
+
         const url = '/api/rooms/settings/';
         const response = await fetch(
             url, 

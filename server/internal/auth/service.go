@@ -101,6 +101,7 @@ func NewAuthService(
 	cookieStore.Options.MaxAge = int(COOKIE_MAX_AGE.Seconds())
 	cookieStore.Options.Secure = true
 	cookieStore.Options.SameSite = http.SameSiteLaxMode
+	cookieStore.Options.HttpOnly = true
 
 	provider, err := oidc.NewProvider(context.Background(), "https://id.twitch.tv/oauth2")
 	if err != nil {

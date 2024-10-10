@@ -5,7 +5,7 @@ import (
 )
 
 func main() {
-	m, err := server.InitializeMainStruct()
+	m, err := server.InitializeMainServer()
 	if err != nil {
 		panic(err)
 	}

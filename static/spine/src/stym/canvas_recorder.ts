@@ -130,6 +130,10 @@ export class CanvasRecorder {
         }
     }
 
+    private getOutputFilename(): string {
+        return (this.getElementById(this.dom, "output_filename") as HTMLInputElement).value;
+    }
+
     private recordManualStart() {
         let saveContext: SaveContextManual = null;
         return (event: any) => {
@@ -139,7 +143,7 @@ export class CanvasRecorder {
                 console.log("start manual recording");
                 event.target.innerText = "Stop";
                 // Start the recording
-                let outputFilename = (this.getElementById(dom, "output_filename") as HTMLInputElement).value;
+                let outputFilename = this.getOutputFilename();
                 let selectedMimeType = (this.getElementById(dom, "file_format_select_id") as HTMLInputElement).value;
                 saveContext = new SaveContextManual(
                     outputFilename,
@@ -176,9 +180,10 @@ export class CanvasRecorder {
 
                 recordModeActor.querySelector("select").innerHTML = "";
                 this.runtime.spinePlayer.getActorNames().forEach(actorName => {
-                    recordModeActor.querySelector("select").appendChild(
-                        this.createElement(`<option value="${actorName}">${actorName}</option>`)
-                    );
+                    let encodedName = encodeURIComponent(actorName);
+                    let opt = this.createElement(`<option value="${encodedName}"></option>`)
+                    opt.innerText = `${encodedName}`;
+                    recordModeActor.querySelector("select").appendChild(opt);
                 })
             } else if (selection === "duration") {
                 recordModeActor.classList.add("hidden");
@@ -196,11 +201,12 @@ export class CanvasRecorder {
             this.recordManualStart(),
         );
         this.findWithClass(dom, "save-button-actor")[0].addEventListener("click", (event) => {
-            let outputFilename = (this.getElementById(dom, "output_filename") as HTMLInputElement).value;
+            let outputFilename = this.getOutputFilename();
             let selectedMimeType = (this.getElementById(dom, "file_format_select_id") as HTMLInputElement).value;
-            let selectedActor = (this.getElementById(dom, "actor_select_id") as HTMLSelectElement).value;
+            let encodedSelectedActor = (this.getElementById(dom, "actor_select_id") as HTMLSelectElement).value;
+            let decodedSelectedActor = decodeURIComponent(encodedSelectedActor);
 
-            let actor = this.runtime.spinePlayer.getActor(selectedActor);
+            let actor = this.runtime.spinePlayer.getActor(decodedSelectedActor);
             if (!actor || actor === undefined) {
                 console.log("Actor not found");
                 return;
@@ -218,7 +224,7 @@ export class CanvasRecorder {
             saveContext.removalFn = removalFn;
         });
         this.findWithClass(dom, "save-button-duration")[0].addEventListener("click", (event) => {
-            let outputFilename = (this.getElementById(dom, "output_filename") as HTMLInputElement).value;
+            let outputFilename = this.getOutputFilename();
             let selectedMimeType = (this.getElementById(dom, "file_format_select_id") as HTMLInputElement).value;
             let duration = (this.getElementById(dom, "record_duration_id") as HTMLInputElement).valueAsNumber;
 

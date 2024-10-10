@@ -32,7 +32,6 @@ function GeneralInfo(props: {
                             <td>Next Rooms GC Time</td>
                             <td>{props.gcTime}</td>
                         </tr>
-
                         {metricsList}
                     </tbody>
                 </table>
