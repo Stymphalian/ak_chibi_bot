@@ -24,10 +24,10 @@ func (r *RoomRepositoryPsql) GetOrInsertRoom(ctx context.Context, roomConfig *Ro
 	var roomDb RoomDb
 	result := db.Where("channel_name = ?", roomConfig.ChannelName).Attrs(
 		RoomDb{
-			ChannelName:                 roomConfig.ChannelName,
-			IsActive:                    true,
-			DefaultOperatorName:         roomConfig.DefaultOperatorName,
-			DefaultOperatorConfig:       roomConfig.DefaultOperatorConfig,
+			ChannelName: roomConfig.ChannelName,
+			IsActive:    true,
+			// DefaultOperatorName:         roomConfig.DefaultOperatorName,
+			// DefaultOperatorConfig:       roomConfig.DefaultOperatorConfig,
 			SpineRuntimeConfig:          *roomConfig.SpineRuntimeConfig,
 			GarbageCollectionPeriodMins: roomConfig.GarbageCollectionPeriodMins,
 		},

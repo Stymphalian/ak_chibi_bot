@@ -262,12 +262,18 @@ func (r *RoomsManager) CreateRoomOrNoOp(ctx context.Context, channel string) err
 		r.removeRoomCh,
 	)
 	if isNew || roomWasInactive {
+		defaultOperatorName := r.botConfig.InitialOperator
+		defaultOperatorConfig := r.botConfig.OperatorDetails
+		if roomDb.DefaultOperatorName != "" {
+			defaultOperatorName = roomDb.DefaultOperatorName
+			defaultOperatorConfig = roomDb.DefaultOperatorConfig
+		}
 		log.Println("Adding default chibi for ", roomDb.ChannelName)
 		roomObj.chibiActor.SetToDefault(
 			ctx,
 			*userinfo,
-			roomDb.DefaultOperatorName,
-			roomDb.DefaultOperatorConfig,
+			defaultOperatorName,
+			defaultOperatorConfig,
 		)
 	}
 
