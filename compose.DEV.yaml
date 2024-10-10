@@ -32,7 +32,7 @@ services:
   migrations:
     image: migrate/migrate:4
     volumes:
-      - .\\db\\migrations:/migrations
+      - ./db/migrations:/migrations
     depends_on:
       db:
         condition: service_healthy
@@ -76,6 +76,6 @@ volumes:
 
 secrets:
   postgres-password.txt:
-    file: secrets\postgres-password.txt
+    file: secrets/postgres-password.txt
   web-user-password.txt:
-    file: secrets\web-user-password.txt
+    file: secrets/web-user-password.txt
