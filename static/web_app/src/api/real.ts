@@ -11,6 +11,12 @@ export async function getUserChannelSettings(channelName:string) {
             url + query.toString(), 
             {method: 'GET'}
         );
+        console.log("@@@@ response", response);
+        let headers = response.headers;
+        for (const [key, value] of Array.from(headers.entries())) {
+            console.log("@@@@ header", key, value)
+        }
+        // console.log("@@@@ headers", [...response.headers.entries()].reduce((acc, [key, value]) => ({...acc, [key]: value}), {}));
         if (!response.ok) {
             return null;
         }

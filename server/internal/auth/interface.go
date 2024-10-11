@@ -8,7 +8,8 @@ import (
 )
 
 type AuthServiceInterface interface {
-	IsAuthorized(w http.ResponseWriter, r *http.Request) (*AuthorizedInfo, error)
+	HasAuthorizedSession(w http.ResponseWriter, r *http.Request) (*AuthorizedInfo, error)
 	GetUserFromTwitchId(twitchUserIdStr string) (*misc.UserInfo, error)
 	RevokeToken(token *oauth2.Token) error
+	ValidateJWTToken(tokenString string) (*AkChibiBotClaims, error)
 }

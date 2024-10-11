@@ -90,8 +90,13 @@ func (s *MainServer) Run() {
 	s.roomManager.LoadExistingRooms(context.Background())
 
 	log.Println("Starting server")
+
+	mux := http.NewServeMux()
+	handler := mux
+	// handler := csrf.Protect([]byte(s.botConfig.CsrfSecret))(mux)
 	server := &http.Server{
 		Addr:              s.args.Address,
+		Handler:           handler,
 		ReadTimeout:       1 * time.Second,
 		ReadHeaderTimeout: 1 * time.Second,
 		WriteTimeout:      5 * time.Second,
@@ -106,7 +111,7 @@ func (s *MainServer) Run() {
 	// Main web app
 	webAppFilePath := s.args.StaticAssetDir + "/web_app/build/"
 	webAppFileServer := http.FileServer(http.Dir(webAppFilePath))
-	http.Handle("/",
+	mux.Handle("/",
 		http.TimeoutHandler(
 			http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 				if r.URL.Path != "/" {
@@ -128,7 +133,7 @@ func (s *MainServer) Run() {
 	)
 
 	// Image File Server
-	http.Handle("/image/assets/",
+	mux.Handle("/image/assets/",
 		http.TimeoutHandler(
 			http.StripPrefix("/image/assets/", http.FileServer(http.Dir(s.args.ImageAssetDir))),
 			DEFAULT_TIMEOUT,
@@ -137,7 +142,7 @@ func (s *MainServer) Run() {
 	)
 
 	// Public File Server
-	http.Handle("/public/",
+	mux.Handle("/public/",
 		http.TimeoutHandler(
 			http.StripPrefix("/public/", http.FileServer(http.Dir(s.args.StaticAssetDir+"/public"))),
 			DEFAULT_TIMEOUT,
@@ -162,14 +167,14 @@ func (s *MainServer) Run() {
 			"",
 		),
 	)
-	http.Handle("/spine/", spineMux)
+	mux.Handle("/spine/", spineMux)
 
 	// Bot Server
-	http.Handle("/room/", misc.MiddlewareWithTimeout(s.HandleRoom, DEFAULT_TIMEOUT))
-	http.Handle("/ws/", misc.Middleware(s.HandleSpineWebSocket))
+	mux.Handle("/room/", misc.MiddlewareWithTimeout(s.HandleRoom, DEFAULT_TIMEOUT))
+	mux.Handle("/ws/", misc.Middleware(s.HandleSpineWebSocket))
 
-	s.apiServer.RegisterHandlers()
-	s.loginServer.RegisterHandlers()
+	s.apiServer.RegisterHandlers(mux)
+	s.loginServer.RegisterHandlers(mux)
 
 	go func() {
 		sigint := make(chan os.Signal, 1)

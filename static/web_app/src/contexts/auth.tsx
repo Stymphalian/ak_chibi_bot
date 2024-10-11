@@ -57,7 +57,7 @@ export const AuthProvider = (props: {
     };
 
     let Logout = (callback: VoidFunction) => {
-        fetch("/auth/logout/", {method: "GET"})
+        fetch("/auth/logout/", {method: "POST"})
         .catch((err) => console.log(err))
         .then(() => {
             setIsAuthenticated(false);

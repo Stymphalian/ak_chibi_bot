@@ -62,6 +62,10 @@ type BotConfig struct {
 	// Required.
 	// A secret key used for encrypting session cookies.
 	CookieSecret string `json:"cookie_secret"`
+
+	// Required
+	// CSRF Secret Key
+	CsrfSecret string `json:"csrf_secret"`
 }
 
 func LoadBotConfig(path string) (*BotConfig, error) {
@@ -131,6 +135,15 @@ func LoadBotConfig(path string) (*BotConfig, error) {
 		if err := ValidateSpineRuntimeConfig(config.SpineRuntimeConfig); err != nil {
 			return nil, err
 		}
+	}
+	if len(config.CsrfSecret) == 0 {
+		return nil, fmt.Errorf("csrf_secret not set in bot config (%s)", path)
+	}
+	if len(config.CsrfSecret) != 32 {
+		return nil, fmt.Errorf("csrf_secret must be 32 characters in bot config (%s)", path)
+	}
+	if len(config.CookieSecret) == 0 {
+		return nil, fmt.Errorf("cookie_secret not set in bot config (%s)", path)
 	}
 
 	return &config, nil

@@ -18,7 +18,7 @@ func NewFakeAuthService() *FakeAuthService {
 	return &FakeAuthService{}
 }
 
-func (s *FakeAuthService) IsAuthorized(w http.ResponseWriter, r *http.Request) (*AuthorizedInfo, error) {
+func (s *FakeAuthService) HasAuthorizedSession(w http.ResponseWriter, r *http.Request) (*AuthorizedInfo, error) {
 	if !s.IsAuthenticated {
 		return nil, fmt.Errorf("not authorized")
 	} else {
@@ -38,4 +38,8 @@ func (s *FakeAuthService) GetUserFromTwitchId(twitchUserIdStr string) (*misc.Use
 
 func (s *FakeAuthService) RevokeToken(token *oauth2.Token) error {
 	return nil
+}
+
+func (s *FakeAuthService) ValidateJWTToken(tokenString string) (*AkChibiBotClaims, error) {
+	return nil, nil
 }

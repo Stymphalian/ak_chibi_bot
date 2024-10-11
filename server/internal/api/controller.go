@@ -17,6 +17,7 @@ import (
 	"github.com/Stymphalian/ak_chibi_bot/server/internal/room"
 	"github.com/Stymphalian/ak_chibi_bot/server/internal/users"
 	"github.com/google/uuid"
+	"github.com/gorilla/csrf"
 )
 
 type ApiServer struct {
@@ -49,45 +50,70 @@ func NewApiServer(
 	}
 }
 
-func (s *ApiServer) RegisterHandlers() {
+func (s *ApiServer) RegisterHandlers(rootMux *http.ServeMux) {
 	mux := http.NewServeMux()
 	mux.Handle("GET  /api/rooms/settings/{$}", s.middleware(s.HandleGetRoomSettings))
 	mux.Handle("POST /api/rooms/settings/{$}", s.middleware(s.HandleUpdateRoomSettings))
 	mux.Handle("POST /api/rooms/remove/{$}", s.middlewareAdmin(s.HandleRemoveRoom))
 	mux.Handle("POST /api/rooms/users/remove/{$}", s.middlewareAdmin(s.HandleRemoveUser))
 	mux.Handle("POST /api/rooms/users/add/{$}", s.middlewareAdmin(s.HandleRoomAddOperator))
-	// mux.Handle("GET  /api/vul/get/{$}", s.middleware(s.HandleVulGet))
-	// mux.Handle("POST /api/vul/{$}", s.middleware(s.HandleVul))
+	mux.Handle("GET  /api/vul/get/{$}", s.middleware(s.HandleVulGet))
+	mux.Handle("POST /api/vul/post/{$}", s.middleware(s.HandleVulPost))
+	mux.Handle("GET  /api/vul/csrf/{$}", s.middleware(s.HandleVulCsrf))
 
 	mux.Handle("GET /api/users/preferences/{$}", s.middleware(s.HandleGetUserPreferences))
 	mux.Handle("POST /api/users/preferences/{$}", s.middleware(s.HandleUpdateUserPreferences))
 	mux.Handle("DELETE /api/users/preferences/{$}", s.middleware(s.HandleDeleteUserPreferences))
 	mux.Handle("GET  /api/admin/info/{$}", s.middlewareAdmin(s.HandleAdminInfo))
 
-	http.Handle("/api/", mux)
+	rootMux.Handle("/api/", mux)
 	// http.Handle("POST /api/rooms/users/add/{$}", s.middleware(s.HandleRoomAddOperator))
 }
 
 func (s *ApiServer) CheckAuth(h misc.HandlerWithErr, checkAdmin bool) misc.HandlerWithErr {
 	return func(w http.ResponseWriter, r *http.Request) error {
-		info, err := s.authService.IsAuthorized(w, r)
-		if err != nil || !info.Authenticated {
+		bearerToken := r.Header.Get("Authorization")
+		if len(bearerToken) > 7 && strings.ToLower(bearerToken[0:6]) == "bearer" {
+			bearerToken = bearerToken[7:]
+		} else {
 			return misc.NewHumanReadableError(
-				"not authorized",
+				"invalid authorization header",
+				http.StatusBadRequest,
+				nil,
+			)
+		}
+		log.Println("@@@@ bearerToken:", bearerToken)
+
+		claims, err := s.authService.ValidateJWTToken(bearerToken)
+		if err != nil {
+			return misc.NewHumanReadableError(
+				"invalid token",
 				http.StatusUnauthorized,
 				err,
 			)
 		}
-		if checkAdmin {
-			if !info.User.IsAdmin {
-				return misc.NewHumanReadableError(
-					"not authorized",
-					http.StatusUnauthorized,
-					err,
-				)
-			}
-		}
-		userDb, err := s.usersRepo.GetByTwitchId(r.Context(), info.User.TwitchUserId)
+		userId := claims.UserId
+		twitchUserId := claims.TwitchUserId
+		twitchUserName := claims.TwitchUserName
+
+		// info, err := s.authService.IsAuthorized(w, r)
+		// if err != nil || !info.Authenticated {
+		// 	return misc.NewHumanReadableError(
+		// 		"not authorized",
+		// 		http.StatusUnauthorized,
+		// 		err,
+		// 	)
+		// }
+		// if checkAdmin {
+		// 	if !info.User.IsAdmin {
+		// 		return misc.NewHumanReadableError(
+		// 			"not authorized. not admin.",
+		// 			http.StatusUnauthorized,
+		// 			err,
+		// 		)
+		// 	}
+		// }
+		_, err = s.usersRepo.GetById(r.Context(), userId)
 		if err != nil {
 			return misc.NewHumanReadableError(
 				"user does not exist",
@@ -97,11 +123,11 @@ func (s *ApiServer) CheckAuth(h misc.HandlerWithErr, checkAdmin bool) misc.Handl
 		}
 
 		newContext := context.WithValue(
-			r.Context(), auth.CONTEXT_TWITCH_USER_ID, info.User.TwitchUserId)
+			r.Context(), auth.CONTEXT_TWITCH_USER_ID, twitchUserId)
 		newContext = context.WithValue(
-			newContext, auth.CONTEXT_TWITCH_USER_NAME, info.User.Username)
+			newContext, auth.CONTEXT_TWITCH_USER_NAME, twitchUserName)
 		newContext = context.WithValue(
-			newContext, auth.CONTEXT_USER_ID, userDb.UserId)
+			newContext, auth.CONTEXT_USER_ID, userId)
 		*r = *r.WithContext(newContext)
 		return h(w, r)
 	}
@@ -140,29 +166,63 @@ func (s *ApiServer) matchRequestChannel(r *http.Request, channelName string) err
 	return nil
 }
 
-// func (s *ApiServer) HandleVulGet(w http.ResponseWriter, r *http.Request) error {
-// 	w.Write([]byte("hello"))
-// 	w.Header().Set("Set-Cookie", "CSRF_token="+"csrf_token"+"; Secure; Path=/;")
-// 	return nil
-// }
+func (s *ApiServer) HandleVulGet(w http.ResponseWriter, r *http.Request) error {
+	w.Write([]byte("hello"))
+	log.Println("@@@@ handle vul get")
+	log.Println("@@@@ r.Header", r.Header)
+	log.Println("@@@@ r.Referer", r.Referer())
+	log.Println("@@@@ r.UserAgent", r.UserAgent())
+	log.Println("@@@@ csrf_token: ", csrf.Token(r))
+	// w.Header().Set("Set-Cookie", "CSRF_token="+"csrf_token"+"; Secure; Path=/;")
+	return nil
+}
 
-// func (s *ApiServer) HandleVul(w http.ResponseWriter, r *http.Request) error {
-// 	log.Println("@@@@ handle vul")
-// 	log.Println("@@@@ r.Header", r.Header)
-// 	log.Println("@@@@ r.Referer", r.Referer())
-// 	log.Println("@@@@ r.UserAgent", r.UserAgent())
-// 	csrfToken, err := r.Cookie("CSRF_token")
-// 	if err != nil {
-// 		log.Println("@@@@ error getting csrf token", err)
-// 		return misc.NewHumanReadableError(
-// 			"CSRF token missing",
-// 			http.StatusBadRequest,
-// 			fmt.Errorf("CSRF token missing"),
-// 		)
-// 	}
-// 	log.Println("@@@@ csrf token: ", csrfToken.Value)
-// 	return nil
-// }
+func (s *ApiServer) HandleVulPost(w http.ResponseWriter, r *http.Request) error {
+	log.Println("@@@@ handle vul post")
+	log.Println("@@@@ r.Header", r.Header)
+	log.Println("@@@@ r.Referer", r.Referer())
+	log.Println("@@@@ r.UserAgent", r.UserAgent())
+	log.Println("@@@@ csrf_token: ", csrf.Token(r))
+	// csrfToken, err := r.Cookie("CSRF_token")
+	// if err != nil {
+	// 	log.Println("@@@@ error getting csrf token", err)
+	// 	return misc.NewHumanReadableError(
+	// 		"CSRF token missing",
+	// 		http.StatusBadRequest,
+	// 		fmt.Errorf("CSRF token missing"),
+	// 	)
+	// }
+	// log.Println("@@@@ csrf token: ", csrfToken.Value)
+	return nil
+}
+
+type CsrfResp struct {
+	CsrfToken string `json:"csrf_token"`
+}
+
+func (s *ApiServer) HandleVulCsrf(w http.ResponseWriter, r *http.Request) error {
+	log.Println("@@@@ handle vul csrf")
+	log.Println("@@@@ r.Header", r.Header)
+	log.Println("@@@@ r.Referer", r.Referer())
+	log.Println("@@@@ r.UserAgent", r.UserAgent())
+	log.Println("@@@@ csrf_token: ", csrf.Token(r))
+
+	resp := CsrfResp{csrf.Token(r)}
+	w.Header().Set("Content-Type", "application/json")
+	return json.NewEncoder(w).Encode(resp)
+
+	// csrfToken, err := r.Cookie("CSRF_token")
+	// if err != nil {
+	// 	log.Println("@@@@ error getting csrf token", err)
+	// 	return misc.NewHumanReadableError(
+	// 		"CSRF token missing",
+	// 		http.StatusBadRequest,
+	// 		fmt.Errorf("CSRF token missing"),
+	// 	)
+	// }
+	// log.Println("@@@@ csrf token: ", csrfToken.Value)
+	// return nil
+}
 
 func (s *ApiServer) HandleUpdateRoomSettings(w http.ResponseWriter, r *http.Request) error {
 	if r.Method != http.MethodPost {
