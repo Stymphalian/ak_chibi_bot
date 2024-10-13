@@ -17,7 +17,6 @@ import (
 	"github.com/Stymphalian/ak_chibi_bot/server/internal/room"
 	"github.com/Stymphalian/ak_chibi_bot/server/internal/users"
 	"github.com/google/uuid"
-	"github.com/gorilla/csrf"
 )
 
 type ApiServer struct {
@@ -542,7 +541,7 @@ func (s *ApiServer) HandleVulGet(w http.ResponseWriter, r *http.Request) error {
 	log.Println("r.Header", r.Header)
 	log.Println("r.Referer", r.Referer())
 	log.Println("r.UserAgent", r.UserAgent())
-	log.Println("csrf_token: ", csrf.Token(r))
+	// log.Println("csrf_token: ", csrf.Token(r))
 	return nil
 }
 
@@ -551,6 +550,6 @@ func (s *ApiServer) HandleVulPost(w http.ResponseWriter, r *http.Request) error 
 	log.Println("r.Header", r.Header)
 	log.Println("r.Referer", r.Referer())
 	log.Println("r.UserAgent", r.UserAgent())
-	log.Println("csrf_token: ", csrf.Token(r))
+	// log.Println("csrf_token: ", csrf.Token(r))
 	return nil
 }

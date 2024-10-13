@@ -66,10 +66,6 @@ type BotConfig struct {
 	// Required
 	// Secret key used for encrypting JWT tokens. Must be kept safe.
 	JwtSecretKey string `json:"jwt_secret_key"`
-
-	// Required
-	// CSRF Secret Key
-	CsrfSecret string `json:"csrf_secret"`
 }
 
 func LoadBotConfig(path string) (*BotConfig, error) {
@@ -139,12 +135,6 @@ func LoadBotConfig(path string) (*BotConfig, error) {
 		if err := ValidateSpineRuntimeConfig(config.SpineRuntimeConfig); err != nil {
 			return nil, err
 		}
-	}
-	if len(config.CsrfSecret) == 0 {
-		return nil, fmt.Errorf("csrf_secret not set in bot config (%s)", path)
-	}
-	if len(config.CsrfSecret) != 32 {
-		return nil, fmt.Errorf("csrf_secret must be 32 characters in bot config (%s)", path)
 	}
 	if len(config.CookieSecret) == 0 {
 		return nil, fmt.Errorf("cookie_secret not set in bot config (%s)", path)

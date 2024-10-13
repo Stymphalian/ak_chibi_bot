@@ -93,7 +93,6 @@ func (s *MainServer) Run() {
 
 	mux := http.NewServeMux()
 	handler := mux
-	// handler := csrf.Protect([]byte(s.botConfig.CsrfSecret))(mux)
 	server := &http.Server{
 		Addr:              s.args.Address,
 		Handler:           handler,
