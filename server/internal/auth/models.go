@@ -2,14 +2,17 @@ package auth
 
 import "github.com/golang-jwt/jwt/v5"
 
+type ContextTwitchUserId string
+type ContextTwitchUserName string
+type ContextUserId string
+type ContextUserRole string
+
 type AkChibiBotClaims struct {
 	jwt.RegisteredClaims
 	UserId         uint   `json:"user_id"`
 	TwitchUserId   string `json:"twitch_user_id"`
 	TwitchUserName string `json:"twitch_user_name"`
 }
-
-const JWT_TOKEN_SECRET = "secret"
 
 type TwitchClaims struct {
 	Iss   string `json:"iss"`
@@ -21,6 +24,13 @@ type TwitchClaims struct {
 	Email string `json:"email"`
 }
 
-type ContextTwitchUserId string
-type ContextTwitchUserName string
-type ContextUserId string
+type AuthUserInfo struct {
+	UserId       uint
+	Username     string
+	TwitchUserId string
+	IsAdmin      bool
+}
+type AuthorizedInfo struct {
+	Authenticated bool
+	User          AuthUserInfo
+}

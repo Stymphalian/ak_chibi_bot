@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { useSubmit } from "react-router-dom";
 import { Alert } from 'react-bootstrap';
 import { useForm, SubmitHandler, SubmitErrorHandler } from "react-hook-form"
 import * as yup from "yup"
@@ -7,6 +6,8 @@ import { yupResolver } from "@hookform/resolvers/yup"
 
 import { ChannelSettings } from '../models/models';
 import {Code} from "./Code";
+import { updateUserChannelSettings } from '../api/real';
+import { useAuth } from '../contexts/auth';
 
 const schema = yup
 .object({
@@ -24,7 +25,9 @@ const schema = yup
 function RoomSettingsForm(props: {
     channelSettings: ChannelSettings
 }) {
+    const auth = useAuth();
     const [showAlert, setShowAlert] = useState(false);
+    const [requestSuccessful, setRequestSuccessful] = useState(false);
     const cs = props.channelSettings;
     const {
         register,
@@ -34,16 +37,22 @@ function RoomSettingsForm(props: {
         resolver: yupResolver(schema)
     });
     const { errors } = formState;
-    const submit = useSubmit();
+    const resetAlert = () => {
+        setShowAlert(false);
+        setRequestSuccessful(false);
+    };
 
     const onSubmit: SubmitHandler<ChannelSettings> = async (data) => {
-        submit(data, { method: "post", action:"/settings",encType: "application/json"});
+        let accessToken = await auth.getAccessToken();
+        let resp = await updateUserChannelSettings(accessToken, data.channelName, data);
         setShowAlert(true);
-        setTimeout(() => setShowAlert(false), 5000);
+        setRequestSuccessful(resp === null ? false: true);
+        setTimeout(resetAlert, 5000);
     }
     const onError: SubmitErrorHandler<ChannelSettings> = async (errors) => {
         setShowAlert(true);
-        setTimeout(() => setShowAlert(false), 5000);
+        setRequestSuccessful(false);
+        setTimeout(resetAlert, 5000);
     }
 
     return (
@@ -162,7 +171,7 @@ function RoomSettingsForm(props: {
                 {
                     showAlert
                     && (
-                        formState.isSubmitSuccessful
+                        formState.isSubmitSuccessful && requestSuccessful
                         ? <div><hr /><Alert variant="success">Saved successfully!</Alert></div>
                         : <div><hr /><Alert variant="warning">Failed to save. Please try again!</Alert></div>
                     )

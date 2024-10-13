@@ -20,14 +20,18 @@ import (
 )
 
 const (
-	STATE_CALLBACK_KEY           = "oauth-state-callback"
-	STATE_JWT_NONCE_KEY          = "oauth-state-jwt-nonce"
-	OAUTH_SESSION_NAME           = "oauth-oidc-session"
-	OAUTH_TOKEN_KEY              = "oauth-token"
-	OAUTH_JWT_TOKEN_KEY          = "oauth-jwt-token"
-	CONTEXT_TWITCH_USER_ID       = ContextTwitchUserId("twitch-user-id")
-	CONTEXT_TWITCH_USER_NAME     = ContextTwitchUserName("twitch-user-name")
-	CONTEXT_USER_ID              = ContextUserId("user-id")
+	STATE_CALLBACK_KEY       = "oauth-state-callback"
+	STATE_JWT_NONCE_KEY      = "oauth-state-jwt-nonce"
+	OAUTH_SESSION_NAME       = "oauth-oidc-session"
+	OAUTH_TOKEN_KEY          = "oauth-token"
+	CONTEXT_TWITCH_USER_ID   = ContextTwitchUserId("twitch-user-id")
+	CONTEXT_TWITCH_USER_NAME = ContextTwitchUserName("twitch-user-name")
+	CONTEXT_USER_ID          = ContextUserId("user-id")
+	CONTEXT_USER_ROLE        = ContextUserRole("user-role")
+	JWT_ISSUER               = "ak-chibi-bot"
+	JWT_AUDIENCE             = "ak-chibi-bot"
+	// TODO: Move JWT token valid duration into config
+	JWT_TOKEN_VALID_DURATION     = 5 * time.Minute
 	VALIDATE_OAUTH_TOKENS_PERIOD = 1 * time.Hour
 	COOKIE_MAX_AGE               = 6 * time.Hour
 )
@@ -44,6 +48,7 @@ type AuthService struct {
 	provider       *oidc.Provider
 	Verifier       *oidc.IDTokenVerifier
 	shutdownChan   chan struct{}
+	jwtSecretKey   string
 }
 
 func ProvideAuthService(
@@ -57,6 +62,7 @@ func ProvideAuthService(
 		botConfig.TwitchClientId,
 		botConfig.TwitchClientSecret,
 		botConfig.CookieSecret,
+		botConfig.JwtSecretKey,
 		botConfig.TwitchOauthRedirectUrl,
 		twitchClient,
 		usersRepo,
@@ -68,6 +74,7 @@ func NewAuthService(
 	twitchClientId string,
 	twitchSecret string,
 	cookieSecret string,
+	jwtSecretKey string,
 	redirectUrl string,
 	twitchClient twitch_api.TwitchApiClientInterface,
 	userRepo users.UserRepository,
@@ -91,6 +98,18 @@ func NewAuthService(
 	cookieStore.Options.Secure = true
 	cookieStore.Options.SameSite = http.SameSiteLaxMode
 	cookieStore.Options.HttpOnly = true
+
+	// cookieStoreSession, err := pgstore.NewPGStoreFromPool(
+	// 	dbPool,
+	// 	[]byte(cookieSecret),
+	// )
+	// if err != nil {
+	// 	return nil, err
+	// }
+	// cookieStoreSession.Options.MaxAge = int(COOKIE_MAX_AGE.Seconds())
+	// cookieStoreSession.Options.Secure = true
+	// cookieStoreSession.Options.SameSite = http.SameSiteStrictMode
+	// cookieStoreSession.Options.HttpOnly = true
 
 	provider, err := oidc.NewProvider(context.Background(), "https://id.twitch.tv/oauth2")
 	if err != nil {
@@ -266,8 +285,7 @@ func (s *AuthService) cleanupExpiredSessions() error {
 		}
 		token, ok := cookieValues[OAUTH_TOKEN_KEY].(*oauth2.Token)
 		if ok {
-
-			if err := s.RevokeToken(token); err != nil {
+			if err := s.RevokeSessionToken(token); err != nil {
 				numTokensRevoked += 1
 			} else {
 				numTokensFailedRevoke += 1
@@ -296,46 +314,29 @@ func (s *AuthService) cleanupExpiredSessions() error {
 	}
 }
 
-type AuthUserInfo struct {
-	UserId       uint
-	Username     string
-	TwitchUserId string
-	IsAdmin      bool
-}
-type AuthorizedInfo struct {
-	Authenticated bool
-	User          AuthUserInfo
-}
-
 func (s *AuthService) HasAuthorizedSession(w http.ResponseWriter, r *http.Request) (*AuthorizedInfo, error) {
 	session, err := s.CookieStore.Get(r, OAUTH_SESSION_NAME)
 	if err != nil {
-		log.Println("@@@@ cookie error:", err)
 		return nil, err
 	}
 	if session.IsNew {
-		log.Println("@@@@ session not found")
 		return nil, fmt.Errorf("session not found")
 	}
 	token, ok := session.Values[OAUTH_TOKEN_KEY].(*oauth2.Token)
 	if !ok {
-		log.Println("@@@@ oauth token not found")
 		return nil, fmt.Errorf("token not found")
 	}
 	// Verify the tokens
 	if token.Expiry.Before(time.Now().UTC()) {
-		log.Println("@@@@ token expired")
 		return nil, fmt.Errorf("token expired")
 	}
 	resp, err := s.twitchClient.ValidateToken(token.AccessToken)
 	if err != nil {
-		log.Println("@@@@ invalid token")
 		return nil, err
 	}
 
 	user, err := s.userRepo.GetByTwitchId(r.Context(), resp.UserId)
 	if err != nil {
-		log.Println("@@@@ twithc user does not exist")
 		return nil, err
 	}
 
@@ -350,20 +351,17 @@ func (s *AuthService) HasAuthorizedSession(w http.ResponseWriter, r *http.Reques
 	}, nil
 }
 
-func getTokenSecretBytes(token *jwt.Token) (interface{}, error) {
+func (s *AuthService) getTokenSecretBytes(token *jwt.Token) (interface{}, error) {
 	// Don't forget to validate the alg is what you expect:
 	if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
-		return nil, fmt.Errorf("Unexpected signing method: %v", token.Header["alg"])
+		return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
 	}
 
 	// hmacSampleSecret is a []byte containing your secret, e.g. []byte("my_secret_key")
-	return []byte(JWT_TOKEN_SECRET), nil
+	return []byte(s.jwtSecretKey), nil
 }
 
 func (s *AuthService) ValidateJWTToken(tokenString string) (*AkChibiBotClaims, error) {
-	// sample token string taken from the New example
-	// tokenString := "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmb28iOiJiYXIiLCJuYmYiOjE0NDQ0Nzg0MDB9.u1riaD1rW97opCoAuRCTy4w58Br-Zk-bh7vLiRIsrpU"
-
 	// Parse takes the token string and a function for looking up the key. The latter is especially
 	// useful if you use multiple keys for your application.  The standard is to use 'kid' in the
 	// head of the token to identify which key to use, but the parsed token (head and claims) is provided
@@ -371,25 +369,39 @@ func (s *AuthService) ValidateJWTToken(tokenString string) (*AkChibiBotClaims, e
 	token, err := jwt.ParseWithClaims(
 		tokenString,
 		&AkChibiBotClaims{},
-		getTokenSecretBytes,
+		s.getTokenSecretBytes,
 		jwt.WithLeeway(5*time.Second),
 	)
 	if err != nil {
 		return nil, err
 	} else if claims, ok := token.Claims.(*AkChibiBotClaims); ok {
-		log.Println("@@@@@	token: ", token)
-		log.Printf("@@@@ claims = %+v", claims)
 		return claims, nil
-		// log.Println(claims["foo"], claims["nbf"])
 	}
 	return nil, fmt.Errorf("invalid token")
-	// return nil, nil
 }
 
-func (s *AuthService) CreateJWTToken(claims *AkChibiBotClaims) (string, error) {
+func (s *AuthService) CreateJWTToken(
+	userId uint,
+	twitchUserId string,
+	twitchUserName string,
+) (string, error) {
+	claims := &AkChibiBotClaims{
+		RegisteredClaims: jwt.RegisteredClaims{
+			Issuer:    JWT_ISSUER,
+			Subject:   fmt.Sprintf("%d", userId),
+			Audience:  jwt.ClaimStrings{JWT_AUDIENCE},
+			IssuedAt:  jwt.NewNumericDate(time.Now()),
+			NotBefore: jwt.NewNumericDate(time.Now()),
+			ExpiresAt: jwt.NewNumericDate(time.Now().Add(JWT_TOKEN_VALID_DURATION)),
+		},
+		UserId:         userId,
+		TwitchUserId:   twitchUserId,
+		TwitchUserName: twitchUserName,
+	}
+
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-	tokenString, err := token.SignedString([]byte(JWT_TOKEN_SECRET))
-	fmt.Println("@@@@ CreateJWTToken: ", tokenString, err)
+	tokenString, err := token.SignedString([]byte(s.jwtSecretKey))
+
 	return tokenString, err
 }
 
@@ -409,6 +421,6 @@ func (s *AuthService) GetUserFromTwitchId(twitchUserIdStr string) (*misc.UserInf
 	}, nil
 }
 
-func (s *AuthService) RevokeToken(token *oauth2.Token) error {
+func (s *AuthService) RevokeSessionToken(token *oauth2.Token) error {
 	return s.twitchClient.RevokeToken(token.AccessToken)
 }

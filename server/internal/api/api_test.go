@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"log"
 	"net/http/httptest"
 	"strings"
 	"testing"
@@ -18,8 +19,8 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func createTestUser(username string, usersRepo users.UserRepository) {
-	usersRepo.GetOrInsertUser(context.TODO(), misc.UserInfo{
+func createTestUser(username string, usersRepo users.UserRepository) (*users.UserDb, error) {
+	return usersRepo.GetOrInsertUser(context.TODO(), misc.UserInfo{
 		Username:        username,
 		UsernameDisplay: "display-" + username,
 		TwitchUserId:    "twitch-" + username,
@@ -35,10 +36,17 @@ func Setup_TestApiServer(username string) (*ApiServer, *auth.FakeAuthService) {
 	userPrefsRepo := users.NewUserPreferencesRepositoryPsql(db)
 	assetsService := operator.NewTestAssetService()
 	operatorService := operator.NewDefaultOperatorService(assetsService)
+
+	userDb, err := createTestUser(username, usersRepo)
+	if err != nil {
+		log.Fatal(err)
+	}
 	authService.IsAuthenticated = true
+	authService.IsJwtTokenValid = true
 	authService.Username = username
 	authService.TwitchUserId = "twitch-" + username
-	createTestUser(username, usersRepo)
+	authService.UserId = userDb.UserId
+
 	apiServer := NewApiServer(
 		roomManager,
 		authService,
@@ -54,6 +62,7 @@ func TestApiServer_HandleRoomUpdate_NoAuth(t *testing.T) {
 	username := "test-api-server-1"
 	sut, authService := Setup_TestApiServer(username)
 	authService.IsAuthenticated = false
+
 	err := sut.roomsManager.CreateRoomOrNoOp(context.TODO(), username)
 	if err != nil {
 		assert.Fail(err.Error())
@@ -71,12 +80,28 @@ func TestApiServer_HandleRoomUpdate_NoAuth(t *testing.T) {
 	}`
 	reqBody := strings.NewReader(jsonBody)
 
-	req := httptest.NewRequest("POST", "http://example.com/api/rooms/settings/", reqBody)
-	w := httptest.NewRecorder()
-	sut.middleware(sut.HandleUpdateRoomSettings).ServeHTTP(w, req)
+	{
+		// Auth header not provided is a bad request
+		authService.IsJwtTokenValid = true
+		req := httptest.NewRequest("POST", "http://example.com/api/rooms/settings/", reqBody)
+		w := httptest.NewRecorder()
+		sut.middleware(sut.HandleUpdateRoomSettings).ServeHTTP(w, req)
 
-	resp := w.Result()
-	assert.Equal(401, resp.StatusCode)
+		resp := w.Result()
+		assert.Equal(400, resp.StatusCode)
+	}
+
+	{
+		// Auth header provided but Invalid token should fail 401
+		authService.IsJwtTokenValid = false
+		req := httptest.NewRequest("POST", "http://example.com/api/rooms/settings/", reqBody)
+		req.Header.Set("Authorization", "Bearer foo")
+		w := httptest.NewRecorder()
+		sut.middleware(sut.HandleUpdateRoomSettings).ServeHTTP(w, req)
+
+		resp := w.Result()
+		assert.Equal(401, resp.StatusCode)
+	}
 }
 
 func TestApiServer_HandleRoomUpdate_HappyPath(t *testing.T) {
@@ -101,6 +126,7 @@ func TestApiServer_HandleRoomUpdate_HappyPath(t *testing.T) {
 	reqBody := strings.NewReader(jsonBody)
 
 	req := httptest.NewRequest("POST", "http://example.com/api/rooms/settings/", reqBody)
+	req.Header.Set("Authorization", "Bearer foo")
 	w := httptest.NewRecorder()
 	sut.middleware(sut.HandleUpdateRoomSettings).ServeHTTP(w, req)
 
@@ -134,6 +160,7 @@ func TestApiServer_HandleRoomUpdate_InvalidConfiguration(t *testing.T) {
 	}`
 	reqBody := strings.NewReader(jsonBody)
 	req := httptest.NewRequest("POST", "http://example.com/api/rooms/settings/", reqBody)
+	req.Header.Set("Authorization", "Bearer foo")
 	w := httptest.NewRecorder()
 	sut.middleware(sut.HandleUpdateRoomSettings).ServeHTTP(w, req)
 	resp := w.Result()
@@ -154,6 +181,7 @@ func TestApiServer_HandleRoomUpdate_InvalidConfiguration(t *testing.T) {
 	}`
 	reqBody = strings.NewReader(jsonBody)
 	req = httptest.NewRequest("POST", "http://example.com/api/rooms/settings/", reqBody)
+	req.Header.Set("Authorization", "Bearer foo")
 	w = httptest.NewRecorder()
 	sut.middleware(sut.HandleUpdateRoomSettings).ServeHTTP(w, req)
 	resp = w.Result()
@@ -174,6 +202,7 @@ func TestApiServer_HandleRoomUpdate_InvalidConfiguration(t *testing.T) {
 	}`
 	reqBody = strings.NewReader(jsonBody)
 	req = httptest.NewRequest("POST", "http://example.com/api/rooms/settings/", reqBody)
+	req.Header.Set("Authorization", "Bearer foo")
 	w = httptest.NewRecorder()
 	sut.middleware(sut.HandleUpdateRoomSettings).ServeHTTP(w, req)
 	resp = w.Result()
@@ -202,6 +231,7 @@ func TestApiServer_HandleRoomUpdate_RoomDoesNotExist(t *testing.T) {
 	}`
 	reqBody := strings.NewReader(jsonBody)
 	req := httptest.NewRequest("POST", "http://example.com/api/rooms/settings/", reqBody)
+	req.Header.Set("Authorization", "Bearer foo")
 	w := httptest.NewRecorder()
 	sut.middleware(sut.HandleUpdateRoomSettings).ServeHTTP(w, req)
 	resp := w.Result()
@@ -224,11 +254,17 @@ func TestApiServer_HandleGetRoomSettings_CannotModifyOtherUsersRoom(t *testing.T
 		"http://example.com/api/rooms/settings/?channel_name=test",
 		nil,
 	)
+	req.Header.Set("Authorization", "Bearer foo")
 	w := httptest.NewRecorder()
 	sut.middleware(sut.HandleGetRoomSettings).ServeHTTP(w, req)
 
 	resp := w.Result()
 	assert.Equal(resp.StatusCode, 400)
+	body, err := io.ReadAll(resp.Body)
+	if err != nil {
+		assert.Fail(err.Error())
+	}
+	assert.Equal("Cannot modify other user's room", string(body))
 }
 
 func TestApiServer_HandleGetRoomSettings_RoomExistsButNotActiveInManager(t *testing.T) {
@@ -246,6 +282,7 @@ func TestApiServer_HandleGetRoomSettings_RoomExistsButNotActiveInManager(t *test
 		fmt.Sprintf("http://example.com/api/rooms/settings/?channel_name=%s", auth.Username),
 		nil,
 	)
+	req.Header.Set("Authorization", "Bearer foo")
 	w := httptest.NewRecorder()
 	sut.middleware(sut.HandleGetRoomSettings).ServeHTTP(w, req)
 
@@ -266,9 +303,3 @@ func TestApiServer_HandleGetRoomSettings_RoomExistsButNotActiveInManager(t *test
 	assert.NoError(err, string(body))
 	assert.Equal(respObj, gotObj)
 }
-
-// func TestMain(m *testing.M) {
-// 	log.Println("@@@@ runninng api_test.go TestMain")
-// 	os.Setenv(akdb.DATABASE_PASSFILE_FILE_ENV, "ak_chibi_bot_api_test")
-// 	m.Run()
-// }

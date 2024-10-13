@@ -50,7 +50,7 @@ export function HomePage() {
                         </li>
                         <li className="list-group-item">
                             Make <Code>StymTwitchBot</Code> a moderator<br />
-                            This way the Bot won't when sending messages into the chat<br />
+                            This way the Bot won't be throttled when sending messages into the chat<br />
                             <Code>/mod StymTwitchBot</Code>
                         </li>
                     </ul>

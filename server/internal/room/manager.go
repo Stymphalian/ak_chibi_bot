@@ -43,6 +43,7 @@ func NewRoomsManager(
 	usersRepo users.UserRepository,
 	userPrefsRepo users.UserPreferencesRepository,
 	chattersRepo users.ChatterRepository,
+	twitchClient twitch_api.TwitchApiClientInterface,
 	botConfig *misc.BotConfig,
 ) *RoomsManager {
 	spineService := operator.NewOperatorService(assets, botConfig.SpineRuntimeConfig)
@@ -56,11 +57,8 @@ func NewRoomsManager(
 		userPrefsRepo: userPrefsRepo,
 		chattersRepo:  chattersRepo,
 
-		botConfig: botConfig,
-		twitchClient: twitch_api.NewTwitchApiClient(
-			botConfig.TwitchClientId,
-			botConfig.TwitchAccessToken,
-		),
+		botConfig:      botConfig,
+		twitchClient:   twitchClient,
 		shutdownDoneCh: make(chan struct{}),
 		removeRoomCh:   make(chan string, 10),
 	}

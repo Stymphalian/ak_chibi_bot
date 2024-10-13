@@ -13,7 +13,7 @@ import './index.css';
 import ErrorPage from './error-page';
 import { Layout, loader as rootLoader, action as rootAction } from './pages/Layout';
 import { HomePage } from './pages/Home';
-import { SettingsPage, action as settingsAction } from './pages/Settings';
+import { SettingsPage} from './pages/Settings';
 import { AuthProvider, RequireAuth } from './contexts/auth';
 import { LoginPage } from './pages/Login';
 import { DocsPage } from './pages/Docs';
@@ -40,7 +40,6 @@ const router = createBrowserRouter(
         />
         <Route
           path="/settings"
-          action={settingsAction}
           element={
             <RequireAuth>
               <SettingsPage />

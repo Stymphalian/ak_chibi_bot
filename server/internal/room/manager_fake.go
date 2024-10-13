@@ -13,6 +13,7 @@ func NewFakeRoomsManager() *RoomsManager {
 	akDB, _ := akdb.ProvideTestDatabaseConn()
 	roomRepo := NewRoomRepositoryPsql(akDB)
 	usersRepo := users.NewUserRepositoryPsql(akDB)
+	userPrefsRepo := users.NewUserPreferencesRepositoryPsql(akDB)
 	chattersRepo := users.NewChatterRepositoryPsql(akDB)
 	botConfig := &misc.BotConfig{
 		TwitchClientId:     "test_client_id",
@@ -26,18 +27,14 @@ func NewFakeRoomsManager() *RoomsManager {
 			PositionX:  0.5,
 		},
 	}
-	spineService := operator.NewOperatorService(assetService, botConfig.SpineRuntimeConfig)
 
-	return &RoomsManager{
-		Rooms:          make(map[string]*Room),
-		assetService:   assetService,
-		spineService:   spineService,
-		roomRepo:       roomRepo,
-		usersRepo:      usersRepo,
-		chattersRepo:   chattersRepo,
-		botConfig:      botConfig,
-		twitchClient:   twitch_api.NewFakeTwitchApiClient(),
-		shutdownDoneCh: make(chan struct{}),
-		removeRoomCh:   make(chan string),
-	}
+	return NewRoomsManager(
+		assetService,
+		roomRepo,
+		usersRepo,
+		userPrefsRepo,
+		chattersRepo,
+		twitch_api.NewFakeTwitchApiClient(),
+		botConfig,
+	)
 }

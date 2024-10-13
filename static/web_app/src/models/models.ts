@@ -30,3 +30,8 @@ export type AdminInfo = {
     next_gc_time: string
     metrics: Map<string, any>
 }
+
+
+export interface AuthInfo {
+    
+}

@@ -1,17 +1,9 @@
 import React from "react";
 import RoomSettingsForm from "../components/RoomSettings";
-import { getUserChannelSettings, updateUserChannelSettings } from "../api/real";
-import { redirect, useLoaderData } from "react-router-dom";
+import { getUserChannelSettings } from "../api/real";
 import { useAuth } from "../contexts/auth";
 import { ChannelSettings } from "../models/models";
 import { LoaderBlock } from "../components/LoaderBlock";
-
-export async function action(data: any) {
-    const request = data.request;
-    const jsonData = await request.json();
-    await updateUserChannelSettings(jsonData.channelName, jsonData);
-    return redirect(`/settings`);
-}
 
 export function SettingsPage() {
     const [channelSettings, setChannelSettings] = React.useState<ChannelSettings>({
@@ -29,14 +21,15 @@ export function SettingsPage() {
 
     React.useEffect(() => {
         async function fetchData() {
-            const settings: ChannelSettings | null = await getUserChannelSettings(auth.userName);
+            let accessToken = await auth.getAccessToken();
+            const settings: ChannelSettings | null = await getUserChannelSettings(accessToken, auth.userName);
             if (settings) {
                 setChannelSettings(settings);
                 setLoading(false);
             }
         }
         fetchData();
-    }, [loading])
+    }, [])
 
     return (
         <div>

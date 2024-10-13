@@ -2,6 +2,7 @@ import React from "react"
 import { AdminInfo, AdminRoomInfo, AdminChatterInfo } from "../models/models"
 import { getAdminInfo, removeUserFromRoom, removeRoom } from "../api/admin"
 import { LoaderBlock } from "../components/LoaderBlock"
+import { useAuth } from "../contexts/auth"
 import "./Admin.css"
 
 function GeneralInfo(props: {
@@ -74,10 +75,12 @@ function ChattersList(props: {
     chatters: AdminChatterInfo[],
     refresh: () => void 
 }) {
+    const auth = useAuth();
     async function handleRemoveUser(event: any) {
         const roomId = event.target.getAttribute('data-room-id');
         const userName = event.target.getAttribute('data-user-id');
-        removeUserFromRoom(roomId, userName);
+        let accessToken = await auth.getAccessToken();
+        await removeUserFromRoom(accessToken, roomId, userName);
         props.refresh();
     }
 
@@ -118,9 +121,11 @@ function ChattersList(props: {
 }
 
 function RoomRow(props: { data: AdminRoomInfo , refresh: () => void }) {
-    function handleRemoveRoom(event: any) {
+    const auth = useAuth();
+    async function handleRemoveRoom(event: any) {
         const roomId = event.target.getAttribute('data-room-id');
-        removeRoom(roomId);
+        let accessToken = await auth.getAccessToken();
+        await removeRoom(accessToken,roomId);
         props.refresh();
     }
 
@@ -198,23 +203,29 @@ function RoomsList(props: {
 export function AdminPage() {
     const [adminInfo, setAdminInfo] = React.useState<AdminInfo>({} as AdminInfo);
     const [loading, setLoading] = React.useState(true)
+    const [refresh, setRefresh] = React.useState(true)
+    const auth = useAuth();
 
     React.useEffect(() => {
         async function fetchData() {
-            const resp: AdminInfo | null = await getAdminInfo();
+            let accessToken = await auth.getAccessToken();
+            const resp: AdminInfo | null = await getAdminInfo(accessToken);
             if (resp) {
                 setAdminInfo(resp);
                 setLoading(false);
             }
         }
         fetchData();
-    }, [loading])
+    }, [refresh])
 
     return (
         <div className="container">
             <LoaderBlock loading={loading}>
                 <GeneralInfo metrics={adminInfo.metrics} gcTime={adminInfo.next_gc_time} />
-                <RoomsList roomData={adminInfo.rooms} refresh={() =>setLoading(true)} />
+                <RoomsList roomData={adminInfo.rooms} refresh={() => {
+                    setRefresh(!refresh);
+                    setLoading(true);
+                }} />
             </LoaderBlock>
         </div>
     )

@@ -1,9 +1,10 @@
 
 import { NavLink, useLocation } from "react-router-dom";
-import { AuthStatus } from "../contexts/auth";
+import { AuthStatus, useAuth } from "../contexts/auth";
 import "./TopNavBar.css";
 
 export function TopNavBar() {
+    const auth = useAuth();
     const location = useLocation();
     const isNotLoginPage = !location.pathname.startsWith("/login");
     return (
@@ -12,6 +13,10 @@ export function TopNavBar() {
                 <NavLink className="navbar-brand" to="/">Home</NavLink>
                 <NavLink className="nav-link me-2" to="/docs">Docs</NavLink>
                 <NavLink className="nav-link me-auto" to="/settings">Settings</NavLink>
+
+                {auth.isAdmin &&
+                    <NavLink className="nav-link me-2" to="/admin">Admin</NavLink>
+                }
                 
                 {isNotLoginPage && 
                 <div className="nav-item">

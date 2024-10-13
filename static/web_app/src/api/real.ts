@@ -1,7 +1,7 @@
 import { ChannelSettings } from "../models/models";
 import { validateChannelName } from "./utils";
 
-export async function getUserChannelSettings(channelName:string) {
+export async function getUserChannelSettings(accessToken: string, channelName:string) {
     try {
         const url = '/api/rooms/settings/?';
         const query = new URLSearchParams({
@@ -9,14 +9,13 @@ export async function getUserChannelSettings(channelName:string) {
         });
         const response = await fetch(
             url + query.toString(), 
-            {method: 'GET'}
+            {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${accessToken}`
+                }
+            }
         );
-        console.log("@@@@ response", response);
-        let headers = response.headers;
-        for (const [key, value] of Array.from(headers.entries())) {
-            console.log("@@@@ header", key, value)
-        }
-        // console.log("@@@@ headers", [...response.headers.entries()].reduce((acc, [key, value]) => ({...acc, [key]: value}), {}));
         if (!response.ok) {
             return null;
         }
@@ -25,7 +24,7 @@ export async function getUserChannelSettings(channelName:string) {
         if (!validateChannelName(channelName)) {
             throw Error("Invalid channel name");
         }
-        return {
+        return {        
             channelName: channelName,
             minAnimationSpeed: jsonBody["min_animation_speed"],
             maxAnimationSpeed: jsonBody["max_animation_speed"],
@@ -41,7 +40,7 @@ export async function getUserChannelSettings(channelName:string) {
     }
 }
 
-export async function updateUserChannelSettings(channelName:string, updates:ChannelSettings) {
+export async function updateUserChannelSettings(accessToken: string, channelName:string, updates:ChannelSettings) {
     try {
         if (!validateChannelName(channelName)) {
             throw Error("Invalid channel name");
@@ -53,7 +52,8 @@ export async function updateUserChannelSettings(channelName:string, updates:Chan
             {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${accessToken}`
                 },
                 body: JSON.stringify({
                     'channel_name': channelName,
