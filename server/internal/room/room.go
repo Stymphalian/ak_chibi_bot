@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"sync"
 	"time"
 
 	"github.com/Stymphalian/ak_chibi_bot/server/internal/chatbot"
@@ -36,7 +37,7 @@ type Room struct {
 	chatterRepo               users.ChatterRepository
 	spineRuntime              spine.SpineRuntime
 	chibiActor                *chibi.ChibiActor
-	twitchChat                chatbot.ChatBotter
+	chatBots                  []chatbot.ChatBotter
 	createdAt                 time.Time
 	nextGarbageCollectionTime time.Time
 	isClosed                  bool
@@ -52,7 +53,7 @@ func NewRoom(
 	operatorService *operator.OperatorService,
 	spineRuntime spine.SpineRuntime,
 	chibiActor *chibi.ChibiActor,
-	twitchBot chatbot.ChatBotter,
+	chatBots []chatbot.ChatBotter,
 	removeRoomCh chan string) *Room {
 	r := &Room{
 		roomId:          roomId,
@@ -63,7 +64,7 @@ func NewRoom(
 		operatorService: operatorService,
 		spineRuntime:    spineRuntime,
 		chibiActor:      chibiActor,
-		twitchChat:      twitchBot,
+		chatBots:        chatBots,
 		createdAt:       misc.Clock.Now(),
 		isClosed:        false,
 		removeRoomCh:    removeRoomCh,
@@ -103,14 +104,16 @@ func (r *Room) Close() error {
 		}
 	}
 
-	// Disconnect the twitch chat
-	err := r.twitchChat.Close()
-	if err != nil {
-		log.Println("Failed to close TwitchChat", err)
+	// Disconnect the twitch chat and other chats bots
+	for _, chatBot := range r.chatBots {
+		err := chatBot.Close()
+		if err != nil {
+			log.Println("Failed to close ChatBot", err)
+		}
 	}
 
 	// Disconnect all websockets
-	err = r.spineRuntime.Close()
+	err := r.spineRuntime.Close()
 	if err != nil {
 		log.Println("Failed to close SpineRuntime", err)
 	}
@@ -154,7 +157,6 @@ func (r *Room) garbageCollectOldChibis(interval time.Duration) {
 func (r *Room) Run() {
 	// misc.GoRunCounter.Add(1)
 	// defer misc.GoRunCounter.Add(-1)
-	var err error
 	log.Printf("Room %s is running\n", r.GetChannelName())
 
 	GCPeriodMins := r.roomRepo.GetRoomGarbageCollectionPeriodMins(context.Background(), r.roomId)
@@ -169,10 +171,18 @@ func (r *Room) Run() {
 		defer stopTimer()
 	}
 
-	err = r.twitchChat.ReadLoop()
-	if err != nil {
-		log.Printf("Room %s run error=", err)
+	wg := sync.WaitGroup{}
+	for _, chatBot := range r.chatBots {
+		wg.Add(1)
+		go func() {
+			err := chatBot.ReadLoop()
+			if err != nil {
+				log.Printf("Room %s run error=", err)
+			}
+			wg.Done()
+		}()
 	}
+	wg.Wait()
 
 	if !r.isClosed {
 		log.Printf("Closing room %s due to Readloop finishing early\n", r.channelName)

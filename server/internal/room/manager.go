@@ -146,7 +146,12 @@ func (r *RoomsManager) checkChannelValid(channel string) (*misc.UserInfo, error)
 	}, nil
 }
 
-func (r *RoomsManager) getRoomServices(roomDb *RoomDb) (*operator.OperatorService, *spine.SpineBridge, *chibi.ChibiActor, *chatbot.TwitchBot, error) {
+func (r *RoomsManager) getRoomServices(roomDb *RoomDb) (
+	*operator.OperatorService,
+	*spine.SpineBridge,
+	*chibi.ChibiActor,
+	[]chatbot.ChatBotter,
+	error) {
 	channelName := roomDb.ChannelName
 	spineRuntimeConfig, err := r.roomRepo.GetSpineRuntimeConfigById(context.Background(), roomDb.RoomId)
 	if err != nil {
@@ -167,6 +172,8 @@ func (r *RoomsManager) getRoomServices(roomDb *RoomDb) (*operator.OperatorServic
 		spineBridge,
 		r.botConfig.ExcludeNames,
 	)
+
+	chatBotters := make([]chatbot.ChatBotter, 0)
 	twitchBot, err := chatbot.NewTwitchBot(
 		chibiActor,
 		channelName,
@@ -176,11 +183,24 @@ func (r *RoomsManager) getRoomServices(roomDb *RoomDb) (*operator.OperatorServic
 	if err != nil {
 		return nil, nil, nil, nil, err
 	}
-	return newSpineService, spineBridge, chibiActor, twitchBot, nil
+	chatBotters = append(chatBotters, twitchBot)
+
+	if r.botConfig.EnableTextTerminalChatBot {
+		cliBot, err := chatbot.NewCliChatBot(
+			chibiActor,
+			channelName,
+		)
+		if err != nil {
+			return nil, nil, nil, nil, err
+		}
+		chatBotters = append(chatBotters, cliBot)
+	}
+
+	return newSpineService, spineBridge, chibiActor, chatBotters, nil
 }
 
 func (r *RoomsManager) InsertRoom(roomDb *RoomDb) error {
-	spineService, spineBridge, chibiActor, twitchBot, err := r.getRoomServices(roomDb)
+	spineService, spineBridge, chibiActor, chatBots, err := r.getRoomServices(roomDb)
 	if err != nil {
 		return err
 	}
@@ -194,7 +214,7 @@ func (r *RoomsManager) InsertRoom(roomDb *RoomDb) error {
 		spineService,
 		spineBridge,
 		chibiActor,
-		twitchBot,
+		chatBots,
 		r.removeRoomCh,
 	)
 
@@ -242,7 +262,7 @@ func (r *RoomsManager) CreateRoomOrNoOp(ctx context.Context, channel string) err
 	}
 
 	// Create the services needed by the room
-	spineService, spineBridge, chibiActor, twitchBot, err := r.getRoomServices(roomDb)
+	spineService, spineBridge, chibiActor, chatBots, err := r.getRoomServices(roomDb)
 	if err != nil {
 		return err
 	}
@@ -256,7 +276,7 @@ func (r *RoomsManager) CreateRoomOrNoOp(ctx context.Context, channel string) err
 		spineService,
 		spineBridge,
 		chibiActor,
-		twitchBot,
+		chatBots,
 		r.removeRoomCh,
 	)
 	if isNew || roomWasInactive {

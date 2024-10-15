@@ -66,6 +66,11 @@ type BotConfig struct {
 	// Required
 	// Secret key used for encrypting JWT tokens. Must be kept safe.
 	JwtSecretKey string `json:"jwt_secret_key"`
+
+	// Optional. Defalt false
+	// Whether to enable the websocket/terminal based text chat.
+	// Only avaiable in development
+	EnableTextTerminalChatBot bool `json:"enable_text_terminal_chat_bot"`
 }
 
 func LoadBotConfig(path string) (*BotConfig, error) {

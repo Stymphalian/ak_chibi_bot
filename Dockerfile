@@ -48,6 +48,9 @@ COPY --from=builder /build/ak_chibi_bot ./ak_chibi_bot
 COPY --from=builder /ak_chibi_assets ./static
 COPY secrets/prod_config.json ./config.json
 EXPOSE 8080
+
+RUN addgroup -S botgroup && adduser -S botuser -G botgroup
+USER botuser
 ENTRYPOINT [ \
     "./ak_chibi_bot", \
     "-address=:8080", \

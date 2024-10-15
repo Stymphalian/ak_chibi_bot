@@ -22,6 +22,8 @@ services:
         condition: service_healthy
       migrations:
         condition: service_completed_successfully
+      text_chat:
+        condition: service_started
     secrets:
       - web-user-password.txt
     volumes:
@@ -70,6 +72,20 @@ services:
       interval: 5m
       timeout: 5s
       retries: 5
+
+  ## A server which allows us to connect to a text-based chat
+  ## server via websocket when interacting with the bot server.
+  ## This allows for testing the bot without needing to directly connect
+  ## via twitch chat. ONLY AVAILABLE IN DEVELOPMENT
+  text_chat:
+    build:
+      context: ./
+      dockerfile: ./text_chat/Dockerfile
+      target: development
+    ports:
+      - "8090:8090"
+    volumes:
+      - ./:/app  # Mounting to /app so that the 'air' CLI tool hot reload
 
 volumes:
   db-data:
