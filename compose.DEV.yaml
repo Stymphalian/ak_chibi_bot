@@ -80,7 +80,7 @@ services:
   text_chat:
     build:
       context: ./
-      dockerfile: ./text_chat/Dockerfile
+      dockerfile: ./server/tools/text_chat/Dockerfile
       target: development
     ports:
       - "8090:8090"

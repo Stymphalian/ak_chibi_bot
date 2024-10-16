@@ -30,15 +30,16 @@ type SpineSkinData struct {
 	Battle map[ChibiFacingEnum]*SpineData `json:"battle"`
 }
 type SpineData struct {
-	AtlasFilepath string `json:"AtlasFilepath"`
-	SkelFilepath  string `json:"AtlasFullFilepath"`
-	PngFilepath   string `json:"png_filepath"`
-
-	AtlasFullFilepath string `json:"atlas_full_filepath"`
-	SkelFullFilepath  string `json:"skel_full_filepath"`
-	PngFullFilepath   string `json:"png_full_filepath"`
-
-	Animations []string `json:"animations"`
+	AtlasFilepath             string   `json:"-"`
+	SkelFilepath              string   `json:"-"`
+	PngFilepath               string   `json:"-"`
+	AtlasFullFilepath         string   `json:"-"`
+	SkelFullFilepath          string   `json:"-"`
+	PngFullFilepath           string   `json:"-"`
+	PlaformIndieAtlasFilepath string   `json:"atlas_filepath"`
+	PlaformIndieSkelFilepath  string   `json:"skel_filepath"`
+	PlaformIndiePngFilepath   string   `json:"png_filepath"`
+	Animations                []string `json:"animations"`
 }
 
 func NewSpineAssetMap() *SpineAssetMap {
@@ -65,19 +66,93 @@ func readJsonSkelAnimations(path string) ([]string, error) {
 	return data["animations"], nil
 }
 
-func (s *SpineAssetMap) Load(assetDir string, assetSubdir string) error {
-	log.Println("Loading Asset maps")
-	charsDir := filepath.Join(assetDir, assetSubdir)
-	log.Println("Characters dir = ", charsDir)
+func (s *SpineAssetMap) LoadFromIndex(indexFile string) (err error) {
+	log.Println("Loading Asset maps from index", indexFile)
+	file, err := os.Open(indexFile)
+	if err != nil {
+		return err
+	}
+	defer file.Close()
 
-	err := filepath.Walk(charsDir, func(path string, info os.FileInfo, err error) error {
+	err = json.NewDecoder(file).Decode(s)
+	if err != nil {
+		return err
+	}
+
+	for opId, opEntry := range s.Data {
+		for skin, skinEntry := range opEntry.Skins {
+			for facing, spineData := range skinEntry.Base {
+				if len(spineData.PlaformIndieAtlasFilepath) > 0 {
+					spineData.AtlasFilepath, err = filepath.Localize(spineData.PlaformIndieAtlasFilepath)
+					if err != nil {
+						log.Println(opId, skin, "base", facing, "atlas", spineData.PlaformIndieAtlasFilepath)
+						return err
+					}
+				}
+
+				if len(spineData.PlaformIndieSkelFilepath) > 0 {
+					spineData.SkelFilepath, err = filepath.Localize(spineData.PlaformIndieSkelFilepath)
+					if err != nil {
+						log.Println(opId, skin, "base", facing, "skel", spineData.PlaformIndieSkelFilepath)
+						return err
+					}
+				}
+				if len(spineData.PlaformIndiePngFilepath) > 0 {
+					spineData.PngFilepath, err = filepath.Localize(spineData.PlaformIndiePngFilepath)
+					if err != nil {
+						log.Println(opId, skin, "base", facing, "png", spineData.PlaformIndiePngFilepath)
+						return err
+					}
+				}
+			}
+			for facing, spineData := range skinEntry.Battle {
+				if len(spineData.PlaformIndieAtlasFilepath) > 0 {
+					spineData.AtlasFilepath, err = filepath.Localize(spineData.PlaformIndieAtlasFilepath)
+					if err != nil {
+						log.Println(opId, skin, "battle", facing, "spine", spineData.PlaformIndieAtlasFilepath)
+						return err
+					}
+				}
+
+				if len(spineData.PlaformIndieSkelFilepath) > 0 {
+					spineData.SkelFilepath, err = filepath.Localize(spineData.PlaformIndieSkelFilepath)
+					if err != nil {
+						log.Println(opId, skin, "battle", facing, "skel", spineData.PlaformIndieSkelFilepath)
+						return err
+					}
+				}
+
+				if len(spineData.PlaformIndiePngFilepath) > 0 {
+					spineData.PngFilepath, err = filepath.Localize(spineData.PlaformIndiePngFilepath)
+					if err != nil {
+						log.Println(opId, skin, "battle", facing, "png", spineData.PlaformIndiePngFilepath)
+						return err
+					}
+				}
+			}
+		}
+	}
+
+	log.Printf("Loaded %d assets from index %s", len(s.Data), indexFile)
+	return nil
+}
+
+func (s *SpineAssetMap) Load(assetDir string, assetSubdir string) (err error) {
+	log.Println("Loading Asset maps")
+	assetDirAbs, err := filepath.Abs(assetDir)
+	if err != nil {
+		return err
+	}
+	charsDir := filepath.Join(assetDirAbs, assetSubdir)
+
+	err = filepath.Walk(charsDir, func(path string, info os.FileInfo, err error) error {
 		if err != nil {
 			return err
 		}
 		if info.IsDir() {
 			return nil
 		}
-		newPath := strings.TrimPrefix(path, assetDir+string(os.PathSeparator))
+		newPath := strings.TrimPrefix(path, assetDirAbs+string(os.PathSeparator))
 		pathList := strings.Split(newPath, string(os.PathSeparator))
 
 		operatorName := pathList[1] // char_002_amiya
@@ -85,17 +160,21 @@ func (s *SpineAssetMap) Load(assetDir string, assetSubdir string) error {
 		battleOrBase := pathList[3] // battle or base
 		frontOrBack := pathList[4]  // Front or Back
 		spineData := s.Get(operatorName, skinName, battleOrBase == "base", frontOrBack == "Front")
+		newPathIndie := filepath.ToSlash(newPath)
 
 		switch filepath.Ext(info.Name()) {
 		case ".atlas":
 			spineData.AtlasFilepath = newPath
-			spineData.AtlasFullFilepath = path
+			spineData.PlaformIndieAtlasFilepath = newPathIndie
+			// spineData.AtlasFullFilepath = path
 		case ".png":
 			spineData.PngFilepath = newPath
-			spineData.PngFullFilepath = path
+			spineData.PlaformIndiePngFilepath = newPathIndie
+			// spineData.PngFullFilepath = path
 		case ".skel":
 			spineData.SkelFilepath = newPath
-			spineData.SkelFullFilepath = path
+			spineData.PlaformIndieSkelFilepath = newPathIndie
+			// spineData.SkelFullFilepath = path
 		case ".json":
 			animations, err := readJsonSkelAnimations(path)
 			if err != nil {
@@ -382,13 +461,19 @@ func NewAssetService(assetDirArg misc.ImageAssetDirString) (*AssetService, error
 		EnemyCommonNames: NewCommonNames(),
 	}
 
-	if err := s.AssetMap.Load(assetDir, "characters"); err != nil {
+	// if err := s.AssetMap.Load(assetDir, "characters"); err != nil {
+	// 	return nil, err
+	// }
+	if err := s.AssetMap.LoadFromIndex(filepath.Join(assetDir, "characters_index.json")); err != nil {
 		return nil, err
 	}
 	if err := s.CommonNames.Load(filepath.Join(assetDir, "saved_names.json")); err != nil {
 		return nil, err
 	}
-	if err := s.EnemyAssetMap.Load(assetDir, "enemies"); err != nil {
+	// if err := s.EnemyAssetMap.Load(assetDir, "enemies"); err != nil {
+	// 	return nil, err
+	// }
+	if err := s.EnemyAssetMap.LoadFromIndex(filepath.Join(assetDir, "enemy_index.json")); err != nil {
 		return nil, err
 	}
 	if err := s.EnemyCommonNames.Load(filepath.Join(assetDir, "saved_enemy_names.json")); err != nil {
@@ -396,16 +481,16 @@ func NewAssetService(assetDirArg misc.ImageAssetDirString) (*AssetService, error
 	}
 
 	// Check for missing assets
-	for enemyId, characterIds := range s.EnemyCommonNames.operatorIdToNames {
+	for enemyId, enemyNames := range s.EnemyCommonNames.operatorIdToNames {
 		if _, ok := s.EnemyAssetMap.Data[enemyId]; !ok {
-			if len(characterIds) > 0 {
+			if len(enemyNames) > 0 {
 				log.Println("Missing enemy", enemyId)
 			}
 		}
 	}
-	for operatorId, characterIds := range s.CommonNames.operatorIdToNames {
+	for operatorId, opNames := range s.CommonNames.operatorIdToNames {
 		if _, ok := s.AssetMap.Data[operatorId]; !ok {
-			if len(characterIds) > 0 {
+			if len(opNames) > 0 {
 				log.Println("Missing operator", operatorId)
 			}
 		}

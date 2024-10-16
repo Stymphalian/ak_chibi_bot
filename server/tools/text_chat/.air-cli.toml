@@ -5,9 +5,18 @@ tmp_dir = "tmp"
 [build]
   args_bin = ["-channel=stymphalian__", "-user=stymphalian__"]
   bin = "tmp/cli"
-  cmd = "go build -o ./tmp/cli text_chat/main.go"
+  cmd = "go build -o ./tmp/cli server/tools/text_chat/main.go"
   delay = 10000
-  exclude_dir = ["assets", "tmp", "vendor", "testdata", "static", "server"]
+  exclude_dir = [
+    "assets", 
+    "tmp", 
+    "vendor", 
+    "testdata", 
+    "static", 
+    "server", 
+    "tools",
+    "thirdparty",
+  ]
   exclude_file = []
   exclude_regex = ["_test.go"]
   exclude_unchanged = true

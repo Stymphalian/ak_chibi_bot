@@ -9,20 +9,21 @@ import (
 	"strings"
 	"time"
 
+	"github.com/Stymphalian/ak_chibi_bot/server/internal/chatbot"
 	"github.com/gorilla/websocket"
 )
 
-// This must be kept in sync with chatbot.CliMessage struct
-type CliMessage struct {
-	Username string `json:"username"`
-	Message  string `json:"message"`
-}
+// This must be kept in sync with chatbot.chatbot.CliMessage struct
+// type chatbot.CliMessage struct {
+// 	Username string `json:"username"`
+// 	Message  string `json:"message"`
+// }
 
 type Chat struct {
 	channel string
 	conn    *websocket.Conn
 	read    chan string
-	write   chan CliMessage
+	write   chan chatbot.CliMessage
 	done    chan bool
 }
 
@@ -116,7 +117,7 @@ func (m *Main) HandleConnection(w http.ResponseWriter, r *http.Request) {
 		channel: channelQuery,
 		conn:    conn,
 		read:    make(chan string, 10),
-		write:   make(chan CliMessage, 10),
+		write:   make(chan chatbot.CliMessage, 10),
 		done:    make(chan bool),
 	}
 	m.chats[channelQuery] = chat
@@ -186,7 +187,7 @@ func (m *Main) HandleTextConnection(w http.ResponseWriter, r *http.Request) {
 			fmt.Println("Channel not connected.")
 			continue
 		}
-		chat.write <- CliMessage{
+		chat.write <- chatbot.CliMessage{
 			Username: m.currentUser,
 			Message:  strings.TrimSpace(text),
 		}

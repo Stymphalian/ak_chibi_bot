@@ -11,7 +11,7 @@ import (
 	"github.com/gorilla/websocket"
 )
 
-// cd text_chat/terminal
+// cd server/tools/text_chat/terminal
 // go run main.go
 // set_channel stymphalian__
 // set_user my_user_name
