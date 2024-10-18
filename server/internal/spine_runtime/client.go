@@ -3,6 +3,7 @@ package spine
 import (
 	"net/http"
 
+	"github.com/Stymphalian/ak_chibi_bot/server/internal/misc"
 	"github.com/Stymphalian/ak_chibi_bot/server/internal/operator"
 )
 
@@ -14,7 +15,11 @@ const (
 	RUNTIME_DEBUG_UPDATE = "RUNTIME_DEBUG_UPDATE"
 )
 
-type SpineResponse struct {
+type BridgeRequest struct {
+	TypeName string `json:"type_name"`
+}
+
+type BridgeResponse struct {
 	TypeName   string `json:"type_name"`
 	ErrorMsg   string `json:"error_msg"`
 	StatusCode int    `json:"staus_code"`
@@ -26,8 +31,26 @@ type SetOperatorRequest struct {
 	UserNameDisplay string                `json:"user_name_display"` // ChonkyKing
 	Operator        operator.OperatorInfo `json:"operator"`
 }
+type SetOperatorInternalRequest struct {
+	BridgeRequest
+	UserName            string                    `json:"user_name"`         // chonkyking
+	UserNameDisplay     string                    `json:"user_name_display"` // ChonkyKing
+	OperatorId          string                    `json:"operator_id"`
+	AtlasFile           string                    `json:"atlas_file"`
+	PngFile             string                    `json:"png_file"`
+	SkelFile            string                    `json:"skel_file"`
+	StartPos            misc.Option[misc.Vector2] `json:"start_pos"`
+	AnimationSpeed      float64                   `json:"animation_speed"`
+	AvailableAnimations []string                  `json:"available_animations"`
+	SpriteScale         misc.Option[misc.Vector2] `json:"sprite_scale"`
+	MaxSpritePixelSize  int                       `json:"max_sprite_pixel_size"`
+	MovementSpeedPx     int                       `json:"movement_speed_px"`
+	MovementSpeed       misc.Option[misc.Vector2] `json:"movement_speed"`
+	Action              operator.ActionEnum       `json:"action"`
+	ActionData          operator.ActionUnion      `json:"action_data"`
+}
 type SetOperatorResponse struct {
-	SpineResponse
+	BridgeResponse
 }
 
 // RemoveOperator
@@ -35,7 +58,7 @@ type RemoveOperatorRequest struct {
 	UserName string `json:"user_name"`
 }
 type RemoveOperatorResponse struct {
-	SpineResponse
+	BridgeResponse
 }
 
 // runtimeDebugUpdate

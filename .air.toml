@@ -3,7 +3,7 @@ testdata_dir = "testdata"
 tmp_dir = "tmp"
 
 [build]
-  args_bin = ["-image_assetdir=/ak_chibi_assets/assets", "-static_dir=static", "-address=:8080", "-bot_config=secrets/dev_config.json"]
+  args_bin = ["-image_assetdir=static/assets", "-static_dir=static", "-address=:8080", "-bot_config=secrets/dev_config.json"]
   bin = "tmp/main"
   cmd = "go build -o ./tmp/main server/main.go"
   delay = 10000

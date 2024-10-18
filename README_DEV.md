@@ -89,7 +89,7 @@ the repo I have not included them here.
     MIGRATE_DB_PASSWORD=password
     ``` 
 1. Download the chibi assets files from [here](https://f002.backblazeb2.com/file/ak-gamedata/assets_20241010.zip) and extract into the `static/assets` folder.
-5. Bring up all the containers. `docker compose -f compose.DEV.yaml up --build`
+5. Bring up all the containers. `docker compose -f compose.yaml up --build`
 6. This should bring up the postgres DB, run any schema migrations and then spin
    up the `bot` AKChibiBot server.
 7. Login to your Database and run `ALTER USER web_user WITH ENCRYPTED PASSWORD 'REPLACE_ME'` to set your `web_users` password. It should match the contents of `web-user-password.txt`
@@ -98,7 +98,7 @@ the repo I have not included them here.
 ### Schema Updates
 1. DB schema migrations are under `db/migrations`. We use [golang-migrate](https://github.com/golang-migrate/migrate) to
 manage all our DB schema migrations/updates.
-2. Bringing up the services using the `compose.DEV.yaml` file will automatically 
+2. Bringing up the services using the `compose.yaml` file will automatically 
  bring up a service to pick up any new migrations.
 3. To add new migrations/schemas. Run the `migrate create` command.
     ```

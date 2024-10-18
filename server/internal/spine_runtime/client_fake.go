@@ -20,7 +20,7 @@ func (f *FakeSpineClient) SetOperator(r *SetOperatorRequest) (*SetOperatorRespon
 	f.Users[r.UserName] = r.Operator
 
 	return &SetOperatorResponse{
-		SpineResponse: SpineResponse{
+		BridgeResponse: BridgeResponse{
 			TypeName:   SET_OPERATOR,
 			ErrorMsg:   "",
 			StatusCode: 200,
@@ -31,7 +31,7 @@ func (f *FakeSpineClient) SetOperator(r *SetOperatorRequest) (*SetOperatorRespon
 func (f *FakeSpineClient) RemoveOperator(r *RemoveOperatorRequest) (*RemoveOperatorResponse, error) {
 	delete(f.Users, r.UserName)
 	return &RemoveOperatorResponse{
-		SpineResponse: SpineResponse{
+		BridgeResponse: BridgeResponse{
 			TypeName:   SET_OPERATOR,
 			ErrorMsg:   "",
 			StatusCode: 200,

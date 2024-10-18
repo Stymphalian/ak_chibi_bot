@@ -55,7 +55,8 @@ func (s *ApiServer) RegisterHandlers(rootMux *http.ServeMux) {
 	mux.Handle("POST /api/rooms/settings/{$}", s.middleware(s.HandleUpdateRoomSettings))
 	mux.Handle("POST /api/rooms/remove/{$}", s.middlewareAdmin(s.HandleRemoveRoom))
 	mux.Handle("POST /api/rooms/users/remove/{$}", s.middlewareAdmin(s.HandleRemoveUser))
-	mux.Handle("POST /api/rooms/users/add/{$}", s.middlewareAdmin(s.HandleRoomAddOperator))
+	mux.Handle("POST /api/rooms/users/give/{$}", s.middlewareAdmin(s.HandleRoomGiveOperator))
+	mux.Handle("POST /api/rooms/users/set/{$}", s.middlewareAdmin(s.HandleRoomSetOperator))
 
 	mux.Handle("GET /api/users/preferences/{$}", s.middleware(s.HandleGetUserPreferences))
 	mux.Handle("POST /api/users/preferences/{$}", s.middleware(s.HandleUpdateUserPreferences))
@@ -230,13 +231,13 @@ func (s *ApiServer) HandleGetRoomSettings(w http.ResponseWriter, r *http.Request
 	return json.NewEncoder(w).Encode(resp)
 }
 
-func (s *ApiServer) HandleRoomAddOperator(w http.ResponseWriter, r *http.Request) error {
+func (s *ApiServer) HandleRoomGiveOperator(w http.ResponseWriter, r *http.Request) error {
 	if r.Method != http.MethodPost {
 		http.NotFound(w, r)
 		return nil
 	}
 	decoder := json.NewDecoder(r.Body)
-	var reqBody RoomAddOperatorRequest
+	var reqBody RoomGiveOperatorRequest
 	if err := decoder.Decode(&reqBody); err != nil {
 		return misc.NewHumanReadableError(
 			"Invalid request body",
@@ -265,13 +266,56 @@ func (s *ApiServer) HandleRoomAddOperator(w http.ResponseWriter, r *http.Request
 		UsernameDisplay: reqBody.UserDisplayName,
 		TwitchUserId:    id,
 	})
-	// faction, err := spine.FactionEnum_Parse(reqBody.Faction)
-	// if err != nil {
-	// 	return err
-	// }
-	// room.AddOperatorToRoom(reqBody.Username, reqBody.Username, reqBody.OperatorId, faction)
 
 	return nil
+}
+
+func (s *ApiServer) HandleRoomSetOperator(w http.ResponseWriter, r *http.Request) error {
+	if r.Method != http.MethodPost {
+		http.NotFound(w, r)
+		return nil
+	}
+	decoder := json.NewDecoder(r.Body)
+	var reqBody RoomSetOperatorRequest
+	if err := decoder.Decode(&reqBody); err != nil {
+		return misc.NewHumanReadableError(
+			"Invalid request body",
+			http.StatusBadRequest,
+			fmt.Errorf("invalid request body: %w", err),
+		)
+	}
+
+	channelName := reqBody.ChannelName
+	if len(channelName) == 0 {
+		return misc.NewHumanReadableError(
+			"Channel name must be provided",
+			http.StatusBadRequest,
+			fmt.Errorf("channel name must be provided"),
+		)
+	}
+	if _, ok := s.roomsManager.Rooms[channelName]; !ok {
+		return fmt.Errorf("room %s does not exist", channelName)
+	}
+	room := s.roomsManager.Rooms[channelName]
+
+	id := uuid.New().String()
+	err := room.AddOperatorToRoom(
+		r.Context(),
+		misc.UserInfo{
+			Username:        reqBody.Username,
+			UsernameDisplay: reqBody.UserDisplayName,
+			TwitchUserId:    id,
+		},
+		reqBody.OperatorId,
+		reqBody.Faction,
+		reqBody.Skin,
+		reqBody.Stance,
+		misc.Vector2{
+			X: reqBody.PositionX,
+			Y: reqBody.PositionY,
+		},
+	)
+	return err
 }
 
 func (s *ApiServer) HandleAdminInfo(w http.ResponseWriter, r *http.Request) error {

@@ -42,7 +42,7 @@ import { ManagedWebGLRenderingContext } from "./WebGL";
 // module spine.webgl {
 	export class SceneRenderer implements Disposable {
 		context: ManagedWebGLRenderingContext;
-		canvas: HTMLCanvasElement;
+		canvas: HTMLCanvasElement|OffscreenCanvas;
 		// camera: OrthoCamera;
 		orthoCamera: OrthoCamera;
 		perspectiveCamera: PerspectiveCamera;
@@ -64,7 +64,7 @@ import { ManagedWebGLRenderingContext } from "./WebGL";
 		private QUAD_TRIANGLES = [0, 1, 2, 2, 3, 0];
 		private WHITE = new Color(1, 1, 1, 1);
 
-		constructor (canvas: HTMLCanvasElement, context: ManagedWebGLRenderingContext | WebGLRenderingContext, twoColorTint: boolean = true) {
+		constructor (canvas: HTMLCanvasElement|OffscreenCanvas, context: ManagedWebGLRenderingContext | WebGLRenderingContext, twoColorTint: boolean = true) {
 			this.canvas = canvas;
 			this.context = context instanceof ManagedWebGLRenderingContext? context : new ManagedWebGLRenderingContext(context);
 			this.twoColorTint = twoColorTint;
@@ -469,8 +469,16 @@ import { ManagedWebGLRenderingContext } from "./WebGL";
 
 		resize (resizeMode: ResizeMode) {
 			let canvas = this.canvas;
-			var w = canvas.clientWidth;
-			var h = canvas.clientHeight;
+			let w = 0;
+			let h = 0;
+			if (canvas instanceof HTMLCanvasElement) {
+				w = canvas.clientWidth;
+				h = canvas.clientHeight;
+			} else if (canvas instanceof OffscreenCanvas) {
+				w = canvas.width;
+				h = canvas.height;				
+			}
+		
 			if (canvas.width != w || canvas.height != h) {
 				canvas.width = w;
 				canvas.height = h;

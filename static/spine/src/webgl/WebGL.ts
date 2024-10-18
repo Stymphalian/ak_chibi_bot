@@ -36,8 +36,8 @@ import { Restorable } from "../core/Utils";
 		public gl: WebGLRenderingContext;
 		private restorables = new Array<Restorable>();
 
-		constructor(canvasOrContext: HTMLCanvasElement | WebGLRenderingContext, contextConfig: any = { alpha: "true" }) {
-			if (canvasOrContext instanceof HTMLCanvasElement) {
+		constructor(canvasOrContext: HTMLCanvasElement | WebGLRenderingContext | OffscreenCanvas, contextConfig: any = { alpha: "true" }) {
+			if (canvasOrContext instanceof HTMLCanvasElement || canvasOrContext instanceof OffscreenCanvas) {
 				let canvas = canvasOrContext;
 				this.gl = <WebGLRenderingContext> (canvas.getContext("webgl2", contextConfig) || canvas.getContext("webgl", contextConfig));
 				this.canvas = canvas;

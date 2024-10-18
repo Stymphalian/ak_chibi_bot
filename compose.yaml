@@ -1,6 +1,6 @@
-# docker compose -f compose.DEV.yaml up -d
-# docker compose -f compose.DEV.yaml down
-# docker compose -f compose.DEV.yaml logs
+# docker compose -f compose.yaml up -d
+# docker compose -f compose.yaml down
+# docker compose -f compose.yaml logs
 name: ak-services
 services:
   bot:

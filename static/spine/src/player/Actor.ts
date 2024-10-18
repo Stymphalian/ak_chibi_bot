@@ -35,6 +35,7 @@ import { Vector3 } from "../webgl/Vector3"
 import { ActorAction, ParseActionNameToAction } from "./Action"
 import { SpinePlayer, BoundingBox } from "./Player"
 import { Event } from "../core/Event"
+import { OffscreenRender } from "./Utils"
 
 // // module spine {
 
@@ -150,9 +151,9 @@ import { Event } from "../core/Event"
 		// public animations: string[]
 
 		public viewport: BoundingBox = null;
-		public animViewport: BoundingBox = null;
-		public prevAnimViewport: BoundingBox = null;
-		public defaultBB: BoundingBox = null;
+		public canvasBB: BoundingBox = null;
+		public canvasBBCalculated:number = 0;
+		private offscreenRender: OffscreenRender = null;
 
 		// Velocity is in world coordinates (pixels/second)
 		// TODO: Abstract out this position/movement/speed data into a seperate class
@@ -176,8 +177,10 @@ import { Event } from "../core/Event"
 		// to keep a stable sort order when rendering actors. Actors created
 		// first should be rendered first, newer actors are rendered on top.
 		public loadedWhen: number = new Date().getTime();
+		
 
-		constructor(config: SpineActorConfig, viewport: BoundingBox) {
+		constructor(config: SpineActorConfig, viewport: BoundingBox, offscreenRender: OffscreenRender) {
+			this.offscreenRender = offscreenRender;
 			this.loadedWhen = new Date().getTime();
 			this.viewport = viewport;
 			this.ResetWithConfig(config);
@@ -185,12 +188,29 @@ import { Event } from "../core/Event"
 			let z = 0;
 			this.position = new Vector3(x, 0, z);
 
-			if (config.startPosX || config.startPosY) {
+			if (config.startPosX != null || config.startPosY != null) {
 				this.position = new Vector3(
 					(config.startPosX* viewport.width) - (viewport.width/2),
-					config.startPosY * viewport.height,
+					(config.startPosY * viewport.height),
 					z
 				);
+			}
+		}
+		public getRenderingBoundingBox(): BoundingBox {
+			if (this.canvasBB) {
+				return {
+					x: this.canvasBB.x,
+					y: this.canvasBB.y,
+					width: this.canvasBB.width,
+					height: this.canvasBB.height
+				}
+			} else {
+				return {
+					x: 0,
+					y: 0,
+					width: this.viewport.width/10,
+					height: this.viewport.height/10,
+				}
 			}
 		}
 
@@ -302,6 +322,7 @@ import { Event } from "../core/Event"
 			this.load_perma_failed = false;
 
 			this.loaded = false;
+			this.canvasBBCalculated = 0;
 			this.skeleton = null;
 			this.animationState = null;
 			this.time = new TimeKeeper();
@@ -309,10 +330,6 @@ import { Event } from "../core/Event"
 			this.playTime = 0;
 			this.speed = 1;
 			this.config = config;
-
-			this.animViewport = null;
-			this.prevAnimViewport = null;
-			this.defaultBB = null;
 
 			// Update movement speed from config
 			if (config.movementSpeedPxX !== null 
@@ -379,26 +396,8 @@ import { Event } from "../core/Event"
 		}
 		
 		public GetUsernameHeaderHeight() {
-			// let avg_width = (51.620900749705015 * this.config.scaleX) / 0.15;
-			// let avg_height = (60.99747806746469 * this.config.scaleY) / 0.15;
-			let finalHeight = 0;
-			if (this.config.chibiId.includes("enemy_")) {
-				finalHeight = this.defaultBB.height;
-			} else {
-				// HACK: Sometimes the chibi bounding box is too big and
-				// doesn't reasonablly fit the chibi. In order to make
-				// sure the name tags are placed at a reasonable height to
-				// the sprite we use a heuristic which was empiracally found
-				// based off the average height of all the operator chibis.
-				let avg_height = (70.0 * this.config.scaleY) / 0.15;
-				let height = this.defaultBB.height;
-				if (height > avg_height) {
-					finalHeight =  avg_height;
-				} else {
-					finalHeight =  height;
-				}
-			}
-			return finalHeight + Math.abs(this.config.extraOffsetY);
+			let renderBB = this.getRenderingBoundingBox();
+			return renderBB.height + renderBB.y + 20;
 		}
 
 		// Privates
@@ -421,14 +420,11 @@ import { Event } from "../core/Event"
 			this.recordAnimation(animations[0]);
 						
 			// Resize very large chibis to more reasonable sizes
-			let width = this.defaultBB.width;
-			let height = this.defaultBB.height;
+			let width = this.canvasBB.width;
+			let height = this.canvasBB.height;
 			let maxSize = Math.sqrt(width*width + height*height);
-			// if (height > maxSize) {
-			// 	maxSize = height;
-			// }
-			if (maxSize > this.config.maxSizePx && this.config.chibiId.includes("enemy_")) {
-				console.log("Resizing actor to " + this.config.maxSizePx);
+			if (maxSize > this.config.maxSizePx) {
+				console.log("Resizing actor", this.config.chibiId, "to", this.config.maxSizePx);
 				let ratio = width / height;
 
 				let xNew = 0;
@@ -453,15 +449,12 @@ import { Event } from "../core/Event"
 
 				this.setAnimationState(animations);
 				this.recordAnimation(animations[0]);
-				// this.startAnimCallback(actor, animations[0]);
 			}
 		}
 
 		private setAnimationState(animations: string[]) {
 			let animation = animations[0];
-			// Determine viewport
-			this.animViewport = this.calculateAnimationViewport(animation);
-			this.defaultBB = this.getDefaultBoundingBox();
+			this.canvasBB = this.getCanvasBoundingBox(animations);
 			this.animationState.timeScale = this.config.animationPlaySpeed;
 			this.animationState.clearTracks();
 			this.skeleton.setToSetupPose();
@@ -498,124 +491,46 @@ import { Event } from "../core/Event"
 			}
 		}
 
-		private getDefaultBoundingBox() {
-			let animations = this.skeleton.data.animations;
-
-			let offsetAvg = new Vector2();
-			let sizeAvg = new Vector2();
-			let num_processed = 0;
-			for (let i = 0, n = animations.length; i < n; i++) {
-				let animationName = animations[i].name;
-				// if (!animationName.toLocaleLowerCase().includes("default")) {
-				// 	continue;
-				// }
-				let animation = this.skeleton.data.findAnimation(animationName);
-				this.animationState.clearTracks();
-				this.skeleton.setToSetupPose()
-				this.animationState.setAnimationWith(0, animation, true);
-
-				let savedX = this.skeleton.x;
-				let savedY = this.skeleton.y;
-				this.skeleton.x = 0;
-				this.skeleton.y = 0;
-				this.skeleton.scaleX = Math.abs(this.config.scaleX);
-				this.skeleton.scaleY = Math.abs(this.config.scaleY);
-				this.animationState.update(0);
-				this.animationState.apply(this.skeleton);
-				this.skeleton.updateWorldTransform();
-				let offset = new Vector2();
-				let size = new Vector2();
-				this.skeleton.getBounds(offset, size);
-
-				this.skeleton.x = savedX;
-				this.skeleton.y = savedY;
-
-				if (Number.isFinite(offset.x) && Number.isFinite(offset.y) && Number.isFinite(size.x) && Number.isFinite(size.y)) {
-					num_processed += 1;
-					offsetAvg.x += offset.x;
-					offsetAvg.y += offset.y;
-					sizeAvg.x += size.x;
-					sizeAvg.y += size.y;
-				}
-			}
-
-			offsetAvg.x /= num_processed;
-			offsetAvg.y /= num_processed;
-			sizeAvg.x /= num_processed;
-			sizeAvg.y /= num_processed;
-
-			// this.average_width += sizeAvg.x;
-			// this.average_height += sizeAvg.y;
-			// this.average_count += 1;
-
-			let ret = {
-				x: offsetAvg.x,
-				y: offsetAvg.y,
-				width: sizeAvg.x,
-				height: sizeAvg.y
-			}
-
-			// HACK: 
-			// For enemies whose y bounding box is too far from the bottom
-			// We add an offset so that it is rendered where we want it
-			if (this.config.chibiId.includes("enemy_")) {
-				if (ret.y < -15) {
-					this.config.extraOffsetY = -ret.y;
-				}
-			}
-			return ret;
-		}
-
-		private calculateAnimationViewport (animationName: string) {
-			let animation = this.skeleton.data.findAnimation(animationName);
-			this.animationState.clearTracks();
-			this.skeleton.setToSetupPose()
-			this.animationState.setAnimationWith(0, animation, true);
-
-			let steps = 100;
-			let stepTime = animation.duration > 0 ? animation.duration / steps : 0;
-			let minX = 100000000;
-			let maxX = -100000000;
-			let minY = 100000000;
-			let maxY = -100000000;
-			let offset = new Vector2();
-			let size = new Vector2();
+		private getCanvasBoundingBox(animations: string[]) : BoundingBox {
+			// let skelAnimations = this.skeleton.data.animations;
+			// let defaultAnimationName = null;
+			// for (let i = 0, n = skelAnimations.length; i < n; i++) {
+			// 	let animationName = skelAnimations[i].name;
+			// 	if (!animationName.toLocaleLowerCase().includes("default")) {
+			// 		continue;
+			// 	}
+			// 	defaultAnimationName = animationName;
+			// }
+			let defaultAnimationName = animations[0];
 
 			let savedX = this.skeleton.x;
 			let savedY = this.skeleton.y;
-			for (var i = 0; i < steps; i++) {
-				this.animationState.update(stepTime);
-				this.animationState.apply(this.skeleton);
+			let savedZ = this.getPositionZ();
+			let savedScaleX = this.skeleton.scaleX;
+			let savedScaleY = this.skeleton.scaleY;
 
-				// TODO: Fix this hack
-				// this.SetSkeletonMovementData(this.playerConfig.viewport);
-				this.skeleton.x = 0;
-				this.skeleton.y = 0;
-				this.skeleton.scaleX = Math.abs(this.config.scaleX);
-				this.skeleton.scaleY = Math.abs(this.config.scaleY);
-				this.skeleton.updateWorldTransform();
-				this.skeleton.getBounds(offset, size);
+			let animation = this.skeleton.data.findAnimation(defaultAnimationName);
+			this.animationState.clearTracks();
+			this.skeleton.setToSetupPose();
+			this.animationState.setAnimationWith(0, animation, true);
+			this.skeleton.x = 0;
+			this.skeleton.y = 0;
+			this.setPositionZ(0);
+			this.skeleton.scaleX = Math.abs(this.config.scaleX);
+			this.skeleton.scaleY = Math.abs(this.config.scaleY);
+			this.animationState.update(0);
+			this.animationState.apply(this.skeleton);
+			this.skeleton.updateWorldTransform();
 
-				minX = Math.min(offset.x, minX);
-				maxX = Math.max(offset.x + size.x, maxX);
-				minY = Math.min(offset.y, minY);
-				maxY = Math.max(offset.y + size.y, maxY);
-			}
+			let bb = this.offscreenRender.getBoundingBox(this);
 
 			this.skeleton.x = savedX;
 			this.skeleton.y = savedY;
+			this.setPositionZ(savedZ);
+			this.skeleton.scaleX = savedScaleX;
+			this.skeleton.scaleY = savedScaleY;
 
-			offset.x = minX;
-			offset.y = minY;
-			size.x = maxX - minX;
-			size.y = maxY - minY;
-
-			return {
-				x: offset.x,
-				y: offset.y,
-				width: size.x,
-				height: size.y
-			};
+			return bb;
 		}
 	}
 //  }

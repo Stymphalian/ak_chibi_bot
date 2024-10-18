@@ -47,12 +47,24 @@ type RoomUpdateRequest struct {
 	MaxSpritePixelSize int `json:"max_sprite_pixel_size"`
 }
 
-type RoomAddOperatorRequest struct {
+type RoomGiveOperatorRequest struct {
 	ChannelName     string `json:"channel_name"`
 	Username        string `json:"username"`
 	UserDisplayName string `json:"user_display_name"`
 	// OperatorId      string `json:"operator_id"`
 	// Faction         string `json:"faction"`
+}
+
+type RoomSetOperatorRequest struct {
+	ChannelName     string                   `json:"channel_name"`
+	Username        string                   `json:"username"`
+	UserDisplayName string                   `json:"user_display_name"`
+	Faction         operator.FactionEnum     `json:"faction"`
+	OperatorId      string                   `json:"operator_id"`
+	Skin            string                   `json:"skin"`
+	Stance          operator.ChibiStanceEnum `json:"stance"`
+	PositionX       float64                  `json:"position_x"`
+	PositionY       float64                  `json:"position_y"`
 }
 
 type GetRoomSettingsRequest struct {

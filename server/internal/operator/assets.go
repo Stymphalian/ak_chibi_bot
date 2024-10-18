@@ -137,6 +137,36 @@ func (s *SpineAssetMap) LoadFromIndex(indexFile string) (err error) {
 	return nil
 }
 
+type SpineAssetMapCallback func(
+	opId string,
+	skin string,
+	stance ChibiStanceEnum,
+	facing ChibiFacingEnum,
+	spineData *SpineData)
+
+func (s *SpineAssetMap) Iterate(callback SpineAssetMapCallback) {
+	keys := make([]string, 0, len(s.Data))
+	for key := range s.Data {
+		keys = append(keys, key)
+	}
+	sort.Strings(keys)
+
+	count := 0
+	for _, opId := range keys {
+		opEntry := s.Data[opId]
+		for skin, skinEntry := range opEntry.Skins {
+			for facing, spineData := range skinEntry.Base {
+				callback(opId, skin, "base", facing, spineData)
+				count += 1
+			}
+			for facing, spineData := range skinEntry.Battle {
+				callback(opId, skin, "battle", facing, spineData)
+				count += 1
+			}
+		}
+	}
+}
+
 func (s *SpineAssetMap) Load(assetDir string, assetSubdir string) (err error) {
 	log.Println("Loading Asset maps")
 	assetDirAbs, err := filepath.Abs(assetDir)

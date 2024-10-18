@@ -53,12 +53,8 @@ import { BoundingBox } from "./Player";
         }
 
         SetAnimation(actor:Actor, animation:string, viewport: BoundingBox) {
-            const startPosYScaled = actor.config.startPosY * viewport.y;
-            if (animation == "Sit") {
-				actor.setPositionY(startPosYScaled + Math.abs(actor.animViewport.y));
-			} else {
-				actor.setPositionY(startPosYScaled);
-			}
+            const startPosYScaled = actor.config.startPosY * viewport.height;
+            actor.setPositionY(startPosYScaled - actor.canvasBB.y)
             this.currentAnimation = animation;
             if (this.currentAnimation.includes("Move")) {
                 this.startPosition = null;
@@ -115,7 +111,9 @@ import { BoundingBox } from "./Player";
         SetAnimation(actor:Actor, animation:string, viewport: BoundingBox) {
             // TODO: Figure out what this for walking, wander, pace-around actions
             // I know for playAnimation it is used to reset from a sit position
-            actor.setPositionY(actor.config.startPosY * viewport.y);
+            // actor.setPositionY(actor.config.startPosY * viewport.height);
+            const startPosYScaled = actor.config.startPosY * viewport.height;
+            actor.setPositionY(startPosYScaled - actor.canvasBB.y)
         }
 
         GetAnimations(): string[] {
@@ -161,7 +159,8 @@ import { BoundingBox } from "./Player";
         }
 
         SetAnimation(actor:Actor, animation:string, viewport: BoundingBox) {
-            actor.setPositionY(actor.config.startPosY * viewport.y);
+            const startPosYScaled = actor.config.startPosY * viewport.height;
+            actor.setPositionY(startPosYScaled - actor.canvasBB.y)
         }
 
         GetAnimations(): string[] {
@@ -228,7 +227,8 @@ import { BoundingBox } from "./Player";
         }
 
         SetAnimation(actor:Actor, animation:string, viewport: BoundingBox) {
-            actor.setPositionY(actor.config.startPosY * viewport.y);
+            const startPosYScaled = actor.config.startPosY * viewport.height;
+            actor.setPositionY(startPosYScaled - actor.canvasBB.y)
         }
 
         GetAnimations(): string[] {
@@ -248,8 +248,8 @@ import { BoundingBox } from "./Player";
 
             if (this.endPosition == null) {
                 // TODO: Make the z range configurable
-                let z1 = Math.random()*20;
-                let z2 = Math.random()*20;
+                let z1 = Math.random()*40;
+                let z2 = Math.random()*40;
                 let start = new Vector3(
                     this.actionData["pace_start_pos"]["x"],
                     this.actionData["pace_start_pos"]["y"],

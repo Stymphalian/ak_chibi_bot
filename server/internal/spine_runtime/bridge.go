@@ -272,26 +272,26 @@ func (s *SpineBridge) setInternalSpineOperator(
 		return "/image/assets/" + strings.ReplaceAll(path, string(os.PathSeparator), "/")
 	}
 
-	data := map[string]interface{}{
-		"type_name":             SET_OPERATOR,
-		"user_name":             UserName,
-		"user_name_display":     userNameDisplay,
-		"operator_id":           info.OperatorId,
-		"atlas_file":            formatPathFn(atlasFile),
-		"png_file":              formatPathFn(pngFile),
-		"skel_file":             formatPathFn(skelFile),
-		"start_pos":             info.StartPos,
-		"animation_speed":       info.AnimationSpeed,
-		"available_animations":  info.AvailableAnimations,
-		"sprite_scale":          info.SpriteScale,
-		"max_sprite_pixel_size": s.spineService.GetMaxSpritePixelSize(),
-		"movement_speed_px":     s.spineService.GetReferenceMovementSpeedPx(),
-		"movement_speed":        info.MovementSpeed,
-
-		"action":      info.CurrentAction,
-		"action_data": info.Action,
+	data := SetOperatorInternalRequest{
+		BridgeRequest: BridgeRequest{
+			TypeName: SET_OPERATOR,
+		},
+		UserName:            UserName,
+		UserNameDisplay:     userNameDisplay,
+		OperatorId:          info.OperatorId,
+		AtlasFile:           formatPathFn(atlasFile),
+		PngFile:             formatPathFn(pngFile),
+		SkelFile:            formatPathFn(skelFile),
+		StartPos:            info.StartPos,
+		AnimationSpeed:      info.AnimationSpeed,
+		AvailableAnimations: info.AvailableAnimations,
+		SpriteScale:         info.SpriteScale,
+		MaxSpritePixelSize:  s.spineService.GetMaxSpritePixelSize(),
+		MovementSpeedPx:     s.spineService.GetReferenceMovementSpeedPx(),
+		MovementSpeed:       info.MovementSpeed,
+		Action:              info.CurrentAction,
+		ActionData:          info.Action,
 	}
-
 	data_json, _ := json.Marshal(data)
 	log.Println("setInternalSpineOperator sending: ", string(data_json))
 
@@ -322,7 +322,7 @@ func (s *SpineBridge) SetOperator(req *SetOperatorRequest) (*SetOperatorResponse
 	}
 
 	return &SetOperatorResponse{
-		SpineResponse: SpineResponse{
+		BridgeResponse: BridgeResponse{
 			TypeName:   SET_OPERATOR,
 			ErrorMsg:   "",
 			StatusCode: 200,
@@ -332,7 +332,7 @@ func (s *SpineBridge) SetOperator(req *SetOperatorRequest) (*SetOperatorResponse
 
 func (s *SpineBridge) RemoveOperator(r *RemoveOperatorRequest) (*RemoveOperatorResponse, error) {
 	successResp := &RemoveOperatorResponse{
-		SpineResponse: SpineResponse{
+		BridgeResponse: BridgeResponse{
 			TypeName:   REMOVE_OPERATOR,
 			ErrorMsg:   "",
 			StatusCode: 200,

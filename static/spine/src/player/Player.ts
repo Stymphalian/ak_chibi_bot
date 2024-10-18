@@ -34,14 +34,14 @@ import { SkeletonBinary } from "../core/SkeletonBinary"
 import { SkeletonData } from "../core/SkeletonData"
 import { SkeletonJson } from "../core/SkeletonJson"
 import { Vector2, Color } from "../core/Utils"
-import { PerspectiveCamera } from "../webgl/Camera"
 import { Input } from "../webgl/Input"
 import { LoadingScreen } from "../webgl/LoadingScreen"
-import { M00 } from "../webgl/Matrix4"
 import { ResizeMode, SceneRenderer } from "../webgl/SceneRenderer"
 import { Vector3 } from "../webgl/Vector3"
 import { ManagedWebGLRenderingContext } from "../webgl/WebGL"
 import { Actor, SpineActorConfig } from "./Actor"
+import { createElement, findWithClass, OffscreenRender, escapeHtml, isAlphanumeric, findWithId, configurePerspectiveCamera, updateCameraSettings } from "./Utils";
+import { Camera } from "../webgl/Camera";
 
 // // module spine {
 	export interface Viewport {
@@ -214,6 +214,9 @@ import { Actor, SpineActorConfig } from "./Actor"
 		private windowFpsFrameCount:number = 0;
 		private webSocket: WebSocket = null;
 		private renderCallbacks: RenderCallbackFn[] = [];
+		private actorQueue: {actorName: string, config: SpineActorConfig}[] = [];
+		private actorQueueIndex: any = null;
+		private offscreenRender: OffscreenRender = null;
 
 		constructor(parent: HTMLElement | string, playerConfig: SpinePlayerConfig) {
 			if (typeof parent === "string") {
@@ -369,6 +372,7 @@ import { Actor, SpineActorConfig } from "./Actor"
 				// Setup the scene renderer and loading screen
 				this.sceneRenderer = new SceneRenderer(this.canvas, this.context, true);
 				this.loadingScreen = new LoadingScreen(this.sceneRenderer);
+				this.offscreenRender = new OffscreenRender();
 			} catch (e) {
 				// this.showError("Sorry, your browser does not support WebGL.<br><br>Please use the latest version of Firefox, Chrome, Edge, or Safari.");
 				console.log("Sorry, your browser does not support WebGL.<br><br>Please use the latest version of Firefox, Chrome, Edge, or Safari.");
@@ -376,7 +380,12 @@ import { Actor, SpineActorConfig } from "./Actor"
 			}
 
 			// configure the camera
-			this.configurePerspectiveCamera(this.playerConfig.viewport);
+			configurePerspectiveCamera(
+				this.sceneRenderer.camera,
+				this.playerConfig.cameraPerspectiveNear,
+    			this.playerConfig.cameraPerspectiveFar,
+				this.playerConfig.viewport
+			);
 
 			// Load the assets
 			this.assetManager = new AssetManager(this.context);
@@ -433,13 +442,36 @@ import { Actor, SpineActorConfig } from "./Actor"
 			this.windowFpsFrameCount = 0;
 		}
 
+		addActorToUpdateQueue(actorName: string, config: SpineActorConfig) {
+			this.actorQueue.push({actorName: actorName, config: config});
+			if (this.actorQueueIndex == null) {
+				this.actorQueueIndex = setTimeout(() => this.consumeActorUpdateQueue(), 100);
+			}
+		}
+		
+		private consumeActorUpdateQueue() {
+			console.log("actorUpdateQueue: ", this.actorQueue.length);
+			if (this.actorQueue.length == 0) {
+				this.actorQueueIndex = null;
+				return;
+			}
+			if (!this.assetManager.isLoadingComplete()) {
+				this.actorQueueIndex = setTimeout(() => this.consumeActorUpdateQueue(), 100);
+				return;
+			}
+
+			let task = this.actorQueue.shift();
+			this.changeOrAddActor(task.actorName, task.config);
+			this.actorQueueIndex = setTimeout(() => this.consumeActorUpdateQueue(), 100);
+		}
+
 		changeOrAddActor(actorName: string, config: SpineActorConfig) {
 			if (this.actors.has(actorName)) {
 				let actor = this.actors.get(actorName);
 				actor.ResetWithConfig(config);
 				this.setupActor(actor);
 			} else {
-				let actor = new Actor(config, this.playerConfig.viewport);
+				let actor = new Actor(config, this.playerConfig.viewport, this.offscreenRender);
 				this.setupActor(actor);
 				this.actors.set(actorName, actor);
 			}
@@ -490,6 +522,10 @@ import { Actor, SpineActorConfig } from "./Actor"
 			// this.lastRequestAnimationFrameId = requestAnimationFrame(() => this.drawFrame());
 		}
 
+		updateCameraSettings(cam: Camera, actor: Actor, viewport: BoundingBox) {
+			updateCameraSettings(cam, actor, viewport)
+		}
+
 		drawText(text: string, xpx: number, ypx: number) {
 			let viewport = this.playerConfig.viewport;
 			// TODO: I don't understand why this is worldToScreen.
@@ -520,54 +556,6 @@ import { Actor, SpineActorConfig } from "./Actor"
 			ctx.fillStyle = "white";
 			ctx.fillText(text, -width/2, 0);
 			ctx.restore();
-		}
-
-		getPerspectiveCameraZOffset(viewport: BoundingBox, near: number, far: number, fovY:number): number {
-			let width = viewport.width;
-			let height = viewport.height;
-			let cam = new PerspectiveCamera(width, height);
-			cam.near = near;
-			cam.far = far;
-			cam.fov = fovY;
-			cam.zoom = 1;
-			cam.position.x = 0.0;
-			cam.position.y = 0.0;
-			cam.position.z = 0.0;
-			cam.update();
-
-			let a = cam.projectionView.values[M00];
-			let w = -a * (width/2);
-			return w;
-		}
-
-		configurePerspectiveCamera(viewport: BoundingBox) {
-			let cam = this.sceneRenderer.camera;
-			cam.near = this.playerConfig.cameraPerspectiveNear;
-			cam.far = this.playerConfig.cameraPerspectiveFar;
-			cam.zoom = 1;
-			cam.position.x = 0;
-			cam.position.y = viewport.height/2;
-			// TODO: Negative so that the view is not flipped?
-			cam.position.z = -this.getPerspectiveCameraZOffset(
-				viewport, cam.near, cam.far, cam.fov
-			);
-			cam.direction = new Vector3(0, 0, -1);
-			cam.update();
-		}
-
-		updateCameraSettings(actor: Actor, viewport: BoundingBox) {
-			let cam = this.sceneRenderer.camera;
-			cam.position.x = 0;
-			cam.position.y = viewport.height/2;
-			// TODO: Negative so that the view is not flipped?
-			cam.position.z = -this.getPerspectiveCameraZOffset(viewport, cam.near, cam.far, cam.fov);
-			cam.position.z += actor.getPositionZ();
-			cam.direction = new Vector3(0, 0, -1);
-			// let origin = new Vector3(0,0,0);
-			// let pos = new Vector3(0,0,cam.position.z)
-			// let dir = origin.sub(pos).normalize();
-			// cam.direction = dir;
-			cam.update();
 		}
 
 		drawFrame (requestNextFrame = true) {
@@ -658,7 +646,7 @@ import { Actor, SpineActorConfig } from "./Actor"
 				actor.skeleton.updateWorldTransform();
 
 				// Update the camera
-				this.updateCameraSettings(actor, viewport);
+				this.updateCameraSettings(this.sceneRenderer.camera, actor, viewport);
 
 				this.sceneRenderer.begin();
 				// // Draw background image if given
@@ -681,7 +669,7 @@ import { Actor, SpineActorConfig } from "./Actor"
 				this.drawText(
 					actor.config.userDisplayName,
 					actor.getPositionX(),
-					actor.getPositionY() - Math.abs(actor.animViewport.y) + actor.GetUsernameHeaderHeight(),
+					actor.getPositionY() + actor.GetUsernameHeaderHeight(),
 				)
 				this.sceneRenderer.end();
 
@@ -690,36 +678,20 @@ import { Actor, SpineActorConfig } from "./Actor"
 					this.sceneRenderer.begin();
 
 					let actor_pos = actor.getPosition();
-					if (actor.scale.x > 0) {
-						this.sceneRenderer.rect(
-							false, 
-							actor_pos.x + actor.animViewport.x,
-							actor_pos.y + actor.animViewport.y,
-							actor.animViewport.width,
-							actor.animViewport.height,
-							Color.BLUE
-						);					
-					} else {
-						this.sceneRenderer.rect(
-							false, 
-							actor_pos.x - (actor.animViewport.width + actor.animViewport.x),
-							actor_pos.y + actor.animViewport.y,
-							actor.animViewport.width,
-							actor.animViewport.height,
-							Color.GREEN
-						);
-					}
-
+					let renderBB = actor.getRenderingBoundingBox();
 					this.sceneRenderer.rect(
 						false,
-						actor_pos.x + actor.defaultBB.x,
-						actor_pos.y + actor.defaultBB.y,
-						actor.defaultBB.width,
-						actor.defaultBB.height,
-						Color.ORANGE
+						actor_pos.x + renderBB.x,
+						actor_pos.y + renderBB.y,
+						renderBB.width,
+						renderBB.height,
+						Color.RED
 					)
 					
 					this.sceneRenderer.circle(true, actor_pos.x, actor_pos.y, 10, Color.RED);
+					this.sceneRenderer.circle(true, 0,0, 10, Color.BLUE);
+					// this.sceneRenderer.circle(true, actor_pos.x, actor_pos.y + actor.defaultBB.height, 5, Color.BLUE);
+
 					this.sceneRenderer.end();
 				}
 			}
@@ -927,68 +899,4 @@ import { Actor, SpineActorConfig } from "./Actor"
 		}
 	}
 
-	function isContained(dom: HTMLElement, needle: HTMLElement): boolean {
-		if (dom === needle) return true;
-		let findRecursive = (dom: HTMLElement, needle: HTMLElement) => {
-			for(var i = 0; i < dom.children.length; i++) {
-				let child = dom.children[i] as HTMLElement;
-				if (child === needle) return true;
-				if (findRecursive(child, needle)) return true;
-			}
-			return false;
-		};
-		return findRecursive(dom, needle);
-	}
-
-	function findWithId(dom: HTMLElement, id: string): HTMLElement[] {
-		let found = new Array<HTMLElement>()
-		let findRecursive = (dom: HTMLElement, id: string, found: HTMLElement[]) => {
-			for(var i = 0; i < dom.children.length; i++) {
-				let child = dom.children[i] as HTMLElement;
-				if (child.id === id) found.push(child);
-				findRecursive(child, id, found);
-			}
-		};
-		findRecursive(dom, id, found);
-		return found;
-	}
-
-	function findWithClass(dom: HTMLElement, className: string): HTMLElement[] {
-		let found = new Array<HTMLElement>()
-		let findRecursive = (dom: HTMLElement, className: string, found: HTMLElement[]) => {
-			for(var i = 0; i < dom.children.length; i++) {
-				let child = dom.children[i] as HTMLElement;
-				if (child.classList.contains(className)) found.push(child);
-				findRecursive(child, className, found);
-			}
-		};
-		findRecursive(dom, className, found);
-		return found;
-	}
-
-	function createElement(html: string): HTMLElement {
-		let dom = document.createElement("div");
-		dom.innerHTML = html;
-		return dom.children[0] as HTMLElement;
-	}
-
-	function removeClass(elements: HTMLCollection, clazz: string) {
-		for (var i = 0; i < elements.length; i++) {
-			elements[i].classList.remove(clazz);
-		}
-	}
-
-	function escapeHtml(str: string) {
-		if (!str) return "";
-		return str
-			 .replace(/&/g, "&amp;")
-			 .replace(/</g, "&lt;")
-			 .replace(/>/g, "&gt;")
-			 .replace(/"/g, "&#34;")
-			 .replace(/'/g, "&#39;");
-	 }
-
-	function isAlphanumeric(str: string): boolean {
-		return /^[a-zA-Z0-9_-]{1,100}$/.test(str)
-	}
 //  }

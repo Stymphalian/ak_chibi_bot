@@ -194,7 +194,7 @@ export class Runtime {
             }
         };
 
-        this.spinePlayer.changeOrAddActor(username, this.actorConfig);
+        this.spinePlayer.addActorToUpdateQueue(username, this.actorConfig);
     }
 
     removeCharacter(requestData: any) {
