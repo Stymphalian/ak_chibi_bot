@@ -3,22 +3,20 @@ import { Vector3 } from "../webgl/Vector3";
 import { Actor } from "./Actor";
 import { BoundingBox } from "./Player";
 
-// // module spine {
     export class ActionName {
-		static PLAY_ANIMATION = "PLAY_ANIMATION";
-		static WANDER = "WANDER";
-		static WALK_TO = "WALK_TO";
+        static PLAY_ANIMATION = "PLAY_ANIMATION";
+        static WANDER = "WANDER";
+        static WALK_TO = "WALK_TO";
         static PACE_AROUND = "PACE_AROUND";
     }
 
     export interface ActorAction {
-        SetAnimation(actor:Actor, animation:string, viewport: BoundingBox): void;
+        SetAnimation(actor: Actor, animation: string, viewport: BoundingBox): void;
         GetAnimations(): string[]
         UpdatePhysics(actor: Actor, deltaSecs: number, viewport: BoundingBox): void
     }
 
-    export function ParseActionNameToAction(actionName: string, actionData: any) : ActorAction 
-    {
+    export function ParseActionNameToAction(actionName: string, actionData: any): ActorAction {
         switch (actionName) {
             case ActionName.PLAY_ANIMATION:
                 return new PlayAnimationAction(actionData);
@@ -34,7 +32,27 @@ import { BoundingBox } from "./Player";
         }
     }
 
-    export class PlayAnimationAction implements ActorAction{
+    function setActorYPositionByAnimation(actor: Actor, animation:string, viewport: BoundingBox) {
+        const startPosYScaled = actor.config.startPosY * viewport.height;
+        actor.setPositionY(startPosYScaled);
+        let isSitting = animation.toLowerCase().includes("sit")
+
+        if (actor.canvasBB.y < 0) {
+            // There is some sprite above the axis
+            if (actor.IsEnemySprite()) {
+                actor.setPositionY(startPosYScaled - actor.canvasBB.y);
+            } else if (isSitting) {
+                actor.setPositionY(startPosYScaled - actor.canvasBB.y);
+            }
+        } else if(actor.canvasBB.y > 0) {
+            // There is some sprite below the axis
+            if (actor.IsEnemySprite()) {
+                actor.setPositionY(startPosYScaled - actor.canvasBB.y);
+            }   
+        }
+    }
+
+    export class PlayAnimationAction implements ActorAction {
         public actionData: any
         public startPosition: Vector2
         public endPosition: Vector2
@@ -49,12 +67,12 @@ import { BoundingBox } from "./Player";
         getRandomPosition(currentPos: Vector2, viewport: BoundingBox): Vector2 {
             let half = viewport.width / 2;
             let rand = Math.random();
-			return new Vector2(rand*viewport.width - half, currentPos.y);
+            return new Vector2(rand * viewport.width - half, currentPos.y);
         }
 
-        SetAnimation(actor:Actor, animation:string, viewport: BoundingBox) {
-            const startPosYScaled = actor.config.startPosY * viewport.height;
-            actor.setPositionY(startPosYScaled - actor.canvasBB.y)
+        SetAnimation(actor: Actor, animation: string, viewport: BoundingBox) {
+            setActorYPositionByAnimation(actor, animation, viewport)
+            
             this.currentAnimation = animation;
             if (this.currentAnimation.includes("Move")) {
                 this.startPosition = null;
@@ -68,20 +86,20 @@ import { BoundingBox } from "./Player";
 
         UpdatePhysics(actor: Actor, deltaSecs: number, viewport: BoundingBox) {
             if (!this.currentAnimation.includes("Move")) {
-                actor.setVelocity(0,0,0);
+                actor.setVelocity(0, 0, 0);
             } else {
                 if (this.endPosition == null) {
                     this.startPosition = actor.getPosition();
                     this.endPosition = this.getRandomPosition(actor.getPosition(), viewport);
                 }
-    
+
                 let dir = this.endPosition.subtract(actor.getPosition());
                 if (dir.length() < 5) {
                     // We have reached the target position. Find a new destination
                     actor.setPosition(this.endPosition.x, this.endPosition.y, 0);
                     this.startPosition = actor.getPosition();
                     this.endPosition = this.getRandomPosition(actor.getPosition(), viewport);
-                }    
+                }
                 dir.normalize();
                 actor.setVelocity(
                     dir.x * actor.getMovementSpeedX() * deltaSecs,
@@ -92,7 +110,7 @@ import { BoundingBox } from "./Player";
         }
     }
 
-    export class WanderAction implements ActorAction{
+    export class WanderAction implements ActorAction {
         public actionData: any
         public startPosition: Vector2 = null;
         public endPosition: Vector2 = null;
@@ -105,22 +123,21 @@ import { BoundingBox } from "./Player";
 
         getRandomPosition(currentPos: Vector2, viewport: BoundingBox): Vector2 {
             let half = viewport.width / 2;
-			return new Vector2(Math.random()*viewport.width - half, currentPos.y);
+            return new Vector2(Math.random() * viewport.width - half, currentPos.y);
         }
 
-        SetAnimation(actor:Actor, animation:string, viewport: BoundingBox) {
+        SetAnimation(actor: Actor, animation: string, viewport: BoundingBox) {
             // TODO: Figure out what this for walking, wander, pace-around actions
             // I know for playAnimation it is used to reset from a sit position
             // actor.setPositionY(actor.config.startPosY * viewport.height);
-            const startPosYScaled = actor.config.startPosY * viewport.height;
-            actor.setPositionY(startPosYScaled - actor.canvasBB.y)
+            setActorYPositionByAnimation(actor, animation, viewport)
         }
 
         GetAnimations(): string[] {
             return [this.actionData["wander_animation"]];
         }
 
-        UpdatePhysics(actor: Actor, deltaSecs: number, viewport: BoundingBox){
+        UpdatePhysics(actor: Actor, deltaSecs: number, viewport: BoundingBox) {
             if (this.endPosition == null) {
                 this.startPosition = actor.getPosition();
                 this.endPosition = this.getRandomPosition(actor.getPosition(), viewport);
@@ -132,7 +149,7 @@ import { BoundingBox } from "./Player";
                 actor.setPosition(this.endPosition.x, this.endPosition.y, 0);
                 this.startPosition = actor.getPosition();
                 this.endPosition = this.getRandomPosition(actor.getPosition(), viewport);
-            }    
+            }
             dir.normalize();
             actor.setVelocity(
                 dir.x * actor.getMovementSpeedX() * deltaSecs,
@@ -143,7 +160,7 @@ import { BoundingBox } from "./Player";
     }
 
 
-    export class WalkToAction implements ActorAction{
+    export class WalkToAction implements ActorAction {
         public actionData: any
         public startPosition: Vector2 = null;
         public endPosition: Vector2 = null;
@@ -158,9 +175,8 @@ import { BoundingBox } from "./Player";
             this.reachedDestination = false;
         }
 
-        SetAnimation(actor:Actor, animation:string, viewport: BoundingBox) {
-            const startPosYScaled = actor.config.startPosY * viewport.height;
-            actor.setPositionY(startPosYScaled - actor.canvasBB.y)
+        SetAnimation(actor: Actor, animation: string, viewport: BoundingBox) {
+            setActorYPositionByAnimation(actor, animation, viewport);
         }
 
         GetAnimations(): string[] {
@@ -183,7 +199,7 @@ import { BoundingBox } from "./Player";
                     this.actionData["target_pos"]["y"],
                 );
                 this.endPosition = new Vector2(
-                    target.x * viewport.width - (viewport.width/2),
+                    target.x * viewport.width - (viewport.width / 2),
                     0,
                 );
                 this.startDir = this.endPosition.subtract(this.startPosition);
@@ -198,9 +214,9 @@ import { BoundingBox } from "./Player";
             let reached = Math.abs(Math.PI - angle) < 0.001;
             if (reached || this.reachedDestination) {
                 // We have reached the target destination
-                actor.setPosition(this.endPosition.x, this.endPosition.y,0);
+                actor.setPosition(this.endPosition.x, this.endPosition.y, 0);
                 this.startPosition = actor.getPosition();
-                actor.setVelocity(0,0,0);
+                actor.setVelocity(0, 0, 0);
                 this.reachedDestination = true;
                 actor.InitAnimationState();
             } else {
@@ -213,7 +229,7 @@ import { BoundingBox } from "./Player";
         }
     }
 
-    export class PaceAroundAction implements ActorAction{
+    export class PaceAroundAction implements ActorAction {
         public actionData: any
         public startPosition: Vector3 = null;
         public endPosition: Vector3 = null;
@@ -226,9 +242,8 @@ import { BoundingBox } from "./Player";
             this.reachedDestination = false;
         }
 
-        SetAnimation(actor:Actor, animation:string, viewport: BoundingBox) {
-            const startPosYScaled = actor.config.startPosY * viewport.height;
-            actor.setPositionY(startPosYScaled - actor.canvasBB.y)
+        SetAnimation(actor: Actor, animation: string, viewport: BoundingBox) {
+            setActorYPositionByAnimation(actor, animation, viewport);
         }
 
         GetAnimations(): string[] {
@@ -248,8 +263,8 @@ import { BoundingBox } from "./Player";
 
             if (this.endPosition == null) {
                 // TODO: Make the z range configurable
-                let z1 = Math.random()*40;
-                let z2 = Math.random()*40;
+                let z1 = Math.random() * 40;
+                let z2 = Math.random() * 40;
                 let start = new Vector3(
                     this.actionData["pace_start_pos"]["x"],
                     this.actionData["pace_start_pos"]["y"],
@@ -261,12 +276,12 @@ import { BoundingBox } from "./Player";
                     z2
                 );
                 this.startPosition = new Vector3(
-                    start.x * viewport.width - (viewport.width/2),
+                    start.x * viewport.width - (viewport.width / 2),
                     start.y * viewport.height,
                     start.z
                 )
                 this.endPosition = new Vector3(
-                    target.x * viewport.width - (viewport.width/2),
+                    target.x * viewport.width - (viewport.width / 2),
                     target.y * viewport.height,
                     target.z
                 );
@@ -281,7 +296,7 @@ import { BoundingBox } from "./Player";
             if (dist_to < 10 || this.reachedDestination) {
                 // We have reached the target destination
                 actor.setPosition(this.endPosition.x, this.endPosition.y, this.endPosition.z);
-                actor.setVelocity(0,0,0);
+                actor.setVelocity(0, 0, 0);
                 this.reachedDestination = true;
             } else {
                 actor.setVelocity(
@@ -292,4 +307,3 @@ import { BoundingBox } from "./Player";
             }
         }
     }
-// }

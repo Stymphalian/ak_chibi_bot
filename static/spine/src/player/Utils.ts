@@ -8,19 +8,26 @@ import { Actor } from "./Actor";
 import { BoundingBox } from "./Player";
 
 export class OffscreenRender {
-    private defaultOffscreenCanvasWidth = 800;
-    private defaultOffscreenCanvasHeight = 800;
-    private offscreenCanvas: OffscreenCanvas;
-    private offscreenContext: ManagedWebGLRenderingContext;
-    private offscreenSceneRenderer: SceneRenderer;
+    public defaultOffscreenCanvasWidth = 800;
+    public defaultOffscreenCanvasHeight = 800;
+    public offscreenCanvas: OffscreenCanvas|HTMLCanvasElement;
+    public offscreenContext: ManagedWebGLRenderingContext;
+    public offscreenSceneRenderer: SceneRenderer;
+    public chibiScaling: number = 1.0;
 
-    public constructor() {
+    public constructor(chibiScale: number, canvas: HTMLCanvasElement|null = null) {
+        this.chibiScaling = chibiScale;
         try {
             var webglConfig = { alpha: true};
-            this.offscreenCanvas = new OffscreenCanvas(
-                this.defaultOffscreenCanvasWidth, 
-                this.defaultOffscreenCanvasHeight
-            );
+            
+            if (canvas !== null) {
+                this.offscreenCanvas = canvas;
+            } else {
+                this.offscreenCanvas = new OffscreenCanvas(
+                    this.defaultOffscreenCanvasWidth, 
+                    this.defaultOffscreenCanvasHeight
+                );
+            }
             this.offscreenContext = new ManagedWebGLRenderingContext(this.offscreenCanvas, webglConfig);
             this.offscreenSceneRenderer = new SceneRenderer(this.offscreenCanvas, this.offscreenContext, true);
         } catch (e) {
@@ -45,6 +52,8 @@ export class OffscreenRender {
         // the offcanvas square.
         this.offscreenCanvas.width = 2*actor.config.maxSizePx / Math.SQRT2;
         this.offscreenCanvas.height = 2*actor.config.maxSizePx / Math.SQRT2;
+        this.offscreenCanvas.width *= this.chibiScaling;
+        this.offscreenCanvas.height *= this.chibiScaling;
         this.offscreenSceneRenderer.resize(ResizeMode.Expand);
 
         let viewport = {

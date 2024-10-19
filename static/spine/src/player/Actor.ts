@@ -399,6 +399,16 @@ import { OffscreenRender } from "./Utils"
 			let renderBB = this.getRenderingBoundingBox();
 			return renderBB.height + renderBB.y + 20;
 		}
+		public IsEnemySprite(): boolean {
+			return this.config.chibiId.startsWith("enemy_");
+		}
+		public IsOperatorSitting(): boolean {
+			let animations = this.GetAnimations();
+			return (
+				!this.IsEnemySprite()
+				&& animations[0].toLowerCase().includes("sit") 
+			);
+		}
 
 		// Privates
 		// ---------------------------------------------------------------------

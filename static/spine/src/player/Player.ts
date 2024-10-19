@@ -103,6 +103,9 @@ import { Camera } from "../webgl/Camera";
 		// Camera Near and Far customization
 		cameraPerspectiveNear: number
 		cameraPerspectiveFar: number
+
+		// The extra scaling to be applied to the all the chibis
+		chibiScale: number
 	}
 
 	class Slider {
@@ -202,7 +205,6 @@ import { Camera } from "../webgl/Camera";
 		private context: ManagedWebGLRenderingContext;
 		private loadingScreen: LoadingScreen;
 		private assetManager: AssetManager;
-
 		private paused = false;
 		private actors = new Map<string, Actor>();
 		private playerConfig: SpinePlayerConfig = null;
@@ -216,6 +218,8 @@ import { Camera } from "../webgl/Camera";
 		private renderCallbacks: RenderCallbackFn[] = [];
 		private actorQueue: {actorName: string, config: SpineActorConfig}[] = [];
 		private actorQueueIndex: any = null;
+
+		// private offCanvas: HTMLCanvasElement|null;
 		private offscreenRender: OffscreenRender = null;
 
 		constructor(parent: HTMLElement | string, playerConfig: SpinePlayerConfig) {
@@ -372,7 +376,11 @@ import { Camera } from "../webgl/Camera";
 				// Setup the scene renderer and loading screen
 				this.sceneRenderer = new SceneRenderer(this.canvas, this.context, true);
 				this.loadingScreen = new LoadingScreen(this.sceneRenderer);
-				this.offscreenRender = new OffscreenRender();
+
+				// this.offCanvas = findWithId(dom, "spine-canvas-off")[0] as HTMLCanvasElement;
+				// // <canvas id="spine-canvas-off" class="spine-player-canvas-off"></canvas>
+				// this.offscreenRender = new OffscreenRender(this.playerConfig.chibiScale, this.offCanvas);
+				this.offscreenRender = new OffscreenRender(this.playerConfig.chibiScale);
 			} catch (e) {
 				// this.showError("Sorry, your browser does not support WebGL.<br><br>Please use the latest version of Firefox, Chrome, Edge, or Safari.");
 				console.log("Sorry, your browser does not support WebGL.<br><br>Please use the latest version of Firefox, Chrome, Edge, or Safari.");
@@ -388,7 +396,9 @@ import { Camera } from "../webgl/Camera";
 			);
 
 			// Load the assets
-			this.assetManager = new AssetManager(this.context);
+			this.assetManager = new AssetManager(
+				[this.context, this.offscreenRender.offscreenContext]
+			);
 
 			// Setup rendering loop
 			this.lastRequestAnimationFrameId = requestAnimationFrame(() => this.drawFrame());
@@ -609,7 +619,8 @@ import { Camera } from "../webgl/Camera";
 
 				// Have we finished loading the asset? Then set things up
 				// if (this.assetManager.isLoadingComplete() && this.skeleton == null) this.loadSkeleton();
-				if (this.assetManager.isLoadingComplete() && actor.skeleton == null) {
+				if (this.assetManager.isLoadingComplete() 
+					&& actor.skeleton == null) {
 					this.loadSkeleton(actor);
 				}
 					

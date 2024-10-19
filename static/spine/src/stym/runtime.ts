@@ -57,6 +57,7 @@ export class Runtime {
                 textSize: 14,
                 textFont: "lato",
                 runtimeDebugInfoDumpIntervalSec: 60,
+                chibiScale: this.runtimeConfig.chibiScale,
 
                 cameraPerspectiveNear: 1,
                 cameraPerspectiveFar: 2000,

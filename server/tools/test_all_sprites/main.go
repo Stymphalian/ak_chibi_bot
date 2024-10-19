@@ -49,8 +49,11 @@ func NewContext(authToken string) *Context {
 		"char_003_kalts":   true,
 		"char_4009_irene":  true,
 
-		// Nightmare floats (epoque, battle)
+		// Operators who float in the air in battle stance
+		// This is because part of their model goes below their feet
 		"char_164_nightm": true,
+		// "char_2023_ling":  true,
+		"char_188_helage": true,
 	}
 
 	weirdEnemeyIds := map[string]bool{

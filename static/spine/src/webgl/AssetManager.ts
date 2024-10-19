@@ -30,12 +30,45 @@
 import { AssetManager as spineAssetManager } from "../core/AssetManager";
 import { GLTexture } from "./GLTexture";
 import { ManagedWebGLRenderingContext } from "./WebGL";
-// module spine.webgl {
-	export class AssetManager extends spineAssetManager {
-		constructor (context: ManagedWebGLRenderingContext | WebGLRenderingContext, pathPrefix: string = "") {
-			super((image: HTMLImageElement) => {
-				return new GLTexture(context, image);
-			}, pathPrefix);
-		}
+import { Restorable, Disposable } from "../core/Utils";
+
+
+type AssetManagerContext = ManagedWebGLRenderingContext | WebGLRenderingContext;
+type AssetManagerContextList = AssetManagerContext[];
+
+export class AssetManager extends spineAssetManager {
+
+	// HACK!!!!
+	// This is a hack to allow loading textures for multiple webGl Context
+	// without needing to keep multiple assetManagers around.
+	// We load the GLTextures for all the contexts but only the first
+	// context is treated as 'primary' and returned from the textureLoader
+	// callback. This allows the existing code for TextureAtlas to work
+	// normally.
+	private altTextures: GLTexture[] = [];
+
+	constructor(context: AssetManagerContextList | AssetManagerContext, pathPrefix: string = "") {
+		super((image: HTMLImageElement) => {
+
+			if (context instanceof ManagedWebGLRenderingContext || context instanceof WebGLRenderingContext) {
+				return new GLTexture(context as AssetManagerContext, image);
+			} else {
+				let ctx = context as AssetManagerContextList;
+				for (let i = 1; i < ctx.length; i++) {
+					this.altTextures.push(new GLTexture(ctx[i], image));
+				}
+				return new GLTexture(ctx[0], image);
+			}
+
+		}, pathPrefix);
 	}
-// }
+
+	dispose() {
+		super.dispose();
+		for (let i = 0; i < this.altTextures.length; i++) {
+			this.altTextures[i].dispose();
+		}
+		this.altTextures = [];
+	}
+}
+
