@@ -377,10 +377,10 @@ import { Camera } from "../webgl/Camera";
 				this.sceneRenderer = new SceneRenderer(this.canvas, this.context, true);
 				this.loadingScreen = new LoadingScreen(this.sceneRenderer);
 
-				// this.offCanvas = findWithId(dom, "spine-canvas-off")[0] as HTMLCanvasElement;
 				// // <canvas id="spine-canvas-off" class="spine-player-canvas-off"></canvas>
-				// this.offscreenRender = new OffscreenRender(this.playerConfig.chibiScale, this.offCanvas);
-				this.offscreenRender = new OffscreenRender(this.playerConfig.chibiScale);
+				// let offCanvas = findWithId(dom, "spine-canvas-off")[0] as HTMLCanvasElement;
+				// this.offscreenRender = new OffscreenRender(this.playerConfig.chibiScale, offCanvas);
+				this.offscreenRender = new OffscreenRender();
 			} catch (e) {
 				// this.showError("Sorry, your browser does not support WebGL.<br><br>Please use the latest version of Firefox, Chrome, Edge, or Safari.");
 				console.log("Sorry, your browser does not support WebGL.<br><br>Please use the latest version of Firefox, Chrome, Edge, or Safari.");
@@ -697,6 +697,12 @@ import { Camera } from "../webgl/Camera";
 						renderBB.width,
 						renderBB.height,
 						Color.RED
+					)
+
+					this.sceneRenderer.rect(
+						false,
+						0,0, actor.config.maxSizePx, actor.config.maxSizePx,
+						Color.ORANGE
 					)
 					
 					this.sceneRenderer.circle(true, actor_pos.x, actor_pos.y, 10, Color.RED);

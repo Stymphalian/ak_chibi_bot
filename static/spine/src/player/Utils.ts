@@ -13,10 +13,8 @@ export class OffscreenRender {
     public offscreenCanvas: OffscreenCanvas|HTMLCanvasElement;
     public offscreenContext: ManagedWebGLRenderingContext;
     public offscreenSceneRenderer: SceneRenderer;
-    public chibiScaling: number = 1.0;
 
-    public constructor(chibiScale: number, canvas: HTMLCanvasElement|null = null) {
-        this.chibiScaling = chibiScale;
+    public constructor(canvas: HTMLCanvasElement|null = null) {
         try {
             var webglConfig = { alpha: true};
             
@@ -36,7 +34,7 @@ export class OffscreenRender {
         }
     }
 
-    public getBoundingBox(actor: Actor) {
+    public getBoundingBox(actor: Actor, defaultBB: BoundingBox): BoundingBox {
         let ctx = this.offscreenContext;
         let gl = ctx.gl;
 
@@ -48,12 +46,9 @@ export class OffscreenRender {
         // Resize the canvas. Offcanvas should be square which is twice the size
         // of the maximum sized sprite. This way we can guarantee that the full
         // sprite will be rendered in the offcanvas for us to collect the 
-        // width/height information. maxsizePx is the diagonal length of the
-        // the offcanvas square.
-        this.offscreenCanvas.width = 2*actor.config.maxSizePx / Math.SQRT2;
-        this.offscreenCanvas.height = 2*actor.config.maxSizePx / Math.SQRT2;
-        this.offscreenCanvas.width *= this.chibiScaling;
-        this.offscreenCanvas.height *= this.chibiScaling;
+        // width/height information
+        this.offscreenCanvas.width = defaultBB.width + (2 * Math.abs(defaultBB.x));
+        this.offscreenCanvas.height = defaultBB.height + defaultBB.height + (2*Math.abs(defaultBB.y));
         this.offscreenSceneRenderer.resize(ResizeMode.Expand);
 
         let viewport = {
@@ -67,7 +62,7 @@ export class OffscreenRender {
         updateCameraSettings(this.offscreenSceneRenderer.camera, actor, viewport);
         // Center the camera so that is the chibi is rendered below the ground
         // we can still detect that in the bounding box.
-        this.offscreenSceneRenderer.camera.position.y = 0
+        this.offscreenSceneRenderer.camera.position.y = 0;        
 
         // Draw skeleton 
         this.offscreenSceneRenderer.begin();
@@ -75,15 +70,17 @@ export class OffscreenRender {
         this.offscreenSceneRenderer.end();
 
         // // Dump to file
-        // this.offscreenCanvas.convertToBlob({ type: "image/png" })
-        // .then(function (blob) {
-        //     var url = window.URL.createObjectURL(blob);
-        //     var a = document.createElement('a');
-        //     a.href = url;
-        //     a.download = "screenshot.png";
-        //     a.click();
-        //     window.URL.revokeObjectURL(url);
-        // })
+        // if (this.offscreenCanvas instanceof OffscreenCanvas) {
+        //     this.offscreenCanvas.convertToBlob({ type: "image/png" })
+        //     .then(function (blob) {
+        //         var url = window.URL.createObjectURL(blob);
+        //         var a = document.createElement('a');
+        //         a.href = url;
+        //         a.download = "screenshot.png";
+        //         a.click();
+        //         window.URL.revokeObjectURL(url);
+        //     })
+        // }
 
         let w = this.offscreenCanvas.width;
         let h = this.offscreenCanvas.height;
@@ -97,7 +94,6 @@ export class OffscreenRender {
         for (let col = 0; col < w; col++) {
             for (let row = 0; row < h; row++) {
                 let i = (row * w + col) * 4;
-
                 if (pixels[i+3] == 255) {
                     // console.log(row, col, pixels[i], pixels[i + 1], pixels[i + 2], pixels[i + 3]);
                     minX = Math.min(minX, col);
@@ -105,7 +101,7 @@ export class OffscreenRender {
                     maxX = Math.max(maxX, col);
                     maxY = Math.max(maxY, row);
                 }
-            }				
+            }
         }
 
         let offset = new Vector2();

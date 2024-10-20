@@ -77,7 +77,7 @@ func NewContext(authToken string) *Context {
 		"enemy_4002_syokai_2": true,
 		"enemy_6011_planty":   true,
 
-		// enemies with y position incorrect after fix
+		// // enemies with y position incorrect after fix
 		"enemy_1101_plkght":   true,
 		"enemy_1010_demon":    true,
 		"enemy_1010_demon_2":  true,
@@ -105,7 +105,7 @@ func NewContext(authToken string) *Context {
 		// Enemies with weird y positions
 		"enemy_1550_dhnzzh": true,
 
-		// Large enemies
+		// // Large enemies
 		"enemy_1526_sfsui6": true,
 		"enemy_2054_smdeer": true,
 		"enemy_2018_csdoll": true,

@@ -432,8 +432,7 @@ import { OffscreenRender } from "./Utils"
 			// Resize very large chibis to more reasonable sizes
 			let width = this.canvasBB.width;
 			let height = this.canvasBB.height;
-			let maxSize = Math.sqrt(width*width + height*height);
-			if (maxSize > this.config.maxSizePx) {
+			if (width > this.config.maxSizePx || height > this.config.maxSizePx) {
 				console.log("Resizing actor", this.config.chibiId, "to", this.config.maxSizePx);
 				let ratio = width / height;
 
@@ -448,7 +447,7 @@ import { OffscreenRender } from "./Utils"
 				}
 				let newScaleX = (xNew * this.config.scaleX) / width;
 				let newScaleY = (yNew * this.config.scaleY) / height;
-
+				
 				// TODO: setting defaultScale is a bug. We need to save it only once
 				this.config.defaultScaleX = this.config.scaleX;
 				this.config.defaultScaleY = this.config.scaleY;
@@ -456,6 +455,8 @@ import { OffscreenRender } from "./Utils"
 				this.config.scaleY = newScaleY;
 				this.scale.x = Math.sign(this.scale.x) * this.config.scaleX;
 				this.scale.y = Math.sign(this.scale.y) * this.config.scaleY;
+				this.skeleton.scaleX = this.scale.x;
+				this.skeleton.scaleY = this.scale.y;
 
 				this.setAnimationState(animations);
 				this.recordAnimation(animations[0]);
@@ -502,15 +503,6 @@ import { OffscreenRender } from "./Utils"
 		}
 
 		private getCanvasBoundingBox(animations: string[]) : BoundingBox {
-			// let skelAnimations = this.skeleton.data.animations;
-			// let defaultAnimationName = null;
-			// for (let i = 0, n = skelAnimations.length; i < n; i++) {
-			// 	let animationName = skelAnimations[i].name;
-			// 	if (!animationName.toLocaleLowerCase().includes("default")) {
-			// 		continue;
-			// 	}
-			// 	defaultAnimationName = animationName;
-			// }
 			let defaultAnimationName = animations[0];
 
 			let savedX = this.skeleton.x;
@@ -532,7 +524,11 @@ import { OffscreenRender } from "./Utils"
 			this.animationState.apply(this.skeleton);
 			this.skeleton.updateWorldTransform();
 
-			let bb = this.offscreenRender.getBoundingBox(this);
+			let offset = new Vector2();
+			let size =   new Vector2();
+			this.skeleton.getBounds(offset, size);
+			let defaultBB = {x: offset.x, y: offset.y, width: size.x, height: size.y};
+			let bb = this.offscreenRender.getBoundingBox(this, defaultBB);
 
 			this.skeleton.x = savedX;
 			this.skeleton.y = savedY;
