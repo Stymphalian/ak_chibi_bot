@@ -1,0 +1,24 @@
+set_user user1
+!chibi ascalon
+!chibi base
+!chibi sit
+set_user NAC16
+!chibi enemy NAC16
+set_user D1
+!chibi enemy D1
+set_user sui-xiang
+!chibi enemy sui-xiang
+set_user bigsadlock
+!chibi enemy big sad lock
+set_user blaze
+!chibi blaze
+!chibi battle
+set_user akafuyu
+!chibi akafuyu
+!chibi epoque
+!chibi battle
+set_user ling
+!chibi ling
+!chibi battle
+set_user S1
+!chibi enemy S1

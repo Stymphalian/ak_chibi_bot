@@ -58,7 +58,7 @@ func NewContext(authToken string) *Context {
 
 	weirdEnemeyIds := map[string]bool{
 		// Flying enemies with weird y positions
-		"enemy_1005_yokai":    true,
+		"enemy_1005_yokai":    true, // D1
 		"enemy_1005_yokai_2":  true,
 		"enemy_1005_yokai_3":  true,
 		"enemy_1040_bombd":    true,
@@ -71,7 +71,7 @@ func NewContext(authToken string) *Context {
 		"enemy_1188_krgdrn_2": true,
 		"enemy_1269_nhfly":    true,
 		"enemy_1269_nhfly_2":  true,
-		"enemy_1321_wdarft":   true,
+		"enemy_1321_wdarft":   true, // NAC16
 		"enemy_1321_wdarft_2": true,
 		"enemy_4002_syokai":   true,
 		"enemy_4002_syokai_2": true,

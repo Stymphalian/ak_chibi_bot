@@ -106,6 +106,7 @@ import { Camera } from "../webgl/Camera";
 
 		// The extra scaling to be applied to the all the chibis
 		chibiScale: number
+		useAccurateBoundingBox: boolean
 	}
 
 	class Slider {
@@ -249,6 +250,7 @@ import { Camera } from "../webgl/Camera";
 			if (!config.textFont) config.textFont = "lato";
 			if (!config.cameraPerspectiveNear) config.cameraPerspectiveNear = 1.0;
 			if (!config.cameraPerspectiveFar) config.cameraPerspectiveFar = 1000.0;
+			if (!config.useAccurateBoundingBox) config.useAccurateBoundingBox = false;
 			return config;
 		}
 
@@ -380,7 +382,16 @@ import { Camera } from "../webgl/Camera";
 				// // <canvas id="spine-canvas-off" class="spine-player-canvas-off"></canvas>
 				// let offCanvas = findWithId(dom, "spine-canvas-off")[0] as HTMLCanvasElement;
 				// this.offscreenRender = new OffscreenRender(this.playerConfig.chibiScale, offCanvas);
-				this.offscreenRender = new OffscreenRender();
+				if (this.playerConfig.useAccurateBoundingBox) {
+					this.offscreenRender = new OffscreenRender();	
+					this.assetManager = new AssetManager(
+						[this.context, this.offscreenRender.offscreenContext]
+					);	
+				} else {
+					this.offscreenRender = null;
+					this.assetManager = new AssetManager([this.context]);	
+				}
+				
 			} catch (e) {
 				// this.showError("Sorry, your browser does not support WebGL.<br><br>Please use the latest version of Firefox, Chrome, Edge, or Safari.");
 				console.log("Sorry, your browser does not support WebGL.<br><br>Please use the latest version of Firefox, Chrome, Edge, or Safari.");
@@ -393,12 +404,7 @@ import { Camera } from "../webgl/Camera";
 				this.playerConfig.cameraPerspectiveNear,
     			this.playerConfig.cameraPerspectiveFar,
 				this.playerConfig.viewport
-			);
-
-			// Load the assets
-			this.assetManager = new AssetManager(
-				[this.context, this.offscreenRender.offscreenContext]
-			);
+			);			
 
 			// Setup rendering loop
 			this.lastRequestAnimationFrameId = requestAnimationFrame(() => this.drawFrame());

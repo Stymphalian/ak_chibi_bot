@@ -7,6 +7,7 @@ export interface RuntimeConfig {
     height: number
     debugMode: boolean
     chibiScale: number
+    accurateBoundingBoxFlag: boolean
 }
 
 export class Runtime {
@@ -58,6 +59,7 @@ export class Runtime {
                 textFont: "lato",
                 runtimeDebugInfoDumpIntervalSec: 60,
                 chibiScale: this.runtimeConfig.chibiScale,
+                useAccurateBoundingBox: this.runtimeConfig.accurateBoundingBoxFlag,
 
                 cameraPerspectiveNear: 1,
                 cameraPerspectiveFar: 2000,

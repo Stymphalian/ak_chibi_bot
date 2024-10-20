@@ -1,3 +1,4 @@
+import { RuntimeConfig } from "./runtime";
 
 export function setContainerSizeFromQuery(searchParams: URLSearchParams) {
     let containerWidth = searchParams.has('width')
@@ -27,14 +28,16 @@ export function setContainerSizeFromQuery(searchParams: URLSearchParams) {
     return [containerWidth, containerHeight];
 }
 
-export function getRuntimeConfigFromQueryParams(searchParams: URLSearchParams) {
+export function getRuntimeConfigFromQueryParams(searchParams: URLSearchParams): RuntimeConfig {
     const debugMode = searchParams.get('debug') === 'true';
+    const useAccurateBoundingBox = searchParams.get('accurate_bb') === 'true';
     const scale = Math.max(Math.min((parseFloat(searchParams.get('scale')) || 1), 3), 0.1);
     const [containerWidth, containerHeight] = setContainerSizeFromQuery(searchParams);
     return {
         width: containerWidth,
         height: containerHeight,
         debugMode: debugMode,
-        chibiScale: scale
+        chibiScale: scale,
+        accurateBoundingBoxFlag: useAccurateBoundingBox
     }
 }

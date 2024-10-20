@@ -49,6 +49,9 @@ export class OffscreenRender {
         // width/height information
         this.offscreenCanvas.width = defaultBB.width + (2 * Math.abs(defaultBB.x));
         this.offscreenCanvas.height = defaultBB.height + defaultBB.height + (2*Math.abs(defaultBB.y));
+        if (this.offscreenCanvas.height > 3000) {
+            this.offscreenCanvas.height = 3000;
+        }
         this.offscreenSceneRenderer.resize(ResizeMode.Expand);
 
         let viewport = {
@@ -112,8 +115,8 @@ export class OffscreenRender {
         size.y = maxY - minY;
 
         actor.canvasBBCalculated += 1;
-        // console.log("actor canvasBBCalculated", actor.config.userDisplayName, actor.canvasBBCalculated);
-        // console.log(offset, size, minX, maxX, minY, maxY);
+        console.log("actor canvasBBCalculated", actor.config.userDisplayName, actor.canvasBBCalculated);
+        console.log(offset, size, minX, maxX, minY, maxY);
         return {
             x: offset.x,
             y: offset.y,

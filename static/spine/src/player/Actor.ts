@@ -153,7 +153,7 @@ import { OffscreenRender } from "./Utils"
 		public viewport: BoundingBox = null;
 		public canvasBB: BoundingBox = null;
 		public canvasBBCalculated:number = 0;
-		private offscreenRender: OffscreenRender = null;
+		private offscreenRender: OffscreenRender|null = null;
 
 		// Velocity is in world coordinates (pixels/second)
 		// TODO: Abstract out this position/movement/speed data into a seperate class
@@ -179,7 +179,7 @@ import { OffscreenRender } from "./Utils"
 		public loadedWhen: number = new Date().getTime();
 		
 
-		constructor(config: SpineActorConfig, viewport: BoundingBox, offscreenRender: OffscreenRender) {
+		constructor(config: SpineActorConfig, viewport: BoundingBox, offscreenRender: OffscreenRender|null) {
 			this.offscreenRender = offscreenRender;
 			this.loadedWhen = new Date().getTime();
 			this.viewport = viewport;
@@ -402,6 +402,9 @@ import { OffscreenRender } from "./Utils"
 		public IsEnemySprite(): boolean {
 			return this.config.chibiId.startsWith("enemy_");
 		}
+		public IsOperatorSprite(): boolean {
+			return !this.IsEnemySprite();
+		}
 		public IsOperatorSitting(): boolean {
 			let animations = this.GetAnimations();
 			return (
@@ -528,8 +531,30 @@ import { OffscreenRender } from "./Utils"
 			let size =   new Vector2();
 			this.skeleton.getBounds(offset, size);
 			let defaultBB = {x: offset.x, y: offset.y, width: size.x, height: size.y};
-			let bb = this.offscreenRender.getBoundingBox(this, defaultBB);
-
+			let bb = defaultBB;
+			if (this.offscreenRender) {
+				bb = this.offscreenRender.getBoundingBox(this, defaultBB);
+			} else {
+				// HACK!!!!:
+				// fixes for certain chibis
+				// Normal chibi height is 200px at a scale of 0.45
+				let normalScale = (200/0.45)*this.config.scaleX;
+				if (this.IsOperatorSprite()) {
+					if (Math.abs(bb.y) > normalScale) {
+						bb.y = 0;
+					}
+					if (bb.height > normalScale) {
+						bb.height = normalScale;
+					}
+					if (bb.width > normalScale) {
+						bb.width = normalScale;
+					}
+				} else if (this.IsEnemySprite()) {
+					if (Math.abs(bb.y) > normalScale) {
+				}
+				
+			}
+			
 			this.skeleton.x = savedX;
 			this.skeleton.y = savedY;
 			this.setPositionZ(savedZ);
@@ -539,4 +564,4 @@ import { OffscreenRender } from "./Utils"
 			return bb;
 		}
 	}
-//  }
+ }
