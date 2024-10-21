@@ -10,6 +10,7 @@ services:
       target: development
     ports:
       - "8080:8080"
+      - "4000:4000"
     environment:
       - DATABASE_USER=web_user
       - DATABASE_DB=akdb

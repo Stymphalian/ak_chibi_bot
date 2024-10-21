@@ -156,9 +156,12 @@ func (c *ChibiActor) HandleMessage(msg chat.ChatMessage) (string, error) {
 		cu.SetLastChatTime(misc.Clock.Now())
 	}
 	c.lastChatterTime = misc.Clock.Now()
-	if msg.Message[0] != '!' {
+	if len(msg.Message) == 0 {
 		return "", nil
 	}
+	// if msg.Message[0] != '!' {
+	// 	return "", nil
+	// }
 
 	current, err := c.CurrentInfo(ctx, msg.Username)
 	if err != nil {
@@ -230,6 +233,18 @@ func (c *ChibiActor) GetUserPreferences(ctx context.Context, userInfo misc.UserI
 		return nil, nil
 	}
 	return &val.OperatorInfo, nil
+}
+
+func (c *ChibiActor) ShowMessage(ctx context.Context, userInfo misc.UserInfo, msg string) error {
+	_, ok := c.ChatUsers[userInfo.Username]
+	if !ok {
+		return nil
+	}
+	_, err := c.client.ShowChatMessage(&spine.ShowChatMessageRequest{
+		UserName: userInfo.Username,
+		Message:  msg,
+	})
+	return err
 }
 
 func (c *ChibiActor) UpdateChatter(

@@ -87,3 +87,7 @@ func (f *FakeChibiActor) UpdateChatter(
 	f.Users[username] = *update
 	return nil
 }
+
+func (c *FakeChibiActor) ShowMessage(ctx context.Context, userInfo misc.UserInfo, msg string) error {
+	return nil
+}

@@ -29,7 +29,7 @@ type ChatArgs struct {
 
 func (c *ChatCommandProcessor) HandleMessage(current *operator.OperatorInfo, chatMsg ChatMessage) (ChatCommand, error) {
 	if !strings.HasPrefix(chatMsg.Message, "!chibi") {
-		return &ChatCommandNoOp{}, nil
+		return c.ShowChatMessage(&chatMsg)
 	}
 	if len(chatMsg.Message) >= 100 {
 		return &ChatCommandNoOp{}, nil
@@ -625,5 +625,15 @@ func (c *ChatCommandProcessor) setClearUserPrefs(
 		twitchUserId:    args.chatMsg.TwitchUserId,
 		action:          ChatCommandSaveChibi_Remove,
 		update:          nil,
+	}, nil
+}
+
+func (c *ChatCommandProcessor) ShowChatMessage(chatMsg *ChatMessage) (ChatCommand, error) {
+	return &ChatCommandShowMessage{
+		replyMessage:    "",
+		username:        chatMsg.Username,
+		usernameDisplay: chatMsg.UserDisplayName,
+		twitchUserId:    chatMsg.TwitchUserId,
+		message:         chatMsg.Message,
 	}, nil
 }

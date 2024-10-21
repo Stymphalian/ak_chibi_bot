@@ -23,6 +23,7 @@ type ActorUpdater interface {
 	UpdateChibi(ctx context.Context, userInfo misc.UserInfo, update *operator.OperatorInfo) error
 	SaveUserPreferences(ctx context.Context, userInfo misc.UserInfo, update *operator.OperatorInfo) error
 	ClearUserPreferences(ctx context.Context, userInfo misc.UserInfo) error
+	ShowMessage(ctx context.Context, userInfo misc.UserInfo, msg string) error
 }
 
 type ChatCommand interface {

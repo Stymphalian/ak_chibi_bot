@@ -357,5 +357,36 @@ func (s *SpineBridge) RemoveOperator(r *RemoveOperatorRequest) (*RemoveOperatorR
 	return successResp, nil
 }
 
+func (s *SpineBridge) ShowChatMessage(r *ShowChatMessageRequest) (*ShowChatMessageResponse, error) {
+	if s.clientConnected() {
+		data := ShowChatMessageInternalRequest{
+			BridgeRequest: BridgeRequest{
+				TypeName: SHOW_CHAT_MESSAGE,
+			},
+			UserName: r.UserName,
+			// WARNING: This is unsanitized input we are sending to the FE
+			// Should be fine because we never render this message in the DOM
+			// and only directly as text in the TextCanvas
+			Message: r.Message,
+		}
+		// data_json, _ := json.Marshal(data)
+		// log.Println("ShowChatMessage() sending: ", string(data_json))
+		for _, websocketConn := range s.WebSocketConnections {
+			if websocketConn.conn != nil {
+				websocketConn.conn.WriteJSON(data)
+			}
+		}
+	}
+
+	successResp := &ShowChatMessageResponse{
+		BridgeResponse: BridgeResponse{
+			TypeName:   SHOW_CHAT_MESSAGE,
+			ErrorMsg:   "",
+			StatusCode: 200,
+		},
+	}
+	return successResp, nil
+}
+
 // ----------------------------
 // End Spine Client Interface functions

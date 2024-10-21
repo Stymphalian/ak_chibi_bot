@@ -105,3 +105,22 @@ func (c *ChatCommandSavePrefs) UpdateActor(a ActorUpdater) error {
 		return a.ClearUserPreferences(ctx, ui)
 	}
 }
+
+type ChatCommandShowMessage struct {
+	replyMessage    string
+	username        string
+	usernameDisplay string
+	twitchUserId    string
+	message         string
+}
+
+func (c *ChatCommandShowMessage) Reply(a ActorUpdater) string { return c.replyMessage }
+func (c *ChatCommandShowMessage) UpdateActor(a ActorUpdater) error {
+	ctx := context.Background()
+	ui := misc.UserInfo{
+		Username:        c.username,
+		UsernameDisplay: c.usernameDisplay,
+		TwitchUserId:    c.twitchUserId,
+	}
+	return a.ShowMessage(ctx, ui, c.message)
+}

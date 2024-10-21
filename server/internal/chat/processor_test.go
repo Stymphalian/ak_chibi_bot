@@ -100,6 +100,9 @@ func (f *FakeActorUpdater) SaveUserPreferences(ctx context.Context, userInfo mis
 func (f *FakeActorUpdater) ClearUserPreferences(ctx context.Context, userInfo misc.UserInfo) error {
 	return nil
 }
+func (f *FakeActorUpdater) ShowMessage(ctx context.Context, userInfo misc.UserInfo, msg string) error {
+	return nil
+}
 
 func setupCommandTest() (*operator.OperatorInfo, ActorUpdater, *ChatCommandProcessor) {
 	current := operator.NewOperatorInfo(

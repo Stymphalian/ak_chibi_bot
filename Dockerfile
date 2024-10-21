@@ -15,18 +15,25 @@ COPY ./static/web_app/build /ak_chibi_assets/web_app/build
 FROM base AS development
 
 # Install npm and typescript
-RUN apt-get update
-RUN apt-get -y install zip
-RUN mkdir -p /node
-RUN cd /node
-RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
-RUN export NVM_DIR="$HOME/.nvm" && \. $NVM_DIR/nvm.sh && nvm install node && npm install typescript -g
+# RUN apt-get update
+# RUN apt-get -y install zip
+# RUN mkdir -p /node
+# RUN cd /node
+# RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
+# RUN export NVM_DIR="$HOME/.nvm" && \. $NVM_DIR/nvm.sh && nvm install node && npm install typescript -g
 RUN go install github.com/air-verse/air@6403f4d1e069e4a6eeb49639c8cafb168c28a523
 
 WORKDIR /app
 COPY go.mod go.sum ./
 RUN go mod download && go mod verify
 CMD ["air"]
+
+## DEBUG
+## -----------------
+FROM development as debug
+WORKDIR /app
+RUN CGO_ENABLED=0 go install -ldflags "-s -w -extldflags '-static'" github.com/go-delve/delve/cmd/dlv@latest
+CMD ["air", "-c", ".air-debug.toml"]
 
 ## BUILDER
 # docker build -t ak-chibi-bot --target builder .

@@ -38,3 +38,13 @@ func (f *FakeSpineClient) RemoveOperator(r *RemoveOperatorRequest) (*RemoveOpera
 		},
 	}, nil
 }
+
+func (f *FakeSpineClient) ShowChatMessage(r *ShowChatMessageRequest) (*ShowChatMessageResponse, error) {
+	return &ShowChatMessageResponse{
+		BridgeResponse: BridgeResponse{
+			TypeName:   SHOW_CHAT_MESSAGE,
+			ErrorMsg:   "",
+			StatusCode: 200,
+		},
+	}, nil
+}

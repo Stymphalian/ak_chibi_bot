@@ -320,3 +320,19 @@ func TestChibiActor_ClearUserPreferences_HappyPath(t *testing.T) {
 	assert.Nil(err)
 	assert.Nil(saved)
 }
+
+func TestChibiActor_ShowMessage(t *testing.T) {
+	assert := assert.New(t)
+	sut := setupActorTest()
+	ctx := context.TODO()
+	username := "test-chibi-actor-5"
+	userinfo := misc.UserInfo{
+		Username:        username,
+		UsernameDisplay: "display-" + username,
+		TwitchUserId:    "twitch-" + username,
+	}
+	sut.usersRepo.GetOrInsertUser(context.TODO(), userinfo)
+
+	err := sut.ShowMessage(ctx, userinfo, "test message")
+	assert.Nil(err)
+}
