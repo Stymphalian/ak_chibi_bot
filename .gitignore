@@ -18,6 +18,8 @@ server/server_linux
 server/server_win386.exe
 server/*.exe
 static/public/test_csrf
+static/spine/dist/
+static/web_app/build/
 
 db/certs/
 
