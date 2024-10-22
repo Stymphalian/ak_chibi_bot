@@ -13,7 +13,8 @@ const (
 	REMOVE_OPERATOR   = "REMOVE_OPERATOR"
 	SHOW_CHAT_MESSAGE = "SHOW_CHAT_MESSAGE"
 	// Response Type Strings
-	RUNTIME_DEBUG_UPDATE = "RUNTIME_DEBUG_UPDATE"
+	RUNTIME_DEBUG_UPDATE  = "RUNTIME_DEBUG_UPDATE"
+	RUNTIME_ROOM_SETTINGS = "RUNTIME_ROOM_SETTINGS"
 )
 
 type BridgeRequest struct {
@@ -80,6 +81,11 @@ type ShowChatMessageResponse struct {
 type RuntimeDebugUpdateRequest struct {
 	TypeName   string  `json:"type_name"`
 	AverageFps float64 `json:"average_fps"`
+}
+
+type RuntimeRoomSettingsRequest struct {
+	BridgeRequest
+	ShowChatMessages bool `json:"show_chat_messages"`
 }
 
 type ChatterInfo struct {

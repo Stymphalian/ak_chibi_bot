@@ -31,6 +31,7 @@ export function setContainerSizeFromQuery(searchParams: URLSearchParams) {
 export function getRuntimeConfigFromQueryParams(searchParams: URLSearchParams): RuntimeConfig {
     const debugMode = searchParams.get('debug') === 'true';
     const useAccurateBoundingBox = searchParams.get('accurate_bb') === 'true';
+    const showChatMessages = searchParams.get('show_chat') === 'true';
     const scale = Math.max(Math.min((parseFloat(searchParams.get('scale')) || 1), 3), 0.1);
     const [containerWidth, containerHeight] = setContainerSizeFromQuery(searchParams);
     return {
@@ -38,6 +39,7 @@ export function getRuntimeConfigFromQueryParams(searchParams: URLSearchParams): 
         height: containerHeight,
         debugMode: debugMode,
         chibiScale: scale,
-        accurateBoundingBoxFlag: useAccurateBoundingBox
+        accurateBoundingBoxFlag: useAccurateBoundingBox,
+        showChatMessagesFlag: showChatMessages,
     }
 }

@@ -42,6 +42,7 @@ type Room struct {
 	nextGarbageCollectionTime time.Time
 	isClosed                  bool
 	removeRoomCh              chan string
+	removalFns                []func()
 }
 
 func NewRoom(
@@ -54,7 +55,7 @@ func NewRoom(
 	spineRuntime spine.SpineRuntime,
 	chibiActor *chibi.ChibiActor,
 	chatBots []chatbot.ChatBotter,
-	removeRoomCh chan string) *Room {
+	removeRoomCh chan string) (*Room, error) {
 	r := &Room{
 		roomId:          roomId,
 		channelName:     chanelName,
@@ -69,7 +70,14 @@ func NewRoom(
 		isClosed:        false,
 		removeRoomCh:    removeRoomCh,
 	}
-	return r
+
+	removeFn, err := spineRuntime.AddListenerToClientRequests(r.handleClientWebsocketRequests)
+	if err != nil {
+		return nil, err
+	}
+	r.removalFns = append(r.removalFns, removeFn)
+
+	return r, nil
 }
 
 func (r *Room) GetChannelName() string {
@@ -307,4 +315,7 @@ func (r *Room) RefreshConfigs(ctx context.Context) error {
 	}
 	r.operatorService.SetConfig(newConfig)
 	return nil
+}
+
+func (r *Room) handleClientWebsocketRequests(connectionName string, typeName string, message []byte) {
 }

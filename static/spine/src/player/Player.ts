@@ -107,6 +107,7 @@ import { Camera } from "../webgl/Camera";
 		// The extra scaling to be applied to the all the chibis
 		chibiScale: number
 		useAccurateBoundingBox: boolean
+		showChatMessages: boolean
 	}
 
 	class Slider {
@@ -236,6 +237,7 @@ import { Camera } from "../webgl/Camera";
 
 		setWebsocket(webSocket: WebSocket) {
 			this.webSocket = webSocket;
+			this.setShowChatMessagesInRoom(this.playerConfig.showChatMessages);
 		}
 
 		validatePlayerConfig(config: SpinePlayerConfig): SpinePlayerConfig {
@@ -251,6 +253,7 @@ import { Camera } from "../webgl/Camera";
 			if (!config.cameraPerspectiveNear) config.cameraPerspectiveNear = 1.0;
 			if (!config.cameraPerspectiveFar) config.cameraPerspectiveFar = 1000.0;
 			if (!config.useAccurateBoundingBox) config.useAccurateBoundingBox = false;
+			if (!config.showChatMessages) config.showChatMessages = false;
 			return config;
 		}
 
@@ -458,6 +461,16 @@ import { Camera } from "../webgl/Camera";
 			this.windowFpsFrameCount = 0;
 		}
 
+		setShowChatMessagesInRoom(showChatMessages: boolean) {
+			if (this.webSocket != null) {
+				const payload = JSON.stringify({
+					type_name: "RUNTIME_ROOM_SETTINGS",
+					show_chat_messages: showChatMessages
+				})
+				this.webSocket.send(payload);
+			}
+		}
+
 		addActorToUpdateQueue(actorName: string, config: SpineActorConfig) {
 			this.actorQueue.push({actorName: actorName, config: config});
 			if (this.actorQueueIndex == null) {
@@ -466,7 +479,7 @@ import { Camera } from "../webgl/Camera";
 		}
 		
 		private consumeActorUpdateQueue() {
-			console.log("actorUpdateQueue: ", this.actorQueue.length);
+			// console.log("actorUpdateQueue: ", this.actorQueue.length);
 			if (this.actorQueue.length == 0) {
 				this.actorQueueIndex = null;
 				return;
@@ -768,7 +781,7 @@ import { Camera } from "../webgl/Camera";
 
 		public drawActorText(actor: Actor) {
 			let chatMessages = actor.GetChatMessages();
-			if (chatMessages) {
+			if (chatMessages && this.playerConfig.showChatMessages) {
 				this.drawText(
 					chatMessages.messages,
 					actor.getPositionX(),

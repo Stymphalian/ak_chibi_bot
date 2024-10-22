@@ -115,8 +115,8 @@ export class OffscreenRender {
         size.y = maxY - minY;
 
         actor.canvasBBCalculated += 1;
-        console.log("actor canvasBBCalculated", actor.config.userDisplayName, actor.canvasBBCalculated);
-        console.log(offset, size, minX, maxX, minY, maxY);
+        // console.log("actor canvasBBCalculated", actor.config.userDisplayName, actor.canvasBBCalculated);
+        // console.log(offset, size, minX, maxX, minY, maxY);
         return {
             x: offset.x,
             y: offset.y,

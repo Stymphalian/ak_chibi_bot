@@ -8,6 +8,7 @@ export interface RuntimeConfig {
     debugMode: boolean
     chibiScale: number
     accurateBoundingBoxFlag: boolean
+    showChatMessagesFlag: boolean
 }
 
 export class Runtime {
@@ -59,10 +60,10 @@ export class Runtime {
                 textFont: "lato",
                 runtimeDebugInfoDumpIntervalSec: 60,
                 chibiScale: this.runtimeConfig.chibiScale,
-                useAccurateBoundingBox: this.runtimeConfig.accurateBoundingBoxFlag,
-
                 cameraPerspectiveNear: 1,
                 cameraPerspectiveFar: 2000,
+                useAccurateBoundingBox: this.runtimeConfig.accurateBoundingBoxFlag,
+                showChatMessages: this.runtimeConfig.showChatMessagesFlag,
             };
 
             console.log("Creating a new spine player");

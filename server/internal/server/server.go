@@ -254,6 +254,14 @@ func (s *MainServer) HandleRoom(w http.ResponseWriter, r *http.Request) error {
 			extraQueryArgs += fmt.Sprintf("&scale=%d", chibiScaleInt)
 		}
 	}
+	accurateBoundingBoxes := r.URL.Query().Get("accurate_bb")
+	if accurateBoundingBoxes == "true" {
+		extraQueryArgs += "&accurate_bb=true"
+	}
+	showChatFlag := r.URL.Query().Get("show_chat")
+	if showChatFlag == "true" {
+		extraQueryArgs += "&show_chat=true"
+	}
 
 	err := s.roomManager.CreateRoomOrNoOp(r.Context(), channelName)
 	if err != nil {

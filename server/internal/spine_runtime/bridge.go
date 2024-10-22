@@ -20,11 +20,12 @@ type WebSocketDebufInfo struct {
 	AverageFps *misc.RollingArray[float64]
 }
 type WebSocketConn struct {
-	connectionName string
-	conn           *websocket.Conn
-	done           chan struct{}
-	remove         bool
-	DebugInfo      *WebSocketDebufInfo
+	connectionName   string
+	conn             *websocket.Conn
+	done             chan struct{}
+	remove           bool
+	DebugInfo        *WebSocketDebufInfo
+	SendChatMsgsFlag bool
 }
 
 type SpineBridge struct {
@@ -145,11 +146,24 @@ func (s *SpineBridge) handleResponseMessages(connectionId string, message []byte
 		var debugUpdateReq RuntimeDebugUpdateRequest
 		err := json.Unmarshal(message, &debugUpdateReq)
 		if err != nil {
+			log.Println(err)
 			return
 		}
 		if _, ok := s.WebSocketConnections[connectionId]; ok {
 			s.WebSocketConnections[connectionId].DebugInfo.AverageFps.Add(debugUpdateReq.AverageFps)
 		}
+	case RUNTIME_ROOM_SETTINGS:
+		var req RuntimeRoomSettingsRequest
+		err := json.Unmarshal(message, &req)
+		if err != nil {
+			log.Println(err)
+			return
+		}
+		if _, ok := s.WebSocketConnections[connectionId]; ok {
+			s.WebSocketConnections[connectionId].SendChatMsgsFlag = req.ShowChatMessages
+		}
+	default:
+		log.Printf("Unhandled message type: %s", typeName)
 	}
 
 	for _, listener := range s.clientResponseCallbackListeners {
@@ -187,6 +201,7 @@ func (s *SpineBridge) AddConnection(
 		DebugInfo: &WebSocketDebufInfo{
 			AverageFps: misc.NewRollingArray[float64](10),
 		},
+		SendChatMsgsFlag: false,
 	}
 	s.WebSocketConnections[connectionName] = websocketConn
 
@@ -372,7 +387,7 @@ func (s *SpineBridge) ShowChatMessage(r *ShowChatMessageRequest) (*ShowChatMessa
 		// data_json, _ := json.Marshal(data)
 		// log.Println("ShowChatMessage() sending: ", string(data_json))
 		for _, websocketConn := range s.WebSocketConnections {
-			if websocketConn.conn != nil {
+			if websocketConn.conn != nil && websocketConn.SendChatMsgsFlag {
 				websocketConn.conn.WriteJSON(data)
 			}
 		}

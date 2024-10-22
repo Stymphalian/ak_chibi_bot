@@ -13,12 +13,14 @@ import (
 )
 
 type ChatCommandProcessor struct {
-	spineService *operator.OperatorService
+	spineService        *operator.OperatorService
+	processChatMessages bool
 }
 
 func NewChatCommandProcessor(spineService *operator.OperatorService) *ChatCommandProcessor {
 	return &ChatCommandProcessor{
-		spineService: spineService,
+		spineService:        spineService,
+		processChatMessages: true,
 	}
 }
 
@@ -27,9 +29,17 @@ type ChatArgs struct {
 	args    []string
 }
 
+func (c *ChatCommandProcessor) SetProcessChatMessagesFlag(val bool) {
+	c.processChatMessages = val
+}
+
 func (c *ChatCommandProcessor) HandleMessage(current *operator.OperatorInfo, chatMsg ChatMessage) (ChatCommand, error) {
 	if !strings.HasPrefix(chatMsg.Message, "!chibi") {
-		return c.ShowChatMessage(&chatMsg)
+		if c.processChatMessages {
+			return c.ShowChatMessage(&chatMsg)
+		} else {
+			return &ChatCommandNoOp{}, nil
+		}
 	}
 	if len(chatMsg.Message) >= 100 {
 		return &ChatCommandNoOp{}, nil

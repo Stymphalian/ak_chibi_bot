@@ -205,7 +205,7 @@ func (r *RoomsManager) InsertRoom(roomDb *RoomDb) error {
 		return err
 	}
 	log.Println("Inserting room: ", roomDb.ChannelName)
-	room := NewRoom(
+	room, err := NewRoom(
 		roomDb.RoomId,
 		roomDb.ChannelName,
 		r.roomRepo,
@@ -217,6 +217,9 @@ func (r *RoomsManager) InsertRoom(roomDb *RoomDb) error {
 		chatBots,
 		r.removeRoomCh,
 	)
+	if err != nil {
+		return err
+	}
 
 	r.rooms_mutex.Lock()
 	r.Rooms[roomDb.ChannelName] = room
@@ -267,7 +270,7 @@ func (r *RoomsManager) CreateRoomOrNoOp(ctx context.Context, channel string) err
 		return err
 	}
 
-	roomObj := NewRoom(
+	roomObj, err := NewRoom(
 		roomDb.RoomId,
 		roomDb.ChannelName,
 		r.roomRepo,
@@ -279,6 +282,9 @@ func (r *RoomsManager) CreateRoomOrNoOp(ctx context.Context, channel string) err
 		chatBots,
 		r.removeRoomCh,
 	)
+	if err != nil {
+		return err
+	}
 	if isNew || roomWasInactive {
 		defaultOperatorName := r.botConfig.InitialOperator
 		defaultOperatorConfig := r.botConfig.OperatorDetails
