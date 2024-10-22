@@ -505,6 +505,14 @@ import { Camera } from "../webgl/Camera";
 			this.actors.delete(actorName)
 		}
 
+		showChatMessage(actorName: string, message: string) {
+			if (!this.actors.has(actorName)) {
+				return;
+			}
+			let actor = this.actors.get(actorName);
+			actor.EnqueueChatMessage(message);
+		}
+
 		setupActor(actor: Actor) {
 			let config = actor.config;
 
@@ -542,7 +550,7 @@ import { Camera } from "../webgl/Camera";
 			updateCameraSettings(cam, actor, viewport)
 		}
 
-		drawText(text: string, xpx: number, ypx: number) {
+		drawText(texts: string[], xpx: number, ypx: number) {
 			let viewport = this.playerConfig.viewport;
 			// TODO: I don't understand why this is worldToScreen.
 			let tt = this.sceneRenderer.camera.worldToScreen(
@@ -556,21 +564,59 @@ import { Camera } from "../webgl/Camera";
 			let ctx = this.textCanvasContext;
 			ctx.save();
 			ctx.translate(xpx, ypx);
-
 			ctx.font = this.playerConfig.textSize + "px " + this.playerConfig.textFont;
 			ctx.textBaseline = "bottom";
-			let data = ctx.measureText(text);
-			let height = data.actualBoundingBoxAscent - data.actualBoundingBoxDescent;
-			let width = data.width;
 
+			// Measure how much space is required for the speech bubble
+			let width = 0;
+			let height = 0;
+			let heights = [];
+			for (let i = 0; i < texts.length; i++) {
+				let data = ctx.measureText(texts[i]);
+				let h = data.actualBoundingBoxAscent - data.actualBoundingBoxDescent;
+				let w = data.width;
+				width = Math.max(width, w);
+				height += h;
+				heights.push(h);
+			}
+
+			// Draw a speech bubble box
 			ctx.beginPath();
-			let pad = 5;
+			let pad = 5
 			ctx.fillStyle = "black";
-			ctx.fillRect(-width/2 - pad, pad, width + 2*pad, -height - 2*pad);
+			ctx.strokeStyle = "#333";
+			ctx.lineWidth = 5;
+			ctx.roundRect(-width/2 - pad, pad, width + 2*pad, -height - 2*pad, 3);
+			ctx.stroke();
 			ctx.fill();
 
+			// Draw a small triangle below the rect
+			ctx.beginPath();
+			ctx.fillStyle="black"
+			ctx.moveTo(-5, pad);
+			ctx.lineTo(0, pad + 5);
+			ctx.lineTo(5, pad);
+			ctx.closePath();
+			ctx.fill();
+			// We want the border to blend in with the box and triangle
+			ctx.beginPath();
+			ctx.strokeStyle = "#333";
+			ctx.lineWidth = 2;
+			ctx.moveTo(-5, pad);
+			ctx.lineTo(0, pad + 5);
+			ctx.lineTo(5, pad);
+			ctx.stroke();
+			ctx.closePath();
+			
+			// Draw the text
 			ctx.fillStyle = "white";
-			ctx.fillText(text, -width/2, 0);
+			let y = -height;
+			for (let i = 0; i < texts.length; i++) {
+				y += heights[i];
+				let text = texts[i];
+				ctx.fillText(text, -width/2, y);	
+			}
+
 			ctx.restore();
 		}
 
@@ -679,15 +725,7 @@ import { Camera } from "../webgl/Camera";
 				this.sceneRenderer.drawSkeleton(actor.skeleton, actor.config.premultipliedAlpha);
 
 				// Render the user's name above the chibi
-				// TODO: Need to figure out if the actor.animViewport.y has any breaking changes
-				// The subtraction of animViewport is to account for the fact the 
-				// character could be sitting and we offset the actors.postion.y 
-				// to make them "sit" in the air.
-				this.drawText(
-					actor.config.userDisplayName,
-					actor.getPositionX(),
-					actor.getPositionY() + actor.GetUsernameHeaderHeight(),
-				)
+				this.drawActorText(actor);
 				this.sceneRenderer.end();
 
 				// Render the debug output with a fixed camera.
@@ -726,6 +764,23 @@ import { Camera } from "../webgl/Camera";
 				this.hideError();
 			}
 			this.windowFpsFrameCount += 1;
+		}
+
+		public drawActorText(actor: Actor) {
+			let chatMessages = actor.GetChatMessages();
+			if (chatMessages) {
+				this.drawText(
+					chatMessages.messages,
+					actor.getPositionX(),
+					actor.getPositionY() + actor.GetUsernameHeaderHeight(),
+				);
+			} else {
+				this.drawText(
+					[actor.config.userDisplayName],
+					actor.getPositionX(),
+					actor.getPositionY() + actor.GetUsernameHeaderHeight(),
+				);	
+			}
 		}
 
 

@@ -104,12 +104,14 @@ export class Runtime {
 
     messageHandler(event: MessageEvent) {
         let requestData = JSON.parse(event.data)
-        console.log("Message received: ", requestData);
-
         if (requestData["type_name"] == "SET_OPERATOR") {
+            console.log("Message received: ", requestData);
             this.swapCharacter(requestData)
         } else if (requestData["type_name"] == "REMOVE_OPERATOR") {
+            console.log("Message received: ", requestData);
             this.removeCharacter(requestData);
+        } else if (requestData["type_name"] == "SHOW_CHAT_MESSAGE")  {
+            this.showChatMessage(requestData);
         }
     }
 
@@ -203,6 +205,15 @@ export class Runtime {
     removeCharacter(requestData: any) {
         if (this.spinePlayer) {
             this.spinePlayer.removeActor(requestData["user_name"]);
+        }
+    }
+
+    showChatMessage(requestData: any) {
+        if (this.spinePlayer) {
+            this.spinePlayer.showChatMessage(
+                requestData["user_name"],
+                requestData["message"],
+            );
         }
     }
 }

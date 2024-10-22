@@ -36,6 +36,7 @@ import { ActorAction, ParseActionNameToAction } from "./Action"
 import { SpinePlayer, BoundingBox } from "./Player"
 import { Event } from "../core/Event"
 import { OffscreenRender } from "./Utils"
+import { ChatMessageQueue, MessageBlock } from "./ChatMessages"
 
 // // module spine {
 
@@ -177,7 +178,7 @@ import { OffscreenRender } from "./Utils"
 		// to keep a stable sort order when rendering actors. Actors created
 		// first should be rendered first, newer actors are rendered on top.
 		public loadedWhen: number = new Date().getTime();
-		
+		private messageQueue: ChatMessageQueue = new ChatMessageQueue();
 
 		constructor(config: SpineActorConfig, viewport: BoundingBox, offscreenRender: OffscreenRender|null) {
 			this.offscreenRender = offscreenRender;
@@ -360,6 +361,7 @@ import { OffscreenRender } from "./Utils"
 		}
 
 		public UpdatePhysics(deltaSecs: number, viewport: BoundingBox) {
+			this.messageQueue.Update(deltaSecs);
 			this.currentAction.UpdatePhysics(this, deltaSecs, viewport);
 			this.position.x += this.velocity.x;
 			this.position.y += this.velocity.y;
@@ -397,7 +399,7 @@ import { OffscreenRender } from "./Utils"
 		
 		public GetUsernameHeaderHeight() {
 			let renderBB = this.getRenderingBoundingBox();
-			return renderBB.height + renderBB.y + 20;
+			return renderBB.height + renderBB.y + 10;
 		}
 		public IsEnemySprite(): boolean {
 			return this.config.chibiId.startsWith("enemy_");
@@ -411,6 +413,13 @@ import { OffscreenRender } from "./Utils"
 				!this.IsEnemySprite()
 				&& animations[0].toLowerCase().includes("sit") 
 			);
+		}
+
+		public EnqueueChatMessage(message: string) {
+			this.messageQueue.AddMessage(message);
+		}
+		public GetChatMessages(): MessageBlock|null {
+			return this.messageQueue.GetCurrentMessageBlock();
 		}
 
 		// Privates
@@ -531,13 +540,23 @@ import { OffscreenRender } from "./Utils"
 			let size =   new Vector2();
 			this.skeleton.getBounds(offset, size);
 			let defaultBB = {x: offset.x, y: offset.y, width: size.x, height: size.y};
-			let bb = defaultBB;
-			if (this.offscreenRender) {
-				bb = this.offscreenRender.getBoundingBox(this, defaultBB);
+			let returnBB = {
+				x: defaultBB.x,
+				y: defaultBB.y,
+				width: defaultBB.width,
+				height: defaultBB.height
+			};
+			if (this.offscreenRender != null) {
+				let bb = this.offscreenRender.getBoundingBox(this, defaultBB);
+				returnBB.x = bb.x;
+				returnBB.y = bb.y;
+				returnBB.width = bb.width;
+				returnBB.height = bb.height;
 			} else {
 				// HACK!!!!:
 				// fixes for certain chibis
 				// Normal chibi height is 200px at a scale of 0.45
+				let bb = defaultBB;
 				let normalScale = (200/0.45)*this.config.scaleX;
 				if (this.IsOperatorSprite()) {
 					if (Math.abs(bb.y) > normalScale) {
@@ -551,8 +570,12 @@ import { OffscreenRender } from "./Utils"
 					}
 				} else if (this.IsEnemySprite()) {
 					if (Math.abs(bb.y) > normalScale) {
+					}
 				}
-				
+				returnBB.x = bb.x;
+				returnBB.y = bb.y;
+				returnBB.width = bb.width;
+				returnBB.height = bb.height;
 			}
 			
 			this.skeleton.x = savedX;
@@ -561,7 +584,6 @@ import { OffscreenRender } from "./Utils"
 			this.skeleton.scaleX = savedScaleX;
 			this.skeleton.scaleY = savedScaleY;
 
-			return bb;
+			return returnBB;
 		}
 	}
- }
