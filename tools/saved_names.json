@@ -32,6 +32,13 @@
         "Friston-3",
         "Friston 3"
     ],
+    "char_4136_phonor": [
+        "Phonor",
+        "Phonor-0",
+        "Logos Phone",
+        "Logos's Phone",
+        "PhonoR-0"
+    ],
     "char_502_nblade": [
         "Yato"
     ],
@@ -304,6 +311,13 @@
     ],
     "char_496_wildmn": [
         "Wild Mane"
+    ],
+    "char_1036_fang2": [
+        "Fang Alter",
+        "Fang 2",
+        "Fang2",
+        "Fang the Fire-Sharpened",
+        "Fang the Fire Sharpened"
     ],
     "char_401_elysm": [
         "Elysium"
@@ -779,6 +793,15 @@
     "char_391_rosmon": [
         "Rosmontis"
     ],
+    "char_1035_wisdel": [
+        "Wisadel",
+        "Wis'adel",
+        "Walter",
+        "W Alter",
+        "Walter White",
+        "Breaking Bad",
+        "Wiš'adel"
+    ],
     "char_1013_chen2": [
         "Chen Alter",
         "Ch'en Alter",
@@ -808,7 +831,8 @@
         "Vigil"
     ],
     "char_249_mlyss": [
-        "Muelsyse"
+        "Muelsyse",
+        "mumu"
     ],
     "char_4087_ines": [
         "Ines"
@@ -831,6 +855,9 @@
         "Holoheyak",
         "Hoolheyak",
         "Ho'loheyak"
+    ],
+    "char_4133_logos": [
+        "Logos"
     ],
     "char_2015_dusk": [
         "Dusk"
@@ -867,6 +894,12 @@
         "Skadi the Corrupting Heart",
         "Skadi2",
         "Skadi 2"
+    ],
+    "char_4134_cetsyr": [
+        "Civilight Eterna",
+        "Theresa",
+        "Civilight",
+        "Eterna"
     ],
     "char_1031_slent2": [
         "Silence Alter",
@@ -1097,11 +1130,11 @@
     "char_263_skadi": [
         "Skadi"
     ],
+    "char_1037_amiya3": [
+        "Medic Amiya"
+    ],
     "char_1001_amiya2": [
         "Guard Amiya",
         "Gaurd Amiya"
-    ],
-    "char_1037_amiya3": [
-        "Medic Amiya"
     ]
 }

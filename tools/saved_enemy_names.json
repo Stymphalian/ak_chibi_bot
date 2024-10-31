@@ -3220,6 +3220,84 @@
         "Deathveil Assassin",
         "UDF1"
     ],
+    "enemy_1422_lrsldr": [
+        "Sarkaz Wither Vanguard",
+        "NAC18"
+    ],
+    "enemy_1422_lrsldr_2": [
+        "Elite Sarkaz Wither Vanguard",
+        "NAC19"
+    ],
+    "enemy_1423_lrfkkt": [
+        "Sarkaz Wither Bulwark",
+        "NAC20"
+    ],
+    "enemy_1423_lrfkkt_2": [
+        "Sarkaz Wither Aegis",
+        "NAC21"
+    ],
+    "enemy_1424_lrboom": [
+        "Caustic Originium Slug",
+        "B13"
+    ],
+    "enemy_1424_lrboom_2": [
+        "Caustic Originium Slug α",
+        "Caustic Originium Slug a",
+        "Caustic Originium Slug alpha",
+        "B14"
+    ],
+    "enemy_1425_lrcmra": [
+        "Profane Chimera",
+        "ABS1"
+    ],
+    "enemy_1425_lrcmra_2": [
+        "Sacrilegious Chimera",
+        "ABS2"
+    ],
+    "enemy_1426_lrthef": [
+        "Sarkaz Altar Keeper",
+        "NAC22"
+    ],
+    "enemy_1426_lrthef_2": [
+        "Sarkaz Altar Nourisher",
+        "NAC23"
+    ],
+    "enemy_1427_lrnazg": [
+        "Sudaram",
+        "NAC24"
+    ],
+    "enemy_1427_lrnazg_2": [
+        "Putrefied Sudaram",
+        "NAC25"
+    ],
+    "enemy_1428_lrsoul": [
+        "Soul Maelstrom",
+        "ABS3"
+    ],
+    "enemy_1429_lrwzrd": [
+        "Focused Soul Remnant",
+        "ABS4"
+    ],
+    "enemy_1429_lrwzrd_2": [
+        "Prism Soul Remnant",
+        "ABS5"
+    ],
+    "enemy_1430_lrrook": [
+        "Chalice of Regret",
+        "ABS6"
+    ],
+    "enemy_1430_lrrook_2": [
+        "Chalice of Mortality",
+        "ABS7"
+    ],
+    "enemy_1431_lrmzrd": [
+        "Infused Soul Husk",
+        "ABS8"
+    ],
+    "enemy_1431_lrmzrd_2": [
+        "Penumbral Soul Husk",
+        "ABS9"
+    ],
     "enemy_3006_tersia": [
         "Theresa, King of Sarkaz",
         "THA1"
@@ -3548,6 +3626,14 @@
     "enemy_1552_mmamiy": [
         "Amiya",
         "THA2"
+    ],
+    "enemy_1553_lrdead": [
+        "Kindling Revenant",
+        "DS"
+    ],
+    "enemy_1554_lrtsia": [
+        "Theresa",
+        "THA3"
     ],
     "enemy_2003_rockman": [
         "Lost Colossus",
