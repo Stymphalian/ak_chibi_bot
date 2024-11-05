@@ -160,6 +160,7 @@ export class CanvasRecorder {
                 console.log("Stop manual recording");
                 event.target.innerText = "Record";
                 saveContext.recorder.stop();
+                saveContext.textRecorder.stop();
                 saveContext.removalFn();
                 saveContext = null;
             }
@@ -309,6 +310,8 @@ class SaveContext {
     public mimeType: string = 'video/mp4;codec=vp9';
     public chunks: Blob[] = [];
     public recorder: MediaRecorder;
+    public textChunks: Blob[] = [];
+    public textRecorder: MediaRecorder;
     public frameCount: number = 0;
 
     constructor(
@@ -324,7 +327,49 @@ class SaveContext {
         this.mimeType = mimeType;
     }
 
-    public startRecording(context: ManagedWebGLRenderingContext) {
+
+    public startTextRecording(textContext: CanvasRenderingContext2D) {
+        const mimetype = this.mimeType;
+        if (!MediaRecorder.isTypeSupported(mimetype)) {
+            console.log("Failed to start recording. unsupported file format", mimetype);
+            return;
+        }
+
+        if (this.setStatusFn) {
+            this.setStatusFn("Recording");
+        }
+
+        try {
+            const canvas = textContext.canvas as HTMLCanvasElement;
+            const chunks: Blob[] = []; // here we will store our recorded media chunks (Blobs)
+            const stream = canvas.captureStream(); // grab our canvas MediaStream
+            const rec = new MediaRecorder(stream, {
+                mimeType: mimetype,
+            }); // init the recorder
+
+            this.textChunks = chunks;
+            this.textRecorder = rec;
+
+            // every time the recorder has new data, we will store it in our array
+            rec.ondataavailable = e => chunks.push(e.data);
+            // only when the recorder stops, we construct a complete Blob from all the chunks
+            rec.onstop = e => {
+                this.saveBlobFn(
+                    new Blob(chunks, { type: mimetype }),
+                    "text-" + this.outputFilename
+                );
+                if (this.setStatusFn) {
+                    this.setStatusFn("Finished recording", true);
+                }
+            }
+            rec.onerror = (e) => console.log("MediaRecorder error", e);
+            rec.start();
+        } catch (e) {
+            console.log("Failed to start recording", e);
+        }
+    }
+
+    public startRecording(context: ManagedWebGLRenderingContext, textContext: CanvasRenderingContext2D) {
         const mimetype = this.mimeType;
         if (!MediaRecorder.isTypeSupported(mimetype)) {
             console.log("Failed to start recording. unsupported file format", mimetype);
@@ -363,9 +408,11 @@ class SaveContext {
         } catch (e) {
             console.log("Failed to start recording", e);
         }
+
+        this.startTextRecording(textContext);
     }
 
-    public renderCallback(context: ManagedWebGLRenderingContext) {
+    public renderCallback(context: ManagedWebGLRenderingContext, textContext: CanvasRenderingContext2D) {
         throw new Error("Method not implemented.");
     }
 }
@@ -378,10 +425,10 @@ class SaveContextDuration extends SaveContext {
         this.durationMs = numSeconds * 1000;
     }
 
-    public renderCallback(context: ManagedWebGLRenderingContext) {
+    public renderCallback(context: ManagedWebGLRenderingContext, textContext: CanvasRenderingContext2D) {
         if (this.frameCount == 0) {
             console.log("Start recording video");
-            this.startRecording(context);
+            this.startRecording(context, textContext);
             this.startTimeMsec = (new Date().getTime());
         }
 
@@ -392,6 +439,7 @@ class SaveContextDuration extends SaveContext {
             console.log("Finished recording video");
             this.removalFn();
             this.recorder.stop();
+            this.textRecorder.stop();
             return;
         }
     }
@@ -415,14 +463,14 @@ class SaveContextActor extends SaveContext {
         this.animationListener = null;
     }
 
-    public renderCallback(context: ManagedWebGLRenderingContext) {
+    public renderCallback(context: ManagedWebGLRenderingContext, textContext: CanvasRenderingContext2D) {
         if (this.state == SaveContextActorState.FIRST_RENDER_CALL) {
             this.animationListener = {
                 complete: (entry: TrackEntry) => {
                     if (this.state == SaveContextActorState.WAIT_FIRST_COMPLETE) {
                         console.log("start recording");
                         this.state = SaveContextActorState.WAIT_SECOND_COMPLETE;
-                        this.startRecording(context);
+                        this.startRecording(context, textContext);
                     } else if (this.state == SaveContextActorState.WAIT_SECOND_COMPLETE) {
                         this.state = SaveContextActorState.WAIT_LAST_FRAME;
                     }
@@ -447,14 +495,15 @@ class SaveContextActor extends SaveContext {
             this.actor.animationState.removeListener(this.animationListener);
             this.removalFn();
             this.recorder.stop();
+            this.textRecorder.stop();
         }
     }
 }
 
 class SaveContextManual extends SaveContext {
-    public renderCallback(context: ManagedWebGLRenderingContext) {
+    public renderCallback(context: ManagedWebGLRenderingContext, textContext: CanvasRenderingContext2D) {
         if (this.frameCount == 0) {
-            this.startRecording(context);
+            this.startRecording(context, textContext);
         }
         this.frameCount += 1;
     }

@@ -134,7 +134,7 @@ func (t *CliChatBot) ReadLoop() error {
 			}
 			chatMessage := chat.ChatMessage{
 				Username:        msg.Username,
-				UserDisplayName: "display-" + msg.Username,
+				UserDisplayName: msg.Username,
 				TwitchUserId:    "twitch-" + msg.Username,
 				Message:         msg.Message,
 			}

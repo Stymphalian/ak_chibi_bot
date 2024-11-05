@@ -182,7 +182,7 @@ import { Camera } from "../webgl/Camera";
 		}
 	}
 
-	type RenderCallbackFn = (context: ManagedWebGLRenderingContext) => void;
+	type RenderCallbackFn = (context: ManagedWebGLRenderingContext, textContext: CanvasRenderingContext2D) => void;
 	type RemoveCallbackFn = () => void;
 
 	export class SpinePlayer {
@@ -806,7 +806,7 @@ import { Camera } from "../webgl/Camera";
 
 		broadcastRenderCallback() {
 			for (let i = 0; i < this.renderCallbacks.length; i++) {
-				this.renderCallbacks[i](this.context);;
+				this.renderCallbacks[i](this.context, this.textCanvasContext);;
 			}
 		}
 
