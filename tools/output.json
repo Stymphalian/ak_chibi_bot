@@ -33,6 +33,10 @@
         "Friston 3"
     ],
     "char_4136_phonor": [
+        "Phonor",
+        "Phonor-0",
+        "Logos Phone",
+        "Logos's Phone",
         "PhonoR-0"
     ],
     "char_502_nblade": [
@@ -790,6 +794,12 @@
         "Rosmontis"
     ],
     "char_1035_wisdel": [
+        "Wisadel",
+        "Wis'adel",
+        "Walter",
+        "W Alter",
+        "Walter White",
+        "Breaking Bad",
         "Wiš'adel"
     ],
     "char_1013_chen2": [
@@ -821,7 +831,8 @@
         "Vigil"
     ],
     "char_249_mlyss": [
-        "Muelsyse"
+        "Muelsyse",
+        "mumu"
     ],
     "char_4087_ines": [
         "Ines"
@@ -885,7 +896,10 @@
         "Skadi 2"
     ],
     "char_4134_cetsyr": [
-        "Civilight Eterna"
+        "Civilight Eterna",
+        "Theresa",
+        "Civilight",
+        "Eterna"
     ],
     "char_1031_slent2": [
         "Silence Alter",
@@ -1116,11 +1130,11 @@
     "char_263_skadi": [
         "Skadi"
     ],
-    "char_1037_amiya3": [
-        "Medic Amiya"
-    ],
     "char_1001_amiya2": [
         "Guard Amiya",
         "Gaurd Amiya"
+    ],
+    "char_1037_amiya3": [
+        "Medic Amiya"
     ]
 }

@@ -3416,6 +3416,110 @@
         "Mobile Power Source",
         "MU5"
     ],
+    "enemy_4004_muvltr": [
+        "Supply Wagon",
+        "IB1"
+    ],
+    "enemy_4004_muvltr_2": [
+        "Soda POP! Supply Wagon",
+        "IB2"
+    ],
+    "enemy_4005_musqrl": [
+        "Musbeast Supplier",
+        "IB3"
+    ],
+    "enemy_4005_musqrl_2": [
+        "Big Brawn Musbeast Supplier",
+        "IB4"
+    ],
+    "enemy_4006_mumole": [
+        "Sandbeast Supplier",
+        "IB5"
+    ],
+    "enemy_4006_mumole_2": [
+        "Faircare Sandbeast Supplier",
+        "IB6"
+    ],
+    "enemy_4007_murino": [
+        "Burdenbeast Supplier",
+        "IB7"
+    ],
+    "enemy_4007_murino_2": [
+        "Timidthy Burdenbeast Supplier",
+        "IB8"
+    ],
+    "enemy_4008_mucat": [
+        "Hammer Supplier",
+        "IB9"
+    ],
+    "enemy_4008_mucat_2": [
+        "Rampage Hammer Supplier",
+        "IB10"
+    ],
+    "enemy_4009_murgby": [
+        "Ironhead Forward",
+        "IB11"
+    ],
+    "enemy_4009_murgby_2": [
+        "Charger Ironhead Forward",
+        "IB12"
+    ],
+    "enemy_4010_mubsbl": [
+        "Long-Armed Pitcher",
+        "IB13"
+    ],
+    "enemy_4010_mubsbl_2": [
+        "True Shot Long-Armed Pitcher",
+        "IB14"
+    ],
+    "enemy_4012_mumssi": [
+        "Field Shooter",
+        "IB17"
+    ],
+    "enemy_4012_mumssi_2": [
+        "Longshot Field Shooter",
+        "IB18"
+    ],
+    "enemy_4013_mubufn": [
+        "Field Goalie",
+        "IB19"
+    ],
+    "enemy_4013_mubufn_2": [
+        "Brain Barrier Field Goalie",
+        "IB20"
+    ],
+    "enemy_4014_mugnfu": [
+        "Field Bludgeoner",
+        "IB21"
+    ],
+    "enemy_4014_mugnfu_2": [
+        "Basher Field Bludgeoner",
+        "IB22"
+    ],
+    "enemy_4015_musucr": [
+        "RMA70 Spikeball",
+        "IB23"
+    ],
+    "enemy_4016_mubuln": [
+        "Fluffy Pink Balloon",
+        "IB24"
+    ],
+    "enemy_4017_muinbl": [
+        "Compressed Ball",
+        "IB25"
+    ],
+    "enemy_4018_muboom": [
+        "Infused Originium Ball",
+        "IB26"
+    ],
+    "enemy_4019_mugold": [
+        "Originite Prime Ball",
+        "IB27"
+    ],
+    "enemy_4020_muboun": [
+        "Perpetual Rebounder",
+        "IB28"
+    ],
     "enemy_1050_lslime": [
         "Pompeii",
         "UM1"

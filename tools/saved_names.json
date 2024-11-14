@@ -1130,11 +1130,11 @@
     "char_263_skadi": [
         "Skadi"
     ],
-    "char_1037_amiya3": [
-        "Medic Amiya"
-    ],
     "char_1001_amiya2": [
         "Guard Amiya",
         "Gaurd Amiya"
+    ],
+    "char_1037_amiya3": [
+        "Medic Amiya"
     ]
 }

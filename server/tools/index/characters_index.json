@@ -20729,6 +20729,45 @@
               ]
             }
           }
+        },
+        "marthe": {
+          "base": {
+            "Front": {
+              "atlas_filepath": "characters/char_376_therex/marthe#7/base/Front/build_char_376_therex_marthe#7.atlas",
+              "skel_filepath": "characters/char_376_therex/marthe#7/base/Front/build_char_376_therex_marthe#7.skel",
+              "png_filepath": "characters/char_376_therex/marthe#7/base/Front/build_char_376_therex_marthe#7.png",
+              "animations": [
+                "Default",
+                "Interact",
+                "Move",
+                "Relax",
+                "Special"
+              ]
+            }
+          },
+          "battle": {
+            "Back": {
+              "atlas_filepath": "characters/char_376_therex/marthe#7/battle/Back/char_376_therex_marthe#7.atlas",
+              "skel_filepath": "characters/char_376_therex/marthe#7/battle/Back/char_376_therex_marthe#7.skel",
+              "png_filepath": "characters/char_376_therex/marthe#7/battle/Back/char_376_therex_marthe#7.png",
+              "animations": [
+                "Default",
+                "Idle",
+                "Start"
+              ]
+            },
+            "Front": {
+              "atlas_filepath": "characters/char_376_therex/marthe#7/battle/Front/char_376_therex_marthe#7.atlas",
+              "skel_filepath": "characters/char_376_therex/marthe#7/battle/Front/char_376_therex_marthe#7.skel",
+              "png_filepath": "characters/char_376_therex/marthe#7/battle/Front/char_376_therex_marthe#7.png",
+              "animations": [
+                "Default",
+                "Die",
+                "Idle",
+                "Start"
+              ]
+            }
+          }
         }
       }
     },
