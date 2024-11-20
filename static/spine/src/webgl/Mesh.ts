@@ -97,7 +97,7 @@ import { ManagedWebGLRenderingContext } from "./WebGL";
 		}
 
 		draw (shader: Shader, primitiveType: number) {
-			this.drawWithOffset(shader, primitiveType, 0, this.indicesLength > 0? this.indicesLength: this.verticesLength / this.elementsPerVertex);
+			this.drawWithOffset(shader, primitiveType, 0, this.indicesLength > 0 ? this.indicesLength: this.verticesLength / this.elementsPerVertex);
 		}
 
 		drawWithOffset (shader: Shader, primitiveType: number, offset: number, count: number) {

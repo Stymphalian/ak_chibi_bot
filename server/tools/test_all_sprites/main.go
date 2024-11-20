@@ -56,7 +56,7 @@ func NewContext(authToken string) *Context {
 		"char_188_helage": true,
 	}
 
-	weirdEnemeyIds := map[string]bool{
+	weirdEnemyIds := map[string]bool{
 		// Flying enemies with weird y positions
 		"enemy_1005_yokai":    true, // D1
 		"enemy_1005_yokai_2":  true,
@@ -121,7 +121,7 @@ func NewContext(authToken string) *Context {
 		authToken:        authToken,
 		faction:          operator.FACTION_ENUM_OPERATOR,
 		weirdOperatorIds: weirdOperatorIds,
-		weirdEnemyIds:    weirdEnemeyIds,
+		weirdEnemyIds:    weirdEnemyIds,
 	}
 }
 

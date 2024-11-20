@@ -386,14 +386,11 @@ import { Camera } from "../webgl/Camera";
 				// let offCanvas = findWithId(dom, "spine-canvas-off")[0] as HTMLCanvasElement;
 				// this.offscreenRender = new OffscreenRender(this.playerConfig.chibiScale, offCanvas);
 				if (this.playerConfig.useAccurateBoundingBox) {
-					this.offscreenRender = new OffscreenRender();	
-					this.assetManager = new AssetManager(
-						[this.context, this.offscreenRender.offscreenContext]
-					);	
+					this.offscreenRender = new OffscreenRender(this.sceneRenderer);	
 				} else {
 					this.offscreenRender = null;
-					this.assetManager = new AssetManager([this.context]);	
 				}
+				this.assetManager = new AssetManager([this.context]);	
 				
 			} catch (e) {
 				// this.showError("Sorry, your browser does not support WebGL.<br><br>Please use the latest version of Firefox, Chrome, Edge, or Safari.");

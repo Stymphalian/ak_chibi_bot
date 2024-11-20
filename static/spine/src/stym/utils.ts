@@ -30,7 +30,7 @@ export function setContainerSizeFromQuery(searchParams: URLSearchParams) {
 
 export function getRuntimeConfigFromQueryParams(searchParams: URLSearchParams): RuntimeConfig {
     const debugMode = searchParams.get('debug') === 'true';
-    const useAccurateBoundingBox = searchParams.get('accurate_bb') === 'true';
+    const useAccurateBoundingBox = !(searchParams.get('accurate_bb') === 'false');
     const showChatMessages = searchParams.get('show_chat') === 'true';
     const scale = Math.max(Math.min((parseFloat(searchParams.get('scale')) || 1), 3), 0.1);
     const [containerWidth, containerHeight] = setContainerSizeFromQuery(searchParams);

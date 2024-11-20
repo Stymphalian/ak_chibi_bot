@@ -31,87 +31,141 @@ import { Texture, TextureFilter, TextureWrap } from "../core/Texture";
 import { Restorable, Disposable } from "../core/Utils";
 import { ManagedWebGLRenderingContext } from "./WebGL";
 
-// module spine.webgl {
-	export class GLTexture extends Texture implements Disposable, Restorable {
-		private context: ManagedWebGLRenderingContext;
-		private texture: WebGLTexture = null;
-		private boundUnit = 0;
-		private useMipMaps = false;
+export class GLTexture extends Texture implements Disposable, Restorable {
+	private context: ManagedWebGLRenderingContext;
+	public texture: WebGLTexture = null;
+	public textureWidth: number = 320;
+	public textureHeight: number = 320;
+	private boundUnit = 0;
+	private useMipMaps = false;
 
-		public static DISABLE_UNPACK_PREMULTIPLIED_ALPHA_WEBGL = false;
+	public static DISABLE_UNPACK_PREMULTIPLIED_ALPHA_WEBGL = false;
 
-		constructor (context: ManagedWebGLRenderingContext | WebGLRenderingContext, image: HTMLImageElement, useMipMaps: boolean = false) {
-			super(image);
-			this.context = context instanceof ManagedWebGLRenderingContext? context : new ManagedWebGLRenderingContext(context);
-			this.useMipMaps = useMipMaps;
-			this.restore();
-			this.context.addRestorable(this);
-		}
+	constructor (
+			context: ManagedWebGLRenderingContext | WebGLRenderingContext, 
+			image: HTMLImageElement|null,
+			useMipMaps: boolean = false,
+			width: number = 320,
+			height: number = 320,
+		) {
+		super(image);
+		this.context = context instanceof ManagedWebGLRenderingContext? context : new ManagedWebGLRenderingContext(context);
+		this.useMipMaps = useMipMaps;
 
-		setFilters (minFilter: TextureFilter, magFilter: TextureFilter) {
-			let gl = this.context.gl;
-			this.bind();
-			gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, minFilter);
-			gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, GLTexture.validateMagFilter(magFilter));
-		}
+		this.textureWidth = width;
+		this.textureHeight = height;
+		this.restore();
+		this.context.addRestorable(this);
+	}
 
-		static validateMagFilter (magFilter: TextureFilter) {
-			switch(magFilter) {
-				case TextureFilter.MipMap:
-				case TextureFilter.MipMapLinearLinear:
-				case TextureFilter.MipMapLinearNearest:
-				case TextureFilter.MipMapNearestLinear:
-				case TextureFilter.MipMapNearestNearest:
-					return TextureFilter.Linear;
-				default:
-					return magFilter;
-			}
-		}
+	setFilters (minFilter: TextureFilter, magFilter: TextureFilter) {
+		let gl = this.context.gl;
+		this.bind();
+		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, minFilter);
+		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, GLTexture.validateMagFilter(magFilter));
+	}
 
-		setWraps (uWrap: TextureWrap, vWrap: TextureWrap) {
-			let gl = this.context.gl;
-			this.bind();
-			gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, uWrap);
-			gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, vWrap);
-		}
-
-		update (useMipMaps: boolean) {
-			let gl = this.context.gl;
-			if (!this.texture) {
-				this.texture = this.context.gl.createTexture();
-			}
-			this.bind();
-			if (GLTexture.DISABLE_UNPACK_PREMULTIPLIED_ALPHA_WEBGL) gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, false);
-			gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, this._image);
-			gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
-			gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, useMipMaps ? gl.LINEAR_MIPMAP_LINEAR : gl.LINEAR);
-			gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
-			gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
-			if (useMipMaps) gl.generateMipmap(gl.TEXTURE_2D);
-		}
-
-		restore () {
-			this.texture = null;
-			this.update(this.useMipMaps);
-		}
-
-		bind (unit: number = 0) {
-			let gl = this.context.gl;
-			this.boundUnit = unit;
-			gl.activeTexture(gl.TEXTURE0 + unit);
-			gl.bindTexture(gl.TEXTURE_2D, this.texture);
-		}
-
-		unbind () {
-			let gl = this.context.gl;
-			gl.activeTexture(gl.TEXTURE0 + this.boundUnit);
-			gl.bindTexture(gl.TEXTURE_2D, null);
-		}
-
-		dispose () {
-			this.context.removeRestorable(this);
-			let gl = this.context.gl;
-			gl.deleteTexture(this.texture);
+	static validateMagFilter (magFilter: TextureFilter) {
+		switch(magFilter) {
+			case TextureFilter.MipMap:
+			case TextureFilter.MipMapLinearLinear:
+			case TextureFilter.MipMapLinearNearest:
+			case TextureFilter.MipMapNearestLinear:
+			case TextureFilter.MipMapNearestNearest:
+				return TextureFilter.Linear;
+			default:
+				return magFilter;
 		}
 	}
-// }
+
+	setWraps (uWrap: TextureWrap, vWrap: TextureWrap) {
+		let gl = this.context.gl;
+		this.bind();
+		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, uWrap);
+		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, vWrap);
+	}
+
+	update (useMipMaps: boolean) {
+		let gl = this.context.gl;
+		if (!this.texture) {
+			this.texture = this.context.gl.createTexture();
+		}
+		this.bind();
+		if (GLTexture.DISABLE_UNPACK_PREMULTIPLIED_ALPHA_WEBGL) gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, false);
+
+		if (this._image) {
+			gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, this._image);
+		} else {
+			// HACK:
+			// Allows us to reuse the GLTexture for offscreen framebuffer 
+			// rendering. This is used to allow us to render to a texture in 
+			// order to accurately calcualte bounding boxes.
+
+			// define size and format of level 0
+			const level = 0;
+			const internalFormat = gl.RGBA;
+			const border = 0;
+			const format = gl.RGBA;
+			const type = gl.UNSIGNED_BYTE;
+			// const data = null;
+			gl.texImage2D(gl.TEXTURE_2D, level, internalFormat,
+				this.textureWidth, this.textureHeight, border,
+				format, type, null);
+		}
+		
+		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, useMipMaps ? gl.LINEAR_MIPMAP_LINEAR : gl.LINEAR);
+		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+		if (useMipMaps) gl.generateMipmap(gl.TEXTURE_2D);
+	}
+
+	restore () {
+		this.texture = null;
+		this.update(this.useMipMaps);
+	}
+
+	bind (unit: number = 0) {
+		let gl = this.context.gl;
+		this.boundUnit = unit;
+		gl.activeTexture(gl.TEXTURE0 + unit);
+		gl.bindTexture(gl.TEXTURE_2D, this.texture);
+	}
+
+	unbind () {
+		let gl = this.context.gl;
+		gl.activeTexture(gl.TEXTURE0 + this.boundUnit);
+		gl.bindTexture(gl.TEXTURE_2D, null);
+	}
+
+	dispose () {
+		this.context.removeRestorable(this);
+		let gl = this.context.gl;
+		gl.deleteTexture(this.texture);
+	}
+
+	getTextureId() : WebGLTexture {
+		return this.texture;
+	}
+
+	resizeTexture(width: number, height:number) {
+		// HACK
+		// 
+		let gl = this.context.gl;
+		// define size and format of level 0
+		const level = 0;
+		const internalFormat = gl.RGBA;
+		const border = 0;
+		const format = gl.RGBA;
+		const type = gl.UNSIGNED_BYTE;
+		// const data = null;
+		this.textureWidth = width;
+		this.textureHeight = height;
+		this.bind();
+		gl.texImage2D(gl.TEXTURE_2D, level, internalFormat,
+			this.textureWidth, this.textureHeight, border,
+			format, type, null);
+		this.unbind();
+	}
+}
+
