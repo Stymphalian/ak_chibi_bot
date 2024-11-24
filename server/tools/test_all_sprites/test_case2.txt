@@ -1,5 +1,6 @@
 set_user user2
-!chibi walk
+!chibi enemy MZK
+!chibi walk 0.3 0.8
 set_user user3
 !chibi follow user2
 set_user user4

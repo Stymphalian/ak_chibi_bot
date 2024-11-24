@@ -185,6 +185,7 @@ func (c *Context) Run(opId string, skin string, stance operator.ChibiStanceEnum,
 	}
 }
 
+// go run main.go -assetDir ..\..\..\static\assets -authToken xxxxx
 func main() {
 	var err error
 	assetDir := flag.String("assetDir", "", "path to the assets")
@@ -206,6 +207,6 @@ func main() {
 	context := NewContext(*authToken)
 	context.faction = operator.FACTION_ENUM_OPERATOR
 	assetMap.Iterate(context.Run)
-	context.faction = operator.FACTION_ENUM_ENEMY
-	enemyAssetMap.Iterate(context.Run)
+	// context.faction = operator.FACTION_ENUM_ENEMY
+	// enemyAssetMap.Iterate(context.Run)
 }

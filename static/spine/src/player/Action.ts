@@ -42,30 +42,66 @@ export function ParseActionNameToAction(actionName: string, actionData: any): Ac
     }
 }
 
+
+const DIST_TOLERANCE = 0.0001;
+const DEBUG_HEIGHT_1 = 0.4;
+const DEBUG_HEIGHT_2 = 0.5;
+const DEBUG_HEIGHT_3 = 0.6;
+const DEBUG_HEIGHT_4 = 0.7;
+const DEBUG_HEIGHT_5 = 0.8;
+const DEBUG_HEIGHT_6 = 0.9;
+
+function getRandomPosition(currentPos: Vector3, viewport: BoundingBox): Vector3 {
+    let half = viewport.width / 2;
+    let rand = Math.random();
+    return new Vector3(rand * viewport.width - half, currentPos.y, currentPos.z);
+}
+
 function setActorYPositionByAnimation(actor: Actor, animation: string, viewport: BoundingBox) {
     const startPosYScaled = actor.config.startPosY * viewport.height;
     actor.setPositionY(startPosYScaled);
+    actor.setSkeletonPositionOffsetY(0);
     let isSitting = animation.toLowerCase().includes("sit")
 
     if (actor.canvasBB.y < 0) {
-        // There is some sprite above the axis
-        if (actor.IsEnemySprite()) {
-            actor.setPositionY(startPosYScaled - actor.canvasBB.y);
-        } else if (isSitting) {
-            actor.setPositionY(startPosYScaled - actor.canvasBB.y);
-        }
-    } else if (actor.canvasBB.y > 0) {
         // There is some sprite below the axis
         if (actor.IsEnemySprite()) {
-            actor.setPositionY(startPosYScaled - actor.canvasBB.y);
+            actor.setSkeletonPositionOffsetY(-actor.canvasBB.y);
+        } else if (isSitting) {
+            actor.setSkeletonPositionOffsetY(-actor.canvasBB.y);
+        }
+    } else if (actor.canvasBB.y > 0) {
+        // There is some sprite above the axis
+        if (actor.IsEnemySprite()) {
+            actor.setSkeletonPositionOffsetY(-actor.canvasBB.y);
         }
     }
 }
 
+function updateVelocityFromDir(actor: Actor, endPosition: Vector3, dir: Vector3, deltaSecs: number) {
+    let actorPosition = actor.getPosition3();
+    let step = actor.getMovementSpeed().scale(deltaSecs);
+    // Scale the distance of the next velocity so that we don't 
+    // overshoot the target position. Otherwise we can get into 
+    // cases where the actor has janky oscillating movement as it
+    // tries to reach endPosition
+    let stepDist = endPosition.subtract(actorPosition);
+    if (step.x > Math.abs(stepDist.x)) {
+        step.x = Math.abs(stepDist.x);
+    }
+    if (step.y > Math.abs(stepDist.y)) {
+        step.y = Math.abs(stepDist.y);
+    }
+    if (step.z > Math.abs(stepDist.z)) {
+        step.z = Math.abs(stepDist.z);
+    }
+    actor.setVelocity(dir.x * step.x, dir.y * step.y, dir.z * step.z);
+}
+
 export class PlayAnimationAction implements ActorAction {
     public actionData: any
-    public startPosition: Vector2
-    public endPosition: Vector2
+    public startPosition: Vector3
+    public endPosition: Vector3
     public currentAnimation: string
 
     constructor(actionData: any) {
@@ -74,15 +110,8 @@ export class PlayAnimationAction implements ActorAction {
         this.endPosition = null;
     }
 
-    getRandomPosition(currentPos: Vector2, viewport: BoundingBox): Vector2 {
-        let half = viewport.width / 2;
-        let rand = Math.random();
-        return new Vector2(rand * viewport.width - half, currentPos.y);
-    }
-
     SetAnimation(actor: Actor, animation: string, viewport: BoundingBox) {
         setActorYPositionByAnimation(actor, animation, viewport)
-
         this.currentAnimation = animation;
         if (this.currentAnimation.includes("Move")) {
             this.startPosition = null;
@@ -94,48 +123,41 @@ export class PlayAnimationAction implements ActorAction {
         return this.actionData["animations"];
     }
 
-    DrawDebug(actor: Actor, renderer: SceneRenderer, viewport: BoundingBox): void { }
+    DrawDebug(actor: Actor, renderer: SceneRenderer, viewport: BoundingBox): void {
+
+    }
 
     UpdatePhysics(actor: Actor, deltaSecs: number, viewport: BoundingBox, player: SpinePlayer) {
         if (!this.currentAnimation.includes("Move")) {
             actor.setVelocity(0, 0, 0);
         } else {
             if (this.endPosition == null) {
-                this.startPosition = actor.getPosition();
-                this.endPosition = this.getRandomPosition(actor.getPosition(), viewport);
+                this.startPosition = actor.getPosition3();
+                this.endPosition = getRandomPosition(actor.getPosition3(), viewport);
             }
 
-            let dir = this.endPosition.subtract(actor.getPosition());
-            if (dir.length() < 5) {
+            let dir = this.endPosition.subtract(actor.getPosition3());
+            if (dir.length() < 0.0001) {
                 // We have reached the target position. Find a new destination
-                actor.setPosition(this.endPosition.x, this.endPosition.y, 0);
-                this.startPosition = actor.getPosition();
-                this.endPosition = this.getRandomPosition(actor.getPosition(), viewport);
+                actor.setPosition(this.endPosition.x, this.endPosition.y, this.endPosition.z);
+                this.startPosition = actor.getPosition3();
+                this.endPosition = getRandomPosition(actor.getPosition3(), viewport);
             }
             dir.normalize();
-            actor.setVelocity(
-                dir.x * actor.getMovementSpeedX() * deltaSecs,
-                dir.y * actor.getMovementSpeedY() * deltaSecs,
-                0
-            );
+            updateVelocityFromDir(actor, this.endPosition, dir, deltaSecs);
         }
     }
 }
 
 export class WanderAction implements ActorAction {
     public actionData: any
-    public startPosition: Vector2 = null;
-    public endPosition: Vector2 = null;
+    public startPosition: Vector3 = null;
+    public endPosition: Vector3 = null;
 
     constructor(actionData: any) {
         this.actionData = actionData
         this.startPosition = null;
         this.endPosition = null;
-    }
-
-    getRandomPosition(currentPos: Vector2, viewport: BoundingBox): Vector2 {
-        let half = viewport.width / 2;
-        return new Vector2(Math.random() * viewport.width - half, currentPos.y);
     }
 
     SetAnimation(actor: Actor, animation: string, viewport: BoundingBox) {
@@ -149,42 +171,52 @@ export class WanderAction implements ActorAction {
         return [this.actionData["wander_animation"]];
     }
 
-    DrawDebug(actor: Actor, renderer: SceneRenderer, viewport: BoundingBox): void { }
+    DrawDebug(actor: Actor, renderer: SceneRenderer, viewport: BoundingBox): void {
+        if (this.endPosition) {
+            renderer.line(
+                this.endPosition.x,
+                this.endPosition.y,
+                this.endPosition.x,
+                this.endPosition.y + viewport.height * DEBUG_HEIGHT_1,
+                Color.OXFORD_BLUE,
+            )
+            renderer.circle(
+                false,
+                this.endPosition.x,
+                this.endPosition.y + viewport.height * DEBUG_HEIGHT_1,
+                5,
+                Color.OXFORD_BLUE
+            );
+        }
+    }
     UpdatePhysics(actor: Actor, deltaSecs: number, viewport: BoundingBox, player: SpinePlayer) {
         if (this.endPosition == null) {
-            this.startPosition = actor.getPosition();
-            this.endPosition = this.getRandomPosition(actor.getPosition(), viewport);
+            this.startPosition = actor.getPosition3();
+            this.endPosition = getRandomPosition(actor.getPosition3(), viewport);
         }
 
-        let dir = this.endPosition.subtract(actor.getPosition());
-        if (dir.length() < 5) {
+        let dir = this.endPosition.subtract(actor.getPosition3());
+        if (dir.length() < DIST_TOLERANCE) {
             // We have reached the target position. Find a new destination
-            actor.setPosition(this.endPosition.x, this.endPosition.y, 0);
-            this.startPosition = actor.getPosition();
-            this.endPosition = this.getRandomPosition(actor.getPosition(), viewport);
+            actor.setPosition(this.endPosition.x, this.endPosition.y, this.endPosition.z);
+            this.startPosition = actor.getPosition3();
+            this.endPosition = getRandomPosition(actor.getPosition3(), viewport);
         }
         dir.normalize();
-        actor.setVelocity(
-            dir.x * actor.getMovementSpeedX() * deltaSecs,
-            dir.y * actor.getMovementSpeedY() * deltaSecs,
-            0
-        );
+        updateVelocityFromDir(actor, this.endPosition, dir, deltaSecs);
     }
 }
 
-
 export class WalkToAction implements ActorAction {
     public actionData: any
-    public startPosition: Vector2 = null;
-    public endPosition: Vector2 = null;
-    public startDir: Vector2 = null;
+    public startPosition: Vector3 = null;
+    public endPosition: Vector3 = null;
     public reachedDestination: boolean;
 
     constructor(actionData: any) {
         this.actionData = actionData;
         this.startPosition = null;
         this.endPosition = null;
-        this.startDir = null;
         this.reachedDestination = false;
     }
 
@@ -200,45 +232,56 @@ export class WalkToAction implements ActorAction {
         }
     }
 
-    DrawDebug(actor: Actor, renderer: SceneRenderer, viewport: BoundingBox): void { }
+    DrawDebug(actor: Actor, renderer: SceneRenderer, viewport: BoundingBox): void {
+        if (this.endPosition) {
+            renderer.line(
+                this.endPosition.x,
+                this.endPosition.y,
+                this.endPosition.x,
+                this.endPosition.y + viewport.height * DEBUG_HEIGHT_2,
+                Color.PENN_BLUE,
+            )
+            renderer.circle(
+                false,
+                this.endPosition.x,
+                this.endPosition.y + viewport.height * DEBUG_HEIGHT_2,
+                10,
+                Color.PENN_BLUE);
+        }
+    }
+
     UpdatePhysics(actor: Actor, deltaSecs: number, viewport: BoundingBox, player: SpinePlayer) {
         if (this.reachedDestination) {
             return;
         }
 
         if (this.endPosition == null) {
-            this.startPosition = actor.getPosition();
-            let target = new Vector2(
-                this.actionData["target_pos"]["x"],
-                this.actionData["target_pos"]["y"],
-            );
-            this.endPosition = new Vector2(
-                target.x * viewport.width - (viewport.width / 2),
+            this.startPosition = actor.getPosition3();
+            let targetX = this.actionData["target_pos"]["x"];
+            let targetY = this.actionData["target_pos"]["y"];
+            this.endPosition = new Vector3(
+                targetX * viewport.width - (viewport.width / 2),
+                targetY,
                 0,
             );
-            this.startDir = this.endPosition.subtract(this.startPosition);
-            if (this.startDir.length() < 10) {
+
+            let reached = this.startPosition.subtract(this.endPosition).length() < DIST_TOLERANCE;
+            if (reached) {
                 this.reachedDestination = true;
+                return;
             }
-            this.startDir = this.startDir.normalize()
         }
 
-        let dir = this.endPosition.subtract(actor.getPosition()).normalize();
-        let angle = this.startDir.angle(dir);
-        let reached = Math.abs(Math.PI - angle) < 0.001;
-        if (reached || this.reachedDestination) {
+        let dir = this.endPosition.subtract(actor.getPosition3()).normalize();
+        let reached = this.endPosition.subtract(actor.getPosition3()).length();
+        if (reached < DIST_TOLERANCE) {
             // We have reached the target destination
-            actor.setPosition(this.endPosition.x, this.endPosition.y, 0);
-            this.startPosition = actor.getPosition();
+            actor.setPosition(this.endPosition.x, this.endPosition.y, this.endPosition.z);
             actor.setVelocity(0, 0, 0);
             this.reachedDestination = true;
             actor.InitAnimationState();
         } else {
-            actor.setVelocity(
-                dir.x * actor.getMovementSpeedX() * deltaSecs,
-                dir.y * actor.getMovementSpeedY() * deltaSecs,
-                0
-            );
+            updateVelocityFromDir(actor, this.endPosition, dir, deltaSecs);
         }
     }
 }
@@ -264,7 +307,38 @@ export class PaceAroundAction implements ActorAction {
         return [this.actionData["pace_around_animation"]];
     }
 
-    DrawDebug(actor: Actor, renderer: SceneRenderer, viewport: BoundingBox): void { }
+    DrawDebug(actor: Actor, renderer: SceneRenderer, viewport: BoundingBox): void {
+        if (this.endPosition) {
+            renderer.line(
+                this.endPosition.x,
+                this.endPosition.y,
+                this.endPosition.x,
+                this.endPosition.y + viewport.height * DEBUG_HEIGHT_3,
+                Color.ROYAL_BLUE,
+            )
+            renderer.circle(
+                false,
+                this.endPosition.x,
+                this.endPosition.y + viewport.height * DEBUG_HEIGHT_3,
+                15,
+                Color.ROYAL_BLUE);
+        }
+        if (this.startPosition) {
+            renderer.line(
+                this.startPosition.x,
+                this.startPosition.y,
+                this.startPosition.x,
+                this.startPosition.y + viewport.height * DEBUG_HEIGHT_3,
+                Color.ROYAL_BLUE,
+            )
+            renderer.circle(
+                true,
+                this.startPosition.x,
+                this.startPosition.y + viewport.height * DEBUG_HEIGHT_3,
+                15,
+                Color.ROYAL_BLUE);
+        }
+    }
     UpdatePhysics(actor: Actor, deltaSecs: number, viewport: BoundingBox, player: SpinePlayer) {
         if (this.reachedDestination) {
             this.reachedDestination = false;
@@ -278,8 +352,8 @@ export class PaceAroundAction implements ActorAction {
 
         if (this.endPosition == null) {
             // TODO: Make the z range configurable
-            let z1 = Math.random() * 40;
-            let z2 = Math.random() * 40;
+            let z1 = Math.random() * 10;
+            let z2 = Math.random() * 10;
             let start = new Vector3(
                 this.actionData["pace_start_pos"]["x"],
                 this.actionData["pace_start_pos"]["y"],
@@ -301,24 +375,20 @@ export class PaceAroundAction implements ActorAction {
                 target.z
             );
             let temp = this.endPosition.copy();
-            if (temp.sub(actor.getPosition3()).length() < 10) {
+            if (temp.sub(actor.getPosition3()).length() < DIST_TOLERANCE) {
                 this.reachedDestination = true;
             }
         }
         // TODO: Figure out a better way of handling if we have reached an end position.
         let dir = this.endPosition.copy().sub(actor.getPosition3()).normalize();
         let dist_to = this.endPosition.copy().sub(actor.getPosition3()).length();
-        if (dist_to < 10 || this.reachedDestination) {
+        if (dist_to < DIST_TOLERANCE || this.reachedDestination) {
             // We have reached the target destination
             actor.setPosition(this.endPosition.x, this.endPosition.y, this.endPosition.z);
             actor.setVelocity(0, 0, 0);
             this.reachedDestination = true;
         } else {
-            actor.setVelocity(
-                dir.x * actor.getMovementSpeedX() * deltaSecs,
-                dir.y * actor.getMovementSpeedY() * deltaSecs,
-                dir.z * actor.getMovementSpeedZ() * deltaSecs
-            )
+            updateVelocityFromDir(actor, this.endPosition, dir, deltaSecs);
         }
     }
 }
@@ -335,12 +405,6 @@ export class FollowAction implements ActorAction {
         this.endPosition = null;
         this.noTargetRandomPosition = null;
         this.reachedDestination = false;
-    }
-
-    getRandomPosition(currentPos: Vector3, viewport: BoundingBox): Vector3 {
-        let half = viewport.width / 2;
-        let rand = Math.random();
-        return new Vector3(rand * viewport.width - half, currentPos.y, currentPos.z);
     }
 
     SetAnimation(actor: Actor, animation: string, viewport: BoundingBox) {
@@ -361,7 +425,7 @@ export class FollowAction implements ActorAction {
             // For cases if the target actor doesn't exist (due to GC)
             // we have the actor just walk to random positions.
             if (this.noTargetRandomPosition == null) {
-                this.noTargetRandomPosition = this.getRandomPosition(
+                this.noTargetRandomPosition = getRandomPosition(
                     actor.getPosition3(), viewport);
             }
             return this.noTargetRandomPosition;
@@ -384,11 +448,19 @@ export class FollowAction implements ActorAction {
 
     DrawDebug(actor: Actor, renderer: SceneRenderer, viewport: BoundingBox): void {
         renderer.line(
-            this.endPosition.x, 0,
-            this.endPosition.x, viewport.height / 2.0,
+            this.endPosition.x,
+            this.endPosition.y,
+            this.endPosition.x,
+            this.endPosition.y + viewport.height * DEBUG_HEIGHT_4,
             Color.PURPLE
         );
-        renderer.circle(true, this.endPosition.x, viewport.height / 2.0, 5, Color.PURPLE);
+        renderer.circle(
+            false,
+            this.endPosition.x,
+            this.endPosition.y + viewport.height * DEBUG_HEIGHT_4,
+            20,
+            Color.PURPLE
+        );
     }
 
     UpdatePhysics(actor: Actor, deltaSecs: number, viewport: BoundingBox, player: SpinePlayer) {
@@ -429,22 +501,7 @@ export class FollowAction implements ActorAction {
                 this.noTargetRandomPosition = null;
             }
         } else {
-            let step = actor.getMovementSpeed().scale(deltaSecs);
-            // Scale the distance of the next velocity so that we don't 
-            // overshoot the target position. Otherwise we can get into 
-            // cases where the actor has janky oscillating movement as it
-            // tries to reach endPosition
-            let stepDist = this.endPosition.subtract(actorPosition);
-            if (step.x > Math.abs(stepDist.x)) {
-                step.x = Math.abs(stepDist.x);
-            }
-            if (step.y > Math.abs(stepDist.y)) {
-                step.y = Math.abs(stepDist.y);
-            }
-            if (step.z > Math.abs(stepDist.z)) {
-                step.z = Math.abs(stepDist.z);
-            }
-            actor.setVelocity(dir.x * step.x, dir.y * step.y, dir.z * step.z);
+            updateVelocityFromDir(actor, this.endPosition, dir, deltaSecs);
         }
     }
 }

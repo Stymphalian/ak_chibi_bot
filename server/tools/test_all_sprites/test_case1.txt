@@ -22,3 +22,6 @@ set_user ling
 !chibi battle
 set_user S1
 !chibi enemy S1
+set_user MZK
+!chibi enemy MZK
+!chibi walk 0.2 0.8

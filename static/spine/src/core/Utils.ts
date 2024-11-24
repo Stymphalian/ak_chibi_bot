@@ -72,6 +72,12 @@ export class Color {
 	public static MAGENTA = new Color(1, 0, 1, 1);
 	public static ORANGE = new Color(1, 0.5, 0.1, 1.0);
 	public static PURPLE = new Color(0.5, 0, 1, 1.0);
+	public static OXFORD_BLUE = new Color(0, 7/255.0, 45/255.0, 1.0);
+	public static PENN_BLUE = new Color(0, 28/255.0, 85/255.0, 1.0);
+	public static ROYAL_BLUE = new Color(10/255.0, 36/255.0, 114/255.0, 1.0);
+	public static BICE_BLUE = new Color(14/255.0, 107/255.0, 168/255.0, 1.0);
+	public static NON_PHOTO_BLUE = new Color(166/255.0, 225/255.0, 250/255.0, 1.0);
+
 
 	constructor(public r: number = 0, public g: number = 0, public b: number = 0, public a: number = 0) {
 	}

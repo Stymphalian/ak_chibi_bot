@@ -15,9 +15,11 @@ export class OffscreenRender {
     public offscreenSceneRenderer: SceneRenderer;
     public offscreenTexture: GLTexture = null;
     public frameBuffer: WebGLFramebuffer = null;
+    // private offscreenCanvas: OffscreenCanvas;
 
     public constructor(sceneRenderer: SceneRenderer, offCanvas: HTMLCanvasElement | null = null) {
         try {
+            // this.offscreenCanvas = new OffscreenCanvas(480, 480);
             this.offscreenSceneRenderer = sceneRenderer;
             this.offscreenContext = sceneRenderer.context;
         } catch (e) {
@@ -32,7 +34,7 @@ export class OffscreenRender {
         let gl = context.gl;
 
         if (this.offscreenTexture) {
-            this.offscreenTexture.dispose();   
+            this.offscreenTexture.dispose();
         }
 
         this.offscreenCanvasWidth = Math.ceil(newWidth);
@@ -44,7 +46,7 @@ export class OffscreenRender {
             this.offscreenCanvasWidth,
             this.offscreenCanvasHeight
         );
-        
+
         this.offscreenTexture.bind();
         if (this.frameBuffer == null) {
             this.frameBuffer = gl.createFramebuffer();
@@ -60,12 +62,13 @@ export class OffscreenRender {
 
         var status = gl.checkFramebufferStatus(gl.FRAMEBUFFER);
         if (status != gl.FRAMEBUFFER_COMPLETE) {
-            console.log("Framebuffer is not complete: ", status);    
+            console.log("Framebuffer is not complete: ", status);
         }
-        
+
         gl.viewport(0, 0, this.offscreenCanvasWidth, this.offscreenCanvasHeight);
         this.offscreenSceneRenderer.camera.setViewport(this.offscreenCanvasWidth, this.offscreenCanvasHeight);
     }
+
 
     public getBoundingBox(actor: Actor, defaultBB: BoundingBox): BoundingBox {
         let ctx = this.offscreenContext;
@@ -94,32 +97,37 @@ export class OffscreenRender {
 
         // Update the camera
         updateCameraSettings(this.offscreenSceneRenderer.camera, actor, viewport);
-        // Center the camera so that is the chibi is rendered below the ground
+        // Center the camera so that if the chibi is rendered below the ground
         // we can still detect that in the bounding box.
         this.offscreenSceneRenderer.camera.position.y = 0;
 
         // Draw skeleton 
         this.offscreenSceneRenderer.begin();
         this.offscreenSceneRenderer.drawSkeleton(actor.skeleton, actor.config.premultipliedAlpha);
+        // this.offscreenSceneRenderer.circle(true, 0, 0, 1, Color.RED);
         this.offscreenSceneRenderer.end();
 
-        // Dump to file
-        // let canvas = this.offscreenSceneRenderer.canvas;
-        // if (canvas instanceof HTMLCanvasElement) {
-        //     (canvas as HTMLCanvasElement).toBlob((blob:any) => {
-        //         var url = window.URL.createObjectURL(blob);
-        //         var a = document.createElement('a');
-        //         a.href = url;
-        //         a.download = "screenshot.png";
-        //         a.click();
-        //         window.URL.revokeObjectURL(url);
-        //     });
-        // }
-
+        
         let w = this.offscreenCanvasWidth;
         let h = this.offscreenCanvasHeight;
-        let pixels = new Uint8Array(w * h * 4);
+        let pixels = new Uint8ClampedArray(w * h * 4);
         gl.readPixels(0, 0, w, h, gl.RGBA, gl.UNSIGNED_BYTE, pixels);
+
+        // Dump to file (for debugging)
+        // let imageData = new ImageData(pixels, w, h);
+        // this.offscreenCanvas.width = w;
+        // this.offscreenCanvas.height = h;
+        // this.offscreenCanvas.getContext("2d").putImageData(imageData, 0, 0);
+        // this.offscreenCanvas.convertToBlob({ type: "image/png" })
+        //     .then(
+        //         (blob: any) => {
+        //             var url = window.URL.createObjectURL(blob);
+        //             var a = document.createElement('a');
+        //             a.href = url;
+        //             a.download = "screenshot.png";
+        //             a.click();
+        //             window.URL.revokeObjectURL(url);
+        //         })
 
         // Reset the GL state. otherwise we can get some weird rendering 
         // artifacts in the next rendered frame.

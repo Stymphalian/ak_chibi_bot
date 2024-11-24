@@ -83,8 +83,8 @@ export interface SpineActorConfig {
 	scaleX: number
 	scaleY: number
 	maxSizePx: number
-	startPosX: number
-	startPosY: number
+	startPosX: number // startPosition 0 to 1.0 as from the command
+	startPosY: number // startPosition 0 to 1.0 as from the command
 	// Specify extra offset in Pixel for X and Y to fit the chibi on the screen
 	extraOffsetX: number,
 	extraOffsetY: number,
@@ -168,6 +168,11 @@ export class Actor {
 	private velocity: Vector3 = new Vector3(0, 0, 0);
 	public startPosition: Vector2 = null;
 	public currentAction: ActorAction = null;
+	// An offset applied to the spine skeleton (x,y) in order to have the 
+	// bottom most part of the sprite appear on the canvas.
+	// For example, operators who are sitting would have a negative y-offset
+	// while operators who "fly" would have a positive y-offset
+	private skeletonPositionOffset: Vector3 = new Vector3(0,0,0);
 
 	// Actor loading retry logic
 	public load_attempts: number = 0;
@@ -249,6 +254,24 @@ export class Actor {
 		this.position.x = x;
 		this.position.y = y;
 		this.position.z = z !== undefined ? z : 0;
+	}
+
+	public getSkeletonPositionOffset(): Vector3 {
+		return this.skeletonPositionOffset.copy();
+	}
+	public setSkeletonPositionOffset(pos: Vector3) {
+		this.skeletonPositionOffset.x = pos.x;
+		this.skeletonPositionOffset.y = pos.y;
+		this.skeletonPositionOffset.z = pos.z;
+	}
+	public setSkeletonPositionOffsetX(v: number) {
+		this.skeletonPositionOffset.x = v;
+	}
+	public setSkeletonPositionOffsetY(v: number) {
+		this.skeletonPositionOffset.y = v;
+	}
+	public setSkeletonPositionOffsetZ(v: number) {
+		this.skeletonPositionOffset.z = v;
 	}
 
 	public getMovmentSpeed(): Vector2 {
@@ -411,8 +434,7 @@ export class Actor {
 	}
 
 	public GetUsernameHeaderHeight() {
-		let renderBB = this.getRenderingBoundingBox();
-		return renderBB.height + renderBB.y + 10;
+		return this.getRenderingBoundingBox().height + 10;
 	}
 	public IsEnemySprite(): boolean {
 		return this.config.chibiId.startsWith("enemy_");
@@ -453,14 +475,14 @@ export class Actor {
 		if (this.isFacingRight()) {
 			return {
 				x: this.position.x + renderBB.x,
-				y: this.position.y + renderBB.y,
+				y: this.position.y,
 				width: renderBB.width,
 				height: renderBB.height
 			};
 		} else {
 			return {
 				x: this.position.x - renderBB.x - renderBB.width,
-				y: this.position.y + renderBB.y,
+				y: this.position.y,
 				width: renderBB.width,
 				height: renderBB.height
 			};
@@ -528,8 +550,8 @@ export class Actor {
 	// ---------------------------------------------------------------------
 
 	private setSkeletonMovementData(viewport: BoundingBox) {
-		this.skeleton.x = this.position.x + this.config.extraOffsetX;
-		this.skeleton.y = this.position.y + this.config.extraOffsetY;
+		this.skeleton.x = this.position.x + this.config.extraOffsetX + this.skeletonPositionOffset.x;
+		this.skeleton.y = this.position.y + this.config.extraOffsetY + this.skeletonPositionOffset.y;
 		this.skeleton.scaleX = this.scale.x;
 		this.skeleton.scaleY = this.scale.y;
 	}
