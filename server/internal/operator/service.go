@@ -156,14 +156,9 @@ func (c *OperatorService) ValidateUpdateSetDefaultOtherwise(update *OperatorInfo
 	// Movement Speed
 	if update.MovementSpeed.IsSome() {
 		vec := update.MovementSpeed.Unwrap()
-		if vec.X < c.GetMinMovementSpeed() || vec.X > c.GetMaxMovementSpeed() {
-			update.MovementSpeed = misc.NewOption(
-				misc.Vector2{
-					X: misc.ClampF64(vec.X, c.GetMinMovementSpeed(), c.GetMaxMovementSpeed()),
-					Y: 0,
-				},
-			)
-		}
+		vec.X = misc.ClampF64(vec.X, c.GetMinMovementSpeed(), c.GetMaxMovementSpeed())
+		vec.Y = misc.ClampF64(vec.Y, c.GetMinMovementSpeed(), c.GetMaxMovementSpeed())
+		update.MovementSpeed = misc.NewOption(vec)
 	}
 
 	// Validate startPos
@@ -290,6 +285,36 @@ func (c *OperatorService) ValidateUpdateSetDefaultOtherwise(update *OperatorInfo
 		if update.Action.PaceEndPos.IsNone() {
 			update.Action.PaceEndPos = misc.NewOption(misc.Vector2{X: 0.5, Y: 0.0})
 		}
+
+	case ACTION_FOLLOW:
+		availableAnimations := update.AvailableAnimations
+		var defaultIdleAnimation string
+		// FIXED BUG:  The "default" idle animation of a base operator is
+		// Relax. We can't use DefaultAnimForChibiStance because that is
+		// a "Move" animation. Which would cause the chibi to "walk in place"
+		// once they reach their destination
+		if update.ChibiStance == CHIBI_STANCE_ENUM_BASE {
+			defaultIdleAnimation = DEFAULT_ANIM_BASE_RELAX
+		} else {
+			defaultIdleAnimation = DEFAULT_ANIM_BATTLE
+		}
+
+		availableMoves := GetAvailableMoveAnimations(availableAnimations)
+		defaultMoveAnim := GetDefaultAnimForChibiStance(update.ChibiStance)
+		if len(availableMoves) > 0 {
+			defaultMoveAnim = availableMoves[0]
+		}
+
+		update.Action.ActionFollowWalkAnimation = getValidAnimations(
+			availableAnimations,
+			[]string{update.Action.ActionFollowWalkAnimation},
+			defaultMoveAnim,
+		)[0]
+		update.Action.ActionFollowIdleAnimation = getValidAnimations(
+			availableAnimations,
+			[]string{update.Action.ActionFollowIdleAnimation},
+			defaultIdleAnimation,
+		)[0]
 	}
 
 	return nil

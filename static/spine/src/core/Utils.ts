@@ -72,6 +72,7 @@ import { Skeleton } from "./Skeleton";
 		public static BLUE = new Color(0, 0, 1, 1);
 		public static MAGENTA = new Color(1, 0, 1, 1);
 		public static ORANGE = new Color(1, 0.5, 0.1, 1.0);
+		public static PURPLE = new Color(0.5, 0, 1, 1.0);
 
 		constructor (public r: number = 0, public g: number = 0, public b: number = 0, public a: number = 0) {
 		}

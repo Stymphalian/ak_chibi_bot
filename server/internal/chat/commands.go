@@ -124,3 +124,21 @@ func (c *ChatCommandShowMessage) UpdateActor(a ActorUpdater) error {
 	}
 	return a.ShowMessage(ctx, ui, c.message)
 }
+
+type ChatCommandFollow struct {
+	replyMessage    string
+	username        string
+	usernameDisplay string
+	twitchUserId    string
+	update          *operator.OperatorInfo
+}
+
+func (c *ChatCommandFollow) Reply(a ActorUpdater) string { return c.replyMessage }
+func (c *ChatCommandFollow) UpdateActor(a ActorUpdater) error {
+	ctx := context.Background()
+	return a.FollowChibi(ctx, misc.UserInfo{
+		Username:        c.username,
+		UsernameDisplay: c.usernameDisplay,
+		TwitchUserId:    c.twitchUserId,
+	}, c.update)
+}

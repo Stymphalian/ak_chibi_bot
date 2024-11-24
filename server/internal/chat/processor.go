@@ -79,6 +79,7 @@ func (c *ChatCommandProcessor) HandleMessage(current *operator.OperatorInfo, cha
 	// !chibi move_speed default
 	// !chibi save
 	// !chibi unsave
+	// !chibi follow stymtwitchbot
 
 	// var msg string
 	subCommand := strings.TrimSpace(args[1])
@@ -128,6 +129,10 @@ func (c *ChatCommandProcessor) HandleMessage(current *operator.OperatorInfo, cha
 		return c.setEnemy(chatArgs, current)
 	case "walk":
 		return c.setWalk(chatArgs, current)
+	case "pace":
+		return c.setPace(chatArgs, current)
+	case "follow":
+		return c.setFollow(chatArgs, current)
 	case "speed":
 		return c.setAnimationSpeed(chatArgs, current)
 	case "size":
@@ -138,8 +143,6 @@ func (c *ChatCommandProcessor) HandleMessage(current *operator.OperatorInfo, cha
 		return c.setMoveSpeed(chatArgs, current)
 	case "velocity":
 		return c.setMoveSpeed(chatArgs, current)
-	case "pace":
-		return c.setPace(chatArgs, current)
 	case "save":
 		return c.setSaveUserPrefs(chatArgs, current)
 	case "unsave":
@@ -553,7 +556,7 @@ func (c *ChatCommandProcessor) setMoveSpeed(args *ChatArgs, current *operator.Op
 			moveSpeed = c.spineService.GetMaxMovementSpeed()
 		}
 		current.MovementSpeed = misc.NewOption(
-			misc.Vector2{X: moveSpeed, Y: 0},
+			misc.Vector2{X: moveSpeed, Y: moveSpeed},
 		)
 	}
 
@@ -635,6 +638,43 @@ func (c *ChatCommandProcessor) setClearUserPrefs(
 		twitchUserId:    args.chatMsg.TwitchUserId,
 		action:          ChatCommandSaveChibi_Remove,
 		update:          nil,
+	}, nil
+}
+
+func (c *ChatCommandProcessor) setFollow(
+	args *ChatArgs,
+	current *operator.OperatorInfo,
+) (ChatCommand, error) {
+	if len(args.args) != 3 {
+		return &ChatCommandNoOp{}, errors.New("try something like !chibi follow <username>")
+	}
+	usernameTarget := strings.ToLower(args.args[2])
+	if misc.ValidateChannelName(usernameTarget) != nil ||
+		usernameTarget == strings.ToLower(args.chatMsg.Username) {
+		return &ChatCommandNoOp{}, errors.New("try something like !chibi follow <username>")
+	}
+
+	if current.Faction == operator.FACTION_ENUM_OPERATOR {
+		current.ChibiStance = operator.CHIBI_STANCE_ENUM_BASE
+	}
+	animationAfterStance := ""
+	if current.ChibiStance == operator.CHIBI_STANCE_ENUM_BASE {
+		animationAfterStance = operator.DEFAULT_ANIM_BASE_RELAX
+	} else {
+		animationAfterStance = operator.DEFAULT_ANIM_BATTLE
+	}
+
+	moveAnimation := c.getMoveAnimFromCurrent(current)
+	current.CurrentAction = operator.ACTION_FOLLOW
+	current.Action = operator.NewActionFollow(usernameTarget, moveAnimation, animationAfterStance)
+	current.AnimationSpeed = c.spineService.GetDefaultAnimationSpeed()
+
+	return &ChatCommandFollow{
+		replyMessage:    "",
+		username:        args.chatMsg.Username,
+		usernameDisplay: args.chatMsg.UserDisplayName,
+		twitchUserId:    args.chatMsg.TwitchUserId,
+		update:          current,
 	}, nil
 }
 

@@ -70,6 +70,11 @@ func (f *FakeChibiActor) UpdateChibi(ctx context.Context, username string, userD
 	return nil
 }
 
+func (f *FakeChibiActor) FollowChibi(ctx context.Context, username string, userDisplayName string, opInfo *operator.OperatorInfo) error {
+	f.Users[username] = *opInfo
+	return nil
+}
+
 func (f *FakeChibiActor) CurrentInfo(ctx context.Context, userName string) (operator.OperatorInfo, error) {
 	if _, ok := f.Users[userName]; !ok {
 		return *operator.EmptyOperatorInfo(), spine.NewUserNotFound("User not found: " + userName)

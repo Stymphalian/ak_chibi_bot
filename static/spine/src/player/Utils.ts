@@ -77,6 +77,7 @@ export class OffscreenRender {
             newHeight = 3000;
         }
         // console.log("newWidth ", newWidth, " newHeight ", newHeight);
+        let oldviewport = gl.getParameter(gl.VIEWPORT);
         this.setupFrameBufferForUse(newWidth, newHeight);
 
         // Clear the viewport
@@ -119,8 +120,13 @@ export class OffscreenRender {
         let h = this.offscreenCanvasHeight;
         let pixels = new Uint8Array(w * h * 4);
         gl.readPixels(0, 0, w, h, gl.RGBA, gl.UNSIGNED_BYTE, pixels);
-        gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+
+        // Reset the GL state. otherwise we can get some weird rendering 
+        // artifacts in the next rendered frame.
         this.offscreenTexture.unbind();
+        gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+        gl.viewport(oldviewport[0], oldviewport[1], oldviewport[2], oldviewport[3]);
+        this.offscreenSceneRenderer.camera.setViewport(oldviewport[2], oldviewport[3]);
 
         let minX = Number.POSITIVE_INFINITY;
         let minY = Number.POSITIVE_INFINITY;

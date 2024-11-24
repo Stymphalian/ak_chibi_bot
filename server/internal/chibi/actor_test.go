@@ -336,3 +336,45 @@ func TestChibiActor_ShowMessage(t *testing.T) {
 	err := sut.ShowMessage(ctx, userinfo, "test message")
 	assert.Nil(err)
 }
+
+func TestChibiActorFollowChibi(t *testing.T) {
+	assert := assert.New(t)
+	sut := setupActorTest()
+	ctx := context.TODO()
+
+	username := "test-chibi-actor-6"
+	twitchUserinfo := misc.UserInfo{
+		Username:        username,
+		UsernameDisplay: "display-" + username,
+		TwitchUserId:    "twitch-" + username,
+	}
+	sut.GiveChibiToUser(ctx, twitchUserinfo)
+	userinfo := misc.UserInfo{
+		Username:        "user1",
+		UsernameDisplay: "userDisplay1",
+		TwitchUserId:    "100",
+	}
+	sut.GiveChibiToUser(ctx, userinfo)
+
+	opInfo := operator.NewOperatorInfo(
+		"Amiya",
+		operator.FACTION_ENUM_OPERATOR,
+		"char_002_amiya",
+		"default",
+		operator.CHIBI_STANCE_ENUM_BASE,
+		operator.CHIBI_FACING_ENUM_FRONT,
+		[]string{"default"},
+		[]string{"Idle", "Relax"},
+		1.0,
+		misc.EmptyOption[misc.Vector2](),
+		operator.ACTION_FOLLOW,
+		operator.NewActionFollow(twitchUserinfo.Username, "Move", "Idle"),
+	)
+	sut.FollowChibi(ctx, userinfo, &opInfo)
+	assert.Contains(sut.ChatUsers, "user1")
+	assert.Contains(sut.ChatUsers, twitchUserinfo.Username)
+	assert.Contains(sut.ChatUsers["user1"].GetOperatorInfo().Skin, "default")
+	assert.Equal(sut.ChatUsers["user1"].GetOperatorInfo().AvailableAnimations, []string{"Move", "base_front1", "base_front2"})
+	assert.Equal(sut.ChatUsers["user1"].GetOperatorInfo().CurrentAction, operator.ACTION_FOLLOW)
+	assert.Equal(sut.ChatUsers["user1"].GetOperatorInfo().Action.ActionFollowTarget, twitchUserinfo.Username)
+}

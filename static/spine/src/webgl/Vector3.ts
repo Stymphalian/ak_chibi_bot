@@ -35,7 +35,6 @@ import { Matrix4, M30, M31, M32, M33, M00, M01, M02, M03, M10, M11, M12, M13, M2
 		y = 0;
 		z = 0;
 		w = 0;
-
 		constructor (x: number = 0, y: number = 0, z: number = 0) {
 			this.x = x;
 			this.y = y;
@@ -68,6 +67,14 @@ import { Matrix4, M30, M31, M32, M33, M00, M01, M02, M03, M10, M11, M12, M13, M2
 			this.y -= v.y;
 			this.z -= v.z;
 			return this;
+		}
+
+		subtract(v: Vector3): Vector3 { 
+			return this.copy().sub(v);
+		}
+
+		addition(v: Vector3): Vector3 { 
+			return this.copy().add(v);
 		}
 
 		scale (s: number): Vector3 {

@@ -30,13 +30,14 @@
 import { AnimationStateListener, AnimationState, TrackEntry } from "../core/AnimationState"
 import { AnimationStateData } from "../core/AnimationStateData"
 import { Skeleton } from "../core/Skeleton"
-import { Vector2, TimeKeeper, Map } from "../core/Utils"
+import { Vector2, TimeKeeper, Map, Color } from "../core/Utils"
 import { Vector3 } from "../webgl/Vector3"
 import { ActorAction, ParseActionNameToAction } from "./Action"
 import { SpinePlayer, BoundingBox } from "./Player"
 import { Event } from "../core/Event"
 import { OffscreenRender } from "./Utils"
 import { ChatMessageQueue, MessageBlock } from "./ChatMessages"
+import { SceneRenderer } from "../webgl/SceneRenderer"
 
 // // module spine {
 
@@ -165,7 +166,7 @@ import { ChatMessageQueue, MessageBlock } from "./ChatMessages"
 		//   and y-axis is 0 at the bottom of the screen.
 		// We use these coordinates compared to top-left corner.
 		private position: Vector3 = new Vector3();
-		public scale: Vector2 = new Vector2(1,1);
+		private scale: Vector2 = new Vector2(1,1);
 		private velocity: Vector3 = new Vector3(0, 0, 0);
 		public startPosition: Vector2 = null;
 		public currentAction: ActorAction = null;
@@ -283,6 +284,9 @@ import { ChatMessageQueue, MessageBlock } from "./ChatMessages"
 		public setMovementSpeedZ(z: number) {
 			this.movementSpeed.z = z;
 		}
+		public getMovementSpeed(): Vector3 {
+			return this.movementSpeed.copy();
+		}
 		public setMovementSpeed(x: number, y: number, z ?: number) {			
 			this.movementSpeed.x = x;
 			this.movementSpeed.y = y;
@@ -309,6 +313,17 @@ import { ChatMessageQueue, MessageBlock } from "./ChatMessages"
 				z != undefined ? z : this.velocity.z
 			);
 		}
+		public isMoving(): boolean {
+			return this.velocity.length() > 0;
+		}
+		public isStationary(): boolean {
+			return this.velocity.length() < 0.00001;
+		}
+
+		public getScaleX(): number { return this.scale.x; }
+		public getScaleY(): number { return this.scale.y; }
+		public setScaleX(x: number) { this.scale.x = x; }
+		public setScaleY(y: number) { this.scale.y = y; }
 
 		public InitAnimations() {
 			this.initAnimationsInternal(this.currentAction.GetAnimations());
@@ -360,9 +375,9 @@ import { ChatMessageQueue, MessageBlock } from "./ChatMessages"
 			);
 		}
 
-		public UpdatePhysics(deltaSecs: number, viewport: BoundingBox) {
+		public UpdatePhysics(player: SpinePlayer, deltaSecs: number, viewport: BoundingBox) {
 			this.messageQueue.Update(deltaSecs);
-			this.currentAction.UpdatePhysics(this, deltaSecs, viewport);
+			this.currentAction.UpdatePhysics(this, deltaSecs, viewport, player);
 			this.position.x += this.velocity.x;
 			this.position.y += this.velocity.y;
 			this.position.z += this.velocity.z;
@@ -414,12 +429,101 @@ import { ChatMessageQueue, MessageBlock } from "./ChatMessages"
 				&& animations[0].toLowerCase().includes("sit") 
 			);
 		}
+		public isFacingRight(): boolean {
+			return this.scale.x > 0;
+		}
+		public isFacingLeft(): boolean {
+			return this.scale.x <= 0;
+		}
+		public setFacingRight(): void {
+			this.scale.x = Math.abs(this.scale.x);
+		}
+		public setFacingLeft(): void {
+			this.scale.x = -Math.abs(this.scale.x);
+		}
 
 		public EnqueueChatMessage(message: string) {
 			this.messageQueue.AddMessage(message);
 		}
 		public GetChatMessages(): MessageBlock|null {
 			return this.messageQueue.GetCurrentMessageBlock();
+		}
+
+		public GetBoundingBox(): BoundingBox {
+			// x, y is the bottom-left corner
+			let renderBB = this.getRenderingBoundingBox();
+			if (this.isFacingRight()) {
+				return {
+					x: this.position.x + renderBB.x,
+					y: this.position.y + renderBB.y,
+					width: renderBB.width,
+					height: renderBB.height
+				};
+			} else {
+				return {
+					x: this.position.x - renderBB.x - renderBB.width,
+					y: this.position.y + renderBB.y,
+					width: renderBB.width,
+					height: renderBB.height
+				};
+			}
+		}
+
+		public GetBoundingTop(): number {
+			let bb = this.GetBoundingBox();
+			return bb.y + bb.height;
+		}
+		public GetBoundingBottom(): number {
+			let bb = this.GetBoundingBox();
+			return bb.y;
+		}
+		public GetBoundingFront(): number {
+			let bb = this.GetBoundingBox();
+			if (this.isFacingRight()) {
+				return bb.x + bb.width;
+			} else {
+				return bb.x;
+			}
+		}
+		public GetBoundingBack(): number {
+			let bb = this.GetBoundingBox();
+			if (this.isFacingRight()) {
+				return bb.x;
+			} else {
+				return bb.x + bb.width;
+			}
+		}
+		public GetBoundingFrontOffset(): number {
+			let front = this.GetBoundingFront();
+			return front - this.position.x;
+		}
+		public GetBoundingBackOffset() : number {
+			let back = this.GetBoundingBack();
+			return this.position.x - back;
+		}
+
+		public DrawDebug(renderer: SceneRenderer, viewport: BoundingBox) {
+			let actor_pos = this.getPosition();
+			let bb = this.GetBoundingBox();
+			renderer.rect(
+				false,
+				bb.x, bb.y, bb.width, bb.height,
+				Color.RED
+			);
+			renderer.circle(true, actor_pos.x, actor_pos.y, 10, Color.RED);
+
+			let front_x = this.GetBoundingFront();
+			let top_y = this.GetBoundingTop();
+			let back_x = this.GetBoundingBack();
+			let bottom_y = this.GetBoundingBottom();
+			renderer.circle(true, back_x, bottom_y, 5, Color.GREEN);
+			renderer.circle(true, front_x, bottom_y, 10, Color.GREEN);
+			renderer.circle(true, back_x, top_y, 5, Color.ORANGE);
+			renderer.circle(true, front_x, top_y, 10, Color.ORANGE);
+
+			if (this.currentAction != null) {
+				this.currentAction.DrawDebug(this, renderer, viewport);
+			}
 		}
 
 		// Privates

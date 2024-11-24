@@ -711,7 +711,7 @@ import { Camera } from "../webgl/Camera";
 					actor.playTime = Math.max(0, Math.min(actor.playTime, animationDuration));
 					this.timelineSlider.setValue(actor.playTime / animationDuration);
 
-					actor.UpdatePhysics(delta, viewport);
+					actor.UpdatePhysics(this, delta, viewport);
 					actor.skeleton.setToSetupPose();					
 					actor.animationState.update(delta);
 					actor.animationState.apply(actor.skeleton);
@@ -741,28 +741,8 @@ import { Camera } from "../webgl/Camera";
 				// Render the debug output with a fixed camera.
 				if (this.playerConfig.viewport.debugRender) {
 					this.sceneRenderer.begin();
-
-					let actor_pos = actor.getPosition();
-					let renderBB = actor.getRenderingBoundingBox();
-					this.sceneRenderer.rect(
-						false,
-						actor_pos.x + renderBB.x,
-						actor_pos.y + renderBB.y,
-						renderBB.width,
-						renderBB.height,
-						Color.RED
-					)
-
-					this.sceneRenderer.rect(
-						false,
-						0,0, actor.config.maxSizePx, actor.config.maxSizePx,
-						Color.ORANGE
-					)
-					
-					this.sceneRenderer.circle(true, actor_pos.x, actor_pos.y, 10, Color.RED);
-					this.sceneRenderer.circle(true, 0,0, 10, Color.BLUE);
-					// this.sceneRenderer.circle(true, actor_pos.x, actor_pos.y + actor.defaultBB.height, 5, Color.BLUE);
-
+					actor.DrawDebug(this.sceneRenderer, viewport);
+					this.sceneRenderer.circle(true, 0, 0, 10, Color.BLUE);
 					this.sceneRenderer.end();
 				}
 			}

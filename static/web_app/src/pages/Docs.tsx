@@ -98,6 +98,12 @@ export function DocsPage() {
                             Use <Code>!chibi unsave</Code> to clear out your preferences.
                         </td>
                     </tr>
+                    <tr>
+                        <td>!chibi follow [username]</td>
+                        <td>Make your chibi follow another Viewer's chibi around.<br />
+                        <Code>!chibi follow StymTwitchBot</Code>
+                        </td>
+                    </tr>
                 </tbody>
             </table>
 
@@ -115,6 +121,11 @@ export function DocsPage() {
                     You can add additional query argument to scale the chibis in the browser <br />
                     For example: <br />
                     <Code>{url + "&scale=2"}</Code>           
+                </li>
+                <li className="list-group-item">
+                    You can have viewer's chat messages display as chat bubbles above their chibi's head. <br />
+                    For example: <br />
+                    <Code>{url + "&show_chat=true"}</Code>           
                 </li>
                 <li className="list-group-item">
                     You can change settings related to how your bot handles 

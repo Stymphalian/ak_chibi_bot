@@ -14,6 +14,7 @@ const (
 	ACTION_WANDER         = ActionEnum("WANDER")
 	ACTION_WALK_TO        = ActionEnum("WALK_TO")
 	ACTION_PACE_AROUND    = ActionEnum("PACE_AROUND")
+	ACTION_FOLLOW         = ActionEnum("FOLLOW")
 	ACTION_NONE           = ActionEnum("")
 )
 
@@ -23,11 +24,12 @@ func IsActionEnum(a ActionEnum) bool {
 		ACTION_WANDER,
 		ACTION_WALK_TO,
 		ACTION_PACE_AROUND,
+		ACTION_FOLLOW,
 	}, a)
 }
 
 func IsWalkingAction(a ActionEnum) bool {
-	return a == ACTION_WANDER || a == ACTION_WALK_TO || a == ACTION_PACE_AROUND
+	return a == ACTION_WANDER || a == ACTION_WALK_TO || a == ACTION_PACE_AROUND || a == ACTION_FOLLOW
 }
 
 type ActionPlayAnimation struct {
@@ -50,11 +52,18 @@ type ActionPaceAround struct {
 	PaceAroundAnimation string                    `json:"pace_around_animation"`
 }
 
+type ActionFollow struct {
+	ActionFollowTarget        string `json:"action_follow_target"`
+	ActionFollowWalkAnimation string `json:"action_follow_walk_animation"`
+	ActionFollowIdleAnimation string `json:"action_follow_idle_animation"`
+}
+
 type ActionUnion struct {
 	ActionPlayAnimation
 	ActionWander
 	ActionWalkTo
 	ActionPaceAround
+	ActionFollow
 	IsSet         bool       `json:"is_set"`
 	CurrentAction ActionEnum `json:"current_action"`
 }
@@ -69,6 +78,8 @@ func (a *ActionUnion) GetAnimations(action ActionEnum) []string {
 		return []string{a.WalkToAnimation, a.WalkToFinalAnimation}
 	case ACTION_PACE_AROUND:
 		return []string{a.PaceAroundAnimation}
+	case ACTION_FOLLOW:
+		return []string{a.ActionFollowWalkAnimation}
 	case ACTION_NONE:
 		fallthrough
 	default:
@@ -113,5 +124,14 @@ func NewActionPaceAround(startPos misc.Vector2, endPos misc.Vector2, animation s
 	r.PaceAroundAnimation = animation
 	r.IsSet = true
 	r.CurrentAction = ACTION_PACE_AROUND
+	return r
+}
+
+func NewActionFollow(usernameTarget string, walkAnimation string, idleAnimation string) (r ActionUnion) {
+	r.ActionFollowTarget = usernameTarget
+	r.ActionFollowWalkAnimation = walkAnimation
+	r.ActionFollowIdleAnimation = idleAnimation
+	r.IsSet = true
+	r.CurrentAction = ACTION_FOLLOW
 	return r
 }

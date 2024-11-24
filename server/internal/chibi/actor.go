@@ -4,6 +4,7 @@ import (
 	"context"
 	"log"
 	"slices"
+	"strings"
 	"time"
 
 	"github.com/Stymphalian/ak_chibi_bot/server/internal/chat"
@@ -193,6 +194,20 @@ func (c *ChibiActor) UpdateChibi(ctx context.Context, userinfo misc.UserInfo, op
 	}
 
 	return c.UpdateChatter(ctx, userinfo, opInfo)
+}
+
+func (c *ChibiActor) FollowChibi(ctx context.Context, userinfo misc.UserInfo, opInfo *operator.OperatorInfo) error {
+	if opInfo.CurrentAction != operator.ACTION_FOLLOW {
+		return nil
+	}
+	// Make sure the target user exists, otherwise we can't follow.
+	targetUsername := strings.ToLower(opInfo.Action.ActionFollowTarget)
+	_, ok := c.ChatUsers[targetUsername]
+	if !ok {
+		return nil
+	}
+
+	return c.UpdateChibi(ctx, userinfo, opInfo)
 }
 
 func (c *ChibiActor) CurrentInfo(ctx context.Context, userName string) (operator.OperatorInfo, error) {
