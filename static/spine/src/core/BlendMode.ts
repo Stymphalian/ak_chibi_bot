@@ -27,13 +27,10 @@
  * THE SPINE RUNTIMES, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *****************************************************************************/
 
-// module spine {
-
-	/** Determines how images are blended with existing pixels when drawn. */
-	export enum BlendMode {
-		Normal,
-		Additive,
-		Multiply,
-		Screen
-	}
-// }
+/** Determines how images are blended with existing pixels when drawn. */
+export enum BlendMode {
+	Normal,
+	Additive,
+	Multiply,
+	Screen
+}

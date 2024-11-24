@@ -27,7 +27,7 @@
  * THE SPINE RUNTIMES, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *****************************************************************************/
 
-import {AssetManager } from "../webgl/AssetManager";
+import { AssetManager } from "../webgl/AssetManager";
 import { AtlasAttachmentLoader } from "../core/AtlasAttachmentLoader"
 import { Skeleton } from "../core/Skeleton"
 import { SkeletonBinary } from "../core/SkeletonBinary"
@@ -43,317 +43,317 @@ import { Actor, SpineActorConfig } from "./Actor"
 import { createElement, findWithClass, OffscreenRender, escapeHtml, isAlphanumeric, findWithId, configurePerspectiveCamera, updateCameraSettings } from "./Utils";
 import { Camera } from "../webgl/Camera";
 
-// // module spine {
-	export interface Viewport {
-		x: number,
-		y: number,
-		width: number,
-		height: number,
-		padLeft: string | number
-		padRight: string | number
-		padTop: string | number
-		padBottom: string | number
-		debugRender: boolean
-	}
 
-	export interface BoundingBox {
-		x: number,
-		y: number,
-		width: number,
-		height: number,
-	}
+export interface Viewport {
+	x: number,
+	y: number,
+	width: number,
+	height: number,
+	padLeft: string | number
+	padRight: string | number
+	padTop: string | number
+	padBottom: string | number
+	debugRender: boolean
+}
 
-	export interface SpinePlayerConfig {
-		/* Optional: whether to show the player controls. Default: true. */
-		showControls: boolean
+export interface BoundingBox {
+	x: number,
+	y: number,
+	width: number,
+	height: number,
+}
 
-		/* Optional: the position and size of the viewport in world coordinates of the skeleton. Default: the setup pose bounding box. */
-		viewport: Viewport
+export interface SpinePlayerConfig {
+	/* Optional: whether to show the player controls. Default: true. */
+	showControls: boolean
 
-		/* Optional: whether the canvas should be transparent. Default: false. */
-		alpha: boolean
+	/* Optional: the position and size of the viewport in world coordinates of the skeleton. Default: the setup pose bounding box. */
+	viewport: Viewport
 
-		/* Optional: the background color. Must be given in the format #rrggbbaa. Default: #000000ff. */
-		backgroundColor: string
+	/* Optional: whether the canvas should be transparent. Default: false. */
+	alpha: boolean
 
-		textSize: number,
-		textFont: string,
+	/* Optional: the background color. Must be given in the format #rrggbbaa. Default: #000000ff. */
+	backgroundColor: string
 
-		/* Optional: the background image. Default: none. */
-		backgroundImage: {
-			/* The URL of the background image */
-			url: string
+	textSize: number,
+	textFont: string,
 
-			/* Optional: the position and size of the background image in world coordinates. Default: viewport. */
-			x: number
-			y: number
-			width: number
-			height: number
-		} | undefined
+	/* Optional: the background image. Default: none. */
+	backgroundImage: {
+		/* The URL of the background image */
+		url: string
 
-		/* Optional: the background color used in fullscreen mode. Must be given in the format #rrggbbaa. Default: backgroundColor. */
-		fullScreenBackgroundColor: string | undefined
+		/* Optional: the position and size of the background image in world coordinates. Default: viewport. */
+		x: number
+		y: number
+		width: number
+		height: number
+	} | undefined
 
-		/** Optional: 
-		 *  How often to send back runtime debug information to the server.
-		 *  This is to help debug performance issues. Default: 60 seconds.
-		 */
-		runtimeDebugInfoDumpIntervalSec: number
+	/* Optional: the background color used in fullscreen mode. Must be given in the format #rrggbbaa. Default: backgroundColor. */
+	fullScreenBackgroundColor: string | undefined
 
-		// Camera Near and Far customization
-		cameraPerspectiveNear: number
-		cameraPerspectiveFar: number
+	/** Optional: 
+	 *  How often to send back runtime debug information to the server.
+	 *  This is to help debug performance issues. Default: 60 seconds.
+	 */
+	runtimeDebugInfoDumpIntervalSec: number
 
-		// The extra scaling to be applied to the all the chibis
-		chibiScale: number
-		useAccurateBoundingBox: boolean
-		showChatMessages: boolean
-	}
+	// Camera Near and Far customization
+	cameraPerspectiveNear: number
+	cameraPerspectiveFar: number
 
-	class Slider {
-		private slider: HTMLElement;
-		private value: HTMLElement;
-		private knob: HTMLElement;
-		public change: (percentage: number) => void;
+	// The extra scaling to be applied to the all the chibis
+	chibiScale: number
+	useAccurateBoundingBox: boolean
+	showChatMessages: boolean
+}
 
-		constructor(public snaps = 0, public snapPercentage = 0.1, public big = false) { }
+class Slider {
+	private slider: HTMLElement;
+	private value: HTMLElement;
+	private knob: HTMLElement;
+	public change: (percentage: number) => void;
 
-		render(): HTMLElement {
-			this.slider = createElement(/*html*/`
-				<div class="spine-player-slider ${this.big ? "big": ""}">
+	constructor(public snaps = 0, public snapPercentage = 0.1, public big = false) { }
+
+	render(): HTMLElement {
+		this.slider = createElement(/*html*/`
+				<div class="spine-player-slider ${this.big ? "big" : ""}">
 					<div class="spine-player-slider-value"></div>
 					<!--<div class="spine-player-slider-knob"></div>-->
 				</div>
 			`);
-			this.value = findWithClass(this.slider, "spine-player-slider-value")[0];
-			// this.knob = findWithClass(this.slider, "spine-player-slider-knob")[0];
-			this.setValue(0);
+		this.value = findWithClass(this.slider, "spine-player-slider-value")[0];
+		// this.knob = findWithClass(this.slider, "spine-player-slider-knob")[0];
+		this.setValue(0);
 
-			let input = new Input(this.slider);
-			var dragging = false;
-			input.addListener({
-				down: (x, y) => {
-					dragging = true;
-					this.value.classList.add("hovering");
-				},
-				up: (x, y) => {
-					dragging = false;
-					let percentage = x / this.slider.clientWidth;
-					percentage = percentage = Math.max(0, Math.min(percentage, 1));
-					this.setValue(x / this.slider.clientWidth);
-					if (this.change) this.change(percentage);
-					this.value.classList.remove("hovering");
-				},
-				moved: (x, y) => {
-					if (dragging) {
-						let percentage = x / this.slider.clientWidth;
-						percentage = Math.max(0, Math.min(percentage, 1));
-						percentage = this.setValue(x / this.slider.clientWidth);
-						if (this.change) this.change(percentage);
-					}
-				},
-				dragged: (x, y) => {
+		let input = new Input(this.slider);
+		var dragging = false;
+		input.addListener({
+			down: (x, y) => {
+				dragging = true;
+				this.value.classList.add("hovering");
+			},
+			up: (x, y) => {
+				dragging = false;
+				let percentage = x / this.slider.clientWidth;
+				percentage = percentage = Math.max(0, Math.min(percentage, 1));
+				this.setValue(x / this.slider.clientWidth);
+				if (this.change) this.change(percentage);
+				this.value.classList.remove("hovering");
+			},
+			moved: (x, y) => {
+				if (dragging) {
 					let percentage = x / this.slider.clientWidth;
 					percentage = Math.max(0, Math.min(percentage, 1));
 					percentage = this.setValue(x / this.slider.clientWidth);
 					if (this.change) this.change(percentage);
 				}
-			});
-
-
-			return this.slider;
-		}
-
-		setValue(percentage: number): number {
-			percentage = Math.max(0, Math.min(1, percentage));
-			if (this.snaps > 0) {
-				let modulo = percentage % (1 / this.snaps);
-				// floor
-				if (modulo < (1 / this.snaps) * this.snapPercentage) {
-					percentage = percentage - modulo;
-				} else if (modulo > (1 / this.snaps) - (1 / this.snaps) * this.snapPercentage) {
-					percentage = percentage - modulo + (1 / this.snaps);
-				}
-				percentage = Math.max(0, Math.min(1, percentage));
+			},
+			dragged: (x, y) => {
+				let percentage = x / this.slider.clientWidth;
+				percentage = Math.max(0, Math.min(percentage, 1));
+				percentage = this.setValue(x / this.slider.clientWidth);
+				if (this.change) this.change(percentage);
 			}
-			this.value.style.width = "" + (percentage * 100) + "%";
-			// this.knob.style.left = "" + (-8 + percentage * this.slider.clientWidth) + "px";
-			return percentage;
-		}
+		});
+
+
+		return this.slider;
 	}
 
-	type RenderCallbackFn = (context: ManagedWebGLRenderingContext, textContext: CanvasRenderingContext2D) => void;
-	type RemoveCallbackFn = () => void;
-
-	export class SpinePlayer {
-		static HOVER_COLOR_INNER = new Color(0.478, 0, 0, 0.25);
-		static HOVER_COLOR_OUTER = new Color(1, 1, 1, 1);
-		static NON_HOVER_COLOR_INNER = new Color(0.478, 0, 0, 0.5);
-		static NON_HOVER_COLOR_OUTER = new Color(1, 0, 0, 0.8);
-
-		// private average_width = 0;
-		// private average_height = 0;
-		// private average_count = 0;
-
-		private sceneRenderer: SceneRenderer;
-		private dom: HTMLElement;
-		private playerControls: HTMLElement;
-		private canvas: HTMLCanvasElement;
-		private textCanvas: HTMLCanvasElement;
-		private textCanvasContext: CanvasRenderingContext2D;
-		private timelineSlider: Slider;
-		private playButton: HTMLElement;
-
-		private context: ManagedWebGLRenderingContext;
-		private loadingScreen: LoadingScreen;
-		private assetManager: AssetManager;
-		private paused = false;
-		private actors = new Map<string, Actor>();
-		private playerConfig: SpinePlayerConfig = null;
-		
-		private parent: HTMLElement;
-
-		private stopRequestAnimationFrame = false;
-		private lastRequestAnimationFrameId = 0;
-		private windowFpsFrameCount:number = 0;
-		private webSocket: WebSocket = null;
-		private renderCallbacks: RenderCallbackFn[] = [];
-		private actorQueue: {actorName: string, config: SpineActorConfig}[] = [];
-		private actorQueueIndex: any = null;
-
-		// private offCanvas: HTMLCanvasElement|null;
-		private offscreenRender: OffscreenRender = null;
-
-		constructor(parent: HTMLElement | string, playerConfig: SpinePlayerConfig) {
-			if (typeof parent === "string") {
-				this.parent = document.getElementById(parent);
-			} else  {
-				this.parent = parent;
+	setValue(percentage: number): number {
+		percentage = Math.max(0, Math.min(1, percentage));
+		if (this.snaps > 0) {
+			let modulo = percentage % (1 / this.snaps);
+			// floor
+			if (modulo < (1 / this.snaps) * this.snapPercentage) {
+				percentage = percentage - modulo;
+			} else if (modulo > (1 / this.snaps) - (1 / this.snaps) * this.snapPercentage) {
+				percentage = percentage - modulo + (1 / this.snaps);
 			}
-			// this.playerConfig = null;
-			this.playerConfig = this.validatePlayerConfig(playerConfig);
-			this.parent.appendChild(this.setupDom());
+			percentage = Math.max(0, Math.min(1, percentage));
+		}
+		this.value.style.width = "" + (percentage * 100) + "%";
+		// this.knob.style.left = "" + (-8 + percentage * this.slider.clientWidth) + "px";
+		return percentage;
+	}
+}
+
+type RenderCallbackFn = (context: ManagedWebGLRenderingContext, textContext: CanvasRenderingContext2D) => void;
+type RemoveCallbackFn = () => void;
+
+export class SpinePlayer {
+	static HOVER_COLOR_INNER = new Color(0.478, 0, 0, 0.25);
+	static HOVER_COLOR_OUTER = new Color(1, 1, 1, 1);
+	static NON_HOVER_COLOR_INNER = new Color(0.478, 0, 0, 0.5);
+	static NON_HOVER_COLOR_OUTER = new Color(1, 0, 0, 0.8);
+
+	// private average_width = 0;
+	// private average_height = 0;
+	// private average_count = 0;
+
+	private sceneRenderer: SceneRenderer;
+	private dom: HTMLElement;
+	private playerControls: HTMLElement;
+	private canvas: HTMLCanvasElement;
+	private textCanvas: HTMLCanvasElement;
+	private textCanvasContext: CanvasRenderingContext2D;
+	private timelineSlider: Slider;
+	private playButton: HTMLElement;
+
+	private context: ManagedWebGLRenderingContext;
+	private loadingScreen: LoadingScreen;
+	private assetManager: AssetManager;
+	private paused = false;
+	private actors = new Map<string, Actor>();
+	private playerConfig: SpinePlayerConfig = null;
+
+	private parent: HTMLElement;
+
+	private stopRequestAnimationFrame = false;
+	private lastRequestAnimationFrameId = 0;
+	private windowFpsFrameCount: number = 0;
+	private webSocket: WebSocket = null;
+	private renderCallbacks: RenderCallbackFn[] = [];
+	private actorQueue: { actorName: string, config: SpineActorConfig }[] = [];
+	private actorQueueIndex: any = null;
+
+	// private offCanvas: HTMLCanvasElement|null;
+	private offscreenRender: OffscreenRender = null;
+
+	constructor(parent: HTMLElement | string, playerConfig: SpinePlayerConfig) {
+		if (typeof parent === "string") {
+			this.parent = document.getElementById(parent);
+		} else {
+			this.parent = parent;
+		}
+		// this.playerConfig = null;
+		this.playerConfig = this.validatePlayerConfig(playerConfig);
+		this.parent.appendChild(this.setupDom());
+	}
+
+	setWebsocket(webSocket: WebSocket) {
+		this.webSocket = webSocket;
+		this.setShowChatMessagesInRoom(this.playerConfig.showChatMessages);
+	}
+
+	validatePlayerConfig(config: SpinePlayerConfig): SpinePlayerConfig {
+		if (!config) throw new Error("Please pass a configuration to new.SpinePlayer().");
+		if (!config.alpha) config.alpha = false;
+		if (!config.backgroundColor) config.backgroundColor = "#000000";
+		if (!config.fullScreenBackgroundColor) config.fullScreenBackgroundColor = config.backgroundColor;
+		if (typeof config.showControls === "undefined")
+			config.showControls = true;
+		if (!config.runtimeDebugInfoDumpIntervalSec) config.runtimeDebugInfoDumpIntervalSec = 60;
+		if (!config.textSize) config.textSize = 14;
+		if (!config.textFont) config.textFont = "lato";
+		if (!config.cameraPerspectiveNear) config.cameraPerspectiveNear = 1.0;
+		if (!config.cameraPerspectiveFar) config.cameraPerspectiveFar = 1000.0;
+		if (!config.useAccurateBoundingBox) config.useAccurateBoundingBox = false;
+		if (!config.showChatMessages) config.showChatMessages = false;
+		return config;
+	}
+
+	validateActorConfig(config: SpineActorConfig): SpineActorConfig {
+		if (!config) throw new Error("Please pass a configuration to new.SpinePlayer().");
+		if (!config.jsonUrl && !config.skelUrl) throw new Error("Please specify the URL of the skeleton JSON or .skel file.");
+		if (!config.atlasUrl) throw new Error("Please specify the URL of the atlas file.");
+		// if (!config.alpha) config.alpha = false;
+		// if (!config.backgroundColor) config.backgroundColor = "#000000";
+		// if (!config.fullScreenBackgroundColor) config.fullScreenBackgroundColor = config.backgroundColor;
+		if (typeof config.premultipliedAlpha === "undefined") config.premultipliedAlpha = true;
+		if (!config.scaleX) config.scaleX = 1;
+		if (!config.scaleY) config.scaleY = 1;
+		if (!config.extraOffsetX) config.extraOffsetX = 0;
+		if (!config.extraOffsetY) config.extraOffsetY = 0;
+		if (!config.success) config.success = (widget, actor) => { };
+		if (!config.error) config.error = (widget, actor, msg) => { };
+		if (!config.animation_listener) {
+			config.animation_listener = {
+				event: function (trackIndex, event) {
+					// console.log("Event on track " + trackIndex + ": " + JSON.stringify(event));
+				},
+				complete: function (trackIndex) {
+					// console.log("Animation on track " + trackIndex + " completed");
+				},
+				start: function (trackIndex) {
+					// console.log("Animation on track " + trackIndex + " started");
+				},
+				end: function (trackIndex) {
+					// console.log("Animation on track " + trackIndex + " ended");
+				},
+				interrupt: function (trackIndex) {
+					// console.log("Animation on track " + trackIndex + " ended");
+				},
+				dispose: function (trackIndex) {
+					// console.log("Animation on track " + trackIndex + " ended");
+				},
+			}
 		}
 
-		setWebsocket(webSocket: WebSocket) {
-			this.webSocket = webSocket;
-			this.setShowChatMessagesInRoom(this.playerConfig.showChatMessages);
+		if (config.skins && config.skin) {
+			if (config.skins.indexOf(config.skin) < 0) {
+				throw new Error("Default skin '" +
+					config.skin +
+					"' is not contained in the list of selectable skins " +
+					escapeHtml(JSON.stringify(config.skins)) +
+					"."
+				);
+			}
+		}
+		if (typeof config.defaultMix === "undefined")
+			config.defaultMix = 0.25;
+
+		if (config.configScaleX == undefined) { config.configScaleX = 1.0; }
+		if (config.configScaleY == undefined) { config.configScaleY = 1.0; }
+		if (config.scaleX == undefined) { config.scaleX = 0.45; }
+		if (config.scaleY == undefined) { config.scaleY = 0.45; }
+		if (config.maxSizePx == undefined) { config.maxSizePx = 350; }
+		if (config.startPosX == undefined) { config.startPosX = null; }
+		if (config.startPosY == undefined) { config.startPosY = null; }
+		if (config.extraOffsetX == undefined) { config.extraOffsetX = 0; }
+		if (config.extraOffsetY == undefined) { config.extraOffsetY = 0; }
+		if (config.defaultMovementSpeedPxX == undefined) { config.defaultMovementSpeedPxX = 80; }
+		if (config.defaultMovementSpeedPxY == undefined) { config.defaultMovementSpeedPxY = 80; }
+		if (config.defaultMovementSpeedPxZ == undefined) { config.defaultMovementSpeedPxZ = 80; }
+		if (config.movementSpeedPxX == undefined) { config.movementSpeedPxX = null; }
+		if (config.movementSpeedPxY == undefined) { config.movementSpeedPxY = null; }
+		if (config.movementSpeedPxZ == undefined) { config.movementSpeedPxZ = config.defaultMovementSpeedPxZ; }
+
+		if (config.chibiId == undefined) { config.chibiId = crypto.randomUUID(); }
+		if (config.userDisplayName == undefined) { config.userDisplayName = crypto.randomUUID(); }
+		if (!isAlphanumeric(config.chibiId)) {
+			throw Error("ChibiId is not valid");
+		}
+		if (!isAlphanumeric(config.userDisplayName)) {
+			throw Error("userDisplayName is not valid");
+		}
+		if (config.action == undefined) {
+			throw Error("config.action must be set");
 		}
 
-		validatePlayerConfig(config: SpinePlayerConfig): SpinePlayerConfig {
-			if (!config) throw new Error("Please pass a configuration to new.SpinePlayer().");
-			if (!config.alpha) config.alpha = false;
-			if (!config.backgroundColor) config.backgroundColor = "#000000";
-			if (!config.fullScreenBackgroundColor) config.fullScreenBackgroundColor = config.backgroundColor;
-			if (typeof config.showControls === "undefined")
-				config.showControls = true;
-			if (!config.runtimeDebugInfoDumpIntervalSec) config.runtimeDebugInfoDumpIntervalSec = 60;
-			if (!config.textSize) config.textSize = 14;
-			if (!config.textFont) config.textFont = "lato";
-			if (!config.cameraPerspectiveNear) config.cameraPerspectiveNear = 1.0;
-			if (!config.cameraPerspectiveFar) config.cameraPerspectiveFar = 1000.0;
-			if (!config.useAccurateBoundingBox) config.useAccurateBoundingBox = false;
-			if (!config.showChatMessages) config.showChatMessages = false;
-			return config;
-		}
+		return config;
+	}
 
-		validateActorConfig(config: SpineActorConfig): SpineActorConfig {
-			if (!config) throw new Error("Please pass a configuration to new.SpinePlayer().");
-			if (!config.jsonUrl && !config.skelUrl) throw new Error("Please specify the URL of the skeleton JSON or .skel file.");
-			if (!config.atlasUrl) throw new Error("Please specify the URL of the atlas file.");
-			// if (!config.alpha) config.alpha = false;
-			// if (!config.backgroundColor) config.backgroundColor = "#000000";
-			// if (!config.fullScreenBackgroundColor) config.fullScreenBackgroundColor = config.backgroundColor;
-			if (typeof config.premultipliedAlpha === "undefined") config.premultipliedAlpha = true;
-			if (!config.scaleX) config.scaleX = 1;
-			if (!config.scaleY) config.scaleY = 1;
-			if (!config.extraOffsetX) config.extraOffsetX = 0;
-			if (!config.extraOffsetY) config.extraOffsetY = 0;
-			if (!config.success) config.success = (widget, actor) => {};
-			if (!config.error) config.error = (widget, actor, msg) => {};
-			if (!config.animation_listener) {
-				config.animation_listener = {
-					event: function(trackIndex, event) {
-						// console.log("Event on track " + trackIndex + ": " + JSON.stringify(event));
-					},
-					complete: function(trackIndex) {
-						// console.log("Animation on track " + trackIndex + " completed");
-					},
-					start: function(trackIndex) {
-						// console.log("Animation on track " + trackIndex + " started");
-					},
-					end: function(trackIndex) {
-						// console.log("Animation on track " + trackIndex + " ended");
-					},
-					interrupt: function(trackIndex) {
-						// console.log("Animation on track " + trackIndex + " ended");
-					},
-					dispose: function(trackIndex) {
-						// console.log("Animation on track " + trackIndex + " ended");
-					},
-				}
-			}
+	showError(actor: Actor, error: string) {
+		let errorDom = findWithClass(this.dom, "spine-player-error")[0];
+		errorDom.classList.remove("spine-player-hidden");
+		errorDom.innerHTML = `<p style="text-align: center; align-self: center;">${error}</p>`;
 
-			if (config.skins && config.skin) {
-				if (config.skins.indexOf(config.skin) < 0) {
-					throw new Error("Default skin '" + 
-						config.skin + 
-						"' is not contained in the list of selectable skins " + 
-						escapeHtml(JSON.stringify(config.skins)) + 
-						"."
-					);
-				}
-			}
-			if (typeof config.defaultMix === "undefined")
-				config.defaultMix = 0.25;
+		// this.playerConfig.error(this, error);
+		actor.config.error(this, actor, error);
+	}
 
-			if (config.configScaleX == undefined) {config.configScaleX = 1.0;}
-			if (config.configScaleY == undefined) {config.configScaleY = 1.0;}
-			if (config.scaleX == undefined) {config.scaleX = 0.45;}
-			if (config.scaleY == undefined) {config.scaleY = 0.45;}
-			if (config.maxSizePx == undefined) {config.maxSizePx = 350;}
-			if (config.startPosX == undefined) {config.startPosX = null;}
-			if (config.startPosY == undefined) {config.startPosY = null;}
-			if (config.extraOffsetX == undefined) {config.extraOffsetX = 0;}
-			if (config.extraOffsetY == undefined) {config.extraOffsetY = 0;}
-			if (config.defaultMovementSpeedPxX == undefined) {config.defaultMovementSpeedPxX = 80;}
-			if (config.defaultMovementSpeedPxY == undefined) {config.defaultMovementSpeedPxY = 80;}
-			if (config.defaultMovementSpeedPxZ == undefined) {config.defaultMovementSpeedPxZ = 80;}
-			if (config.movementSpeedPxX == undefined) {config.movementSpeedPxX = null;}
-			if (config.movementSpeedPxY == undefined) {config.movementSpeedPxY = null;}
-			if (config.movementSpeedPxZ == undefined) {config.movementSpeedPxZ = config.defaultMovementSpeedPxZ;}
+	hideError() {
+		let errorDom = findWithClass(this.dom, "spine-player-error")[0];
+		errorDom.classList.add("spine-player-hidden");
+	}
 
-			if (config.chibiId == undefined) {config.chibiId = crypto.randomUUID();}
-			if (config.userDisplayName == undefined) {config.userDisplayName = crypto.randomUUID();}
-			if (!isAlphanumeric(config.chibiId)) {
-				throw Error("ChibiId is not valid");
-			}
-			if (!isAlphanumeric(config.userDisplayName)) {
-				throw Error("userDisplayName is not valid");
-			}
-			if (config.action == undefined) {
-				throw Error("config.action must be set");
-			}
-
-			return config;
-		}
-
-		showError(actor: Actor, error: string) {
-			let errorDom = findWithClass(this.dom, "spine-player-error")[0];
-			errorDom.classList.remove("spine-player-hidden");
-			errorDom.innerHTML = `<p style="text-align: center; align-self: center;">${error}</p>`;
-
-			// this.playerConfig.error(this, error);
-			actor.config.error(this, actor, error);
-		}
-
-		hideError() {
-			let errorDom = findWithClass(this.dom, "spine-player-error")[0];
-			errorDom.classList.add("spine-player-hidden");
-		}
-
-		setupDom(): HTMLElement {
-			let dom = this.dom = createElement(/*html*/`
+	setupDom(): HTMLElement {
+		let dom = this.dom = createElement(/*html*/`
 				<div class="spine-player">
 					<div class="spine-player-error spine-player-hidden"></div>
 					<canvas id="spine-canvas" class="spine-player-canvas"></canvas>
@@ -369,602 +369,600 @@ import { Camera } from "../webgl/Camera";
 				</div>
 			`)
 
-			try {
-				// Setup the scene renderer and OpenGL context
-				// this.canvas = findWithClass(dom, "spine-player-canvas")[0] as HTMLCanvasElement;
-				this.canvas = findWithId(dom, "spine-canvas")[0] as HTMLCanvasElement;
-				this.textCanvas = findWithId(dom, "spine-text")[0] as HTMLCanvasElement;
-				this.textCanvasContext = this.textCanvas.getContext("2d");
-				// var webglConfig = { alpha: config.alpha };
-				var webglConfig = { alpha: this.playerConfig.alpha};
-				this.context = new ManagedWebGLRenderingContext(this.canvas, webglConfig);
-				// Setup the scene renderer and loading screen
-				this.sceneRenderer = new SceneRenderer(this.canvas, this.context, true);
-				this.loadingScreen = new LoadingScreen(this.sceneRenderer);
+		try {
+			// Setup the scene renderer and OpenGL context
+			// this.canvas = findWithClass(dom, "spine-player-canvas")[0] as HTMLCanvasElement;
+			this.canvas = findWithId(dom, "spine-canvas")[0] as HTMLCanvasElement;
+			this.textCanvas = findWithId(dom, "spine-text")[0] as HTMLCanvasElement;
+			this.textCanvasContext = this.textCanvas.getContext("2d");
+			// var webglConfig = { alpha: config.alpha };
+			var webglConfig = { alpha: this.playerConfig.alpha };
+			this.context = new ManagedWebGLRenderingContext(this.canvas, webglConfig);
+			// Setup the scene renderer and loading screen
+			this.sceneRenderer = new SceneRenderer(this.canvas, this.context, true);
+			this.loadingScreen = new LoadingScreen(this.sceneRenderer);
 
-				// // <canvas id="spine-canvas-off" class="spine-player-canvas-off"></canvas>
-				// let offCanvas = findWithId(dom, "spine-canvas-off")[0] as HTMLCanvasElement;
-				// this.offscreenRender = new OffscreenRender(this.playerConfig.chibiScale, offCanvas);
-				if (this.playerConfig.useAccurateBoundingBox) {
-					this.offscreenRender = new OffscreenRender(this.sceneRenderer);	
-				} else {
-					this.offscreenRender = null;
-				}
-				this.assetManager = new AssetManager([this.context]);	
-				
-			} catch (e) {
-				// this.showError("Sorry, your browser does not support WebGL.<br><br>Please use the latest version of Firefox, Chrome, Edge, or Safari.");
-				console.log("Sorry, your browser does not support WebGL.<br><br>Please use the latest version of Firefox, Chrome, Edge, or Safari.");
-				return dom;
+			// // <canvas id="spine-canvas-off" class="spine-player-canvas-off"></canvas>
+			// let offCanvas = findWithId(dom, "spine-canvas-off")[0] as HTMLCanvasElement;
+			// this.offscreenRender = new OffscreenRender(this.playerConfig.chibiScale, offCanvas);
+			if (this.playerConfig.useAccurateBoundingBox) {
+				this.offscreenRender = new OffscreenRender(this.sceneRenderer);
+			} else {
+				this.offscreenRender = null;
 			}
+			this.assetManager = new AssetManager([this.context]);
 
-			// configure the camera
-			configurePerspectiveCamera(
-				this.sceneRenderer.camera,
-				this.playerConfig.cameraPerspectiveNear,
-    			this.playerConfig.cameraPerspectiveFar,
-				this.playerConfig.viewport
-			);			
-
-			// Setup rendering loop
-			this.lastRequestAnimationFrameId = requestAnimationFrame(() => this.drawFrame());
-
-			// Setup FPS counter
-			performance.mark('fps_window_start');
-			this.windowFpsFrameCount = 0;
-			if (this.playerConfig.runtimeDebugInfoDumpIntervalSec > 0) {
-				setInterval(() => this.callbackSendRuntimeUpdateInfo(), 1000* this.playerConfig.runtimeDebugInfoDumpIntervalSec);
-			}
-
-			// Setup the event listeners for UI elements
-			this.playerControls = findWithClass(dom, "spine-player-controls")[0];
-			let timeline = findWithClass(dom, "spine-player-timeline")[0];
-			this.timelineSlider = new Slider();
-			timeline.appendChild(this.timelineSlider.render());
-			this.playButton = findWithId(dom, "spine-player-button-play-pause")[0];
-
-			this.playButton.onclick = () => {
-				if (this.paused) this.play()
-				else this.pause();
-			}
-
-			// Register a global resize handler to redraw and avoid flicker
-			window.onresize = () => {
-				this.drawFrame(false);
-			}
-
-			// Setup the input processor and controllable bones
-			this.setupInput();
-
+		} catch (e) {
+			// this.showError("Sorry, your browser does not support WebGL.<br><br>Please use the latest version of Firefox, Chrome, Edge, or Safari.");
+			console.log("Sorry, your browser does not support WebGL.<br><br>Please use the latest version of Firefox, Chrome, Edge, or Safari.");
 			return dom;
 		}
 
-		callbackSendRuntimeUpdateInfo() {
-			performance.mark('fps_window_end');
-			const totalTime = performance.measure('fps_window_time', 'fps_window_start', 'fps_window_end')
-			const averageFps = this.windowFpsFrameCount / (totalTime.duration  / 1000);
+		// configure the camera
+		configurePerspectiveCamera(
+			this.sceneRenderer.camera,
+			this.playerConfig.cameraPerspectiveNear,
+			this.playerConfig.cameraPerspectiveFar,
+			this.playerConfig.viewport
+		);
 
-			if (this.webSocket != null) {
-				const payload = JSON.stringify(
-					{
-						type_name: "RUNTIME_DEBUG_UPDATE",
-						average_fps: averageFps, 
-					}
-				)
-				this.webSocket.send(payload);
-			}
+		// Setup rendering loop
+		this.lastRequestAnimationFrameId = requestAnimationFrame(() => this.drawFrame());
 
-			performance.mark('fps_window_start');
-			this.windowFpsFrameCount = 0;
+		// Setup FPS counter
+		performance.mark('fps_window_start');
+		this.windowFpsFrameCount = 0;
+		if (this.playerConfig.runtimeDebugInfoDumpIntervalSec > 0) {
+			setInterval(() => this.callbackSendRuntimeUpdateInfo(), 1000 * this.playerConfig.runtimeDebugInfoDumpIntervalSec);
 		}
 
-		setShowChatMessagesInRoom(showChatMessages: boolean) {
-			if (this.webSocket != null) {
-				const payload = JSON.stringify({
-					type_name: "RUNTIME_ROOM_SETTINGS",
-					show_chat_messages: showChatMessages
-				})
-				this.webSocket.send(payload);
-			}
+		// Setup the event listeners for UI elements
+		this.playerControls = findWithClass(dom, "spine-player-controls")[0];
+		let timeline = findWithClass(dom, "spine-player-timeline")[0];
+		this.timelineSlider = new Slider();
+		timeline.appendChild(this.timelineSlider.render());
+		this.playButton = findWithId(dom, "spine-player-button-play-pause")[0];
+
+		this.playButton.onclick = () => {
+			if (this.paused) this.play()
+			else this.pause();
 		}
 
-		addActorToUpdateQueue(actorName: string, config: SpineActorConfig) {
-			this.actorQueue.push({actorName: actorName, config: config});
-			if (this.actorQueueIndex == null) {
-				this.actorQueueIndex = setTimeout(() => this.consumeActorUpdateQueue(), 100);
-			}
-		}
-		
-		private consumeActorUpdateQueue() {
-			// console.log("actorUpdateQueue: ", this.actorQueue.length);
-			if (this.actorQueue.length == 0) {
-				this.actorQueueIndex = null;
-				return;
-			}
-			if (!this.assetManager.isLoadingComplete()) {
-				this.actorQueueIndex = setTimeout(() => this.consumeActorUpdateQueue(), 100);
-				return;
-			}
-
-			let task = this.actorQueue.shift();
-			this.changeOrAddActor(task.actorName, task.config);
-			this.actorQueueIndex = setTimeout(() => this.consumeActorUpdateQueue(), 100);
+		// Register a global resize handler to redraw and avoid flicker
+		window.onresize = () => {
+			this.drawFrame(false);
 		}
 
-		changeOrAddActor(actorName: string, config: SpineActorConfig) {
-			if (this.actors.has(actorName)) {
-				let actor = this.actors.get(actorName);
-				actor.ResetWithConfig(config);
-				this.setupActor(actor);
-			} else {
-				let actor = new Actor(config, this.playerConfig.viewport, this.offscreenRender);
-				this.setupActor(actor);
-				this.actors.set(actorName, actor);
-			}
-		}
+		// Setup the input processor and controllable bones
+		this.setupInput();
 
-		public getActor(actorName: string) : Actor {
-			return this.actors.get(actorName);
-		}
+		return dom;
+	}
 
-		public getActorNames() : Array<string> {
-			return Array.from(this.actors.keys());
-		}
+	callbackSendRuntimeUpdateInfo() {
+		performance.mark('fps_window_end');
+		const totalTime = performance.measure('fps_window_time', 'fps_window_start', 'fps_window_end')
+		const averageFps = this.windowFpsFrameCount / (totalTime.duration / 1000);
 
-		removeActor(actorName: string) {
-			this.actors.delete(actorName)
-		}
-
-		showChatMessage(actorName: string, message: string) {
-			if (!this.actors.has(actorName)) {
-				return;
-			}
-			let actor = this.actors.get(actorName);
-			actor.EnqueueChatMessage(message);
-		}
-
-		setupActor(actor: Actor) {
-			let config = actor.config;
-
-			try {
-				// Validate the configuration
-				// this.config = this.validatePlayerConfig(config);
-				actor.config = this.validateActorConfig(actor.config);
-			} catch (e) {
-				this.showError(actor, e);
-				return;
-			}
-
-			// Load the assets
-			if (config.rawDataURIs) {
-				for (let path in config.rawDataURIs) {
-					let data = config.rawDataURIs[path];
-					this.assetManager.setRawDataURI(path, data);
+		if (this.webSocket != null) {
+			const payload = JSON.stringify(
+				{
+					type_name: "RUNTIME_DEBUG_UPDATE",
+					average_fps: averageFps,
 				}
-			}
-			if (config.jsonUrl) {
-				this.assetManager.loadText(config.jsonUrl);
-			} else {
-				this.assetManager.loadBinary(config.skelUrl);
-			}
-			this.assetManager.loadTextureAtlas(config.atlasUrl);
-			if (config.backgroundImage && config.backgroundImage.url) {
-				this.assetManager.loadTexture(config.backgroundImage.url);
-			}
-
-			// Setup rendering loop
-			// this.lastRequestAnimationFrameId = requestAnimationFrame(() => this.drawFrame());
+			)
+			this.webSocket.send(payload);
 		}
 
-		updateCameraSettings(cam: Camera, actor: Actor, viewport: BoundingBox) {
-			updateCameraSettings(cam, actor, viewport)
-		}
+		performance.mark('fps_window_start');
+		this.windowFpsFrameCount = 0;
+	}
 
-		drawText(texts: string[], xpx: number, ypx: number) {
-			let viewport = this.playerConfig.viewport;
-			// TODO: I don't understand why this is worldToScreen.
-			let tt = this.sceneRenderer.camera.worldToScreen(
-				new Vector3(xpx,ypx,0)
-			);
-			let textpos = new Vector2(tt.x, tt.y);
-			textpos.y = viewport.height - textpos.y;
-			xpx = textpos.x;
-			ypx = textpos.y;
-
-			let ctx = this.textCanvasContext;
-			ctx.save();
-			ctx.translate(xpx, ypx);
-			ctx.font = this.playerConfig.textSize + "px " + this.playerConfig.textFont;
-			ctx.textBaseline = "bottom";
-
-			// Measure how much space is required for the speech bubble
-			let width = 0;
-			let height = 0;
-			let heights = [];
-			for (let i = 0; i < texts.length; i++) {
-				let data = ctx.measureText(texts[i]);
-				let h = data.actualBoundingBoxAscent - data.actualBoundingBoxDescent;
-				let w = data.width;
-				width = Math.max(width, w);
-				height += h;
-				heights.push(h);
-			}
-
-			// Draw a speech bubble box
-			ctx.beginPath();
-			let pad = 5
-			ctx.fillStyle = "black";
-			ctx.strokeStyle = "#333";
-			ctx.lineWidth = 5;
-			ctx.roundRect(-width/2 - pad, pad, width + 2*pad, -height - 2*pad, 3);
-			ctx.stroke();
-			ctx.fill();
-
-			// Draw a small triangle below the rect
-			ctx.beginPath();
-			ctx.fillStyle="black"
-			ctx.moveTo(-5, pad);
-			ctx.lineTo(0, pad + 5);
-			ctx.lineTo(5, pad);
-			ctx.closePath();
-			ctx.fill();
-			// We want the border to blend in with the box and triangle
-			ctx.beginPath();
-			ctx.strokeStyle = "#333";
-			ctx.lineWidth = 2;
-			ctx.moveTo(-5, pad);
-			ctx.lineTo(0, pad + 5);
-			ctx.lineTo(5, pad);
-			ctx.stroke();
-			ctx.closePath();
-			
-			// Draw the text
-			ctx.fillStyle = "white";
-			let y = -height;
-			for (let i = 0; i < texts.length; i++) {
-				y += heights[i];
-				let text = texts[i];
-				ctx.fillText(text, -width/2, y);	
-			}
-
-			ctx.restore();
-		}
-
-		drawFrame (requestNextFrame = true) {
-			if (requestNextFrame && !this.stopRequestAnimationFrame) {
-				this.lastRequestAnimationFrameId = requestAnimationFrame(() => this.drawFrame());
-			}
-			let ctx = this.context;
-			let gl = ctx.gl;
-
-			// Clear the viewport
-			var doc = document as any;
-			var isFullscreen = doc.fullscreenElement || doc.webkitFullscreenElement || doc.mozFullScreenElement || doc.msFullscreenElement;
-			// let bg = new Color().setFromString(isFullscreen ? this.config.fullScreenBackgroundColor : this.config.backgroundColor);
-			let bg = new Color().setFromString(
-				isFullscreen ? 
-				this.playerConfig.fullScreenBackgroundColor :
-				this.playerConfig.backgroundColor
-			);
-			gl.clearColor(bg.r, bg.g, bg.b, bg.a);
-			gl.clear(gl.COLOR_BUFFER_BIT);
-
-			// Clear the Text Canvas
-			this.textCanvas.width = this.textCanvas.clientWidth;
-			this.textCanvas.height = this.textCanvas.clientHeight;
-			this.textCanvasContext.clearRect(0,0, this.textCanvas.width, this.textCanvas.height);
-
-			// // Display loading screen
-			// this.loadingScreen.backgroundColor.setFromColor(bg);
-			// this.loadingScreen.draw(this.assetManager.isLoadingComplete());
-
-			// Resize the canvas
-			this.sceneRenderer.resize(ResizeMode.Expand);
-
-			// Order the actors to draw based on their z-order
-			let actorsZOrder = Array.from(this.actors.keys()).sort((a:string,b:string ) => {
-				let a1 = this.actors.get(a);
-				let a2 = this.actors.get(b);
-				let r = a2.getPositionZ() - a1.getPositionZ()
-				// To ensure stable sort
-				if (r == 0) {return a1.loadedWhen - a2.loadedWhen;}
-				return r;
-			});
-
-			let all_actors_loaded = true;
-			for (let key of actorsZOrder) {
-				let actor = this.actors.get(key);
-				if (actor.load_perma_failed) {
-					// Permanant failure trying to load this actor. Just skip it.
-					continue;
-				}
-
-				// Have we finished loading the asset? Then set things up
-				// if (this.assetManager.isLoadingComplete() && this.skeleton == null) this.loadSkeleton();
-				if (this.assetManager.isLoadingComplete() 
-					&& actor.skeleton == null) {
-					this.loadSkeleton(actor);
-				}
-					
-				// // Resize the canvas
-				// this.sceneRenderer.resize(webgl.ResizeMode.Expand);
-
-				// Update and draw the skeleton
-				if (!actor.loaded) {
-					all_actors_loaded = false;
-					continue;
-				}
-				
-				let viewport = this.playerConfig.viewport;
-
-				// Update animation and skeleton based on user selections
-				// if (!actor.paused && actor.config.animations.length > 0) {
-				if (!actor.paused && actor.GetAnimations().length > 0) {
-					actor.time.update();
-					let delta = actor.time.delta * actor.speed;
-
-					let animationDuration = actor.animationState.getCurrent(0).animation.duration;
-					actor.playTime += delta;
-					while (actor.playTime >= animationDuration && animationDuration != 0) {
-						actor.playTime -= animationDuration;
-					}
-					actor.playTime = Math.max(0, Math.min(actor.playTime, animationDuration));
-					this.timelineSlider.setValue(actor.playTime / animationDuration);
-
-					actor.UpdatePhysics(this, delta, viewport);
-					actor.skeleton.setToSetupPose();					
-					actor.animationState.update(delta);
-					actor.animationState.apply(actor.skeleton);
-				}
-				actor.skeleton.updateWorldTransform();
-
-				// Update the camera
-				this.updateCameraSettings(this.sceneRenderer.camera, actor, viewport);
-
-				this.sceneRenderer.begin();
-				// // Draw background image if given
-				if (actor.config.backgroundImage && actor.config.backgroundImage.url) {
-					let bgImage = this.assetManager.get(actor.config.backgroundImage.url);
-					if (!(actor.config.backgroundImage.hasOwnProperty("x") && actor.config.backgroundImage.hasOwnProperty("y") && actor.config.backgroundImage.hasOwnProperty("width") && actor.config.backgroundImage.hasOwnProperty("height"))) {
-						this.sceneRenderer.drawTexture(bgImage, viewport.x, viewport.y, viewport.width, viewport.height);
-					} else {
-						this.sceneRenderer.drawTexture(bgImage, actor.config.backgroundImage.x, actor.config.backgroundImage.y, actor.config.backgroundImage.width, actor.config.backgroundImage.height);
-					}
-				}
-				// Draw skeleton 
-				this.sceneRenderer.drawSkeleton(actor.skeleton, actor.config.premultipliedAlpha);
-
-				// Render the user's name above the chibi
-				this.drawActorText(actor);
-				this.sceneRenderer.end();
-
-				// Render the debug output with a fixed camera.
-				if (this.playerConfig.viewport.debugRender) {
-					this.sceneRenderer.begin();
-					actor.DrawDebug(this.sceneRenderer, viewport);
-					this.sceneRenderer.circle(true, 0, 0, 10, Color.BLUE);
-					this.sceneRenderer.end();
-				}
-			}
-
-			this.broadcastRenderCallback();
-
-			if (all_actors_loaded) {
-				this.assetManager.clearErrors();
-				this.hideError();
-			}
-			this.windowFpsFrameCount += 1;
-		}
-
-		public drawActorText(actor: Actor) {
-			let chatMessages = actor.GetChatMessages();
-			if (chatMessages && this.playerConfig.showChatMessages) {
-				this.drawText(
-					chatMessages.messages,
-					actor.getPositionX(),
-					actor.getPositionY() + actor.GetUsernameHeaderHeight(),
-				);
-			} else {
-				this.drawText(
-					[actor.config.userDisplayName],
-					actor.getPositionX(),
-					actor.getPositionY() + actor.GetUsernameHeaderHeight(),
-				);	
-			}
-		}
-
-
-		public registerRenderCallback(callback: RenderCallbackFn) : RemoveCallbackFn{
-			this.renderCallbacks.push(callback);
-			return () => {
-				this.renderCallbacks = this.renderCallbacks.filter(c => c !== callback);
-			}
-		}
-
-		broadcastRenderCallback() {
-			for (let i = 0; i < this.renderCallbacks.length; i++) {
-				this.renderCallbacks[i](this.context, this.textCanvasContext);;
-			}
-		}
-
-		scale(sourceWidth: number, sourceHeight: number, targetWidth: number, targetHeight: number): Vector2 {
-			let targetRatio = targetHeight / targetWidth;
-			let sourceRatio = sourceHeight / sourceWidth;
-			let scale = targetRatio > sourceRatio ? targetWidth / sourceWidth : targetHeight / sourceHeight;
-			let temp = new Vector2();
-			temp.x = sourceWidth * scale;
-			temp.y = sourceHeight * scale;
-			return temp;
-		}
-
-		loadSkeleton (actor: Actor) {
-			if (actor.loaded || actor.load_perma_failed) return;
-
-			if (this.assetManager.hasErrors()) {
-				this.showError(actor, "Error: assets could not be loaded.<br><br>" + escapeHtml(JSON.stringify(this.assetManager.getErrors())));
-				return;
-			}
-
-			let atlas = this.assetManager.get(actor.config.atlasUrl);
-			let skeletonData: SkeletonData;
-			if (actor.config.jsonUrl) {
-				let jsonText = this.assetManager.get(actor.config.jsonUrl);
-				let json = new SkeletonJson(new AtlasAttachmentLoader(atlas));
-				try {
-					skeletonData = json.readSkeletonData(jsonText);
-				} catch (e) {
-					this.showError(actor, "Error: could not load skeleton .json.<br><br>" + escapeHtml(JSON.stringify(e)));
-					return;
-				}
-			} else {
-				let binaryData = this.assetManager.get(actor.config.skelUrl);
-				let binary = new SkeletonBinary(new AtlasAttachmentLoader(atlas));
-				try {
-					skeletonData = binary.readSkeletonData(binaryData);
-				} catch (e) {
-					this.showError(actor, "Error: could not load skeleton .skel.<br><br>" + escapeHtml(JSON.stringify(e)));
-					return;
-				}
-			}
-			actor.skeleton = new Skeleton(skeletonData);
-			
-			// Setup skin
-			if (!actor.config.skin) {
-				if (skeletonData.skins.length > 0) {
-					actor.config.skin = skeletonData.skins[0].name;
-				}
-			}
-
-			if (actor.config.skins && actor.config.skin.length > 0) {
-				actor.config.skins.forEach(skin => {
-					if (!actor.skeleton.data.findSkin(skin)) {
-						this.showError(actor, `Error: skin '${skin}' in selectable skin list does not exist in skeleton.`);
-						return;
-					}
-				});
-			}
-
-			if (actor.config.skin) {
-				if (!actor.skeleton.data.findSkin(actor.config.skin)) {
-					this.showError(actor, `Error: skin '${actor.config.skin}' does not exist in skeleton.`);
-					return;
-				}
-				actor.skeleton.setSkinByName(actor.config.skin);
-				actor.skeleton.setSlotsToSetupPose();
-			}
-			actor.InitAnimationState();
-
-			actor.config.success(this, actor);
-			actor.loaded = true;
-		}
-
-		private cancelId: any = 0;
-		private setupInput () {
-			let canvas = this.canvas;
-			let input = new Input(canvas);
-			input.addListener({
-				down: (x, y) => {},
-				dragged: (x, y) => {},
-				moved: (x, y) => {},
-				up: (x, y) => {
-					if (!this.playerConfig.showControls) return;
-					if (this.paused) {
-						this.play()
-					} else {
-						this.pause()
-					}
-				},
-			});
-
-			// For the manual hover to work, we need to disable
-			// hidding the controls if the mouse/touch entered
-			// the clickable area of a child of the controls.
-			// For this we need to register a mouse handler on
-			// the document and see if we are within the canvas
-			// area :/
-			var mouseOverControls = true;
-			var mouseOverCanvas = false;
-			document.addEventListener("mousemove", (ev: UIEvent) => {
-				if (ev instanceof MouseEvent) {
-					handleHover(ev.clientX, ev.clientY);
-				}
-			});
-			document.addEventListener("touchmove", (ev: UIEvent) => {
-				if (ev instanceof TouchEvent) {
-					var touches = ev.changedTouches;
-					if (touches.length > 0) {
-						var touch = touches[0];
-						handleHover(touch.clientX, touch.clientY);
-					}
-				}
-			});
-
-			let handleHover = (mouseX: number, mouseY: number) => {
-				// if (!this.config.showControls) return;
-				if (!this.playerConfig.showControls) return;
-
-				let popup = findWithClass(this.dom, "spine-player-popup");
-				mouseOverControls = overlap(mouseX, mouseY, this.playerControls.getBoundingClientRect());
-				mouseOverCanvas = overlap(mouseX, mouseY, this.canvas.getBoundingClientRect());
-				clearTimeout(this.cancelId);
-				let hide = popup.length == 0 && !mouseOverControls && !mouseOverCanvas && !this.paused;
-				if (hide) {
-					this.playerControls.classList.add("spine-player-controls-hidden");
-				} else {
-					this.playerControls.classList.remove("spine-player-controls-hidden");
-				}
-				if (!mouseOverControls && popup.length == 0 && !this.paused) {
-					let remove = () => {
-						if (!this.paused) this.playerControls.classList.add("spine-player-controls-hidden");
-					};
-					this.cancelId = setTimeout(remove, 1000);
-				}
-			}
-
-			let overlap = (mouseX: number, mouseY: number, rect: DOMRect | ClientRect): boolean => {
-				let x = mouseX - rect.left;
-				let y = mouseY - rect.top;
-				return x >= 0 && x <= rect.width && y >= 0 && y <= rect.height;
-			}
-		}
-
-		private play () {
-			this.paused = false;
-			let remove = () => {
-				if (!this.paused) this.playerControls.classList.add("spine-player-controls-hidden");
-			};
-			this.cancelId = setTimeout(remove, 1000);
-			this.playButton.classList.remove("spine-player-button-icon-play");
-			this.playButton.classList.add("spine-player-button-icon-pause");
-
-			for(let [key,actor] of this.actors) {
-				actor.paused = false;
-				if (actor.animationState) {
-					if (!actor.animationState.getCurrent(0)) {
-						actor.InitAnimations();
-						// this.setAnimations(actor, actor.GetAnimations());
-					}
-				}
-			}
-		}
-
-		private pause () {
-			this.paused = true;
-			this.playerControls.classList.remove("spine-player-controls-hidden");
-			clearTimeout(this.cancelId);
-
-			this.playButton.classList.remove("spine-player-button-icon-pause");
-			this.playButton.classList.add("spine-player-button-icon-play");
-
-			for(let [key, actor] of this.actors) {
-				actor.paused = true;
-			}
-		}
-
-		// Exposed only for testing.
-		public getSceneRenderer() : SceneRenderer {
-			return this.sceneRenderer;
+	setShowChatMessagesInRoom(showChatMessages: boolean) {
+		if (this.webSocket != null) {
+			const payload = JSON.stringify({
+				type_name: "RUNTIME_ROOM_SETTINGS",
+				show_chat_messages: showChatMessages
+			})
+			this.webSocket.send(payload);
 		}
 	}
 
-//  }
+	addActorToUpdateQueue(actorName: string, config: SpineActorConfig) {
+		this.actorQueue.push({ actorName: actorName, config: config });
+		if (this.actorQueueIndex == null) {
+			this.actorQueueIndex = setTimeout(() => this.consumeActorUpdateQueue(), 100);
+		}
+	}
+
+	private consumeActorUpdateQueue() {
+		// console.log("actorUpdateQueue: ", this.actorQueue.length);
+		if (this.actorQueue.length == 0) {
+			this.actorQueueIndex = null;
+			return;
+		}
+		if (!this.assetManager.isLoadingComplete()) {
+			this.actorQueueIndex = setTimeout(() => this.consumeActorUpdateQueue(), 100);
+			return;
+		}
+
+		let task = this.actorQueue.shift();
+		this.changeOrAddActor(task.actorName, task.config);
+		this.actorQueueIndex = setTimeout(() => this.consumeActorUpdateQueue(), 100);
+	}
+
+	changeOrAddActor(actorName: string, config: SpineActorConfig) {
+		if (this.actors.has(actorName)) {
+			let actor = this.actors.get(actorName);
+			actor.ResetWithConfig(config);
+			this.setupActor(actor);
+		} else {
+			let actor = new Actor(config, this.playerConfig.viewport, this.offscreenRender);
+			this.setupActor(actor);
+			this.actors.set(actorName, actor);
+		}
+	}
+
+	public getActor(actorName: string): Actor {
+		return this.actors.get(actorName);
+	}
+
+	public getActorNames(): Array<string> {
+		return Array.from(this.actors.keys());
+	}
+
+	removeActor(actorName: string) {
+		this.actors.delete(actorName)
+	}
+
+	showChatMessage(actorName: string, message: string) {
+		if (!this.actors.has(actorName)) {
+			return;
+		}
+		let actor = this.actors.get(actorName);
+		actor.EnqueueChatMessage(message);
+	}
+
+	setupActor(actor: Actor) {
+		let config = actor.config;
+
+		try {
+			// Validate the configuration
+			// this.config = this.validatePlayerConfig(config);
+			actor.config = this.validateActorConfig(actor.config);
+		} catch (e) {
+			this.showError(actor, e);
+			return;
+		}
+
+		// Load the assets
+		if (config.rawDataURIs) {
+			for (let path in config.rawDataURIs) {
+				let data = config.rawDataURIs[path];
+				this.assetManager.setRawDataURI(path, data);
+			}
+		}
+		if (config.jsonUrl) {
+			this.assetManager.loadText(config.jsonUrl);
+		} else {
+			this.assetManager.loadBinary(config.skelUrl);
+		}
+		this.assetManager.loadTextureAtlas(config.atlasUrl);
+		if (config.backgroundImage && config.backgroundImage.url) {
+			this.assetManager.loadTexture(config.backgroundImage.url);
+		}
+
+		// Setup rendering loop
+		// this.lastRequestAnimationFrameId = requestAnimationFrame(() => this.drawFrame());
+	}
+
+	updateCameraSettings(cam: Camera, actor: Actor, viewport: BoundingBox) {
+		updateCameraSettings(cam, actor, viewport)
+	}
+
+	drawText(texts: string[], xpx: number, ypx: number) {
+		let viewport = this.playerConfig.viewport;
+		// TODO: I don't understand why this is worldToScreen.
+		let tt = this.sceneRenderer.camera.worldToScreen(
+			new Vector3(xpx, ypx, 0)
+		);
+		let textpos = new Vector2(tt.x, tt.y);
+		textpos.y = viewport.height - textpos.y;
+		xpx = textpos.x;
+		ypx = textpos.y;
+
+		let ctx = this.textCanvasContext;
+		ctx.save();
+		ctx.translate(xpx, ypx);
+		ctx.font = this.playerConfig.textSize + "px " + this.playerConfig.textFont;
+		ctx.textBaseline = "bottom";
+
+		// Measure how much space is required for the speech bubble
+		let width = 0;
+		let height = 0;
+		let heights = [];
+		for (let i = 0; i < texts.length; i++) {
+			let data = ctx.measureText(texts[i]);
+			let h = data.actualBoundingBoxAscent - data.actualBoundingBoxDescent;
+			let w = data.width;
+			width = Math.max(width, w);
+			height += h;
+			heights.push(h);
+		}
+
+		// Draw a speech bubble box
+		ctx.beginPath();
+		let pad = 5
+		ctx.fillStyle = "black";
+		ctx.strokeStyle = "#333";
+		ctx.lineWidth = 5;
+		ctx.roundRect(-width / 2 - pad, pad, width + 2 * pad, -height - 2 * pad, 3);
+		ctx.stroke();
+		ctx.fill();
+
+		// Draw a small triangle below the rect
+		ctx.beginPath();
+		ctx.fillStyle = "black"
+		ctx.moveTo(-5, pad);
+		ctx.lineTo(0, pad + 5);
+		ctx.lineTo(5, pad);
+		ctx.closePath();
+		ctx.fill();
+		// We want the border to blend in with the box and triangle
+		ctx.beginPath();
+		ctx.strokeStyle = "#333";
+		ctx.lineWidth = 2;
+		ctx.moveTo(-5, pad);
+		ctx.lineTo(0, pad + 5);
+		ctx.lineTo(5, pad);
+		ctx.stroke();
+		ctx.closePath();
+
+		// Draw the text
+		ctx.fillStyle = "white";
+		let y = -height;
+		for (let i = 0; i < texts.length; i++) {
+			y += heights[i];
+			let text = texts[i];
+			ctx.fillText(text, -width / 2, y);
+		}
+
+		ctx.restore();
+	}
+
+	drawFrame(requestNextFrame = true) {
+		if (requestNextFrame && !this.stopRequestAnimationFrame) {
+			this.lastRequestAnimationFrameId = requestAnimationFrame(() => this.drawFrame());
+		}
+		let ctx = this.context;
+		let gl = ctx.gl;
+
+		// Clear the viewport
+		var doc = document as any;
+		var isFullscreen = doc.fullscreenElement || doc.webkitFullscreenElement || doc.mozFullScreenElement || doc.msFullscreenElement;
+		// let bg = new Color().setFromString(isFullscreen ? this.config.fullScreenBackgroundColor : this.config.backgroundColor);
+		let bg = new Color().setFromString(
+			isFullscreen ?
+				this.playerConfig.fullScreenBackgroundColor :
+				this.playerConfig.backgroundColor
+		);
+		gl.clearColor(bg.r, bg.g, bg.b, bg.a);
+		gl.clear(gl.COLOR_BUFFER_BIT);
+
+		// Clear the Text Canvas
+		this.textCanvas.width = this.textCanvas.clientWidth;
+		this.textCanvas.height = this.textCanvas.clientHeight;
+		this.textCanvasContext.clearRect(0, 0, this.textCanvas.width, this.textCanvas.height);
+
+		// // Display loading screen
+		// this.loadingScreen.backgroundColor.setFromColor(bg);
+		// this.loadingScreen.draw(this.assetManager.isLoadingComplete());
+
+		// Resize the canvas
+		this.sceneRenderer.resize(ResizeMode.Expand);
+
+		// Order the actors to draw based on their z-order
+		let actorsZOrder = Array.from(this.actors.keys()).sort((a: string, b: string) => {
+			let a1 = this.actors.get(a);
+			let a2 = this.actors.get(b);
+			let r = a2.getPositionZ() - a1.getPositionZ()
+			// To ensure stable sort
+			if (r == 0) { return a1.loadedWhen - a2.loadedWhen; }
+			return r;
+		});
+
+		let all_actors_loaded = true;
+		for (let key of actorsZOrder) {
+			let actor = this.actors.get(key);
+			if (actor.load_perma_failed) {
+				// Permanant failure trying to load this actor. Just skip it.
+				continue;
+			}
+
+			// Have we finished loading the asset? Then set things up
+			// if (this.assetManager.isLoadingComplete() && this.skeleton == null) this.loadSkeleton();
+			if (this.assetManager.isLoadingComplete()
+				&& actor.skeleton == null) {
+				this.loadSkeleton(actor);
+			}
+
+			// // Resize the canvas
+			// this.sceneRenderer.resize(webgl.ResizeMode.Expand);
+
+			// Update and draw the skeleton
+			if (!actor.loaded) {
+				all_actors_loaded = false;
+				continue;
+			}
+
+			let viewport = this.playerConfig.viewport;
+
+			// Update animation and skeleton based on user selections
+			// if (!actor.paused && actor.config.animations.length > 0) {
+			if (!actor.paused && actor.GetAnimations().length > 0) {
+				actor.time.update();
+				let delta = actor.time.delta * actor.speed;
+
+				let animationDuration = actor.animationState.getCurrent(0).animation.duration;
+				actor.playTime += delta;
+				while (actor.playTime >= animationDuration && animationDuration != 0) {
+					actor.playTime -= animationDuration;
+				}
+				actor.playTime = Math.max(0, Math.min(actor.playTime, animationDuration));
+				this.timelineSlider.setValue(actor.playTime / animationDuration);
+
+				actor.UpdatePhysics(this, delta, viewport);
+				actor.skeleton.setToSetupPose();
+				actor.animationState.update(delta);
+				actor.animationState.apply(actor.skeleton);
+			}
+			actor.skeleton.updateWorldTransform();
+
+			// Update the camera
+			this.updateCameraSettings(this.sceneRenderer.camera, actor, viewport);
+
+			this.sceneRenderer.begin();
+			// // Draw background image if given
+			if (actor.config.backgroundImage && actor.config.backgroundImage.url) {
+				let bgImage = this.assetManager.get(actor.config.backgroundImage.url);
+				if (!(actor.config.backgroundImage.hasOwnProperty("x") && actor.config.backgroundImage.hasOwnProperty("y") && actor.config.backgroundImage.hasOwnProperty("width") && actor.config.backgroundImage.hasOwnProperty("height"))) {
+					this.sceneRenderer.drawTexture(bgImage, viewport.x, viewport.y, viewport.width, viewport.height);
+				} else {
+					this.sceneRenderer.drawTexture(bgImage, actor.config.backgroundImage.x, actor.config.backgroundImage.y, actor.config.backgroundImage.width, actor.config.backgroundImage.height);
+				}
+			}
+			// Draw skeleton 
+			this.sceneRenderer.drawSkeleton(actor.skeleton, actor.config.premultipliedAlpha);
+
+			// Render the user's name above the chibi
+			this.drawActorText(actor);
+			this.sceneRenderer.end();
+
+			// Render the debug output with a fixed camera.
+			if (this.playerConfig.viewport.debugRender) {
+				this.sceneRenderer.begin();
+				actor.DrawDebug(this.sceneRenderer, viewport);
+				this.sceneRenderer.circle(true, 0, 0, 10, Color.BLUE);
+				this.sceneRenderer.end();
+			}
+		}
+
+		this.broadcastRenderCallback();
+
+		if (all_actors_loaded) {
+			this.assetManager.clearErrors();
+			this.hideError();
+		}
+		this.windowFpsFrameCount += 1;
+	}
+
+	public drawActorText(actor: Actor) {
+		let chatMessages = actor.GetChatMessages();
+		if (chatMessages && this.playerConfig.showChatMessages) {
+			this.drawText(
+				chatMessages.messages,
+				actor.getPositionX(),
+				actor.getPositionY() + actor.GetUsernameHeaderHeight(),
+			);
+		} else {
+			this.drawText(
+				[actor.config.userDisplayName],
+				actor.getPositionX(),
+				actor.getPositionY() + actor.GetUsernameHeaderHeight(),
+			);
+		}
+	}
+
+
+	public registerRenderCallback(callback: RenderCallbackFn): RemoveCallbackFn {
+		this.renderCallbacks.push(callback);
+		return () => {
+			this.renderCallbacks = this.renderCallbacks.filter(c => c !== callback);
+		}
+	}
+
+	broadcastRenderCallback() {
+		for (let i = 0; i < this.renderCallbacks.length; i++) {
+			this.renderCallbacks[i](this.context, this.textCanvasContext);;
+		}
+	}
+
+	scale(sourceWidth: number, sourceHeight: number, targetWidth: number, targetHeight: number): Vector2 {
+		let targetRatio = targetHeight / targetWidth;
+		let sourceRatio = sourceHeight / sourceWidth;
+		let scale = targetRatio > sourceRatio ? targetWidth / sourceWidth : targetHeight / sourceHeight;
+		let temp = new Vector2();
+		temp.x = sourceWidth * scale;
+		temp.y = sourceHeight * scale;
+		return temp;
+	}
+
+	loadSkeleton(actor: Actor) {
+		if (actor.loaded || actor.load_perma_failed) return;
+
+		if (this.assetManager.hasErrors()) {
+			this.showError(actor, "Error: assets could not be loaded.<br><br>" + escapeHtml(JSON.stringify(this.assetManager.getErrors())));
+			return;
+		}
+
+		let atlas = this.assetManager.get(actor.config.atlasUrl);
+		let skeletonData: SkeletonData;
+		if (actor.config.jsonUrl) {
+			let jsonText = this.assetManager.get(actor.config.jsonUrl);
+			let json = new SkeletonJson(new AtlasAttachmentLoader(atlas));
+			try {
+				skeletonData = json.readSkeletonData(jsonText);
+			} catch (e) {
+				this.showError(actor, "Error: could not load skeleton .json.<br><br>" + escapeHtml(JSON.stringify(e)));
+				return;
+			}
+		} else {
+			let binaryData = this.assetManager.get(actor.config.skelUrl);
+			let binary = new SkeletonBinary(new AtlasAttachmentLoader(atlas));
+			try {
+				skeletonData = binary.readSkeletonData(binaryData);
+			} catch (e) {
+				this.showError(actor, "Error: could not load skeleton .skel.<br><br>" + escapeHtml(JSON.stringify(e)));
+				return;
+			}
+		}
+		actor.skeleton = new Skeleton(skeletonData);
+
+		// Setup skin
+		if (!actor.config.skin) {
+			if (skeletonData.skins.length > 0) {
+				actor.config.skin = skeletonData.skins[0].name;
+			}
+		}
+
+		if (actor.config.skins && actor.config.skin.length > 0) {
+			actor.config.skins.forEach(skin => {
+				if (!actor.skeleton.data.findSkin(skin)) {
+					this.showError(actor, `Error: skin '${skin}' in selectable skin list does not exist in skeleton.`);
+					return;
+				}
+			});
+		}
+
+		if (actor.config.skin) {
+			if (!actor.skeleton.data.findSkin(actor.config.skin)) {
+				this.showError(actor, `Error: skin '${actor.config.skin}' does not exist in skeleton.`);
+				return;
+			}
+			actor.skeleton.setSkinByName(actor.config.skin);
+			actor.skeleton.setSlotsToSetupPose();
+		}
+		actor.InitAnimationState();
+
+		actor.config.success(this, actor);
+		actor.loaded = true;
+	}
+
+	private cancelId: any = 0;
+	private setupInput() {
+		let canvas = this.canvas;
+		let input = new Input(canvas);
+		input.addListener({
+			down: (x, y) => { },
+			dragged: (x, y) => { },
+			moved: (x, y) => { },
+			up: (x, y) => {
+				if (!this.playerConfig.showControls) return;
+				if (this.paused) {
+					this.play()
+				} else {
+					this.pause()
+				}
+			},
+		});
+
+		// For the manual hover to work, we need to disable
+		// hidding the controls if the mouse/touch entered
+		// the clickable area of a child of the controls.
+		// For this we need to register a mouse handler on
+		// the document and see if we are within the canvas
+		// area :/
+		var mouseOverControls = true;
+		var mouseOverCanvas = false;
+		document.addEventListener("mousemove", (ev: UIEvent) => {
+			if (ev instanceof MouseEvent) {
+				handleHover(ev.clientX, ev.clientY);
+			}
+		});
+		document.addEventListener("touchmove", (ev: UIEvent) => {
+			if (ev instanceof TouchEvent) {
+				var touches = ev.changedTouches;
+				if (touches.length > 0) {
+					var touch = touches[0];
+					handleHover(touch.clientX, touch.clientY);
+				}
+			}
+		});
+
+		let handleHover = (mouseX: number, mouseY: number) => {
+			// if (!this.config.showControls) return;
+			if (!this.playerConfig.showControls) return;
+
+			let popup = findWithClass(this.dom, "spine-player-popup");
+			mouseOverControls = overlap(mouseX, mouseY, this.playerControls.getBoundingClientRect());
+			mouseOverCanvas = overlap(mouseX, mouseY, this.canvas.getBoundingClientRect());
+			clearTimeout(this.cancelId);
+			let hide = popup.length == 0 && !mouseOverControls && !mouseOverCanvas && !this.paused;
+			if (hide) {
+				this.playerControls.classList.add("spine-player-controls-hidden");
+			} else {
+				this.playerControls.classList.remove("spine-player-controls-hidden");
+			}
+			if (!mouseOverControls && popup.length == 0 && !this.paused) {
+				let remove = () => {
+					if (!this.paused) this.playerControls.classList.add("spine-player-controls-hidden");
+				};
+				this.cancelId = setTimeout(remove, 1000);
+			}
+		}
+
+		let overlap = (mouseX: number, mouseY: number, rect: DOMRect | ClientRect): boolean => {
+			let x = mouseX - rect.left;
+			let y = mouseY - rect.top;
+			return x >= 0 && x <= rect.width && y >= 0 && y <= rect.height;
+		}
+	}
+
+	private play() {
+		this.paused = false;
+		let remove = () => {
+			if (!this.paused) this.playerControls.classList.add("spine-player-controls-hidden");
+		};
+		this.cancelId = setTimeout(remove, 1000);
+		this.playButton.classList.remove("spine-player-button-icon-play");
+		this.playButton.classList.add("spine-player-button-icon-pause");
+
+		for (let [key, actor] of this.actors) {
+			actor.paused = false;
+			if (actor.animationState) {
+				if (!actor.animationState.getCurrent(0)) {
+					actor.InitAnimations();
+					// this.setAnimations(actor, actor.GetAnimations());
+				}
+			}
+		}
+	}
+
+	private pause() {
+		this.paused = true;
+		this.playerControls.classList.remove("spine-player-controls-hidden");
+		clearTimeout(this.cancelId);
+
+		this.playButton.classList.remove("spine-player-button-icon-pause");
+		this.playButton.classList.add("spine-player-button-icon-play");
+
+		for (let [key, actor] of this.actors) {
+			actor.paused = true;
+		}
+	}
+
+	// Exposed only for testing.
+	public getSceneRenderer(): SceneRenderer {
+		return this.sceneRenderer;
+	}
+}

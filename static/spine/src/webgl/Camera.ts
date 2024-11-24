@@ -30,206 +30,204 @@
 import { Matrix4 } from "./Matrix4";
 import { Vector3 } from "./Vector3";
 
-// module spine.webgl {
 
-	export interface Camera {
-		position: Vector3;
-		direction: Vector3;
-		up: Vector3;
-		near: number
-		far: number
-		fov: number
-		zoom: number
-		viewportWidth: number
-		viewportHeight: number
-		projectionView: Matrix4;
-		inverseProjectionView: Matrix4;
-		projection: Matrix4;
-		view: Matrix4;
-		is_perspective: boolean;
+export interface Camera {
+	position: Vector3;
+	direction: Vector3;
+	up: Vector3;
+	near: number
+	far: number
+	fov: number
+	zoom: number
+	viewportWidth: number
+	viewportHeight: number
+	projectionView: Matrix4;
+	inverseProjectionView: Matrix4;
+	projection: Matrix4;
+	view: Matrix4;
+	is_perspective: boolean;
 
-		update() : void;
-		screenToWorld (screenCoords: Vector3, screenWidth: number, screenHeight: number) : Vector3;
-		worldToScreen(worldCoords: Vector3): Vector3;
-		setViewport(viewportWidth: number, viewportHeight: number): void;
+	update(): void;
+	screenToWorld(screenCoords: Vector3, screenWidth: number, screenHeight: number): Vector3;
+	worldToScreen(worldCoords: Vector3): Vector3;
+	setViewport(viewportWidth: number, viewportHeight: number): void;
+}
+
+export class OrthoCamera {
+	position = new Vector3(0, 0, 0);
+	direction = new Vector3(0, 0, -1);
+	up = new Vector3(0, 1, 0);
+	near = 0;
+	far = 100;
+	fov = 0.0; // unused
+	zoom = 1;
+	viewportWidth = 0;
+	viewportHeight = 0;
+	projectionView = new Matrix4();
+	inverseProjectionView = new Matrix4();
+	projection = new Matrix4();
+	view = new Matrix4();
+	is_perspective = false;
+
+	private tmp = new Vector3();
+
+	constructor(viewportWidth: number, viewportHeight: number) {
+		this.viewportWidth = viewportWidth;
+		this.viewportHeight = viewportHeight;
+		this.update();
 	}
 
-	export class OrthoCamera {
-		position = new Vector3(0, 0, 0);
-		direction = new Vector3(0, 0, -1);
-		up = new Vector3(0, 1, 0);
-		near = 0;
-		far = 100;
-		fov = 0.0; // unused
-		zoom = 1;
-		viewportWidth = 0;
-		viewportHeight = 0;
-		projectionView = new Matrix4();
-		inverseProjectionView = new Matrix4();
-		projection = new Matrix4();
-		view = new Matrix4();
-		is_perspective = false;
+	update() {
+		let projection = this.projection;
+		let view = this.view;
+		let projectionView = this.projectionView;
+		let inverseProjectionView = this.inverseProjectionView;
+		let zoom = this.zoom, viewportWidth = this.viewportWidth, viewportHeight = this.viewportHeight;
+		projection.ortho(zoom * (-viewportWidth / 2), zoom * (viewportWidth / 2),
+			zoom * (-viewportHeight / 2), zoom * (viewportHeight / 2),
+			this.near, this.far);
+		view.lookAt(this.position, this.direction, this.up);
+		projectionView.set(projection.values);
+		projectionView.multiply(view);
+		inverseProjectionView.set(projectionView.values).invert();
+	}
 
-		private tmp = new Vector3();
+	screenToWorld(screenCoords: Vector3, screenWidth: number, screenHeight: number) {
+		let x = screenCoords.x;
+		let y = screenCoords.y;
+		let z = screenCoords.z;
+		let tmp = this.tmp;
+		tmp.x = (2 * (x / screenWidth)) - 1;
+		// tmp.y = 1 - (2 * (y / screenHeight));
+		tmp.y = (2 * (y / screenHeight)) - 1;
+		tmp.z = z;
+		tmp.project(this.inverseProjectionView);
+		screenCoords.set(tmp.x, tmp.y, tmp.z);
+		return screenCoords;
+	}
 
-		constructor (viewportWidth: number, viewportHeight: number) {
-			this.viewportWidth = viewportWidth;
-			this.viewportHeight = viewportHeight;
-			this.update();
-		}
+	worldToScreen(worldCoords: Vector3): Vector3 {
+		let tmp = new Vector3(
+			worldCoords.x,
+			worldCoords.y,
+			worldCoords.z,
+		)
+		tmp.multiply(this.projectionView);
+		tmp.x = ((tmp.x + 1) / 2) * (this.viewportWidth);
+		// tmp.y = (1.0 - (tmp.y + 1)/2) * (this.viewportHeight);
+		tmp.y = ((tmp.y + 1) / 2) * (this.viewportHeight);
+		return new Vector3(tmp.x, tmp.y, 0);
+	}
 
-		update () {
-			let projection = this.projection;
-			let view = this.view;
-			let projectionView = this.projectionView;
-			let inverseProjectionView = this.inverseProjectionView;
-			let zoom = this.zoom, viewportWidth = this.viewportWidth, viewportHeight = this.viewportHeight;
-			projection.ortho(zoom * (-viewportWidth / 2), zoom * (viewportWidth / 2),
-							 zoom * (-viewportHeight / 2), zoom * (viewportHeight / 2),
-							 this.near, this.far);
+	// screenToWorld (screenCoords: Vector3, screenWidth: number, screenHeight: number) {
+	// 	let x = screenCoords.x;y = screenHeight - screenCoords.y - 1;
+	// 	let tmp = this.tmp;
+	// 	tmp.x = (2 * x) / screenWidth - 1;
+	// 	tmp.y = (2 * y) / screenHeight - 1;
+	// 	tmp.z = (2 * screenCoords.z) - 1;
+	// 	tmp.project(this.inverseProjectionView);
+	// 	screenCoords.set(tmp.x, tmp.y, tmp.z);
+	// 	return screenCoords;
+	// }
+
+	// worldToScreen(worldCoords: Vector2): spine.Vector2 {
+	// 	let tmp = new Vector3(
+	// 		worldCoords.x,
+	// 		worldCoords.y,
+	// 		0,
+	// 	)
+	// 	tmp.multiply(this.projectionView);
+	// 	tmp.x = ((tmp.x + 1)/2) * (this.viewportWidth);
+	// 	tmp.y = ((tmp.y + 1)/2) * (this.viewportHeight);
+	// 	return new spine.Vector2(tmp.x, tmp.y);
+	// }
+
+	setViewport(viewportWidth: number, viewportHeight: number) {
+		this.viewportWidth = viewportWidth;
+		this.viewportHeight = viewportHeight;
+	}
+}
+
+export class PerspectiveCamera {
+	position = new Vector3(0, 0, 0);
+	direction = new Vector3(0, 0, -1);
+	up = new Vector3(0, 1, 0);
+	near = 1;
+	far = 1000;
+	zoom = 1;
+	fov = 45;
+	viewportWidth = 0;
+	viewportHeight = 0;
+	projectionView = new Matrix4();
+	inverseProjectionView = new Matrix4();
+	projection = new Matrix4();
+	view = new Matrix4();
+	is_perspective = true;
+
+	private tmp = new Vector3();
+
+	constructor(viewportWidth: number, viewportHeight: number) {
+		this.viewportWidth = viewportWidth;
+		this.viewportHeight = viewportHeight;
+		this.update();
+	}
+
+	update(if_throw = false) {
+		let projection = this.projection;
+		let view = this.view;
+		let projectionView = this.projectionView;
+		let inverseProjectionView = this.inverseProjectionView;
+
+		try {
+			projection.projection(
+				this.near,
+				this.far,
+				this.fov,
+				this.viewportWidth / this.viewportHeight
+			)
 			view.lookAt(this.position, this.direction, this.up);
 			projectionView.set(projection.values);
 			projectionView.multiply(view);
 			inverseProjectionView.set(projectionView.values).invert();
-		}
-
-		screenToWorld (screenCoords: Vector3, screenWidth: number, screenHeight: number) {
-			let x = screenCoords.x;
-			let y = screenCoords.y;
-			let z = screenCoords.z;
-			let tmp = this.tmp;
-			tmp.x = (2 * (x / screenWidth)) - 1;
-			// tmp.y = 1 - (2 * (y / screenHeight));
-			tmp.y = (2 * (y / screenHeight)) - 1;
-			tmp.z = z;
-			tmp.project(this.inverseProjectionView);
-			screenCoords.set(tmp.x, tmp.y, tmp.z);
-			return screenCoords;
-		}
-
-		worldToScreen(worldCoords: Vector3): Vector3 {
-			let tmp = new Vector3(
-				worldCoords.x,
-				worldCoords.y,
-				worldCoords.z,
-			)
-			tmp.multiply(this.projectionView);
-			tmp.x = ((tmp.x + 1)/2) * (this.viewportWidth);
-			// tmp.y = (1.0 - (tmp.y + 1)/2) * (this.viewportHeight);
-			tmp.y = ((tmp.y + 1)/2) * (this.viewportHeight);
-			return new Vector3(tmp.x, tmp.y, 0);
-		}
-
-		// screenToWorld (screenCoords: Vector3, screenWidth: number, screenHeight: number) {
-		// 	let x = screenCoords.x;y = screenHeight - screenCoords.y - 1;
-		// 	let tmp = this.tmp;
-		// 	tmp.x = (2 * x) / screenWidth - 1;
-		// 	tmp.y = (2 * y) / screenHeight - 1;
-		// 	tmp.z = (2 * screenCoords.z) - 1;
-		// 	tmp.project(this.inverseProjectionView);
-		// 	screenCoords.set(tmp.x, tmp.y, tmp.z);
-		// 	return screenCoords;
-		// }
-
-		// worldToScreen(worldCoords: Vector2): spine.Vector2 {
-		// 	let tmp = new Vector3(
-		// 		worldCoords.x,
-		// 		worldCoords.y,
-		// 		0,
-		// 	)
-		// 	tmp.multiply(this.projectionView);
-		// 	tmp.x = ((tmp.x + 1)/2) * (this.viewportWidth);
-		// 	tmp.y = ((tmp.y + 1)/2) * (this.viewportHeight);
-		// 	return new spine.Vector2(tmp.x, tmp.y);
-		// }
-
-		setViewport(viewportWidth: number, viewportHeight: number) {
-			this.viewportWidth = viewportWidth;
-			this.viewportHeight = viewportHeight;
-		}
-	}
-
-	export class PerspectiveCamera {
-		position = new Vector3(0, 0, 0);
-		direction = new Vector3(0, 0, -1);
-		up = new Vector3(0, 1, 0);
-		near = 1;
-		far = 1000;
-		zoom = 1;
-		fov = 45;
-		viewportWidth = 0;
-		viewportHeight = 0;
-		projectionView = new Matrix4();
-		inverseProjectionView = new Matrix4();
-		projection = new Matrix4();
-		view = new Matrix4();
-		is_perspective = true;
-
-		private tmp = new Vector3();
-
-		constructor (viewportWidth: number, viewportHeight: number) {
-			this.viewportWidth = viewportWidth;
-			this.viewportHeight = viewportHeight;
-			this.update();
-		}
-
-		update (if_throw = false) {
-			let projection = this.projection;
-			let view = this.view;
-			let projectionView = this.projectionView;
-			let inverseProjectionView = this.inverseProjectionView;
-
-			try {
-				projection.projection(
-					this.near,
-					this.far,
-					this.fov,
-					this.viewportWidth / this.viewportHeight
-				)
-				view.lookAt(this.position, this.direction, this.up);
-				projectionView.set(projection.values);
-				projectionView.multiply(view);
-				inverseProjectionView.set(projectionView.values).invert();
-			} catch(e) {
-				if (if_throw) {
-					throw e;
-				}
+		} catch (e) {
+			if (if_throw) {
+				throw e;
 			}
 		}
-
-		screenToWorld (screenCoords: Vector3, screenWidth: number, screenHeight: number) {
-			let x = screenCoords.x;
-			let y = screenCoords.y;
-			let z = screenCoords.z;
-			let tmp = this.tmp;
-			tmp.x = (2 * (x / screenWidth)) - 1;
-			tmp.y = (2 * (y / screenHeight)) - 1;
-			// tmp.y = 1 - (2 * (y / screenHeight));  old
-			tmp.z = z;
-			tmp.project(this.inverseProjectionView);
-			screenCoords.set(tmp.x, tmp.y, tmp.z);
-			return screenCoords;
-		}
-
-		worldToScreen(worldCoords: Vector3): Vector3 {
-			let tmp = new Vector3(
-				worldCoords.x,
-				worldCoords.y,
-				worldCoords.z,
-			)
-
-			tmp.project(this.projectionView);
-			tmp.x = ((tmp.x + 1)/2) * (this.viewportWidth);
-			tmp.y = ((tmp.y + 1)/2) * (this.viewportHeight);
-			// tmp.y = (1.0 - ((tmp.y + 1)/2)) * (this.viewportHeight); old
-			let ret =  new Vector3(tmp.x, tmp.y, tmp.z);
-			ret.w = tmp.w;
-			return ret;
-		}
-
-		setViewport(viewportWidth: number, viewportHeight: number) {
-			this.viewportWidth = viewportWidth;
-			this.viewportHeight = viewportHeight;
-		}
 	}
-// }
+
+	screenToWorld(screenCoords: Vector3, screenWidth: number, screenHeight: number) {
+		let x = screenCoords.x;
+		let y = screenCoords.y;
+		let z = screenCoords.z;
+		let tmp = this.tmp;
+		tmp.x = (2 * (x / screenWidth)) - 1;
+		tmp.y = (2 * (y / screenHeight)) - 1;
+		// tmp.y = 1 - (2 * (y / screenHeight));  old
+		tmp.z = z;
+		tmp.project(this.inverseProjectionView);
+		screenCoords.set(tmp.x, tmp.y, tmp.z);
+		return screenCoords;
+	}
+
+	worldToScreen(worldCoords: Vector3): Vector3 {
+		let tmp = new Vector3(
+			worldCoords.x,
+			worldCoords.y,
+			worldCoords.z,
+		)
+
+		tmp.project(this.projectionView);
+		tmp.x = ((tmp.x + 1) / 2) * (this.viewportWidth);
+		tmp.y = ((tmp.y + 1) / 2) * (this.viewportHeight);
+		// tmp.y = (1.0 - ((tmp.y + 1)/2)) * (this.viewportHeight); old
+		let ret = new Vector3(tmp.x, tmp.y, tmp.z);
+		ret.w = tmp.w;
+		return ret;
+	}
+
+	setViewport(viewportWidth: number, viewportHeight: number) {
+		this.viewportWidth = viewportWidth;
+		this.viewportHeight = viewportHeight;
+	}
+}

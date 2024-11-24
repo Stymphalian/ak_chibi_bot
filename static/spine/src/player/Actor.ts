@@ -39,655 +39,653 @@ import { OffscreenRender } from "./Utils"
 import { ChatMessageQueue, MessageBlock } from "./ChatMessages"
 import { SceneRenderer } from "../webgl/SceneRenderer"
 
-// // module spine {
+export interface ActorUpdateConfig {
+	start_pos: Vector2
+	dest_pos: Vector2
+	loop_positions: boolean
+	wander: boolean
+	animation: string
+}
 
-    export interface ActorUpdateConfig {
-        start_pos: Vector2
-        dest_pos: Vector2
-        loop_positions: boolean
-        wander: boolean
-        animation: string
-    }
+export interface SpineActorConfig {
+	/* the URL of the skeleton .json file */
+	jsonUrl?: string
 
-	export interface SpineActorConfig {
-		/* the URL of the skeleton .json file */
-		jsonUrl?: string
+	/* the URL of the skeleton .skel file */
+	skelUrl: string
 
-		/* the URL of the skeleton .skel file */
-		skelUrl: string
+	/* the URL of the skeleton .atlas file. Atlas page images are automatically resolved. */
+	atlasUrl: string
 
-		/* the URL of the skeleton .atlas file. Atlas page images are automatically resolved. */
-		atlasUrl: string
+	/* Raw data URIs, mapping from a path to base 64 encoded raw data. When the player
+	   resolves a path of the `jsonUrl`, `skelUrl`, `atlasUrl`, or the image paths
+	   referenced in the atlas, it will first look for that path in this array of
+	   raw data URIs. This allows embedding of resources directly in HTML/JS. */
+	rawDataURIs?: Map<string>
 
-		/* Raw data URIs, mapping from a path to base 64 encoded raw data. When the player
-		   resolves a path of the `jsonUrl`, `skelUrl`, `atlasUrl`, or the image paths
-		   referenced in the atlas, it will first look for that path in this array of
-		   raw data URIs. This allows embedding of resources directly in HTML/JS. */
-		rawDataURIs?: Map<string>
+	/* Optional: the default mix time used to switch between two animations. */
+	defaultMix?: number
 
-		/* Optional: the default mix time used to switch between two animations. */
-		defaultMix?: number
+	/* Optional: the name of the skin to be set. Default: the default skin. */
+	skin?: string
 
-		/* Optional: the name of the skin to be set. Default: the default skin. */
-		skin?: string
+	/* Optional: list of skin names from which the user can choose. */
+	skins?: string[]
 
-		/* Optional: list of skin names from which the user can choose. */
-		skins?: string[]
+	/* Optional: whether the skeleton uses premultiplied alpha. Default: true. */
+	premultipliedAlpha: boolean
 
-		/* Optional: whether the skeleton uses premultiplied alpha. Default: true. */
-		premultipliedAlpha: boolean
+	/** Optional: Animation play speed. 0 to 3.0 */
+	animationPlaySpeed: number,
 
-		/** Optional: Animation play speed. 0 to 3.0 */
-		animationPlaySpeed: number,
+	configScaleX: number
+	configScaleY: number
+	scaleX: number
+	scaleY: number
+	maxSizePx: number
+	startPosX: number
+	startPosY: number
+	// Specify extra offset in Pixel for X and Y to fit the chibi on the screen
+	extraOffsetX: number,
+	extraOffsetY: number,
 
-		configScaleX: number
-		configScaleY: number
-		scaleX: number
-		scaleY: number
-		maxSizePx: number
-		startPosX : number
-		startPosY : number
-		// Specify extra offset in Pixel for X and Y to fit the chibi on the screen
-		extraOffsetX: number,
-		extraOffsetY: number,
+	defaultMovementSpeedPxX: number,
+	defaultMovementSpeedPxY: number,
+	defaultMovementSpeedPxZ: number,
+	movementSpeedPxX: number,
+	movementSpeedPxY: number,
+	movementSpeedPxZ: number,
 
-		defaultMovementSpeedPxX: number,
-		defaultMovementSpeedPxY: number,
-		defaultMovementSpeedPxZ: number,
-		movementSpeedPxX: number,
-		movementSpeedPxY: number,
-		movementSpeedPxZ: number,
+	// Unused?
+	defaultScaleX?: number
+	defaultScaleY?: number
 
-		// Unused?
-		defaultScaleX?: number
-		defaultScaleY?: number
+	/* Optional: the background image. Default: none. */
+	backgroundImage?: {
+		/* The URL of the background image */
+		url: string
 
-		/* Optional: the background image. Default: none. */
-		backgroundImage?: {
-			/* The URL of the background image */
-			url: string
-
-			/* Optional: the position and size of the background image in world coordinates. Default: viewport. */
-			x: number
-			y: number
-			width: number
-			height: number
-		}
-
-		// /* Optional: the background color used in fullscreen mode. Must be given in the format #rrggbbaa. Default: backgroundColor. */
-		// fullScreenBackgroundColor: string
-
-		// /* Optional: list of bone names that the user can control by dragging. */
-		// controlBones: string[]
-
-		/* Optional: callback when the widget and its assets have been successfully loaded. */
-		success?: (widget: SpinePlayer, actor: Actor) => void
-
-		/* Optional: callback when the widget could not be loaded. */
-		error?: (widget: SpinePlayer, actor: Actor, msg: string) => void
-
-		/** Optional: Callbacks for the animations */
-		animation_listener?: AnimationStateListener
-
-		/** char_002_amiya, enemy_1526_sfsui, etc */
-		chibiId: string,
-		userDisplayName: string,
-
-		/** Required: action name */
-		action: string
-		/** Required: A json object of the action data */
-		action_data: any
+		/* Optional: the position and size of the background image in world coordinates. Default: viewport. */
+		x: number
+		y: number
+		width: number
+		height: number
 	}
 
+	// /* Optional: the background color used in fullscreen mode. Must be given in the format #rrggbbaa. Default: backgroundColor. */
+	// fullScreenBackgroundColor: string
 
-	export class Actor {
-		public loaded: boolean;
-		public skeleton: Skeleton;
-		public animationState: AnimationState;
-		public time = new TimeKeeper();
-		public paused = false;
-		public playTime = 0;
-		public speed = 1;
-		public config: SpineActorConfig;
-		public lastAnimation: string = null;
-		// public animations: string[]
+	// /* Optional: list of bone names that the user can control by dragging. */
+	// controlBones: string[]
 
-		public viewport: BoundingBox = null;
-		public canvasBB: BoundingBox = null;
-		public canvasBBCalculated:number = 0;
-		private offscreenRender: OffscreenRender|null = null;
+	/* Optional: callback when the widget and its assets have been successfully loaded. */
+	success?: (widget: SpinePlayer, actor: Actor) => void
 
-		// Velocity is in world coordinates (pixels/second)
-		// TODO: Abstract out this position/movement/speed data into a seperate class
-		// TODO: Create our own vector3 class
-		private movementSpeed: Vector3 = new Vector3();
-		// Position is in world coordinates (with dimensions same as viewport)
-		//   x-axis is 0 in center of the screen
-		//   and y-axis is 0 at the bottom of the screen.
-		// We use these coordinates compared to top-left corner.
-		private position: Vector3 = new Vector3();
-		private scale: Vector2 = new Vector2(1,1);
-		private velocity: Vector3 = new Vector3(0, 0, 0);
-		public startPosition: Vector2 = null;
-		public currentAction: ActorAction = null;
+	/* Optional: callback when the widget could not be loaded. */
+	error?: (widget: SpinePlayer, actor: Actor, msg: string) => void
 
-		// Actor loading retry logic
-		public load_attempts: number = 0;
-		public max_load_attempts: number = 10;
-		public load_perma_failed: boolean = false;
-		// Record the timestamp when the actor was first loaded. We use this
-		// to keep a stable sort order when rendering actors. Actors created
-		// first should be rendered first, newer actors are rendered on top.
-		public loadedWhen: number = new Date().getTime();
-		private messageQueue: ChatMessageQueue = new ChatMessageQueue();
+	/** Optional: Callbacks for the animations */
+	animation_listener?: AnimationStateListener
 
-		constructor(config: SpineActorConfig, viewport: BoundingBox, offscreenRender: OffscreenRender|null) {
-			this.offscreenRender = offscreenRender;
-			this.loadedWhen = new Date().getTime();
-			this.viewport = viewport;
-			this.ResetWithConfig(config);
-			let x = Math.random()*viewport.width - (viewport.width/2)
-			let z = 0;
-			this.position = new Vector3(x, 0, z);
+	/** char_002_amiya, enemy_1526_sfsui, etc */
+	chibiId: string,
+	userDisplayName: string,
 
-			if (config.startPosX != null || config.startPosY != null) {
-				this.position = new Vector3(
-					(config.startPosX* viewport.width) - (viewport.width/2),
-					(config.startPosY * viewport.height),
-					z
-				);
+	/** Required: action name */
+	action: string
+	/** Required: A json object of the action data */
+	action_data: any
+}
+
+
+export class Actor {
+	public loaded: boolean;
+	public skeleton: Skeleton;
+	public animationState: AnimationState;
+	public time = new TimeKeeper();
+	public paused = false;
+	public playTime = 0;
+	public speed = 1;
+	public config: SpineActorConfig;
+	public lastAnimation: string = null;
+	// public animations: string[]
+
+	public viewport: BoundingBox = null;
+	public canvasBB: BoundingBox = null;
+	public canvasBBCalculated: number = 0;
+	private offscreenRender: OffscreenRender | null = null;
+
+	// Velocity is in world coordinates (pixels/second)
+	// TODO: Abstract out this position/movement/speed data into a seperate class
+	// TODO: Create our own vector3 class
+	private movementSpeed: Vector3 = new Vector3();
+	// Position is in world coordinates (with dimensions same as viewport)
+	//   x-axis is 0 in center of the screen
+	//   and y-axis is 0 at the bottom of the screen.
+	// We use these coordinates compared to top-left corner.
+	private position: Vector3 = new Vector3();
+	private scale: Vector2 = new Vector2(1, 1);
+	private velocity: Vector3 = new Vector3(0, 0, 0);
+	public startPosition: Vector2 = null;
+	public currentAction: ActorAction = null;
+
+	// Actor loading retry logic
+	public load_attempts: number = 0;
+	public max_load_attempts: number = 10;
+	public load_perma_failed: boolean = false;
+	// Record the timestamp when the actor was first loaded. We use this
+	// to keep a stable sort order when rendering actors. Actors created
+	// first should be rendered first, newer actors are rendered on top.
+	public loadedWhen: number = new Date().getTime();
+	private messageQueue: ChatMessageQueue = new ChatMessageQueue();
+
+	constructor(config: SpineActorConfig, viewport: BoundingBox, offscreenRender: OffscreenRender | null) {
+		this.offscreenRender = offscreenRender;
+		this.loadedWhen = new Date().getTime();
+		this.viewport = viewport;
+		this.ResetWithConfig(config);
+		let x = Math.random() * viewport.width - (viewport.width / 2)
+		let z = 0;
+		this.position = new Vector3(x, 0, z);
+
+		if (config.startPosX != null || config.startPosY != null) {
+			this.position = new Vector3(
+				(config.startPosX * viewport.width) - (viewport.width / 2),
+				(config.startPosY * viewport.height),
+				z
+			);
+		}
+	}
+	public getRenderingBoundingBox(): BoundingBox {
+		if (this.canvasBB) {
+			return {
+				x: this.canvasBB.x,
+				y: this.canvasBB.y,
+				width: this.canvasBB.width,
+				height: this.canvasBB.height
+			}
+		} else {
+			return {
+				x: 0,
+				y: 0,
+				width: this.viewport.width / 10,
+				height: this.viewport.height / 10,
 			}
 		}
-		public getRenderingBoundingBox(): BoundingBox {
-			if (this.canvasBB) {
-				return {
-					x: this.canvasBB.x,
-					y: this.canvasBB.y,
-					width: this.canvasBB.width,
-					height: this.canvasBB.height
+	}
+
+	public getPosition(): Vector2 {
+		return new Vector2(
+			this.position.x,
+			this.position.y
+		);
+	}
+	public getPosition3(): Vector3 {
+		return new Vector3(
+			this.position.x,
+			this.position.y,
+			this.position.z
+		);
+	}
+	public getPositionX(): number {
+		return this.position.x;
+	}
+	public getPositionY(): number {
+		return this.position.y;
+	}
+	public getPositionZ(): number {
+		return this.position.z;
+	}
+	public setPositionX(x: number) {
+		this.position.x = x;
+	}
+	public setPositionY(y: number) {
+		this.position.y = y;
+	}
+	public setPositionZ(z: number) {
+		this.position.z = z;
+	}
+	public setPosition(x: number, y: number, z?: number) {
+		this.position.x = x;
+		this.position.y = y;
+		this.position.z = z !== undefined ? z : 0;
+	}
+
+	public getMovmentSpeed(): Vector2 {
+		return new Vector2(
+			this.movementSpeed.x,
+			this.movementSpeed.y
+		);
+	}
+	public getMovmentSpeed3(): Vector3 {
+		return new Vector3(
+			this.movementSpeed.x,
+			this.movementSpeed.y,
+			this.movementSpeed.z
+		);
+	}
+	public getMovementSpeedX(): number {
+		return this.movementSpeed.x;
+	}
+	public getMovementSpeedY(): number {
+		return this.movementSpeed.y;
+	}
+	public getMovementSpeedZ(): number {
+		return this.movementSpeed.z;
+	}
+	public setMovementSpeedX(x: number) {
+		this.movementSpeed.x = x;
+	}
+	public setMovementSpeedY(y: number) {
+		this.movementSpeed.y = y;
+	}
+	public setMovementSpeedZ(z: number) {
+		this.movementSpeed.z = z;
+	}
+	public getMovementSpeed(): Vector3 {
+		return this.movementSpeed.copy();
+	}
+	public setMovementSpeed(x: number, y: number, z?: number) {
+		this.movementSpeed.x = x;
+		this.movementSpeed.y = y;
+		this.movementSpeed.z = z !== undefined ? z : this.config.defaultMovementSpeedPxZ;
+	}
+
+	public getVelocity(): Vector2 {
+		return new Vector2(
+			this.velocity.x,
+			this.velocity.y
+		)
+	}
+	public getVelocity3(): Vector3 {
+		return new Vector3(
+			this.velocity.x,
+			this.velocity.y,
+			this.velocity.z
+		)
+	}
+	public setVelocity(x?: number, y?: number, z?: number) {
+		this.velocity = new Vector3(
+			x != undefined ? x : this.velocity.x,
+			y != undefined ? y : this.velocity.y,
+			z != undefined ? z : this.velocity.z
+		);
+	}
+	public isMoving(): boolean {
+		return this.velocity.length() > 0;
+	}
+	public isStationary(): boolean {
+		return this.velocity.length() < 0.00001;
+	}
+
+	public getScaleX(): number { return this.scale.x; }
+	public getScaleY(): number { return this.scale.y; }
+	public setScaleX(x: number) { this.scale.x = x; }
+	public setScaleY(y: number) { this.scale.y = y; }
+
+	public InitAnimations() {
+		this.initAnimationsInternal(this.currentAction.GetAnimations());
+	}
+
+	public GetAnimations(): string[] {
+		return this.currentAction.GetAnimations()
+	}
+
+	public ResetWithConfig(config: SpineActorConfig) {
+		this.load_attempts = 0;
+		this.load_perma_failed = false;
+
+		this.loaded = false;
+		this.canvasBBCalculated = 0;
+		this.skeleton = null;
+		this.animationState = null;
+		this.time = new TimeKeeper();
+		this.paused = false;
+		this.playTime = 0;
+		this.speed = 1;
+		this.config = config;
+
+		// Update movement speed from config
+		if (config.movementSpeedPxX !== null
+			&& config.movementSpeedPxY !== null
+			&& config.movementSpeedPxZ !== null) {
+			this.movementSpeed = new Vector3(
+				config.movementSpeedPxX,
+				config.movementSpeedPxY,
+				config.movementSpeedPxZ,
+			);
+		} else {
+			this.movementSpeed = new Vector3(
+				config.defaultMovementSpeedPxX + Math.random() * config.defaultMovementSpeedPxX / 2,
+				config.defaultMovementSpeedPxY,
+				config.defaultMovementSpeedPxZ,
+			);
+		}
+
+		// current bearing should be kept the same, event as we change
+		// the configuration/animation
+		this.scale.x = Math.sign(this.scale.x) * config.scaleX;
+		this.scale.y = Math.sign(this.scale.y) * config.scaleY;
+
+		this.currentAction = ParseActionNameToAction(
+			this.config.action,
+			this.config.action_data
+		);
+	}
+
+	public UpdatePhysics(player: SpinePlayer, deltaSecs: number, viewport: BoundingBox) {
+		this.messageQueue.Update(deltaSecs);
+		this.currentAction.UpdatePhysics(this, deltaSecs, viewport, player);
+		this.position.x += this.velocity.x;
+		this.position.y += this.velocity.y;
+		this.position.z += this.velocity.z;
+
+		// Make the Actor face right or left depending on velocity
+		if (this.velocity.x != 0) {
+			if (this.velocity.x > 0) {
+				this.scale.x = this.config.scaleX;
+			} else {
+				this.scale.x = -this.config.scaleX;
+			}
+		}
+		this.setSkeletonMovementData(viewport);
+	}
+
+	public InitAnimationState() {
+		let skeletonData = this.skeleton.data;
+		let stateData = new AnimationStateData(skeletonData);
+		stateData.defaultMix = this.config.defaultMix;
+		this.animationState = new AnimationState(stateData);
+		if (this.config.animation_listener) {
+			this.animationState.clearListeners();
+			this.animationState.addListener(this.config.animation_listener);
+		}
+		if (this.GetAnimations()) {
+			// TODO: Verify all the animations are found in the skeleton data
+			if (this.animationState) {
+				if (!this.animationState.getCurrent(0)) {
+					this.InitAnimations();
 				}
+			}
+		}
+	}
+
+	public GetUsernameHeaderHeight() {
+		let renderBB = this.getRenderingBoundingBox();
+		return renderBB.height + renderBB.y + 10;
+	}
+	public IsEnemySprite(): boolean {
+		return this.config.chibiId.startsWith("enemy_");
+	}
+	public IsOperatorSprite(): boolean {
+		return !this.IsEnemySprite();
+	}
+	public IsOperatorSitting(): boolean {
+		let animations = this.GetAnimations();
+		return (
+			!this.IsEnemySprite()
+			&& animations[0].toLowerCase().includes("sit")
+		);
+	}
+	public isFacingRight(): boolean {
+		return this.scale.x > 0;
+	}
+	public isFacingLeft(): boolean {
+		return this.scale.x <= 0;
+	}
+	public setFacingRight(): void {
+		this.scale.x = Math.abs(this.scale.x);
+	}
+	public setFacingLeft(): void {
+		this.scale.x = -Math.abs(this.scale.x);
+	}
+
+	public EnqueueChatMessage(message: string) {
+		this.messageQueue.AddMessage(message);
+	}
+	public GetChatMessages(): MessageBlock | null {
+		return this.messageQueue.GetCurrentMessageBlock();
+	}
+
+	public GetBoundingBox(): BoundingBox {
+		// x, y is the bottom-left corner
+		let renderBB = this.getRenderingBoundingBox();
+		if (this.isFacingRight()) {
+			return {
+				x: this.position.x + renderBB.x,
+				y: this.position.y + renderBB.y,
+				width: renderBB.width,
+				height: renderBB.height
+			};
+		} else {
+			return {
+				x: this.position.x - renderBB.x - renderBB.width,
+				y: this.position.y + renderBB.y,
+				width: renderBB.width,
+				height: renderBB.height
+			};
+		}
+	}
+
+	public GetBoundingTop(): number {
+		let bb = this.GetBoundingBox();
+		return bb.y + bb.height;
+	}
+	public GetBoundingBottom(): number {
+		let bb = this.GetBoundingBox();
+		return bb.y;
+	}
+	public GetBoundingFront(): number {
+		let bb = this.GetBoundingBox();
+		if (this.isFacingRight()) {
+			return bb.x + bb.width;
+		} else {
+			return bb.x;
+		}
+	}
+	public GetBoundingBack(): number {
+		let bb = this.GetBoundingBox();
+		if (this.isFacingRight()) {
+			return bb.x;
+		} else {
+			return bb.x + bb.width;
+		}
+	}
+	public GetBoundingFrontOffset(): number {
+		let front = this.GetBoundingFront();
+		return front - this.position.x;
+	}
+	public GetBoundingBackOffset(): number {
+		let back = this.GetBoundingBack();
+		return this.position.x - back;
+	}
+
+	public DrawDebug(renderer: SceneRenderer, viewport: BoundingBox) {
+		let actor_pos = this.getPosition();
+		let bb = this.GetBoundingBox();
+		renderer.rect(
+			false,
+			bb.x, bb.y, bb.width, bb.height,
+			Color.RED
+		);
+		renderer.circle(true, actor_pos.x, actor_pos.y, 10, Color.RED);
+
+		let front_x = this.GetBoundingFront();
+		let top_y = this.GetBoundingTop();
+		let back_x = this.GetBoundingBack();
+		let bottom_y = this.GetBoundingBottom();
+		renderer.circle(true, back_x, bottom_y, 5, Color.GREEN);
+		renderer.circle(true, front_x, bottom_y, 10, Color.GREEN);
+		renderer.circle(true, back_x, top_y, 5, Color.ORANGE);
+		renderer.circle(true, front_x, top_y, 10, Color.ORANGE);
+
+		if (this.currentAction != null) {
+			this.currentAction.DrawDebug(this, renderer, viewport);
+		}
+	}
+
+	// Privates
+	// ---------------------------------------------------------------------
+
+	private setSkeletonMovementData(viewport: BoundingBox) {
+		this.skeleton.x = this.position.x + this.config.extraOffsetX;
+		this.skeleton.y = this.position.y + this.config.extraOffsetY;
+		this.skeleton.scaleX = this.scale.x;
+		this.skeleton.scaleY = this.scale.y;
+	}
+
+	private recordAnimation(animation: string) {
+		this.currentAction.SetAnimation(this, animation, this.viewport);
+		this.lastAnimation = animation;
+	}
+
+	private initAnimationsInternal(animations: string[]) {
+		this.setAnimationState(animations);
+		this.recordAnimation(animations[0]);
+
+		// Resize very large chibis to more reasonable sizes
+		let width = this.canvasBB.width;
+		let height = this.canvasBB.height;
+		if (width > this.config.maxSizePx || height > this.config.maxSizePx) {
+			console.log("Resizing actor", this.config.chibiId, "to", this.config.maxSizePx);
+			let ratio = width / height;
+
+			let xNew = 0;
+			let yNew = 0;
+			if (height > width) {
+				xNew = ratio * this.config.maxSizePx;
+				yNew = this.config.maxSizePx;
 			} else {
-				return {
-					x: 0,
-					y: 0,
-					width: this.viewport.width/10,
-					height: this.viewport.height/10,
-				}
+				xNew = this.config.maxSizePx;
+				yNew = this.config.maxSizePx / ratio;
 			}
-		}
+			let newScaleX = (xNew * this.config.scaleX) / width;
+			let newScaleY = (yNew * this.config.scaleY) / height;
 
-		public getPosition(): Vector2 {
-			return new Vector2(
-				this.position.x,
-				this.position.y
-			);
-		}
-		public getPosition3(): Vector3 {
-			return new Vector3(
-				this.position.x,
-				this.position.y,
-				this.position.z
-			);
-		}
-		public getPositionX(): number {
-			return this.position.x;
-		}
-		public getPositionY(): number {
-			return this.position.y;
-		}
-		public getPositionZ(): number {
-			return this.position.z;
-		}
-		public setPositionX(x: number) {
-			this.position.x = x;
-		}
-		public setPositionY(y: number) {
-			this.position.y = y;
-		}
-		public setPositionZ(z: number) {
-			this.position.z = z;
-		}
-		public setPosition(x: number, y: number, z ?:number) {
-			this.position.x = x;
-			this.position.y = y;
-			this.position.z = z !== undefined ? z : 0;
-		}
-
-		public getMovmentSpeed(): Vector2 {
-			return new Vector2(
-				this.movementSpeed.x,
-				this.movementSpeed.y
-			);
-		}
-		public getMovmentSpeed3(): Vector3 {
-			return new Vector3(
-				this.movementSpeed.x,
-				this.movementSpeed.y,
-				this.movementSpeed.z
-			);
-		}
-		public getMovementSpeedX(): number {
-			return this.movementSpeed.x;
-		}
-		public getMovementSpeedY(): number {
-			return this.movementSpeed.y;
-		}
-		public getMovementSpeedZ(): number {
-			return this.movementSpeed.z;
-		}
-		public setMovementSpeedX(x: number) {
-			this.movementSpeed.x = x;
-		}
-		public setMovementSpeedY(y: number) {
-			this.movementSpeed.y = y;
-		}
-		public setMovementSpeedZ(z: number) {
-			this.movementSpeed.z = z;
-		}
-		public getMovementSpeed(): Vector3 {
-			return this.movementSpeed.copy();
-		}
-		public setMovementSpeed(x: number, y: number, z ?: number) {			
-			this.movementSpeed.x = x;
-			this.movementSpeed.y = y;
-			this.movementSpeed.z = z !== undefined ? z : this.config.defaultMovementSpeedPxZ;
-		}
-
-		public getVelocity(): Vector2 {
-			return new Vector2(
-				this.velocity.x,
-				this.velocity.y
-			)
-		}
-		public getVelocity3(): Vector3 {
-			return new Vector3(
-				this.velocity.x,
-				this.velocity.y,
-				this.velocity.z
-			)
-		}
-		public setVelocity(x?: number, y ?: number, z ?: number) {
-			this.velocity = new Vector3(
-				x != undefined ? x : this.velocity.x,
-				y != undefined ? y : this.velocity.y,
-				z != undefined ? z : this.velocity.z
-			);
-		}
-		public isMoving(): boolean {
-			return this.velocity.length() > 0;
-		}
-		public isStationary(): boolean {
-			return this.velocity.length() < 0.00001;
-		}
-
-		public getScaleX(): number { return this.scale.x; }
-		public getScaleY(): number { return this.scale.y; }
-		public setScaleX(x: number) { this.scale.x = x; }
-		public setScaleY(y: number) { this.scale.y = y; }
-
-		public InitAnimations() {
-			this.initAnimationsInternal(this.currentAction.GetAnimations());
-		}
-
-		public GetAnimations(): string[] {
-			return this.currentAction.GetAnimations()
-		}
-
-		public ResetWithConfig(config: SpineActorConfig) {
-			this.load_attempts = 0;
-			this.load_perma_failed = false;
-
-			this.loaded = false;
-			this.canvasBBCalculated = 0;
-			this.skeleton = null;
-			this.animationState = null;
-			this.time = new TimeKeeper();
-			this.paused = false;
-			this.playTime = 0;
-			this.speed = 1;
-			this.config = config;
-
-			// Update movement speed from config
-			if (config.movementSpeedPxX !== null 
-				&& config.movementSpeedPxY !== null
-				&& config.movementSpeedPxZ !== null) {
-				this.movementSpeed = new Vector3(
-					config.movementSpeedPxX, 
-					config.movementSpeedPxY,
-					config.movementSpeedPxZ,
-				);
-			} else {
-				this.movementSpeed = new Vector3(
-					config.defaultMovementSpeedPxX + Math.random()*config.defaultMovementSpeedPxX/2,
-					config.defaultMovementSpeedPxY,
-					config.defaultMovementSpeedPxZ,
-				);
-			}
-			
-			// current bearing should be kept the same, event as we change
-			// the configuration/animation
-			this.scale.x = Math.sign(this.scale.x) * config.scaleX;
-			this.scale.y = Math.sign(this.scale.y) * config.scaleY;
-
-			this.currentAction = ParseActionNameToAction(
-				this.config.action,
-				this.config.action_data
-			);
-		}
-
-		public UpdatePhysics(player: SpinePlayer, deltaSecs: number, viewport: BoundingBox) {
-			this.messageQueue.Update(deltaSecs);
-			this.currentAction.UpdatePhysics(this, deltaSecs, viewport, player);
-			this.position.x += this.velocity.x;
-			this.position.y += this.velocity.y;
-			this.position.z += this.velocity.z;
-
-			// Make the Actor face right or left depending on velocity
-			if (this.velocity.x != 0) {
-				if (this.velocity.x > 0) {
-					this.scale.x = this.config.scaleX;
-				} else {
-					this.scale.x = -this.config.scaleX;
-				}
-			}
-			this.setSkeletonMovementData(viewport);
-		}
-
-		public InitAnimationState() {
-			let skeletonData = this.skeleton.data;
-			let stateData = new AnimationStateData(skeletonData);
-			stateData.defaultMix = this.config.defaultMix;
-			this.animationState = new AnimationState(stateData);
-			if (this.config.animation_listener) {
-				this.animationState.clearListeners();
-				this.animationState.addListener(this.config.animation_listener);
-			}
-			if(this.GetAnimations()) {
-				// TODO: Verify all the animations are found in the skeleton data
-				if (this.animationState) {
-					if (!this.animationState.getCurrent(0)) {
-						this.InitAnimations();
-					}
-				}
-			}
-		}
-		
-		public GetUsernameHeaderHeight() {
-			let renderBB = this.getRenderingBoundingBox();
-			return renderBB.height + renderBB.y + 10;
-		}
-		public IsEnemySprite(): boolean {
-			return this.config.chibiId.startsWith("enemy_");
-		}
-		public IsOperatorSprite(): boolean {
-			return !this.IsEnemySprite();
-		}
-		public IsOperatorSitting(): boolean {
-			let animations = this.GetAnimations();
-			return (
-				!this.IsEnemySprite()
-				&& animations[0].toLowerCase().includes("sit") 
-			);
-		}
-		public isFacingRight(): boolean {
-			return this.scale.x > 0;
-		}
-		public isFacingLeft(): boolean {
-			return this.scale.x <= 0;
-		}
-		public setFacingRight(): void {
-			this.scale.x = Math.abs(this.scale.x);
-		}
-		public setFacingLeft(): void {
-			this.scale.x = -Math.abs(this.scale.x);
-		}
-
-		public EnqueueChatMessage(message: string) {
-			this.messageQueue.AddMessage(message);
-		}
-		public GetChatMessages(): MessageBlock|null {
-			return this.messageQueue.GetCurrentMessageBlock();
-		}
-
-		public GetBoundingBox(): BoundingBox {
-			// x, y is the bottom-left corner
-			let renderBB = this.getRenderingBoundingBox();
-			if (this.isFacingRight()) {
-				return {
-					x: this.position.x + renderBB.x,
-					y: this.position.y + renderBB.y,
-					width: renderBB.width,
-					height: renderBB.height
-				};
-			} else {
-				return {
-					x: this.position.x - renderBB.x - renderBB.width,
-					y: this.position.y + renderBB.y,
-					width: renderBB.width,
-					height: renderBB.height
-				};
-			}
-		}
-
-		public GetBoundingTop(): number {
-			let bb = this.GetBoundingBox();
-			return bb.y + bb.height;
-		}
-		public GetBoundingBottom(): number {
-			let bb = this.GetBoundingBox();
-			return bb.y;
-		}
-		public GetBoundingFront(): number {
-			let bb = this.GetBoundingBox();
-			if (this.isFacingRight()) {
-				return bb.x + bb.width;
-			} else {
-				return bb.x;
-			}
-		}
-		public GetBoundingBack(): number {
-			let bb = this.GetBoundingBox();
-			if (this.isFacingRight()) {
-				return bb.x;
-			} else {
-				return bb.x + bb.width;
-			}
-		}
-		public GetBoundingFrontOffset(): number {
-			let front = this.GetBoundingFront();
-			return front - this.position.x;
-		}
-		public GetBoundingBackOffset() : number {
-			let back = this.GetBoundingBack();
-			return this.position.x - back;
-		}
-
-		public DrawDebug(renderer: SceneRenderer, viewport: BoundingBox) {
-			let actor_pos = this.getPosition();
-			let bb = this.GetBoundingBox();
-			renderer.rect(
-				false,
-				bb.x, bb.y, bb.width, bb.height,
-				Color.RED
-			);
-			renderer.circle(true, actor_pos.x, actor_pos.y, 10, Color.RED);
-
-			let front_x = this.GetBoundingFront();
-			let top_y = this.GetBoundingTop();
-			let back_x = this.GetBoundingBack();
-			let bottom_y = this.GetBoundingBottom();
-			renderer.circle(true, back_x, bottom_y, 5, Color.GREEN);
-			renderer.circle(true, front_x, bottom_y, 10, Color.GREEN);
-			renderer.circle(true, back_x, top_y, 5, Color.ORANGE);
-			renderer.circle(true, front_x, top_y, 10, Color.ORANGE);
-
-			if (this.currentAction != null) {
-				this.currentAction.DrawDebug(this, renderer, viewport);
-			}
-		}
-
-		// Privates
-		// ---------------------------------------------------------------------
-
-		private setSkeletonMovementData(viewport: BoundingBox) {
-			this.skeleton.x = this.position.x + this.config.extraOffsetX;
-			this.skeleton.y = this.position.y + this.config.extraOffsetY;
+			// TODO: setting defaultScale is a bug. We need to save it only once
+			this.config.defaultScaleX = this.config.scaleX;
+			this.config.defaultScaleY = this.config.scaleY;
+			this.config.scaleX = newScaleX;
+			this.config.scaleY = newScaleY;
+			this.scale.x = Math.sign(this.scale.x) * this.config.scaleX;
+			this.scale.y = Math.sign(this.scale.y) * this.config.scaleY;
 			this.skeleton.scaleX = this.scale.x;
 			this.skeleton.scaleY = this.scale.y;
-		}
 
-		private recordAnimation(animation: string) {
-			this.currentAction.SetAnimation(this, animation, this.viewport);
-			this.lastAnimation = animation;
-		}
-
-		private initAnimationsInternal(animations: string[]) {
 			this.setAnimationState(animations);
 			this.recordAnimation(animations[0]);
-						
-			// Resize very large chibis to more reasonable sizes
-			let width = this.canvasBB.width;
-			let height = this.canvasBB.height;
-			if (width > this.config.maxSizePx || height > this.config.maxSizePx) {
-				console.log("Resizing actor", this.config.chibiId, "to", this.config.maxSizePx);
-				let ratio = width / height;
-
-				let xNew = 0;
-				let yNew = 0;
-				if (height > width) {
-					xNew = ratio * this.config.maxSizePx;
-					yNew = this.config.maxSizePx;
-				} else {
-					xNew = this.config.maxSizePx;
-					yNew = this.config.maxSizePx / ratio;
-				}
-				let newScaleX = (xNew * this.config.scaleX) / width;
-				let newScaleY = (yNew * this.config.scaleY) / height;
-				
-				// TODO: setting defaultScale is a bug. We need to save it only once
-				this.config.defaultScaleX = this.config.scaleX;
-				this.config.defaultScaleY = this.config.scaleY;
-				this.config.scaleX = newScaleX;
-				this.config.scaleY = newScaleY;
-				this.scale.x = Math.sign(this.scale.x) * this.config.scaleX;
-				this.scale.y = Math.sign(this.scale.y) * this.config.scaleY;
-				this.skeleton.scaleX = this.scale.x;
-				this.skeleton.scaleY = this.scale.y;
-
-				this.setAnimationState(animations);
-				this.recordAnimation(animations[0]);
-			}
-		}
-
-		private setAnimationState(animations: string[]) {
-			let animation = animations[0];
-			this.canvasBB = this.getCanvasBoundingBox(animations);
-			this.animationState.timeScale = this.config.animationPlaySpeed;
-			this.animationState.clearTracks();
-			this.skeleton.setToSetupPose();
-			
-			this.animationState.setAnimation(0, animation, true);
-			let lastTrackEntry = null;
-			for (let i = 1; i < animations.length; i++) {
-				lastTrackEntry = this.animationState.addAnimation(0, animations[i], false, 0);
-			}
-
-			if (lastTrackEntry) {
-				this.animationState.addListener({
-					start: (
-						(trackEntry: TrackEntry) => {
-							this.recordAnimation(trackEntry.animation.name,)
-						}
-					).bind(this),
-					interrupt: function (trackEntry) { },
-					end: function (trackEntry) {},
-					complete: (
-						(trackEntry: TrackEntry) => { 
-							// Loop through all the animations
-							if (trackEntry.next == null) {
-								this.animationState.setAnimation(0, animation, true);
-								for (let i = 1; i < animations.length; i++) {
-									lastTrackEntry = this.animationState.addAnimation(0, animations[i], false, 0);
-								}
-							}
-						}
-					).bind(this),
-					dispose: function (trackEntry) {},
-					event: function (entry: TrackEntry, event: Event): void {}
-				});
-			}
-		}
-
-		private getCanvasBoundingBox(animations: string[]) : BoundingBox {
-			let defaultAnimationName = animations[0];
-
-			let savedX = this.skeleton.x;
-			let savedY = this.skeleton.y;
-			let savedZ = this.getPositionZ();
-			let savedScaleX = this.skeleton.scaleX;
-			let savedScaleY = this.skeleton.scaleY;
-
-			let animation = this.skeleton.data.findAnimation(defaultAnimationName);
-			this.animationState.clearTracks();
-			this.skeleton.setToSetupPose();
-			this.animationState.setAnimationWith(0, animation, true);
-			this.skeleton.x = 0;
-			this.skeleton.y = 0;
-			this.setPositionZ(0);
-			this.skeleton.scaleX = Math.abs(this.config.scaleX);
-			this.skeleton.scaleY = Math.abs(this.config.scaleY);
-			this.animationState.update(0);
-			this.animationState.apply(this.skeleton);
-			this.skeleton.updateWorldTransform();
-
-			let offset = new Vector2();
-			let size =   new Vector2();
-			this.skeleton.getBounds(offset, size);
-			let defaultBB = {x: offset.x, y: offset.y, width: size.x, height: size.y};
-			let returnBB = {
-				x: defaultBB.x,
-				y: defaultBB.y,
-				width: defaultBB.width,
-				height: defaultBB.height
-			};
-			if (this.offscreenRender != null) {
-				let bb = this.offscreenRender.getBoundingBox(this, defaultBB);
-				returnBB.x = bb.x;
-				returnBB.y = bb.y;
-				returnBB.width = bb.width;
-				returnBB.height = bb.height;
-			} else {
-				// HACK!!!!:
-				// fixes for certain chibis
-				// Normal chibi height is 200px at a scale of 0.45
-				let bb = defaultBB;
-				let normalScale = (200/0.45)*this.config.scaleX;
-				if (this.IsOperatorSprite()) {
-					if (Math.abs(bb.y) > normalScale) {
-						bb.y = 0;
-					}
-					if (bb.height > normalScale) {
-						bb.height = normalScale;
-					}
-					if (bb.width > normalScale) {
-						bb.width = normalScale;
-					}
-				} else if (this.IsEnemySprite()) {
-					if (Math.abs(bb.y) > normalScale) {
-					}
-				}
-				returnBB.x = bb.x;
-				returnBB.y = bb.y;
-				returnBB.width = bb.width;
-				returnBB.height = bb.height;
-			}
-			
-			this.skeleton.x = savedX;
-			this.skeleton.y = savedY;
-			this.setPositionZ(savedZ);
-			this.skeleton.scaleX = savedScaleX;
-			this.skeleton.scaleY = savedScaleY;
-
-			return returnBB;
 		}
 	}
+
+	private setAnimationState(animations: string[]) {
+		let animation = animations[0];
+		this.canvasBB = this.getCanvasBoundingBox(animations);
+		this.animationState.timeScale = this.config.animationPlaySpeed;
+		this.animationState.clearTracks();
+		this.skeleton.setToSetupPose();
+
+		this.animationState.setAnimation(0, animation, true);
+		let lastTrackEntry = null;
+		for (let i = 1; i < animations.length; i++) {
+			lastTrackEntry = this.animationState.addAnimation(0, animations[i], false, 0);
+		}
+
+		if (lastTrackEntry) {
+			this.animationState.addListener({
+				start: (
+					(trackEntry: TrackEntry) => {
+						this.recordAnimation(trackEntry.animation.name,)
+					}
+				).bind(this),
+				interrupt: function (trackEntry) { },
+				end: function (trackEntry) { },
+				complete: (
+					(trackEntry: TrackEntry) => {
+						// Loop through all the animations
+						if (trackEntry.next == null) {
+							this.animationState.setAnimation(0, animation, true);
+							for (let i = 1; i < animations.length; i++) {
+								lastTrackEntry = this.animationState.addAnimation(0, animations[i], false, 0);
+							}
+						}
+					}
+				).bind(this),
+				dispose: function (trackEntry) { },
+				event: function (entry: TrackEntry, event: Event): void { }
+			});
+		}
+	}
+
+	private getCanvasBoundingBox(animations: string[]): BoundingBox {
+		let defaultAnimationName = animations[0];
+
+		let savedX = this.skeleton.x;
+		let savedY = this.skeleton.y;
+		let savedZ = this.getPositionZ();
+		let savedScaleX = this.skeleton.scaleX;
+		let savedScaleY = this.skeleton.scaleY;
+
+		let animation = this.skeleton.data.findAnimation(defaultAnimationName);
+		this.animationState.clearTracks();
+		this.skeleton.setToSetupPose();
+		this.animationState.setAnimationWith(0, animation, true);
+		this.skeleton.x = 0;
+		this.skeleton.y = 0;
+		this.setPositionZ(0);
+		this.skeleton.scaleX = Math.abs(this.config.scaleX);
+		this.skeleton.scaleY = Math.abs(this.config.scaleY);
+		this.animationState.update(0);
+		this.animationState.apply(this.skeleton);
+		this.skeleton.updateWorldTransform();
+
+		let offset = new Vector2();
+		let size = new Vector2();
+		this.skeleton.getBounds(offset, size);
+		let defaultBB = { x: offset.x, y: offset.y, width: size.x, height: size.y };
+		let returnBB = {
+			x: defaultBB.x,
+			y: defaultBB.y,
+			width: defaultBB.width,
+			height: defaultBB.height
+		};
+		if (this.offscreenRender != null) {
+			let bb = this.offscreenRender.getBoundingBox(this, defaultBB);
+			returnBB.x = bb.x;
+			returnBB.y = bb.y;
+			returnBB.width = bb.width;
+			returnBB.height = bb.height;
+		} else {
+			// HACK!!!!:
+			// fixes for certain chibis
+			// Normal chibi height is 200px at a scale of 0.45
+			let bb = defaultBB;
+			let normalScale = (200 / 0.45) * this.config.scaleX;
+			if (this.IsOperatorSprite()) {
+				if (Math.abs(bb.y) > normalScale) {
+					bb.y = 0;
+				}
+				if (bb.height > normalScale) {
+					bb.height = normalScale;
+				}
+				if (bb.width > normalScale) {
+					bb.width = normalScale;
+				}
+			} else if (this.IsEnemySprite()) {
+				if (Math.abs(bb.y) > normalScale) {
+				}
+			}
+			returnBB.x = bb.x;
+			returnBB.y = bb.y;
+			returnBB.width = bb.width;
+			returnBB.height = bb.height;
+		}
+
+		this.skeleton.x = savedX;
+		this.skeleton.y = savedY;
+		this.setPositionZ(savedZ);
+		this.skeleton.scaleX = savedScaleX;
+		this.skeleton.scaleY = savedScaleY;
+
+		return returnBB;
+	}
+}

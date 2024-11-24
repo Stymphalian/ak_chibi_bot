@@ -1,0 +1,9 @@
+set_user user2
+!chibi walk
+set_user user3
+!chibi follow user2
+set_user user4
+!chibi follow user3
+set_user user5
+!chibi follow user4
+hello
