@@ -2443,6 +2443,59 @@
               ]
             }
           }
+        },
+        "epoque": {
+          "base": {
+            "Front": {
+              "atlas_filepath": "characters/char_1031_slent2/epoque#32/base/Front/build_char_1031_slent2_epoque#32.atlas",
+              "skel_filepath": "characters/char_1031_slent2/epoque#32/base/Front/build_char_1031_slent2_epoque#32.skel",
+              "png_filepath": "characters/char_1031_slent2/epoque#32/base/Front/build_char_1031_slent2_epoque#32.png",
+              "animations": [
+                "Default",
+                "Interact",
+                "Move",
+                "Relax",
+                "Sit",
+                "Sleep",
+                "Special"
+              ]
+            }
+          },
+          "battle": {
+            "Back": {
+              "atlas_filepath": "characters/char_1031_slent2/epoque#32/battle/Back/char_1031_slent2_epoque#32.atlas",
+              "skel_filepath": "characters/char_1031_slent2/epoque#32/battle/Back/char_1031_slent2_epoque#32.skel",
+              "png_filepath": "characters/char_1031_slent2/epoque#32/battle/Back/char_1031_slent2_epoque#32.png",
+              "animations": [
+                "Attack",
+                "Default",
+                "Idle",
+                "Skill",
+                "Skill_2_Begin",
+                "Skill_2_End",
+                "Skill_2_Idle",
+                "Skill_2_Loop",
+                "Start"
+              ]
+            },
+            "Front": {
+              "atlas_filepath": "characters/char_1031_slent2/epoque#32/battle/Front/char_1031_slent2_epoque#32.atlas",
+              "skel_filepath": "characters/char_1031_slent2/epoque#32/battle/Front/char_1031_slent2_epoque#32.skel",
+              "png_filepath": "characters/char_1031_slent2/epoque#32/battle/Front/char_1031_slent2_epoque#32.png",
+              "animations": [
+                "Attack",
+                "Default",
+                "Die",
+                "Idle",
+                "Skill",
+                "Skill_2_Begin",
+                "Skill_2_End",
+                "Skill_2_Idle",
+                "Skill_2_Loop",
+                "Start"
+              ]
+            }
+          }
         }
       }
     },
@@ -5725,6 +5778,59 @@
               "atlas_filepath": "characters/char_136_hsguma/nian#3/battle/Front/char_136_hsguma_nian#3.atlas",
               "skel_filepath": "characters/char_136_hsguma/nian#3/battle/Front/char_136_hsguma_nian#3.skel",
               "png_filepath": "characters/char_136_hsguma/nian#3/battle/Front/char_136_hsguma_nian#3.png",
+              "animations": [
+                "Attack",
+                "Attack_Down",
+                "Default",
+                "Die",
+                "Idle",
+                "Skill",
+                "Skill_Begin",
+                "Skill_Down",
+                "Skill_Down_Begin",
+                "Skill_Down_End",
+                "Skill_End",
+                "Start"
+              ]
+            }
+          }
+        },
+        "summer": {
+          "base": {
+            "Front": {
+              "atlas_filepath": "characters/char_136_hsguma/summer#16/base/Front/build_char_136_hsguma_summer#16.atlas",
+              "skel_filepath": "characters/char_136_hsguma/summer#16/base/Front/build_char_136_hsguma_summer#16.skel",
+              "png_filepath": "characters/char_136_hsguma/summer#16/base/Front/build_char_136_hsguma_summer#16.png",
+              "animations": [
+                "Default",
+                "Interact",
+                "Move",
+                "Relax",
+                "Sit",
+                "Sleep",
+                "Special"
+              ]
+            }
+          },
+          "battle": {
+            "Back": {
+              "atlas_filepath": "characters/char_136_hsguma/summer#16/battle/Back/char_136_hsguma_summer#16.atlas",
+              "skel_filepath": "characters/char_136_hsguma/summer#16/battle/Back/char_136_hsguma_summer#16.skel",
+              "png_filepath": "characters/char_136_hsguma/summer#16/battle/Back/char_136_hsguma_summer#16.png",
+              "animations": [
+                "Attack",
+                "Default",
+                "Idle",
+                "Skill",
+                "Skill_Begin",
+                "Skill_End",
+                "Start"
+              ]
+            },
+            "Front": {
+              "atlas_filepath": "characters/char_136_hsguma/summer#16/battle/Front/char_136_hsguma_summer#16.atlas",
+              "skel_filepath": "characters/char_136_hsguma/summer#16/battle/Front/char_136_hsguma_summer#16.skel",
+              "png_filepath": "characters/char_136_hsguma/summer#16/battle/Front/char_136_hsguma_summer#16.png",
               "animations": [
                 "Attack",
                 "Attack_Down",
