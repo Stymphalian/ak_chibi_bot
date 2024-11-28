@@ -128,6 +128,23 @@ export function DocsPage() {
                     <Code>{url + "&show_chat=true"}</Code>           
                 </li>
                 <li className="list-group-item">
+                    You can blacklist usernames so that they won't be given a chibi when chatting. <br />
+                    Use this to blacklist bot accounts, or your own account so that they don't appear on stream. <br />
+                    There are two ways to do this: <br />
+                    <ol>
+                        <li>
+                            You can add a query argument to the end of the Browser Source URL. <br />
+                            <Code>{url + "&blacklist=stymtwitchbot,streamelements,nightbot"}</Code>
+                        </li>
+                        <li>
+                            Go to the <NavLink to="/settings">Settings</NavLink> page and edit
+                            the Usernames Blacklist with a comma separated list of usernames. <br />
+                            <Code>stymtwitchbot,streamelements</Code> <br />
+                            Once you are done, reload the Browser Source in OBS to pick up the changes.
+                        </li>
+                    </ol>
+                </li>
+                <li className="list-group-item">
                     You can change settings related to how your bot handles 
                     (<Code>!chibi size, !chibi speed, !chibi velocity</Code>) commands 
                     by going to <NavLink to="/settings">Settings</NavLink>. <br />

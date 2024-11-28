@@ -14,7 +14,8 @@ export function SettingsPage() {
         maxVelocity: 0,
         minSpriteScale: 0,
         maxSpriteScale: 0,
-        maxSpritePixelSize: 0
+        maxSpritePixelSize: 0,
+        usernamesBlacklist: ""
     })
     const [loading, setLoading] = React.useState(true)
     const auth = useAuth()

@@ -28,11 +28,33 @@ export function setContainerSizeFromQuery(searchParams: URLSearchParams) {
     return [containerWidth, containerHeight];
 }
 
+
+function isValidTwitchUserName(username: string): boolean {
+    // validate username name is alphanumeric
+    if (!/^[a-zA-Z0-9_-]{1,100}$/.test(username)) {
+        return false;
+    }
+    return true;
+}
+
+function getUsernameBlacklist(searchParams: URLSearchParams) {
+    const usernameBlacklist = searchParams.get('blacklist');
+    if (usernameBlacklist) {
+        return decodeURIComponent(usernameBlacklist)
+            .split(',')
+            .map(name => name.trim().toLowerCase())
+            .filter(name => isValidTwitchUserName(name));
+    }
+    return [];
+}
+
 export function getRuntimeConfigFromQueryParams(searchParams: URLSearchParams): RuntimeConfig {
     const debugMode = searchParams.get('debug') === 'true';
     const useAccurateBoundingBox = !(searchParams.get('accurate_bb') === 'false');
     const showChatMessages = searchParams.get('show_chat') === 'true';
     const scale = Math.max(Math.min((parseFloat(searchParams.get('scale')) || 1), 3), 0.1);
+    const usernameBlacklist = getUsernameBlacklist(searchParams);
+
     const [containerWidth, containerHeight] = setContainerSizeFromQuery(searchParams);
     return {
         width: containerWidth,
@@ -41,5 +63,6 @@ export function getRuntimeConfigFromQueryParams(searchParams: URLSearchParams): 
         chibiScale: scale,
         accurateBoundingBoxFlag: useAccurateBoundingBox,
         showChatMessagesFlag: showChatMessages,
+        usernameBlacklist: usernameBlacklist,
     }
 }

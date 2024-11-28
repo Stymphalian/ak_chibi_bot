@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"net/url"
 	"os"
 	"os/signal"
 	"path"
@@ -261,6 +262,10 @@ func (s *MainServer) HandleRoom(w http.ResponseWriter, r *http.Request) error {
 	showChatFlag := r.URL.Query().Get("show_chat")
 	if showChatFlag == "true" {
 		extraQueryArgs += "&show_chat=true"
+	}
+	usernameBlacklist := r.URL.Query().Get("blacklist")
+	if len(usernameBlacklist) > 0 {
+		extraQueryArgs += "&blacklist=" + url.QueryEscape(usernameBlacklist)
 	}
 
 	err := s.roomManager.CreateRoomOrNoOp(r.Context(), channelName)

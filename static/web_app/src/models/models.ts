@@ -6,7 +6,8 @@ export type ChannelSettings = {
     maxVelocity: number,
     minSpriteScale: number,
     maxSpriteScale: number,
-    maxSpritePixelSize: number
+    maxSpritePixelSize: number,
+    usernamesBlacklist ?: string
 };
 
 export type AdminChatterInfo = {

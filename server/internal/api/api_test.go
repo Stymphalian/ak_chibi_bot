@@ -121,7 +121,8 @@ func TestApiServer_HandleRoomUpdate_HappyPath(t *testing.T) {
 	"max_velocity":3,
 	"min_sprite_scale":0.5,
 	"max_sprite_scale":2,
-	"max_sprite_pixel_size":300
+	"max_sprite_pixel_size":300,
+	"usernames_blacklist": ["user1", "user2"]
 	}`
 	reqBody := strings.NewReader(jsonBody)
 
@@ -209,6 +210,28 @@ func TestApiServer_HandleRoomUpdate_InvalidConfiguration(t *testing.T) {
 	assert.Equal(resp.StatusCode, 400)
 	body, _ = io.ReadAll(resp.Body)
 	assert.Equal("Invalid request body", string(body))
+
+	// Invalid usernames blacklist
+	jsonBody = `{
+	"channel_name":"test-api-server-3",
+	"min_animation_speed":3,
+	"max_animation_speed":0.1,
+	"min_velocity":0.1,
+	"max_velocity":3,
+	"min_sprite_scale":0.5,
+	"max_sprite_scale":2,
+	"max_sprite_pixel_size":300,
+	"usernames_blacklist": ["user1^"]
+	}`
+	reqBody = strings.NewReader(jsonBody)
+	req = httptest.NewRequest("POST", "http://example.com/api/rooms/settings/", reqBody)
+	req.Header.Set("Authorization", "Bearer foo")
+	w = httptest.NewRecorder()
+	sut.middleware(sut.HandleUpdateRoomSettings).ServeHTTP(w, req)
+	resp = w.Result()
+	assert.Equal(resp.StatusCode, 400)
+	body, _ = io.ReadAll(resp.Body)
+	assert.Equal("Invalid configuration settings", string(body))
 }
 
 func TestApiServer_HandleRoomUpdate_RoomDoesNotExist(t *testing.T) {

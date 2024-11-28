@@ -101,9 +101,6 @@ func (c *ChibiActor) GiveChibiToUser(ctx context.Context, userInfo misc.UserInfo
 }
 
 func (c *ChibiActor) RemoveUserChibi(ctx context.Context, userName string) error {
-	if slices.Contains(c.excludeNames, userName) {
-		return nil
-	}
 	_, err := c.client.RemoveOperator(
 		&spine.RemoveOperatorRequest{UserName: userName},
 	)
@@ -137,11 +134,22 @@ func (c *ChibiActor) SetToDefault(
 	opName string,
 	details misc.InitialOperatorDetails,
 ) {
+	if c.ShouldExcludeUser(userInfo.Username) {
+		return
+	}
+
 	opInfo := c.spineService.OperatorFromDefault(opName, details)
 	err := c.UpdateChatter(ctx, userInfo, opInfo)
 	if err != nil {
 		log.Printf("Failed to SetToDefault for %s: %s\n", userInfo.Username, err)
 	}
+}
+
+func (r *ChibiActor) UpdateExcludeNames(usernames []string) {
+	r.excludeNames = usernames
+}
+func (c *ChibiActor) ShouldExcludeUser(username string) bool {
+	return slices.Contains(c.excludeNames, strings.ToLower(username))
 }
 
 func (c *ChibiActor) HandleMessage(msg chat.ChatMessage) (string, error) {

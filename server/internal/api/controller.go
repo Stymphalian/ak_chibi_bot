@@ -545,6 +545,15 @@ func (s *ApiServer) updateRoomSettings(ctx context.Context, channelName string, 
 	if reqBody.MaxSpritePixelSize > 0 {
 		config.MaxSpritePixelSize = reqBody.MaxSpritePixelSize
 	}
+	if len(reqBody.UsernamesBlacklist) > 20 {
+		return misc.NewHumanReadableError(
+			"Too many usernames in blacklist",
+			http.StatusBadRequest,
+			fmt.Errorf("too many usernames in blacklist"),
+		)
+	}
+	config.UsernamesBlacklist = reqBody.UsernamesBlacklist
+
 	if err := misc.ValidateSpineRuntimeConfig(&config); err != nil {
 		return misc.NewHumanReadableError(
 			"Invalid configuration settings",
@@ -575,6 +584,7 @@ func (s *ApiServer) getRoomSettings(ctx context.Context, channelName string) (*G
 		MinSpriteSize:      config.MinScaleSize,
 		MaxSpriteSize:      config.MaxScaleSize,
 		MaxSpritePixelSize: config.MaxSpritePixelSize,
+		UsernamesBlacklist: config.UsernamesBlacklist,
 	}
 	return resp, nil
 }

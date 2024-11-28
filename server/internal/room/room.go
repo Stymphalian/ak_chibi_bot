@@ -278,6 +278,12 @@ func (r *Room) LoadExistingChatters(ctx context.Context) error {
 		if err != nil {
 			continue
 		}
+		if r.chibiActor.ShouldExcludeUser(user.Username) {
+			log.Println("Excluding user ", user.Username)
+			r.chibiActor.RemoveUserChibi(ctx, user.Username)
+			continue
+		}
+
 		log.Printf("Reloading chatter %s in room %s with operator %s", user.Username, r.GetChannelName(), chatter.OperatorInfo.OperatorDisplayName)
 		err = r.chibiActor.UpdateChibi(
 			ctx,
@@ -308,12 +314,15 @@ func (r *Room) GetRoomId() uint {
 	return r.roomId
 }
 
-func (r *Room) RefreshConfigs(ctx context.Context) error {
+func (r *Room) RefreshConfigs(ctx context.Context, botConfig *misc.BotConfig) error {
 	newConfig, err := r.GetSpineRuntimeConfig(ctx)
 	if err != nil {
 		return err
 	}
 	r.operatorService.SetConfig(newConfig)
+	r.chibiActor.UpdateExcludeNames(
+		append(botConfig.ExcludeNames, newConfig.UsernamesBlacklist...),
+	)
 	return nil
 }
 

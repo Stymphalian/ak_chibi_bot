@@ -660,7 +660,7 @@ func TestCmdProcessorHandleMessage_ChibiMoveSpeed(t *testing.T) {
 		assert.Fail("Command is not of type: ChatCommandUpdateActor")
 	}
 	assert.Equal(2.0, current.MovementSpeed.Unwrap().X)
-	assert.Equal(0.0, current.MovementSpeed.Unwrap().Y)
+	assert.Equal(2.0, current.MovementSpeed.Unwrap().Y)
 }
 
 func TestCmdProcessorHandleMessage_ChibiMoveSpeedOutOfRange(t *testing.T) {

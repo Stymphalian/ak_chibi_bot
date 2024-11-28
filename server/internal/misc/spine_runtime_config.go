@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"strings"
 )
 
 type SpineRuntimeConfig struct {
@@ -21,6 +22,8 @@ type SpineRuntimeConfig struct {
 	DefaultMovementSpeed     float64 `json:"default_movement_speed"`
 	MinMovementSpeed         float64 `json:"min_movement_speed"`
 	MaxMovementSpeed         float64 `json:"max_movement_speed"`
+
+	UsernamesBlacklist []string `json:"usernames_blacklist"`
 }
 
 func DefaultSpineRuntimeConfig() *SpineRuntimeConfig {
@@ -38,6 +41,7 @@ func DefaultSpineRuntimeConfig() *SpineRuntimeConfig {
 		DefaultMovementSpeed:     1.0,
 		MinMovementSpeed:         0.1,
 		MaxMovementSpeed:         2.0,
+		UsernamesBlacklist:       []string{},
 	}
 }
 
@@ -69,7 +73,34 @@ func ValidateSpineRuntimeConfig(config *SpineRuntimeConfig) error {
 		return fmt.Errorf("default_movement_speed must be between %f and %f", config.MinMovementSpeed, config.MaxMovementSpeed)
 	}
 
+	newUsernames := make([]string, 0)
+	for _, username := range config.UsernamesBlacklist {
+		username = strings.ToLower(username)
+		username = strings.TrimSpace(username)
+		if len(username) == 0 {
+			return fmt.Errorf("invalid username in usernames_blacklist")
+		}
+		if err := ValidateChannelName(username); err != nil {
+			return fmt.Errorf("invalid username in usernames_blacklist: %w", err)
+		}
+		newUsernames = append(newUsernames, username)
+	}
+	config.UsernamesBlacklist = removeDuplicates(newUsernames)
+
 	return nil
+}
+
+func removeDuplicates(slice []string) []string {
+	seen := make(map[string]bool)
+	newSlice := make([]string, 0)
+	for _, v := range slice {
+		if _, ok := seen[v]; ok {
+			continue
+		}
+		newSlice = append(newSlice, v)
+		seen[v] = true
+	}
+	return newSlice
 }
 
 func (oi *SpineRuntimeConfig) Scan(value interface{}) error {

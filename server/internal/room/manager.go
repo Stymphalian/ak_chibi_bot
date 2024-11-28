@@ -170,7 +170,7 @@ func (r *RoomsManager) getRoomServices(roomDb *RoomDb) (
 		r.userPrefsRepo,
 		r.chattersRepo,
 		spineBridge,
-		r.botConfig.ExcludeNames,
+		append(r.botConfig.ExcludeNames, spineRuntimeConfig.UsernamesBlacklist...),
 	)
 
 	chatBotters := make([]chatbot.ChatBotter, 0)
@@ -240,7 +240,7 @@ func (r *RoomsManager) CreateRoomOrNoOp(ctx context.Context, channel string) err
 
 	if _, ok := r.Rooms[channel]; ok {
 		// Refresh the room's configs, best effort
-		r.Rooms[channel].RefreshConfigs(ctx)
+		r.Rooms[channel].RefreshConfigs(ctx, r.botConfig)
 		r.Rooms[channel].LoadExistingChatters(ctx)
 		return nil
 	}
@@ -292,13 +292,15 @@ func (r *RoomsManager) CreateRoomOrNoOp(ctx context.Context, channel string) err
 			defaultOperatorName = roomDb.DefaultOperatorName
 			defaultOperatorConfig = roomDb.DefaultOperatorConfig
 		}
-		log.Println("Adding default chibi for ", roomDb.ChannelName)
-		roomObj.chibiActor.SetToDefault(
-			ctx,
-			*userinfo,
-			defaultOperatorName,
-			defaultOperatorConfig,
-		)
+		if !roomObj.chibiActor.ShouldExcludeUser(roomDb.ChannelName) {
+			log.Println("Adding default chibi for ", roomDb.ChannelName)
+			roomObj.chibiActor.SetToDefault(
+				ctx,
+				*userinfo,
+				defaultOperatorName,
+				defaultOperatorConfig,
+			)
+		}
 	}
 
 	r.rooms_mutex.Lock()
@@ -392,6 +394,8 @@ func (r *RoomsManager) UpdateSpineRuntimeConfig(ctx context.Context, roomId uint
 	if newConfig.DefaultMovementSpeed > 0 {
 		runtimeConfig.DefaultMovementSpeed = newConfig.DefaultMovementSpeed
 	}
+	runtimeConfig.UsernamesBlacklist = newConfig.UsernamesBlacklist
+
 	r.roomRepo.UpdateSpineRuntimeConfigForId(ctx, roomId, runtimeConfig)
 	return nil
 }

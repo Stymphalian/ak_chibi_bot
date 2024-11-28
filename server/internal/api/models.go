@@ -44,7 +44,8 @@ type RoomUpdateRequest struct {
 	MinSpriteScale float64 `json:"min_sprite_size"`
 	MaxSpriteScale float64 `json:"max_sprite_size"`
 	// DefaultSpriteScale    float64 `json:"default_sprite_scale"`
-	MaxSpritePixelSize int `json:"max_sprite_pixel_size"`
+	MaxSpritePixelSize int      `json:"max_sprite_pixel_size"`
+	UsernamesBlacklist []string `json:"usernames_blacklist"`
 }
 
 type RoomGiveOperatorRequest struct {
@@ -72,13 +73,14 @@ type GetRoomSettingsRequest struct {
 }
 
 type GetRoomSettingsResponse struct {
-	MinAnimationSpeed  float64 `json:"min_animation_speed"`
-	MaxAnimationSpeed  float64 `json:"max_animation_speed"`
-	MinMovementSpeed   float64 `json:"min_movement_speed"`
-	MaxMovementSpeed   float64 `json:"max_movement_speed"`
-	MinSpriteSize      float64 `json:"min_sprite_size"`
-	MaxSpriteSize      float64 `json:"max_sprite_size"`
-	MaxSpritePixelSize int     `json:"max_sprite_pixel_size"`
+	MinAnimationSpeed  float64  `json:"min_animation_speed"`
+	MaxAnimationSpeed  float64  `json:"max_animation_speed"`
+	MinMovementSpeed   float64  `json:"min_movement_speed"`
+	MaxMovementSpeed   float64  `json:"max_movement_speed"`
+	MinSpriteSize      float64  `json:"min_sprite_size"`
+	MaxSpriteSize      float64  `json:"max_sprite_size"`
+	MaxSpritePixelSize int      `json:"max_sprite_pixel_size"`
+	UsernamesBlacklist []string `json:"usernames_blacklist"`
 }
 
 type GetUserPreferencesRequest struct {

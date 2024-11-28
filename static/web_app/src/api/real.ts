@@ -24,6 +24,8 @@ export async function getUserChannelSettings(accessToken: string, channelName:st
         if (!validateChannelName(channelName)) {
             throw Error("Invalid channel name");
         }
+
+        let usernamesBlacklist = jsonBody["usernames_blacklist"];
         return {        
             channelName: channelName,
             minAnimationSpeed: jsonBody["min_animation_speed"],
@@ -32,7 +34,8 @@ export async function getUserChannelSettings(accessToken: string, channelName:st
             maxVelocity: jsonBody["max_movement_speed"],
             minSpriteScale: jsonBody["min_sprite_size"],
             maxSpriteScale: jsonBody["max_sprite_size"],
-            maxSpritePixelSize: jsonBody["max_sprite_pixel_size"]
+            maxSpritePixelSize: jsonBody["max_sprite_pixel_size"],
+            usernamesBlacklist: usernamesBlacklist ? usernamesBlacklist.join(",") : ""
         };
     } catch (error) {
         console.error("Error fetching room settings for channel " + channelName, error);
@@ -63,7 +66,10 @@ export async function updateUserChannelSettings(accessToken: string, channelName
                     'max_movement_speed': updates.maxVelocity,
                     'min_sprite_size': updates.minSpriteScale,
                     'max_sprite_size': updates.maxSpriteScale,
-                    'max_sprite_pixel_size': updates.maxSpritePixelSize
+                    'max_sprite_pixel_size': updates.maxSpritePixelSize,
+                    'usernames_blacklist': updates.usernamesBlacklist 
+                        ? updates.usernamesBlacklist.split(",")
+                        : []
                 })
             }
         );

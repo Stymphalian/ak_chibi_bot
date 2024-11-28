@@ -19,6 +19,7 @@ const schema = yup
     minSpriteScale: yup.number().positive().min(0).max(10).required(),
     maxSpriteScale: yup.number().positive().min(0).max(10).required(),
     maxSpritePixelSize: yup.number().positive().min(100).max(2000).required(),
+    usernamesBlacklist: yup.string()
 })
 .required()
 
@@ -157,6 +158,18 @@ function RoomSettingsForm(props: {
                             defaultValue={cs.maxSpritePixelSize} 
                             {...register("maxSpritePixelSize")} />
                         {errors.maxSpritePixelSize && <div className="p-1 bg-warning bg-gradient text-black rounded">{errors.maxSpritePixelSize?.message}</div>}
+                    </div>
+                </div>
+
+                <div className="form-group row pb-1">
+                    <label className="col-form-label col-sm-2">Usernames Blacklist</label>
+                    <div className="col-sm-10">
+                        <input 
+                            className="form-control" 
+                            placeholder="Blacklist usernames from having chibis (eg. streamelements,nightbot)"
+                            defaultValue={cs.usernamesBlacklist} 
+                            {...register("usernamesBlacklist")} />
+                        {errors.usernamesBlacklist && <div className="p-1 bg-warning bg-gradient text-black rounded">{errors.usernamesBlacklist?.message}</div>}
                     </div>
                 </div>
 

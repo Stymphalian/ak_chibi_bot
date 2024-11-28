@@ -9,6 +9,7 @@ export interface RuntimeConfig {
     chibiScale: number
     accurateBoundingBoxFlag: boolean
     showChatMessagesFlag: boolean
+    usernameBlacklist: string[]
 }
 
 export class Runtime {
@@ -118,6 +119,11 @@ export class Runtime {
 
     swapCharacter(requestData: any) {
         let username = requestData["user_name"];
+        if (this.runtimeConfig.usernameBlacklist.includes(username)) {
+            console.log("User " + username + " is blacklisted");
+            return;
+        }
+
         let startPosX = null;
         let startPosY = null;
         if (requestData["start_pos"] != null) {
