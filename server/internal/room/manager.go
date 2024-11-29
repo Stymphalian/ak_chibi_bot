@@ -83,11 +83,12 @@ func (r *RoomsManager) LoadExistingRooms(ctx context.Context) error {
 func (r *RoomsManager) garbageCollectRooms() {
 	log.Println("Garbage collecting unused chat rooms")
 	period := time.Duration(r.botConfig.RemoveUnusedRoomsAfterMinutes) * time.Minute
+	lastChatTime := time.Duration(r.botConfig.RemoveUnusedRoomsLastChatMinutes) * time.Minute
 
 	roomsRemoved := 0
 	r.rooms_mutex.Lock()
 	for channel, room := range r.Rooms {
-		if !room.HasActiveChatters(period) {
+		if room.NumConnectedClients() == 0 || !room.HasActiveChatters(lastChatTime) {
 			log.Println("Removing unused room", channel)
 			room.SetActive(false)
 			room.Close()
@@ -292,15 +293,14 @@ func (r *RoomsManager) CreateRoomOrNoOp(ctx context.Context, channel string) err
 			defaultOperatorName = roomDb.DefaultOperatorName
 			defaultOperatorConfig = roomDb.DefaultOperatorConfig
 		}
-		if !roomObj.chibiActor.ShouldExcludeUser(roomDb.ChannelName) {
-			log.Println("Adding default chibi for ", roomDb.ChannelName)
-			roomObj.chibiActor.SetToDefault(
-				ctx,
-				*userinfo,
-				defaultOperatorName,
-				defaultOperatorConfig,
-			)
-		}
+
+		log.Println("Adding default chibi for ", roomDb.ChannelName)
+		roomObj.chibiActor.SetToDefault(
+			ctx,
+			*userinfo,
+			defaultOperatorName,
+			defaultOperatorConfig,
+		)
 	}
 
 	r.rooms_mutex.Lock()

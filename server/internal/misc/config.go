@@ -52,8 +52,14 @@ type BotConfig struct {
 	// Option
 	// The interval in minutes to check when to garbage collect unused
 	// chat rooms
-	// Default: 360 (6 hours)
+	// Default: 20 minutes
 	RemoveUnusedRoomsAfterMinutes int `json:"remove_unused_rooms_after_minutes"`
+
+	// Option
+	// The period in minutes after which to garbage collect unused chat rooms
+	// based off of the last time there was a chat message
+	// Default: 360 (6 hours)
+	RemoveUnusedRoomsLastChatMinutes int `json:"remove_unused_rooms_last_chat_minutes"`
 
 	// Optional
 	// Default settings for the spine runtime. Min/max/default values
@@ -116,7 +122,10 @@ func LoadBotConfig(path string) (*BotConfig, error) {
 		config.RemoveChibiAfterMinutes = 40
 	}
 	if config.RemoveUnusedRoomsAfterMinutes == 0 {
-		config.RemoveUnusedRoomsAfterMinutes = 360
+		config.RemoveUnusedRoomsAfterMinutes = 15
+	}
+	if config.RemoveUnusedRoomsLastChatMinutes == 0 {
+		config.RemoveUnusedRoomsLastChatMinutes = 360
 	}
 	if config.OperatorDetails.Skin == "" {
 		config.OperatorDetails.Skin = "default"

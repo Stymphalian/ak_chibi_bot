@@ -268,6 +268,8 @@ func (s *MainServer) HandleRoom(w http.ResponseWriter, r *http.Request) error {
 		extraQueryArgs += "&blacklist=" + url.QueryEscape(usernameBlacklist)
 	}
 
+	log.Printf("CreateRoom request from %s for %s", r.RemoteAddr, channelName)
+	log.Printf("CreateRoom request from x-forwarded-for %v for %s", r.Header[http.CanonicalHeaderKey("X-FORWARDED-FOR")], channelName)
 	err := s.roomManager.CreateRoomOrNoOp(r.Context(), channelName)
 	if err != nil {
 		return err
