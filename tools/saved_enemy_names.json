@@ -3298,6 +3298,66 @@
         "Penumbral Soul Husk",
         "ABS9"
     ],
+    "enemy_1433_dsbasi": [
+        "Unicellular Predator",
+        "SM33"
+    ],
+    "enemy_1433_dsbasi_2": [
+        "Allotropic Predator",
+        "SM34"
+    ],
+    "enemy_1434_dsshel": [
+        "Exocellular Depositor",
+        "SM35"
+    ],
+    "enemy_1435_dsflys": [
+        "Toxocellular Drifter",
+        "SM36"
+    ],
+    "enemy_1435_dsflys_2": [
+        "Allotropic Drifter",
+        "SM37"
+    ],
+    "enemy_1436_dsdivi": [
+        "Divicellular Hoarder",
+        "SM38"
+    ],
+    "enemy_1436_dsdivi_2": [
+        "Allotropic Hoarder",
+        "SM39"
+    ],
+    "enemy_1437_dsfull": [
+        "Matrocellular Nurse",
+        "SM40"
+    ],
+    "enemy_1437_dsfull_2": [
+        "Allotropic Nurse",
+        "SM41"
+    ],
+    "enemy_1438_dspred": [
+        "Multicellular Herald",
+        "SM42"
+    ],
+    "enemy_1438_dspred_2": [
+        "Allotropic Herald",
+        "SM43"
+    ],
+    "enemy_1439_dslntf": [
+        "Nucleic Maleficent",
+        "SM44"
+    ],
+    "enemy_1439_dslntf_2": [
+        "Allotropic Maleficent",
+        "SM45"
+    ],
+    "enemy_1440_dselec": [
+        "The Abandoned",
+        "FC1"
+    ],
+    "enemy_1440_dselec_2": [
+        "The Cursed",
+        "FC2"
+    ],
     "enemy_3006_tersia": [
         "Theresa, King of Sarkaz",
         "THA1"
@@ -3738,6 +3798,12 @@
     "enemy_1554_lrtsia": [
         "Theresa",
         "THA3"
+    ],
+    "enemy_1556_dsbish": [
+        "Martus",
+        "Martus Seaborn",
+        "Mártus Seaborn",
+        "MSB"
     ],
     "enemy_2003_rockman": [
         "Lost Colossus",

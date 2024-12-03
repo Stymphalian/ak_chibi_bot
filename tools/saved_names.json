@@ -612,6 +612,9 @@
     "char_107_liskam": [
         "Liskarm"
     ],
+    "char_4137_udflow": [
+        "Underflow"
+    ],
     "char_201_moeshd": [
         "Croissant"
     ],
@@ -625,10 +628,10 @@
         "Asbestos"
     ],
     "char_512_aprot": [
-        "Shalem"
+        "Shalem2"
     ],
     "char_4025_aprot2": [
-        "Shalem2"
+        "Shalem"
     ],
     "char_4047_pianst": [
         "Czerny"
@@ -697,6 +700,9 @@
     ],
     "char_254_vodfox": [
         "Shamare"
+    ],
+    "char_4079_haini": [
+        "Lucilla"
     ],
     "char_195_glassb": [
         "Istina"
@@ -1048,6 +1054,11 @@
     "char_4088_hodrer": [
         "Hoederer"
     ],
+    "char_4145_ulpia": [
+        "Ulpianus",
+        "Ulpipi",
+        "Ulpapi"
+    ],
     "char_010_chen": [
         "Ch'en",
         "Chen"
@@ -1130,11 +1141,11 @@
     "char_263_skadi": [
         "Skadi"
     ],
+    "char_1037_amiya3": [
+        "Medic Amiya"
+    ],
     "char_1001_amiya2": [
         "Guard Amiya",
         "Gaurd Amiya"
-    ],
-    "char_1037_amiya3": [
-        "Medic Amiya"
     ]
 }
