@@ -83,7 +83,8 @@ func (s *LoginServer) HandleLoginTwitch(w http.ResponseWriter, r *http.Request) 
 	claims := oauth2.SetAuthURLParam("claims", `{"id_token":{}}`)
 	nonce := oauth2.SetAuthURLParam("nonce", jwtNonce)
 	forceVerify := oauth2.SetAuthURLParam("force_verify", "true")
-	http.Redirect(w, r, s.authService.Oauth2Config.AuthCodeURL(state, claims, nonce, forceVerify), http.StatusTemporaryRedirect)
+	scopes := oauth2.SetAuthURLParam("scope", "channel:bot openid")
+	http.Redirect(w, r, s.authService.Oauth2Config.AuthCodeURL(state, claims, nonce, scopes, forceVerify), http.StatusTemporaryRedirect)
 	return nil
 }
 
