@@ -4223,6 +4223,38 @@
         "Armored Originium Slug",
         "SD41"
     ],
+    "enemy_7047_xbdit": [
+        "Liquid Shifter",
+        "SD42"
+    ],
+    "enemy_7049_xbnum": [
+        "Rogue Burdenbeast",
+        "SD43"
+    ],
+    "enemy_7051_xbcas": [
+        "Thalebeast",
+        "SD44"
+    ],
+    "enemy_7053_xbcasz": [
+        "Thalebeast",
+        "SD45"
+    ],
+    "enemy_7054_xbsmi": [
+        "Vanillawing",
+        "SD46"
+    ],
+    "enemy_7056_xbsmiz": [
+        "Vanillawing",
+        "SD47"
+    ],
+    "enemy_7057_xbrok": [
+        "Quicksand Beast",
+        "SD48"
+    ],
+    "enemy_7059_xbrokz": [
+        "Quicksand Beast",
+        "SD49"
+    ],
     "enemy_1037_lunsabr": [
         "Spec Ops Soldier",
         "33"

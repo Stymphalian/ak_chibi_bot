@@ -17880,6 +17880,59 @@
             }
           }
         },
+        "sanrio": {
+          "base": {
+            "Front": {
+              "atlas_filepath": "characters/char_322_lmlee/sanrio#1/base/Front/build_char_322_lmlee_sanrio#1.atlas",
+              "skel_filepath": "characters/char_322_lmlee/sanrio#1/base/Front/build_char_322_lmlee_sanrio#1.skel",
+              "png_filepath": "characters/char_322_lmlee/sanrio#1/base/Front/build_char_322_lmlee_sanrio#1.png",
+              "animations": [
+                "Default",
+                "Interact",
+                "Move",
+                "Relax",
+                "Sit",
+                "Sleep",
+                "Special"
+              ]
+            }
+          },
+          "battle": {
+            "Back": {
+              "atlas_filepath": "characters/char_322_lmlee/sanrio#1/battle/Back/char_322_lmlee_sanrio#1.atlas",
+              "skel_filepath": "characters/char_322_lmlee/sanrio#1/battle/Back/char_322_lmlee_sanrio#1.skel",
+              "png_filepath": "characters/char_322_lmlee/sanrio#1/battle/Back/char_322_lmlee_sanrio#1.png",
+              "animations": [
+                "Attack",
+                "Default",
+                "Idle",
+                "Skill_2_Start",
+                "Skill_3_End",
+                "Skill_3_Idle",
+                "Skill_3_Loop",
+                "Skill_3_Start",
+                "Start"
+              ]
+            },
+            "Front": {
+              "atlas_filepath": "characters/char_322_lmlee/sanrio#1/battle/Front/char_322_lmlee_sanrio#1.atlas",
+              "skel_filepath": "characters/char_322_lmlee/sanrio#1/battle/Front/char_322_lmlee_sanrio#1.skel",
+              "png_filepath": "characters/char_322_lmlee/sanrio#1/battle/Front/char_322_lmlee_sanrio#1.png",
+              "animations": [
+                "Attack",
+                "Default",
+                "Die",
+                "Idle",
+                "Skill_2_Start",
+                "Skill_3_End",
+                "Skill_3_Idle",
+                "Skill_3_Loop",
+                "Skill_3_Start",
+                "Start"
+              ]
+            }
+          }
+        },
         "witch": {
           "base": {
             "Front": {
@@ -21079,6 +21132,70 @@
               "atlas_filepath": "characters/char_377_gdglow/default/battle/Front/char_377_gdglow.atlas",
               "skel_filepath": "characters/char_377_gdglow/default/battle/Front/char_377_gdglow.skel",
               "png_filepath": "characters/char_377_gdglow/default/battle/Front/char_377_gdglow.png",
+              "animations": [
+                "Attack",
+                "Attack_End",
+                "Attack_Start",
+                "Default",
+                "Die",
+                "Idle",
+                "Skill2_Idle",
+                "Skill2_Loop",
+                "Skill2_Start",
+                "Skill3_End",
+                "Skill3_Loop",
+                "Skill3_Start",
+                "Skill_Attack",
+                "Skill_End",
+                "Skill_Idle",
+                "Skill_Start",
+                "Start"
+              ]
+            }
+          }
+        },
+        "sanrio": {
+          "base": {
+            "Front": {
+              "atlas_filepath": "characters/char_377_gdglow/sanrio#1/base/Front/build_char_377_gdglow_sanrio#1.atlas",
+              "skel_filepath": "characters/char_377_gdglow/sanrio#1/base/Front/build_char_377_gdglow_sanrio#1.skel",
+              "png_filepath": "characters/char_377_gdglow/sanrio#1/base/Front/build_char_377_gdglow_sanrio#1.png",
+              "animations": [
+                "Default",
+                "Interact",
+                "Move",
+                "Relax",
+                "Sit",
+                "Sleep",
+                "Special"
+              ]
+            }
+          },
+          "battle": {
+            "Back": {
+              "atlas_filepath": "characters/char_377_gdglow/sanrio#1/battle/Back/char_377_gdglow_sanrio#1.atlas",
+              "skel_filepath": "characters/char_377_gdglow/sanrio#1/battle/Back/char_377_gdglow_sanrio#1.skel",
+              "png_filepath": "characters/char_377_gdglow/sanrio#1/battle/Back/char_377_gdglow_sanrio#1.png",
+              "animations": [
+                "Attack",
+                "Attack_End",
+                "Attack_Start",
+                "Default",
+                "Idle",
+                "Skill2_Idle",
+                "Skill2_Loop",
+                "Skill2_Start",
+                "Skill_Attack",
+                "Skill_End",
+                "Skill_Idle",
+                "Skill_Start",
+                "Start"
+              ]
+            },
+            "Front": {
+              "atlas_filepath": "characters/char_377_gdglow/sanrio#1/battle/Front/char_377_gdglow_sanrio#1.atlas",
+              "skel_filepath": "characters/char_377_gdglow/sanrio#1/battle/Front/char_377_gdglow_sanrio#1.skel",
+              "png_filepath": "characters/char_377_gdglow/sanrio#1/battle/Front/char_377_gdglow_sanrio#1.png",
               "animations": [
                 "Attack",
                 "Attack_End",
@@ -26975,6 +27092,41 @@
               ]
             }
           }
+        },
+        "sanrio": {
+          "base": {
+            "Front": {
+              "atlas_filepath": "characters/char_4091_ulika/sanrio#1/base/Front/build_char_4091_ulika_sanrio#1.atlas",
+              "skel_filepath": "characters/char_4091_ulika/sanrio#1/base/Front/build_char_4091_ulika_sanrio#1.skel",
+              "png_filepath": "characters/char_4091_ulika/sanrio#1/base/Front/build_char_4091_ulika_sanrio#1.png",
+              "animations": [
+                "Default",
+                "Interact",
+                "Move",
+                "Relax",
+                "Sit",
+                "Sleep",
+                "Special"
+              ]
+            }
+          },
+          "battle": {
+            "Front": {
+              "atlas_filepath": "characters/char_4091_ulika/sanrio#1/battle/Front/char_4091_ulika_sanrio#1.atlas",
+              "skel_filepath": "characters/char_4091_ulika/sanrio#1/battle/Front/char_4091_ulika_sanrio#1.skel",
+              "png_filepath": "characters/char_4091_ulika/sanrio#1/battle/Front/char_4091_ulika_sanrio#1.png",
+              "animations": [
+                "Default",
+                "Die",
+                "Idle",
+                "Skill_Begin_1",
+                "Skill_Begin_2",
+                "Skill_End",
+                "Skill_Loop",
+                "Start"
+              ]
+            }
+          }
         }
       }
     },
@@ -27138,6 +27290,62 @@
               "atlas_filepath": "characters/char_4100_caper/default/battle/Front/char_4100_caper.atlas",
               "skel_filepath": "characters/char_4100_caper/default/battle/Front/char_4100_caper.skel",
               "png_filepath": "characters/char_4100_caper/default/battle/Front/char_4100_caper.png",
+              "animations": [
+                "Attack",
+                "Attack_Down",
+                "Default",
+                "Die",
+                "Idle",
+                "Skill_Begin",
+                "Skill_Down_Begin",
+                "Skill_Down_End",
+                "Skill_Down_Idle",
+                "Skill_Down_Loop",
+                "Skill_End",
+                "Skill_Idle",
+                "Skill_Loop",
+                "Start"
+              ]
+            }
+          }
+        },
+        "summer": {
+          "base": {
+            "Front": {
+              "atlas_filepath": "characters/char_4100_caper/summer#18/base/Front/build_char_4100_caper_summer#18.atlas",
+              "skel_filepath": "characters/char_4100_caper/summer#18/base/Front/build_char_4100_caper_summer#18.skel",
+              "png_filepath": "characters/char_4100_caper/summer#18/base/Front/build_char_4100_caper_summer#18.png",
+              "animations": [
+                "Default",
+                "Interact",
+                "Move",
+                "Relax",
+                "Sit",
+                "Sleep",
+                "Special"
+              ]
+            }
+          },
+          "battle": {
+            "Back": {
+              "atlas_filepath": "characters/char_4100_caper/summer#18/battle/Back/char_4100_caper_summer#18.atlas",
+              "skel_filepath": "characters/char_4100_caper/summer#18/battle/Back/char_4100_caper_summer#18.skel",
+              "png_filepath": "characters/char_4100_caper/summer#18/battle/Back/char_4100_caper_summer#18.png",
+              "animations": [
+                "Attack",
+                "Default",
+                "Idle",
+                "Skill_Begin",
+                "Skill_End",
+                "Skill_Idle",
+                "Skill_Loop",
+                "Start"
+              ]
+            },
+            "Front": {
+              "atlas_filepath": "characters/char_4100_caper/summer#18/battle/Front/char_4100_caper_summer#18.atlas",
+              "skel_filepath": "characters/char_4100_caper/summer#18/battle/Front/char_4100_caper_summer#18.skel",
+              "png_filepath": "characters/char_4100_caper/summer#18/battle/Front/char_4100_caper_summer#18.png",
               "animations": [
                 "Attack",
                 "Attack_Down",
@@ -27386,6 +27594,53 @@
               "atlas_filepath": "characters/char_4106_bryota/default/battle/Front/char_4106_bryota.atlas",
               "skel_filepath": "characters/char_4106_bryota/default/battle/Front/char_4106_bryota.skel",
               "png_filepath": "characters/char_4106_bryota/default/battle/Front/char_4106_bryota.png",
+              "animations": [
+                "Attack",
+                "Attack_Down",
+                "Default",
+                "Die",
+                "Idle",
+                "Skill",
+                "Skill_Down",
+                "Start"
+              ]
+            }
+          }
+        },
+        "epoque": {
+          "base": {
+            "Front": {
+              "atlas_filepath": "characters/char_4106_bryota/epoque#34/base/Front/build_char_4106_bryota_epoque#34.atlas",
+              "skel_filepath": "characters/char_4106_bryota/epoque#34/base/Front/build_char_4106_bryota_epoque#34.skel",
+              "png_filepath": "characters/char_4106_bryota/epoque#34/base/Front/build_char_4106_bryota_epoque#34.png",
+              "animations": [
+                "Default",
+                "Interact",
+                "Move",
+                "Relax",
+                "Sit",
+                "Sleep",
+                "Special"
+              ]
+            }
+          },
+          "battle": {
+            "Back": {
+              "atlas_filepath": "characters/char_4106_bryota/epoque#34/battle/Back/char_4106_bryota_epoque#34.atlas",
+              "skel_filepath": "characters/char_4106_bryota/epoque#34/battle/Back/char_4106_bryota_epoque#34.skel",
+              "png_filepath": "characters/char_4106_bryota/epoque#34/battle/Back/char_4106_bryota_epoque#34.png",
+              "animations": [
+                "Attack",
+                "Default",
+                "Idle",
+                "Skill",
+                "Start"
+              ]
+            },
+            "Front": {
+              "atlas_filepath": "characters/char_4106_bryota/epoque#34/battle/Front/char_4106_bryota_epoque#34.atlas",
+              "skel_filepath": "characters/char_4106_bryota/epoque#34/battle/Front/char_4106_bryota_epoque#34.skel",
+              "png_filepath": "characters/char_4106_bryota/epoque#34/battle/Front/char_4106_bryota_epoque#34.png",
               "animations": [
                 "Attack",
                 "Attack_Down",
@@ -34207,6 +34462,74 @@
               "atlas_filepath": "characters/char_498_inside/default/battle/Front/char_498_inside.atlas",
               "skel_filepath": "characters/char_498_inside/default/battle/Front/char_498_inside.skel",
               "png_filepath": "characters/char_498_inside/default/battle/Front/char_498_inside.png",
+              "animations": [
+                "Attack_Begin",
+                "Attack_Down_Loop",
+                "Attack_End",
+                "Attack_Idle",
+                "Attack_Loop",
+                "Default",
+                "Die",
+                "Idle",
+                "Skill_1_Begin",
+                "Skill_1_End",
+                "Skill_1_Idle",
+                "Skill_1_Loop",
+                "Skill_2_Begin",
+                "Skill_2_End",
+                "Skill_2_Idle",
+                "Skill_2_Loop",
+                "Skill_Down_1_Loop",
+                "Skill_Down_2_Loop",
+                "Start"
+              ]
+            }
+          }
+        },
+        "kitchen": {
+          "base": {
+            "Front": {
+              "atlas_filepath": "characters/char_498_inside/kitchen#2/base/Front/build_char_498_inside_kitchen#2.atlas",
+              "skel_filepath": "characters/char_498_inside/kitchen#2/base/Front/build_char_498_inside_kitchen#2.skel",
+              "png_filepath": "characters/char_498_inside/kitchen#2/base/Front/build_char_498_inside_kitchen#2.png",
+              "animations": [
+                "Default",
+                "Interact",
+                "Move",
+                "Relax",
+                "Sit",
+                "Sleep",
+                "Special"
+              ]
+            }
+          },
+          "battle": {
+            "Back": {
+              "atlas_filepath": "characters/char_498_inside/kitchen#2/battle/Back/char_498_inside_kitchen#2.atlas",
+              "skel_filepath": "characters/char_498_inside/kitchen#2/battle/Back/char_498_inside_kitchen#2.skel",
+              "png_filepath": "characters/char_498_inside/kitchen#2/battle/Back/char_498_inside_kitchen#2.png",
+              "animations": [
+                "Attack_Begin",
+                "Attack_End",
+                "Attack_Idle",
+                "Attack_Loop",
+                "Default",
+                "Idle",
+                "Skill_1_Begin",
+                "Skill_1_End",
+                "Skill_1_Idle",
+                "Skill_1_Loop",
+                "Skill_2_Begin",
+                "Skill_2_End",
+                "Skill_2_Idle",
+                "Skill_2_Loop",
+                "Start"
+              ]
+            },
+            "Front": {
+              "atlas_filepath": "characters/char_498_inside/kitchen#2/battle/Front/char_498_inside_kitchen#2.atlas",
+              "skel_filepath": "characters/char_498_inside/kitchen#2/battle/Front/char_498_inside_kitchen#2.skel",
+              "png_filepath": "characters/char_498_inside/kitchen#2/battle/Front/char_498_inside_kitchen#2.png",
               "animations": [
                 "Attack_Begin",
                 "Attack_Down_Loop",
