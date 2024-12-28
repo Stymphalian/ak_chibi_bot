@@ -88,7 +88,7 @@ the repo I have not included them here.
     MIGRATE_DB_USER=postgres
     MIGRATE_DB_PASSWORD=password
     ``` 
-1. Download the chibi assets files from [here](https://f002.backblazeb2.com/file/ak-gamedata/assets_20241220.zip) and extract into the `static/assets` folder.
+1. Download the chibi assets files from [here](https://f002.backblazeb2.com/file/ak-gamedata/assets_20241228.zip) and extract into the `static/assets` folder.
 5. Bring up all the containers. `docker compose -f compose.yaml up --build`
 6. This should bring up the postgres DB, run any schema migrations and then spin
    up the `bot` AKChibiBot server.

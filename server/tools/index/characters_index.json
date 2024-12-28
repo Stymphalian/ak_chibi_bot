@@ -3073,6 +3073,65 @@
               ]
             }
           }
+        },
+        "sale": {
+          "base": {
+            "Front": {
+              "atlas_filepath": "characters/char_1037_amiya3/sale#13/base/Front/build_char_1037_amiya3_sale#13.atlas",
+              "skel_filepath": "characters/char_1037_amiya3/sale#13/base/Front/build_char_1037_amiya3_sale#13.skel",
+              "png_filepath": "characters/char_1037_amiya3/sale#13/base/Front/build_char_1037_amiya3_sale#13.png",
+              "animations": [
+                "Default",
+                "Interact",
+                "Move",
+                "Relax",
+                "Sit",
+                "Sleep",
+                "Special"
+              ]
+            }
+          },
+          "battle": {
+            "Back": {
+              "atlas_filepath": "characters/char_1037_amiya3/sale#13/battle/Back/char_1037_amiya3_sale#13.atlas",
+              "skel_filepath": "characters/char_1037_amiya3/sale#13/battle/Back/char_1037_amiya3_sale#13.skel",
+              "png_filepath": "characters/char_1037_amiya3/sale#13/battle/Back/char_1037_amiya3_sale#13.png",
+              "animations": [
+                "Attack",
+                "Default",
+                "Idle",
+                "Skill_1_Attack",
+                "Skill_1_Begin",
+                "Skill_1_End",
+                "Skill_1_Loop",
+                "Skill_2_Attack",
+                "Skill_2_Begin",
+                "Skill_2_End",
+                "Skill_2_Loop",
+                "Start"
+              ]
+            },
+            "Front": {
+              "atlas_filepath": "characters/char_1037_amiya3/sale#13/battle/Front/char_1037_amiya3_sale#13.atlas",
+              "skel_filepath": "characters/char_1037_amiya3/sale#13/battle/Front/char_1037_amiya3_sale#13.skel",
+              "png_filepath": "characters/char_1037_amiya3/sale#13/battle/Front/char_1037_amiya3_sale#13.png",
+              "animations": [
+                "Attack",
+                "Default",
+                "Die",
+                "Idle",
+                "Skill_1_Attack",
+                "Skill_1_Begin",
+                "Skill_1_End",
+                "Skill_1_Loop",
+                "Skill_2_Attack",
+                "Skill_2_Begin",
+                "Skill_2_End",
+                "Skill_2_Loop",
+                "Start"
+              ]
+            }
+          }
         }
       }
     },
