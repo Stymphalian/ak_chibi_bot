@@ -40,6 +40,9 @@ type SpineData struct {
 	PlaformIndieSkelFilepath  string   `json:"skel_filepath"`
 	PlaformIndiePngFilepath   string   `json:"png_filepath"`
 	Animations                []string `json:"animations"`
+
+	SpritesheetDataFilepath              string `json:"-"`
+	PlatformIndieSpritesheetDataFilepath string `json:"spritesheet_data_filepath"`
 }
 
 func NewSpineAssetMap() *SpineAssetMap {
@@ -66,7 +69,7 @@ func readJsonSkelAnimations(path string) ([]string, error) {
 	return data["animations"], nil
 }
 
-func (s *SpineAssetMap) LoadFromIndex(indexFile string) (err error) {
+func (s *SpineAssetMap) MergeFromIndex(indexFile string) (err error) {
 	log.Println("Loading Asset maps from index", indexFile)
 	file, err := os.Open(indexFile)
 	if err != nil {
@@ -74,12 +77,13 @@ func (s *SpineAssetMap) LoadFromIndex(indexFile string) (err error) {
 	}
 	defer file.Close()
 
-	err = json.NewDecoder(file).Decode(s)
+	output := NewSpineAssetMap()
+	err = json.NewDecoder(file).Decode(output)
 	if err != nil {
 		return err
 	}
 
-	for opId, opEntry := range s.Data {
+	for opId, opEntry := range output.Data {
 		for skin, skinEntry := range opEntry.Skins {
 			for facing, spineData := range skinEntry.Base {
 				if len(spineData.PlaformIndieAtlasFilepath) > 0 {
@@ -101,6 +105,13 @@ func (s *SpineAssetMap) LoadFromIndex(indexFile string) (err error) {
 					spineData.PngFilepath, err = filepath.Localize(spineData.PlaformIndiePngFilepath)
 					if err != nil {
 						log.Println(opId, skin, "base", facing, "png", spineData.PlaformIndiePngFilepath)
+						return err
+					}
+				}
+				if len(spineData.PlatformIndieSpritesheetDataFilepath) > 0 {
+					spineData.SpritesheetDataFilepath, err = filepath.Localize(spineData.PlatformIndieSpritesheetDataFilepath)
+					if err != nil {
+						log.Println(opId, skin, "base", facing, "spritesheet-json", spineData.PlatformIndieSpritesheetDataFilepath)
 						return err
 					}
 				}
@@ -129,12 +140,26 @@ func (s *SpineAssetMap) LoadFromIndex(indexFile string) (err error) {
 						return err
 					}
 				}
+				if len(spineData.PlatformIndieSpritesheetDataFilepath) > 0 {
+					spineData.SpritesheetDataFilepath, err = filepath.Localize(spineData.PlatformIndieSpritesheetDataFilepath)
+					if err != nil {
+						log.Println(opId, skin, "battle", facing, "spritesheet-json", spineData.PlatformIndieSpritesheetDataFilepath)
+						return
+					}
+				}
 			}
 		}
+
+		// Add to current spineAssetMap
+		s.Data[opId] = opEntry
 	}
 
 	log.Printf("Loaded %d assets from index %s", len(s.Data), indexFile)
 	return nil
+}
+
+func (s *SpineAssetMap) LoadFromIndex(indexFile string) (err error) {
+	return s.MergeFromIndex(indexFile)
 }
 
 type SpineAssetMapCallback func(
@@ -206,11 +231,18 @@ func (s *SpineAssetMap) Load(assetDir string, assetSubdir string) (err error) {
 			spineData.PlaformIndieSkelFilepath = newPathIndie
 			// spineData.SkelFullFilepath = path
 		case ".json":
-			animations, err := readJsonSkelAnimations(path)
-			if err != nil {
-				log.Fatal("Failed to extract animations from skeleton json: ", err)
+			if strings.HasSuffix(newPathIndie, ".animations.json") {
+				animations, err := readJsonSkelAnimations(path)
+				if err != nil {
+					log.Fatal("Failed to extract animations from skeleton json: ", err)
+				}
+				spineData.Animations = animations
+			} else if strings.HasSuffix(newPathIndie, ".spritesheet.json") {
+				spineData.SpritesheetDataFilepath = newPath
+				spineData.PlatformIndieSpritesheetDataFilepath = newPathIndie
+			} else {
+				log.Fatal("Unknown secondary extension: ", info.Name())
 			}
-			spineData.Animations = animations
 		default:
 			log.Fatal("Unknown extension: ", info.Name())
 		}
@@ -378,7 +410,7 @@ func (c *CommonNames) GetOperatorIdToName(operatorId string) []string {
 	return c.operatorIdToNames[operatorId]
 }
 
-func (s *CommonNames) Load(assetFilePath string) error {
+func (s *CommonNames) MergeLoad(assetFilePath string) error {
 	savedNames := make(map[string]([]string))
 	data, err := os.ReadFile(assetFilePath)
 	if err != nil {
@@ -413,11 +445,22 @@ func (s *CommonNames) Load(assetFilePath string) error {
 		}
 	}
 
-	s.operatorIdToNames = savedNames
-	s.namesToOperatorId = nameToOperatorId
-	s.allNames = allNames
+	for operatorId, names := range savedNames {
+		s.operatorIdToNames[operatorId] = names
+	}
+	for name, operatorIds := range savedNames {
+		s.namesToOperatorId[name] = operatorIds
+	}
+	s.allNames = append(s.allNames, allNames...)
+	// s.operatorIdToNames = savedNames
+	// s.namesToOperatorId = nameToOperatorId
+	// s.allNames = allNames
 	log.Printf("Found %d common names\n", len(s.operatorIdToNames))
 	return nil
+}
+
+func (s *CommonNames) Load(assetFilePath string) error {
+	return s.MergeLoad(assetFilePath)
 }
 
 func (s *CommonNames) GetCanonicalName(operatorId string) string {
@@ -497,7 +540,13 @@ func NewAssetService(assetDirArg misc.ImageAssetDirString) (*AssetService, error
 	if err := s.AssetMap.LoadFromIndex(filepath.Join(assetDir, "characters_index.json")); err != nil {
 		return nil, err
 	}
+	if err := s.AssetMap.MergeFromIndex(filepath.Join(assetDir, "custom_index.json")); err != nil {
+		return nil, err
+	}
 	if err := s.CommonNames.Load(filepath.Join(assetDir, "saved_names.json")); err != nil {
+		return nil, err
+	}
+	if err := s.CommonNames.MergeLoad(filepath.Join(assetDir, "saved_custom_names.json")); err != nil {
 		return nil, err
 	}
 	// if err := s.EnemyAssetMap.Load(assetDir, "enemies"); err != nil {

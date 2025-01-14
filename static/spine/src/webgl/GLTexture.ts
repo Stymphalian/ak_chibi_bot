@@ -99,7 +99,7 @@ export class GLTexture extends Texture implements Disposable, Restorable {
 			// HACK:
 			// Allows us to reuse the GLTexture for offscreen framebuffer 
 			// rendering. This is used to allow us to render to a texture in 
-			// order to accurately calcualte bounding boxes.
+			// order to accurately calculate bounding boxes.
 
 			// define size and format of level 0
 			const level = 0;

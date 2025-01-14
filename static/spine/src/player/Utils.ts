@@ -104,6 +104,7 @@ export class OffscreenRender {
         // Draw skeleton 
         this.offscreenSceneRenderer.begin();
         this.offscreenSceneRenderer.drawSkeleton(actor.skeleton, actor.config.premultipliedAlpha);
+        // TODO: Draw with spritesheet if needed
         // this.offscreenSceneRenderer.circle(true, 0, 0, 1, Color.RED);
         this.offscreenSceneRenderer.end();
 

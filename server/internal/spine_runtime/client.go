@@ -35,21 +35,22 @@ type SetOperatorRequest struct {
 }
 type SetOperatorInternalRequest struct {
 	BridgeRequest
-	UserName            string                    `json:"user_name"`         // chonkyking
-	UserNameDisplay     string                    `json:"user_name_display"` // ChonkyKing
-	OperatorId          string                    `json:"operator_id"`
-	AtlasFile           string                    `json:"atlas_file"`
-	PngFile             string                    `json:"png_file"`
-	SkelFile            string                    `json:"skel_file"`
-	StartPos            misc.Option[misc.Vector2] `json:"start_pos"`
-	AnimationSpeed      float64                   `json:"animation_speed"`
-	AvailableAnimations []string                  `json:"available_animations"`
-	SpriteScale         misc.Option[misc.Vector2] `json:"sprite_scale"`
-	MaxSpritePixelSize  int                       `json:"max_sprite_pixel_size"`
-	MovementSpeedPx     int                       `json:"movement_speed_px"`
-	MovementSpeed       misc.Option[misc.Vector2] `json:"movement_speed"`
-	Action              operator.ActionEnum       `json:"action"`
-	ActionData          operator.ActionUnion      `json:"action_data"`
+	UserName                string                    `json:"user_name"`         // chonkyking
+	UserNameDisplay         string                    `json:"user_name_display"` // ChonkyKing
+	OperatorId              string                    `json:"operator_id"`
+	AtlasFile               string                    `json:"atlas_file"`
+	PngFile                 string                    `json:"png_file"`
+	SkelFile                string                    `json:"skel_file"`
+	SpritesheetDataFilepath string                    `json:"spritesheet_data_filepath"`
+	StartPos                misc.Option[misc.Vector2] `json:"start_pos"`
+	AnimationSpeed          float64                   `json:"animation_speed"`
+	AvailableAnimations     []string                  `json:"available_animations"`
+	SpriteScale             misc.Option[misc.Vector2] `json:"sprite_scale"`
+	MaxSpritePixelSize      int                       `json:"max_sprite_pixel_size"`
+	MovementSpeedPx         int                       `json:"movement_speed_px"`
+	MovementSpeed           misc.Option[misc.Vector2] `json:"movement_speed"`
+	Action                  operator.ActionEnum       `json:"action"`
+	ActionData              operator.ActionUnion      `json:"action_data"`
 }
 type SetOperatorResponse struct {
 	BridgeResponse

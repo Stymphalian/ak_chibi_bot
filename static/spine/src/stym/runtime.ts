@@ -170,6 +170,7 @@ export class Runtime {
             userDisplayName: requestData['user_name_display'],
             skelUrl: requestData["skel_file"],
             atlasUrl: requestData["atlas_file"],
+            spritesheetDataUrl: requestData["spritesheet_data_filepath"],
 
             startPosX: startPosX,
             startPosY: startPosY,

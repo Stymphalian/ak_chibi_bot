@@ -38,6 +38,7 @@ import { Event } from "../core/Event"
 import { OffscreenRender } from "./Utils"
 import { ChatMessageQueue, MessageBlock } from "./ChatMessages"
 import { SceneRenderer } from "../webgl/SceneRenderer"
+import { SpritesheetActor } from "./Spritesheet"
 
 export interface ActorUpdateConfig {
 	start_pos: Vector2
@@ -134,13 +135,17 @@ export interface SpineActorConfig {
 	/** Required: action name */
 	action: string
 	/** Required: A json object of the action data */
-	action_data: any
+	action_data: any,
+
+	// Add spritesheet_data_file fileds
+	spritesheetDataUrl: string
 }
 
 
 export class Actor {
 	public loaded: boolean;
 	public skeleton: Skeleton;
+	public spritesheet: SpritesheetActor;
 	public animationState: AnimationState;
 	public time = new TimeKeeper();
 	public paused = false;
@@ -172,7 +177,7 @@ export class Actor {
 	// bottom most part of the sprite appear on the canvas.
 	// For example, operators who are sitting would have a negative y-offset
 	// while operators who "fly" would have a positive y-offset
-	private skeletonPositionOffset: Vector3 = new Vector3(0,0,0);
+	private skeletonPositionOffset: Vector3 = new Vector3(0, 0, 0);
 
 	// Actor loading retry logic
 	public load_attempts: number = 0;
@@ -201,6 +206,20 @@ export class Actor {
 			);
 		}
 	}
+
+	public isSpritesheetActor(): boolean {
+		const isSpritesheet = this.config.spritesheetDataUrl != null && this.config.spritesheetDataUrl != "";
+		return isSpritesheet;
+	}
+
+	public isActorDoneLoading(): boolean {
+		if (this.isSpritesheetActor()) {
+			return this.spritesheet != null;
+		} else {
+			return this.skeleton != null;
+		}
+	}
+
 	public getRenderingBoundingBox(): BoundingBox {
 		if (this.canvasBB) {
 			return {
@@ -361,6 +380,7 @@ export class Actor {
 		this.loaded = false;
 		this.canvasBBCalculated = 0;
 		this.skeleton = null;
+		this.spritesheet = null;
 		this.animationState = null;
 		this.time = new TimeKeeper();
 		this.paused = false;
@@ -411,23 +431,31 @@ export class Actor {
 				this.scale.x = -this.config.scaleX;
 			}
 		}
-		this.setSkeletonMovementData(viewport);
+
+		if (!this.isSpritesheetActor()) {
+			this.setSkeletonMovementData(viewport);
+		}
 	}
 
 	public InitAnimationState() {
-		let skeletonData = this.skeleton.data;
-		let stateData = new AnimationStateData(skeletonData);
-		stateData.defaultMix = this.config.defaultMix;
-		this.animationState = new AnimationState(stateData);
-		if (this.config.animation_listener) {
-			this.animationState.clearListeners();
-			this.animationState.addListener(this.config.animation_listener);
-		}
-		if (this.GetAnimations()) {
-			// TODO: Verify all the animations are found in the skeleton data
-			if (this.animationState) {
-				if (!this.animationState.getCurrent(0)) {
-					this.InitAnimations();
+
+		if (this.isSpritesheetActor()) {
+			this.InitAnimations();
+		} else {
+			let skeletonData = this.skeleton.data;
+			let stateData = new AnimationStateData(skeletonData);
+			stateData.defaultMix = this.config.defaultMix;
+			this.animationState = new AnimationState(stateData);
+			if (this.config.animation_listener) {
+				this.animationState.clearListeners();
+				this.animationState.addListener(this.config.animation_listener);
+			}
+			if (this.GetAnimations()) {
+				// TODO: Verify all the animations are found in the skeleton data
+				if (this.animationState) {
+					if (!this.animationState.getCurrent(0)) {
+						this.InitAnimations();
+					}
 				}
 			}
 		}
@@ -558,6 +586,9 @@ export class Actor {
 
 	private recordAnimation(animation: string) {
 		this.currentAction.SetAnimation(this, animation, this.viewport);
+		if (this.spritesheet != null) {
+			this.spritesheet.SetAnimation(animation);
+		}
 		this.lastAnimation = animation;
 	}
 
@@ -591,8 +622,10 @@ export class Actor {
 			this.config.scaleY = newScaleY;
 			this.scale.x = Math.sign(this.scale.x) * this.config.scaleX;
 			this.scale.y = Math.sign(this.scale.y) * this.config.scaleY;
-			this.skeleton.scaleX = this.scale.x;
-			this.skeleton.scaleY = this.scale.y;
+			if (this.skeleton != null) {
+				this.skeleton.scaleX = this.scale.x;
+				this.skeleton.scaleY = this.scale.y;
+			}
 
 			this.setAnimationState(animations);
 			this.recordAnimation(animations[0]);
@@ -602,6 +635,12 @@ export class Actor {
 	private setAnimationState(animations: string[]) {
 		let animation = animations[0];
 		this.canvasBB = this.getCanvasBoundingBox(animations);
+
+		if (this.isSpritesheetActor()) {
+			this.spritesheet.timeScale = this.config.animationPlaySpeed;
+			return;
+		}
+
 		this.animationState.timeScale = this.config.animationPlaySpeed;
 		this.animationState.clearTracks();
 		this.skeleton.setToSetupPose();
@@ -641,73 +680,98 @@ export class Actor {
 	private getCanvasBoundingBox(animations: string[]): BoundingBox {
 		let defaultAnimationName = animations[0];
 
-		let savedX = this.skeleton.x;
-		let savedY = this.skeleton.y;
-		let savedZ = this.getPositionZ();
-		let savedScaleX = this.skeleton.scaleX;
-		let savedScaleY = this.skeleton.scaleY;
+		if (this.isSpritesheetActor()) {
+			let width = this.spritesheet.animationConfig.width * this.config.scaleX * this.spritesheet.animationConfig.scaleX; 
+			let height = this.spritesheet.animationConfig.height * this.config.scaleY * this.spritesheet.animationConfig.scaleY;
+			let defaultBB = {
+				x: -width/2.0,
+				y: 0,
+				width: width,
+				height: height
+			};
+			let returnBB = {
+				x: defaultBB.x,
+				y: defaultBB.y,
+				width: defaultBB.width,
+				height: defaultBB.height
+			};
 
-		let animation = this.skeleton.data.findAnimation(defaultAnimationName);
-		this.animationState.clearTracks();
-		this.skeleton.setToSetupPose();
-		this.animationState.setAnimationWith(0, animation, true);
-		this.skeleton.x = 0;
-		this.skeleton.y = 0;
-		this.setPositionZ(0);
-		this.skeleton.scaleX = Math.abs(this.config.scaleX);
-		this.skeleton.scaleY = Math.abs(this.config.scaleY);
-		this.animationState.update(0);
-		this.animationState.apply(this.skeleton);
-		this.skeleton.updateWorldTransform();
-
-		let offset = new Vector2();
-		let size = new Vector2();
-		this.skeleton.getBounds(offset, size);
-		let defaultBB = { x: offset.x, y: offset.y, width: size.x, height: size.y };
-		let returnBB = {
-			x: defaultBB.x,
-			y: defaultBB.y,
-			width: defaultBB.width,
-			height: defaultBB.height
-		};
-		if (this.offscreenRender != null) {
-			let bb = this.offscreenRender.getBoundingBox(this, defaultBB);
-			returnBB.x = bb.x;
-			returnBB.y = bb.y;
-			returnBB.width = bb.width;
-			returnBB.height = bb.height;
+			// if (this.offscreenRender != null) {
+			// 	let bb = this.offscreenRender.getBoundingBox(this, defaultBB);
+			// 	returnBB.x = bb.x;
+			// 	returnBB.y = bb.y;
+			// 	returnBB.width = bb.width;
+			// 	returnBB.height = bb.height;
+			// }
+			return returnBB;
 		} else {
-			// HACK!!!!:
-			// fixes for certain chibis
-			// Normal chibi height is 200px at a scale of 0.45
-			let bb = defaultBB;
-			let normalScale = (200 / 0.45) * this.config.scaleX;
-			if (this.IsOperatorSprite()) {
-				if (Math.abs(bb.y) > normalScale) {
-					bb.y = 0;
+			let savedX = this.skeleton.x;
+			let savedY = this.skeleton.y;
+			let savedZ = this.getPositionZ();
+			let savedScaleX = this.skeleton.scaleX;
+			let savedScaleY = this.skeleton.scaleY;
+
+			let animation = this.skeleton.data.findAnimation(defaultAnimationName);
+			this.animationState.clearTracks();
+			this.skeleton.setToSetupPose();
+			this.animationState.setAnimationWith(0, animation, true);
+			this.skeleton.x = 0;
+			this.skeleton.y = 0;
+			this.setPositionZ(0);
+			this.skeleton.scaleX = Math.abs(this.config.scaleX);
+			this.skeleton.scaleY = Math.abs(this.config.scaleY);
+			this.animationState.update(0);
+			this.animationState.apply(this.skeleton);
+			this.skeleton.updateWorldTransform();
+
+			let offset = new Vector2();
+			let size = new Vector2();
+			this.skeleton.getBounds(offset, size);
+			let defaultBB = { x: offset.x, y: offset.y, width: size.x, height: size.y };
+			let returnBB = {
+				x: defaultBB.x,
+				y: defaultBB.y,
+				width: defaultBB.width,
+				height: defaultBB.height
+			};
+			if (this.offscreenRender != null) {
+				let bb = this.offscreenRender.getBoundingBox(this, defaultBB);
+				returnBB.x = bb.x;
+				returnBB.y = bb.y;
+				returnBB.width = bb.width;
+				returnBB.height = bb.height;
+			} else {
+				// HACK!!!!:
+				// fixes for certain chibis
+				// Normal chibi height is 200px at a scale of 0.45
+				let bb = defaultBB;
+				let normalScale = (200 / 0.45) * this.config.scaleX;
+				if (this.IsOperatorSprite()) {
+					if (Math.abs(bb.y) > normalScale) {
+						bb.y = 0;
+					}
+					if (bb.height > normalScale) {
+						bb.height = normalScale;
+					}
+					if (bb.width > normalScale) {
+						bb.width = normalScale;
+					}
+				} else if (this.IsEnemySprite()) {
+					if (Math.abs(bb.y) > normalScale) {
+					}
 				}
-				if (bb.height > normalScale) {
-					bb.height = normalScale;
-				}
-				if (bb.width > normalScale) {
-					bb.width = normalScale;
-				}
-			} else if (this.IsEnemySprite()) {
-				if (Math.abs(bb.y) > normalScale) {
-				}
+				returnBB.x = bb.x;
+				returnBB.y = bb.y;
+				returnBB.width = bb.width;
+				returnBB.height = bb.height;
 			}
-			returnBB.x = bb.x;
-			returnBB.y = bb.y;
-			returnBB.width = bb.width;
-			returnBB.height = bb.height;
+
+			this.skeleton.x = savedX;
+			this.skeleton.y = savedY;
+			this.setPositionZ(savedZ);
+			this.skeleton.scaleX = savedScaleX;
+			this.skeleton.scaleY = savedScaleY;
+			return returnBB;
 		}
-
-		this.skeleton.x = savedX;
-		this.skeleton.y = savedY;
-		this.setPositionZ(savedZ);
-		this.skeleton.scaleX = savedScaleX;
-		this.skeleton.scaleY = savedScaleY;
-
-		return returnBB;
 	}
 }

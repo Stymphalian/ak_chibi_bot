@@ -277,26 +277,35 @@ func (s *SpineBridge) setInternalSpineOperator(
 	atlasFile := ""
 	pngFile := ""
 	skelFile := ""
+	spritesheetDataFilepath := ""
 	spineData := s.spineService.GetSpineData(info.OperatorId, info.Faction, info.Skin, isBase, isFront)
-	atlasFile = spineData.AtlasFilepath
-	pngFile = spineData.PngFilepath
-	skelFile = spineData.SkelFilepath
 	// TODO: Make the image/assets path a configurable variable
 	formatPathFn := func(path string) string {
 		// return "/static/assets/" + strings.ReplaceAll(path, string(os.PathSeparator), "/")
 		return "/image/assets/" + strings.ReplaceAll(path, string(os.PathSeparator), "/")
 	}
 
+	if len(spineData.SpritesheetDataFilepath) > 0 {
+		atlasFile = formatPathFn(spineData.AtlasFilepath)
+		spritesheetDataFilepath = formatPathFn(spineData.SpritesheetDataFilepath)
+	} else {
+		atlasFile = formatPathFn(spineData.AtlasFilepath)
+		pngFile = formatPathFn(spineData.PngFilepath)
+		skelFile = formatPathFn(spineData.SkelFilepath)
+	}
+
 	data := SetOperatorInternalRequest{
 		BridgeRequest: BridgeRequest{
 			TypeName: SET_OPERATOR,
 		},
-		UserName:            UserName,
-		UserNameDisplay:     userNameDisplay,
-		OperatorId:          info.OperatorId,
-		AtlasFile:           formatPathFn(atlasFile),
-		PngFile:             formatPathFn(pngFile),
-		SkelFile:            formatPathFn(skelFile),
+		UserName:                UserName,
+		UserNameDisplay:         userNameDisplay,
+		OperatorId:              info.OperatorId,
+		AtlasFile:               atlasFile,
+		PngFile:                 pngFile,
+		SkelFile:                skelFile,
+		SpritesheetDataFilepath: spritesheetDataFilepath,
+
 		StartPos:            info.StartPos,
 		AnimationSpeed:      info.AnimationSpeed,
 		AvailableAnimations: info.AvailableAnimations,

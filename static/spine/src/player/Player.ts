@@ -42,6 +42,7 @@ import { ManagedWebGLRenderingContext } from "../webgl/WebGL"
 import { Actor, SpineActorConfig } from "./Actor"
 import { createElement, findWithClass, OffscreenRender, escapeHtml, isAlphanumeric, findWithId, configurePerspectiveCamera, updateCameraSettings } from "./Utils";
 import { Camera } from "../webgl/Camera";
+import { readSpritesheetJsonConfig, SpritesheetActor } from "./Spritesheet";
 
 
 export interface Viewport {
@@ -259,8 +260,14 @@ export class SpinePlayer {
 
 	validateActorConfig(config: SpineActorConfig): SpineActorConfig {
 		if (!config) throw new Error("Please pass a configuration to new.SpinePlayer().");
-		if (!config.jsonUrl && !config.skelUrl) throw new Error("Please specify the URL of the skeleton JSON or .skel file.");
-		if (!config.atlasUrl) throw new Error("Please specify the URL of the atlas file.");
+
+		if (config.spritesheetDataUrl) {
+			if (!config.atlasUrl) throw new Error("Please specify the URL of the atlas file.");
+		} else {
+			if (!config.jsonUrl && !config.skelUrl) throw new Error("Please specify the URL of the skeleton JSON or .skel file.");
+			if (!config.atlasUrl) throw new Error("Please specify the URL of the atlas file.");
+		}
+
 		// if (!config.alpha) config.alpha = false;
 		// if (!config.backgroundColor) config.backgroundColor = "#000000";
 		// if (!config.fullScreenBackgroundColor) config.fullScreenBackgroundColor = config.backgroundColor;
@@ -390,8 +397,7 @@ export class SpinePlayer {
 			} else {
 				this.offscreenRender = null;
 			}
-			this.assetManager = new AssetManager([this.context]);
-
+			this.assetManager = new AssetManager(this.context);
 		} catch (e) {
 			// this.showError("Sorry, your browser does not support WebGL.<br><br>Please use the latest version of Firefox, Chrome, Edge, or Safari.");
 			console.log("Sorry, your browser does not support WebGL.<br><br>Please use the latest version of Firefox, Chrome, Edge, or Safari.");
@@ -542,14 +548,20 @@ export class SpinePlayer {
 				this.assetManager.setRawDataURI(path, data);
 			}
 		}
-		if (config.jsonUrl) {
-			this.assetManager.loadText(config.jsonUrl);
+
+		if (actor.isSpritesheetActor()) {
+			this.assetManager.loadText(config.spritesheetDataUrl);
+			this.assetManager.loadTextureAtlas(config.atlasUrl);
 		} else {
-			this.assetManager.loadBinary(config.skelUrl);
-		}
-		this.assetManager.loadTextureAtlas(config.atlasUrl);
-		if (config.backgroundImage && config.backgroundImage.url) {
-			this.assetManager.loadTexture(config.backgroundImage.url);
+			if (config.jsonUrl) {
+				this.assetManager.loadText(config.jsonUrl);
+			} else {
+				this.assetManager.loadBinary(config.skelUrl);
+			}
+			this.assetManager.loadTextureAtlas(config.atlasUrl);
+			if (config.backgroundImage && config.backgroundImage.url) {
+				this.assetManager.loadTexture(config.backgroundImage.url);
+			}
 		}
 
 		// Setup rendering loop
@@ -680,10 +692,11 @@ export class SpinePlayer {
 			}
 
 			// Have we finished loading the asset? Then set things up
-			// if (this.assetManager.isLoadingComplete() && this.skeleton == null) this.loadSkeleton();
-			if (this.assetManager.isLoadingComplete()
-				&& actor.skeleton == null) {
-				this.loadSkeleton(actor);
+			// if (this.assetManager.isLoadingComplete() && this.skeleton == null) this.loadActor();
+			if (this.assetManager.isLoadingComplete()) {
+				if (!actor.isActorDoneLoading()) {
+					this.loadActor(actor);
+				}
 			}
 
 			// // Resize the canvas
@@ -703,20 +716,27 @@ export class SpinePlayer {
 				actor.time.update();
 				let delta = actor.time.delta * actor.speed;
 
-				let animationDuration = actor.animationState.getCurrent(0).animation.duration;
-				actor.playTime += delta;
-				while (actor.playTime >= animationDuration && animationDuration != 0) {
-					actor.playTime -= animationDuration;
-				}
-				actor.playTime = Math.max(0, Math.min(actor.playTime, animationDuration));
-				this.timelineSlider.setValue(actor.playTime / animationDuration);
+				if (actor.isSpritesheetActor()) {
+					actor.UpdatePhysics(this, delta, viewport);
+					actor.spritesheet.Update(delta);
+				} else {
+					let animationDuration = actor.animationState.getCurrent(0).animation.duration;
+					actor.playTime += delta;
+					while (actor.playTime >= animationDuration && animationDuration != 0) {
+						actor.playTime -= animationDuration;
+					}
+					actor.playTime = Math.max(0, Math.min(actor.playTime, animationDuration));
+					this.timelineSlider.setValue(actor.playTime / animationDuration);
 
-				actor.UpdatePhysics(this, delta, viewport);
-				actor.skeleton.setToSetupPose();
-				actor.animationState.update(delta);
-				actor.animationState.apply(actor.skeleton);
+					actor.UpdatePhysics(this, delta, viewport);
+					actor.skeleton.setToSetupPose();
+					actor.animationState.update(delta);
+					actor.animationState.apply(actor.skeleton);
+				}
 			}
-			actor.skeleton.updateWorldTransform();
+			if (!actor.isSpritesheetActor()) {
+				actor.skeleton.updateWorldTransform();
+			}
 
 			// Update the camera
 			this.updateCameraSettings(this.sceneRenderer.camera, actor, viewport);
@@ -732,7 +752,26 @@ export class SpinePlayer {
 				}
 			}
 			// Draw skeleton 
-			this.sceneRenderer.drawSkeleton(actor.skeleton, actor.config.premultipliedAlpha);
+			if (actor.isSpritesheetActor()) {
+				const coords = actor.spritesheet.GetUVFromFrame();
+				if (actor.isFacingLeft()) {
+					let temp = coords.U1;
+					coords.U1 = coords.U2;
+					coords.U2 = temp;
+				}
+				this.sceneRenderer.drawTextureUV(
+					actor.spritesheet.GetTexture(),
+					actor.GetBoundingBox().x,
+					actor.GetBoundingBox().y,
+					actor.GetBoundingBox().width,
+					actor.GetBoundingBox().height,
+					coords.U1, coords.V1, 
+					coords.U2, coords.V2,
+				);
+			} else {
+				this.sceneRenderer.drawSkeleton(actor.skeleton, actor.config.premultipliedAlpha);
+			}
+
 
 			// Render the user's name above the chibi
 			this.drawActorText(actor);
@@ -797,14 +836,7 @@ export class SpinePlayer {
 		return temp;
 	}
 
-	loadSkeleton(actor: Actor) {
-		if (actor.loaded || actor.load_perma_failed) return;
-
-		if (this.assetManager.hasErrors()) {
-			this.showError(actor, "Error: assets could not be loaded.<br><br>" + escapeHtml(JSON.stringify(this.assetManager.getErrors())));
-			return;
-		}
-
+	loadSpineSkeleton(actor: Actor) {
 		let atlas = this.assetManager.get(actor.config.atlasUrl);
 		let skeletonData: SkeletonData;
 		if (actor.config.jsonUrl) {
@@ -856,6 +888,41 @@ export class SpinePlayer {
 
 		actor.config.success(this, actor);
 		actor.loaded = true;
+	}
+
+	loadSpritesheetActor(actor: Actor) {
+		let json = this.assetManager.get(actor.config.spritesheetDataUrl);
+		let spritesheetConfig = readSpritesheetJsonConfig(json);
+
+		let parentPrefix = actor.config.spritesheetDataUrl.split("/").slice(0, -1).join("/");
+		let textures: Map<string, any> = new Map<string, any>();
+		for (let [animationKey, config] of spritesheetConfig.animations) {
+			let texture = this.assetManager.get(parentPrefix + "/" + config.filepath);
+			textures.set(animationKey, texture);
+		}
+		
+		let spritesheetActor = new SpritesheetActor(spritesheetConfig, textures);
+		spritesheetActor.SetAnimation(actor.GetAnimations()[0]);
+		actor.spritesheet = spritesheetActor;
+
+		actor.InitAnimationState();
+		actor.config.success(this, actor);
+		actor.loaded = true;
+	}
+
+	loadActor(actor: Actor) {
+		if (actor.loaded || actor.load_perma_failed) return;
+
+		if (this.assetManager.hasErrors()) {
+			this.showError(actor, "Error: assets could not be loaded.<br><br>" + escapeHtml(JSON.stringify(this.assetManager.getErrors())));
+			return;
+		}
+
+		if (actor.isSpritesheetActor()) {
+			this.loadSpritesheetActor(actor);
+		} else {
+			this.loadSpineSkeleton(actor);
+		}
 	}
 
 	private cancelId: any = 0;

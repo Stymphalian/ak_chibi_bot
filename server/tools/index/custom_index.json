@@ -1,0 +1,36 @@
+{
+  "data": {
+    "char_10000_bubu": {
+      "skins": {
+        "default": {
+          "base": {
+            "Front": {
+              "atlas_filepath": "custom/char_10000_bubu/default/base/Front/build_char_10000_bubu.atlas",
+              "skel_filepath": "",
+              "png_filepath": "custom/char_10000_bubu/default/base/Front/build_char_10000_bubu.relax.png",
+              "animations": [
+                "Default",
+                "Relax",
+                "Move",
+                "Sit"
+              ],
+              "spritesheet_data_filepath": "custom/char_10000_bubu/default/base/Front/build_char_10000_bubu.spritesheet.json"
+            }
+          },
+          "battle": {
+            "Front": {
+              "atlas_filepath": "custom/char_10000_bubu/default/battle/Front/char_10000_bubu.atlas",
+              "skel_filepath": "",
+              "png_filepath": "custom/char_10000_bubu/default/battle/Front/char_10000_bubu.idle.png",
+              "animations": [
+                "Default",
+                "Idle"
+              ],
+              "spritesheet_data_filepath": "custom/char_10000_bubu/default/battle/Front/char_10000_bubu.spritesheet.json"
+            }
+          }
+        }
+      }
+    }
+  }
+}

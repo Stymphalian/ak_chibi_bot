@@ -12,9 +12,13 @@ import (
 
 func run(assetDir string, outputDir string) error {
 	assetMap := operator.NewSpineAssetMap()
+	customMap := operator.NewSpineAssetMap()
 	enemyAssetMap := operator.NewSpineAssetMap()
 
 	if err := assetMap.Load(assetDir, "characters"); err != nil {
+		return err
+	}
+	if err := customMap.Load(assetDir, "custom"); err != nil {
 		return err
 	}
 	if err := enemyAssetMap.Load(assetDir, "enemies"); err != nil {
@@ -26,6 +30,14 @@ func run(assetDir string, outputDir string) error {
 		return err
 	}
 	if err := os.WriteFile(filepath.Join(outputDir, "characters_index.json"), assetMapJsonBytes, 0666); err != nil {
+		return err
+	}
+
+	customMapJsonBytes, err := json.MarshalIndent(customMap, "", "  ")
+	if err != nil {
+		return err
+	}
+	if err := os.WriteFile(filepath.Join(outputDir, "custom_index.json"), customMapJsonBytes, 0666); err != nil {
 		return err
 	}
 
