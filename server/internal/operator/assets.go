@@ -448,7 +448,7 @@ func (s *CommonNames) MergeLoad(assetFilePath string) error {
 	for operatorId, names := range savedNames {
 		s.operatorIdToNames[operatorId] = names
 	}
-	for name, operatorIds := range savedNames {
+	for name, operatorIds := range nameToOperatorId {
 		s.namesToOperatorId[name] = operatorIds
 	}
 	s.allNames = append(s.allNames, allNames...)
