@@ -3358,6 +3358,90 @@
         "The Cursed",
         "FC2"
     ],
+    "enemy_10010_sgnja": [
+        "Street Bandit",
+        "GS1"
+    ],
+    "enemy_10010_sgnja_2": [
+        "Roaming Street Bandit",
+        "GS2"
+    ],
+    "enemy_10011_sgshot": [
+        "Street Hunter",
+        "GS3"
+    ],
+    "enemy_10011_sgshot_2": [
+        "Roaming Street Hunter",
+        "GS4"
+    ],
+    "enemy_10012_sgbtle": [
+        "Exhibit 237-1",
+        "GS5"
+    ],
+    "enemy_10012_sgbtle_2": [
+        "Exhibit 237-2",
+        "GS6"
+    ],
+    "enemy_10013_sgrob": [
+        "Small Bejeweled Wagon",
+        "GS7"
+    ],
+    "enemy_10013_sgrob_2": [
+        "Large Bejeweled Wagon",
+        "GS8"
+    ],
+    "enemy_10014_sgrich": [
+        "Small Broken Vessel",
+        "GS9"
+    ],
+    "enemy_10014_sgrich_2": [
+        "Large Broken Vessel",
+        "GS10"
+    ],
+    "enemy_10015_sgbird": [
+        "Gliding Toy",
+        "GS11"
+    ],
+    "enemy_10015_sgbird_2": [
+        "Gliding Crown",
+        "GS12"
+    ],
+    "enemy_10016_sggint": [
+        "Angry Stampede",
+        "GS13"
+    ],
+    "enemy_10016_sggint_2": [
+        "Angry Rampage",
+        "GS14"
+    ],
+    "enemy_10017_sgass": [
+        "Hall Statue (Left)",
+        "GS15"
+    ],
+    "enemy_10017_sgass_2": [
+        "Hall Statue (Right)",
+        "GS16"
+    ],
+    "enemy_10018_sgrobh": [
+        "Unicycle Toy",
+        "GS17"
+    ],
+    "enemy_10018_sgrobh_2": [
+        "Bouncing Unicycle",
+        "GS18"
+    ],
+    "enemy_10019_sgmum": [
+        "Bejeweled Slab Defender",
+        "GS19"
+    ],
+    "enemy_10019_sgmum_2": [
+        "Bejeweled Slab Guardian",
+        "GS20"
+    ],
+    "enemy_10020_sgcat": [
+        "Mio, the Eager Examinant",
+        "MA"
+    ],
     "enemy_3006_tersia": [
         "Theresa, King of Sarkaz",
         "THA1"
@@ -3804,6 +3888,10 @@
         "Martus Seaborn",
         "Mártus Seaborn",
         "MSB"
+    ],
+    "enemy_1558_sgactr": [
+        "Zubayidamu the Timeless",
+        "ZYA"
     ],
     "enemy_2003_rockman": [
         "Lost Colossus",

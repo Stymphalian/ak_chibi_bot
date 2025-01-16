@@ -542,6 +542,9 @@
     "char_336_folivo": [
         "Scene"
     ],
+    "char_4140_lasher": [
+        "Sand Reckoner"
+    ],
     "char_108_silent": [
         "Silence"
     ],
@@ -583,6 +586,9 @@
     ],
     "char_4071_peper": [
         "Paprika"
+    ],
+    "char_4139_papyrs": [
+        "Papyrus"
     ],
     "char_148_nearl": [
         "Nearl"
@@ -817,6 +823,9 @@
     ],
     "char_4117_ray": [
         "Ray"
+    ],
+    "char_4138_narant": [
+        "Narantuya"
     ],
     "char_112_siege": [
         "Siege"
@@ -1058,6 +1067,12 @@
         "Ulpianus",
         "Ulpipi",
         "Ulpapi"
+    ],
+    "char_4058_pepe": [
+        "Pepe",
+        "Pepega",
+        "Paypay",
+        "Namie's 3rd Child"
     ],
     "char_010_chen": [
         "Ch'en",
