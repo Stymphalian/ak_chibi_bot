@@ -751,27 +751,8 @@ export class SpinePlayer {
 					this.sceneRenderer.drawTexture(bgImage, actor.config.backgroundImage.x, actor.config.backgroundImage.y, actor.config.backgroundImage.width, actor.config.backgroundImage.height);
 				}
 			}
-			// Draw skeleton 
-			if (actor.isSpritesheetActor()) {
-				const coords = actor.spritesheet.GetUVFromFrame();
-				if (actor.isFacingLeft()) {
-					let temp = coords.U1;
-					coords.U1 = coords.U2;
-					coords.U2 = temp;
-				}
-				this.sceneRenderer.drawTextureUV(
-					actor.spritesheet.GetTexture(),
-					actor.GetBoundingBox().x,
-					actor.GetBoundingBox().y,
-					actor.GetBoundingBox().width,
-					actor.GetBoundingBox().height,
-					coords.U1, coords.V1, 
-					coords.U2, coords.V2,
-				);
-			} else {
-				this.sceneRenderer.drawSkeleton(actor.skeleton, actor.config.premultipliedAlpha);
-			}
-
+			// Draw the actor
+			actor.Draw(this.sceneRenderer)
 
 			// Render the user's name above the chibi
 			this.drawActorText(actor);

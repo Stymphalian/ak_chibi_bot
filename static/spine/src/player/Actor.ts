@@ -550,6 +550,29 @@ export class Actor {
 		return this.position.x - back;
 	}
 
+	public Draw(sceneRenderer: SceneRenderer) {
+		if (this.isSpritesheetActor()) {
+			let coords = this.spritesheet.GetUVFromFrame();
+			if (this.isFacingLeft()) {
+				let temp = coords.U1;
+				coords.U1 = coords.U2;
+				coords.U2 = temp;
+			}
+			const bb = this.GetBoundingBox();
+			sceneRenderer.drawTextureUV(
+				this.spritesheet.GetTexture(),
+				bb.x,
+				bb.y,
+				bb.width,
+				bb.height,
+				coords.U1, coords.V1, 
+				coords.U2, coords.V2,
+			);
+		} else {
+			sceneRenderer.drawSkeleton(this.skeleton, this.config.premultipliedAlpha);
+		}
+	}
+
 	public DrawDebug(renderer: SceneRenderer, viewport: BoundingBox) {
 		let actor_pos = this.getPosition();
 		let bb = this.GetBoundingBox();
