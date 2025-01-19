@@ -47,13 +47,28 @@ func Setup_TestApiServer(username string) (*ApiServer, *auth.FakeAuthService) {
 	authService.TwitchUserId = "twitch-" + username
 	authService.UserId = userDb.UserId
 
+	botConfig := &misc.BotConfig{
+		TwitchClientId:     "test_client_id",
+		TwitchAccessToken:  "test_access_token",
+		SpineRuntimeConfig: misc.DefaultSpineRuntimeConfig(),
+		InitialOperator:    "Amiya",
+		OperatorDetails: misc.InitialOperatorDetails{
+			Skin:       "default",
+			Stance:     "base",
+			Animations: []string{"Idle"},
+			PositionX:  0.5,
+		},
+	}
+
 	apiServer := NewApiServer(
 		roomManager,
 		authService,
 		roomsRepo,
 		usersRepo,
 		userPrefsRepo,
-		operatorService)
+		operatorService,
+		botConfig,
+	)
 	return apiServer, authService
 }
 
@@ -325,4 +340,29 @@ func TestApiServer_HandleGetRoomSettings_RoomExistsButNotActiveInManager(t *test
 	err = json.Unmarshal(body, &gotObj)
 	assert.NoError(err, string(body))
 	assert.Equal(respObj, gotObj)
+}
+
+func TestApiServer_HandleRoomRefresh_HappyPath(t *testing.T) {
+	assert := assert.New(t)
+	username := "test-api-server-7"
+	sut, _ := Setup_TestApiServer(username)
+	err := sut.roomsManager.CreateRoomOrNoOp(context.TODO(), username)
+	if err != nil {
+		assert.Fail(err.Error())
+	}
+
+	jsonBody := `{"channel_name":"test-api-server-7"}`
+	reqBody := strings.NewReader(jsonBody)
+
+	req := httptest.NewRequest("POST", "http://example.com/api/rooms/refresh/", reqBody)
+	req.Header.Set("Authorization", "Bearer foo")
+	w := httptest.NewRecorder()
+	sut.middleware(sut.HandleRoomRefresh).ServeHTTP(w, req)
+
+	resp := w.Result()
+	assert.Equal(200, resp.StatusCode)
+	body, _ := io.ReadAll(resp.Body)
+	fmt.Println(resp.StatusCode)
+	fmt.Println(resp.Header.Get("Content-Type"))
+	fmt.Println(string(body))
 }

@@ -83,6 +83,10 @@ type GetRoomSettingsResponse struct {
 	UsernamesBlacklist []string `json:"usernames_blacklist"`
 }
 
+type RoomRefreshRequest struct {
+	ChannelName string `json:"channel_name"`
+}
+
 type GetUserPreferencesRequest struct {
 	UserId uint `json:"user_id"`
 }

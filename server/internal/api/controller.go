@@ -26,6 +26,7 @@ type ApiServer struct {
 	usersRepo        users.UserRepository
 	userPrefsRepo    users.UserPreferencesRepository
 	operatorsService *operator.OperatorService
+	botConfig        *misc.BotConfig
 }
 
 // TODO: Refactor the API handlers. More of the logic should be moved into
@@ -37,6 +38,7 @@ func NewApiServer(
 	usersRepo users.UserRepository,
 	userPrefsRepo users.UserPreferencesRepository,
 	operatorService *operator.OperatorService,
+	botConfig *misc.BotConfig,
 ) *ApiServer {
 	log.Println("NewApiServer created")
 	return &ApiServer{
@@ -46,6 +48,7 @@ func NewApiServer(
 		usersRepo:        usersRepo,
 		userPrefsRepo:    userPrefsRepo,
 		operatorsService: operatorService,
+		botConfig:        botConfig,
 	}
 }
 
@@ -54,6 +57,7 @@ func (s *ApiServer) RegisterHandlers(rootMux *http.ServeMux) {
 	mux.Handle("GET  /api/rooms/settings/{$}", s.middleware(s.HandleGetRoomSettings))
 	mux.Handle("POST /api/rooms/settings/{$}", s.middleware(s.HandleUpdateRoomSettings))
 	mux.Handle("POST /api/rooms/remove/{$}", s.middlewareAdmin(s.HandleRemoveRoom))
+	mux.Handle("POST /api/rooms/refresh/{$}", s.middlewareAdmin(s.HandleRoomRefresh))
 	mux.Handle("POST /api/rooms/users/remove/{$}", s.middlewareAdmin(s.HandleRemoveUser))
 	mux.Handle("POST /api/rooms/users/give/{$}", s.middlewareAdmin(s.HandleRoomGiveOperator))
 	mux.Handle("POST /api/rooms/users/set/{$}", s.middlewareAdmin(s.HandleRoomSetOperator))
@@ -390,6 +394,38 @@ func (s *ApiServer) HandleRemoveRoom(w http.ResponseWriter, r *http.Request) err
 	}
 
 	return s.roomsManager.RemoveRoom(channelName)
+}
+
+func (s *ApiServer) HandleRoomRefresh(w http.ResponseWriter, r *http.Request) error {
+	if r.Method != http.MethodPost {
+		http.NotFound(w, r)
+		return nil
+	}
+	decoder := json.NewDecoder(r.Body)
+	var reqBody RoomRefreshRequest
+	if err := decoder.Decode(&reqBody); err != nil {
+		return misc.NewHumanReadableError(
+			"Invalid request body",
+			http.StatusBadRequest,
+			fmt.Errorf("invalid request body: %w", err),
+		)
+	}
+
+	channelName := reqBody.ChannelName
+	if len(channelName) == 0 {
+		return misc.NewHumanReadableError(
+			"Channel name must be provided",
+			http.StatusBadRequest,
+			fmt.Errorf("channel name must be provided"),
+		)
+	}
+	if _, ok := s.roomsManager.Rooms[channelName]; !ok {
+		return fmt.Errorf("room %s does not exist", channelName)
+	}
+	room := s.roomsManager.Rooms[channelName]
+
+	err := room.Refresh(r.Context(), s.botConfig)
+	return err
 }
 
 func (s *ApiServer) HandleRemoveUser(w http.ResponseWriter, r *http.Request) error {

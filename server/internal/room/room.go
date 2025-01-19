@@ -326,5 +326,13 @@ func (r *Room) RefreshConfigs(ctx context.Context, botConfig *misc.BotConfig) er
 	return nil
 }
 
+func (r *Room) Refresh(ctx context.Context, botConfig *misc.BotConfig) error {
+	err := r.RefreshConfigs(ctx, botConfig)
+	if err != nil {
+		return err
+	}
+	return r.LoadExistingChatters(ctx)
+}
+
 func (r *Room) handleClientWebsocketRequests(connectionName string, typeName string, message []byte) {
 }
