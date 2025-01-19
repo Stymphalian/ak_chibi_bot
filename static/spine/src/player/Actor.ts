@@ -186,12 +186,12 @@ export class Actor {
 	// Record the timestamp when the actor was first loaded. We use this
 	// to keep a stable sort order when rendering actors. Actors created
 	// first should be rendered first, newer actors are rendered on top.
-	public loadedWhen: number = new Date().getTime();
+	public lastUpdatedWhen: number = new Date().getTime();
 	private messageQueue: ChatMessageQueue = new ChatMessageQueue();
 
 	constructor(config: SpineActorConfig, viewport: BoundingBox, offscreenRender: OffscreenRender | null) {
 		this.offscreenRender = offscreenRender;
-		this.loadedWhen = new Date().getTime();
+		this.lastUpdatedWhen = new Date().getTime();
 		this.viewport = viewport;
 		this.ResetWithConfig(config);
 		let x = Math.random() * viewport.width - (viewport.width / 2)
@@ -387,6 +387,7 @@ export class Actor {
 		this.playTime = 0;
 		this.speed = 1;
 		this.config = config;
+		this.lastUpdatedWhen = new Date().getTime();
 
 		// Update movement speed from config
 		if (config.movementSpeedPxX !== null

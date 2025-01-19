@@ -679,7 +679,7 @@ export class SpinePlayer {
 			let a2 = this.actors.get(b);
 			let r = a2.getPositionZ() - a1.getPositionZ()
 			// To ensure stable sort
-			if (r == 0) { return a1.loadedWhen - a2.loadedWhen; }
+			if (r == 0) { return a1.lastUpdatedWhen - a2.lastUpdatedWhen; }
 			return r;
 		});
 
