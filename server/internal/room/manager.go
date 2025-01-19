@@ -242,7 +242,15 @@ func (r *RoomsManager) CreateRoomOrNoOp(ctx context.Context, channel string) err
 	if _, ok := r.Rooms[channel]; ok {
 		// Refresh the room's configs, best effort
 		r.Rooms[channel].RefreshConfigs(ctx, r.botConfig)
-		r.Rooms[channel].LoadExistingChatters(ctx)
+
+		// Only refresh the chatters if there are no active connections.
+		// When hitting /room this will cause all active connections to
+		// receive messages to reload the chatter's operators.
+		// This could be exploited to cause a bunch of messsage to get sent
+		// do the downstream rooms which is bad.
+		if r.Rooms[channel].NumConnectedClients() == 0 {
+			r.Rooms[channel].LoadExistingChatters(ctx)
+		}
 		return nil
 	}
 
