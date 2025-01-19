@@ -7,6 +7,7 @@ import (
 	"net/url"
 	"os"
 	"strings"
+	"time"
 
 	"github.com/gorilla/websocket"
 )
@@ -41,6 +42,7 @@ func main() {
 	for scanner.Scan() {
 		text := strings.TrimSpace(scanner.Text())
 		err = c.WriteMessage(websocket.TextMessage, []byte(text))
+		time.Sleep(time.Millisecond * 200)
 		if err != nil {
 			log.Println("write:", err)
 			return

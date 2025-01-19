@@ -172,8 +172,7 @@
         "C4"
     ],
     "enemy_1020_obsv": [
-        "Technical Scout",
-        "T1"
+        "Technical Scout"
     ],
     "enemy_1010_demon": [
         "Sarkaz Greatswordsman",
@@ -288,8 +287,7 @@
         "32"
     ],
     "enemy_1036_amraoe": [
-        "Shielded Senior Caster",
-        "A7"
+        "Shielded Senior Caster"
     ],
     "enemy_1037_lunsbr": [],
     "enemy_1038_lunmag": [
@@ -2156,12 +2154,10 @@
         "THE"
     ],
     "enemy_1277_sgman": [
-        "Famiglia Soldier",
-        "SA1"
+        "Famiglia Soldier"
     ],
     "enemy_1277_sgman_2": [
-        "Elite Famiglia Soldier",
-        "SA2"
+        "Elite Famiglia Soldier"
     ],
     "enemy_1278_sgbow": [
         "Famiglia Crossbowman",
@@ -2643,8 +2639,7 @@
     "enemy_1342_frtuna": [
         "Fortuna",
         "Fallen Angel",
-        "Fortuna - Fallen Angel",
-        "FA"
+        "Fortuna - Fallen Angel"
     ],
     "enemy_3005_lpeopl": [
         "Monastery Inhabitant",
@@ -3804,8 +3799,7 @@
         "ZA"
     ],
     "enemy_1536_ncrmcr": [
-        "The Leader",
-        "EB"
+        "The Leader"
     ],
     "enemy_1538_ymmons": [
         "Ya",
@@ -3864,8 +3858,7 @@
         "HC"
     ],
     "enemy_1550_dhnzzh": [
-        "Slumbering of Sui",
-        "SUI"
+        "Slumbering of Sui"
     ],
     "enemy_1551_bolicp": [
         "Captain Mateo",
@@ -4324,7 +4317,7 @@
         "SD44"
     ],
     "enemy_7053_xbcasz": [
-        "Thalebeast",
+        "Thalebeast Alt",
         "SD45"
     ],
     "enemy_7054_xbsmi": [
@@ -4332,7 +4325,7 @@
         "SD46"
     ],
     "enemy_7056_xbsmiz": [
-        "Vanillawing",
+        "Vanillawing Alt",
         "SD47"
     ],
     "enemy_7057_xbrok": [
@@ -4340,7 +4333,7 @@
         "SD48"
     ],
     "enemy_7059_xbrokz": [
-        "Quicksand Beast",
+        "Quicksand Beast Alt",
         "SD49"
     ],
     "enemy_1037_lunsabr": [

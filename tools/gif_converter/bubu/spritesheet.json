@@ -1,0 +1,71 @@
+{
+    "scales": {
+        "full": 1.0,
+        "half": 0.5, 
+        "quarter": 0.25
+    },
+    "base": {
+        "animations": {
+            "Relax": {
+                "filepath": "relax.gif",
+                "fps": 30,
+                "scaleX": 0.35,
+                "scaleY": 0.35,
+                "flip_left_right": false,
+                "convert_alpha": false,
+                "crop": {
+                    "left": 0,
+                    "right": 816,
+                    "top": 0,
+                    "bottom": 1150
+                }
+            },
+            "Move": {
+                "filepath": "move.gif",
+                "fps": 30,
+                "scaleX": 0.35,
+                "scaleY": 0.35,
+                "flip_left_right": false,
+                "convert_alpha": false,
+                "crop": {
+                    "left": 0,
+                    "right": 816,
+                    "top": 0,
+                    "bottom": 1150
+                }
+            },
+            "Sit": {
+                "filepath": "sit.gif",
+                "fps": 30,
+                "scaleX": 0.35,
+                "scaleY": 0.35,
+                "flip_left_right": false,
+                "convert_alpha": false,
+                "crop": {
+                    "left": 0,
+                    "right": 816,
+                    "top": 0,
+                    "bottom": 1150
+                }
+            }
+        }
+    },
+    "battle": {
+        "animations": {
+            "Idle": {
+                "filepath": "idle.gif",
+                "fps": 30,
+                "scaleX": 0.35,
+                "scaleY": 0.35,
+                "flip_left_right": false,
+                "convert_alpha": false,
+                "crop": {
+                    "left": 0,
+                    "right": 816,
+                    "top": 0,
+                    "bottom": 1150
+                }
+            }
+        }
+    }
+}

@@ -4,6 +4,7 @@ python/venv
 tools/venv
 tools/chars_list.txt
 tools/enemys_list.txt
+tools/gif_converter/__pycache__
 
 assets/assets/
 server/assets/characters/
