@@ -1,3 +1,5 @@
+import { Color } from "../core/Utils"
+
 export class SpritesheetAnimationConfig  {
     public filepath: string
     public rows : number
@@ -53,6 +55,7 @@ export class SpritesheetActor {
     public textures: Map<string, any>;
     private animationName: string;
     public animationConfig: SpritesheetAnimationConfig
+    public highlightColor: Color = Color.WHITE;
 
     // animation state
     public timeScale = 1;

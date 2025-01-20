@@ -617,6 +617,7 @@ export class Actor {
 				bb.height,
 				coords.U1, coords.V1,
 				coords.U2, coords.V2,
+				this.spritesheet.highlightColor
 			);
 		} else {
 			sceneRenderer.drawSkeleton(this.skeleton, this.config.premultipliedAlpha);
@@ -650,10 +651,19 @@ export class Actor {
 	public FlashFindCharacter() {
 		this.ShouldFlashCharacter = true;
 		this.lastUpdatedWhen = new Date().getTime();
-		this.skeleton.color = Color.GREEN;
+		if (this.isSpritesheetActor()) {
+			this.spritesheet.highlightColor = Color.GREEN;
+		} else {
+			this.skeleton.color = Color.GREEN;
+		}
+		
 		setTimeout(() => {
 			this.ShouldFlashCharacter = false;
-			this.skeleton.color = Color.WHITE;
+			if (this.isSpritesheetActor()) {
+				this.spritesheet.highlightColor = Color.WHITE;
+			} else {
+				this.skeleton.color = Color.WHITE;
+			}
 		}, 10000);
 		// TODO: Make the timout configurable
 	}
