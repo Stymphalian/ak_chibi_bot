@@ -208,6 +208,20 @@ func (c *OperatorService) ValidateUpdateSetDefaultOtherwise(update *OperatorInfo
 				)
 			}
 		}
+	} else if update.Faction == FACTION_ENUM_ENEMY {
+		// When switching to an enemy and the action is a walking action we
+		// need to check to see if their is "move" animation that can be used
+		// to render the walking action. If there is not, then we need to
+		// default back to a play animation.
+		if IsWalkingAction(update.CurrentAction) {
+			hasMoveAnim := len(GetAvailableMoveAnimations(update.AvailableAnimations)) > 0
+			if !hasMoveAnim {
+				update.CurrentAction = ACTION_PLAY_ANIMATION
+				update.Action = NewActionPlayAnimation(
+					[]string{GetDefaultAnimForChibiStance(update.ChibiStance)},
+				)
+			}
+		}
 	}
 
 	switch update.CurrentAction {
