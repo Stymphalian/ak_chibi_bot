@@ -6,6 +6,6 @@ interface CodeBlockProps {
 
 export function Code({ children }: CodeBlockProps) {
     return (
-        <span className="code-block user-select-all">{children}</span>
+        <span className="code-block user-select-auto">{children}</span>
     );
 }

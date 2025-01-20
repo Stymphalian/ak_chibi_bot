@@ -11,6 +11,7 @@ const (
 	// Request Type Strings
 	SET_OPERATOR      = "SET_OPERATOR"
 	REMOVE_OPERATOR   = "REMOVE_OPERATOR"
+	FIND_OPERATOR     = "FIND_OPERATOR"
 	SHOW_CHAT_MESSAGE = "SHOW_CHAT_MESSAGE"
 	// Response Type Strings
 	RUNTIME_DEBUG_UPDATE  = "RUNTIME_DEBUG_UPDATE"
@@ -78,6 +79,18 @@ type ShowChatMessageResponse struct {
 	BridgeResponse
 }
 
+// FindOperator
+type FindOperatorRequest struct {
+	UserName string `json:"user_name"`
+}
+type FindOperatorInternalRequest struct {
+	BridgeRequest
+	UserName string `json:"user_name"` // chonkyking
+}
+type FindOperatorResponse struct {
+	BridgeResponse
+}
+
 // runtimeDebugUpdate
 type RuntimeDebugUpdateRequest struct {
 	TypeName   string  `json:"type_name"`
@@ -111,6 +124,7 @@ type SpineClient interface {
 	Close() error
 	SetOperator(r *SetOperatorRequest) (*SetOperatorResponse, error)
 	RemoveOperator(r *RemoveOperatorRequest) (*RemoveOperatorResponse, error)
+	FindOperator(r *FindOperatorRequest) (*FindOperatorResponse, error)
 	ShowChatMessage(r *ShowChatMessageRequest) (*ShowChatMessageResponse, error)
 }
 

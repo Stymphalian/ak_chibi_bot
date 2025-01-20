@@ -70,7 +70,7 @@ Manual Test Cases:
 !chibi reed
 !chibi battle
 
-// Changing from enemy to operate during a walkto action was causing
+// Changing from enemy to operator during a walkto action was causing
 // the operator to forever loop in their "move" animation once they
 // reached their destination
 !chibi enemy b2
@@ -107,6 +107,9 @@ func (f *FakeActorUpdater) ClearUserPreferences(ctx context.Context, userInfo mi
 func (f *FakeActorUpdater) ShowMessage(ctx context.Context, userInfo misc.UserInfo, msg string) error {
 	return nil
 }
+func (f *FakeActorUpdater) FindOperator(ctx context.Context, userInfo misc.UserInfo) error {
+	return nil
+}
 
 func setupCommandTest() (*operator.OperatorInfo, ActorUpdater, *ChatCommandProcessor) {
 	current := operator.NewOperatorInfo(
@@ -120,8 +123,10 @@ func setupCommandTest() (*operator.OperatorInfo, ActorUpdater, *ChatCommandProce
 		[]string{operator.DEFAULT_ANIM_BASE, operator.DEFAULT_ANIM_BATTLE, "anim1"},
 		1.0,
 		misc.EmptyOption[misc.Vector2](),
-		operator.ACTION_PLAY_ANIMATION,
-		operator.NewActionPlayAnimation([]string{operator.DEFAULT_ANIM_BASE}),
+		operator.ACTION_WANDER,
+		operator.NewActionWander(operator.DEFAULT_MOVE_ANIM_NAME, operator.DEFAULT_ANIM_BASE_RELAX),
+		// operator.ACTION_PLAY_ANIMATION,
+		// operator.NewActionPlayAnimation([]string{operator.DEFAULT_ANIM_BASE}),
 	)
 	actor := &FakeActorUpdater{
 		opInfo: current,
@@ -189,7 +194,7 @@ func TestCmdProcessorHandleMessage_ChibiOnlyCommandShowHelp(t *testing.T) {
 	})
 
 	assert.Nil(err)
-	assert.Contains(cmd.Reply(actor), "!chibi to control your Arknights chibi.")
+	assert.Contains(cmd.Reply(actor), "akchibibot.stymphalian.top")
 }
 
 func TestCmdProcessorHandleMessage_ChibiHelp(t *testing.T) {
@@ -204,7 +209,7 @@ func TestCmdProcessorHandleMessage_ChibiHelp(t *testing.T) {
 	})
 
 	assert.Nil(err)
-	assert.Contains(cmd.Reply(actor), "!chibi to control your Arknights chibi.")
+	assert.Contains(cmd.Reply(actor), "akchibibot.stymphalian.top")
 }
 func TestCmdProcessorHandleMessage_ChibiSkins(t *testing.T) {
 	current, actor, sut := setupCommandTest()
@@ -248,7 +253,7 @@ func TestCmdProcessorHandleMessage_ChibiInfo(t *testing.T) {
 	})
 
 	assert.Nil(err)
-	assert.Contains(cmd.Reply(actor), "Amiya: default, base, Front, (Move)")
+	assert.Contains(cmd.Reply(actor), "Amiya: default, base, Front, (Move,Relax)")
 }
 
 func TestCmdProcessorHandleMessage_ChibiWhoFail(t *testing.T) {
@@ -486,7 +491,7 @@ func TestCmdProcessorHandleMessage_ChibiWalk(t *testing.T) {
 	} else {
 		assert.Fail("Command is not of type: ChatCommandUpdateActor")
 	}
-	assert.Equal(operator.ACTION_WANDER, current.CurrentAction)
+	assert.Equal(operator.ACTION_WALK, current.CurrentAction)
 	assert.Equal([]string{"Move"}, current.Action.GetAnimations(current.CurrentAction))
 	assert.Equal(1.0, current.AnimationSpeed)
 }
@@ -589,7 +594,7 @@ func TestCmdProcessorHandleMessage_Regression_EnemyToOperatorShouldMaintainWande
 	current.Faction = operator.FACTION_ENUM_ENEMY
 	current.ChibiStance = operator.CHIBI_STANCE_ENUM_BATTLE
 	current.CurrentAction = operator.ACTION_WANDER
-	current.Action = operator.NewActionWander("Move")
+	current.Action = operator.NewActionWander("Move", "Relax")
 
 	log.Printf("%v\n", current)
 
@@ -755,4 +760,42 @@ func TestCmdProcessorHandleMessage_ChibiFollow(t *testing.T) {
 	assert.Empty(cmd.Reply(actor))
 	assert.Equal(operator.ACTION_FOLLOW, current.CurrentAction)
 	assert.Equal([]string{"Move"}, current.Action.GetAnimations(current.CurrentAction))
+}
+
+func TestCmdProcessorHandleMessage_ChibiWander(t *testing.T) {
+	current, actor, sut := setupCommandTest()
+
+	assert := assert.New(t)
+	cmd, err := sut.HandleMessage(current, ChatMessage{
+		Username:        "user1",
+		UserDisplayName: "user1DisplayName",
+		TwitchUserId:    "100",
+		Message:         "!chibi wander",
+	})
+
+	assert.Nil(err)
+	assert.Empty(cmd.Reply(actor))
+	assert.Equal(operator.ACTION_WANDER, current.CurrentAction)
+	assert.Equal([]string{"Move", "Relax"}, current.Action.GetAnimations(current.CurrentAction))
+}
+
+func TestCmdProcessorHandleMessage_ChibiFindMe(t *testing.T) {
+	current, actor, sut := setupCommandTest()
+
+	assert := assert.New(t)
+	cmd, err := sut.HandleMessage(current, ChatMessage{
+		Username:        "user1",
+		UserDisplayName: "user1DisplayName",
+		TwitchUserId:    "100",
+		Message:         "!chibi findme",
+	})
+
+	assert.Nil(err)
+	assert.Empty(cmd.Reply(actor))
+	if findMeCmd, ok := cmd.(*ChatCommandFindMe); ok {
+		assert.Equal(findMeCmd.username, "user1")
+		assert.Equal(findMeCmd.usernameDisplay, "user1DisplayName")
+	} else {
+		assert.Fail("Command is not of type: ChatCommandFindMe")
+	}
 }

@@ -96,3 +96,7 @@ func (f *FakeChibiActor) UpdateChatter(
 func (c *FakeChibiActor) ShowMessage(ctx context.Context, userInfo misc.UserInfo, msg string) error {
 	return nil
 }
+
+func (c *FakeChibiActor) FindOperator(ctx context.Context, userInfo misc.UserInfo) error {
+	return nil
+}

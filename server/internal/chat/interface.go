@@ -25,6 +25,7 @@ type ActorUpdater interface {
 	SaveUserPreferences(ctx context.Context, userInfo misc.UserInfo, update *operator.OperatorInfo) error
 	ClearUserPreferences(ctx context.Context, userInfo misc.UserInfo) error
 	ShowMessage(ctx context.Context, userInfo misc.UserInfo, msg string) error
+	FindOperator(ctx context.Context, userInfo misc.UserInfo) error
 }
 
 type ChatCommand interface {

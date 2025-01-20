@@ -10,6 +10,7 @@ export interface RuntimeConfig {
     accurateBoundingBoxFlag: boolean
     showChatMessagesFlag: boolean
     usernameBlacklist: string[]
+    excessiveChibiMitigations: boolean
 }
 
 export class Runtime {
@@ -25,7 +26,7 @@ export class Runtime {
 
     constructor(channelName: string, config: RuntimeConfig) {
         this.runtimeConfig = config;
-        const { width, height, debugMode, chibiScale } = config;
+        const { width, height, debugMode } = config;
 
         // TODO: Make the fonts configurable
         let font = new FontFace("lato", "url(/public/fonts/Lato/Lato-Black.ttf)");
@@ -65,6 +66,7 @@ export class Runtime {
                 cameraPerspectiveFar: 2000,
                 useAccurateBoundingBox: this.runtimeConfig.accurateBoundingBoxFlag,
                 showChatMessages: this.runtimeConfig.showChatMessagesFlag,
+                excessiveChibiMitigations: this.runtimeConfig.excessiveChibiMitigations,
             };
 
             console.log("Creating a new spine player");
@@ -110,10 +112,14 @@ export class Runtime {
             console.log("Message received: ", requestData);
             this.swapCharacter(requestData)
         } else if (requestData["type_name"] == "REMOVE_OPERATOR") {
-            console.log("Message received: ", requestData);
+            // console.log("Message received: ", requestData);
             this.removeCharacter(requestData);
         } else if (requestData["type_name"] == "SHOW_CHAT_MESSAGE")  {
+            // console.log("Message received: ", requestData);
             this.showChatMessage(requestData);
+        } else if (requestData["type_name"] == "FIND_OPERATOR") {
+            // console.log("Message received: ", requestData);
+            this.findCharacter(requestData);
         }
     }
 
@@ -213,6 +219,12 @@ export class Runtime {
     removeCharacter(requestData: any) {
         if (this.spinePlayer) {
             this.spinePlayer.removeActor(requestData["user_name"]);
+        }
+    }
+
+    findCharacter(requestData: any) {
+        if (this.spinePlayer) {
+            this.spinePlayer.flashFindCharacter(requestData["user_name"]);
         }
     }
 

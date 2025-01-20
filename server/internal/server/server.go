@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"log"
+	"math"
 	"net/http"
 	"net/url"
 	"os"
@@ -250,9 +251,13 @@ func (s *MainServer) HandleRoom(w http.ResponseWriter, r *http.Request) error {
 	}
 	chibiScale := r.URL.Query().Get("scale")
 	if len(chibiScale) > 0 {
-		chibiScaleInt, err := strconv.Atoi(chibiScale)
+		chibiScaleFloat, err := strconv.ParseFloat(chibiScale, 64)
 		if err == nil {
-			extraQueryArgs += fmt.Sprintf("&scale=%d", chibiScaleInt)
+			if chibiScaleFloat == math.Floor(chibiScaleFloat) {
+				extraQueryArgs += fmt.Sprintf("&scale=%d", int(chibiScaleFloat))
+			} else {
+				extraQueryArgs += fmt.Sprintf("&scale=%.2f", chibiScaleFloat)
+			}
 		}
 	}
 	accurateBoundingBoxes := r.URL.Query().Get("accurate_bb")
@@ -262,6 +267,10 @@ func (s *MainServer) HandleRoom(w http.ResponseWriter, r *http.Request) error {
 	showChatFlag := r.URL.Query().Get("show_chat")
 	if showChatFlag == "true" {
 		extraQueryArgs += "&show_chat=true"
+	}
+	excessiveChibisMitigation := r.URL.Query().Get("chibi_ocean")
+	if excessiveChibisMitigation == "true" || excessiveChibisMitigation == "false" {
+		extraQueryArgs += "&chibi_ocean=" + excessiveChibisMitigation
 	}
 	usernameBlacklist := r.URL.Query().Get("blacklist")
 	if len(usernameBlacklist) > 0 {

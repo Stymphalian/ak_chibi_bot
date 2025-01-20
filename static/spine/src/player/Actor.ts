@@ -39,6 +39,7 @@ import { OffscreenRender } from "./Utils"
 import { ChatMessageQueue, MessageBlock } from "./ChatMessages"
 import { SceneRenderer } from "../webgl/SceneRenderer"
 import { SpritesheetActor } from "./Spritesheet"
+import { ExperimentFlags } from "./Flags"
 
 export interface ActorUpdateConfig {
 	start_pos: Vector2
@@ -143,6 +144,10 @@ export interface SpineActorConfig {
 
 
 export class Actor {
+	static averageActorHeight: number = 0;
+	static NUMBER_HEADER_BANDS: number = 5;
+	static HEADER_BANDS_HEIGHT: number = 20;
+
 	public loaded: boolean;
 	public skeleton: Skeleton;
 	public spritesheet: SpritesheetActor;
@@ -189,10 +194,37 @@ export class Actor {
 	public lastUpdatedWhen: number = new Date().getTime();
 	private messageQueue: ChatMessageQueue = new ChatMessageQueue();
 
-	constructor(config: SpineActorConfig, viewport: BoundingBox, offscreenRender: OffscreenRender | null) {
+
+	// Variables for controlling mitigations to help with excessive chibis on the screen.
+	// This is to help with visual clarity of seeing the chibis on the screen
+	// rather than addressing a performance issue.
+	// -----------
+	// The chibis will wander and then stop for a few seconds before moving again.
+	// this reduces the amount of movement on the screen helping users find their chibis
+	private wanderActionWithPeriodicStoppingFlag: boolean
+	// This name tags are placed above the chibis in a random +y height above the 
+	// chibis head. This makes the name tags more distributed in the screen so 
+	// that not so many overlap.
+	private spreadNameTagsFlag: boolean
+	private headerBandIndex: number = 0;
+	// control whether we should highlight a character to make it easier to find
+	public ShouldFlashCharacter: boolean = false;
+
+	constructor(
+		config: SpineActorConfig,
+		viewport: BoundingBox,
+		offscreenRender: OffscreenRender | null,
+		excessiveChibiMitigation: boolean
+	) {
+		this.loaded = false;
+		this.config = config;
 		this.offscreenRender = offscreenRender;
 		this.lastUpdatedWhen = new Date().getTime();
 		this.viewport = viewport;
+		this.wanderActionWithPeriodicStoppingFlag = excessiveChibiMitigation;
+		this.spreadNameTagsFlag = excessiveChibiMitigation;
+		this.headerBandIndex = Math.floor(Math.random() * Actor.NUMBER_HEADER_BANDS);
+
 		this.ResetWithConfig(config);
 		let x = Math.random() * viewport.width - (viewport.width / 2)
 		let z = 0;
@@ -413,7 +445,12 @@ export class Actor {
 
 		this.currentAction = ParseActionNameToAction(
 			this.config.action,
-			this.config.action_data
+			this.config.action_data,
+			// TODO: Make a global FLAGS class so that we can quickly access these
+			// types of configurations without needing to pass all they way down
+			new Map([
+				[ExperimentFlags.WANDER_WITH_STOP, this.wanderActionWithPeriodicStoppingFlag]
+			])
 		);
 	}
 
@@ -463,7 +500,19 @@ export class Actor {
 	}
 
 	public GetUsernameHeaderHeight() {
-		return this.getRenderingBoundingBox().height + 10;
+		if (this.spreadNameTagsFlag && Actor.averageActorHeight > 0) {
+			const headerHeight = this.getRenderingBoundingBox().height + 10;
+			if (headerHeight < Actor.averageActorHeight * 0.75) {
+				return headerHeight;
+			} else {
+				return Math.max(
+					this.getRenderingBoundingBox().height + 10,
+					Actor.averageActorHeight + this.headerBandIndex * Actor.HEADER_BANDS_HEIGHT
+				);
+			}
+		} else {
+			return this.getRenderingBoundingBox().height + 10;
+		}
 	}
 	public IsEnemySprite(): boolean {
 		return this.config.chibiId.startsWith("enemy_");
@@ -566,7 +615,7 @@ export class Actor {
 				bb.y,
 				bb.width,
 				bb.height,
-				coords.U1, coords.V1, 
+				coords.U1, coords.V1,
 				coords.U2, coords.V2,
 			);
 		} else {
@@ -596,6 +645,17 @@ export class Actor {
 		if (this.currentAction != null) {
 			this.currentAction.DrawDebug(this, renderer, viewport);
 		}
+	}
+
+	public FlashFindCharacter() {
+		this.ShouldFlashCharacter = true;
+		this.lastUpdatedWhen = new Date().getTime();
+		this.skeleton.color = Color.GREEN;
+		setTimeout(() => {
+			this.ShouldFlashCharacter = false;
+			this.skeleton.color = Color.WHITE;
+		}, 10000);
+		// TODO: Make the timout configurable
 	}
 
 	// Privates
@@ -705,10 +765,10 @@ export class Actor {
 		let defaultAnimationName = animations[0];
 
 		if (this.isSpritesheetActor()) {
-			let width = this.spritesheet.animationConfig.width * this.config.scaleX * this.spritesheet.animationConfig.scaleX; 
+			let width = this.spritesheet.animationConfig.width * this.config.scaleX * this.spritesheet.animationConfig.scaleX;
 			let height = this.spritesheet.animationConfig.height * this.config.scaleY * this.spritesheet.animationConfig.scaleY;
 			let defaultBB = {
-				x: -width/2.0,
+				x: -width / 2.0,
 				y: 0,
 				width: width,
 				height: height

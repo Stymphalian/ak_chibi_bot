@@ -9,9 +9,14 @@ import (
 
 type ActionEnum string
 
+// Wander: Walk around and then periodically stop
+// Walkd: Walk around randomly never stopping
+// WalkTo: Walk to point A and then stop
+// PaceAround: Pace between point A and B
 const (
 	ACTION_PLAY_ANIMATION = ActionEnum("PLAY_ANIMATION")
 	ACTION_WANDER         = ActionEnum("WANDER")
+	ACTION_WALK           = ActionEnum("WALK")
 	ACTION_WALK_TO        = ActionEnum("WALK_TO")
 	ACTION_PACE_AROUND    = ActionEnum("PACE_AROUND")
 	ACTION_FOLLOW         = ActionEnum("FOLLOW")
@@ -22,6 +27,7 @@ func IsActionEnum(a ActionEnum) bool {
 	return slices.Contains([]ActionEnum{
 		ACTION_PLAY_ANIMATION,
 		ACTION_WANDER,
+		ACTION_WALK,
 		ACTION_WALK_TO,
 		ACTION_PACE_AROUND,
 		ACTION_FOLLOW,
@@ -29,7 +35,11 @@ func IsActionEnum(a ActionEnum) bool {
 }
 
 func IsWalkingAction(a ActionEnum) bool {
-	return a == ACTION_WANDER || a == ACTION_WALK_TO || a == ACTION_PACE_AROUND || a == ACTION_FOLLOW
+	return (a == ACTION_WALK ||
+		a == ACTION_WANDER ||
+		a == ACTION_WALK_TO ||
+		a == ACTION_PACE_AROUND ||
+		a == ACTION_FOLLOW)
 }
 
 type ActionPlayAnimation struct {
@@ -37,7 +47,12 @@ type ActionPlayAnimation struct {
 }
 
 type ActionWander struct {
-	WanderAnimation string `json:"wander_animation"`
+	WanderAnimation     string `json:"wander_animation"`
+	WanderAnimationIdle string `json:"wander_animation_idle"`
+}
+
+type ActionWalk struct {
+	WalkAnimation string `json:"walk_animation"`
 }
 
 type ActionWalkTo struct {
@@ -61,6 +76,7 @@ type ActionFollow struct {
 type ActionUnion struct {
 	ActionPlayAnimation
 	ActionWander
+	ActionWalk
 	ActionWalkTo
 	ActionPaceAround
 	ActionFollow
@@ -73,7 +89,9 @@ func (a *ActionUnion) GetAnimations(action ActionEnum) []string {
 	case ACTION_PLAY_ANIMATION:
 		return a.Animations
 	case ACTION_WANDER:
-		return []string{a.WanderAnimation}
+		return []string{a.WanderAnimation, a.WanderAnimationIdle}
+	case ACTION_WALK:
+		return []string{a.WalkAnimation}
 	case ACTION_WALK_TO:
 		return []string{a.WalkToAnimation, a.WalkToFinalAnimation}
 	case ACTION_PACE_AROUND:
@@ -103,12 +121,22 @@ func NewActionPlayAnimation(animations []string) (r ActionUnion) {
 	r.CurrentAction = ACTION_PLAY_ANIMATION
 	return r
 }
-func NewActionWander(animation string) (r ActionUnion) {
+
+func NewActionWander(animation string, animationIdle string) (r ActionUnion) {
 	r.WanderAnimation = animation
+	r.WanderAnimationIdle = animationIdle
 	r.IsSet = true
 	r.CurrentAction = ACTION_WANDER
 	return r
 }
+
+func NewActionWalk(animation string) (r ActionUnion) {
+	r.WalkAnimation = animation
+	r.IsSet = true
+	r.CurrentAction = ACTION_WALK
+	return r
+}
+
 func NewActionWalkTo(TargetPos misc.Vector2, walkAnimation string, finalAnimation string) (r ActionUnion) {
 	r.TargetPos = misc.NewOption(TargetPos)
 	r.WalkToAnimation = walkAnimation

@@ -5,6 +5,7 @@ import (
 	"log"
 	"math/rand"
 	"slices"
+	"strings"
 
 	"github.com/Stymphalian/ak_chibi_bot/server/internal/misc"
 )
@@ -227,6 +228,30 @@ func (c *OperatorService) ValidateUpdateSetDefaultOtherwise(update *OperatorInfo
 			[]string{update.Action.WanderAnimation},
 			defaultMoveAnim,
 		)[0]
+
+		// FIXED BUG:  The "default" idle animation of a base operator is
+		// Relax. We can't use DefaultAnimForChibiStance because that is
+		// a "Move" animation. Which would cause the chibi to "walk in place"
+		// once they reach their destination
+		defaultIdleAnimation := c.getDefaultIdleAnim(update.ChibiStance)
+
+		update.Action.WanderAnimationIdle = getValidAnimations(
+			update.AvailableAnimations,
+			[]string{update.Action.WanderAnimationIdle},
+			defaultIdleAnimation,
+		)[0]
+	case ACTION_WALK:
+		availableMoves := GetAvailableMoveAnimations(update.AvailableAnimations)
+		defaultMoveAnim := GetDefaultAnimForChibiStance(update.ChibiStance)
+		if len(availableMoves) > 0 {
+			defaultMoveAnim = availableMoves[0]
+		}
+		update.Action.WalkAnimation = getValidAnimations(
+			update.AvailableAnimations,
+			[]string{update.Action.WalkAnimation},
+			defaultMoveAnim,
+		)[0]
+
 	case ACTION_WALK_TO:
 		if update.Action.TargetPos.IsNone() {
 			update.Action.TargetPos = misc.NewOption(misc.Vector2{X: 0.5, Y: 0.5})
@@ -239,16 +264,11 @@ func (c *OperatorService) ValidateUpdateSetDefaultOtherwise(update *OperatorInfo
 				},
 			)
 			availableAnimations := update.AvailableAnimations
-			var defaultIdleAnimation string
 			// FIXED BUG:  The "default" idle animation of a base operator is
 			// Relax. We can't use DefaultAnimForChibiStance because that is
 			// a "Move" animation. Which would cause the chibi to "walk in place"
 			// once they reach their destination
-			if update.ChibiStance == CHIBI_STANCE_ENUM_BASE {
-				defaultIdleAnimation = DEFAULT_ANIM_BASE_RELAX
-			} else {
-				defaultIdleAnimation = DEFAULT_ANIM_BATTLE
-			}
+			defaultIdleAnimation := c.getDefaultIdleAnim(update.ChibiStance)
 
 			availableMoves := GetAvailableMoveAnimations(availableAnimations)
 			defaultMoveAnim := GetDefaultAnimForChibiStance(update.ChibiStance)
@@ -395,6 +415,28 @@ func (s *OperatorService) GetOperatorIdFromName(name string, faction FactionEnum
 	return "", humanMatches
 }
 
+func (c *OperatorService) getDefaultMoveAnims(availableAnimations []string) string {
+	moveAnimation := DEFAULT_MOVE_ANIM_NAME
+	if !slices.Contains(availableAnimations, moveAnimation) {
+		for _, animation := range availableAnimations {
+			if strings.Contains(animation, "Move") {
+				moveAnimation = animation
+				break
+			}
+		}
+	}
+	return moveAnimation
+}
+func (c *OperatorService) getDefaultIdleAnim(stance ChibiStanceEnum) string {
+	var defaultIdleAnimation string
+	if stance == CHIBI_STANCE_ENUM_BASE {
+		defaultIdleAnimation = DEFAULT_ANIM_BASE_RELAX
+	} else {
+		defaultIdleAnimation = DEFAULT_ANIM_BATTLE
+	}
+	return defaultIdleAnimation
+}
+
 func (s *OperatorService) GetRandomOperator() (*OperatorInfo, error) {
 	operatorIds, err := s.GetOperatorIds(FACTION_ENUM_OPERATOR)
 	if err != nil {
@@ -437,9 +479,10 @@ func (s *OperatorService) GetRandomOperator() (*OperatorInfo, error) {
 		availableAnimations,
 		1.0,
 		misc.EmptyOption[misc.Vector2](),
-		ACTION_PLAY_ANIMATION,
-		NewActionPlayAnimation(
-			[]string{GetDefaultAnimForChibiStance(chibiStance)},
+		ACTION_WANDER,
+		NewActionWander(
+			s.getDefaultMoveAnims(availableAnimations),
+			s.getDefaultIdleAnim(chibiStance),
 		),
 	)
 	return &opInfo, nil

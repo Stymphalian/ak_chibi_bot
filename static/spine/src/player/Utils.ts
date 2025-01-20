@@ -285,3 +285,6 @@ export function escapeHtml(str: string) {
 export function isAlphanumeric(str: string): boolean {
     return /^[a-zA-Z0-9_-]{1,100}$/.test(str)
 }
+export function isAlphanumericWithSpace(str: string): boolean {
+    return /^[a-zA-Z0-9_-\s]{1,100}$/.test(str)
+}

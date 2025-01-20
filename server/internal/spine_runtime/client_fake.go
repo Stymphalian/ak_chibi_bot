@@ -48,3 +48,13 @@ func (f *FakeSpineClient) ShowChatMessage(r *ShowChatMessageRequest) (*ShowChatM
 		},
 	}, nil
 }
+
+func (f *FakeSpineClient) FindOperator(r *FindOperatorRequest) (*FindOperatorResponse, error) {
+	return &FindOperatorResponse{
+		BridgeResponse: BridgeResponse{
+			TypeName:   FIND_OPERATOR,
+			ErrorMsg:   "",
+			StatusCode: 200,
+		},
+	}, nil
+}

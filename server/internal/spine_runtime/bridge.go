@@ -412,5 +412,35 @@ func (s *SpineBridge) ShowChatMessage(r *ShowChatMessageRequest) (*ShowChatMessa
 	return successResp, nil
 }
 
+func (s *SpineBridge) FindOperator(r *FindOperatorRequest) (*FindOperatorResponse, error) {
+	if s.clientConnected() {
+		data := FindOperatorInternalRequest{
+			BridgeRequest: BridgeRequest{
+				TypeName: FIND_OPERATOR,
+			},
+			UserName: r.UserName,
+		}
+		// data_json, _ := json.Marshal(data)
+		// log.Println("FindOperator() sending: ", string(data_json))
+		for _, websocketConn := range s.WebSocketConnections {
+			if websocketConn.conn != nil {
+				err := websocketConn.conn.WriteJSON(data)
+				if err != nil {
+					log.Println("Error sending FindOperatorInternalRequest: ", err)
+				}
+			}
+		}
+	}
+
+	successResp := &FindOperatorResponse{
+		BridgeResponse: BridgeResponse{
+			TypeName:   FIND_OPERATOR,
+			ErrorMsg:   "",
+			StatusCode: 200,
+		},
+	}
+	return successResp, nil
+}
+
 // ----------------------------
 // End Spine Client Interface functions

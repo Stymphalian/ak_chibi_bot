@@ -142,3 +142,20 @@ func (c *ChatCommandFollow) UpdateActor(a ActorUpdater) error {
 		TwitchUserId:    c.twitchUserId,
 	}, c.update)
 }
+
+type ChatCommandFindMe struct {
+	replyMessage    string
+	username        string
+	usernameDisplay string
+	twitchUserId    string
+}
+
+func (c *ChatCommandFindMe) Reply(a ActorUpdater) string { return c.replyMessage }
+func (c *ChatCommandFindMe) UpdateActor(a ActorUpdater) error {
+	ctx := context.Background()
+	return a.FindOperator(ctx, misc.UserInfo{
+		Username:        c.username,
+		UsernameDisplay: c.usernameDisplay,
+		TwitchUserId:    c.twitchUserId,
+	})
+}

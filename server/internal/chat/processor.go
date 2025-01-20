@@ -80,6 +80,7 @@ func (c *ChatCommandProcessor) HandleMessage(current *operator.OperatorInfo, cha
 	// !chibi save
 	// !chibi unsave
 	// !chibi follow stymtwitchbot
+	// !chibi findme
 
 	// var msg string
 	subCommand := strings.TrimSpace(args[1])
@@ -129,6 +130,8 @@ func (c *ChatCommandProcessor) HandleMessage(current *operator.OperatorInfo, cha
 		return c.setEnemy(chatArgs, current)
 	case "walk":
 		return c.setWalk(chatArgs, current)
+	case "wander":
+		return c.setWander(chatArgs, current)
 	case "pace":
 		return c.setPace(chatArgs, current)
 	case "follow":
@@ -147,6 +150,8 @@ func (c *ChatCommandProcessor) HandleMessage(current *operator.OperatorInfo, cha
 		return c.setSaveUserPrefs(chatArgs, current)
 	case "unsave":
 		return c.setClearUserPrefs(chatArgs, current)
+	case "findme":
+		return c.setFindMe(chatArgs, current)
 	default:
 		if _, ok := misc.MatchesKeywords(subCommand, current.AvailableAnimations); ok {
 			chatArgs.args = []string{"!chibi", "play", subCommand}
@@ -167,14 +172,13 @@ func (c *ChatCommandProcessor) HandleMessage(current *operator.OperatorInfo, cha
 
 func (c *ChatCommandProcessor) chibiHelp(args *ChatArgs) (ChatCommand, error) {
 	log.Printf("!chibi_help command triggered with %v\n", args.chatMsg.Message)
-	msg := `!chibi to control your Arknights chibi. ` +
-		`"!chibi Rockrock" to change your operator. ` +
-		`"!chibi play Move", "!chibi skin epoque#2" to change the animation and skin. ` +
+	msg := `"!chibi amiya" to change your operator. ` +
+		`"!chibi play interact", "!chibi epoque" to change the animation and skin. ` +
 		`"!chibi skins" and "!chibi anims" lists available skins and animations. ` +
-		`"!chibi stance battle" to change from base or battle chibis. ` +
-		`"!chibi enemy mandragora" to change into an enemy mob instead of an operator. ` +
+		`"!chibi enemy mandragora" to change into an enemy mob. ` +
 		`"!chibi walk" to have your chibi walk around the screen. ` +
-		`Source Code from github: search Stymphalian/ak_chibi_bot`
+		`"!chibi speed 2", "!chibi velocity 0.5" to change animation and movement speed. ` +
+		`akchibibot.stymphalian.top/docs for more help.`
 	return &ChatCommandSimpleMessage{replyMessage: msg}, nil
 }
 
@@ -256,7 +260,7 @@ func (c *ChatCommandProcessor) setStance(args *ChatArgs, current *operator.Opera
 }
 
 func (c *ChatCommandProcessor) setFacing(args *ChatArgs, current *operator.OperatorInfo) (ChatCommand, error) {
-	if len(args.args) < 3 {
+	if len(args.args) != 3 {
 		return &ChatCommandNoOp{}, errors.New("try something like !chibi face back")
 	}
 	facing, err := operator.ChibiFacingEnum_Parse(args.args[2])
@@ -333,8 +337,9 @@ func (c *ChatCommandProcessor) setWalk(args *ChatArgs, current *operator.Operato
 	// animations then try to find an animation with "Move" in its name
 	// Try to keep the current animation if it is already a "move" like animation
 	moveAnimation := c.getMoveAnimFromCurrent(current)
-	current.CurrentAction = operator.ACTION_WANDER
-	current.Action = operator.NewActionWander(moveAnimation)
+
+	current.CurrentAction = operator.ACTION_WALK
+	current.Action = operator.NewActionWalk(moveAnimation)
 	current.AnimationSpeed = c.spineService.GetDefaultAnimationSpeed()
 
 	if len(args.args) == 3 {
@@ -356,7 +361,6 @@ func (c *ChatCommandProcessor) setWalk(args *ChatArgs, current *operator.Operato
 		} else {
 			animationAfterStance = operator.DEFAULT_ANIM_BATTLE
 		}
-
 		current.Action = operator.NewActionWalkTo(
 			misc.Vector2{X: desiredPosition, Y: 0.0},
 			moveAnimation,
@@ -385,6 +389,35 @@ func (c *ChatCommandProcessor) setWalk(args *ChatArgs, current *operator.Operato
 		)
 		current.AnimationSpeed = c.spineService.GetDefaultAnimationSpeed()
 	}
+	return &ChatCommandUpdateActor{
+		replyMessage:    "",
+		username:        args.chatMsg.Username,
+		usernameDisplay: args.chatMsg.UserDisplayName,
+		twitchUserId:    args.chatMsg.TwitchUserId,
+		update:          current,
+	}, nil
+}
+
+func (c *ChatCommandProcessor) setWander(args *ChatArgs, current *operator.OperatorInfo) (ChatCommand, error) {
+	if current.Faction == operator.FACTION_ENUM_OPERATOR {
+		current.ChibiStance = operator.CHIBI_STANCE_ENUM_BASE
+	}
+
+	// Set the animation to "Move". If "Move" doesn't exist in the list of
+	// animations then try to find an animation with "Move" in its name
+	// Try to keep the current animation if it is already a "move" like animation
+	moveAnimation := c.getMoveAnimFromCurrent(current)
+	animationAfterStance := ""
+	if current.ChibiStance == operator.CHIBI_STANCE_ENUM_BASE {
+		animationAfterStance = operator.DEFAULT_ANIM_BASE_RELAX
+	} else {
+		animationAfterStance = operator.DEFAULT_ANIM_BATTLE
+	}
+
+	current.CurrentAction = operator.ACTION_WANDER
+	current.Action = operator.NewActionWander(moveAnimation, animationAfterStance)
+	current.AnimationSpeed = c.spineService.GetDefaultAnimationSpeed()
+
 	return &ChatCommandUpdateActor{
 		replyMessage:    "",
 		username:        args.chatMsg.Username,
@@ -638,6 +671,21 @@ func (c *ChatCommandProcessor) setClearUserPrefs(
 		twitchUserId:    args.chatMsg.TwitchUserId,
 		action:          ChatCommandSaveChibi_Remove,
 		update:          nil,
+	}, nil
+}
+
+func (c *ChatCommandProcessor) setFindMe(
+	args *ChatArgs,
+	_ *operator.OperatorInfo,
+) (ChatCommand, error) {
+	if len(args.args) != 2 {
+		return &ChatCommandNoOp{}, errors.New("try something like !chibi findme")
+	}
+	return &ChatCommandFindMe{
+		replyMessage:    "",
+		username:        args.chatMsg.Username,
+		usernameDisplay: args.chatMsg.UserDisplayName,
+		twitchUserId:    args.chatMsg.TwitchUserId,
 	}, nil
 }
 

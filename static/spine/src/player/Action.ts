@@ -2,12 +2,13 @@ import { Color, Vector2 } from "../core/Utils";
 import { SceneRenderer } from "../webgl/SceneRenderer";
 import { Vector3 } from "../webgl/Vector3";
 import { Actor } from "./Actor";
+import { ExperimentFlags } from "./Flags";
 import { BoundingBox, SpinePlayer } from "./Player";
-
 
 export class ActionName {
     static PLAY_ANIMATION = "PLAY_ANIMATION";
     static WANDER = "WANDER";
+    static WALK = "WALK";
     static WALK_TO = "WALK_TO";
     static PACE_AROUND = "PACE_AROUND";
     static FOLLOW = "FOLLOW";
@@ -24,12 +25,19 @@ export interface ActorAction {
         player: SpinePlayer): void
 }
 
-export function ParseActionNameToAction(actionName: string, actionData: any): ActorAction {
+export function ParseActionNameToAction(actionName: string, actionData: any, flags: Map<string, any>): ActorAction {
     switch (actionName) {
         case ActionName.PLAY_ANIMATION:
             return new PlayAnimationAction(actionData);
         case ActionName.WANDER:
-            return new WanderAction(actionData);
+            if (flags.get(ExperimentFlags.WANDER_WITH_STOP)) {
+                return new WanderAction(actionData);    
+            } else {
+                actionData["walk_animation"] = actionData["wander_animation"];
+                return new WalkAction(actionData);
+            }
+        case ActionName.WALK:
+            return new WalkAction(actionData);
         case ActionName.WALK_TO:
             return new WalkToAction(actionData);
         case ActionName.PACE_AROUND:
@@ -43,7 +51,7 @@ export function ParseActionNameToAction(actionName: string, actionData: any): Ac
 }
 
 
-const DIST_TOLERANCE = 0.0001;
+const DIST_TOLERANCE = 0.001;
 const DEBUG_HEIGHT_1 = 0.4;
 const DEBUG_HEIGHT_2 = 0.5;
 const DEBUG_HEIGHT_3 = 0.6;
@@ -51,10 +59,20 @@ const DEBUG_HEIGHT_4 = 0.7;
 const DEBUG_HEIGHT_5 = 0.8;
 const DEBUG_HEIGHT_6 = 0.9;
 
-function getRandomPosition(currentPos: Vector3, viewport: BoundingBox): Vector3 {
+// function getRandomPosition(currentPos: Vector3, viewport: BoundingBox): Vector3 {
+//     let half = viewport.width / 2;
+//     let rand = Math.random();
+//     // NOTE: We do the rand*width - half because origin is in the center of the screen
+//     // We want to ensure that the chibi stays within the bounds of the viewport
+//     return new Vector3(rand * viewport.width - half, currentPos.y, currentPos.z);
+// }
+function getRandomPositionWithZ(currentPos: Vector3, viewport: BoundingBox): Vector3 {
     let half = viewport.width / 2;
     let rand = Math.random();
-    return new Vector3(rand * viewport.width - half, currentPos.y, currentPos.z);
+    let randZ = Math.random() * 10;
+    // NOTE: We do the rand*width - half because origin is in the center of the screen
+    // We want to ensure that the chibi stays within the bounds of the viewport
+    return new Vector3(rand * viewport.width - half, currentPos.y, randZ);
 }
 
 function setActorYPositionByAnimation(actor: Actor, animation: string, viewport: BoundingBox) {
@@ -124,7 +142,6 @@ export class PlayAnimationAction implements ActorAction {
     }
 
     DrawDebug(actor: Actor, renderer: SceneRenderer, viewport: BoundingBox): void {
-
     }
 
     UpdatePhysics(actor: Actor, deltaSecs: number, viewport: BoundingBox, player: SpinePlayer) {
@@ -133,7 +150,7 @@ export class PlayAnimationAction implements ActorAction {
         } else {
             if (this.endPosition == null) {
                 this.startPosition = actor.getPosition3();
-                this.endPosition = getRandomPosition(actor.getPosition3(), viewport);
+                this.endPosition = getRandomPositionWithZ(actor.getPosition3(), viewport);
             }
 
             let dir = this.endPosition.subtract(actor.getPosition3());
@@ -141,7 +158,7 @@ export class PlayAnimationAction implements ActorAction {
                 // We have reached the target position. Find a new destination
                 actor.setPosition(this.endPosition.x, this.endPosition.y, this.endPosition.z);
                 this.startPosition = actor.getPosition3();
-                this.endPosition = getRandomPosition(actor.getPosition3(), viewport);
+                this.endPosition = getRandomPositionWithZ(actor.getPosition3(), viewport);
             }
             dir.normalize();
             updateVelocityFromDir(actor, this.endPosition, dir, deltaSecs);
@@ -149,7 +166,7 @@ export class PlayAnimationAction implements ActorAction {
     }
 }
 
-export class WanderAction implements ActorAction {
+export class WalkAction implements ActorAction {
     public actionData: any
     public startPosition: Vector3 = null;
     public endPosition: Vector3 = null;
@@ -168,7 +185,7 @@ export class WanderAction implements ActorAction {
     }
 
     GetAnimations(): string[] {
-        return [this.actionData["wander_animation"]];
+        return [this.actionData["walk_animation"]];
     }
 
     DrawDebug(actor: Actor, renderer: SceneRenderer, viewport: BoundingBox): void {
@@ -192,7 +209,7 @@ export class WanderAction implements ActorAction {
     UpdatePhysics(actor: Actor, deltaSecs: number, viewport: BoundingBox, player: SpinePlayer) {
         if (this.endPosition == null) {
             this.startPosition = actor.getPosition3();
-            this.endPosition = getRandomPosition(actor.getPosition3(), viewport);
+            this.endPosition = getRandomPositionWithZ(actor.getPosition3(), viewport);
         }
 
         let dir = this.endPosition.subtract(actor.getPosition3());
@@ -200,10 +217,99 @@ export class WanderAction implements ActorAction {
             // We have reached the target position. Find a new destination
             actor.setPosition(this.endPosition.x, this.endPosition.y, this.endPosition.z);
             this.startPosition = actor.getPosition3();
-            this.endPosition = getRandomPosition(actor.getPosition3(), viewport);
+            this.endPosition = getRandomPositionWithZ(actor.getPosition3(), viewport);
         }
         dir.normalize();
         updateVelocityFromDir(actor, this.endPosition, dir, deltaSecs);
+    }
+}
+
+export class WanderAction implements ActorAction {
+    static WANDER_WALK = "wander_walk";
+    static WANDER_IDLE = "wander_idle";
+    static WANDER_IDLE_MIN_TIME_SEC = 10;
+    static WANDER_IDLE_WAIT_TIME_SEC = 20;
+    
+    public actionData: any
+    public startPosition: Vector3 = null;
+    public endPosition: Vector3 = null;
+    public state: string = null;
+    public idleWaitTimeTotalSecs: number = 0;
+    public idleWaitTimeSecs: number = 0;
+
+    constructor(actionData: any) {
+        this.actionData = actionData
+        this.startPosition = null;
+        this.endPosition = null;
+        this.state = WanderAction.WANDER_WALK;
+        this.idleWaitTimeTotalSecs = 0;
+        this.idleWaitTimeSecs = 0;
+    }
+
+    SetAnimation(actor: Actor, animation: string, viewport: BoundingBox) {
+        // TODO: Figure out what this is for walking, wander, pace-around actions
+        // I know for playAnimation it is used to reset from a sit position
+        // actor.setPositionY(actor.config.startPosY * viewport.height);
+        setActorYPositionByAnimation(actor, animation, viewport)
+    }
+
+    GetAnimations(): string[] {
+        if (this.state == WanderAction.WANDER_IDLE) {
+            return [this.actionData["wander_animation_idle"]];
+        } else {
+            return [this.actionData["wander_animation"]];
+        }
+        // return [this.actionData["wander_animation"]];
+    }
+
+    DrawDebug(actor: Actor, renderer: SceneRenderer, viewport: BoundingBox): void {
+        if (this.endPosition) {
+            renderer.line(
+                this.endPosition.x,
+                this.endPosition.y,
+                this.endPosition.x,
+                this.endPosition.y + viewport.height * DEBUG_HEIGHT_1,
+                Color.OXFORD_BLUE,
+            )
+            renderer.circle(
+                false,
+                this.endPosition.x,
+                this.endPosition.y + viewport.height * DEBUG_HEIGHT_1,
+                (this.idleWaitTimeSecs / this.idleWaitTimeTotalSecs) * 30,
+                Color.OXFORD_BLUE
+            );
+        }
+    }
+    UpdatePhysics(actor: Actor, deltaSecs: number, viewport: BoundingBox, player: SpinePlayer) {
+        if (this.state == WanderAction.WANDER_WALK) {
+            if (this.endPosition == null) {
+                this.startPosition = actor.getPosition3();
+                this.endPosition = getRandomPositionWithZ(actor.getPosition3(), viewport);
+            }
+    
+            let dir = this.endPosition.subtract(actor.getPosition3());
+            if (dir.length() < DIST_TOLERANCE) {
+                // We have reached the target position. Find a new destination
+                actor.setPosition(this.endPosition.x, this.endPosition.y, this.endPosition.z);
+                actor.setVelocity(0, 0, 0);
+                this.state = WanderAction.WANDER_IDLE;
+                this.idleWaitTimeTotalSecs = WanderAction.WANDER_IDLE_MIN_TIME_SEC + Math.random() * WanderAction.WANDER_IDLE_WAIT_TIME_SEC;
+                this.idleWaitTimeSecs = this.idleWaitTimeTotalSecs;
+                actor.InitAnimationState();
+            } else {
+                dir.normalize();
+                updateVelocityFromDir(actor, this.endPosition, dir, deltaSecs);
+            }
+            
+        } else if (this.state == WanderAction.WANDER_IDLE) {
+            this.idleWaitTimeSecs -= deltaSecs;
+            if (this.idleWaitTimeSecs < 0) {
+                this.state = WanderAction.WANDER_WALK;
+                this.startPosition = actor.getPosition3();
+                this.endPosition = getRandomPositionWithZ(actor.getPosition3(), viewport);
+                actor.InitAnimationState();
+            }
+        }
     }
 }
 
@@ -265,16 +371,17 @@ export class WalkToAction implements ActorAction {
                 0,
             );
 
-            let reached = this.startPosition.subtract(this.endPosition).length() < DIST_TOLERANCE;
-            if (reached) {
+            const dist = this.startPosition.subtract(this.endPosition).length();
+            if (dist < DIST_TOLERANCE) {
                 this.reachedDestination = true;
+                actor.InitAnimationState();
                 return;
             }
         }
 
         let dir = this.endPosition.subtract(actor.getPosition3()).normalize();
-        let reached = this.endPosition.subtract(actor.getPosition3()).length();
-        if (reached < DIST_TOLERANCE) {
+        let dist = this.endPosition.subtract(actor.getPosition3()).length();
+        if (dist < DIST_TOLERANCE) {
             // We have reached the target destination
             actor.setPosition(this.endPosition.x, this.endPosition.y, this.endPosition.z);
             actor.setVelocity(0, 0, 0);
@@ -425,7 +532,7 @@ export class FollowAction implements ActorAction {
             // For cases if the target actor doesn't exist (due to GC)
             // we have the actor just walk to random positions.
             if (this.noTargetRandomPosition == null) {
-                this.noTargetRandomPosition = getRandomPosition(
+                this.noTargetRandomPosition = getRandomPositionWithZ(
                     actor.getPosition3(), viewport);
             }
             return this.noTargetRandomPosition;

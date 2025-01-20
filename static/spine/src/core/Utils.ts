@@ -69,6 +69,8 @@ export class Color {
 	public static RED = new Color(1, 0, 0, 1);
 	public static GREEN = new Color(0, 1, 0, 1);
 	public static BLUE = new Color(0, 0, 1, 1);
+	public static YELLOW = new Color(1, 1, 0, 1);
+	public static GOLD =  new Color(1, 0.92, 0.016, 1);
 	public static MAGENTA = new Color(1, 0, 1, 1);
 	public static ORANGE = new Color(1, 0.5, 0.1, 1.0);
 	public static PURPLE = new Color(0.5, 0, 1, 1.0);

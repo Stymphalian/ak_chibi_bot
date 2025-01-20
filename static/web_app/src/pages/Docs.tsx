@@ -68,10 +68,14 @@ export function DocsPage() {
                          for the chibi to walk to that part of the screen.</td>
                     </tr>
                     <tr>
+                        <td>!chibi wander</td>
+                        <td>Have the chibi walk a bit, pause and then walk again. </td>
+                    </tr>
+                    <tr>
                         <td>!chibi enemy The Last Steam Knight</td>
                         <td>Change the chibi into one of the enemies in the game. <br />
                              You can also use the enemies "code". <br />
-                            <Code>!chibi enemy B4</Code> is equivalent to !chibi enemy Originium Slug. <br />
+                            <Code>!chibi enemy B4</Code> is equivalent to <Code>!chibi enemy Originium Slug</Code>. <br />
                             You can find all the enemy codes from <a href="https://arknights.wiki.gg/wiki/Enemy/Normal">Arknights Wiki</a>.
                         </td>
                     </tr>
@@ -103,6 +107,10 @@ export function DocsPage() {
                         <td>Make your chibi follow another Viewer's chibi around.<br />
                         <Code>!chibi follow StymTwitchBot</Code>
                         </td>
+                    </tr>
+                    <tr>
+                        <td>!chibi findme</td>
+                        <td>Highlight your chibi on screen to make it easier to find.</td>
                     </tr>
                 </tbody>
             </table>
@@ -143,6 +151,13 @@ export function DocsPage() {
                             Once you are done, reload the Browser Source in OBS to pick up the changes.
                         </li>
                     </ol>
+                </li>
+                <li className="list-group-item">
+                    You can enable a feature to make it easier for viewers to find their chibis <br />
+                    For example: <br />
+                    <Code>{url + "&chibi_ocean=true&scale=0.75"}</Code> <br />
+                    Enabling this features means the chibis move less on the screen and the nametags are more visible. <br />
+                    A good rule of thumb is if there are more than 30+ chibis on your screen it is probably worthwhile to turn this feature on.
                 </li>
                 <li className="list-group-item">
                     You can change settings related to how your bot handles 

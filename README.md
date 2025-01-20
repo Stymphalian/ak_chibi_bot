@@ -27,6 +27,7 @@ Command Name | Description
 !chibi velocity 1.2 | For when the chibi is walking around change the movement speed of the chibi (min 0.1, max 2). Use !chibi velocity default to change back to a default speed.
 !chibi <save, unsave> | Save the current chibi as your preferred chibi. When you join a stream the saved chibi will be loaded with the same skin, animation, etc. Use `!chibi unsave` to clear out your preferences.
 !chibi follow <username> | Have your chibi follow behind another viewer's chibi. `!chibi follow stymtwitchbot`
+!chibi findme | Highligh your chibi on screen to make it easier to find.
 
 # Quick Start - Hosted
 Have the twich bot directly connect to your chat by using a hosted bot.

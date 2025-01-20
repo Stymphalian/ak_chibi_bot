@@ -53,6 +53,7 @@ export function getRuntimeConfigFromQueryParams(searchParams: URLSearchParams): 
     const useAccurateBoundingBox = !(searchParams.get('accurate_bb') === 'false');
     const showChatMessages = searchParams.get('show_chat') === 'true';
     const scale = Math.max(Math.min((parseFloat(searchParams.get('scale')) || 1), 3), 0.1);
+    const excessiveChibiMitigations = searchParams.get('chibi_ocean') === 'true';
     const usernameBlacklist = getUsernameBlacklist(searchParams);
 
     const [containerWidth, containerHeight] = setContainerSizeFromQuery(searchParams);
@@ -64,5 +65,6 @@ export function getRuntimeConfigFromQueryParams(searchParams: URLSearchParams): 
         accurateBoundingBoxFlag: useAccurateBoundingBox,
         showChatMessagesFlag: showChatMessages,
         usernameBlacklist: usernameBlacklist,
+        excessiveChibiMitigations: excessiveChibiMitigations,
     }
 }

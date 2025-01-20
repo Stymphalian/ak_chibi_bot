@@ -40,7 +40,7 @@ import { ResizeMode, SceneRenderer } from "../webgl/SceneRenderer"
 import { Vector3 } from "../webgl/Vector3"
 import { ManagedWebGLRenderingContext } from "../webgl/WebGL"
 import { Actor, SpineActorConfig } from "./Actor"
-import { createElement, findWithClass, OffscreenRender, escapeHtml, isAlphanumeric, findWithId, configurePerspectiveCamera, updateCameraSettings } from "./Utils";
+import { createElement, findWithClass, OffscreenRender, escapeHtml, isAlphanumeric, findWithId, configurePerspectiveCamera, updateCameraSettings, isAlphanumericWithSpace } from "./Utils";
 import { Camera } from "../webgl/Camera";
 import { readSpritesheetJsonConfig, SpritesheetActor } from "./Spritesheet";
 
@@ -109,6 +109,10 @@ export interface SpinePlayerConfig {
 	chibiScale: number
 	useAccurateBoundingBox: boolean
 	showChatMessages: boolean
+
+	// Configs to help with crowded chibis on the screen
+	// ----------
+	excessiveChibiMitigations: boolean
 }
 
 class Slider {
@@ -224,6 +228,7 @@ export class SpinePlayer {
 
 	// private offCanvas: HTMLCanvasElement|null;
 	private offscreenRender: OffscreenRender = null;
+	private actorHeightDirty = true;
 
 	constructor(parent: HTMLElement | string, playerConfig: SpinePlayerConfig) {
 		if (typeof parent === "string") {
@@ -332,11 +337,12 @@ export class SpinePlayer {
 
 		if (config.chibiId == undefined) { config.chibiId = crypto.randomUUID(); }
 		if (config.userDisplayName == undefined) { config.userDisplayName = crypto.randomUUID(); }
+		// TODO: Remove the logging of chibiId and userDisplayName
 		if (!isAlphanumeric(config.chibiId)) {
-			throw Error("ChibiId is not valid");
+			throw Error("ChibiId is not valid ");
 		}
-		if (!isAlphanumeric(config.userDisplayName)) {
-			throw Error("userDisplayName is not valid");
+		if (!isAlphanumericWithSpace(config.userDisplayName)) {
+			throw Error("userDisplayName is not valid ");
 		}
 		if (config.action == undefined) {
 			throw Error("config.action must be set");
@@ -498,12 +504,17 @@ export class SpinePlayer {
 	}
 
 	changeOrAddActor(actorName: string, config: SpineActorConfig) {
+		this.actorHeightDirty = true;
 		if (this.actors.has(actorName)) {
 			let actor = this.actors.get(actorName);
 			actor.ResetWithConfig(config);
 			this.setupActor(actor);
 		} else {
-			let actor = new Actor(config, this.playerConfig.viewport, this.offscreenRender);
+			let actor = new Actor(
+				config, 
+				this.playerConfig.viewport, 
+				this.offscreenRender, 
+				this.playerConfig.excessiveChibiMitigations);
 			this.setupActor(actor);
 			this.actors.set(actorName, actor);
 		}
@@ -519,6 +530,13 @@ export class SpinePlayer {
 
 	removeActor(actorName: string) {
 		this.actors.delete(actorName)
+	}
+	
+	flashFindCharacter(actorName: string) {
+		if (!this.actors.has(actorName)) {
+			return;
+		}
+		this.actors.get(actorName).FlashFindCharacter();
 	}
 
 	showChatMessage(actorName: string, message: string) {
@@ -677,11 +695,17 @@ export class SpinePlayer {
 		let actorsZOrder = Array.from(this.actors.keys()).sort((a: string, b: string) => {
 			let a1 = this.actors.get(a);
 			let a2 = this.actors.get(b);
+			if (a1.ShouldFlashCharacter && !a2.ShouldFlashCharacter) {
+				return 1;
+			} else if (a2.ShouldFlashCharacter && !a1.ShouldFlashCharacter) {
+				return -1;
+			}
 			let r = a2.getPositionZ() - a1.getPositionZ()
 			// To ensure stable sort
 			if (r == 0) { return a1.lastUpdatedWhen - a2.lastUpdatedWhen; }
 			return r;
 		});
+		this.calculateAverageActorHeights(actorsZOrder);
 
 		let all_actors_loaded = true;
 		for (let key of actorsZOrder) {
@@ -774,6 +798,41 @@ export class SpinePlayer {
 			this.hideError();
 		}
 		this.windowFpsFrameCount += 1;
+	}
+
+	public calculateAverageActorHeights(actorsZOrder: string[]) {
+		if (!this.playerConfig.excessiveChibiMitigations) {
+			return;
+		}
+		if (actorsZOrder.length < 30) {
+			// Only trigger using actor bands if we have lots of actors
+			return;
+		}
+		if (!this.actorHeightDirty) {
+			return;
+		}
+		let averageHeight  = 0;
+		let actorCount = 0;
+		for (let key of actorsZOrder) {
+			let actor = this.actors.get(key);
+			if (actor.load_perma_failed) {
+				// Permanant failure trying to load this actor. Just skip it.
+				continue;
+			}
+
+			// Have we finished loading the asset? Then set things up
+			// if (this.assetManager.isLoadingComplete() && this.skeleton == null) this.loadActor();
+			if (this.assetManager.isLoadingComplete()) {
+				if (!actor.isActorDoneLoading()) {
+					break;
+				}
+			}
+
+			averageHeight += actor.getRenderingBoundingBox().height
+			actorCount += 1;
+		}
+		Actor.averageActorHeight = averageHeight / actorCount;
+		this.actorHeightDirty = false;
 	}
 
 	public drawActorText(actor: Actor) {

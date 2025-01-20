@@ -270,6 +270,17 @@ func (c *ChibiActor) ShowMessage(ctx context.Context, userInfo misc.UserInfo, ms
 	return err
 }
 
+func (c *ChibiActor) FindOperator(ctx context.Context, userInfo misc.UserInfo) error {
+	_, ok := c.ChatUsers[userInfo.Username]
+	if !ok {
+		return nil
+	}
+	_, err := c.client.FindOperator(&spine.FindOperatorRequest{
+		UserName: userInfo.Username,
+	})
+	return err
+}
+
 func (c *ChibiActor) UpdateChatter(
 	ctx context.Context,
 	userInfo misc.UserInfo,
