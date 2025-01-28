@@ -260,10 +260,6 @@ func (s *MainServer) HandleRoom(w http.ResponseWriter, r *http.Request) error {
 			}
 		}
 	}
-	accurateBoundingBoxes := r.URL.Query().Get("accurate_bb")
-	if accurateBoundingBoxes == "true" || accurateBoundingBoxes == "false" {
-		extraQueryArgs += "&accurate_bb=" + accurateBoundingBoxes
-	}
 	showChatFlag := r.URL.Query().Get("show_chat")
 	if showChatFlag == "true" {
 		extraQueryArgs += "&show_chat=true"

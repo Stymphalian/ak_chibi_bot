@@ -33,13 +33,14 @@ import { Skeleton } from "../core/Skeleton"
 import { Vector2, TimeKeeper, Map, Color } from "../core/Utils"
 import { Vector3 } from "../webgl/Vector3"
 import { ActorAction, ParseActionNameToAction } from "./Action"
-import { SpinePlayer, BoundingBox } from "./Player"
+import { SpinePlayer } from "./Player"
 import { Event } from "../core/Event"
-import { OffscreenRender } from "./Utils"
+import { BoundingBox } from "./Utils"
 import { ChatMessageQueue, MessageBlock } from "./ChatMessages"
 import { SceneRenderer } from "../webgl/SceneRenderer"
 import { SpritesheetActor } from "./Spritesheet"
 import { ExperimentFlags } from "./Flags"
+import { OffscreenRender } from "./OffscreenRender"
 
 export interface ActorUpdateConfig {
 	start_pos: Vector2
@@ -147,6 +148,7 @@ export class Actor {
 	static averageActorHeight: number = 0;
 	static NUMBER_HEADER_BANDS: number = 5;
 	static HEADER_BANDS_HEIGHT: number = 20;
+	static FLASH_CHARACTER_TIMEOUT_MSEC = 10000; // 10 seconds
 
 	public loaded: boolean;
 	public skeleton: Skeleton;
@@ -162,6 +164,7 @@ export class Actor {
 
 	public viewport: BoundingBox = null;
 	public canvasBB: BoundingBox = null;
+	public canavsBBSaved = new Map<string, BoundingBox>();
 	public canvasBBCalculated: number = 0;
 	private offscreenRender: OffscreenRender | null = null;
 
@@ -194,6 +197,9 @@ export class Actor {
 	public lastUpdatedWhen: number = new Date().getTime();
 	private messageQueue: ChatMessageQueue = new ChatMessageQueue();
 
+	// Controls whether this actor needs to change from one animation to another
+	// When we do this we need to reset the animation state.
+	public dirtyAnimation: boolean = false;
 
 	// Variables for controlling mitigations to help with excessive chibis on the screen.
 	// This is to help with visual clarity of seeing the chibis on the screen
@@ -410,6 +416,7 @@ export class Actor {
 		this.load_perma_failed = false;
 
 		this.loaded = false;
+		this.canavsBBSaved.clear();
 		this.canvasBBCalculated = 0;
 		this.skeleton = null;
 		this.spritesheet = null;
@@ -472,6 +479,20 @@ export class Actor {
 
 		if (!this.isSpritesheetActor()) {
 			this.setSkeletonMovementData(viewport);
+		}
+	}
+
+	public QueueAnimationStateChange() {
+		this.dirtyAnimation = true;
+	}
+	public ProcessAnimationStateChange() {
+		if (this.dirtyAnimation) {
+			this.dirtyAnimation = false;
+			if (this.isSpritesheetActor()) {
+				this.InitAnimations();
+			} else {
+				this.InitAnimationState();
+			}
 		}
 	}
 
@@ -613,6 +634,7 @@ export class Actor {
 				this.spritesheet.GetTexture(),
 				bb.x,
 				bb.y,
+				this.getPositionZ(),
 				bb.width,
 				bb.height,
 				coords.U1, coords.V1,
@@ -625,23 +647,24 @@ export class Actor {
 	}
 
 	public DrawDebug(renderer: SceneRenderer, viewport: BoundingBox) {
-		let actor_pos = this.getPosition();
+		let actor_pos = this.getPosition3();
 		let bb = this.GetBoundingBox();
 		renderer.rect(
 			false,
-			bb.x, bb.y, bb.width, bb.height,
+			bb.x, bb.y, actor_pos.z, bb.width, bb.height,
 			Color.RED
 		);
-		renderer.circle(true, actor_pos.x, actor_pos.y, 10, Color.RED);
+		renderer.circle(true, actor_pos.x, actor_pos.y, actor_pos.z, 10, Color.RED);
 
 		let front_x = this.GetBoundingFront();
 		let top_y = this.GetBoundingTop();
 		let back_x = this.GetBoundingBack();
 		let bottom_y = this.GetBoundingBottom();
-		renderer.circle(true, back_x, bottom_y, 5, Color.GREEN);
-		renderer.circle(true, front_x, bottom_y, 10, Color.GREEN);
-		renderer.circle(true, back_x, top_y, 5, Color.ORANGE);
-		renderer.circle(true, front_x, top_y, 10, Color.ORANGE);
+		let z = actor_pos.z;
+		renderer.circle(true, back_x, bottom_y, z, 5, Color.GREEN);
+		renderer.circle(true, front_x, bottom_y, z, 10, Color.GREEN);
+		renderer.circle(true, back_x, top_y, z, 5, Color.ORANGE);
+		renderer.circle(true, front_x, top_y, z, 10, Color.ORANGE);
 
 		if (this.currentAction != null) {
 			this.currentAction.DrawDebug(this, renderer, viewport);
@@ -664,8 +687,7 @@ export class Actor {
 			} else {
 				this.skeleton.color = Color.WHITE;
 			}
-		}, 10000);
-		// TODO: Make the timout configurable
+		}, Actor.FLASH_CHARACTER_TIMEOUT_MSEC);
 	}
 
 	// Privates
@@ -674,6 +696,7 @@ export class Actor {
 	private setSkeletonMovementData(viewport: BoundingBox) {
 		this.skeleton.x = this.position.x + this.config.extraOffsetX + this.skeletonPositionOffset.x;
 		this.skeleton.y = this.position.y + this.config.extraOffsetY + this.skeletonPositionOffset.y;
+		this.skeleton.z = this.position.z;
 		this.skeleton.scaleX = this.scale.x;
 		this.skeleton.scaleY = this.scale.y;
 	}
@@ -720,6 +743,10 @@ export class Actor {
 				this.skeleton.scaleX = this.scale.x;
 				this.skeleton.scaleY = this.scale.y;
 			}
+
+			// TODO: This reaches a bit down into the logic of the setAnimationState
+			let defaultAnimationName = animations[0];
+			this.canavsBBSaved.delete(defaultAnimationName);
 
 			this.setAnimationState(animations);
 			this.recordAnimation(animations[0]);
@@ -811,6 +838,7 @@ export class Actor {
 			this.animationState.setAnimationWith(0, animation, true);
 			this.skeleton.x = 0;
 			this.skeleton.y = 0;
+			this.skeleton.z = 0;
 			this.setPositionZ(0);
 			this.skeleton.scaleX = Math.abs(this.config.scaleX);
 			this.skeleton.scaleY = Math.abs(this.config.scaleY);
@@ -829,11 +857,11 @@ export class Actor {
 				height: defaultBB.height
 			};
 			if (this.offscreenRender != null) {
-				let bb = this.offscreenRender.getBoundingBox(this, defaultBB);
-				returnBB.x = bb.x;
-				returnBB.y = bb.y;
-				returnBB.width = bb.width;
-				returnBB.height = bb.height;
+				if (!this.canavsBBSaved.has(defaultAnimationName)) {
+					let bb = this.offscreenRender.getBoundingBox(this, defaultBB);
+					this.canavsBBSaved.set(defaultAnimationName, bb);
+				}
+				returnBB = this.canavsBBSaved.get(defaultAnimationName);
 			} else {
 				// HACK!!!!:
 				// fixes for certain chibis
@@ -862,6 +890,7 @@ export class Actor {
 
 			this.skeleton.x = savedX;
 			this.skeleton.y = savedY;
+			this.skeleton.z = savedZ;
 			this.setPositionZ(savedZ);
 			this.skeleton.scaleX = savedScaleX;
 			this.skeleton.scaleY = savedScaleY;

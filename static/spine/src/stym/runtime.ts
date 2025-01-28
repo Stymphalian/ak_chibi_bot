@@ -7,7 +7,6 @@ export interface RuntimeConfig {
     height: number
     debugMode: boolean
     chibiScale: number
-    accurateBoundingBoxFlag: boolean
     showChatMessagesFlag: boolean
     usernameBlacklist: string[]
     excessiveChibiMitigations: boolean
@@ -64,7 +63,6 @@ export class Runtime {
                 chibiScale: this.runtimeConfig.chibiScale,
                 cameraPerspectiveNear: 1,
                 cameraPerspectiveFar: 2000,
-                useAccurateBoundingBox: this.runtimeConfig.accurateBoundingBoxFlag,
                 showChatMessages: this.runtimeConfig.showChatMessagesFlag,
                 excessiveChibiMitigations: this.runtimeConfig.excessiveChibiMitigations,
             };

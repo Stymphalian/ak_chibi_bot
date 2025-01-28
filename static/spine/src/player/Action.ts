@@ -3,7 +3,8 @@ import { SceneRenderer } from "../webgl/SceneRenderer";
 import { Vector3 } from "../webgl/Vector3";
 import { Actor } from "./Actor";
 import { ExperimentFlags } from "./Flags";
-import { BoundingBox, SpinePlayer } from "./Player";
+import { SpinePlayer } from "./Player";
+import { BoundingBox } from "./Utils";
 
 export class ActionName {
     static PLAY_ANIMATION = "PLAY_ANIMATION";
@@ -30,6 +31,7 @@ export function ParseActionNameToAction(actionName: string, actionData: any, fla
         case ActionName.PLAY_ANIMATION:
             return new PlayAnimationAction(actionData);
         case ActionName.WANDER:
+            // return new WanderAction(actionData);    
             if (flags.get(ExperimentFlags.WANDER_WITH_STOP)) {
                 return new WanderAction(actionData);    
             } else {
@@ -58,6 +60,7 @@ const DEBUG_HEIGHT_3 = 0.6;
 const DEBUG_HEIGHT_4 = 0.7;
 const DEBUG_HEIGHT_5 = 0.8;
 const DEBUG_HEIGHT_6 = 0.9;
+const MAX_Z_DEPTH = 10.0;
 
 // function getRandomPosition(currentPos: Vector3, viewport: BoundingBox): Vector3 {
 //     let half = viewport.width / 2;
@@ -69,7 +72,7 @@ const DEBUG_HEIGHT_6 = 0.9;
 function getRandomPositionWithZ(currentPos: Vector3, viewport: BoundingBox): Vector3 {
     let half = viewport.width / 2;
     let rand = Math.random();
-    let randZ = Math.random() * 10;
+    let randZ = -(Math.random() * MAX_Z_DEPTH);
     // NOTE: We do the rand*width - half because origin is in the center of the screen
     // We want to ensure that the chibi stays within the bounds of the viewport
     return new Vector3(rand * viewport.width - half, currentPos.y, randZ);
@@ -195,12 +198,14 @@ export class WalkAction implements ActorAction {
                 this.endPosition.y,
                 this.endPosition.x,
                 this.endPosition.y + viewport.height * DEBUG_HEIGHT_1,
+                this.endPosition.z,
                 Color.OXFORD_BLUE,
             )
             renderer.circle(
                 false,
                 this.endPosition.x,
                 this.endPosition.y + viewport.height * DEBUG_HEIGHT_1,
+                this.endPosition.z,
                 5,
                 Color.OXFORD_BLUE
             );
@@ -269,17 +274,20 @@ export class WanderAction implements ActorAction {
                 this.endPosition.y,
                 this.endPosition.x,
                 this.endPosition.y + viewport.height * DEBUG_HEIGHT_1,
+                this.endPosition.z,
                 Color.OXFORD_BLUE,
             )
             renderer.circle(
                 false,
                 this.endPosition.x,
                 this.endPosition.y + viewport.height * DEBUG_HEIGHT_1,
+                this.endPosition.z,
                 (this.idleWaitTimeSecs / this.idleWaitTimeTotalSecs) * 30,
                 Color.OXFORD_BLUE
             );
         }
     }
+
     UpdatePhysics(actor: Actor, deltaSecs: number, viewport: BoundingBox, player: SpinePlayer) {
         if (this.state == WanderAction.WANDER_WALK) {
             if (this.endPosition == null) {
@@ -295,7 +303,7 @@ export class WanderAction implements ActorAction {
                 this.state = WanderAction.WANDER_IDLE;
                 this.idleWaitTimeTotalSecs = WanderAction.WANDER_IDLE_MIN_TIME_SEC + Math.random() * WanderAction.WANDER_IDLE_WAIT_TIME_SEC;
                 this.idleWaitTimeSecs = this.idleWaitTimeTotalSecs;
-                actor.InitAnimationState();
+                actor.QueueAnimationStateChange();
             } else {
                 dir.normalize();
                 updateVelocityFromDir(actor, this.endPosition, dir, deltaSecs);
@@ -307,7 +315,7 @@ export class WanderAction implements ActorAction {
                 this.state = WanderAction.WANDER_WALK;
                 this.startPosition = actor.getPosition3();
                 this.endPosition = getRandomPositionWithZ(actor.getPosition3(), viewport);
-                actor.InitAnimationState();
+                actor.QueueAnimationStateChange();
             }
         }
     }
@@ -345,12 +353,14 @@ export class WalkToAction implements ActorAction {
                 this.endPosition.y,
                 this.endPosition.x,
                 this.endPosition.y + viewport.height * DEBUG_HEIGHT_2,
+                this.endPosition.z,
                 Color.PENN_BLUE,
             )
             renderer.circle(
                 false,
                 this.endPosition.x,
                 this.endPosition.y + viewport.height * DEBUG_HEIGHT_2,
+                this.endPosition.z,
                 10,
                 Color.PENN_BLUE);
         }
@@ -374,7 +384,7 @@ export class WalkToAction implements ActorAction {
             const dist = this.startPosition.subtract(this.endPosition).length();
             if (dist < DIST_TOLERANCE) {
                 this.reachedDestination = true;
-                actor.InitAnimationState();
+                actor.QueueAnimationStateChange();
                 return;
             }
         }
@@ -386,7 +396,7 @@ export class WalkToAction implements ActorAction {
             actor.setPosition(this.endPosition.x, this.endPosition.y, this.endPosition.z);
             actor.setVelocity(0, 0, 0);
             this.reachedDestination = true;
-            actor.InitAnimationState();
+            actor.QueueAnimationStateChange();
         } else {
             updateVelocityFromDir(actor, this.endPosition, dir, deltaSecs);
         }
@@ -421,12 +431,14 @@ export class PaceAroundAction implements ActorAction {
                 this.endPosition.y,
                 this.endPosition.x,
                 this.endPosition.y + viewport.height * DEBUG_HEIGHT_3,
+                this.endPosition.z,
                 Color.ROYAL_BLUE,
             )
             renderer.circle(
                 false,
                 this.endPosition.x,
                 this.endPosition.y + viewport.height * DEBUG_HEIGHT_3,
+                this.endPosition.z,
                 15,
                 Color.ROYAL_BLUE);
         }
@@ -436,12 +448,14 @@ export class PaceAroundAction implements ActorAction {
                 this.startPosition.y,
                 this.startPosition.x,
                 this.startPosition.y + viewport.height * DEBUG_HEIGHT_3,
+                this.startPosition.z,
                 Color.ROYAL_BLUE,
             )
             renderer.circle(
                 true,
                 this.startPosition.x,
                 this.startPosition.y + viewport.height * DEBUG_HEIGHT_3,
+                this.startPosition.z,
                 15,
                 Color.ROYAL_BLUE);
         }
@@ -459,8 +473,8 @@ export class PaceAroundAction implements ActorAction {
 
         if (this.endPosition == null) {
             // TODO: Make the z range configurable
-            let z1 = Math.random() * 10;
-            let z2 = Math.random() * 10;
+            let z1 = -(Math.random() * MAX_Z_DEPTH);
+            let z2 = -(Math.random() * MAX_Z_DEPTH);
             let start = new Vector3(
                 this.actionData["pace_start_pos"]["x"],
                 this.actionData["pace_start_pos"]["y"],
@@ -559,12 +573,14 @@ export class FollowAction implements ActorAction {
             this.endPosition.y,
             this.endPosition.x,
             this.endPosition.y + viewport.height * DEBUG_HEIGHT_4,
+            this.endPosition.z,
             Color.PURPLE
         );
         renderer.circle(
             false,
             this.endPosition.x,
             this.endPosition.y + viewport.height * DEBUG_HEIGHT_4,
+            this.endPosition.z,
             20,
             Color.PURPLE
         );
@@ -579,7 +595,7 @@ export class FollowAction implements ActorAction {
             } else {
                 // Target is moving again, we need to start moving.
                 this.reachedDestination = false;
-                actor.InitAnimationState();
+                actor.QueueAnimationStateChange();
             }
         }
         let targetPosition = this.getTargetPosition(actor, player, viewport);
@@ -602,7 +618,7 @@ export class FollowAction implements ActorAction {
                     } else {
                         actor.setFacingLeft();
                     }
-                    actor.InitAnimationState();
+                    actor.QueueAnimationStateChange();
                 }
             } else {
                 this.noTargetRandomPosition = null;

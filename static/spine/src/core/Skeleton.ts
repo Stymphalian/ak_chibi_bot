@@ -96,6 +96,9 @@ export class Skeleton {
 	/** Sets the skeleton Y position, which is added to the root bone worldY position. */
 	y = 0;
 
+	/** Sets the skeleton Z position. Used directly in the rendering pipeline for a z-offset */
+	z = 0;
+
 	constructor(data: SkeletonData) {
 		if (data == null) throw new Error("data cannot be null.");
 		this.data = data;

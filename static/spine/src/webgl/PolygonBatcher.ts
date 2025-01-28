@@ -34,18 +34,30 @@ import { ManagedWebGLRenderingContext } from "./WebGL";
 import { Disposable } from "../core/Utils";
 
 export class PolygonBatcher implements Disposable {
+	static MAX_LAST_TEXTURES = 5;
+
 	private context: ManagedWebGLRenderingContext;
 	private drawCalls: number;
 	private isDrawing = false;
 	private mesh: Mesh;
 	private shader: Shader = null;
-	private lastTexture: GLTexture = null;
 	private verticesLength = 0;
 	private indicesLength = 0;
+	private texturesLength = 0;
 	private srcBlend: number;
 	private dstBlend: number;
 
-	constructor(context: ManagedWebGLRenderingContext | WebGLRenderingContext, twoColorTint: boolean = true, maxVertices: number = 10920) {
+	private lastTextures: Map<number, GLTexture>;
+	private lastTextureIndex: Map<number, number>;
+	private lastTextureIndexCount: number;
+	private totalNumberTris: number = 0
+	private totalNumberVertices: number = 0;
+
+	constructor(
+		context: ManagedWebGLRenderingContext | WebGLRenderingContext,
+		twoColorTint: boolean = true,
+		maxVertices: number = 10920
+	) {
 		if (maxVertices > 10920) throw new Error("Can't have more than 10920 triangles per batch: " + maxVertices);
 		this.context = context instanceof ManagedWebGLRenderingContext ? context : new ManagedWebGLRenderingContext(context);
 		let attributes = twoColorTint ?
@@ -61,7 +73,9 @@ export class PolygonBatcher implements Disposable {
 		if (this.isDrawing) throw new Error("PolygonBatch is already drawing. Call PolygonBatch.end() before calling PolygonBatch.begin()");
 		this.drawCalls = 0;
 		this.shader = shader;
-		this.lastTexture = null;
+		this.lastTextures = new Map<number, GLTexture>();
+		this.lastTextureIndex = new Map<number, number>();
+		this.lastTextureIndexCount = 0;
 		this.isDrawing = true;
 
 		gl.enable(gl.BLEND);
@@ -78,12 +92,11 @@ export class PolygonBatcher implements Disposable {
 		}
 	}
 
-	draw(texture: GLTexture, vertices: ArrayLike<number>, indices: Array<number>) {
-		if (texture != this.lastTexture) {
-			this.flush();
-			this.lastTexture = texture;
-		} else if (this.verticesLength + vertices.length > this.mesh.getVertices().length ||
+	draw(texture: GLTexture, vertices: ArrayLike<number>, indices: Array<number>, positionZ: number = 0.0) {
+		if (this.verticesLength + vertices.length > this.mesh.getVertices().length ||
 			this.indicesLength + indices.length > this.mesh.getIndices().length) {
+			this.flush();
+		} else if (this.lastTextures.size >= PolygonBatcher.MAX_LAST_TEXTURES) {
 			this.flush();
 		}
 
@@ -97,28 +110,74 @@ export class PolygonBatcher implements Disposable {
 			indicesArray[i] = indices[j] + indexStart;
 		this.indicesLength += indices.length;
 		this.mesh.setIndicesLength(this.indicesLength);
+
+		// Attach the textures/positions to the mesh
+		if (!this.lastTextures.has(texture.getID())) {
+			this.lastTextures.set(texture.getID(), texture);
+			this.lastTextureIndex.set(texture.getID(), this.lastTextureIndexCount);
+			this.lastTextureIndexCount++;
+		}
+		let textureIndexToUse = this.lastTextureIndex.get(texture.getID());
+		let texturesArray = this.mesh.getTexturesPos();
+		let numVerts = vertices.length / this.mesh.getVertexSizeInFloats();
+		let textures = [];
+		for (let i = 0; i < numVerts; i++) {
+			textures.push(textureIndexToUse);
+			textures.push(positionZ);
+		};
+		for (let i = this.texturesLength, j = 0; j < textures.length; i++, j++) {
+			texturesArray[i] = textures[j]
+		}
+		this.texturesLength += textures.length;
+		this.mesh.setTexturesPosLength(this.texturesLength);
+	}
+
+	public clearTotals() {
+		this.totalNumberTris = 0;
+		this.totalNumberVertices = 0;
+	}
+	public printTotals() {
+		console.log("Total number tris: ", this.totalNumberTris);
+		console.log("Total number vertices: ", this.totalNumberVertices);
 	}
 
 	private flush() {
 		let gl = this.context.gl;
 		if (this.verticesLength == 0) return;
 
-		this.lastTexture.bind();
+		for (let [key, value] of this.lastTextures) {
+			let index = this.lastTextureIndex.get(key);
+			value.bind(index);
+			this.shader.setUniformi(Shader.SAMPLER + "[" + index + ']', index);
+		}
 		this.mesh.draw(this.shader, gl.TRIANGLES);
+		this.totalNumberTris += this.indicesLength / 3;
+		this.totalNumberVertices += this.verticesLength / this.mesh.getVertexSizeInFloats();
 
 		this.verticesLength = 0;
 		this.indicesLength = 0;
+		this.texturesLength = 0;
+
+		this.lastTextures.clear();
+		this.lastTextureIndex.clear();
+		this.lastTextureIndexCount = 0;
+
 		this.mesh.setVerticesLength(0);
 		this.mesh.setIndicesLength(0);
+		this.mesh.setTexturesPosLength(0);
 		this.drawCalls++;
 	}
 
 	end() {
 		let gl = this.context.gl;
 		if (!this.isDrawing) throw new Error("PolygonBatch is not drawing. Call PolygonBatch.begin() before calling PolygonBatch.end()");
-		if (this.verticesLength > 0 || this.indicesLength > 0) this.flush();
+		if (this.verticesLength > 0 || this.indicesLength > 0) {
+			this.flush();
+		}
 		this.shader = null;
-		this.lastTexture = null;
+		this.lastTextures.clear();
+		this.lastTextureIndex.clear();
+		this.lastTextureIndexCount = 0;
 		this.isDrawing = false;
 
 		gl.disable(gl.BLEND);

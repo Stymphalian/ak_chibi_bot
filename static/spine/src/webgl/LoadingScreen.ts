@@ -118,6 +118,7 @@ export class LoadingScreen {
 				canvas.width - x, 0,
 				canvas.width - x, canvas.height,
 				0 - x, canvas.height,
+				0,
 				this.tempColor, this.tempColor, this.tempColor, this.tempColor);
 			// renderer.quad(true, 
 			// 	0, 0, 
@@ -148,6 +149,7 @@ export class LoadingScreen {
 			// (canvas.width - logoWidth) / 2,
 			(-logoWidth) / 2,
 			(canvas.height - logoHeight) / 2,
+			0.0,
 			logoWidth, logoHeight,
 			this.tempColor
 		);

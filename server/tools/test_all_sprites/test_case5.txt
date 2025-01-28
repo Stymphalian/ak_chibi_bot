@@ -1,0 +1,300 @@
+set_user Lancet
+!chibi Lancet
+set_user Castle
+!chibi Castle
+set_user THRM
+!chibi THRM
+set_user Justice Knight
+!chibi Justice Knight
+set_user Palico
+!chibi Palico
+set_user UOfficial
+!chibi UOfficial
+set_user Friston
+!chibi Friston
+set_user Phonor
+!chibi Phonor
+set_user Yato
+!chibi Yato
+set_user Noir Corne
+!chibi Noir Corne
+set_user Rangers
+!chibi Rangers
+set_user Durin
+!chibi Durin
+set_user 12F
+!chibi 12F
+set_user Fang
+!chibi Fang
+set_user Vanilla
+!chibi Vanilla
+set_user Reserve Operator - Melee
+!chibi Reserve Operator - Melee
+set_user Plume
+!chibi Plume
+set_user Melantha
+!chibi Melantha
+set_user Popukar
+!chibi Popukar
+set_user Cardigan
+!chibi Cardigan
+set_user Beagle
+!chibi Beagle
+set_user Reserve Operator - Defender
+!chibi Reserve Operator - Defender
+set_user Spot
+!chibi Spot
+set_user Kroos
+!chibi Kroos
+set_user Adnachiel
+!chibi Adnachiel
+set_user Reserve Operator - Sniper
+!chibi Reserve Operator - Sniper
+set_user Lava
+!chibi Lava
+set_user Hibiscus
+!chibi Hibiscus
+set_user Ansel
+!chibi Ansel
+set_user Reserve Operator - Logistics
+!chibi Reserve Operator - Logistics
+set_user Steward
+!chibi Steward
+set_user Reserve Operator - Caster
+!chibi Reserve Operator - Caster
+set_user Orchid
+!chibi Orchid
+set_user Haze
+!chibi Haze
+set_user Gitano
+!chibi Gitano
+set_user Greyy
+!chibi Greyy
+set_user Click
+!chibi Click
+set_user Indigo
+!chibi Indigo
+set_user Pudding
+!chibi Pudding
+set_user Jessica
+!chibi Jessica
+set_user Meteor
+!chibi Meteor
+set_user Vermeil
+!chibi Vermeil
+set_user May
+!chibi May
+set_user Shirayuki
+!chibi Shirayuki
+set_user Pinecone
+!chibi Pinecone
+set_user Ambriel
+!chibi Ambriel
+set_user Aciddrop
+!chibi Aciddrop
+set_user Totter
+!chibi Totter
+set_user Caper
+!chibi Caper
+set_user Courier
+!chibi Courier
+set_user Scavenger
+!chibi Scavenger
+set_user Vigna
+!chibi Vigna
+set_user Myrtle
+!chibi Myrtle
+set_user Beanstalk
+!chibi Beanstalk
+set_user Dobermann
+!chibi Dobermann
+set_user Matoimaru
+!chibi Matoimaru
+set_user Conviction
+!chibi Conviction
+set_user Frostleaf
+!chibi Frostleaf
+set_user Estelle
+!chibi Estelle
+set_user Mousse
+!chibi Mousse
+set_user Cutter
+!chibi Cutter
+set_user Utage
+!chibi Utage
+set_user Arene
+!chibi Arene
+set_user Luo Xiaohei
+!chibi Luo Xiaohei
+set_user Quartz
+!chibi Quartz
+set_user Humus
+!chibi Humus
+set_user Gravel
+!chibi Gravel
+set_user Jaye
+!chibi Jaye
+set_user Rope
+!chibi Rope
+set_user Myrrh
+!chibi Myrrh
+set_user Gavial
+!chibi Gavial
+set_user Sussurro
+!chibi Sussurro
+set_user Perfumer
+!chibi Perfumer
+set_user Purestream
+!chibi Purestream
+set_user Chestnut
+!chibi Chestnut
+set_user Matterhorn
+!chibi Matterhorn
+set_user Cuora
+!chibi Cuora
+set_user Bubble
+!chibi Bubble
+set_user Lutonada
+!chibi Lutonada
+set_user Gummy
+!chibi Gummy
+set_user Durnar
+!chibi Durnar
+set_user Deepcolor
+!chibi Deepcolor
+set_user Earthspirit
+!chibi Earthspirit
+set_user Podenco
+!chibi Podenco
+set_user Roberta
+!chibi Roberta
+set_user Ethan
+!chibi Ethan
+set_user Shaw
+!chibi Shaw
+set_user Verdant
+!chibi Verdant
+set_user Ptilopsis
+!chibi Ptilopsis
+set_user Breeze
+!chibi Breeze
+set_user Zima
+!chibi Zima
+set_user Texas
+!chibi Texas
+set_user Chiave
+!chibi Chiave
+set_user Poncirus
+!chibi Poncirus
+set_user Tulip
+!chibi Tulip
+set_user Kestrel
+!chibi Kestrel
+set_user Reed
+!chibi Reed
+set_user Wild Mane
+!chibi Wild Mane
+set_user Fang Alter
+!chibi Fang Alter
+set_user Elysium
+!chibi Elysium
+set_user Wanqing
+!chibi Wanqing
+set_user Blacknight
+!chibi Blacknight
+set_user Cantabile
+!chibi Cantabile
+set_user Puzzle
+!chibi Puzzle
+set_user Swire
+!chibi Swire
+set_user Whislash
+!chibi Whislash
+set_user Bryophyta
+!chibi Bryophyta
+set_user Doc
+!chibi Doc
+set_user Franka
+!chibi Franka
+set_user Flamebringer
+!chibi Flamebringer
+set_user Morgan
+!chibi Morgan
+set_user Sharp
+!chibi Sharp
+set_user Indra
+!chibi Indra
+set_user Flint
+!chibi Flint
+set_user Dagda
+!chibi Dagda
+set_user Lappland
+!chibi Lappland
+set_user Ayerscarpe
+!chibi Ayerscarpe
+set_user Leto
+!chibi Leto
+set_user Wind Chimes
+!chibi Wind Chimes
+set_user Bibeak
+!chibi Bibeak
+set_user Tachanka
+!chibi Tachanka
+set_user Specter
+!chibi Specter
+set_user Broca
+!chibi Broca
+set_user Fuze
+!chibi Fuze
+set_user Astesia
+!chibi Astesia
+set_user Sideroca
+!chibi Sideroca
+set_user Akafuyu
+!chibi Akafuyu
+set_user Noir Corne Alter
+!chibi Noir Corne Alter
+set_user La Pluma
+!chibi La Pluma
+set_user Highmore
+!chibi Highmore
+set_user Tequila
+!chibi Tequila
+set_user Odda
+!chibi Odda
+set_user Blue Poison
+!chibi Blue Poison
+set_user Platinum
+!chibi Platinum
+set_user GreyThroat
+!chibi GreyThroat
+set_user Stormeye
+!chibi Stormeye
+set_user April
+!chibi April
+set_user Kroos Alter
+!chibi Kroos Alter
+set_user Insider
+!chibi Insider
+set_user Meteorite
+!chibi Meteorite
+set_user Sesa
+!chibi Sesa
+set_user Jieyun
+!chibi Jieyun
+set_user Executor
+!chibi Executor
+set_user Aosta
+!chibi Aosta
+set_user Amiya
+!chibi Amiya
+set_user Absinthe
+!chibi Absinthe
+set_user Tomimi
+!chibi Tomimi
+set_user Qanipalaat
+!chibi Qanipalaat
+set_user Skyfire
+!chibi Skyfire
+set_user Pith
+!chibi Pith

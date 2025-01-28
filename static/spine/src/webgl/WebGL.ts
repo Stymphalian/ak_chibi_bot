@@ -66,6 +66,39 @@ export class ManagedWebGLRenderingContext {
 		let index = this.restorables.indexOf(restorable);
 		if (index > -1) this.restorables.splice(index, 1);
 	}
+
+	GetWebGLParameters() {
+		let gl = this.gl;
+		let parameters: {[k: string]: any} = {
+			MAX_TEXTURE_SIZE: gl.getParameter(gl.MAX_TEXTURE_SIZE),
+			MAX_CUBE_MAP_TEXTURE_SIZE: gl.getParameter(gl.MAX_CUBE_MAP_TEXTURE_SIZE),
+			MAX_RENDERBUFFER_SIZE: gl.getParameter(gl.MAX_RENDERBUFFER_SIZE),
+			MAX_VERTEX_ATTRIBS: gl.getParameter(gl.MAX_VERTEX_ATTRIBS),
+			MAX_VERTEX_UNIFORM_VECTORS: gl.getParameter(gl.MAX_VERTEX_UNIFORM_VECTORS),
+			MAX_VARYING_VECTORS: gl.getParameter(gl.MAX_VARYING_VECTORS),
+			MAX_FRAGMENT_UNIFORM_VECTORS: gl.getParameter(gl.MAX_FRAGMENT_UNIFORM_VECTORS),
+			MAX_COMBINED_TEXTURE_IMAGE_UNITS: gl.getParameter(gl.MAX_COMBINED_TEXTURE_IMAGE_UNITS),
+			MAX_TEXTURE_IMAGE_UNITS: gl.getParameter(gl.MAX_TEXTURE_IMAGE_UNITS),
+			MAX_VIEWPORT_DIMS: gl.getParameter(gl.MAX_VIEWPORT_DIMS),
+			VENDOR: gl.getParameter(gl.VENDOR),
+			RENDERER: gl.getParameter(gl.RENDERER),
+			VERSION: gl.getParameter(gl.VERSION),
+			SHADING_LANGUAGE_VERSION: gl.getParameter(gl.SHADING_LANGUAGE_VERSION),
+		};
+	
+		if (gl instanceof WebGL2RenderingContext) {
+			parameters = {
+				...parameters,
+				MAX_DRAW_BUFFERS: gl.getParameter(gl.MAX_DRAW_BUFFERS),
+				MAX_ELEMENT_INDEX: gl.getParameter(gl.MAX_ELEMENT_INDEX),
+				MAX_ELEMENTS_INDICES: gl.getParameter(gl.MAX_ELEMENTS_INDICES),
+				MAX_ELEMENTS_VERTICES: gl.getParameter(gl.MAX_ELEMENTS_VERTICES),
+				MAX_VARYING_COMPONENTS: gl.getParameter(gl.MAX_VARYING_COMPONENTS),
+			}
+		}
+		console.table(parameters);
+		return parameters;
+	}
 }
 
 export class WebGLBlendModeConverter {

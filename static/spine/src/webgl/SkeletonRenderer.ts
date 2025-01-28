@@ -72,7 +72,8 @@ export class SkeletonRenderer {
 		let clipper = this.clipper;
 		let premultipliedAlpha = this.premultipliedAlpha;
 		let twoColorTint = this.twoColorTint;
-		let blendMode: BlendMode = null;
+		// let blendMode: BlendMode = null;
+		let blendMode: BlendMode = BlendMode.Normal;
 
 		let tempPos = this.temp;
 		let tempUv = this.temp2;
@@ -172,7 +173,9 @@ export class SkeletonRenderer {
 				let slotBlendMode = slot.data.blendMode;
 				if (slotBlendMode != blendMode) {
 					blendMode = slotBlendMode;
-					batcher.setBlendMode(WebGLBlendModeConverter.getSourceGLBlendMode(blendMode, premultipliedAlpha), WebGLBlendModeConverter.getDestGLBlendMode(blendMode));
+					batcher.setBlendMode(
+						WebGLBlendModeConverter.getSourceGLBlendMode(blendMode, premultipliedAlpha),
+						WebGLBlendModeConverter.getDestGLBlendMode(blendMode));
 				}
 
 				if (clipper.isClipping()) {
@@ -224,7 +227,7 @@ export class SkeletonRenderer {
 							}
 						}
 					}
-					batcher.draw(texture, clippedVertices, clippedTriangles);
+					batcher.draw(texture, clippedVertices, clippedTriangles, skeleton.z);
 				} else {
 					let verts = renderable.vertices;
 					if (this.vertexEffect != null) {
@@ -296,7 +299,7 @@ export class SkeletonRenderer {
 						}
 					}
 					let view = (renderable.vertices as Float32Array).subarray(0, renderable.numFloats);
-					batcher.draw(texture, view, triangles);
+					batcher.draw(texture, view, triangles, skeleton.z);
 				}
 			}
 

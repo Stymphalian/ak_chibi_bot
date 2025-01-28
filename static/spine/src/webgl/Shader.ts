@@ -36,7 +36,8 @@ export class Shader implements Disposable, Restorable {
 	public static COLOR = "a_color";
 	public static COLOR2 = "a_color2";
 	public static TEXCOORDS = "a_texCoords";
-	public static SAMPLER = "u_texture";
+	public static TEXTURE_INDEX_POS_Z = "a_texture_index_pos_z";
+	public static SAMPLER = "u_textures";
 
 	private context: ManagedWebGLRenderingContext;
 	private vs: WebGLShader = null;
@@ -189,6 +190,7 @@ export class Shader implements Disposable, Restorable {
 
 	public static newColoredTextured(context: ManagedWebGLRenderingContext | WebGLRenderingContext): Shader {
 		let vs = `
+		bad
 				attribute vec4 ${Shader.POSITION};
 				attribute vec4 ${Shader.COLOR};
 				attribute vec2 ${Shader.TEXCOORDS};
@@ -204,6 +206,7 @@ export class Shader implements Disposable, Restorable {
 			`;
 
 		let fs = `
+		bad
 				#ifdef GL_ES
 					#define LOWP lowp
 					precision mediump float;
@@ -224,20 +227,31 @@ export class Shader implements Disposable, Restorable {
 
 	public static newTwoColoredTextured(context: ManagedWebGLRenderingContext | WebGLRenderingContext): Shader {
 		let vs = `
-				attribute vec4 ${Shader.POSITION};
+				attribute vec2 ${Shader.POSITION};
 				attribute vec4 ${Shader.COLOR};
 				attribute vec4 ${Shader.COLOR2};
 				attribute vec2 ${Shader.TEXCOORDS};
+				attribute vec2 ${Shader.TEXTURE_INDEX_POS_Z};
 				uniform mat4 ${Shader.MVP_MATRIX};
+
 				varying vec4 v_light;
 				varying vec4 v_dark;
 				varying vec2 v_texCoords;
+				varying float v_texIndex;
 
 				void main () {
 					v_light = ${Shader.COLOR};
 					v_dark = ${Shader.COLOR2};
 					v_texCoords = ${Shader.TEXCOORDS};
-					gl_Position = ${Shader.MVP_MATRIX} * ${Shader.POSITION};
+					v_texIndex = ${Shader.TEXTURE_INDEX_POS_Z}.x;
+
+					vec4 pos = vec4(
+						${Shader.POSITION}.x,
+						${Shader.POSITION}.y,
+						${Shader.TEXTURE_INDEX_POS_Z}.y,
+						1.0
+					);
+					gl_Position = ${Shader.MVP_MATRIX} * pos;
 				}
 			`;
 
@@ -251,10 +265,43 @@ export class Shader implements Disposable, Restorable {
 				varying LOWP vec4 v_light;
 				varying LOWP vec4 v_dark;
 				varying vec2 v_texCoords;
-				uniform sampler2D u_texture;
+				varying float v_texIndex;
+				uniform sampler2D u_textures[6];
+
+				bool eq(float a, float b) {
+					return abs(a - b) < 0.00001;
+				}
+				bool lte(float l, float r) {
+					return l <= (r + 0.00001);
+				}
+
+				vec4 getTextureColor() {
+					int index = -1;
+					if (eq(v_texIndex, 0.0)) {
+						index = 0;
+						return texture2D(u_textures[0], v_texCoords);
+					} else if (eq(v_texIndex, 1.0)) {
+					 	index = 1;
+						return texture2D(u_textures[1], v_texCoords);
+					} else if (eq(v_texIndex, 2.0)) {
+					 	index = 2;
+						return texture2D(u_textures[2], v_texCoords);
+					} else if (eq(v_texIndex, 3.0)) {
+					 	index = 3;
+						return texture2D(u_textures[3], v_texCoords);
+					} else if (eq(v_texIndex, 4.0)) {
+						index = 4;
+						return texture2D(u_textures[4], v_texCoords);
+					} else if (eq(v_texIndex, 5.0)) {
+					 	index = 5;
+						return texture2D(u_textures[5], v_texCoords);
+					} else {
+					 	return vec4(1.0, 0.0, 0.0, 1.0);
+					}
+				}
 
 				void main () {
-					vec4 texColor = texture2D(u_texture, v_texCoords);
+					vec4 texColor = getTextureColor();
 					gl_FragColor.a = texColor.a * v_light.a;
 					gl_FragColor.rgb = ((texColor.a - 1.0) * v_dark.a + 1.0 - texColor.rgb) * v_dark.rgb + texColor.rgb * v_light.rgb;
 				}
@@ -265,14 +312,14 @@ export class Shader implements Disposable, Restorable {
 
 	public static newColored(context: ManagedWebGLRenderingContext | WebGLRenderingContext): Shader {
 		let vs = `
-				attribute vec4 ${Shader.POSITION};
+				attribute vec3 ${Shader.POSITION};
 				attribute vec4 ${Shader.COLOR};
 				uniform mat4 ${Shader.MVP_MATRIX};
 				varying vec4 v_color;
 
 				void main () {
 					v_color = ${Shader.COLOR};
-					gl_Position = ${Shader.MVP_MATRIX} * ${Shader.POSITION};
+					gl_Position = ${Shader.MVP_MATRIX} * vec4(${Shader.POSITION}, 1.0);
 				}
 			`;
 

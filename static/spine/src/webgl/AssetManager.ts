@@ -46,12 +46,20 @@ export class AssetManager extends spineAssetManager {
 	// callback. This allows the existing code for TextureAtlas to work
 	// normally.
 	private altTextures: GLTexture[] = [];
+	// TODO: This saved seenImages should happen within the spineAssetManager 
+	// instead of here.
+	private seenImages = new Map<string, GLTexture>();
 
 	constructor(context: AssetManagerContextList | AssetManagerContext, pathPrefix: string = "") {
 		super((image: HTMLImageElement) => {
+			if (this.seenImages.has(image.src)) {
+				return this.seenImages.get(image.src);
+			}
 
 			if (context instanceof ManagedWebGLRenderingContext || context instanceof WebGLRenderingContext) {
-				return new GLTexture(context as AssetManagerContext, image);
+				this.seenImages.set(image.src, new GLTexture(context, image));
+				return this.seenImages.get(image.src);
+				// return new GLTexture(context as AssetManagerContext, image);
 			} else {
 				let ctx = context as AssetManagerContextList;
 				for (let i = 1; i < ctx.length; i++) {

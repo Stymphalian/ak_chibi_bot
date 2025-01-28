@@ -40,29 +40,11 @@ import { ResizeMode, SceneRenderer } from "../webgl/SceneRenderer"
 import { Vector3 } from "../webgl/Vector3"
 import { ManagedWebGLRenderingContext } from "../webgl/WebGL"
 import { Actor, SpineActorConfig } from "./Actor"
-import { createElement, findWithClass, OffscreenRender, escapeHtml, isAlphanumeric, findWithId, configurePerspectiveCamera, updateCameraSettings, isAlphanumericWithSpace } from "./Utils";
+import { createElement, findWithClass, escapeHtml, isAlphanumeric, findWithId, configurePerspectiveCamera, updateCameraSettings, isAlphanumericWithSpace, BoundingBox, Viewport } from "./Utils";
 import { Camera } from "../webgl/Camera";
 import { readSpritesheetJsonConfig, SpritesheetActor } from "./Spritesheet";
-
-
-export interface Viewport {
-	x: number,
-	y: number,
-	width: number,
-	height: number,
-	padLeft: string | number
-	padRight: string | number
-	padTop: string | number
-	padBottom: string | number
-	debugRender: boolean
-}
-
-export interface BoundingBox {
-	x: number,
-	y: number,
-	width: number,
-	height: number,
-}
+import { GLFrameBuffer } from "../webgl/GLFrameBuffer";
+import { OffscreenRender } from "./OffscreenRender";
 
 export interface SpinePlayerConfig {
 	/* Optional: whether to show the player controls. Default: true. */
@@ -107,7 +89,6 @@ export interface SpinePlayerConfig {
 
 	// The extra scaling to be applied to the all the chibis
 	chibiScale: number
-	useAccurateBoundingBox: boolean
 	showChatMessages: boolean
 
 	// Configs to help with crowded chibis on the screen
@@ -258,7 +239,6 @@ export class SpinePlayer {
 		if (!config.textFont) config.textFont = "lato";
 		if (!config.cameraPerspectiveNear) config.cameraPerspectiveNear = 1.0;
 		if (!config.cameraPerspectiveFar) config.cameraPerspectiveFar = 1000.0;
-		if (!config.useAccurateBoundingBox) config.useAccurateBoundingBox = false;
 		if (!config.showChatMessages) config.showChatMessages = false;
 		return config;
 	}
@@ -337,7 +317,6 @@ export class SpinePlayer {
 
 		if (config.chibiId == undefined) { config.chibiId = crypto.randomUUID(); }
 		if (config.userDisplayName == undefined) { config.userDisplayName = crypto.randomUUID(); }
-		// TODO: Remove the logging of chibiId and userDisplayName
 		if (!isAlphanumeric(config.chibiId)) {
 			throw Error("ChibiId is not valid ");
 		}
@@ -388,22 +367,19 @@ export class SpinePlayer {
 			this.canvas = findWithId(dom, "spine-canvas")[0] as HTMLCanvasElement;
 			this.textCanvas = findWithId(dom, "spine-text")[0] as HTMLCanvasElement;
 			this.textCanvasContext = this.textCanvas.getContext("2d");
+			this.textCanvasContext.font = this.playerConfig.textSize + "px " + this.playerConfig.textFont;
+			this.textCanvasContext.textBaseline = "bottom";
+
 			// var webglConfig = { alpha: config.alpha };
 			var webglConfig = { alpha: this.playerConfig.alpha };
 			this.context = new ManagedWebGLRenderingContext(this.canvas, webglConfig);
 			// Setup the scene renderer and loading screen
 			this.sceneRenderer = new SceneRenderer(this.canvas, this.context, true);
 			this.loadingScreen = new LoadingScreen(this.sceneRenderer);
-
-			// // <canvas id="spine-canvas-off" class="spine-player-canvas-off"></canvas>
-			// let offCanvas = findWithId(dom, "spine-canvas-off")[0] as HTMLCanvasElement;
-			// this.offscreenRender = new OffscreenRender(this.playerConfig.chibiScale, offCanvas);
-			if (this.playerConfig.useAccurateBoundingBox) {
-				this.offscreenRender = new OffscreenRender(this.sceneRenderer);
-			} else {
-				this.offscreenRender = null;
-			}
+			this.offscreenRender = new OffscreenRender(this.sceneRenderer);
 			this.assetManager = new AssetManager(this.context);
+
+			// this.context.GetWebGLParameters();
 		} catch (e) {
 			// this.showError("Sorry, your browser does not support WebGL.<br><br>Please use the latest version of Firefox, Chrome, Edge, or Safari.");
 			console.log("Sorry, your browser does not support WebGL.<br><br>Please use the latest version of Firefox, Chrome, Edge, or Safari.");
@@ -511,9 +487,9 @@ export class SpinePlayer {
 			this.setupActor(actor);
 		} else {
 			let actor = new Actor(
-				config, 
-				this.playerConfig.viewport, 
-				this.offscreenRender, 
+				config,
+				this.playerConfig.viewport,
+				this.offscreenRender,
 				this.playerConfig.excessiveChibiMitigations);
 			this.setupActor(actor);
 			this.actors.set(actorName, actor);
@@ -531,7 +507,7 @@ export class SpinePlayer {
 	removeActor(actorName: string) {
 		this.actors.delete(actorName)
 	}
-	
+
 	flashFindCharacter(actorName: string) {
 		if (!this.actors.has(actorName)) {
 			return;
@@ -590,11 +566,10 @@ export class SpinePlayer {
 		updateCameraSettings(cam, actor, viewport)
 	}
 
-	drawText(texts: string[], xpx: number, ypx: number) {
+	drawText(texts: string[], xpx: number, ypx: number, zpx: number = 0) {
 		let viewport = this.playerConfig.viewport;
-		// TODO: I don't understand why this is worldToScreen.
 		let tt = this.sceneRenderer.camera.worldToScreen(
-			new Vector3(xpx, ypx, 0)
+			new Vector3(xpx, ypx, zpx)
 		);
 		let textpos = new Vector2(tt.x, tt.y);
 		textpos.y = viewport.height - textpos.y;
@@ -604,8 +579,6 @@ export class SpinePlayer {
 		let ctx = this.textCanvasContext;
 		ctx.save();
 		ctx.translate(xpx, ypx);
-		ctx.font = this.playerConfig.textSize + "px " + this.playerConfig.textFont;
-		ctx.textBaseline = "bottom";
 
 		// Measure how much space is required for the speech bubble
 		let width = 0;
@@ -660,10 +633,7 @@ export class SpinePlayer {
 		ctx.restore();
 	}
 
-	drawFrame(requestNextFrame = true) {
-		if (requestNextFrame && !this.stopRequestAnimationFrame) {
-			this.lastRequestAnimationFrameId = requestAnimationFrame(() => this.drawFrame());
-		}
+	bindForDraw() {
 		let ctx = this.context;
 		let gl = ctx.gl;
 
@@ -679,60 +649,28 @@ export class SpinePlayer {
 		gl.clearColor(bg.r, bg.g, bg.b, bg.a);
 		gl.clear(gl.COLOR_BUFFER_BIT);
 
-		// Clear the Text Canvas
-		this.textCanvas.width = this.textCanvas.clientWidth;
-		this.textCanvas.height = this.textCanvas.clientHeight;
-		this.textCanvasContext.clearRect(0, 0, this.textCanvas.width, this.textCanvas.height);
-
-		// // Display loading screen
-		// this.loadingScreen.backgroundColor.setFromColor(bg);
-		// this.loadingScreen.draw(this.assetManager.isLoadingComplete());
-
 		// Resize the canvas
+		let viewport = this.playerConfig.viewport;
 		this.sceneRenderer.resize(ResizeMode.Expand);
+		this.updateCameraSettings(this.sceneRenderer.camera, null, viewport);
 
-		// Order the actors to draw based on their z-order
-		let actorsZOrder = Array.from(this.actors.keys()).sort((a: string, b: string) => {
-			let a1 = this.actors.get(a);
-			let a2 = this.actors.get(b);
-			if (a1.ShouldFlashCharacter && !a2.ShouldFlashCharacter) {
-				return 1;
-			} else if (a2.ShouldFlashCharacter && !a1.ShouldFlashCharacter) {
-				return -1;
-			}
-			let r = a2.getPositionZ() - a1.getPositionZ()
-			// To ensure stable sort
-			if (r == 0) { return a1.lastUpdatedWhen - a2.lastUpdatedWhen; }
-			return r;
-		});
-		this.calculateAverageActorHeights(actorsZOrder);
+		// Clear the Text Canvas
+		if (this.textCanvas.width != this.textCanvas.clientWidth ||
+			this.textCanvas.height != this.textCanvas.clientHeight
+		) {
+			this.textCanvas.width = this.textCanvas.clientWidth;
+			this.textCanvas.height = this.textCanvas.clientHeight;
+			this.textCanvasContext.font = this.playerConfig.textSize + "px " + this.playerConfig.textFont;
+			this.textCanvasContext.textBaseline = "bottom";
+		}
+		this.textCanvasContext.clearRect(0, 0, this.textCanvas.width, this.textCanvas.height);
+	}
 
-		let all_actors_loaded = true;
+	drawActors(actorsZOrder: Array<string>) {
+		let viewport = this.playerConfig.viewport;
+		this.sceneRenderer.begin();
 		for (let key of actorsZOrder) {
 			let actor = this.actors.get(key);
-			if (actor.load_perma_failed) {
-				// Permanant failure trying to load this actor. Just skip it.
-				continue;
-			}
-
-			// Have we finished loading the asset? Then set things up
-			// if (this.assetManager.isLoadingComplete() && this.skeleton == null) this.loadActor();
-			if (this.assetManager.isLoadingComplete()) {
-				if (!actor.isActorDoneLoading()) {
-					this.loadActor(actor);
-				}
-			}
-
-			// // Resize the canvas
-			// this.sceneRenderer.resize(webgl.ResizeMode.Expand);
-
-			// Update and draw the skeleton
-			if (!actor.loaded) {
-				all_actors_loaded = false;
-				continue;
-			}
-
-			let viewport = this.playerConfig.viewport;
 
 			// Update animation and skeleton based on user selections
 			// if (!actor.paused && actor.config.animations.length > 0) {
@@ -753,7 +691,7 @@ export class SpinePlayer {
 					this.timelineSlider.setValue(actor.playTime / animationDuration);
 
 					actor.UpdatePhysics(this, delta, viewport);
-					actor.skeleton.setToSetupPose();
+					// actor.skeleton.setToSetupPose(); // Seems to do nothing?
 					actor.animationState.update(delta);
 					actor.animationState.apply(actor.skeleton);
 				}
@@ -762,33 +700,74 @@ export class SpinePlayer {
 				actor.skeleton.updateWorldTransform();
 			}
 
-			// Update the camera
-			this.updateCameraSettings(this.sceneRenderer.camera, actor, viewport);
-
-			this.sceneRenderer.begin();
-			// // Draw background image if given
-			if (actor.config.backgroundImage && actor.config.backgroundImage.url) {
-				let bgImage = this.assetManager.get(actor.config.backgroundImage.url);
-				if (!(actor.config.backgroundImage.hasOwnProperty("x") && actor.config.backgroundImage.hasOwnProperty("y") && actor.config.backgroundImage.hasOwnProperty("width") && actor.config.backgroundImage.hasOwnProperty("height"))) {
-					this.sceneRenderer.drawTexture(bgImage, viewport.x, viewport.y, viewport.width, viewport.height);
-				} else {
-					this.sceneRenderer.drawTexture(bgImage, actor.config.backgroundImage.x, actor.config.backgroundImage.y, actor.config.backgroundImage.width, actor.config.backgroundImage.height);
-				}
-			}
-			// Draw the actor
 			actor.Draw(this.sceneRenderer)
-
 			// Render the user's name above the chibi
 			this.drawActorText(actor);
-			this.sceneRenderer.end();
+		}
+		this.sceneRenderer.end();
 
-			// Render the debug output with a fixed camera.
-			if (this.playerConfig.viewport.debugRender) {
-				this.sceneRenderer.begin();
+		// Render the debug output with a fixed camera.
+		if (this.playerConfig.viewport.debugRender) {
+			this.sceneRenderer.begin();
+			for (let key of actorsZOrder) {
+				let actor = this.actors.get(key);
 				actor.DrawDebug(this.sceneRenderer, viewport);
-				this.sceneRenderer.circle(true, 0, 0, 10, Color.BLUE);
-				this.sceneRenderer.end();
+				this.sceneRenderer.circle(true, 0, 0, 0, 10, Color.BLUE);
 			}
+			this.sceneRenderer.end();
+		}
+	}
+
+	drawFrame(requestNextFrame = true) {
+		if (requestNextFrame && !this.stopRequestAnimationFrame) {
+			this.lastRequestAnimationFrameId = requestAnimationFrame(() => this.drawFrame());
+		}
+
+		// Order the actors to draw based on their z-order
+		let all_actors_loaded = true;
+		let actorsZOrder = Array
+			.from(this.actors.keys()).sort((a: string, b: string) => {
+				let a1 = this.actors.get(a);
+				let a2 = this.actors.get(b);
+				if (a1.ShouldFlashCharacter && !a2.ShouldFlashCharacter) {
+					return 1;
+				} else if (a2.ShouldFlashCharacter && !a1.ShouldFlashCharacter) {
+					return -1;
+				}
+				let r = a1.getPositionZ() - a2.getPositionZ()
+				// To ensure stable sort
+				if (r == 0) { return a1.lastUpdatedWhen - a2.lastUpdatedWhen; }
+				return r;
+			})
+			.filter(key => {
+				let actor = this.actors.get(key);
+				if (actor.load_perma_failed) {
+					// Permanant failure trying to load this actor. Just skip it.
+					return false;
+				}
+				if (this.assetManager.isLoadingComplete()) {
+					if (!actor.isActorDoneLoading()) {
+						this.loadActor(actor);
+					}
+				}
+				if (!actor.loaded) {
+					all_actors_loaded = false;
+				}
+				return actor.loaded;
+			});
+		this.calculateAverageActorHeights(actorsZOrder);
+
+		this.bindForDraw();
+		this.drawActors(actorsZOrder);
+
+		// We want to post-process all the animation state changes AFTER
+		// we have fully rendered the frame. This is because the animation stage
+		// changes use the same canvas GL context for calculating the accurate
+		// bounding boxes and will produce artifacts on the screen if we use
+		// it within the same draw frame.
+		for (let key of actorsZOrder) {
+			let actor = this.actors.get(key);
+			actor.ProcessAnimationStateChange();
 		}
 
 		this.broadcastRenderCallback();
@@ -811,23 +790,10 @@ export class SpinePlayer {
 		if (!this.actorHeightDirty) {
 			return;
 		}
-		let averageHeight  = 0;
+		let averageHeight = 0;
 		let actorCount = 0;
 		for (let key of actorsZOrder) {
 			let actor = this.actors.get(key);
-			if (actor.load_perma_failed) {
-				// Permanant failure trying to load this actor. Just skip it.
-				continue;
-			}
-
-			// Have we finished loading the asset? Then set things up
-			// if (this.assetManager.isLoadingComplete() && this.skeleton == null) this.loadActor();
-			if (this.assetManager.isLoadingComplete()) {
-				if (!actor.isActorDoneLoading()) {
-					break;
-				}
-			}
-
 			averageHeight += actor.getRenderingBoundingBox().height
 			actorCount += 1;
 		}
@@ -842,16 +808,17 @@ export class SpinePlayer {
 				chatMessages.messages,
 				actor.getPositionX(),
 				actor.getPositionY() + actor.GetUsernameHeaderHeight(),
+				actor.getPositionZ()
 			);
 		} else {
 			this.drawText(
 				[actor.config.userDisplayName],
 				actor.getPositionX(),
 				actor.getPositionY() + actor.GetUsernameHeaderHeight(),
+				actor.getPositionZ()
 			);
 		}
 	}
-
 
 	public registerRenderCallback(callback: RenderCallbackFn): RemoveCallbackFn {
 		this.renderCallbacks.push(callback);
@@ -940,7 +907,7 @@ export class SpinePlayer {
 			let texture = this.assetManager.get(parentPrefix + "/" + config.filepath);
 			textures.set(animationKey, texture);
 		}
-		
+
 		let spritesheetActor = new SpritesheetActor(spritesheetConfig, textures);
 		spritesheetActor.SetAnimation(actor.GetAnimations()[0]);
 		actor.spritesheet = spritesheetActor;

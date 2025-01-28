@@ -33,14 +33,22 @@ import { ManagedWebGLRenderingContext } from "./WebGL";
 
 export class Mesh implements Disposable, Restorable {
 	private context: ManagedWebGLRenderingContext;
+
 	private vertices: Float32Array;
 	private verticesBuffer: WebGLBuffer;
 	private verticesLength = 0;
 	private dirtyVertices = false;
+
 	private indices: Uint16Array;
 	private indicesBuffer: WebGLBuffer;
 	private indicesLength = 0;
 	private dirtyIndices = false;
+
+	private texturePos: Float32Array;
+	private texturesPosBuffer: WebGLBuffer;
+	private texturesPosLength = 0;
+	private dirtyTexturesPos = false;
+
 	private elementsPerVertex = 0;
 
 	getAttributes(): VertexAttribute[] { return this.attributes; }
@@ -61,6 +69,15 @@ export class Mesh implements Disposable, Restorable {
 	}
 	getIndices(): Uint16Array { return this.indices };
 
+	public enabletexturesPos: boolean = true;
+	maxTexturesPos(): number { return this.texturePos.length; }
+	numTexturesPos(): number { return this.texturesPosLength; }
+	setTexturesPosLength(length: number) {
+		this.dirtyTexturesPos = true;
+		this.texturesPosLength = length;
+	}
+	getTexturesPos(): Float32Array { return this.texturePos };
+
 	getVertexSizeInFloats(): number {
 		let size = 0;
 		for (var i = 0; i < this.attributes.length; i++) {
@@ -70,7 +87,11 @@ export class Mesh implements Disposable, Restorable {
 		return size;
 	}
 
-	constructor(context: ManagedWebGLRenderingContext | WebGLRenderingContext, private attributes: VertexAttribute[], maxVertices: number, maxIndices: number) {
+	constructor(
+		context: ManagedWebGLRenderingContext | WebGLRenderingContext,
+		private attributes: VertexAttribute[],
+		maxVertices: number,
+		maxIndices: number) {
 		this.context = context instanceof ManagedWebGLRenderingContext ? context : new ManagedWebGLRenderingContext(context);
 		this.elementsPerVertex = 0;
 		for (let i = 0; i < attributes.length; i++) {
@@ -78,6 +99,7 @@ export class Mesh implements Disposable, Restorable {
 		}
 		this.vertices = new Float32Array(maxVertices * this.elementsPerVertex);
 		this.indices = new Uint16Array(maxIndices);
+		this.texturePos = new Float32Array(maxVertices * 2)
 		this.context.addRestorable(this);
 	}
 
@@ -95,22 +117,32 @@ export class Mesh implements Disposable, Restorable {
 		this.indicesLength = indices.length;
 	}
 
+	setTexturesPos(texturesPos: Array<number>) {
+		this.dirtyTexturesPos = true;
+		if (texturesPos.length > this.texturePos.length) throw Error("Mesh can't store more than " + this.maxTexturesPos() + " texturesPos");
+		this.texturePos.set(texturesPos, 0);
+		this.texturesPosLength = texturesPos.length;
+	}
+
 	draw(shader: Shader, primitiveType: number) {
-		this.drawWithOffset(shader, primitiveType, 0, this.indicesLength > 0 ? this.indicesLength : this.verticesLength / this.elementsPerVertex);
+		this.drawWithOffset(shader, primitiveType, 0,
+			this.indicesLength > 0 ? this.indicesLength : this.verticesLength / this.elementsPerVertex);
 	}
 
 	drawWithOffset(shader: Shader, primitiveType: number, offset: number, count: number) {
 		let gl = this.context.gl;
-		if (this.dirtyVertices || this.dirtyIndices) this.update();
+		if (this.dirtyVertices || this.dirtyIndices || this.dirtyTexturesPos) this.update();
 		this.bind(shader);
 		if (this.indicesLength > 0) {
 			gl.drawElements(primitiveType, count, gl.UNSIGNED_SHORT, offset * 2);
 		} else {
 			gl.drawArrays(primitiveType, offset, count);
 		}
-		this.unbind(shader);
+		// TODO: This an optimization. No need to unbind the attributes
+		// this.unbind(shader);
 	}
 
+	// TODO: Try to remove this call to bind and enableVertexAttribArray calls
 	bind(shader: Shader) {
 		let gl = this.context.gl;
 		gl.bindBuffer(gl.ARRAY_BUFFER, this.verticesBuffer);
@@ -122,17 +154,34 @@ export class Mesh implements Disposable, Restorable {
 			gl.vertexAttribPointer(location, attrib.numElements, gl.FLOAT, false, this.elementsPerVertex * 4, offset * 4);
 			offset += attrib.numElements;
 		}
+
+		if (this.enabletexturesPos) {
+			gl.bindBuffer(gl.ARRAY_BUFFER, this.texturesPosBuffer);
+			let attr = new TextureIndexAndPositionZAttribute();
+			let location = shader.getAttributeLocation(attr.name);
+			gl.enableVertexAttribArray(location);
+			gl.vertexAttribPointer(location, attr.numElements, gl.FLOAT, false, attr.numElements * 4, 0);
+		}
+
 		if (this.indicesLength > 0) gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.indicesBuffer);
 	}
 
 	unbind(shader: Shader) {
 		let gl = this.context.gl;
+		gl.bindBuffer(gl.ARRAY_BUFFER, this.verticesBuffer);
 		for (let i = 0; i < this.attributes.length; i++) {
 			let attrib = this.attributes[i];
 			let location = shader.getAttributeLocation(attrib.name);
 			gl.disableVertexAttribArray(location);
 		}
+		if (this.enabletexturesPos) {
+			gl.bindBuffer(gl.ARRAY_BUFFER, this.texturesPosBuffer);
+			let attr = new TextureIndexAndPositionZAttribute();
+			let location = shader.getAttributeLocation(attr.name);
+			gl.disableVertexAttribArray(location);
+		}
 		gl.bindBuffer(gl.ARRAY_BUFFER, null);
+
 		if (this.indicesLength > 0) gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, null);
 	}
 
@@ -155,11 +204,21 @@ export class Mesh implements Disposable, Restorable {
 			gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, this.indices.subarray(0, this.indicesLength), gl.DYNAMIC_DRAW);
 			this.dirtyIndices = false;
 		}
+
+		if (this.dirtyTexturesPos && this.enabletexturesPos) {
+			if (!this.texturesPosBuffer) {
+				this.texturesPosBuffer = gl.createBuffer();
+			}
+			gl.bindBuffer(gl.ARRAY_BUFFER, this.texturesPosBuffer);
+			gl.bufferData(gl.ARRAY_BUFFER, this.texturePos.subarray(0, this.texturesPosLength), gl.DYNAMIC_DRAW);
+			this.dirtyTexturesPos = false;
+		}
 	}
 
 	restore() {
 		this.verticesBuffer = null;
 		this.indicesBuffer = null;
+		this.texturesPosBuffer = null;
 		this.update();
 	}
 
@@ -168,11 +227,18 @@ export class Mesh implements Disposable, Restorable {
 		let gl = this.context.gl;
 		gl.deleteBuffer(this.verticesBuffer);
 		gl.deleteBuffer(this.indicesBuffer);
+		gl.deleteBuffer(this.texturesPosBuffer);
 	}
 }
 
 export class VertexAttribute {
 	constructor(public name: string, public type: VertexAttributeType, public numElements: number) { }
+}
+
+export class TextureIndexAndPositionZAttribute extends VertexAttribute {
+	constructor() {
+		super(Shader.TEXTURE_INDEX_POS_Z, VertexAttributeType.Float, 2);
+	}
 }
 
 export class Position2Attribute extends VertexAttribute {

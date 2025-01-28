@@ -38,8 +38,10 @@ export class GLTexture extends Texture implements Disposable, Restorable {
 	public textureHeight: number = 320;
 	private boundUnit = 0;
 	private useMipMaps = false;
+	private _id: number;
 
 	public static DISABLE_UNPACK_PREMULTIPLIED_ALPHA_WEBGL = false;
+	private static nextID = 0;
 
 	constructor (
 			context: ManagedWebGLRenderingContext | WebGLRenderingContext, 
@@ -49,6 +51,7 @@ export class GLTexture extends Texture implements Disposable, Restorable {
 			height: number = 320,
 		) {
 		super(image);
+		this._id = GLTexture.nextID++;
 		this.context = context instanceof ManagedWebGLRenderingContext? context : new ManagedWebGLRenderingContext(context);
 		this.useMipMaps = useMipMaps;
 
@@ -56,6 +59,11 @@ export class GLTexture extends Texture implements Disposable, Restorable {
 		this.textureHeight = height;
 		this.restore();
 		this.context.addRestorable(this);
+	}
+
+
+	public getID(): number {
+		return this._id;
 	}
 
 	setFilters (minFilter: TextureFilter, magFilter: TextureFilter) {
@@ -142,6 +150,7 @@ export class GLTexture extends Texture implements Disposable, Restorable {
 		this.context.removeRestorable(this);
 		let gl = this.context.gl;
 		gl.deleteTexture(this.texture);
+		this.texture = null;
 	}
 
 	getTextureId() : WebGLTexture {
