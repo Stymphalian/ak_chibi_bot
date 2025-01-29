@@ -55,7 +55,6 @@ export class Runtime {
                     padBottom: 0,
                     debugRender: debugMode,
                 },
-                fullScreenBackgroundColor: null,
                 backgroundImage: null,
                 textSize: 14,
                 textFont: "lato",

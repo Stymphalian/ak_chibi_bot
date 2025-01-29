@@ -74,9 +74,6 @@ export interface SpinePlayerConfig {
 		height: number
 	} | undefined
 
-	/* Optional: the background color used in fullscreen mode. Must be given in the format #rrggbbaa. Default: backgroundColor. */
-	fullScreenBackgroundColor: string | undefined
-
 	/** Optional: 
 	 *  How often to send back runtime debug information to the server.
 	 *  This is to help debug performance issues. Default: 60 seconds.
@@ -231,7 +228,6 @@ export class SpinePlayer {
 		if (!config) throw new Error("Please pass a configuration to new.SpinePlayer().");
 		if (!config.alpha) config.alpha = false;
 		if (!config.backgroundColor) config.backgroundColor = "#000000";
-		if (!config.fullScreenBackgroundColor) config.fullScreenBackgroundColor = config.backgroundColor;
 		if (typeof config.showControls === "undefined")
 			config.showControls = true;
 		if (!config.runtimeDebugInfoDumpIntervalSec) config.runtimeDebugInfoDumpIntervalSec = 60;
@@ -633,19 +629,19 @@ export class SpinePlayer {
 		ctx.restore();
 	}
 
+	updateActors(actorsZOrder: Array<string>) {
+		for (let key of actorsZOrder) {
+			let actor = this.actors.get(key);
+			actor.Update(this);
+		}
+	}
+
 	bindForDraw() {
 		let ctx = this.context;
 		let gl = ctx.gl;
 
 		// Clear the viewport
-		var doc = document as any;
-		var isFullscreen = doc.fullscreenElement || doc.webkitFullscreenElement || doc.mozFullScreenElement || doc.msFullscreenElement;
-		// let bg = new Color().setFromString(isFullscreen ? this.config.fullScreenBackgroundColor : this.config.backgroundColor);
-		let bg = new Color().setFromString(
-			isFullscreen ?
-				this.playerConfig.fullScreenBackgroundColor :
-				this.playerConfig.backgroundColor
-		);
+		let bg = new Color().setFromString(this.playerConfig.backgroundColor);
 		gl.clearColor(bg.r, bg.g, bg.b, bg.a);
 		gl.clear(gl.COLOR_BUFFER_BIT);
 
@@ -667,61 +663,54 @@ export class SpinePlayer {
 	}
 
 	drawActors(actorsZOrder: Array<string>) {
-		let viewport = this.playerConfig.viewport;
+		this.bindForDraw();
+
 		this.sceneRenderer.begin();
 		for (let key of actorsZOrder) {
 			let actor = this.actors.get(key);
-
-			// Update animation and skeleton based on user selections
-			// if (!actor.paused && actor.config.animations.length > 0) {
-			if (!actor.paused && actor.GetAnimations().length > 0) {
-				actor.time.update();
-				let delta = actor.time.delta * actor.speed;
-
-				if (actor.isSpritesheetActor()) {
-					actor.UpdatePhysics(this, delta, viewport);
-					actor.spritesheet.Update(delta);
-				} else {
-					let animationDuration = actor.animationState.getCurrent(0).animation.duration;
-					actor.playTime += delta;
-					while (actor.playTime >= animationDuration && animationDuration != 0) {
-						actor.playTime -= animationDuration;
-					}
-					actor.playTime = Math.max(0, Math.min(actor.playTime, animationDuration));
-					this.timelineSlider.setValue(actor.playTime / animationDuration);
-
-					actor.UpdatePhysics(this, delta, viewport);
-					// actor.skeleton.setToSetupPose(); // Seems to do nothing?
-					actor.animationState.update(delta);
-					actor.animationState.apply(actor.skeleton);
-				}
-			}
-			if (!actor.isSpritesheetActor()) {
-				actor.skeleton.updateWorldTransform();
-			}
-
 			actor.Draw(this.sceneRenderer)
-			// Render the user's name above the chibi
-			this.drawActorText(actor);
 		}
 		this.sceneRenderer.end();
+
+		// Render all the speech bubbles
+		for (let key of actorsZOrder) {
+			let actor = this.actors.get(key);
+			actor.DrawText(
+				this.sceneRenderer.camera,
+				this.textCanvasContext,
+				this.playerConfig.showChatMessages)
+		}
 
 		// Render the debug output with a fixed camera.
 		if (this.playerConfig.viewport.debugRender) {
 			this.sceneRenderer.begin();
 			for (let key of actorsZOrder) {
 				let actor = this.actors.get(key);
-				actor.DrawDebug(this.sceneRenderer, viewport);
+				actor.DrawDebug(this.sceneRenderer);
 				this.sceneRenderer.circle(true, 0, 0, 0, 10, Color.BLUE);
 			}
 			this.sceneRenderer.end();
 		}
 	}
 
+	postProcessActors(actorsZOrder: Array<string>) {
+		// We want to post-process all the animation state changes AFTER
+		// we have fully rendered the frame. This is because the animation stage
+		// changes use the same canvas GL context for calculating the accurate
+		// bounding boxes and will produce artifacts on the screen if we use
+		// it within the same draw frame.
+		for (let key of actorsZOrder) {
+			let actor = this.actors.get(key);
+			actor.ProcessAnimationStateChange();
+		}
+	}
+
+	lastDrawCall: number = null;
 	drawFrame(requestNextFrame = true) {
 		if (requestNextFrame && !this.stopRequestAnimationFrame) {
 			this.lastRequestAnimationFrameId = requestAnimationFrame(() => this.drawFrame());
 		}
+		let startTime = new Date().getTime();
 
 		// Order the actors to draw based on their z-order
 		let all_actors_loaded = true;
@@ -757,26 +746,22 @@ export class SpinePlayer {
 			});
 		this.calculateAverageActorHeights(actorsZOrder);
 
-		this.bindForDraw();
+		this.updateActors(actorsZOrder);
 		this.drawActors(actorsZOrder);
-
-		// We want to post-process all the animation state changes AFTER
-		// we have fully rendered the frame. This is because the animation stage
-		// changes use the same canvas GL context for calculating the accurate
-		// bounding boxes and will produce artifacts on the screen if we use
-		// it within the same draw frame.
-		for (let key of actorsZOrder) {
-			let actor = this.actors.get(key);
-			actor.ProcessAnimationStateChange();
-		}
-
+		this.postProcessActors(actorsZOrder);
 		this.broadcastRenderCallback();
 
 		if (all_actors_loaded) {
 			this.assetManager.clearErrors();
 			this.hideError();
 		}
+
+		let endTime = new Date().getTime();
 		this.windowFpsFrameCount += 1;
+		if (this.windowFpsFrameCount % 60 == 0) {
+			// console.log("Frame time: " + (endTime - startTime) + "ms", "Frame delay: " + (startTime - this.lastDrawCall) + "ms");
+		}
+		this.lastDrawCall = endTime;
 	}
 
 	public calculateAverageActorHeights(actorsZOrder: string[]) {
@@ -799,25 +784,6 @@ export class SpinePlayer {
 		}
 		Actor.averageActorHeight = averageHeight / actorCount;
 		this.actorHeightDirty = false;
-	}
-
-	public drawActorText(actor: Actor) {
-		let chatMessages = actor.GetChatMessages();
-		if (chatMessages && this.playerConfig.showChatMessages) {
-			this.drawText(
-				chatMessages.messages,
-				actor.getPositionX(),
-				actor.getPositionY() + actor.GetUsernameHeaderHeight(),
-				actor.getPositionZ()
-			);
-		} else {
-			this.drawText(
-				[actor.config.userDisplayName],
-				actor.getPositionX(),
-				actor.getPositionY() + actor.GetUsernameHeaderHeight(),
-				actor.getPositionZ()
-			);
-		}
 	}
 
 	public registerRenderCallback(callback: RenderCallbackFn): RemoveCallbackFn {

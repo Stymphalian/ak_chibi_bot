@@ -266,38 +266,58 @@ export class Shader implements Disposable, Restorable {
 				varying LOWP vec4 v_dark;
 				varying vec2 v_texCoords;
 				varying float v_texIndex;
-				uniform sampler2D u_textures[6];
-
-				bool eq(float a, float b) {
-					return abs(a - b) < 0.00001;
-				}
-				bool lte(float l, float r) {
-					return l <= (r + 0.00001);
-				}
+				uniform sampler2D u_textures[16];
 
 				vec4 getTextureColor() {
-					int index = -1;
-					if (eq(v_texIndex, 0.0)) {
-						index = 0;
-						return texture2D(u_textures[0], v_texCoords);
-					} else if (eq(v_texIndex, 1.0)) {
-					 	index = 1;
-						return texture2D(u_textures[1], v_texCoords);
-					} else if (eq(v_texIndex, 2.0)) {
-					 	index = 2;
-						return texture2D(u_textures[2], v_texCoords);
-					} else if (eq(v_texIndex, 3.0)) {
-					 	index = 3;
-						return texture2D(u_textures[3], v_texCoords);
-					} else if (eq(v_texIndex, 4.0)) {
-						index = 4;
-						return texture2D(u_textures[4], v_texCoords);
-					} else if (eq(v_texIndex, 5.0)) {
-					 	index = 5;
-						return texture2D(u_textures[5], v_texCoords);
+					int index = int(floor(v_texIndex + 0.2));
+					
+					if (index < 8) {
+						if (index < 4) {
+							if (index < 2) {
+								return (index == 0) 
+									? texture2D(u_textures[0], v_texCoords) 
+									: texture2D(u_textures[1], v_texCoords);
+							} else {
+								return (index == 2) 
+								? texture2D(u_textures[2], v_texCoords) 
+								: texture2D(u_textures[3], v_texCoords);
+							}
+						} else {
+							if (index < 6) {
+								return (index == 4) 
+									? texture2D(u_textures[4], v_texCoords) 
+									: texture2D(u_textures[5], v_texCoords);
+							} else {
+								return (index == 6) 
+								? texture2D(u_textures[6], v_texCoords) 
+								: texture2D(u_textures[7], v_texCoords);
+							}
+						}
 					} else {
-					 	return vec4(1.0, 0.0, 0.0, 1.0);
+						if (index < 12) {
+							if (index < 10) {
+								return (index == 8) 
+									? texture2D(u_textures[8], v_texCoords) 
+									: texture2D(u_textures[9], v_texCoords);
+							} else {
+								return (index == 10) 
+								? texture2D(u_textures[10], v_texCoords) 
+								: texture2D(u_textures[11], v_texCoords);
+							}
+						} else {
+							if (index < 14) {
+								return (index == 12) 
+									? texture2D(u_textures[12], v_texCoords) 
+									: texture2D(u_textures[13], v_texCoords);
+							} else {
+								return (index == 14) 
+								? texture2D(u_textures[14], v_texCoords) 
+								: texture2D(u_textures[15], v_texCoords);
+							}
+						}
 					}
+					
+					return vec4(1.0, 0.0, 0.0, 1.0); // Fallback for invalid indices
 				}
 
 				void main () {

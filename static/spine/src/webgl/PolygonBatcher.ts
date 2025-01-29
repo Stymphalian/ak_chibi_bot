@@ -34,7 +34,10 @@ import { ManagedWebGLRenderingContext } from "./WebGL";
 import { Disposable } from "../core/Utils";
 
 export class PolygonBatcher implements Disposable {
-	static MAX_LAST_TEXTURES = 5;
+	// 16 is the minimum supported by openGL. 
+	// Might be better to directly query the parameter and then use that value.
+	// But that would require us to dynamically generate the fragment shader
+	static MAX_LAST_TEXTURES = 16;  
 
 	private context: ManagedWebGLRenderingContext;
 	private drawCalls: number;

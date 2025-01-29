@@ -41,6 +41,8 @@ import { SceneRenderer } from "../webgl/SceneRenderer"
 import { SpritesheetActor } from "./Spritesheet"
 import { ExperimentFlags } from "./Flags"
 import { OffscreenRender } from "./OffscreenRender"
+import { Camera } from "../webgl/Camera"
+import { SpeechBubble } from "./SpeechBubble"
 
 export interface ActorUpdateConfig {
 	start_pos: Vector2
@@ -200,6 +202,7 @@ export class Actor {
 	// Controls whether this actor needs to change from one animation to another
 	// When we do this we need to reset the animation state.
 	public dirtyAnimation: boolean = false;
+	private speechBubble : SpeechBubble = new SpeechBubble();
 
 	// Variables for controlling mitigations to help with excessive chibis on the screen.
 	// This is to help with visual clarity of seeing the chibis on the screen
@@ -427,6 +430,7 @@ export class Actor {
 		this.speed = 1;
 		this.config = config;
 		this.lastUpdatedWhen = new Date().getTime();
+		this.speechBubble.Reset();
 
 		// Update movement speed from config
 		if (config.movementSpeedPxX !== null
@@ -461,9 +465,9 @@ export class Actor {
 		);
 	}
 
-	public UpdatePhysics(player: SpinePlayer, deltaSecs: number, viewport: BoundingBox) {
+	public UpdatePhysics(player: SpinePlayer, deltaSecs: number) {
 		this.messageQueue.Update(deltaSecs);
-		this.currentAction.UpdatePhysics(this, deltaSecs, viewport, player);
+		this.currentAction.UpdatePhysics(this, deltaSecs, this.viewport, player);
 		this.position.x += this.velocity.x;
 		this.position.y += this.velocity.y;
 		this.position.z += this.velocity.z;
@@ -478,7 +482,7 @@ export class Actor {
 		}
 
 		if (!this.isSpritesheetActor()) {
-			this.setSkeletonMovementData(viewport);
+			this.setSkeletonMovementData();
 		}
 	}
 
@@ -621,6 +625,33 @@ export class Actor {
 		return this.position.x - back;
 	}
 
+	public Update(player: SpinePlayer) {
+		if (!this.paused && this.GetAnimations().length > 0) {
+			this.time.update();
+			let delta = this.time.delta * this.speed;
+			this.UpdatePhysics(player, delta);
+
+			if (this.isSpritesheetActor()) {
+				this.spritesheet.Update(delta);
+			} else {
+				let animationDuration = this.animationState.getCurrent(0).animation.duration;
+				this.playTime += delta;
+				while (this.playTime >= animationDuration && animationDuration != 0) {
+					this.playTime -= animationDuration;
+				}
+				this.playTime = Math.max(0, Math.min(this.playTime, animationDuration));
+				// this.timelineSlider.setValue(this.playTime / animationDuration);
+
+				// this.skeleton.setToSetupPose(); // Seems to do nothing?
+				this.animationState.update(delta);
+				this.animationState.apply(this.skeleton);
+			}
+		}
+		if (!this.isSpritesheetActor()) {
+			this.skeleton.updateWorldTransform();
+		}
+	}
+
 	public Draw(sceneRenderer: SceneRenderer) {
 		if (this.isSpritesheetActor()) {
 			let coords = this.spritesheet.GetUVFromFrame();
@@ -646,7 +677,36 @@ export class Actor {
 		}
 	}
 
-	public DrawDebug(renderer: SceneRenderer, viewport: BoundingBox) {
+	public DrawText(
+		camera: Camera,
+		textCanvasContext: CanvasRenderingContext2D,
+		showChatMessages: boolean = false,
+	) {
+		let chatMessages = this.GetChatMessages();
+		if (chatMessages && showChatMessages) {
+			this.speechBubble.ChatText(
+				this.viewport,
+				camera,
+				textCanvasContext,
+				chatMessages.messages,
+				this.getPositionX(),
+				this.getPositionY() + this.GetUsernameHeaderHeight(),
+				this.getPositionZ()
+			);
+		} else {
+			this.speechBubble.NameTag(
+				this.viewport,
+				camera,
+				textCanvasContext,
+				this.config.userDisplayName,
+				this.getPositionX(),
+				this.getPositionY() + this.GetUsernameHeaderHeight(),
+				this.getPositionZ()
+			);
+		}
+	}
+
+	public DrawDebug(renderer: SceneRenderer) {
 		let actor_pos = this.getPosition3();
 		let bb = this.GetBoundingBox();
 		renderer.rect(
@@ -667,7 +727,7 @@ export class Actor {
 		renderer.circle(true, front_x, top_y, z, 10, Color.ORANGE);
 
 		if (this.currentAction != null) {
-			this.currentAction.DrawDebug(this, renderer, viewport);
+			this.currentAction.DrawDebug(this, renderer, this.viewport);
 		}
 	}
 
@@ -679,7 +739,7 @@ export class Actor {
 		} else {
 			this.skeleton.color = Color.GREEN;
 		}
-		
+
 		setTimeout(() => {
 			this.ShouldFlashCharacter = false;
 			if (this.isSpritesheetActor()) {
@@ -693,7 +753,7 @@ export class Actor {
 	// Privates
 	// ---------------------------------------------------------------------
 
-	private setSkeletonMovementData(viewport: BoundingBox) {
+	private setSkeletonMovementData() {
 		this.skeleton.x = this.position.x + this.config.extraOffsetX + this.skeletonPositionOffset.x;
 		this.skeleton.y = this.position.y + this.config.extraOffsetY + this.skeletonPositionOffset.y;
 		this.skeleton.z = this.position.z;
