@@ -49,9 +49,9 @@ export class SceneRenderer implements Disposable {
 	camera: Camera;
 	batcher: PolygonBatcher;
 	private twoColorTint = false;
-	private batcherShader: Shader;
+	// private batcherShader: Shader;
 	private shapes: ShapeRenderer;
-	private shapesShader: Shader;
+	// private shapesShader: Shader;
 	private activeRenderer: PolygonBatcher | ShapeRenderer | SkeletonDebugRenderer = null;
 	skeletonRenderer: SkeletonRenderer;
 	skeletonDebugRenderer: SkeletonDebugRenderer;
@@ -65,7 +65,9 @@ export class SceneRenderer implements Disposable {
 	private QUAD_TRIANGLES = [0, 1, 2, 2, 3, 0];
 	private WHITE = new Color(1, 1, 1, 1);
 
-	constructor(canvas: HTMLCanvasElement | OffscreenCanvas, context: ManagedWebGLRenderingContext | WebGLRenderingContext, twoColorTint: boolean = true) {
+	constructor(canvas: HTMLCanvasElement | OffscreenCanvas,
+		context: ManagedWebGLRenderingContext | WebGL2RenderingContext,
+		twoColorTint: boolean = true) {
 		this.canvas = canvas;
 		this.context = context instanceof ManagedWebGLRenderingContext ? context : new ManagedWebGLRenderingContext(context);
 		this.twoColorTint = twoColorTint;
@@ -74,34 +76,52 @@ export class SceneRenderer implements Disposable {
 		this.perspectiveCamera = new PerspectiveCamera(canvas.width, canvas.height);
 		this.camera = this.perspectiveCamera;
 
-		this.batcherShader = twoColorTint ? Shader.newTwoColoredTextured(this.context) : Shader.newColoredTextured(this.context);
+		// this.batcherShader = twoColorTint ? Shader.newTwoColoredTextured(this.context) : Shader.newColoredTextured(this.context);
 		this.batcher = new PolygonBatcher(this.context, twoColorTint);
-		this.shapesShader = Shader.newColored(this.context);
+		// this.shapesShader = Shader.newColored(this.context);
 		this.shapes = new ShapeRenderer(this.context);
 		this.skeletonRenderer = new SkeletonRenderer(this.context, twoColorTint);
 		this.skeletonDebugRenderer = new SkeletonDebugRenderer(this.context);
 	}
 
+	isDrawing: boolean = false;
 	begin() {
+		if (this.isDrawing) throw new Error("SceneRenderer.begin() when already drawing. Call SceneRenderer.end() first.");
+		this.isDrawing = true;
 		this.camera.update();
 		this.enableRenderer(this.batcher);
 		this.batcher.clearTotals();
 	}
+	beginShapes() {
+		if (this.isDrawing) throw new Error("SceneRenderer.beginShapes() when already drawing. Call SceneRenderer.end() first.");
+		this.isDrawing = true;
+		this.camera.update();
+		this.enableRenderer(this.shapes);
+	}
+
+	end() {
+		if (!this.isDrawing) throw new Error("SceneRenderer.end() called without SceneRenderer.begin()");
+		this.isDrawing = false;
+		if (this.activeRenderer === this.batcher) this.batcher.finish();
+		else if (this.activeRenderer === this.shapes) this.shapes.finish();
+		// this.activeRenderer = null;
+	}
 
 	drawSkeleton(skeleton: Skeleton, premultipliedAlpha = false, slotRangeStart = -1, slotRangeEnd = -1) {
-		this.enableRenderer(this.batcher);
+		if (this.activeRenderer !== this.batcher) throw new Error("Must call begin() before drawSkeleton()");
 		this.skeletonRenderer.premultipliedAlpha = premultipliedAlpha;
 		this.skeletonRenderer.draw(this.batcher, skeleton, slotRangeStart, slotRangeEnd);
 	}
 
 	drawSkeletonDebug(skeleton: Skeleton, premultipliedAlpha = false, ignoredBones: Array<string> = null) {
-		this.enableRenderer(this.shapes);
+		// this.enableRenderer(this.shapes);
+		if (this.activeRenderer !== this.shapes) throw new Error("Must call begin() before drawSkeletonDebug()");
 		this.skeletonDebugRenderer.premultipliedAlpha = premultipliedAlpha;
 		this.skeletonDebugRenderer.draw(this.shapes, skeleton, ignoredBones);
 	}
 
 	drawTexture(texture: GLTexture, x: number, y: number, z: number, width: number, height: number, color: Color = null) {
-		this.enableRenderer(this.batcher);
+		if (this.activeRenderer !== this.batcher) throw new Error("Must call begin() before drawTexture()");
 		if (color === null) color = this.WHITE;
 		let quad = this.QUAD;
 		var i = 0;
@@ -165,7 +185,7 @@ export class SceneRenderer implements Disposable {
 	}
 
 	drawTextureUV(texture: GLTexture, x: number, y: number, z: number, width: number, height: number, u: number, v: number, u2: number, v2: number, color: Color = null) {
-		this.enableRenderer(this.batcher);
+		if (this.activeRenderer !== this.batcher) throw new Error("Must call begin() before drawTextureUV()");
 		if (color === null) color = this.WHITE;
 		let quad = this.QUAD;
 		var i = 0;
@@ -229,7 +249,7 @@ export class SceneRenderer implements Disposable {
 	}
 
 	drawTextureRotated(texture: GLTexture, x: number, y: number, width: number, height: number, pivotX: number, pivotY: number, angle: number, color: Color = null, premultipliedAlpha: boolean = false) {
-		this.enableRenderer(this.batcher);
+		if (this.activeRenderer !== this.batcher) throw new Error("Must call begin() before drawTextureRotated()");
 		if (color === null) color = this.WHITE;
 		let quad = this.QUAD;
 
@@ -360,7 +380,7 @@ export class SceneRenderer implements Disposable {
 	}
 
 	drawRegion(region: TextureAtlasRegion, x: number, y: number, width: number, height: number, color: Color = null, premultipliedAlpha: boolean = false) {
-		this.enableRenderer(this.batcher);
+		if (this.activeRenderer !== this.batcher) throw new Error("Must call begin() before drawRegion()");
 		if (color === null) color = this.WHITE;
 		let quad = this.QUAD;
 		var i = 0;
@@ -424,49 +444,51 @@ export class SceneRenderer implements Disposable {
 	}
 
 	line(x: number, y: number, x2: number, y2: number, z: number, color: Color = null, color2: Color = null) {
-		this.enableRenderer(this.shapes);
+		// this.enableRenderer(this.shapes);
+		if (this.activeRenderer !== this.shapes) throw new Error("Must call begin() before line()");
 		this.shapes.line(x, y, x2, y2, color, z);
 	}
 
 	triangle(filled: boolean, x: number, y: number, x2: number, y2: number, x3: number, y3: number, z: number, color: Color = null, color2: Color = null, color3: Color = null) {
-		this.enableRenderer(this.shapes);
+		// this.enableRenderer(this.shapes);
+		if (this.activeRenderer !== this.shapes) throw new Error("Must call begin() before triangle()");
 		this.shapes.triangle(filled, x, y, x2, y2, x3, y3, color, color2, color3, z);
 	}
 
-	quad(filled: boolean, x: number, y: number, x2: number, y2: number, x3: number, y3: number, x4: number, y4: number, z:number, color: Color = null, color2: Color = null, color3: Color = null, color4: Color = null) {
-		this.enableRenderer(this.shapes);
+	quad(filled: boolean, x: number, y: number, x2: number, y2: number, x3: number, y3: number, x4: number, y4: number, z: number, color: Color = null, color2: Color = null, color3: Color = null, color4: Color = null) {
+		// this.enableRenderer(this.shapes);
+		if (this.activeRenderer !== this.shapes) throw new Error("Must call begin() before quad()");
 		this.shapes.quad(filled, x, y, x2, y2, x3, y3, x4, y4, color, color2, color3, color4, z);
 	}
 
-	rect(filled: boolean, x: number, y: number, z:number, width: number, height: number, color: Color = null) {
-		this.enableRenderer(this.shapes);
+	rect(filled: boolean, x: number, y: number, z: number, width: number, height: number, color: Color = null) {
+		// this.enableRenderer(this.shapes);
+		if (this.activeRenderer !== this.shapes) throw new Error("Must call begin() before rect()");
 		this.shapes.rect(filled, x, y, width, height, color, z);
 	}
 
-	rectLine(filled: boolean, x1: number, y1: number, x2: number, y2: number, z:number, width: number, color: Color = null) {
-		this.enableRenderer(this.shapes);
+	rectLine(filled: boolean, x1: number, y1: number, x2: number, y2: number, z: number, width: number, color: Color = null) {
+		// this.enableRenderer(this.shapes);
+		if (this.activeRenderer !== this.shapes) throw new Error("Must call begin() before rectLine()");
 		this.shapes.rectLine(filled, x1, y1, x2, y2, width, color);
 	}
 
-	polygon(polygonVertices: ArrayLike<number>, z:number, offset: number, count: number, color: Color = null) {
-		this.enableRenderer(this.shapes);
+	polygon(polygonVertices: ArrayLike<number>, z: number, offset: number, count: number, color: Color = null) {
+		// this.enableRenderer(this.shapes);
+		if (this.activeRenderer !== this.shapes) throw new Error("Must call begin() before polygon()");
 		this.shapes.polygon(polygonVertices, offset, count, color, z);
 	}
 
 	circle(filled: boolean, x: number, y: number, z: number, radius: number, color: Color = null, segments: number = 0) {
-		this.enableRenderer(this.shapes);
+		// this.enableRenderer(this.shapes);
+		if (this.activeRenderer !== this.shapes) throw new Error("Must call begin() before circle()");
 		this.shapes.circle(filled, x, y, radius, color, segments, z);
 	}
 
-	curve(x1: number, y1: number, cx1: number, cy1: number, cx2: number, cy2: number, x2: number, y2: number, z:number, segments: number, color: Color = null) {
-		this.enableRenderer(this.shapes);
+	curve(x1: number, y1: number, cx1: number, cy1: number, cx2: number, cy2: number, x2: number, y2: number, z: number, segments: number, color: Color = null) {
+		// this.enableRenderer(this.shapes);
+		if (this.activeRenderer !== this.shapes) throw new Error("Must call begin() before curve()");
 		this.shapes.curve(x1, y1, cx1, cy1, cx2, cy2, x2, y2, segments, color, z);
-	}
-
-	end() {
-		if (this.activeRenderer === this.batcher) this.batcher.end();
-		else if (this.activeRenderer === this.shapes) this.shapes.end();
-		this.activeRenderer = null;
 	}
 
 	private lastViewport: BoundingBox = null;
@@ -487,15 +509,15 @@ export class SceneRenderer implements Disposable {
 			canvas.height = h;
 		}
 		if (this.lastViewport != null) {
-			if (this.lastViewport.width == canvas.width && 
+			if (this.lastViewport.width == canvas.width &&
 				this.lastViewport.height == canvas.height) {
 				return;
 			}
 		}
-		
+
 		this.context.gl.viewport(0, 0, canvas.width, canvas.height);
 		this.lastViewport = {
-			x:0, y:0,
+			x: 0, y: 0,
 			width: canvas.width,
 			height: canvas.height
 		};
@@ -516,30 +538,48 @@ export class SceneRenderer implements Disposable {
 		this.camera.update();
 	}
 
-	private enableRenderer(renderer: PolygonBatcher | ShapeRenderer | SkeletonDebugRenderer) {
-		if (this.activeRenderer === renderer) return;
-		this.end();
+	private switchRenderer(renderer: PolygonBatcher | ShapeRenderer | SkeletonDebugRenderer) {
+		// this.end();
 		if (renderer instanceof PolygonBatcher) {
-			this.batcherShader.bind();
-			this.batcherShader.setUniform4x4f(Shader.MVP_MATRIX, this.camera.projectionView.values);
-			// this.batcherShader.setUniformi("u_texture", 0);
-			this.batcher.begin(this.batcherShader);
+			// this.batcherShader.bind();
+			// this.batcherShader.setUniform4x4f(Shader.MVP_MATRIX, this.camera.projectionView.values);
+			// this.batcher.begin(this.batcherShader);
+			// this.batcher.begin(this.camera);
+			this.batcher.prep();
+			this.batcher.use(this.camera);
 			this.activeRenderer = this.batcher;
 		} else if (renderer instanceof ShapeRenderer) {
-			this.shapesShader.bind();
-			this.shapesShader.setUniform4x4f(Shader.MVP_MATRIX, this.camera.projectionView.values);
-			this.shapes.begin(this.shapesShader);
+			// this.shapesShader.bind();
+			// this.shapesShader.setUniform4x4f(Shader.MVP_MATRIX, this.camera.projectionView.values);
+			// this.shapes.begin(this.shapesShader);
+			// this.shapes.begin(this.camera);
+			this.shapes.prep();
+			this.shapes.use(this.camera);
 			this.activeRenderer = this.shapes;
 		} else {
 			this.activeRenderer = this.skeletonDebugRenderer;
 		}
 	}
 
+	private enableRenderer(renderer: PolygonBatcher | ShapeRenderer | SkeletonDebugRenderer) {
+		if (this.activeRenderer === renderer) {
+			if (renderer instanceof PolygonBatcher) {
+				this.batcher.use(this.camera);
+			} else if (renderer instanceof ShapeRenderer) {
+				this.shapes.use(this.camera);
+			} else {
+				// pass
+			}
+		} else {
+			this.switchRenderer(renderer);
+		}
+	}
+
 	dispose() {
 		this.batcher.dispose();
-		this.batcherShader.dispose();
+		// this.batcherShader.dispose();
 		this.shapes.dispose();
-		this.shapesShader.dispose();
+		// this.shapesShader.dispose();
 		this.skeletonDebugRenderer.dispose();
 	}
 }

@@ -28,6 +28,7 @@
  *****************************************************************************/
 
 import { Color, Vector2, MathUtils, Disposable } from "../core/Utils";
+import { Camera } from "./Camera";
 import { Mesh, Position2Attribute, ColorAttribute, Position3Attribute } from "./Mesh";
 import { Shader } from "./Shader";
 import { ManagedWebGLRenderingContext } from "./WebGL";
@@ -48,24 +49,40 @@ export class ShapeRenderer implements Disposable {
 	private srcBlend: number;
 	private dstBlend: number;
 
-	constructor(context: ManagedWebGLRenderingContext | WebGLRenderingContext, maxVertices: number = 10920) {
+	constructor(context: ManagedWebGLRenderingContext | WebGL2RenderingContext, maxVertices: number = 10920) {
 		if (maxVertices > 10920) throw new Error("Can't have more than 10920 triangles per batch: " + maxVertices);
 		this.context = context instanceof ManagedWebGLRenderingContext ? context : new ManagedWebGLRenderingContext(context);
 		this.mesh = new Mesh(context, [new Position3Attribute(), new ColorAttribute()], maxVertices, 0);
 		this.mesh.enabletexturesPos = false;
 		this.srcBlend = this.context.gl.SRC_ALPHA;
 		this.dstBlend = this.context.gl.ONE_MINUS_SRC_ALPHA;
+		this.shader = Shader.newColored(this.context);
 	}
 
-	begin(shader: Shader) {
+	prep() {
+		this.shader.bind();
+		this.mesh.prep(this.shader);
+		let gl = this.context.gl;
+		gl.enable(this.context.gl.BLEND);
+		gl.blendFunc(this.srcBlend, this.dstBlend);
+	}
+
+	// begin(shader: Shader) {
+	use(camera: Camera) {
 		if (this.isDrawing) throw new Error("ShapeRenderer.begin() has already been called");
-		this.shader = shader;
 		this.vertexIndex = 0;
 		this.isDrawing = true;
 
-		let gl = this.context.gl;
-		gl.enable(gl.BLEND);
-		gl.blendFunc(this.srcBlend, this.dstBlend);
+		this.shader.setUniform4x4f(
+			Shader.MVP_MATRIX,
+			camera.projectionView.values
+		);
+	}
+
+	finish() {
+		if (!this.isDrawing) throw new Error("ShapeRenderer.begin() has not been called");
+		this.flush();
+		this.isDrawing = false;
 	}
 
 	setBlendMode(srcBlend: number, dstBlend: number) {
@@ -316,13 +333,6 @@ export class ShapeRenderer implements Disposable {
 		this.vertexIndex = idx;
 	}
 
-	end() {
-		if (!this.isDrawing) throw new Error("ShapeRenderer.begin() has not been called");
-		this.flush();
-		this.context.gl.disable(this.context.gl.BLEND);
-		this.isDrawing = false;
-	}
-
 	private flush() {
 		if (this.vertexIndex == 0) return;
 		this.mesh.setVerticesLength(this.vertexIndex);
@@ -343,6 +353,7 @@ export class ShapeRenderer implements Disposable {
 
 	dispose() {
 		this.mesh.dispose();
+		this.shader.dispose();
 	}
 }
 

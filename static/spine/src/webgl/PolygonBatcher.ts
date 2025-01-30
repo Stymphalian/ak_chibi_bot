@@ -32,6 +32,7 @@ import { Mesh, Position2Attribute, ColorAttribute, TexCoordAttribute, Color2Attr
 import { Shader } from "./Shader";
 import { ManagedWebGLRenderingContext } from "./WebGL";
 import { Disposable } from "../core/Utils";
+import { Camera } from "./Camera";
 
 export class PolygonBatcher implements Disposable {
 	// 16 is the minimum supported by openGL. 
@@ -57,7 +58,7 @@ export class PolygonBatcher implements Disposable {
 	private totalNumberVertices: number = 0;
 
 	constructor(
-		context: ManagedWebGLRenderingContext | WebGLRenderingContext,
+		context: ManagedWebGLRenderingContext | WebGL2RenderingContext,
 		twoColorTint: boolean = true,
 		maxVertices: number = 10920
 	) {
@@ -67,22 +68,39 @@ export class PolygonBatcher implements Disposable {
 			[new Position2Attribute(), new ColorAttribute(), new TexCoordAttribute(), new Color2Attribute()] :
 			[new Position2Attribute(), new ColorAttribute(), new TexCoordAttribute()];
 		this.mesh = new Mesh(context, attributes, maxVertices, maxVertices * 3);
+		this.shader = twoColorTint ? Shader.newTwoColoredTextured(this.context) : Shader.newColoredTextured(this.context);
 		this.srcBlend = this.context.gl.SRC_ALPHA;
 		this.dstBlend = this.context.gl.ONE_MINUS_SRC_ALPHA;
 	}
 
-	begin(shader: Shader) {
+	prep() {
+		this.shader.bind();
+		this.mesh.prep(this.shader);
 		let gl = this.context.gl;
+		gl.enable(gl.BLEND);
+		gl.blendFunc(this.srcBlend, this.dstBlend);
+	}
+
+	use(camera: Camera) {
 		if (this.isDrawing) throw new Error("PolygonBatch is already drawing. Call PolygonBatch.end() before calling PolygonBatch.begin()");
 		this.drawCalls = 0;
-		this.shader = shader;
 		this.lastTextures = new Map<number, GLTexture>();
 		this.lastTextureIndex = new Map<number, number>();
 		this.lastTextureIndexCount = 0;
 		this.isDrawing = true;
 
-		gl.enable(gl.BLEND);
-		gl.blendFunc(this.srcBlend, this.dstBlend);
+		this.shader.setUniform4x4f(
+			Shader.MVP_MATRIX,
+			camera.projectionView.values
+		);
+	}
+
+	finish() {
+		if (!this.isDrawing) throw new Error("PolygonBatch is not drawing. Call PolygonBatch.begin() before calling PolygonBatch.end()");
+		if (this.verticesLength > 0 || this.indicesLength > 0) {
+			this.flush();
+		}
+		this.isDrawing = false;
 	}
 
 	setBlendMode(srcBlend: number, dstBlend: number) {
@@ -171,24 +189,10 @@ export class PolygonBatcher implements Disposable {
 		this.drawCalls++;
 	}
 
-	end() {
-		let gl = this.context.gl;
-		if (!this.isDrawing) throw new Error("PolygonBatch is not drawing. Call PolygonBatch.begin() before calling PolygonBatch.end()");
-		if (this.verticesLength > 0 || this.indicesLength > 0) {
-			this.flush();
-		}
-		this.shader = null;
-		this.lastTextures.clear();
-		this.lastTextureIndex.clear();
-		this.lastTextureIndexCount = 0;
-		this.isDrawing = false;
-
-		gl.disable(gl.BLEND);
-	}
-
 	getDrawCalls() { return this.drawCalls; }
 
 	dispose() {
 		this.mesh.dispose();
+		this.shader.dispose();
 	}
 }

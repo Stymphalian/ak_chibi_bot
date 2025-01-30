@@ -32,13 +32,14 @@ import { Restorable } from "../core/Utils";
 
 export class ManagedWebGLRenderingContext {
 	public canvas: HTMLCanvasElement | OffscreenCanvas;
-	public gl: WebGLRenderingContext;
+	public gl: WebGL2RenderingContext;
 	private restorables = new Array<Restorable>();
 
-	constructor(canvasOrContext: HTMLCanvasElement | WebGLRenderingContext | OffscreenCanvas, contextConfig: any = { alpha: "true" }) {
+	constructor(canvasOrContext: HTMLCanvasElement | WebGL2RenderingContext | OffscreenCanvas, contextConfig: any = { alpha: "true" }) {
 		if (canvasOrContext instanceof HTMLCanvasElement || canvasOrContext instanceof OffscreenCanvas) {
 			let canvas = canvasOrContext;
-			this.gl = <WebGLRenderingContext>(canvas.getContext("webgl2", contextConfig) || canvas.getContext("webgl", contextConfig));
+			// this.gl = <WebGLRenderingContext>(canvas.getContext("webgl2", contextConfig) || canvas.getContext("webgl", contextConfig));
+			this.gl = <WebGL2RenderingContext>canvas.getContext("webgl2", contextConfig);
 			this.canvas = canvas;
 			canvas.addEventListener("webglcontextlost", (e: any) => {
 				let event = <WebGLContextEvent>e;

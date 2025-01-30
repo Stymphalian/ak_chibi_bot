@@ -44,7 +44,7 @@ export class GLTexture extends Texture implements Disposable, Restorable {
 	private static nextID = 0;
 
 	constructor (
-			context: ManagedWebGLRenderingContext | WebGLRenderingContext, 
+			context: ManagedWebGLRenderingContext | WebGL2RenderingContext, 
 			image: HTMLImageElement|null,
 			useMipMaps: boolean = false,
 			width: number = 320,

@@ -370,7 +370,7 @@ export class SpinePlayer {
 			var webglConfig = { alpha: this.playerConfig.alpha };
 			this.context = new ManagedWebGLRenderingContext(this.canvas, webglConfig);
 			// Setup the scene renderer and loading screen
-			this.sceneRenderer = new SceneRenderer(this.canvas, this.context, true);
+			this.sceneRenderer = new SceneRenderer(this.canvas, this.context);
 			this.loadingScreen = new LoadingScreen(this.sceneRenderer);
 			this.offscreenRender = new OffscreenRender(this.sceneRenderer);
 			this.assetManager = new AssetManager(this.context);
@@ -672,6 +672,17 @@ export class SpinePlayer {
 		}
 		this.sceneRenderer.end();
 
+		// Render the debug output with a fixed camera.
+		if (this.playerConfig.viewport.debugRender) {
+			this.sceneRenderer.beginShapes();
+			for (let key of actorsZOrder) {
+				let actor = this.actors.get(key);
+				actor.DrawDebug(this.sceneRenderer);
+				this.sceneRenderer.circle(true, 0, 0, 0, 10, Color.BLUE);
+			}
+			this.sceneRenderer.end();
+		}
+
 		// Render all the speech bubbles
 		for (let key of actorsZOrder) {
 			let actor = this.actors.get(key);
@@ -679,17 +690,6 @@ export class SpinePlayer {
 				this.sceneRenderer.camera,
 				this.textCanvasContext,
 				this.playerConfig.showChatMessages)
-		}
-
-		// Render the debug output with a fixed camera.
-		if (this.playerConfig.viewport.debugRender) {
-			this.sceneRenderer.begin();
-			for (let key of actorsZOrder) {
-				let actor = this.actors.get(key);
-				actor.DrawDebug(this.sceneRenderer);
-				this.sceneRenderer.circle(true, 0, 0, 0, 10, Color.BLUE);
-			}
-			this.sceneRenderer.end();
 		}
 	}
 
@@ -707,9 +707,6 @@ export class SpinePlayer {
 
 	lastDrawCall: number = null;
 	drawFrame(requestNextFrame = true) {
-		if (requestNextFrame && !this.stopRequestAnimationFrame) {
-			this.lastRequestAnimationFrameId = requestAnimationFrame(() => this.drawFrame());
-		}
 		let startTime = new Date().getTime();
 
 		// Order the actors to draw based on their z-order
@@ -762,6 +759,10 @@ export class SpinePlayer {
 			// console.log("Frame time: " + (endTime - startTime) + "ms", "Frame delay: " + (startTime - this.lastDrawCall) + "ms");
 		}
 		this.lastDrawCall = endTime;
+
+		if (requestNextFrame && !this.stopRequestAnimationFrame) {
+			this.lastRequestAnimationFrameId = requestAnimationFrame(() => this.drawFrame());
+		}
 	}
 
 	public calculateAverageActorHeights(actorsZOrder: string[]) {

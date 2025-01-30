@@ -33,7 +33,7 @@ import { ManagedWebGLRenderingContext } from "./WebGL";
 import { Restorable, Disposable } from "../core/Utils";
 
 
-type AssetManagerContext = ManagedWebGLRenderingContext | WebGLRenderingContext;
+type AssetManagerContext = ManagedWebGLRenderingContext | WebGL2RenderingContext;
 type AssetManagerContextList = AssetManagerContext[];
 
 export class AssetManager extends spineAssetManager {
@@ -56,7 +56,7 @@ export class AssetManager extends spineAssetManager {
 				return this.seenImages.get(image.src);
 			}
 
-			if (context instanceof ManagedWebGLRenderingContext || context instanceof WebGLRenderingContext) {
+			if (context instanceof ManagedWebGLRenderingContext || context instanceof WebGL2RenderingContext) {
 				this.seenImages.set(image.src, new GLTexture(context, image));
 				return this.seenImages.get(image.src);
 				// return new GLTexture(context as AssetManagerContext, image);

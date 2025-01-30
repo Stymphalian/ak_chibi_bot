@@ -49,6 +49,7 @@ export class Mesh implements Disposable, Restorable {
 	private texturesPosLength = 0;
 	private dirtyTexturesPos = false;
 
+	private vao: WebGLVertexArrayObject;
 	private elementsPerVertex = 0;
 
 	getAttributes(): VertexAttribute[] { return this.attributes; }
@@ -88,7 +89,7 @@ export class Mesh implements Disposable, Restorable {
 	}
 
 	constructor(
-		context: ManagedWebGLRenderingContext | WebGLRenderingContext,
+		context: ManagedWebGLRenderingContext | WebGL2RenderingContext,
 		private attributes: VertexAttribute[],
 		maxVertices: number,
 		maxIndices: number) {
@@ -131,86 +132,95 @@ export class Mesh implements Disposable, Restorable {
 
 	drawWithOffset(shader: Shader, primitiveType: number, offset: number, count: number) {
 		let gl = this.context.gl;
+		this.use();
 		if (this.dirtyVertices || this.dirtyIndices || this.dirtyTexturesPos) this.update();
-		this.bind(shader);
 		if (this.indicesLength > 0) {
 			gl.drawElements(primitiveType, count, gl.UNSIGNED_SHORT, offset * 2);
 		} else {
 			gl.drawArrays(primitiveType, offset, count);
 		}
-		// TODO: This an optimization. No need to unbind the attributes
-		// this.unbind(shader);
+		this.finish();
 	}
 
-	// TODO: Try to remove this call to bind and enableVertexAttribArray calls
-	bind(shader: Shader) {
+	public prep(shader: Shader) {
 		let gl = this.context.gl;
-		gl.bindBuffer(gl.ARRAY_BUFFER, this.verticesBuffer);
-		let offset = 0;
-		for (let i = 0; i < this.attributes.length; i++) {
-			let attrib = this.attributes[i];
-			let location = shader.getAttributeLocation(attrib.name);
-			gl.enableVertexAttribArray(location);
-			gl.vertexAttribPointer(location, attrib.numElements, gl.FLOAT, false, this.elementsPerVertex * 4, offset * 4);
-			offset += attrib.numElements;
-		}
+		if (this.vao == null) {
+			this.vao = gl.createVertexArray();
+			gl.bindVertexArray(this.vao);
 
-		if (this.enabletexturesPos) {
-			gl.bindBuffer(gl.ARRAY_BUFFER, this.texturesPosBuffer);
-			let attr = new TextureIndexAndPositionZAttribute();
-			let location = shader.getAttributeLocation(attr.name);
-			gl.enableVertexAttribArray(location);
-			gl.vertexAttribPointer(location, attr.numElements, gl.FLOAT, false, attr.numElements * 4, 0);
-		}
+			this.verticesBuffer = gl.createBuffer();
+			this.indicesBuffer = gl.createBuffer();
+			if (this.enabletexturesPos) {
+				this.texturesPosBuffer = gl.createBuffer();
+			}
 
-		if (this.indicesLength > 0) gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.indicesBuffer);
+			gl.bindBuffer(gl.ARRAY_BUFFER, this.verticesBuffer);
+			gl.bufferData(gl.ARRAY_BUFFER, this.vertices.length*4, gl.DYNAMIC_DRAW)
+			let offset = 0;
+			for (let i = 0; i < this.attributes.length; i++) {
+				let attrib = this.attributes[i];
+				let location = shader.getAttributeLocation(attrib.name);
+				gl.enableVertexAttribArray(location);
+				gl.vertexAttribPointer(location, attrib.numElements, gl.FLOAT, false, this.elementsPerVertex * 4, offset * 4);
+				offset += attrib.numElements;
+			}
+
+			if (this.enabletexturesPos) {
+				gl.bindBuffer(gl.ARRAY_BUFFER, this.texturesPosBuffer);
+				gl.bufferData(gl.ARRAY_BUFFER, this.texturePos.length*4, gl.DYNAMIC_DRAW)
+				let attr = new TextureIndexAndPositionZAttribute();
+				let location = shader.getAttributeLocation(attr.name);
+				gl.enableVertexAttribArray(location);
+				gl.vertexAttribPointer(location, attr.numElements, gl.FLOAT, false, attr.numElements * 4, 0);
+			}
+
+
+			gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.indicesBuffer);
+			gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, this.indices.length*2, gl.DYNAMIC_DRAW)
+		}
+		// gl.bindVertexArray(this.vao);
 	}
 
-	unbind(shader: Shader) {
+	use() {
 		let gl = this.context.gl;
-		gl.bindBuffer(gl.ARRAY_BUFFER, this.verticesBuffer);
-		for (let i = 0; i < this.attributes.length; i++) {
-			let attrib = this.attributes[i];
-			let location = shader.getAttributeLocation(attrib.name);
-			gl.disableVertexAttribArray(location);
-		}
-		if (this.enabletexturesPos) {
-			gl.bindBuffer(gl.ARRAY_BUFFER, this.texturesPosBuffer);
-			let attr = new TextureIndexAndPositionZAttribute();
-			let location = shader.getAttributeLocation(attr.name);
-			gl.disableVertexAttribArray(location);
-		}
-		gl.bindBuffer(gl.ARRAY_BUFFER, null);
+		gl.bindVertexArray(this.vao);
+	}
 
-		if (this.indicesLength > 0) gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, null);
+	finish() {
+		let gl = this.context.gl;
+		gl.bindVertexArray(null);
 	}
 
 	private update() {
 		let gl = this.context.gl;
 		if (this.dirtyVertices) {
-			if (!this.verticesBuffer) {
-				this.verticesBuffer = gl.createBuffer();
-			}
+			// if (!this.verticesBuffer) {
+			// 	this.verticesBuffer = gl.createBuffer();
+			// }
 			gl.bindBuffer(gl.ARRAY_BUFFER, this.verticesBuffer);
-			gl.bufferData(gl.ARRAY_BUFFER, this.vertices.subarray(0, this.verticesLength), gl.DYNAMIC_DRAW);
+			gl.bufferSubData( gl.ARRAY_BUFFER, 0, this.vertices, 0,  this.verticesLength);
+			// gl.bufferData(gl.ARRAY_BUFFER, this.vertices.subarray(0, this.verticesLength), gl.DYNAMIC_DRAW);
 			this.dirtyVertices = false;
 		}
 
 		if (this.dirtyIndices) {
-			if (!this.indicesBuffer) {
-				this.indicesBuffer = gl.createBuffer();
-			}
+			// if (!this.indicesBuffer) {
+			// 	this.indicesBuffer = gl.createBuffer();
+			// }
 			gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.indicesBuffer);
-			gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, this.indices.subarray(0, this.indicesLength), gl.DYNAMIC_DRAW);
+			gl.bufferSubData( gl.ELEMENT_ARRAY_BUFFER, 0, this.indices, 0, this.indicesLength);
+			// gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, this.indices.subarray(0, this.indicesLength), gl.DYNAMIC_DRAW);
 			this.dirtyIndices = false;
 		}
 
 		if (this.dirtyTexturesPos && this.enabletexturesPos) {
-			if (!this.texturesPosBuffer) {
-				this.texturesPosBuffer = gl.createBuffer();
-			}
+			// if (!this.texturesPosBuffer) {
+			// 	this.texturesPosBuffer = gl.createBuffer();
+			// }
 			gl.bindBuffer(gl.ARRAY_BUFFER, this.texturesPosBuffer);
-			gl.bufferData(gl.ARRAY_BUFFER, this.texturePos.subarray(0, this.texturesPosLength), gl.DYNAMIC_DRAW);
+			// gl.bufferData(gl.ARRAY_BUFFER, this.texturePos.subarray(0, this.texturesPosLength), gl.DYNAMIC_DRAW);
+			// gl.bufferSubData(gl.ARRAY_BUFFER, 0, this.texturePos.subarray(0, this.texturesPosLength));
+			gl.bufferSubData(gl.ARRAY_BUFFER, 0, this.texturePos, 0, this.texturesPosLength);
 			this.dirtyTexturesPos = false;
 		}
 	}
@@ -219,6 +229,7 @@ export class Mesh implements Disposable, Restorable {
 		this.verticesBuffer = null;
 		this.indicesBuffer = null;
 		this.texturesPosBuffer = null;
+		this.vao = null;
 		this.update();
 	}
 
@@ -228,6 +239,7 @@ export class Mesh implements Disposable, Restorable {
 		gl.deleteBuffer(this.verticesBuffer);
 		gl.deleteBuffer(this.indicesBuffer);
 		gl.deleteBuffer(this.texturesPosBuffer);
+		gl.deleteVertexArray(this.vao);
 	}
 }
 
