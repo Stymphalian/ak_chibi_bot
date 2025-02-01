@@ -68,7 +68,17 @@ export class SkeletonRenderer {
 		this.vertices = Utils.newFloatArray(this.vertexSize * 1024);
 	}
 
-	draw(batcher: PolygonBatcher, skeleton: Skeleton, slotRangeStart: number = -1, slotRangeEnd: number = -1) {
+/**
+  * Draws the skeleton using the provided PolygonBatcher and Skeleton instances.
+  * This method handles rendering of different attachment types, applying vertex effects,
+  * clipping, and blending.
+  *
+  * @param batcher The PolygonBatcher instance to use for drawing.
+  * @param skeleton The Skeleton instance to draw.
+  * @param slotRangeStart (Optional) The index of the first slot to draw. If not provided, all slots will be drawn.
+  * @param slotRangeEnd (Optional) The index of the last slot to draw. If not provided, all slots will be drawn.
+  */
+ draw(batcher: PolygonBatcher, skeleton: Skeleton, slotRangeStart: number = -1, slotRangeEnd: number = -1) {
 		let clipper = this.clipper;
 		let premultipliedAlpha = this.premultipliedAlpha;
 		let twoColorTint = this.twoColorTint;
@@ -116,7 +126,7 @@ export class SkeletonRenderer {
 				let region = <RegionAttachment>attachment;
 				renderable.vertices = this.vertices;
 				renderable.numVertices = 4;
-				renderable.numFloats = clippedVertexSize << 2;
+				renderable.numFloats = clippedVertexSize << 2; // x4 (4 bytes per float)
 				region.computeWorldVertices(slot.bone, renderable.vertices, 0, clippedVertexSize);
 				triangles = SkeletonRenderer.QUAD_TRIANGLES;
 				uvs = region.uvs;

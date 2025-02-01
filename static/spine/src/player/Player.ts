@@ -375,7 +375,9 @@ export class SpinePlayer {
 			this.offscreenRender = new OffscreenRender(this.sceneRenderer);
 			this.assetManager = new AssetManager(this.context);
 
-			// this.context.GetWebGLParameters();
+			if (this.playerConfig.viewport.debugRender) {
+				this.context.GetWebGLParameters();
+			}
 		} catch (e) {
 			// this.showError("Sorry, your browser does not support WebGL.<br><br>Please use the latest version of Firefox, Chrome, Edge, or Safari.");
 			console.log("Sorry, your browser does not support WebGL.<br><br>Please use the latest version of Firefox, Chrome, Edge, or Safari.");

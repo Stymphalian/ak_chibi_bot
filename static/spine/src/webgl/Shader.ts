@@ -37,6 +37,7 @@ export class Shader implements Disposable, Restorable {
 	public static COLOR2 = "a_color2";
 	public static TEXCOORDS = "a_texCoords";
 	public static TEXTURE_INDEX_POS_Z = "a_texture_index_pos_z";
+	public static TEXTURE_VERTS = "u_data";
 	public static SAMPLER = "u_textures";
 
 	private context: ManagedWebGLRenderingContext;
@@ -316,6 +317,120 @@ export class Shader implements Disposable, Restorable {
 								return (index == 14) 
 								? texture(u_textures[14], v_texCoords) 
 								: texture(u_textures[15], v_texCoords);
+							}
+						}
+					}
+					
+					return vec4(1.0, 0.0, 0.0, 1.0); // Fallback for invalid indices
+				}
+
+				void main () {
+					vec4 texColor = getTextureColor();
+					FragColor.a = texColor.a * v_light.a;
+					FragColor.rgb = ((texColor.a - 1.0) * v_dark.a + 1.0 - texColor.rgb) * v_dark.rgb + texColor.rgb * v_light.rgb;
+				}
+			`;
+
+		return new Shader(context, vs, fs);
+	}
+
+	public static newTwoColoredTexturedWithTextureVerts(context: ManagedWebGLRenderingContext | WebGL2RenderingContext): Shader {
+		let vs = `#version 300 es
+				layout(location = 0) in int u_input_coords;
+				uniform mat4 ${Shader.MVP_MATRIX};
+				uniform sampler2D ${Shader.TEXTURE_VERTS};
+
+				out vec4 v_light;
+				out vec4 v_dark;
+				out vec2 v_texCoords;
+				out float v_texIndex;
+
+				struct VertexData {
+					vec3 position;
+					vec4 color1;
+					vec4 color2;
+					vec2 uv;
+					float textureIndex;
+				};
+				VertexData vd;
+
+				void fillVertexDataByIndex(int index) {
+					// x4 because we align to 4 byte/pixel boundaries, and the 
+					// vertex has 14 components
+					index = index * 4;
+					
+					int texWidth = textureSize(${Shader.TEXTURE_VERTS}, 0).x;
+					int col = index % texWidth;
+					int row = index / texWidth;
+					vec4 v = texelFetch(${Shader.TEXTURE_VERTS}, ivec2(col, row), 0);
+					vd.position = v.xyz;
+					vd.textureIndex = v.w;
+
+					int col2 = (col + 1 >= texWidth) ? 0 : col + 1;
+					int row2 = (col + 1 >= texWidth) ? row + 1 : row;
+					v = texelFetch(${Shader.TEXTURE_VERTS}, ivec2(col2, row2), 0);
+					vd.color1 = v;
+
+					col2 = (col + 2 >= texWidth) ? 1 : col + 2;
+					row2 = (col + 2 >= texWidth) ? row + 1 : row;
+					v = texelFetch(${Shader.TEXTURE_VERTS}, ivec2(col2, row2), 0);
+					vd.color2 = v;
+
+					col2 = (col + 3 >= texWidth) ? 2 : col + 3;
+					row2 = (col + 3 >= texWidth) ? row + 1 : row;
+					v = texelFetch(${Shader.TEXTURE_VERTS}, ivec2(col2, row2), 0);
+					vd.uv = v.xy;
+				}
+
+				void main () {
+					fillVertexDataByIndex(u_input_coords);
+
+					v_light = vd.color1;
+					v_dark = vd.color2;
+					v_texCoords = vd.uv;
+					v_texIndex = vd.textureIndex;
+					vec4 pos = vec4(vd.position, 1.0);
+
+					gl_Position = ${Shader.MVP_MATRIX} * pos;
+				}
+			`;
+
+		let fs = `#version 300 es
+				#ifdef GL_ES
+					#define LOWP lowp
+					precision mediump float;
+				#else
+					#define LOWP
+				#endif
+				in LOWP vec4 v_light;
+				in LOWP vec4 v_dark;
+				in vec2 v_texCoords;
+				in float v_texIndex;
+				out vec4 FragColor;
+				uniform sampler2D u_textures[8];
+
+				vec4 getTextureColor() {
+					int index = int(floor(v_texIndex + 0.2));
+					if (index < 8) {
+						if (index < 4) {
+							if (index < 2) {
+								return (index == 0) 
+									? texture(u_textures[0], v_texCoords) 
+									: texture(u_textures[1], v_texCoords);
+							} else {
+								return (index == 2) 
+								? texture(u_textures[2], v_texCoords) 
+								: texture(u_textures[3], v_texCoords);
+							}
+						} else {
+							if (index < 6) {
+								return (index == 4) 
+									? texture(u_textures[4], v_texCoords) 
+									: texture(u_textures[5], v_texCoords);
+							} else {
+								return (index == 6) 
+								? texture(u_textures[6], v_texCoords) 
+								: texture(u_textures[7], v_texCoords);
 							}
 						}
 					}

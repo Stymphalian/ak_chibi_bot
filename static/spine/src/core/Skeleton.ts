@@ -67,9 +67,11 @@ export class Skeleton {
 	/** The skeleton's path constraints. */
 	pathConstraints: Array<PathConstraint>;
 
-	/** The list of bones and constraints, sorted in the order they should be updated, as computed by {@link #updateCache()}. */
+	/** The list of bones and constraints, sorted in the order they should 
+	 * be updated, as computed by {@link #updateCache()}. */
 	_updateCache = new Array<Updatable>();
-	updateCacheReset = new Array<Updatable>();
+	// List of bones used in the Constraints
+	updateCacheReset = new Array<Updatable>(); 
 
 	/** The skeleton's current skin. May be null. */
 	skin: Skin;
@@ -149,7 +151,8 @@ export class Skeleton {
 		this.updateCache();
 	}
 
-	/** Caches information about bones and constraints. Must be called if the {@link #getSkin()} is modified or if bones,
+	/** Caches information about bones and constraints. 
+	 * Must be called if the {@link #getSkin()} is modified or if bones,
 	 * constraints, or weighted path attachments are added or removed. */
 	updateCache() {
 		let updateCache = this._updateCache;
@@ -179,7 +182,9 @@ export class Skeleton {
 		let ikConstraints = this.ikConstraints;
 		let transformConstraints = this.transformConstraints;
 		let pathConstraints = this.pathConstraints;
-		let ikCount = ikConstraints.length, transformCount = transformConstraints.length, pathCount = pathConstraints.length;
+		let ikCount = ikConstraints.length;
+		let transformCount = transformConstraints.length;
+		let pathCount = pathConstraints.length;
 		let constraintCount = ikCount + transformCount + pathCount;
 
 		outer:
@@ -211,6 +216,11 @@ export class Skeleton {
 			this.sortBone(bones[i]);
 	}
 
+	/**
+	 * Sorts an IK constraint by ensuring the target bone and constrained bones 
+	 * are properly sorted.
+	 * @param constraint The IK constraint to sort.
+	 */
 	sortIkConstraint(constraint: IkConstraint) {
 		constraint.active = constraint.target.isActive() && (!constraint.data.skinRequired || (this.skin != null && Utils.contains(this.skin.constraints, constraint.data, true)));
 		if (!constraint.active) return;
@@ -233,6 +243,11 @@ export class Skeleton {
 		constrained[constrained.length - 1].sorted = true;
 	}
 
+	/**
+	 * Sorts a path constraint by ensuring the target bone and constrained bones 
+	 * are properly sorted.
+	 * @param constraint The path constraint to sort.
+	 */
 	sortPathConstraint(constraint: PathConstraint) {
 		constraint.active = constraint.target.bone.isActive() && (!constraint.data.skinRequired || (this.skin != null && Utils.contains(this.skin.constraints, constraint.data, true)));
 		if (!constraint.active) return;
@@ -316,6 +331,16 @@ export class Skeleton {
 		}
 	}
 
+	/** Sorts the specified bone and its parent bones recursively.
+	 * 
+	 * This method is used to ensure that bones are processed in the correct order 
+	 * during the world transform update.
+	 * If a bone is already sorted, this method will return without doing anything.
+	 * Otherwise, it will sort the bone's parent bones recursively, then mark 
+	 * the bone as sorted and add it to the update cache.
+	 * 
+	 * @param bone The bone to sort.
+	 */
 	sortBone(bone: Bone) {
 		if (bone.sorted) return;
 		let parent = bone.parent;
@@ -338,6 +363,8 @@ export class Skeleton {
 	 * See [World transforms](http://esotericsoftware.com/spine-runtime-skeletons#World-transforms) in the Spine
 	 * Runtimes Guide. */
 	updateWorldTransform() {
+		// Resets all the bones which are used in constraints 
+		// back to their default states.
 		let updateCacheReset = this.updateCacheReset;
 		for (let i = 0, n = updateCacheReset.length; i < n; i++) {
 			let bone = updateCacheReset[i] as Bone;
@@ -350,6 +377,8 @@ export class Skeleton {
 			bone.ashearY = bone.shearY;
 			bone.appliedValid = true;
 		}
+
+		// apply all the constraints to the skeleton's bones
 		let updateCache = this._updateCache;
 		for (let i = 0, n = updateCache.length; i < n; i++)
 			updateCache[i].update();

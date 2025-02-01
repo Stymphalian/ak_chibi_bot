@@ -28,22 +28,25 @@
  *****************************************************************************/
 
 import { GLTexture } from "./GLTexture";
-import { Mesh, Position2Attribute, ColorAttribute, TexCoordAttribute, Color2Attribute } from "./Mesh";
+import { Mesh, Position2Attribute, ColorAttribute, TexCoordAttribute, Color2Attribute} from "./Mesh";
 import { Shader } from "./Shader";
 import { ManagedWebGLRenderingContext } from "./WebGL";
 import { Disposable } from "../core/Utils";
 import { Camera } from "./Camera";
+import { MeshTextureVerts } from "./MeshTextureVerts";
 
 export class PolygonBatcher implements Disposable {
 	// 16 is the minimum supported by openGL. 
 	// Might be better to directly query the parameter and then use that value.
 	// But that would require us to dynamically generate the fragment shader
-	static MAX_LAST_TEXTURES = 16;  
+	static MAX_LAST_TEXTURES = 16;
+	// static MAX_LAST_TEXTURES = 8;
 
 	private context: ManagedWebGLRenderingContext;
 	private drawCalls: number;
 	private isDrawing = false;
 	private mesh: Mesh;
+	// private mesh: MeshTextureVerts;
 	private shader: Shader = null;
 	private verticesLength = 0;
 	private indicesLength = 0;
@@ -69,6 +72,8 @@ export class PolygonBatcher implements Disposable {
 			[new Position2Attribute(), new ColorAttribute(), new TexCoordAttribute()];
 		this.mesh = new Mesh(context, attributes, maxVertices, maxVertices * 3);
 		this.shader = twoColorTint ? Shader.newTwoColoredTextured(this.context) : Shader.newColoredTextured(this.context);
+		// this.mesh = new MeshTextureVerts(context, attributes, maxVertices, maxVertices * 3);
+		// this.shader = Shader.newTwoColoredTexturedWithTextureVerts(this.context);
 		this.srcBlend = this.context.gl.SRC_ALPHA;
 		this.dstBlend = this.context.gl.ONE_MINUS_SRC_ALPHA;
 	}

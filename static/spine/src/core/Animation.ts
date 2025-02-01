@@ -133,8 +133,8 @@ export interface Timeline {
  *
  * See Timeline {@link Timeline#apply(Skeleton, float, float, Array, float, MixBlend, MixDirection)}. */
 export enum MixBlend {
-	/** Transitions from the setup value to the timeline value (the current value is not used). Before the first key, the setup
-	 * value is set. */
+	/** Transitions from the setup value to the timeline value (the current value is not used). 
+	 * Before the first key, the setup value is set. */
 	setup,
 	/** Transitions from the current value to the timeline value. Before the first key, transitions from the current value to
 	 * the setup value. Timelines which perform instant transitions, such as {@link DrawOrderTimeline} or
@@ -832,7 +832,10 @@ export class AttachmentTimeline implements Timeline {
 
 		let attachmentName = this.attachmentNames[frameIndex];
 		skeleton.slots[this.slotIndex]
-			.setAttachment(attachmentName == null ? null : skeleton.getAttachment(this.slotIndex, attachmentName));
+			.setAttachment(
+				attachmentName == null 
+				? null 
+				: skeleton.getAttachment(this.slotIndex, attachmentName));
 	}
 
 	setAttachment(skeleton: Skeleton, slot: Slot, attachmentName: string) {

@@ -37,9 +37,10 @@ export class SkeletonClipping {
 	private triangulator = new Triangulator();
 	private clippingPolygon = new Array<number>();
 	private clipOutput = new Array<number>();
-	clippedVertices = new Array<number>();
-	clippedTriangles = new Array<number>();
 	private scratch = new Array<number>();
+
+	public clippedVertices = new Array<number>();
+	public clippedTriangles = new Array<number>();
 
 	private clipAttachment: ClippingAttachment;
 	private clippingPolygons: Array<Array<number>>;
@@ -48,6 +49,9 @@ export class SkeletonClipping {
 		if (this.clipAttachment != null) return 0;
 		this.clipAttachment = clip;
 
+		// TODO: Do we need to do this every single time we load this clipping attachment
+		// can we cache this transform if we have already used it once.
+		// this clipping attachment's position is modifed by it's parent's bones location.
 		let n = clip.worldVerticesLength;
 		let vertices = Utils.setArraySize(this.clippingPolygon, n);
 		clip.computeWorldVertices(slot, 0, n, vertices, 0, 2);
@@ -112,6 +116,8 @@ export class SkeletonClipping {
 				if (this.clip(x1, y1, x2, y2, x3, y3, polygons[p], clipOutput)) {
 					let clipOutputLength = clipOutput.length;
 					if (clipOutputLength == 0) continue;
+					// These (d0, d1, etc) are used to calculate barycentric coordinates
+					// in order to coorectly interpolate the new UV texture coords
 					let d0 = y2 - y3, d1 = x3 - x2, d2 = x1 - x3, d4 = y3 - y1;
 					let d = 1 / (d0 * d2 + d1 * (y1 - y3));
 
@@ -239,8 +245,9 @@ export class SkeletonClipping {
 		if (clippingArea.length % 4 >= 2) {
 			input = output;
 			output = this.scratch;
-		} else
+		} else {
 			input = this.scratch;
+		}
 
 		input.length = 0;
 		input.push(x1);
@@ -265,6 +272,10 @@ export class SkeletonClipping {
 			for (let ii = 0; ii < inputVerticesLength; ii += 2) {
 				let inputX = inputVertices[ii], inputY = inputVertices[ii + 1];
 				let inputX2 = inputVertices[ii + 2], inputY2 = inputVertices[ii + 3];
+
+				// side2, and the if condition are using 2d vector cross products
+				// to tell if the input vertex is on the inside/outside of the 
+				// clipping edge.
 				let side2 = deltaX * (inputY2 - edgeY2) - deltaY * (inputX2 - edgeX2) > 0;
 				if (deltaX * (inputY - edgeY2) - deltaY * (inputX - edgeX2) > 0) {
 					if (side2) { // v1 inside, v2 inside
@@ -272,6 +283,10 @@ export class SkeletonClipping {
 						output.push(inputY2);
 						continue;
 					}
+
+					// Line segment intersection.
+					// https://stackoverflow.com/questions/563198/how-do-you-detect-where-two-line-segments-intersect
+					// 
 					// v1 inside, v2 outside
 					let c0 = inputY2 - inputY, c2 = inputX2 - inputX;
 					let s = c0 * (edgeX2 - edgeX) - c2 * (edgeY2 - edgeY);
@@ -305,10 +320,15 @@ export class SkeletonClipping {
 				return true;
 			}
 
+			// Adding the first vertex again to close the shape.
 			output.push(output[0]);
 			output.push(output[1]);
 
 			if (i == clippingVerticesLast) break;
+
+			// Switching the output/input. Because we might have clipped some 
+			// vertices we need to use the "newly clipped" vertices when checking
+			// against the other clip polygon edges.
 			let temp = output;
 			output = input;
 			output.length = 0;
@@ -319,8 +339,9 @@ export class SkeletonClipping {
 			originalOutput.length = 0;
 			for (let i = 0, n = output.length - 2; i < n; i++)
 				originalOutput[i] = output[i];
-		} else
+		} else {
 			originalOutput.length = originalOutput.length - 2;
+		}
 
 		return clipped;
 	}
@@ -329,7 +350,8 @@ export class SkeletonClipping {
 		let vertices = polygon;
 		let verticeslength = polygon.length;
 
-		let area = vertices[verticeslength - 2] * vertices[1] - vertices[0] * vertices[verticeslength - 1], p1x = 0, p1y = 0, p2x = 0, p2y = 0;
+		let area = vertices[verticeslength - 2] * vertices[1] - vertices[0] * vertices[verticeslength - 1];
+		let p1x = 0, p1y = 0, p2x = 0, p2y = 0;
 		for (let i = 0, n = verticeslength - 3; i < n; i += 2) {
 			p1x = vertices[i];
 			p1y = vertices[i + 1];

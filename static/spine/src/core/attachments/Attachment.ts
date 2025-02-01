@@ -42,7 +42,8 @@ export abstract class Attachment {
 	abstract copy(): Attachment;
 }
 
-/** Base class for an attachment with vertices that are transformed by one or more bones and can be deformed by a slot's
+/** Base class for an attachment with vertices that are transformed by one or 
+ * more bones and can be deformed by a slot's
  * {@link Slot#deform}. */
 export abstract class VertexAttachment extends Attachment {
 	private static nextID = 0;
@@ -71,8 +72,8 @@ export abstract class VertexAttachment extends Attachment {
 		super(name);
 	}
 
-	/** Transforms the attachment's local {@link vertices} to world coordinates. If the slot's {@link Slot#deform} is
-	 * not empty, it is used to deform the vertices.
+	/** Transforms the attachment's local {@link vertices} to world coordinates.
+	 *  If the slot's {@link Slot#deform} is not empty, it is used to deform the vertices.
 	 *
 	 * See [World transforms](http://esotericsoftware.com/spine-runtime-skeletons#World-transforms) in the Spine
 	 * Runtimes Guide.
@@ -82,7 +83,8 @@ export abstract class VertexAttachment extends Attachment {
 	 *           `stride` / 2.
 	 * @param offset The `worldVertices` index to begin writing values.
 	 * @param stride The number of `worldVertices` entries between the value pairs written. */
-	computeWorldVertices(slot: Slot, start: number, count: number, worldVertices: ArrayLike<number>, offset: number, stride: number) {
+	computeWorldVertices(slot: Slot, start: number, count: number, 
+		worldVertices: ArrayLike<number>, offset: number, stride: number) {
 		count = offset + (count >> 1) * stride;
 		let skeleton = slot.bone.skeleton;
 		let deformArray = slot.deform;

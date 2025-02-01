@@ -184,7 +184,8 @@ export class AnimationState {
 		return false;
 	}
 
-	/** Poses the skeleton using the track entry animations. There are no side effects other than invoking listeners, so the
+	/** Poses the skeleton using the track entry animations. There are no side effects 
+	 * other than invoking listeners, so the
 	 * animation state can be applied to multiple skeletons to pose them identically.
 	 * @returns True if any animations were applied. */
 	apply(skeleton: Skeleton): boolean {
@@ -251,8 +252,10 @@ export class AnimationState {
 			current.nextTrackLast = current.trackTime;
 		}
 
-		// Set slots attachments to the setup pose, if needed. This occurs if an animation that is mixing out sets attachments so
-		// subsequent timelines see any deform, but the subsequent timelines don't set an attachment (eg they are also mixing out or
+		// Set slots attachments to the setup pose, if needed. This occurs if an
+		// animation that is mixing out sets attachments so
+		// subsequent timelines see any deform, but the subsequent timelines 
+		// don't set an attachment (eg they are also mixing out or
 		// the time is before the first key).
 		var setupState = this.unkeyedState + AnimationState.SETUP;
 		var slots = skeleton.slots;
@@ -284,8 +287,10 @@ export class AnimationState {
 		}
 
 		let events = mix < from.eventThreshold ? this.events : null;
-		let attachments = mix < from.attachmentThreshold, drawOrder = mix < from.drawOrderThreshold;
-		let animationLast = from.animationLast, animationTime = from.getAnimationTime();
+		let attachments = mix < from.attachmentThreshold;
+		let drawOrder = mix < from.drawOrderThreshold;
+		let animationLast = from.animationLast;
+		let animationTime = from.getAnimationTime();
 		let timelineCount = from.animation.timelines.length;
 		let timelines = from.animation.timelines;
 		let alphaHold = from.alpha * to.interruptAlpha, alphaMix = alphaHold * (1 - mix);
@@ -379,8 +384,10 @@ export class AnimationState {
 	}
 
 
-	applyRotateTimeline(timeline: Timeline, skeleton: Skeleton, time: number, alpha: number, blend: MixBlend,
-		timelinesRotation: Array<number>, i: number, firstFrame: boolean) {
+	applyRotateTimeline(
+		timeline: Timeline, skeleton: Skeleton, time: number, alpha: number,
+		blend: MixBlend, timelinesRotation: Array<number>, i: number, 
+		firstFrame: boolean) {
 
 		if (firstFrame) timelinesRotation[i] = 0;
 
@@ -734,6 +741,11 @@ export class AnimationState {
 		entry.next = null;
 	}
 
+	/**
+	 * Recalculates the animation state after changes have been made to the animations.
+	 * This method is called internally when the animations are changed, but can 
+	 * also be called manually to ensure the animation state is up-to-date.
+	 */
 	_animationsChanged() {
 		this.animationsChanged = false;
 
@@ -752,6 +764,14 @@ export class AnimationState {
 		}
 	}
 
+	/**
+	 * Computes the timeline modes for the given track entry, determining how 
+	 * the animation timelines should be applied.
+	 * This method is called internally when the animations are changed, but can
+	 * also be called manually to ensure the animation state is up-to-date.
+	 *
+	 * @param entry The track entry to compute the timeline modes for.
+	 */
 	computeHold(entry: TrackEntry) {
 		let to = entry.mixingTo;
 		let timelines = entry.animation.timelines;
