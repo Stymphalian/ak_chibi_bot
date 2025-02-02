@@ -919,6 +919,10 @@ export class Actor {
 			if (this.offscreenRender != null) {
 				if (!this.canavsBBSaved.has(defaultAnimationName)) {
 					let bb = this.offscreenRender.getBoundingBox(this, defaultBB);
+					if (!Number.isFinite(bb.x)) {
+						// Fallback, just in case getBoundingBox returns infinitys/NAN
+						bb = defaultBB;
+					}
 					this.canavsBBSaved.set(defaultAnimationName, bb);
 				}
 				returnBB = this.canavsBBSaved.get(defaultAnimationName);
