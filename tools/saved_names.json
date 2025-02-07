@@ -329,6 +329,9 @@
     "char_476_blkngt": [
         "Blacknight"
     ],
+    "char_4147_mitm": [
+        "Mitm"
+    ],
     "char_497_ctable": [
         "Cantabile"
     ],
@@ -772,6 +775,10 @@
     "char_4124_iana": [
         "Iana"
     ],
+    "char_4151_tinman": [
+        "Tin Man",
+        "Tinman"
+    ],
     "char_103_angel": [
         "Exusiai"
     ],
@@ -893,6 +900,9 @@
     ],
     "char_4046_ebnhlz": [
         "Ebenholz"
+    ],
+    "char_4146_nymph": [
+        "Nymph"
     ],
     "char_206_gnosis": [
         "Gnosis"

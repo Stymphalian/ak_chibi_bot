@@ -5450,6 +5450,58 @@
               "spritesheet_data_filepath": ""
             }
           }
+        },
+        "yun": {
+          "base": {
+            "Front": {
+              "atlas_filepath": "characters/char_128_plosis/yun#4/base/Front/build_char_128_plosis_yun#4.atlas",
+              "skel_filepath": "characters/char_128_plosis/yun#4/base/Front/build_char_128_plosis_yun#4.skel",
+              "png_filepath": "characters/char_128_plosis/yun#4/base/Front/build_char_128_plosis_yun#4.png",
+              "animations": [
+                "Default",
+                "Interact",
+                "Move",
+                "Relax",
+                "Sit",
+                "Sleep",
+                "Special"
+              ],
+              "spritesheet_data_filepath": ""
+            }
+          },
+          "battle": {
+            "Back": {
+              "atlas_filepath": "characters/char_128_plosis/yun#4/battle/Back/char_128_plosis_yun#4.atlas",
+              "skel_filepath": "characters/char_128_plosis/yun#4/battle/Back/char_128_plosis_yun#4.skel",
+              "png_filepath": "characters/char_128_plosis/yun#4/battle/Back/char_128_plosis_yun#4.png",
+              "animations": [
+                "Attack",
+                "Attack_End",
+                "Attack_Loop",
+                "Attack_Start",
+                "Default",
+                "Idle",
+                "Start"
+              ],
+              "spritesheet_data_filepath": ""
+            },
+            "Front": {
+              "atlas_filepath": "characters/char_128_plosis/yun#4/battle/Front/char_128_plosis_yun#4.atlas",
+              "skel_filepath": "characters/char_128_plosis/yun#4/battle/Front/char_128_plosis_yun#4.skel",
+              "png_filepath": "characters/char_128_plosis/yun#4/battle/Front/char_128_plosis_yun#4.png",
+              "animations": [
+                "Attack",
+                "Attack_End",
+                "Attack_Loop",
+                "Attack_Start",
+                "Default",
+                "Die",
+                "Idle",
+                "Start"
+              ],
+              "spritesheet_data_filepath": ""
+            }
+          }
         }
       }
     },
@@ -10518,6 +10570,85 @@
               "atlas_filepath": "characters/char_2012_typhon/default/battle/Front/char_2012_typhon.atlas",
               "skel_filepath": "characters/char_2012_typhon/default/battle/Front/char_2012_typhon.skel",
               "png_filepath": "characters/char_2012_typhon/default/battle/Front/char_2012_typhon.png",
+              "animations": [
+                "Attack_Begin",
+                "Attack_Down_Begin",
+                "Attack_Down_End",
+                "Attack_Down_Loop",
+                "Attack_End",
+                "Attack_Loop",
+                "Default",
+                "Die",
+                "Idle",
+                "Skill_2_1_Begin",
+                "Skill_2_1_End",
+                "Skill_2_1_Loop",
+                "Skill_2_2_Begin",
+                "Skill_2_2_Idle",
+                "Skill_2_2_Loop",
+                "Skill_3_Begin",
+                "Skill_3_End",
+                "Skill_3_Idle",
+                "Skill_3_Loop",
+                "Skill_Down_2_1_Begin",
+                "Skill_Down_2_1_End",
+                "Skill_Down_2_1_Loop",
+                "Skill_Down_2_2_Begin",
+                "Skill_Down_2_2_Idle",
+                "Skill_Down_2_2_Loop",
+                "Start"
+              ],
+              "spritesheet_data_filepath": ""
+            }
+          }
+        },
+        "summer": {
+          "base": {
+            "Front": {
+              "atlas_filepath": "characters/char_2012_typhon/summer#17/base/Front/build_char_2012_typhon_summer#17.atlas",
+              "skel_filepath": "characters/char_2012_typhon/summer#17/base/Front/build_char_2012_typhon_summer#17.skel",
+              "png_filepath": "characters/char_2012_typhon/summer#17/base/Front/build_char_2012_typhon_summer#17.png",
+              "animations": [
+                "Default",
+                "Interact",
+                "Move",
+                "Relax",
+                "Sit",
+                "Sleep",
+                "Special"
+              ],
+              "spritesheet_data_filepath": ""
+            }
+          },
+          "battle": {
+            "Back": {
+              "atlas_filepath": "characters/char_2012_typhon/summer#17/battle/Back/char_2012_typhon_summer#17.atlas",
+              "skel_filepath": "characters/char_2012_typhon/summer#17/battle/Back/char_2012_typhon_summer#17.skel",
+              "png_filepath": "characters/char_2012_typhon/summer#17/battle/Back/char_2012_typhon_summer#17.png",
+              "animations": [
+                "Attack_Begin",
+                "Attack_End",
+                "Attack_Loop",
+                "Default",
+                "Idle",
+                "Skill_2_1_Begin",
+                "Skill_2_1_End",
+                "Skill_2_1_Loop",
+                "Skill_2_2_Begin",
+                "Skill_2_2_Idle",
+                "Skill_2_2_Loop",
+                "Skill_3_Begin",
+                "Skill_3_End",
+                "Skill_3_Idle",
+                "Skill_3_Loop",
+                "Start"
+              ],
+              "spritesheet_data_filepath": ""
+            },
+            "Front": {
+              "atlas_filepath": "characters/char_2012_typhon/summer#17/battle/Front/char_2012_typhon_summer#17.atlas",
+              "skel_filepath": "characters/char_2012_typhon/summer#17/battle/Front/char_2012_typhon_summer#17.skel",
+              "png_filepath": "characters/char_2012_typhon/summer#17/battle/Front/char_2012_typhon_summer#17.png",
               "animations": [
                 "Attack_Begin",
                 "Attack_Down_Begin",
@@ -16944,6 +17075,52 @@
               "atlas_filepath": "characters/char_282_catap/default/battle/Front/char_282_catap.atlas",
               "skel_filepath": "characters/char_282_catap/default/battle/Front/char_282_catap.skel",
               "png_filepath": "characters/char_282_catap/default/battle/Front/char_282_catap.png",
+              "animations": [
+                "Attack",
+                "Default",
+                "Die",
+                "Idle",
+                "Start"
+              ],
+              "spritesheet_data_filepath": ""
+            }
+          }
+        },
+        "summer": {
+          "base": {
+            "Front": {
+              "atlas_filepath": "characters/char_282_catap/summer#17/base/Front/build_char_282_catap_summer#17.atlas",
+              "skel_filepath": "characters/char_282_catap/summer#17/base/Front/build_char_282_catap_summer#17.skel",
+              "png_filepath": "characters/char_282_catap/summer#17/base/Front/build_char_282_catap_summer#17.png",
+              "animations": [
+                "Default",
+                "Interact",
+                "Move",
+                "Relax",
+                "Sit",
+                "Sleep",
+                "Special"
+              ],
+              "spritesheet_data_filepath": ""
+            }
+          },
+          "battle": {
+            "Back": {
+              "atlas_filepath": "characters/char_282_catap/summer#17/battle/Back/char_282_catap_summer#17.atlas",
+              "skel_filepath": "characters/char_282_catap/summer#17/battle/Back/char_282_catap_summer#17.skel",
+              "png_filepath": "characters/char_282_catap/summer#17/battle/Back/char_282_catap_summer#17.png",
+              "animations": [
+                "Attack",
+                "Default",
+                "Idle",
+                "Start"
+              ],
+              "spritesheet_data_filepath": ""
+            },
+            "Front": {
+              "atlas_filepath": "characters/char_282_catap/summer#17/battle/Front/char_282_catap_summer#17.atlas",
+              "skel_filepath": "characters/char_282_catap/summer#17/battle/Front/char_282_catap_summer#17.skel",
+              "png_filepath": "characters/char_282_catap/summer#17/battle/Front/char_282_catap_summer#17.png",
               "animations": [
                 "Attack",
                 "Default",
@@ -25390,6 +25567,60 @@
             }
           }
         },
+        "summer": {
+          "base": {
+            "Front": {
+              "atlas_filepath": "characters/char_4032_provs/summer#17/base/Front/build_char_4032_provs_summer#17.atlas",
+              "skel_filepath": "characters/char_4032_provs/summer#17/base/Front/build_char_4032_provs_summer#17.skel",
+              "png_filepath": "characters/char_4032_provs/summer#17/base/Front/build_char_4032_provs_summer#17.png",
+              "animations": [
+                "Default",
+                "Interact",
+                "Move",
+                "Relax",
+                "Sit",
+                "Sleep",
+                "Special"
+              ],
+              "spritesheet_data_filepath": ""
+            }
+          },
+          "battle": {
+            "Back": {
+              "atlas_filepath": "characters/char_4032_provs/summer#17/battle/Back/char_4032_provs_summer#17.atlas",
+              "skel_filepath": "characters/char_4032_provs/summer#17/battle/Back/char_4032_provs_summer#17.skel",
+              "png_filepath": "characters/char_4032_provs/summer#17/battle/Back/char_4032_provs_summer#17.png",
+              "animations": [
+                "Attack",
+                "Default",
+                "Idle",
+                "Skill_2_Begin",
+                "Skill_2_End",
+                "Skill_2_Idle",
+                "Skill_2_Loop",
+                "Start"
+              ],
+              "spritesheet_data_filepath": ""
+            },
+            "Front": {
+              "atlas_filepath": "characters/char_4032_provs/summer#17/battle/Front/char_4032_provs_summer#17.atlas",
+              "skel_filepath": "characters/char_4032_provs/summer#17/battle/Front/char_4032_provs_summer#17.skel",
+              "png_filepath": "characters/char_4032_provs/summer#17/battle/Front/char_4032_provs_summer#17.png",
+              "animations": [
+                "Attack",
+                "Default",
+                "Die",
+                "Idle",
+                "Skill_2_Begin",
+                "Skill_2_End",
+                "Skill_2_Idle",
+                "Skill_2_Loop",
+                "Start"
+              ],
+              "spritesheet_data_filepath": ""
+            }
+          }
+        },
         "wild": {
           "base": {
             "Front": {
@@ -27097,6 +27328,52 @@
               "spritesheet_data_filepath": ""
             }
           }
+        },
+        "summer": {
+          "base": {
+            "Front": {
+              "atlas_filepath": "characters/char_4062_totter/summer#17/base/Front/build_char_4062_totter_summer#17.atlas",
+              "skel_filepath": "characters/char_4062_totter/summer#17/base/Front/build_char_4062_totter_summer#17.skel",
+              "png_filepath": "characters/char_4062_totter/summer#17/base/Front/build_char_4062_totter_summer#17.png",
+              "animations": [
+                "Default",
+                "Interact",
+                "Move",
+                "Relax",
+                "Sit",
+                "Sleep",
+                "Special"
+              ],
+              "spritesheet_data_filepath": ""
+            }
+          },
+          "battle": {
+            "Back": {
+              "atlas_filepath": "characters/char_4062_totter/summer#17/battle/Back/char_4062_totter_summer#17.atlas",
+              "skel_filepath": "characters/char_4062_totter/summer#17/battle/Back/char_4062_totter_summer#17.skel",
+              "png_filepath": "characters/char_4062_totter/summer#17/battle/Back/char_4062_totter_summer#17.png",
+              "animations": [
+                "Attack",
+                "Default",
+                "Idle",
+                "Start"
+              ],
+              "spritesheet_data_filepath": ""
+            },
+            "Front": {
+              "atlas_filepath": "characters/char_4062_totter/summer#17/battle/Front/char_4062_totter_summer#17.atlas",
+              "skel_filepath": "characters/char_4062_totter/summer#17/battle/Front/char_4062_totter_summer#17.skel",
+              "png_filepath": "characters/char_4062_totter/summer#17/battle/Front/char_4062_totter_summer#17.png",
+              "animations": [
+                "Attack",
+                "Default",
+                "Die",
+                "Idle",
+                "Start"
+              ],
+              "spritesheet_data_filepath": ""
+            }
+          }
         }
       }
     },
@@ -28621,6 +28898,59 @@
               "spritesheet_data_filepath": ""
             }
           }
+        },
+        "yun": {
+          "base": {
+            "Front": {
+              "atlas_filepath": "characters/char_4083_chimes/yun#5/base/Front/build_char_4083_chimes_yun#5.atlas",
+              "skel_filepath": "characters/char_4083_chimes/yun#5/base/Front/build_char_4083_chimes_yun#5.skel",
+              "png_filepath": "characters/char_4083_chimes/yun#5/base/Front/build_char_4083_chimes_yun#5.png",
+              "animations": [
+                "Default",
+                "Interact",
+                "Move",
+                "Move2",
+                "Relax",
+                "Sit",
+                "Sleep",
+                "Special"
+              ],
+              "spritesheet_data_filepath": ""
+            }
+          },
+          "battle": {
+            "Back": {
+              "atlas_filepath": "characters/char_4083_chimes/yun#5/battle/Back/char_4083_chimes_yun#5.atlas",
+              "skel_filepath": "characters/char_4083_chimes/yun#5/battle/Back/char_4083_chimes_yun#5.skel",
+              "png_filepath": "characters/char_4083_chimes/yun#5/battle/Back/char_4083_chimes_yun#5.png",
+              "animations": [
+                "Attack",
+                "Default",
+                "Idle",
+                "Skill_Begin",
+                "Skill_End",
+                "Skill_Idle",
+                "Start"
+              ],
+              "spritesheet_data_filepath": ""
+            },
+            "Front": {
+              "atlas_filepath": "characters/char_4083_chimes/yun#5/battle/Front/char_4083_chimes_yun#5.atlas",
+              "skel_filepath": "characters/char_4083_chimes/yun#5/battle/Front/char_4083_chimes_yun#5.skel",
+              "png_filepath": "characters/char_4083_chimes/yun#5/battle/Front/char_4083_chimes_yun#5.png",
+              "animations": [
+                "Attack",
+                "Default",
+                "Die",
+                "Idle",
+                "Skill_Begin",
+                "Skill_End",
+                "Skill_Idle",
+                "Start"
+              ],
+              "spritesheet_data_filepath": ""
+            }
+          }
         }
       }
     },
@@ -29310,6 +29640,92 @@
               "atlas_filepath": "characters/char_4104_coldst/default/battle/Front/char_4104_coldst.atlas",
               "skel_filepath": "characters/char_4104_coldst/default/battle/Front/char_4104_coldst.skel",
               "png_filepath": "characters/char_4104_coldst/default/battle/Front/char_4104_coldst.png",
+              "animations": [
+                "Attack_Begin",
+                "Attack_Down_Begin",
+                "Attack_Down_End",
+                "Attack_Down_Loop",
+                "Attack_End",
+                "Attack_Loop",
+                "Default",
+                "Die",
+                "Idle",
+                "Reload_Begin",
+                "Reload_Break",
+                "Reload_Down_Begin",
+                "Reload_Down_Break",
+                "Reload_Down_End",
+                "Reload_Down_Loop",
+                "Reload_End",
+                "Reload_Loop",
+                "Skill_2_Begin",
+                "Skill_2_End",
+                "Skill_2_Loop",
+                "Skill_2_Reload_Begin",
+                "Skill_2_Reload_Break",
+                "Skill_2_Reload_End",
+                "Skill_2_Reload_Loop",
+                "Skill_Down_2_Begin",
+                "Skill_Down_2_End",
+                "Skill_Down_2_Loop",
+                "Skill_Down_2_Reload_Begin",
+                "Skill_Down_2_Reload_Break",
+                "Skill_Down_2_Reload_End",
+                "Skill_Down_2_Reload_Loop",
+                "Start"
+              ],
+              "spritesheet_data_filepath": ""
+            }
+          }
+        },
+        "striker": {
+          "base": {
+            "Front": {
+              "atlas_filepath": "characters/char_4104_coldst/striker#3/base/Front/build_char_4104_coldst_striker#3.atlas",
+              "skel_filepath": "characters/char_4104_coldst/striker#3/base/Front/build_char_4104_coldst_striker#3.skel",
+              "png_filepath": "characters/char_4104_coldst/striker#3/base/Front/build_char_4104_coldst_striker#3.png",
+              "animations": [
+                "Default",
+                "Interact",
+                "Move",
+                "Relax",
+                "Sit",
+                "Sleep",
+                "Special"
+              ],
+              "spritesheet_data_filepath": ""
+            }
+          },
+          "battle": {
+            "Back": {
+              "atlas_filepath": "characters/char_4104_coldst/striker#3/battle/Back/char_4104_coldst_striker#3.atlas",
+              "skel_filepath": "characters/char_4104_coldst/striker#3/battle/Back/char_4104_coldst_striker#3.skel",
+              "png_filepath": "characters/char_4104_coldst/striker#3/battle/Back/char_4104_coldst_striker#3.png",
+              "animations": [
+                "Attack_Begin",
+                "Attack_End",
+                "Attack_Loop",
+                "Default",
+                "Idle",
+                "Reload_Begin",
+                "Reload_Break",
+                "Reload_End",
+                "Reload_Loop",
+                "Skill_2_Begin",
+                "Skill_2_End",
+                "Skill_2_Loop",
+                "Skill_2_Reload_Begin",
+                "Skill_2_Reload_Break",
+                "Skill_2_Reload_End",
+                "Skill_2_Reload_Loop",
+                "Start"
+              ],
+              "spritesheet_data_filepath": ""
+            },
+            "Front": {
+              "atlas_filepath": "characters/char_4104_coldst/striker#3/battle/Front/char_4104_coldst_striker#3.atlas",
+              "skel_filepath": "characters/char_4104_coldst/striker#3/battle/Front/char_4104_coldst_striker#3.skel",
+              "png_filepath": "characters/char_4104_coldst/striker#3/battle/Front/char_4104_coldst_striker#3.png",
               "animations": [
                 "Attack_Begin",
                 "Attack_Down_Begin",
@@ -31449,6 +31865,177 @@
                 "Skill_3_Loop",
                 "Skill_3_ReStart_A",
                 "Skill_3_ReStart_B",
+                "Start"
+              ],
+              "spritesheet_data_filepath": ""
+            }
+          }
+        }
+      }
+    },
+    "char_4146_nymph": {
+      "skins": {
+        "default": {
+          "base": {
+            "Front": {
+              "atlas_filepath": "characters/char_4146_nymph/default/base/Front/build_char_4146_nymph.atlas",
+              "skel_filepath": "characters/char_4146_nymph/default/base/Front/build_char_4146_nymph.skel",
+              "png_filepath": "characters/char_4146_nymph/default/base/Front/build_char_4146_nymph.png",
+              "animations": [
+                "Default",
+                "Interact",
+                "Move",
+                "Relax",
+                "Sit",
+                "Sleep"
+              ],
+              "spritesheet_data_filepath": ""
+            }
+          },
+          "battle": {
+            "Back": {
+              "atlas_filepath": "characters/char_4146_nymph/default/battle/Back/char_4146_nymph.atlas",
+              "skel_filepath": "characters/char_4146_nymph/default/battle/Back/char_4146_nymph.skel",
+              "png_filepath": "characters/char_4146_nymph/default/battle/Back/char_4146_nymph.png",
+              "animations": [
+                "Attack",
+                "Default",
+                "Idle",
+                "Skill_2",
+                "Skill_3_Attack",
+                "Skill_3_Begin",
+                "Skill_3_End",
+                "Skill_3_Idle",
+                "Start"
+              ],
+              "spritesheet_data_filepath": ""
+            },
+            "Front": {
+              "atlas_filepath": "characters/char_4146_nymph/default/battle/Front/char_4146_nymph.atlas",
+              "skel_filepath": "characters/char_4146_nymph/default/battle/Front/char_4146_nymph.skel",
+              "png_filepath": "characters/char_4146_nymph/default/battle/Front/char_4146_nymph.png",
+              "animations": [
+                "Attack",
+                "Default",
+                "Die",
+                "Idle",
+                "Skill_2",
+                "Skill_3_Attack",
+                "Skill_3_Begin",
+                "Skill_3_End",
+                "Skill_3_Idle",
+                "Start"
+              ],
+              "spritesheet_data_filepath": ""
+            }
+          }
+        }
+      }
+    },
+    "char_4147_mitm": {
+      "skins": {
+        "default": {
+          "base": {
+            "Front": {
+              "atlas_filepath": "characters/char_4147_mitm/default/base/Front/build_char_4147_mitm.atlas",
+              "skel_filepath": "characters/char_4147_mitm/default/base/Front/build_char_4147_mitm.skel",
+              "png_filepath": "characters/char_4147_mitm/default/base/Front/build_char_4147_mitm.png",
+              "animations": [
+                "Default",
+                "Interact",
+                "Move",
+                "Relax",
+                "Sit",
+                "Sleep"
+              ],
+              "spritesheet_data_filepath": ""
+            }
+          },
+          "battle": {
+            "Back": {
+              "atlas_filepath": "characters/char_4147_mitm/default/battle/Back/char_4147_mitm.atlas",
+              "skel_filepath": "characters/char_4147_mitm/default/battle/Back/char_4147_mitm.skel",
+              "png_filepath": "characters/char_4147_mitm/default/battle/Back/char_4147_mitm.png",
+              "animations": [
+                "Attack",
+                "Default",
+                "Idle",
+                "Skill_1",
+                "Skill_2_Begin",
+                "Skill_2_End",
+                "Skill_2_Idle",
+                "Skill_2_Loop",
+                "Start"
+              ],
+              "spritesheet_data_filepath": ""
+            },
+            "Front": {
+              "atlas_filepath": "characters/char_4147_mitm/default/battle/Front/char_4147_mitm.atlas",
+              "skel_filepath": "characters/char_4147_mitm/default/battle/Front/char_4147_mitm.skel",
+              "png_filepath": "characters/char_4147_mitm/default/battle/Front/char_4147_mitm.png",
+              "animations": [
+                "Attack",
+                "Default",
+                "Die",
+                "Idle",
+                "Skill_1",
+                "Skill_2_Begin",
+                "Skill_2_End",
+                "Skill_2_Idle",
+                "Skill_2_Loop",
+                "Start"
+              ],
+              "spritesheet_data_filepath": ""
+            }
+          }
+        }
+      }
+    },
+    "char_4151_tinman": {
+      "skins": {
+        "default": {
+          "base": {
+            "Front": {
+              "atlas_filepath": "characters/char_4151_tinman/default/base/Front/build_char_4151_tinman.atlas",
+              "skel_filepath": "characters/char_4151_tinman/default/base/Front/build_char_4151_tinman.skel",
+              "png_filepath": "characters/char_4151_tinman/default/base/Front/build_char_4151_tinman.png",
+              "animations": [
+                "Default",
+                "Interact",
+                "Move",
+                "Relax",
+                "Sit",
+                "Sleep"
+              ],
+              "spritesheet_data_filepath": ""
+            }
+          },
+          "battle": {
+            "Back": {
+              "atlas_filepath": "characters/char_4151_tinman/default/battle/Back/char_4151_tinman.atlas",
+              "skel_filepath": "characters/char_4151_tinman/default/battle/Back/char_4151_tinman.skel",
+              "png_filepath": "characters/char_4151_tinman/default/battle/Back/char_4151_tinman.png",
+              "animations": [
+                "Attack",
+                "Default",
+                "Idle",
+                "Skill",
+                "Skill_2",
+                "Start"
+              ],
+              "spritesheet_data_filepath": ""
+            },
+            "Front": {
+              "atlas_filepath": "characters/char_4151_tinman/default/battle/Front/char_4151_tinman.atlas",
+              "skel_filepath": "characters/char_4151_tinman/default/battle/Front/char_4151_tinman.skel",
+              "png_filepath": "characters/char_4151_tinman/default/battle/Front/char_4151_tinman.png",
+              "animations": [
+                "Attack",
+                "Default",
+                "Die",
+                "Idle",
+                "Skill",
+                "Skill_2",
                 "Start"
               ],
               "spritesheet_data_filepath": ""

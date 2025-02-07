@@ -3453,6 +3453,10 @@
         "Crying Thief",
         "THF"
     ],
+    "enemy_2085_skzjxd": [
+        "Fatty",
+        "FAT"
+    ],
     "enemy_2009_csaudc": [
         "Derisive Audience",
         "CS1"
@@ -3534,6 +3538,38 @@
     "enemy_2061_smhond": [
         "Royal Companion",
         "EJ7"
+    ],
+    "enemy_2063_skzlch": [
+        "Sarkaz Maze Guide",
+        "SFF1"
+    ],
+    "enemy_2064_skzwdd": [
+        "Sarkaz Maze Returner",
+        "SFF2"
+    ],
+    "enemy_2065_skzjs": [
+        "Dreadkaz",
+        "SFF3"
+    ],
+    "enemy_2066_skzlcp": [
+        "Sarkaz Maze Spellweaver",
+        "SFF4"
+    ],
+    "enemy_2067_skzcy": [
+        "Portal",
+        "SFF5"
+    ],
+    "enemy_2068_skzirn": [
+        "Holy Automaton",
+        "SFF6"
+    ],
+    "enemy_2069_skzbox": [
+        "Lost Contraption",
+        "SFF7"
+    ],
+    "enemy_2070_skzfbx": [
+        "Lost Hovercraft",
+        "SFF8"
     ],
     "enemy_4001_toxcar": [
         "Retrofitted Gastruck",
@@ -4033,6 +4069,54 @@
     "enemy_2062_smcar": [
         "Self-Driving Recon Cart",
         "SMC0"
+    ],
+    "enemy_2071_skzdny": [
+        "Laqeramaline",
+        "LMR"
+    ],
+    "enemy_2072_skdny2": [
+        "The Tear Weaver",
+        "LMS"
+    ],
+    "enemy_2074_skzgly": [
+        "Goliath",
+        "GLT"
+    ],
+    "enemy_2075_skgly2": [
+        "Champion of Lost Agonies",
+        "GLS"
+    ],
+    "enemy_2076_skzklz": [
+        "Kaltsit",
+        "KST"
+    ],
+    "enemy_2077_skklz2": [
+        "The Doomsday Prophet",
+        "KSS"
+    ],
+    "enemy_2078_skzmst": [
+        "Mon2tr",
+        "M2T"
+    ],
+    "enemy_2079_skmst2": [
+        "Evolving Monster",
+        "M2S"
+    ],
+    "enemy_2080_skzlwy": [
+        "Fremont, Enlightener of Minds",
+        "FMT"
+    ],
+    "enemy_2081_skztxs": [
+        "Theresis, Black Crowned Lord",
+        "TRS"
+    ],
+    "enemy_2082_skzdd": [
+        "Buldrokkastee, Holy Gun-Knight",
+        "SPT"
+    ],
+    "enemy_2084_skzcan": [
+        "Mr. Goodenough",
+        "KNS"
     ],
     "enemy_5008_cstrwd": [],
     "enemy_5009_shtrwd": [],

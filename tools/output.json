@@ -329,6 +329,9 @@
     "char_476_blkngt": [
         "Blacknight"
     ],
+    "char_4147_mitm": [
+        "Mitm"
+    ],
     "char_497_ctable": [
         "Cantabile"
     ],
@@ -588,7 +591,8 @@
         "Paprika"
     ],
     "char_4139_papyrs": [
-        "Papyrus"
+        "Papyrus",
+        "Mari"
     ],
     "char_148_nearl": [
         "Nearl"
@@ -771,6 +775,9 @@
     "char_4124_iana": [
         "Iana"
     ],
+    "char_4151_tinman": [
+        "Tin Man"
+    ],
     "char_103_angel": [
         "Exusiai"
     ],
@@ -860,7 +867,8 @@
     ],
     "char_180_amgoat": [
         "Eyja",
-        "Eyjafjalla"
+        "Eyjafjalla",
+        "Hallelujah"
     ],
     "char_2013_cerber": [
         "Ceobe"
@@ -891,6 +899,9 @@
     ],
     "char_4046_ebnhlz": [
         "Ebenholz"
+    ],
+    "char_4146_nymph": [
+        "Nymph"
     ],
     "char_206_gnosis": [
         "Gnosis"
@@ -1001,7 +1012,8 @@
         "Eyjafjalla Alter",
         "EyjaAlter",
         "Eyja 2",
-        "Eyja2"
+        "Eyja2",
+        "Hallelujah Alter"
     ],
     "char_1020_reed2": [
         "Reed Alter",
@@ -1069,7 +1081,11 @@
         "Ulpapi"
     ],
     "char_4058_pepe": [
-        "Pepe"
+        "Pepe",
+        "Pepega",
+        "Paypay",
+        "Paypal",
+        "Namie's 3rd Child"
     ],
     "char_010_chen": [
         "Ch'en",
