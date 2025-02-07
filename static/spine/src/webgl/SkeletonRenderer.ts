@@ -82,8 +82,7 @@ export class SkeletonRenderer {
 		let clipper = this.clipper;
 		let premultipliedAlpha = this.premultipliedAlpha;
 		let twoColorTint = this.twoColorTint;
-		// let blendMode: BlendMode = null;
-		let blendMode: BlendMode = BlendMode.Normal;
+		let blendMode: BlendMode = null;
 
 		let tempPos = this.temp;
 		let tempUv = this.temp2;

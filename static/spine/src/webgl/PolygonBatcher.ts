@@ -110,6 +110,9 @@ export class PolygonBatcher implements Disposable {
 
 	setBlendMode(srcBlend: number, dstBlend: number) {
 		let gl = this.context.gl;
+		if (this.srcBlend == srcBlend && this.dstBlend == dstBlend) {
+			return;
+		}
 		this.srcBlend = srcBlend;
 		this.dstBlend = dstBlend;
 		if (this.isDrawing) {
