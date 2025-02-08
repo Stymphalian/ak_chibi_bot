@@ -93,9 +93,10 @@ func (c *Chat) Close() error {
 }
 
 type Main struct {
-	currentChannel string
-	currentUser    string
-	chats          map[string]*Chat
+	currentChannel         string
+	currentUser            string
+	currentUserDisplayName string
+	chats                  map[string]*Chat
 }
 
 func (m *Main) HandleConnection(w http.ResponseWriter, r *http.Request) {
@@ -167,8 +168,15 @@ func (m *Main) HandleTextConnection(w http.ResponseWriter, r *http.Request) {
 		}
 		text := strings.TrimSpace(string(message))
 
-		if strings.HasPrefix(text, "set_user") {
+		if strings.HasPrefix(text, "set_user_display") {
+			m.currentUserDisplayName = strings.TrimPrefix(text, "set_user_display ")
+			conn.WriteMessage(websocket.TextMessage, []byte(
+				fmt.Sprintf("%s/%s", m.currentChannel, m.currentUser),
+			))
+			continue
+		} else if strings.HasPrefix(text, "set_user") {
 			m.currentUser = strings.TrimPrefix(text, "set_user ")
+			m.currentUserDisplayName = ""
 			conn.WriteMessage(websocket.TextMessage, []byte(
 				fmt.Sprintf("%s/%s", m.currentChannel, m.currentUser),
 			))
@@ -188,8 +196,9 @@ func (m *Main) HandleTextConnection(w http.ResponseWriter, r *http.Request) {
 			continue
 		}
 		chat.write <- chatbot.CliMessage{
-			Username: m.currentUser,
-			Message:  strings.TrimSpace(text),
+			Username:        m.currentUser,
+			UserDisplayName: m.currentUserDisplayName,
+			Message:         strings.TrimSpace(text),
 		}
 	}
 

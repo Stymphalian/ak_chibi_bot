@@ -1,0 +1,7 @@
+# Test Display names with chinese/japanese characters
+set_user user1
+set_user_display 黛_玉
+!chibi ascalon
+set_user user2
+set_user_display 다크켄
+!chibi mizuki

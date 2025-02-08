@@ -40,7 +40,7 @@ import { ResizeMode, SceneRenderer } from "../webgl/SceneRenderer"
 import { Vector3 } from "../webgl/Vector3"
 import { ManagedWebGLRenderingContext } from "../webgl/WebGL"
 import { Actor, SpineActorConfig } from "./Actor"
-import { createElement, findWithClass, escapeHtml, isAlphanumeric, findWithId, configurePerspectiveCamera, updateCameraSettings, isAlphanumericWithSpace, BoundingBox, Viewport } from "./Utils";
+import { createElement, findWithClass, escapeHtml, isAlphanumeric, findWithId, configurePerspectiveCamera, updateCameraSettings, BoundingBox, Viewport, isValidTwitchUserDisplayName } from "./Utils";
 import { Camera } from "../webgl/Camera";
 import { readSpritesheetJsonConfig, SpritesheetActor } from "./Spritesheet";
 import { GLFrameBuffer } from "../webgl/GLFrameBuffer";
@@ -316,9 +316,9 @@ export class SpinePlayer {
 		if (!isAlphanumeric(config.chibiId)) {
 			throw Error("ChibiId is not valid ");
 		}
-		// if (!isAlphanumericWithSpace(config.userDisplayName)) {
-		// 	throw Error("userDisplayName is not valid ");
-		// }
+		if (!isValidTwitchUserDisplayName(config.userDisplayName)) {
+			throw Error("userDisplayName is not valid ");
+		}
 		if (config.action == undefined) {
 			throw Error("config.action must be set");
 		}

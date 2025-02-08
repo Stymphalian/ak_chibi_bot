@@ -115,8 +115,26 @@ export function escapeHtml(str: string) {
 export function isAlphanumeric(str: string): boolean {
     return /^[a-zA-Z0-9_-]{1,100}$/.test(str)
 }
-export function isAlphanumericWithSpace(str: string): boolean {
-    return /^[a-zA-Z0-9_-\s]{1,100}$/.test(str)
+
+
+// Try to do some basic sanitization of userDisplayName input:
+// allowed:
+// name
+// twitch_user
+// text user name
+// $test 123
+// 黛_玉
+// 다크켄
+// 
+// not allowed:
+// /username
+// \username
+// <script>
+// 01234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567891
+// &lt
+// %5c
+export function isValidTwitchUserDisplayName(str: string): boolean {
+    return /^[^<>%&\\\/]{1,100}$/.test(str)
 }
 
 export interface Viewport {

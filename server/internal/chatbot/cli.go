@@ -90,8 +90,9 @@ func (t *CliChatBot) HandlePrivateMessage(m chat.ChatMessage) {
 }
 
 type CliMessage struct {
-	Username string `json:"username"`
-	Message  string `json:"message"`
+	Username        string `json:"username"`
+	UserDisplayName string `json:"userDisplayName"`
+	Message         string `json:"message"`
 }
 
 func (t *CliChatBot) ReadLoop() error {
@@ -132,9 +133,13 @@ func (t *CliChatBot) ReadLoop() error {
 				log.Println("read:", err)
 				return err
 			}
+			userDisplayName := msg.UserDisplayName
+			if userDisplayName == "" {
+				userDisplayName = msg.Username
+			}
 			chatMessage := chat.ChatMessage{
 				Username:        msg.Username,
-				UserDisplayName: msg.Username,
+				UserDisplayName: userDisplayName,
 				TwitchUserId:    "twitch-" + msg.Username,
 				Message:         msg.Message,
 			}

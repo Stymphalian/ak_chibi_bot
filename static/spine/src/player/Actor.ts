@@ -134,6 +134,11 @@ export interface SpineActorConfig {
 
 	/** char_002_amiya, enemy_1526_sfsui, etc */
 	chibiId: string,
+	/** Twitch user displayName. This isn't validated on the server side.
+	 * This can be purely alphanumeric + underscore, OR it can be unicode with 
+	 * Japanese/Chinese/Korean characters. It is hard to validate for this so 
+	 * be careful when embedding this anywhere.
+	 */
 	userDisplayName: string,
 
 	/** Required: action name */

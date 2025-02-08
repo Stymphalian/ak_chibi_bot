@@ -16,6 +16,7 @@ import (
 // go run main.go
 // set_channel stymphalian__
 // set_user my_user_name
+// set_user_display displayName
 // !chibi lin
 func main() {
 	u := url.URL{Scheme: "ws", Host: "localhost:8090", Path: "/ws/text"}
