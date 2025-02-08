@@ -316,9 +316,9 @@ export class SpinePlayer {
 		if (!isAlphanumeric(config.chibiId)) {
 			throw Error("ChibiId is not valid ");
 		}
-		if (!isAlphanumericWithSpace(config.userDisplayName)) {
-			throw Error("userDisplayName is not valid ");
-		}
+		// if (!isAlphanumericWithSpace(config.userDisplayName)) {
+		// 	throw Error("userDisplayName is not valid ");
+		// }
 		if (config.action == undefined) {
 			throw Error("config.action must be set");
 		}
