@@ -302,13 +302,22 @@ func (r *RoomsManager) CreateRoomOrNoOp(ctx context.Context, channel string) err
 			defaultOperatorConfig = roomDb.DefaultOperatorConfig
 		}
 
-		log.Println("Adding default chibi for ", roomDb.ChannelName)
-		roomObj.chibiActor.SetToDefault(
-			ctx,
-			*userinfo,
-			defaultOperatorName,
-			defaultOperatorConfig,
-		)
+		pref, _ := r.userPrefsRepo.GetByTwitchIdOrNil(ctx, userinfo.TwitchUserId)
+		if pref == nil {
+			log.Println("Adding default chibi for ", roomDb.ChannelName)
+			roomObj.chibiActor.SetToDefault(
+				ctx,
+				*userinfo,
+				defaultOperatorName,
+				defaultOperatorConfig,
+			)
+		} else {
+			log.Println("Adding user preference default chibi for ", roomDb.ChannelName)
+			err = roomObj.chibiActor.GiveChibiToUser(ctx, *userinfo)
+			if err != nil {
+				return err
+			}
+		}
 	}
 
 	r.rooms_mutex.Lock()
