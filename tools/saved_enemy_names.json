@@ -3353,6 +3353,70 @@
         "The Cursed",
         "FC2"
     ],
+    "enemy_10001_trslim": [
+        "Basic Slug",
+        "DT1"
+    ],
+    "enemy_10001_trslim_2": [
+        "Gourmet Slug",
+        "DT2"
+    ],
+    "enemy_10002_trtrsl": [
+        "Berry Slug",
+        "DT3"
+    ],
+    "enemy_10002_trtrsl_2": [
+        "Fruit Slug",
+        "DT4"
+    ],
+    "enemy_10003_trwlpl": [
+        "Raging Slug Eater",
+        "DT5"
+    ],
+    "enemy_10003_trwlpl_2": [
+        "Raging Man Eater",
+        "DT6"
+    ],
+    "enemy_10004_trdiam": [
+        "Berry Metal Crab",
+        "DT7"
+    ],
+    "enemy_10004_trdiam_2": [
+        "Fruit Metal Crab",
+        "DT8"
+    ],
+    "enemy_10005_trsmsb": [
+        "Corrupted Soldier",
+        "DT9"
+    ],
+    "enemy_10005_trsmsb_2": [
+        "Corrupted Warrior",
+        "DT10"
+    ],
+    "enemy_10006_trsmgi": [
+        "Corrupted Golem",
+        "DT11"
+    ],
+    "enemy_10006_trsmgi_2": [
+        "Warped Golem",
+        "DT12"
+    ],
+    "enemy_10007_trspsb": [
+        "Ink Brew",
+        "DT13"
+    ],
+    "enemy_10007_trspsb_2": [
+        "Merry Ink Brew",
+        "DT14"
+    ],
+    "enemy_10008_trbbox": [
+        "Sea Terror Chest",
+        "DT15"
+    ],
+    "enemy_10008_trbbox_2": [
+        "Sea Monster Chest",
+        "DT16"
+    ],
     "enemy_10010_sgnja": [
         "Street Bandit",
         "GS1"
@@ -3918,6 +3982,10 @@
         "Mártus Seaborn",
         "MSB"
     ],
+    "enemy_1557_trcerb": [
+        "Tri-Maw",
+        "DT"
+    ],
     "enemy_1558_sgactr": [
         "Zubayidamu the Timeless",
         "ZYA"
@@ -4213,6 +4281,18 @@
     "enemy_6024_crnbug": [
         "Really Unruly Creature",
         "DL24"
+    ],
+    "enemy_6025_tinker": [
+        "Altar of Hatred",
+        "DL25"
+    ],
+    "enemy_6026_techn": [
+        "Witchcraft Orb",
+        "DL26"
+    ],
+    "enemy_6027_bqthie": [
+        "Ye Wuqing, Rooftop Runner",
+        "DL27"
     ],
     "enemy_7001_blwzad": [
         "Tribal Shaman",
