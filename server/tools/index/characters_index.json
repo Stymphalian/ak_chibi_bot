@@ -14403,6 +14403,52 @@
               "spritesheet_data_filepath": ""
             }
           }
+        },
+        "game": {
+          "base": {
+            "Front": {
+              "atlas_filepath": "characters/char_240_wyvern/game#4/base/Front/build_char_240_wyvern_game#4.atlas",
+              "skel_filepath": "characters/char_240_wyvern/game#4/base/Front/build_char_240_wyvern_game#4.skel",
+              "png_filepath": "characters/char_240_wyvern/game#4/base/Front/build_char_240_wyvern_game#4.png",
+              "animations": [
+                "Default",
+                "Interact",
+                "Move",
+                "Relax",
+                "Sit",
+                "Sleep",
+                "Special"
+              ],
+              "spritesheet_data_filepath": ""
+            }
+          },
+          "battle": {
+            "Back": {
+              "atlas_filepath": "characters/char_240_wyvern/game#4/battle/Back/char_240_wyvern_game#4.atlas",
+              "skel_filepath": "characters/char_240_wyvern/game#4/battle/Back/char_240_wyvern_game#4.skel",
+              "png_filepath": "characters/char_240_wyvern/game#4/battle/Back/char_240_wyvern_game#4.png",
+              "animations": [
+                "Attack",
+                "Default",
+                "Idle",
+                "Start"
+              ],
+              "spritesheet_data_filepath": ""
+            },
+            "Front": {
+              "atlas_filepath": "characters/char_240_wyvern/game#4/battle/Front/char_240_wyvern_game#4.atlas",
+              "skel_filepath": "characters/char_240_wyvern/game#4/battle/Front/char_240_wyvern_game#4.skel",
+              "png_filepath": "characters/char_240_wyvern/game#4/battle/Front/char_240_wyvern_game#4.png",
+              "animations": [
+                "Attack",
+                "Default",
+                "Die",
+                "Idle",
+                "Start"
+              ],
+              "spritesheet_data_filepath": ""
+            }
+          }
         }
       }
     },

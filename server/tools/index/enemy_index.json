@@ -30417,6 +30417,68 @@
           }
         }
       }
+    },
+    "enemy_8007_eltrsm": {
+      "skins": {
+        "default": {
+          "base": {},
+          "battle": {
+            "Front": {
+              "atlas_filepath": "enemies/enemy_8007_eltrsm/default/battle/Front/enemy_8007_eltrsm.atlas",
+              "skel_filepath": "enemies/enemy_8007_eltrsm/default/battle/Front/enemy_8007_eltrsm.skel",
+              "png_filepath": "enemies/enemy_8007_eltrsm/default/battle/Front/enemy_8007_eltrsm.png",
+              "animations": [
+                "A_Attack",
+                "A_Die_Begin",
+                "A_Die_Begin_2",
+                "A_Die_End",
+                "A_Die_Loop",
+                "A_Idle",
+                "A_Idle_1to2",
+                "A_Idle_2",
+                "A_Move",
+                "A_Move_2",
+                "A_Skill",
+                "A_Skill_2",
+                "B_Skill_Begin",
+                "B_Skill_End",
+                "B_Skill_Loop",
+                "BtoC",
+                "BtoC_2",
+                "C_Attack",
+                "C_Die",
+                "C_Idle",
+                "C_Move",
+                "Default"
+              ],
+              "spritesheet_data_filepath": ""
+            }
+          }
+        }
+      }
+    },
+    "enemy_8009_eltufo": {
+      "skins": {
+        "default": {
+          "base": {},
+          "battle": {
+            "Front": {
+              "atlas_filepath": "enemies/enemy_8009_eltufo/default/battle/Front/enemy_8009_eltufo.atlas",
+              "skel_filepath": "enemies/enemy_8009_eltufo/default/battle/Front/enemy_8009_eltufo.skel",
+              "png_filepath": "enemies/enemy_8009_eltufo/default/battle/Front/enemy_8009_eltufo.png",
+              "animations": [
+                "Attack",
+                "Default",
+                "Default2",
+                "Die",
+                "Idle",
+                "Move"
+              ],
+              "spritesheet_data_filepath": ""
+            }
+          }
+        }
+      }
     }
   }
 }

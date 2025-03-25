@@ -4379,6 +4379,14 @@
         "Reforged Retinue",
         "SFR02"
     ],
+    "enemy_8008_eltswd": [
+        "V.T.E.",
+        "SFR04"
+    ],
+    "enemy_8009_eltufo": [
+        "Rosmontiss Drone",
+        "SFR05"
+    ],
     "enemy_8001_flmlod": [
         "Sverdsmeltr",
         "Sverdsmeltr, Guardian Ember of the King",
@@ -4386,6 +4394,18 @@
     ],
     "enemy_8001_flmlod_2": [],
     "enemy_8001_flmlod_3": [],
+    "enemy_8007_eltrsm": [
+        "Rosmontis, Simulated Sentry I",
+        "SFR03"
+    ],
+    "enemy_8007_eltrsm_2": [
+        "Rosmontis, Simulated Sentry II",
+        "SFR032"
+    ],
+    "enemy_8007_eltrsm_3": [
+        "Rosmontis, Simulated Sentry III",
+        "SFR033"
+    ],
     "enemy_7016_shushu": [
         "Barrenlands Musbeast",
         "SD22"
