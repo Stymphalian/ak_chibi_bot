@@ -5,17 +5,26 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Debug",
+            "name": "Python Debug (Current File)",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal"
+        },
+        {
+            "name": "Go Debug",
             "type": "go",
             "request": "attach",
             "mode": "remote",
             "port": 4000,
             "host": "localhost",
             "showLog": true,
-            "substitutePath": [{
-                "from": "C:\\Users\\Jordan\\Desktop\\dev\\lab\\twitch_bots\\StymphalianTestBot\\server",
-                "to": "/app/server",
-            }]
+            "substitutePath": [
+                {
+                    "from": "C:\\Users\\Jordan\\Desktop\\dev\\lab\\twitch_bots\\StymphalianTestBot\\server",
+                    "to": "/app/server",
+                }
+            ]
         }
     ]
 }

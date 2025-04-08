@@ -3501,6 +3501,66 @@
         "Mio, the Eager Examinant",
         "MA"
     ],
+    "enemy_10021_vtcar": [
+        "Freight Car",
+        "LUD15"
+    ],
+    "enemy_10022_vtskny": [
+        "Novice Junkman",
+        "LUD16"
+    ],
+    "enemy_10022_vtskny_2": [
+        "Seasoned Junkman",
+        "LUD17"
+    ],
+    "enemy_10023_vtsnky": [
+        "Goggles Gang Thief",
+        "LUD18"
+    ],
+    "enemy_10023_vtsnky_2": [
+        "Goggles Gang Thug",
+        "LUD19"
+    ],
+    "enemy_10024_vtstrn": [
+        "Neighborhood Watch Member",
+        "LUD20"
+    ],
+    "enemy_10024_vtstrn_2": [
+        "Neighborhood Watch Leader",
+        "LUD21"
+    ],
+    "enemy_10025_vtmstr": [
+        "Millscar Mercenary",
+        "LUD22"
+    ],
+    "enemy_10025_vtmstr_2": [
+        "Millscar Elite Mercenary",
+        "LUD23"
+    ],
+    "enemy_10026_vtzepl": [
+        "Transport Vessel",
+        "LUD24"
+    ],
+    "enemy_10026_vtzepl_2": [
+        "Heavy Transport Vessel",
+        "LUD25"
+    ],
+    "enemy_10027_vtsk": [
+        "Armor of the Empire",
+        "VSK1"
+    ],
+    "enemy_10028_vtswd": [
+        "Unequipped Blade",
+        "LUD26"
+    ],
+    "enemy_10029_vtshld": [
+        "Protective Vest",
+        "LUD27"
+    ],
+    "enemy_10030_vtwand": [
+        "Assault Arts Unit",
+        "LUD28"
+    ],
     "enemy_3006_tersia": [
         "Theresa, King of Sarkaz",
         "THA1"
@@ -3634,6 +3694,14 @@
     "enemy_2070_skzfbx": [
         "Lost Hovercraft",
         "SFF8"
+    ],
+    "enemy_2090_skzjbc": [
+        "Padmasana of Rebirth",
+        "SFF9"
+    ],
+    "enemy_2091_skzgds": [
+        "Window",
+        "SFF10"
     ],
     "enemy_4001_toxcar": [
         "Retrofitted Gastruck",
@@ -3990,6 +4058,10 @@
         "Zubayidamu the Timeless",
         "ZYA"
     ],
+    "enemy_1559_vtlionk": [
+        "Alistair, Final Flame of the Empire",
+        "ALS"
+    ],
     "enemy_2003_rockman": [
         "Lost Colossus",
         "WDG"
@@ -4185,6 +4257,10 @@
     "enemy_2084_skzcan": [
         "Mr. Goodenough",
         "KNS"
+    ],
+    "enemy_2089_skzjkl": [
+        "Quilon, Avatar of the Mahasattva",
+        "QLN"
     ],
     "enemy_5008_cstrwd": [],
     "enemy_5009_shtrwd": [],

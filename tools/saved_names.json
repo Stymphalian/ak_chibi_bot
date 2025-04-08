@@ -739,6 +739,9 @@
     "char_433_windft": [
         "Windflit"
     ],
+    "char_4162_cathy": [
+        "Catherine"
+    ],
     "char_101_sora": [
         "Sora"
     ],
@@ -756,6 +759,9 @@
     ],
     "char_4102_threye": [
         "Valarqvin"
+    ],
+    "char_487_bobb": [
+        "Bobbing"
     ],
     "char_215_mantic": [
         "Manticore"
@@ -1126,6 +1132,12 @@
     "char_4098_vvana": [
         "Viviana"
     ],
+    "char_1019_siege2": [
+        "Vina Victoria",
+        "Vina",
+        "Siege Alter",
+        "Siege2"
+    ],
     "char_188_helage": [
         "Hellagur"
     ],
@@ -1182,11 +1194,11 @@
     "char_263_skadi": [
         "Skadi"
     ],
+    "char_1037_amiya3": [
+        "Medic Amiya"
+    ],
     "char_1001_amiya2": [
         "Guard Amiya",
         "Gaurd Amiya"
-    ],
-    "char_1037_amiya3": [
-        "Medic Amiya"
     ]
 }

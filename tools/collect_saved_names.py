@@ -1,4 +1,5 @@
 
+import os
 import json
 from collections import defaultdict
 from pathlib import Path
@@ -42,12 +43,22 @@ def process_character_table(character_table_path: Path, saved_names):
 
 
 def main():
+    debug=False
     saved_names = {}
-    with Path("./saved_names.json").open(encoding="utf-8") as f:
+    
+    currentdir = Path(os.getcwd())
+    if debug:
+        currentdir = currentdir / "tools"
+
+    saved_names_path = currentdir / Path("saved_names.json")
+    character_table_path = currentdir / Path("character_table.json")
+    output_path =  currentdir / Path("output.json")
+
+    with saved_names_path.open(encoding="utf-8") as f:
         saved_names = json.loads(f.read().encode("utf-8"))
 
-    output_dict = process_character_table(Path("./character_table.json"), saved_names)
-    with Path("./output.json").open("w", encoding="utf-8") as f:
+    output_dict = process_character_table(character_table_path, saved_names)
+    with output_path.open("w", encoding="utf-8") as f:
         json.dump(output_dict, f, indent=4, ensure_ascii=False)
 
 if __name__ == "__main__":
