@@ -282,6 +282,9 @@
     "char_4107_vrdant": [
         "Verdant"
     ],
+    "char_4165_ctrail": [
+        "Contrail"
+    ],
     "char_128_plosis": [
         "Ptilopsis"
     ],
@@ -378,7 +381,8 @@
         "Dagda"
     ],
     "char_140_whitew": [
-        "Lappland"
+        "Lappland",
+        "Lappy"
     ],
     "char_294_ayer": [
         "Ayerscarpe"
@@ -628,6 +632,9 @@
         "Mr Nothing",
         "MrNothing"
     ],
+    "char_4155_talr": [
+        "Figurino"
+    ],
     "char_107_liskam": [
         "Liskarm"
     ],
@@ -672,6 +679,9 @@
     ],
     "char_464_cement": [
         "Cement"
+    ],
+    "char_4148_philae": [
+        "Philae"
     ],
     "char_145_prove": [
         "Provence"
@@ -859,6 +869,11 @@
     "char_362_saga": [
         "Saga"
     ],
+    "char_4026_vulpis": [
+        "Vulpisfoglia",
+        "Vulpis",
+        "Suzumom"
+    ],
     "char_479_sleach": [
         "Saileach"
     ],
@@ -916,6 +931,12 @@
     "char_377_gdglow": [
         "Goldenglow"
     ],
+    "char_1038_whitw2": [
+        "Lappland Alter",
+        "Lappland the Decadenza",
+        "Lappy Alter",
+        "Laptop"
+    ],
     "char_4046_ebnhlz": [
         "Ebenholz"
     ],
@@ -929,7 +950,8 @@
         "Angelina"
     ],
     "char_358_lisa": [
-        "Suzuran"
+        "Suzuran",
+        "Suzu"
     ],
     "char_248_mgllan": [
         "Magallan"
@@ -975,6 +997,9 @@
         "Kirin R Yato",
         "Yato2",
         "Yato 2"
+    ],
+    "char_1502_crosly": [
+        "CrownSlayer"
     ],
     "char_322_lmlee": [
         "Lee"

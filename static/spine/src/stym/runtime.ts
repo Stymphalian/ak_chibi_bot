@@ -172,6 +172,7 @@ export class Runtime {
             chibiId: requestData["operator_id"],
             userDisplayName: requestData['user_name_display'],
             skelUrl: requestData["skel_file"],
+            jsonUrl: requestData["skel_json_file"],
             atlasUrl: requestData["atlas_file"],
             spritesheetDataUrl: requestData["spritesheet_data_filepath"],
 

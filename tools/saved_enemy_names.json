@@ -3561,6 +3561,86 @@
         "Assault Arts Unit",
         "LUD28"
     ],
+    "enemy_10031_cnvsld": [
+        "Amateur Performer",
+        "CNV1"
+    ],
+    "enemy_10031_cnvsld_2": [
+        "Professional Performer",
+        "CNV2"
+    ],
+    "enemy_10032_cnvsnp": [
+        "Fireworks Merchant",
+        "CNV3"
+    ],
+    "enemy_10032_cnvsnp_2": [
+        "Fireworks Dealer",
+        "CNV4"
+    ],
+    "enemy_10033_cnvbsk": [
+        "Streetside Fire Juggler",
+        "CNV5"
+    ],
+    "enemy_10033_cnvbsk_2": [
+        "Streetside Fire Maestro",
+        "CNV6"
+    ],
+    "enemy_10034_cnvsax": [
+        "Festival Jazz Musician",
+        "CNV7"
+    ],
+    "enemy_10034_cnvsax_2": [
+        "Parading Jazz Musician",
+        "CNV8"
+    ],
+    "enemy_10035_cnvdnc": [
+        "Entusiasta Dancer",
+        "CNV9"
+    ],
+    "enemy_10035_cnvdnc_2": [
+        "Entusiasta Lead Dancer",
+        "CNV10"
+    ],
+    "enemy_10036_cnvpvd": [
+        "Carnevale Snack Seller",
+        "CNV11"
+    ],
+    "enemy_10036_cnvpvd_2": [
+        "Parade Snack Seller",
+        "CNV12"
+    ],
+    "enemy_10037_cnvpcar": [
+        "Carnevale Snack Cart",
+        "CNV13"
+    ],
+    "enemy_10037_cnvpcar_2": [
+        "Parade Snack Cart",
+        "CNV14"
+    ],
+    "enemy_10038_cnvpiz": [
+        "Convenient Eats",
+        "CNV15"
+    ],
+    "enemy_10038_cnvpiz_2": [
+        "Gourmet Delivery",
+        "CNV16"
+    ],
+    "enemy_10039_cnvber": [
+        "Happy Drinking",
+        "CNV17"
+    ],
+    "enemy_10039_cnvber_2": [
+        "Merrymaker Express",
+        "CNV18"
+    ],
+    "enemy_10040_cnvbln": [
+        "Carnevale Balloon",
+        "CNV19"
+    ],
+    "enemy_10040_cnvbln_2": [
+        "Parade Balloon",
+        "CNV20"
+    ],
     "enemy_3006_tersia": [
         "Theresa, King of Sarkaz",
         "THA1"
@@ -4061,6 +4141,10 @@
     "enemy_1559_vtlionk": [
         "Alistair, Final Flame of the Empire",
         "ALS"
+    ],
+    "enemy_1560_cnvlap": [
+        "La Signora del Carnevale",
+        "LOM"
     ],
     "enemy_2003_rockman": [
         "Lost Colossus",

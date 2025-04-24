@@ -30,16 +30,19 @@ type SpineSkinData struct {
 	Battle map[ChibiFacingEnum]*SpineData `json:"battle"`
 }
 type SpineData struct {
-	AtlasFilepath             string   `json:"-"`
-	SkelFilepath              string   `json:"-"`
-	PngFilepath               string   `json:"-"`
-	AtlasFullFilepath         string   `json:"-"`
-	SkelFullFilepath          string   `json:"-"`
-	PngFullFilepath           string   `json:"-"`
-	PlaformIndieAtlasFilepath string   `json:"atlas_filepath"`
-	PlaformIndieSkelFilepath  string   `json:"skel_filepath"`
-	PlaformIndiePngFilepath   string   `json:"png_filepath"`
-	Animations                []string `json:"animations"`
+	AtlasFilepath                string   `json:"-"`
+	SkelFilepath                 string   `json:"-"`
+	SkelJsonFilepath             string   `json:"-"`
+	PngFilepath                  string   `json:"-"`
+	AtlasFullFilepath            string   `json:"-"`
+	SkelFullFilepath             string   `json:"-"`
+	SkelJsonFullFilepath         string   `json:"-"`
+	PngFullFilepath              string   `json:"-"`
+	PlaformIndieAtlasFilepath    string   `json:"atlas_filepath"`
+	PlaformIndieSkelFilepath     string   `json:"skel_filepath"`
+	PlaformIndieSkelJsonFilepath string   `json:"skel_json_filepath"`
+	PlaformIndiePngFilepath      string   `json:"png_filepath"`
+	Animations                   []string `json:"animations"`
 
 	SpritesheetDataFilepath              string `json:"-"`
 	PlatformIndieSpritesheetDataFilepath string `json:"spritesheet_data_filepath"`
@@ -101,6 +104,13 @@ func (s *SpineAssetMap) MergeFromIndex(indexFile string) (err error) {
 						return err
 					}
 				}
+				if len(spineData.PlaformIndieSkelJsonFilepath) > 0 {
+					spineData.SkelJsonFilepath, err = filepath.Localize(spineData.PlaformIndieSkelJsonFilepath)
+					if err != nil {
+						log.Println(opId, skin, "base", facing, "skel", spineData.PlaformIndieSkelJsonFilepath)
+						return err
+					}
+				}
 				if len(spineData.PlaformIndiePngFilepath) > 0 {
 					spineData.PngFilepath, err = filepath.Localize(spineData.PlaformIndiePngFilepath)
 					if err != nil {
@@ -129,6 +139,13 @@ func (s *SpineAssetMap) MergeFromIndex(indexFile string) (err error) {
 					spineData.SkelFilepath, err = filepath.Localize(spineData.PlaformIndieSkelFilepath)
 					if err != nil {
 						log.Println(opId, skin, "battle", facing, "skel", spineData.PlaformIndieSkelFilepath)
+						return err
+					}
+				}
+				if len(spineData.PlaformIndieSkelJsonFilepath) > 0 {
+					spineData.SkelJsonFilepath, err = filepath.Localize(spineData.PlaformIndieSkelJsonFilepath)
+					if err != nil {
+						log.Println(opId, skin, "battle", facing, "skel", spineData.PlaformIndieSkelJsonFilepath)
 						return err
 					}
 				}
@@ -230,6 +247,10 @@ func (s *SpineAssetMap) Load(assetDir string, assetSubdir string) (err error) {
 			spineData.SkelFilepath = newPath
 			spineData.PlaformIndieSkelFilepath = newPathIndie
 			// spineData.SkelFullFilepath = path
+		case ".jskel":
+			spineData.SkelJsonFilepath = newPath
+			spineData.PlaformIndieSkelJsonFilepath = newPathIndie
+			// spineData.SkelFullJsonFilepath = path
 		case ".json":
 			if strings.HasSuffix(newPathIndie, ".animations.json") {
 				animations, err := readJsonSkelAnimations(path)

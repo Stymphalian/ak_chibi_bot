@@ -42,6 +42,7 @@ type SetOperatorInternalRequest struct {
 	AtlasFile               string                    `json:"atlas_file"`
 	PngFile                 string                    `json:"png_file"`
 	SkelFile                string                    `json:"skel_file"`
+	SkelJsonFile            string                    `json:"skel_json_file"`
 	SpritesheetDataFilepath string                    `json:"spritesheet_data_filepath"`
 	StartPos                misc.Option[misc.Vector2] `json:"start_pos"`
 	AnimationSpeed          float64                   `json:"animation_speed"`

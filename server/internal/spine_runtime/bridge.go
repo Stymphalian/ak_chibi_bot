@@ -277,6 +277,7 @@ func (s *SpineBridge) setInternalSpineOperator(
 	atlasFile := ""
 	pngFile := ""
 	skelFile := ""
+	skelJsonFile := ""
 	spritesheetDataFilepath := ""
 	spineData := s.spineService.GetSpineData(info.OperatorId, info.Faction, info.Skin, isBase, isFront)
 	// TODO: Make the image/assets path a configurable variable
@@ -291,7 +292,12 @@ func (s *SpineBridge) setInternalSpineOperator(
 	} else {
 		atlasFile = formatPathFn(spineData.AtlasFilepath)
 		pngFile = formatPathFn(spineData.PngFilepath)
-		skelFile = formatPathFn(spineData.SkelFilepath)
+		if len(spineData.SkelFilepath) > 0 {
+			skelFile = formatPathFn(spineData.SkelFilepath)
+		}
+		if len(spineData.SkelJsonFilepath) > 0 {
+			skelJsonFile = formatPathFn(spineData.SkelJsonFilepath)
+		}
 	}
 
 	data := SetOperatorInternalRequest{
@@ -304,6 +310,7 @@ func (s *SpineBridge) setInternalSpineOperator(
 		AtlasFile:               atlasFile,
 		PngFile:                 pngFile,
 		SkelFile:                skelFile,
+		SkelJsonFile:            skelJsonFile,
 		SpritesheetDataFilepath: spritesheetDataFilepath,
 
 		StartPos:            info.StartPos,

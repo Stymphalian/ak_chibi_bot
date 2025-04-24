@@ -7,6 +7,7 @@
             "Front": {
               "atlas_filepath": "custom/char_10000_bubu/default/base/Front/build_char_10000_bubu.atlas",
               "skel_filepath": "",
+              "skel_json_filepath": "",
               "png_filepath": "custom/char_10000_bubu/default/base/Front/quarter/build_char_10000_bubu.sit.png",
               "animations": [
                 "Default",
@@ -21,6 +22,7 @@
             "Front": {
               "atlas_filepath": "custom/char_10000_bubu/default/battle/Front/char_10000_bubu.atlas",
               "skel_filepath": "",
+              "skel_json_filepath": "",
               "png_filepath": "custom/char_10000_bubu/default/battle/Front/quarter/char_10000_bubu.idle.png",
               "animations": [
                 "Default",
@@ -39,6 +41,7 @@
             "Front": {
               "atlas_filepath": "custom/char_10001_solari/default/base/Front/build_char_10001_solari.atlas",
               "skel_filepath": "",
+              "skel_json_filepath": "",
               "png_filepath": "custom/char_10001_solari/default/base/Front/full/build_char_10001_solari.special.png",
               "animations": [
                 "Default",
@@ -53,6 +56,7 @@
             "Front": {
               "atlas_filepath": "custom/char_10001_solari/default/battle/Front/char_10001_solari.atlas",
               "skel_filepath": "",
+              "skel_json_filepath": "",
               "png_filepath": "custom/char_10001_solari/default/battle/Front/full/char_10001_solari.idle.png",
               "animations": [
                 "Default",
