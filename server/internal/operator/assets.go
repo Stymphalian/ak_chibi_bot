@@ -261,6 +261,10 @@ func (s *SpineAssetMap) Load(assetDir string, assetSubdir string) (err error) {
 			} else if strings.HasSuffix(newPathIndie, ".spritesheet.json") {
 				spineData.SpritesheetDataFilepath = newPath
 				spineData.PlatformIndieSpritesheetDataFilepath = newPathIndie
+			} else if strings.HasSuffix(newPathIndie, ".skel.json") {
+				spineData.SkelJsonFilepath = newPath
+				spineData.PlaformIndieSkelJsonFilepath = newPathIndie
+				// spineData.SkelFullJsonFilepath = path
 			} else {
 				log.Fatal("Unknown secondary extension: ", info.Name())
 			}

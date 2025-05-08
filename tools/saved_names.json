@@ -92,7 +92,7 @@
         "Adnachiel"
     ],
     "char_507_rsnipe": [
-        "Reserve Operator - Sniper"
+        " 2"
     ],
     "char_121_lava": [
         "Lava"
@@ -117,6 +117,9 @@
     ],
     "char_141_nights": [
         "Haze"
+    ],
+    "char_604_ccast": [
+        "Reserve Operator - Caster2"
     ],
     "char_109_fmout": [
         "Gitano"
@@ -145,6 +148,9 @@
     "char_133_mm": [
         "May"
     ],
+    "char_603_csnipe": [
+        "Reserve Operator - Sniper 2"
+    ],
     "char_118_yuki": [
         "Shirayuki"
     ],
@@ -169,6 +175,9 @@
     "char_149_scave": [
         "Scavenger"
     ],
+    "char_600_cpione": [
+        "Reserve Operator - Vanguard 2"
+    ],
     "char_290_vigna": [
         "Vigna"
     ],
@@ -186,6 +195,9 @@
     ],
     "char_159_peacok": [
         "Conviction"
+    ],
+    "char_601_cguard": [
+        "Reserve Operator - Guard 2"
     ],
     "char_193_frostl": [
         "Frostleaf"
@@ -217,6 +229,9 @@
     "char_237_gravel": [
         "Gravel"
     ],
+    "char_607_cspec": [
+        "Reserve Operator - Specialist 2"
+    ],
     "char_272_strong": [
         "Jaye"
     ],
@@ -231,6 +246,9 @@
     ],
     "char_298_susuro": [
         "Sussurro"
+    ],
+    "char_605_cmedic": [
+        "Reserve Operator - Medic 2"
     ],
     "char_181_flower": [
         "Perfumer"
@@ -249,6 +267,9 @@
     ],
     "char_381_bubble": [
         "Bubble"
+    ],
+    "char_602_cdfend": [
+        "Reserve Operator - Defender 2"
     ],
     "char_4130_luton": [
         "Lutonada",
@@ -269,6 +290,9 @@
     ],
     "char_258_podego": [
         "Podenco"
+    ],
+    "char_606_csuppo": [
+        "Reserve Operator - Supporter 2"
     ],
     "char_484_robrta": [
         "Roberta"
@@ -813,6 +837,9 @@
     "char_456_ash": [
         "Ash"
     ],
+    "char_611_acnipe": [
+        "Stormeye Alt"
+    ],
     "char_340_shwaz": [
         "Schwarz"
     ],
@@ -880,6 +907,9 @@
     "char_420_flamtl": [
         "Flametail"
     ],
+    "char_608_acpion": [
+        "Tulip Alt"
+    ],
     "char_427_vigil": [
         "Vigil"
     ],
@@ -919,6 +949,9 @@
     "char_4141_marcil": [
         "Marcille"
     ],
+    "char_612_accast": [
+        "Pith Alt"
+    ],
     "char_472_pasngr": [
         "Passenger"
     ],
@@ -952,6 +985,9 @@
     "char_358_lisa": [
         "Suzuran",
         "Suzu"
+    ],
+    "char_614_acsupo": [
+        "Raidian"
     ],
     "char_248_mgllan": [
         "Magallan"
@@ -1001,6 +1037,9 @@
     "char_1502_crosly": [
         "CrownSlayer"
     ],
+    "char_615_acspec": [
+        "Misery"
+    ],
     "char_322_lmlee": [
         "Lee"
     ],
@@ -1040,6 +1079,9 @@
     "char_147_shining": [
         "Shining"
     ],
+    "char_613_acmedc": [
+        "Touch Alt"
+    ],
     "char_179_cgbird": [
         "Nightingale"
     ],
@@ -1067,6 +1109,9 @@
     ],
     "char_136_hsguma": [
         "Hoshiguma"
+    ],
+    "char_610_acfend": [
+        "Mechanist"
     ],
     "char_202_demkni": [
         "Saria"
@@ -1183,6 +1228,9 @@
     "char_4011_lessng": [
         "Lessing"
     ],
+    "char_609_acguad": [
+        "Sharp Alt"
+    ],
     "char_1032_excu2": [
         "Executor Alter",
         "Executor the Ex Foedere",
@@ -1219,11 +1267,11 @@
     "char_263_skadi": [
         "Skadi"
     ],
-    "char_1037_amiya3": [
-        "Medic Amiya"
-    ],
     "char_1001_amiya2": [
         "Guard Amiya",
         "Gaurd Amiya"
+    ],
+    "char_1037_amiya3": [
+        "Medic Amiya"
     ]
 }

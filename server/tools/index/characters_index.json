@@ -15124,6 +15124,57 @@
               "spritesheet_data_filepath": ""
             }
           }
+        },
+        "kitchen": {
+          "base": {
+            "Front": {
+              "atlas_filepath": "characters/char_230_savage/kitchen#3/base/Front/build_char_230_savage_kitchen#3.atlas",
+              "skel_filepath": "characters/char_230_savage/kitchen#3/base/Front/build_char_230_savage_kitchen#3.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "characters/char_230_savage/kitchen#3/base/Front/build_char_230_savage_kitchen#3.png",
+              "animations": [
+                "Default",
+                "Interact",
+                "Move",
+                "Relax",
+                "Sit",
+                "Sleep",
+                "Special"
+              ],
+              "spritesheet_data_filepath": ""
+            }
+          },
+          "battle": {
+            "Back": {
+              "atlas_filepath": "characters/char_230_savage/kitchen#3/battle/Back/char_230_savage_kitchen#3.atlas",
+              "skel_filepath": "characters/char_230_savage/kitchen#3/battle/Back/char_230_savage_kitchen#3.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "characters/char_230_savage/kitchen#3/battle/Back/char_230_savage_kitchen#3.png",
+              "animations": [
+                "Attack",
+                "Default",
+                "Idle",
+                "Skill",
+                "Start"
+              ],
+              "spritesheet_data_filepath": ""
+            },
+            "Front": {
+              "atlas_filepath": "characters/char_230_savage/kitchen#3/battle/Front/char_230_savage_kitchen#3.atlas",
+              "skel_filepath": "characters/char_230_savage/kitchen#3/battle/Front/char_230_savage_kitchen#3.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "characters/char_230_savage/kitchen#3/battle/Front/char_230_savage_kitchen#3.png",
+              "animations": [
+                "Attack",
+                "Default",
+                "Die",
+                "Idle",
+                "Skill",
+                "Start"
+              ],
+              "spritesheet_data_filepath": ""
+            }
+          }
         }
       }
     },
@@ -41534,6 +41585,64 @@
               "spritesheet_data_filepath": ""
             }
           }
+        },
+        "epoque": {
+          "base": {
+            "Front": {
+              "atlas_filepath": "characters/char_499_kaitou/epoque#37/base/Front/build_char_499_kaitou_epoque#37.atlas",
+              "skel_filepath": "characters/char_499_kaitou/epoque#37/base/Front/build_char_499_kaitou_epoque#37.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "characters/char_499_kaitou/epoque#37/base/Front/build_char_499_kaitou_epoque#37.png",
+              "animations": [
+                "Default",
+                "Interact",
+                "Move",
+                "Relax",
+                "Sit",
+                "Sleep",
+                "Special"
+              ],
+              "spritesheet_data_filepath": ""
+            }
+          },
+          "battle": {
+            "Back": {
+              "atlas_filepath": "characters/char_499_kaitou/epoque#37/battle/Back/char_499_kaitou_epoque#37.atlas",
+              "skel_filepath": "characters/char_499_kaitou/epoque#37/battle/Back/char_499_kaitou_epoque#37.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "characters/char_499_kaitou/epoque#37/battle/Back/char_499_kaitou_epoque#37.png",
+              "animations": [
+                "Attack",
+                "Default",
+                "Idle",
+                "Skill_Begin",
+                "Skill_End",
+                "Skill_Idle",
+                "Skill_Loop",
+                "Start"
+              ],
+              "spritesheet_data_filepath": ""
+            },
+            "Front": {
+              "atlas_filepath": "characters/char_499_kaitou/epoque#37/battle/Front/char_499_kaitou_epoque#37.atlas",
+              "skel_filepath": "characters/char_499_kaitou/epoque#37/battle/Front/char_499_kaitou_epoque#37.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "characters/char_499_kaitou/epoque#37/battle/Front/char_499_kaitou_epoque#37.png",
+              "animations": [
+                "Attack",
+                "Default",
+                "Die",
+                "Idle",
+                "Skill_Begin",
+                "Skill_End",
+                "Skill_Idle",
+                "Skill_Loop",
+                "Start",
+                "Stun"
+              ],
+              "spritesheet_data_filepath": ""
+            }
+          }
         }
       }
     },
@@ -42149,6 +42258,589 @@
               "skel_filepath": "characters/char_514_rdfend/default/battle/Front/char_514_rdfend.skel",
               "skel_json_filepath": "",
               "png_filepath": "characters/char_514_rdfend/default/battle/Front/char_514_rdfend.png",
+              "animations": [
+                "Attack",
+                "Default",
+                "Die",
+                "Idle",
+                "Start"
+              ],
+              "spritesheet_data_filepath": ""
+            }
+          }
+        }
+      }
+    },
+    "char_600_cpione": {
+      "skins": {
+        "default": {
+          "base": {},
+          "battle": {
+            "Back": {
+              "atlas_filepath": "characters/char_600_cpione/default/battle/Back/char_600_cpione.atlas",
+              "skel_filepath": "characters/char_600_cpione/default/battle/Back/char_600_cpione.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "characters/char_600_cpione/default/battle/Back/char_600_cpione.png",
+              "animations": [
+                "Attack",
+                "Default",
+                "Idle",
+                "Start"
+              ],
+              "spritesheet_data_filepath": ""
+            },
+            "Front": {
+              "atlas_filepath": "characters/char_600_cpione/default/battle/Front/char_600_cpione.atlas",
+              "skel_filepath": "characters/char_600_cpione/default/battle/Front/char_600_cpione.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "characters/char_600_cpione/default/battle/Front/char_600_cpione.png",
+              "animations": [
+                "Attack",
+                "Default",
+                "Die",
+                "Idle",
+                "Start"
+              ],
+              "spritesheet_data_filepath": ""
+            }
+          }
+        }
+      }
+    },
+    "char_601_cguard": {
+      "skins": {
+        "default": {
+          "base": {},
+          "battle": {
+            "Back": {
+              "atlas_filepath": "characters/char_601_cguard/default/battle/Back/char_601_cguard.atlas",
+              "skel_filepath": "characters/char_601_cguard/default/battle/Back/char_601_cguard.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "characters/char_601_cguard/default/battle/Back/char_601_cguard.png",
+              "animations": [
+                "Attack",
+                "Default",
+                "Idle",
+                "Start"
+              ],
+              "spritesheet_data_filepath": ""
+            },
+            "Front": {
+              "atlas_filepath": "characters/char_601_cguard/default/battle/Front/char_601_cguard.atlas",
+              "skel_filepath": "characters/char_601_cguard/default/battle/Front/char_601_cguard.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "characters/char_601_cguard/default/battle/Front/char_601_cguard.png",
+              "animations": [
+                "Attack",
+                "Default",
+                "Die",
+                "Idle",
+                "Start"
+              ],
+              "spritesheet_data_filepath": ""
+            }
+          }
+        }
+      }
+    },
+    "char_602_cdfend": {
+      "skins": {
+        "default": {
+          "base": {},
+          "battle": {
+            "Back": {
+              "atlas_filepath": "characters/char_602_cdfend/default/battle/Back/char_602_cdfend.atlas",
+              "skel_filepath": "characters/char_602_cdfend/default/battle/Back/char_602_cdfend.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "characters/char_602_cdfend/default/battle/Back/char_602_cdfend.png",
+              "animations": [
+                "Attack",
+                "Default",
+                "Die",
+                "Idle",
+                "Start"
+              ],
+              "spritesheet_data_filepath": ""
+            },
+            "Front": {
+              "atlas_filepath": "characters/char_602_cdfend/default/battle/Front/char_602_cdfend.atlas",
+              "skel_filepath": "characters/char_602_cdfend/default/battle/Front/char_602_cdfend.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "characters/char_602_cdfend/default/battle/Front/char_602_cdfend.png",
+              "animations": [
+                "Attack",
+                "Default",
+                "Die",
+                "Idle",
+                "Start"
+              ],
+              "spritesheet_data_filepath": ""
+            }
+          }
+        }
+      }
+    },
+    "char_603_csnipe": {
+      "skins": {
+        "default": {
+          "base": {},
+          "battle": {
+            "Back": {
+              "atlas_filepath": "characters/char_603_csnipe/default/battle/Back/char_603_csnipe.atlas",
+              "skel_filepath": "characters/char_603_csnipe/default/battle/Back/char_603_csnipe.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "characters/char_603_csnipe/default/battle/Back/char_603_csnipe.png",
+              "animations": [
+                "Attack",
+                "Default",
+                "Idle",
+                "Start"
+              ],
+              "spritesheet_data_filepath": ""
+            },
+            "Front": {
+              "atlas_filepath": "characters/char_603_csnipe/default/battle/Front/char_603_csnipe.atlas",
+              "skel_filepath": "characters/char_603_csnipe/default/battle/Front/char_603_csnipe.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "characters/char_603_csnipe/default/battle/Front/char_603_csnipe.png",
+              "animations": [
+                "Attack",
+                "Default",
+                "Die",
+                "Idle",
+                "Start"
+              ],
+              "spritesheet_data_filepath": ""
+            }
+          }
+        }
+      }
+    },
+    "char_604_ccast": {
+      "skins": {
+        "default": {
+          "base": {},
+          "battle": {
+            "Back": {
+              "atlas_filepath": "characters/char_604_ccast/default/battle/Back/char_604_ccast.atlas",
+              "skel_filepath": "characters/char_604_ccast/default/battle/Back/char_604_ccast.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "characters/char_604_ccast/default/battle/Back/char_604_ccast.png",
+              "animations": [
+                "Attack",
+                "Default",
+                "Idle",
+                "Start"
+              ],
+              "spritesheet_data_filepath": ""
+            },
+            "Front": {
+              "atlas_filepath": "characters/char_604_ccast/default/battle/Front/char_604_ccast.atlas",
+              "skel_filepath": "characters/char_604_ccast/default/battle/Front/char_604_ccast.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "characters/char_604_ccast/default/battle/Front/char_604_ccast.png",
+              "animations": [
+                "Attack",
+                "Default",
+                "Die",
+                "Idle",
+                "Start"
+              ],
+              "spritesheet_data_filepath": ""
+            }
+          }
+        }
+      }
+    },
+    "char_605_cmedic": {
+      "skins": {
+        "default": {
+          "base": {},
+          "battle": {
+            "Back": {
+              "atlas_filepath": "characters/char_605_cmedic/default/battle/Back/char_605_cmedic.atlas",
+              "skel_filepath": "characters/char_605_cmedic/default/battle/Back/char_605_cmedic.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "characters/char_605_cmedic/default/battle/Back/char_605_cmedic.png",
+              "animations": [
+                "Attack",
+                "Default",
+                "Idle",
+                "Start"
+              ],
+              "spritesheet_data_filepath": ""
+            },
+            "Front": {
+              "atlas_filepath": "characters/char_605_cmedic/default/battle/Front/char_605_cmedic.atlas",
+              "skel_filepath": "characters/char_605_cmedic/default/battle/Front/char_605_cmedic.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "characters/char_605_cmedic/default/battle/Front/char_605_cmedic.png",
+              "animations": [
+                "Attack",
+                "Default",
+                "Die",
+                "Idle",
+                "Start"
+              ],
+              "spritesheet_data_filepath": ""
+            }
+          }
+        }
+      }
+    },
+    "char_606_csuppo": {
+      "skins": {
+        "default": {
+          "base": {},
+          "battle": {
+            "Back": {
+              "atlas_filepath": "characters/char_606_csuppo/default/battle/Back/char_606_csuppo.atlas",
+              "skel_filepath": "characters/char_606_csuppo/default/battle/Back/char_606_csuppo.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "characters/char_606_csuppo/default/battle/Back/char_606_csuppo.png",
+              "animations": [
+                "Attack",
+                "Default",
+                "Idle",
+                "Start"
+              ],
+              "spritesheet_data_filepath": ""
+            },
+            "Front": {
+              "atlas_filepath": "characters/char_606_csuppo/default/battle/Front/char_606_csuppo.atlas",
+              "skel_filepath": "characters/char_606_csuppo/default/battle/Front/char_606_csuppo.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "characters/char_606_csuppo/default/battle/Front/char_606_csuppo.png",
+              "animations": [
+                "Attack",
+                "Default",
+                "Die",
+                "Idle",
+                "Start"
+              ],
+              "spritesheet_data_filepath": ""
+            }
+          }
+        }
+      }
+    },
+    "char_607_cspec": {
+      "skins": {
+        "default": {
+          "base": {},
+          "battle": {
+            "Back": {
+              "atlas_filepath": "characters/char_607_cspec/default/battle/Back/char_607_cspec.atlas",
+              "skel_filepath": "characters/char_607_cspec/default/battle/Back/char_607_cspec.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "characters/char_607_cspec/default/battle/Back/char_607_cspec.png",
+              "animations": [
+                "Attack",
+                "Default",
+                "Idle",
+                "Start"
+              ],
+              "spritesheet_data_filepath": ""
+            },
+            "Front": {
+              "atlas_filepath": "characters/char_607_cspec/default/battle/Front/char_607_cspec.atlas",
+              "skel_filepath": "characters/char_607_cspec/default/battle/Front/char_607_cspec.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "characters/char_607_cspec/default/battle/Front/char_607_cspec.png",
+              "animations": [
+                "Attack",
+                "Default",
+                "Die",
+                "Idle",
+                "Start"
+              ],
+              "spritesheet_data_filepath": ""
+            }
+          }
+        }
+      }
+    },
+    "char_608_acpion": {
+      "skins": {
+        "default": {
+          "base": {},
+          "battle": {
+            "Back": {
+              "atlas_filepath": "characters/char_608_acpion/default/battle/Back/char_608_acpion.atlas",
+              "skel_filepath": "characters/char_608_acpion/default/battle/Back/char_608_acpion.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "characters/char_608_acpion/default/battle/Back/char_608_acpion.png",
+              "animations": [
+                "Attack",
+                "Default",
+                "Idle",
+                "Skill",
+                "Skill_2",
+                "Skill_End",
+                "Start"
+              ],
+              "spritesheet_data_filepath": ""
+            },
+            "Front": {
+              "atlas_filepath": "characters/char_608_acpion/default/battle/Front/char_608_acpion.atlas",
+              "skel_filepath": "characters/char_608_acpion/default/battle/Front/char_608_acpion.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "characters/char_608_acpion/default/battle/Front/char_608_acpion.png",
+              "animations": [
+                "Attack",
+                "Default",
+                "Die",
+                "Idle",
+                "Skill",
+                "Skill_2",
+                "Skill_End",
+                "Start"
+              ],
+              "spritesheet_data_filepath": ""
+            }
+          }
+        }
+      }
+    },
+    "char_609_acguad": {
+      "skins": {
+        "default": {
+          "base": {},
+          "battle": {
+            "Back": {
+              "atlas_filepath": "characters/char_609_acguad/default/battle/Back/char_609_acguad.atlas",
+              "skel_filepath": "characters/char_609_acguad/default/battle/Back/char_609_acguad.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "characters/char_609_acguad/default/battle/Back/char_609_acguad.png",
+              "animations": [
+                "Attack",
+                "Default",
+                "Idle",
+                "Start"
+              ],
+              "spritesheet_data_filepath": ""
+            },
+            "Front": {
+              "atlas_filepath": "characters/char_609_acguad/default/battle/Front/char_609_acguad.atlas",
+              "skel_filepath": "characters/char_609_acguad/default/battle/Front/char_609_acguad.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "characters/char_609_acguad/default/battle/Front/char_609_acguad.png",
+              "animations": [
+                "Attack",
+                "Default",
+                "Die",
+                "Idle",
+                "Start"
+              ],
+              "spritesheet_data_filepath": ""
+            }
+          }
+        }
+      }
+    },
+    "char_610_acfend": {
+      "skins": {
+        "default": {
+          "base": {},
+          "battle": {
+            "Back": {
+              "atlas_filepath": "characters/char_610_acfend/default/battle/Back/char_610_acfend.atlas",
+              "skel_filepath": "characters/char_610_acfend/default/battle/Back/char_610_acfend.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "characters/char_610_acfend/default/battle/Back/char_610_acfend.png",
+              "animations": [
+                "Attack",
+                "Default",
+                "Idle",
+                "Start"
+              ],
+              "spritesheet_data_filepath": ""
+            },
+            "Front": {
+              "atlas_filepath": "characters/char_610_acfend/default/battle/Front/char_610_acfend.atlas",
+              "skel_filepath": "characters/char_610_acfend/default/battle/Front/char_610_acfend.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "characters/char_610_acfend/default/battle/Front/char_610_acfend.png",
+              "animations": [
+                "Attack",
+                "Default",
+                "Die",
+                "Idle",
+                "Start"
+              ],
+              "spritesheet_data_filepath": ""
+            }
+          }
+        }
+      }
+    },
+    "char_611_acnipe": {
+      "skins": {
+        "default": {
+          "base": {},
+          "battle": {
+            "Back": {
+              "atlas_filepath": "characters/char_611_acnipe/default/battle/Back/char_611_acnipe.atlas",
+              "skel_filepath": "characters/char_611_acnipe/default/battle/Back/char_611_acnipe.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "characters/char_611_acnipe/default/battle/Back/char_611_acnipe.png",
+              "animations": [
+                "Attack",
+                "Default",
+                "Idle",
+                "Start"
+              ],
+              "spritesheet_data_filepath": ""
+            },
+            "Front": {
+              "atlas_filepath": "characters/char_611_acnipe/default/battle/Front/char_611_acnipe.atlas",
+              "skel_filepath": "characters/char_611_acnipe/default/battle/Front/char_611_acnipe.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "characters/char_611_acnipe/default/battle/Front/char_611_acnipe.png",
+              "animations": [
+                "Attack",
+                "Default",
+                "Die",
+                "Idle",
+                "Start"
+              ],
+              "spritesheet_data_filepath": ""
+            }
+          }
+        }
+      }
+    },
+    "char_612_accast": {
+      "skins": {
+        "default": {
+          "base": {},
+          "battle": {
+            "Back": {
+              "atlas_filepath": "characters/char_612_accast/default/battle/Back/char_612_accast.atlas",
+              "skel_filepath": "characters/char_612_accast/default/battle/Back/char_612_accast.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "characters/char_612_accast/default/battle/Back/char_612_accast.png",
+              "animations": [
+                "Attack",
+                "Default",
+                "Idle",
+                "Start"
+              ],
+              "spritesheet_data_filepath": ""
+            },
+            "Front": {
+              "atlas_filepath": "characters/char_612_accast/default/battle/Front/char_612_accast.atlas",
+              "skel_filepath": "characters/char_612_accast/default/battle/Front/char_612_accast.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "characters/char_612_accast/default/battle/Front/char_612_accast.png",
+              "animations": [
+                "Attack",
+                "Default",
+                "Die",
+                "Idle",
+                "Start"
+              ],
+              "spritesheet_data_filepath": ""
+            }
+          }
+        }
+      }
+    },
+    "char_613_acmedc": {
+      "skins": {
+        "default": {
+          "base": {},
+          "battle": {
+            "Back": {
+              "atlas_filepath": "characters/char_613_acmedc/default/battle/Back/char_613_acmedc.atlas",
+              "skel_filepath": "characters/char_613_acmedc/default/battle/Back/char_613_acmedc.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "characters/char_613_acmedc/default/battle/Back/char_613_acmedc.png",
+              "animations": [
+                "Attack",
+                "Default",
+                "Idle",
+                "Start"
+              ],
+              "spritesheet_data_filepath": ""
+            },
+            "Front": {
+              "atlas_filepath": "characters/char_613_acmedc/default/battle/Front/char_613_acmedc.atlas",
+              "skel_filepath": "characters/char_613_acmedc/default/battle/Front/char_613_acmedc.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "characters/char_613_acmedc/default/battle/Front/char_613_acmedc.png",
+              "animations": [
+                "Attack",
+                "Default",
+                "Die",
+                "Idle",
+                "Start"
+              ],
+              "spritesheet_data_filepath": ""
+            }
+          }
+        }
+      }
+    },
+    "char_614_acsupo": {
+      "skins": {
+        "default": {
+          "base": {},
+          "battle": {
+            "Back": {
+              "atlas_filepath": "characters/char_614_acsupo/default/battle/Back/char_614_acsupo.atlas",
+              "skel_filepath": "characters/char_614_acsupo/default/battle/Back/char_614_acsupo.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "characters/char_614_acsupo/default/battle/Back/char_614_acsupo.png",
+              "animations": [
+                "Attack",
+                "Default",
+                "Idle",
+                "Start"
+              ],
+              "spritesheet_data_filepath": ""
+            },
+            "Front": {
+              "atlas_filepath": "characters/char_614_acsupo/default/battle/Front/char_614_acsupo.atlas",
+              "skel_filepath": "characters/char_614_acsupo/default/battle/Front/char_614_acsupo.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "characters/char_614_acsupo/default/battle/Front/char_614_acsupo.png",
+              "animations": [
+                "Attack",
+                "Default",
+                "Die",
+                "Idle",
+                "Start"
+              ],
+              "spritesheet_data_filepath": ""
+            }
+          }
+        }
+      }
+    },
+    "char_615_acspec": {
+      "skins": {
+        "default": {
+          "base": {},
+          "battle": {
+            "Back": {
+              "atlas_filepath": "characters/char_615_acspec/default/battle/Back/char_615_acspec.atlas",
+              "skel_filepath": "characters/char_615_acspec/default/battle/Back/char_615_acspec.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "characters/char_615_acspec/default/battle/Back/char_615_acspec.png",
+              "animations": [
+                "Attack",
+                "Default",
+                "Idle",
+                "Start"
+              ],
+              "spritesheet_data_filepath": ""
+            },
+            "Front": {
+              "atlas_filepath": "characters/char_615_acspec/default/battle/Front/char_615_acspec.atlas",
+              "skel_filepath": "characters/char_615_acspec/default/battle/Front/char_615_acspec.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "characters/char_615_acspec/default/battle/Front/char_615_acspec.png",
               "animations": [
                 "Attack",
                 "Default",

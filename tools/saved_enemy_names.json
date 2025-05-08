@@ -4680,6 +4680,26 @@
         "Quicksand Beast Alt",
         "SD49"
     ],
+    "enemy_9001_ayokai": [
+        "Surprise Sponsor Drone",
+        "PM01"
+    ],
+    "enemy_9002_adsham": [
+        "Sarkaz Bloodthirst Caster",
+        "PM02"
+    ],
+    "enemy_9003_askate": [
+        "Pathfinder Armicustos",
+        "PM03"
+    ],
+    "enemy_9004_anlock": [
+        "Technician Prisoner",
+        "PM04"
+    ],
+    "enemy_9005_aicemn": [
+        "Glacial Archer",
+        "PM05"
+    ],
     "enemy_1037_lunsabr": [
         "Spec Ops Soldier",
         "33"

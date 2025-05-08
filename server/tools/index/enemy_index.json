@@ -32818,6 +32818,123 @@
           }
         }
       }
+    },
+    "enemy_9001_ayokai": {
+      "skins": {
+        "default": {
+          "base": {},
+          "battle": {
+            "Front": {
+              "atlas_filepath": "enemies/enemy_9001_ayokai/default/battle/Front/enemy_9001_ayokai.atlas",
+              "skel_filepath": "enemies/enemy_9001_ayokai/default/battle/Front/enemy_9001_ayokai.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "enemies/enemy_9001_ayokai/default/battle/Front/enemy_9001_ayokai.png",
+              "animations": [
+                "Default",
+                "Die",
+                "Idle",
+                "Move"
+              ],
+              "spritesheet_data_filepath": ""
+            }
+          }
+        }
+      }
+    },
+    "enemy_9002_adsham": {
+      "skins": {
+        "default": {
+          "base": {},
+          "battle": {
+            "Front": {
+              "atlas_filepath": "enemies/enemy_9002_adsham/default/battle/Front/enemy_9002_adsham.atlas",
+              "skel_filepath": "enemies/enemy_9002_adsham/default/battle/Front/enemy_9002_adsham.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "enemies/enemy_9002_adsham/default/battle/Front/enemy_9002_adsham.png",
+              "animations": [
+                "Attack",
+                "Default",
+                "Die",
+                "Idle",
+                "Move",
+                "Skill"
+              ],
+              "spritesheet_data_filepath": ""
+            }
+          }
+        }
+      }
+    },
+    "enemy_9003_askate": {
+      "skins": {
+        "default": {
+          "base": {},
+          "battle": {
+            "Front": {
+              "atlas_filepath": "enemies/enemy_9003_askate/default/battle/Front/enemy_9003_askate.atlas",
+              "skel_filepath": "enemies/enemy_9003_askate/default/battle/Front/enemy_9003_askate.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "enemies/enemy_9003_askate/default/battle/Front/enemy_9003_askate.png",
+              "animations": [
+                "Attack",
+                "Default",
+                "Die",
+                "Idle",
+                "Move",
+                "Start"
+              ],
+              "spritesheet_data_filepath": ""
+            }
+          }
+        }
+      }
+    },
+    "enemy_9004_anlock": {
+      "skins": {
+        "default": {
+          "base": {},
+          "battle": {
+            "Front": {
+              "atlas_filepath": "enemies/enemy_9004_anlock/default/battle/Front/enemy_9004_anlock.atlas",
+              "skel_filepath": "enemies/enemy_9004_anlock/default/battle/Front/enemy_9004_anlock.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "enemies/enemy_9004_anlock/default/battle/Front/enemy_9004_anlock.png",
+              "animations": [
+                "Attack",
+                "Default",
+                "Die",
+                "Idle",
+                "Move",
+                "Skill"
+              ],
+              "spritesheet_data_filepath": ""
+            }
+          }
+        }
+      }
+    },
+    "enemy_9005_aicemn": {
+      "skins": {
+        "default": {
+          "base": {},
+          "battle": {
+            "Front": {
+              "atlas_filepath": "enemies/enemy_9005_aicemn/default/battle/Front/enemy_9005_aicemn.atlas",
+              "skel_filepath": "enemies/enemy_9005_aicemn/default/battle/Front/enemy_9005_aicemn.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "enemies/enemy_9005_aicemn/default/battle/Front/enemy_9005_aicemn.png",
+              "animations": [
+                "Attack",
+                "Default",
+                "Die",
+                "Idle",
+                "Move"
+              ],
+              "spritesheet_data_filepath": ""
+            }
+          }
+        }
+      }
     }
   }
 }
