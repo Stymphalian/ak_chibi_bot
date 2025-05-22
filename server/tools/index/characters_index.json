@@ -26532,6 +26532,71 @@
               "spritesheet_data_filepath": ""
             }
           }
+        },
+        "whirlwind": {
+          "base": {
+            "Front": {
+              "atlas_filepath": "characters/char_4011_lessng/whirlwind#7/base/Front/build_char_4011_lessng_whirlwind#7.atlas",
+              "skel_filepath": "characters/char_4011_lessng/whirlwind#7/base/Front/build_char_4011_lessng_whirlwind#7.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "characters/char_4011_lessng/whirlwind#7/base/Front/build_char_4011_lessng_whirlwind#7.png",
+              "animations": [
+                "Default",
+                "Interact",
+                "Move",
+                "Relax",
+                "Sit",
+                "Sleep",
+                "Special"
+              ],
+              "spritesheet_data_filepath": ""
+            }
+          },
+          "battle": {
+            "Back": {
+              "atlas_filepath": "characters/char_4011_lessng/whirlwind#7/battle/Back/char_4011_lessng_whirlwind#7.atlas",
+              "skel_filepath": "characters/char_4011_lessng/whirlwind#7/battle/Back/char_4011_lessng_whirlwind#7.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "characters/char_4011_lessng/whirlwind#7/battle/Back/char_4011_lessng_whirlwind#7.png",
+              "animations": [
+                "Attack",
+                "Default",
+                "Idle",
+                "Skill_2_End",
+                "Skill_2_Idle",
+                "Skill_2_Loop",
+                "Skill_3_Begin",
+                "Skill_3_End",
+                "Skill_3_Idle",
+                "Skill_3_Loop",
+                "Start",
+                "Start_2"
+              ],
+              "spritesheet_data_filepath": ""
+            },
+            "Front": {
+              "atlas_filepath": "characters/char_4011_lessng/whirlwind#7/battle/Front/char_4011_lessng_whirlwind#7.atlas",
+              "skel_filepath": "characters/char_4011_lessng/whirlwind#7/battle/Front/char_4011_lessng_whirlwind#7.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "characters/char_4011_lessng/whirlwind#7/battle/Front/char_4011_lessng_whirlwind#7.png",
+              "animations": [
+                "Attack",
+                "Default",
+                "Die",
+                "Idle",
+                "Skill_2_End",
+                "Skill_2_Idle",
+                "Skill_2_Loop",
+                "Skill_3_Begin",
+                "Skill_3_End",
+                "Skill_3_Idle",
+                "Skill_3_Loop",
+                "Start",
+                "Start_2"
+              ],
+              "spritesheet_data_filepath": ""
+            }
+          }
         }
       }
     },
