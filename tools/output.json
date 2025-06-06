@@ -315,6 +315,9 @@
     "char_275_breeze": [
         "Breeze"
     ],
+    "char_4163_rosesa": [
+        "Rose Salt"
+    ],
     "char_115_headbr": [
         "Zima"
     ],
@@ -572,6 +575,9 @@
     "char_4081_warmy": [
         "Warmy",
         "Potlid"
+    ],
+    "char_4164_tecno": [
+        "Tecno"
     ],
     "char_242_otter": [
         "Mayer"
@@ -1075,6 +1081,11 @@
     ],
     "char_4123_ela": [
         "Ela"
+    ],
+    "char_1039_thorn2": [
+        "Thorns Alter",
+        "Thorns the Lodestar",
+        "Thorns the lobster"
     ],
     "char_147_shining": [
         "Shining"

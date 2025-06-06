@@ -3641,6 +3641,70 @@
         "Parade Balloon",
         "CNV20"
     ],
+    "enemy_10042_prtrop": [
+        "Bridge Builder",
+        "PI1"
+    ],
+    "enemy_10042_prtrop_2": [
+        "Bridge Holder",
+        "PI2"
+    ],
+    "enemy_10043_sailor": [
+        "Risk-seeking Sailor",
+        "PI3"
+    ],
+    "enemy_10043_sailor_2": [
+        "Risk-surviving Sailor",
+        "PI4"
+    ],
+    "enemy_10044_wintun": [
+        "Garum Gourmet",
+        "PI5"
+    ],
+    "enemy_10044_wintun_2": [
+        "Rum Gourmet",
+        "PI6"
+    ],
+    "enemy_10045_parrot": [
+        "Lucky Flyfin",
+        "PI7"
+    ],
+    "enemy_10045_parrot_2": [
+        "Unlucky Flyfin",
+        "PI8"
+    ],
+    "enemy_10046_pshark": [
+        "Saltfin Shaker",
+        "PI9"
+    ],
+    "enemy_10046_pshark_2": [
+        "Saltfin Breaker",
+        "P10"
+    ],
+    "enemy_10047_shrknt": [
+        "Explosion Chaser",
+        "P11"
+    ],
+    "enemy_10047_shrknt_2": [
+        "Explosion Devotee",
+        "P12"
+    ],
+    "enemy_10048_prtsld": [
+        "Bloody Chef",
+        "P13"
+    ],
+    "enemy_10048_prtsld_2": [
+        "Terrible Chef",
+        "P14"
+    ],
+    "enemy_10049_pcaptn": [
+        "Cacophonous Boatswain",
+        "P15"
+    ],
+    "enemy_10049_pcaptn_2": [
+        "Bel Canto Boatswain",
+        "P16"
+    ],
     "enemy_3006_tersia": [
         "Theresa, King of Sarkaz",
         "THA1"
@@ -4146,6 +4210,10 @@
         "La Signora del Carnevale",
         "LOM"
     ],
+    "enemy_1561_crzjdg": [
+        "Anastasio, the Atoner",
+        "AR"
+    ],
     "enemy_2003_rockman": [
         "Lost Colossus",
         "WDG"
@@ -4454,6 +4522,10 @@
         "Ye Wuqing, Rooftop Runner",
         "DL27"
     ],
+    "enemy_6028_cosgia": [
+        "Song of the Pack",
+        "DL28"
+    ],
     "enemy_7001_blwzad": [
         "Tribal Shaman",
         "SD1"
@@ -4699,6 +4771,34 @@
     "enemy_9005_aicemn": [
         "Glacial Archer",
         "PM05"
+    ],
+    "enemy_5501_arcbank": [
+        "Tycoon",
+        "PM06"
+    ],
+    "enemy_5502_arcthf": [
+        "Treasure Thief",
+        "PM07"
+    ],
+    "enemy_5503_arcslma": [
+        "Jelly Kid",
+        "PM08"
+    ],
+    "enemy_5504_arcslmi": [
+        "Jello",
+        "PM09"
+    ],
+    "enemy_5505_arctxi": [
+        "The Amphibian Ship-Car",
+        "PM10"
+    ],
+    "enemy_5506_arcgo": [
+        "Washed-Up Parts",
+        "PM11"
+    ],
+    "enemy_5507_arctolm": [
+        "Fountain Soda Knight",
+        "PM12"
     ],
     "enemy_1037_lunsabr": [
         "Spec Ops Soldier",
