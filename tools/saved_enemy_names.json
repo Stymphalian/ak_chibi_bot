@@ -3847,6 +3847,10 @@
         "Window",
         "SFF10"
     ],
+    "enemy_2093_skzams": [
+        "Finale Cadence",
+        "SFF11"
+    ],
     "enemy_4001_toxcar": [
         "Retrofitted Gastruck",
         "MU1"
@@ -4413,6 +4417,26 @@
     "enemy_2089_skzjkl": [
         "Quilon, Avatar of the Mahasattva",
         "QLN"
+    ],
+    "enemy_2092_skzamy": [
+        "Amiya, Furnaces Finale",
+        "AFF"
+    ],
+    "enemy_2097_skzfdd": [
+        "Buldrokkastee, Holy Gun-Knight",
+        "SPT-2"
+    ],
+    "enemy_2098_skzftx": [
+        "Theresis, Black Crowned Lord",
+        "TRS-2"
+    ],
+    "enemy_2099_skzfkl": [
+        "Quilon, Avatar of the Mahasattva",
+        "QLN-2"
+    ],
+    "enemy_2100_skzfmf": [
+        "Manfred",
+        "MAN-2"
     ],
     "enemy_5008_cstrwd": [],
     "enemy_5009_shtrwd": [],

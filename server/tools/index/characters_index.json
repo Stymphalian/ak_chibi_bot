@@ -14026,6 +14026,55 @@
             }
           }
         },
+        "epoque": {
+          "base": {
+            "Front": {
+              "atlas_filepath": "characters/char_212_ansel/epoque#29/base/Front/build_char_212_ansel_epoque#29.atlas",
+              "skel_filepath": "characters/char_212_ansel/epoque#29/base/Front/build_char_212_ansel_epoque#29.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "characters/char_212_ansel/epoque#29/base/Front/build_char_212_ansel_epoque#29.png",
+              "animations": [
+                "Default",
+                "Interact",
+                "Move",
+                "Relax",
+                "Sit",
+                "Sleep",
+                "Special"
+              ],
+              "spritesheet_data_filepath": ""
+            }
+          },
+          "battle": {
+            "Back": {
+              "atlas_filepath": "characters/char_212_ansel/epoque#29/battle/Back/char_212_ansel_epoque#29.atlas",
+              "skel_filepath": "characters/char_212_ansel/epoque#29/battle/Back/char_212_ansel_epoque#29.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "characters/char_212_ansel/epoque#29/battle/Back/char_212_ansel_epoque#29.png",
+              "animations": [
+                "Attack",
+                "Default",
+                "Idle",
+                "Start"
+              ],
+              "spritesheet_data_filepath": ""
+            },
+            "Front": {
+              "atlas_filepath": "characters/char_212_ansel/epoque#29/battle/Front/char_212_ansel_epoque#29.atlas",
+              "skel_filepath": "characters/char_212_ansel/epoque#29/battle/Front/char_212_ansel_epoque#29.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "characters/char_212_ansel/epoque#29/battle/Front/char_212_ansel_epoque#29.png",
+              "animations": [
+                "Attack",
+                "Default",
+                "Die",
+                "Idle",
+                "Start"
+              ],
+              "spritesheet_data_filepath": ""
+            }
+          }
+        },
         "summer": {
           "base": {
             "Front": {
@@ -18508,7 +18557,7 @@
               "atlas_filepath": "characters/char_275_breeze/default/battle/Back/char_275_breeze.atlas",
               "skel_filepath": "characters/char_275_breeze/default/battle/Back/char_275_breeze.skel",
               "skel_json_filepath": "",
-              "png_filepath": "characters/char_275_breeze/default/battle/char_275_breeze.png",
+              "png_filepath": "characters/char_275_breeze/default/battle/Back/char_275_breeze.png",
               "animations": [
                 "Attack",
                 "Default",
@@ -20646,6 +20695,59 @@
               "skel_filepath": "characters/char_301_cutter/default/battle/Front/char_301_cutter.skel",
               "skel_json_filepath": "",
               "png_filepath": "characters/char_301_cutter/default/battle/Front/char_301_cutter.png",
+              "animations": [
+                "Attack",
+                "Default",
+                "Die",
+                "Idle",
+                "Skill_1",
+                "Skill_2",
+                "Start"
+              ],
+              "spritesheet_data_filepath": ""
+            }
+          }
+        },
+        "marthe": {
+          "base": {
+            "Front": {
+              "atlas_filepath": "characters/char_301_cutter/marthe#8/base/Front/build_char_301_cutter_marthe#8.atlas",
+              "skel_filepath": "",
+              "skel_json_filepath": "characters/char_301_cutter/marthe#8/base/Front/build_char_301_cutter_marthe#8.jskel",
+              "png_filepath": "characters/char_301_cutter/marthe#8/base/Front/build_char_301_cutter_marthe#8.png",
+              "animations": [
+                "Default",
+                "Interact",
+                "Move",
+                "Relax",
+                "Sit",
+                "Sleep",
+                "Special"
+              ],
+              "spritesheet_data_filepath": ""
+            }
+          },
+          "battle": {
+            "Back": {
+              "atlas_filepath": "characters/char_301_cutter/marthe#8/battle/Back/char_301_cutter_marthe#8.atlas",
+              "skel_filepath": "characters/char_301_cutter/marthe#8/battle/Back/char_301_cutter_marthe#8.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "characters/char_301_cutter/marthe#8/battle/Back/char_301_cutter_marthe#8.png",
+              "animations": [
+                "Attack",
+                "Default",
+                "Idle",
+                "Skill_1",
+                "Skill_2",
+                "Start"
+              ],
+              "spritesheet_data_filepath": ""
+            },
+            "Front": {
+              "atlas_filepath": "characters/char_301_cutter/marthe#8/battle/Front/char_301_cutter_marthe#8.atlas",
+              "skel_filepath": "characters/char_301_cutter/marthe#8/battle/Front/char_301_cutter_marthe#8.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "characters/char_301_cutter/marthe#8/battle/Front/char_301_cutter_marthe#8.png",
               "animations": [
                 "Attack",
                 "Default",
@@ -33276,6 +33378,63 @@
               "spritesheet_data_filepath": ""
             }
           }
+        },
+        "snow": {
+          "base": {
+            "Front": {
+              "atlas_filepath": "characters/char_4114_harold/snow#7/base/Front/build_char_4114_harold_snow#7.atlas",
+              "skel_filepath": "characters/char_4114_harold/snow#7/base/Front/build_char_4114_harold_snow#7.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "characters/char_4114_harold/snow#7/base/Front/build_char_4114_harold_snow#7.png",
+              "animations": [
+                "Default",
+                "Interact",
+                "Move",
+                "Relax",
+                "Sit",
+                "Sleep",
+                "Special"
+              ],
+              "spritesheet_data_filepath": ""
+            }
+          },
+          "battle": {
+            "Back": {
+              "atlas_filepath": "characters/char_4114_harold/snow#7/battle/Back/char_4114_harold_snow#7.atlas",
+              "skel_filepath": "characters/char_4114_harold/snow#7/battle/Back/char_4114_harold_snow#7.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "characters/char_4114_harold/snow#7/battle/Back/char_4114_harold_snow#7.png",
+              "animations": [
+                "Attack",
+                "Default",
+                "Idle",
+                "Skill_2_Begin",
+                "Skill_2_End",
+                "Skill_2_Idle",
+                "Skill_2_Loop",
+                "Start"
+              ],
+              "spritesheet_data_filepath": ""
+            },
+            "Front": {
+              "atlas_filepath": "characters/char_4114_harold/snow#7/battle/Front/char_4114_harold_snow#7.atlas",
+              "skel_filepath": "characters/char_4114_harold/snow#7/battle/Front/char_4114_harold_snow#7.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "characters/char_4114_harold/snow#7/battle/Front/char_4114_harold_snow#7.png",
+              "animations": [
+                "Attack",
+                "Default",
+                "Die",
+                "Idle",
+                "Skill_2_Begin",
+                "Skill_2_End",
+                "Skill_2_Idle",
+                "Skill_2_Loop",
+                "Start"
+              ],
+              "spritesheet_data_filepath": ""
+            }
+          }
         }
       }
     },
@@ -33703,6 +33862,61 @@
               "skel_filepath": "characters/char_4119_wanqin/default/battle/Front/char_4119_wanqin.skel",
               "skel_json_filepath": "",
               "png_filepath": "characters/char_4119_wanqin/default/battle/Front/char_4119_wanqin.png",
+              "animations": [
+                "Attack",
+                "Default",
+                "Die",
+                "Idle",
+                "Skill_Begin",
+                "Skill_End",
+                "Skill_Loop",
+                "Start"
+              ],
+              "spritesheet_data_filepath": ""
+            }
+          }
+        },
+        "epoque": {
+          "base": {
+            "Front": {
+              "atlas_filepath": "characters/char_4119_wanqin/epoque#41/base/Front/build_char_4119_wanqin_epoque#41.atlas",
+              "skel_filepath": "characters/char_4119_wanqin/epoque#41/base/Front/build_char_4119_wanqin_epoque#41.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "characters/char_4119_wanqin/epoque#41/base/Front/build_char_4119_wanqin_epoque#41.png",
+              "animations": [
+                "Default",
+                "Interact",
+                "Move",
+                "Relax",
+                "Sit",
+                "Sleep",
+                "Special"
+              ],
+              "spritesheet_data_filepath": ""
+            }
+          },
+          "battle": {
+            "Back": {
+              "atlas_filepath": "characters/char_4119_wanqin/epoque#41/battle/Back/char_4119_wanqin_epoque#41.atlas",
+              "skel_filepath": "characters/char_4119_wanqin/epoque#41/battle/Back/char_4119_wanqin_epoque#41.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "characters/char_4119_wanqin/epoque#41/battle/Back/char_4119_wanqin_epoque#41.png",
+              "animations": [
+                "Attack",
+                "Default",
+                "Idle",
+                "Skill_Begin",
+                "Skill_End",
+                "Skill_Loop",
+                "Start"
+              ],
+              "spritesheet_data_filepath": ""
+            },
+            "Front": {
+              "atlas_filepath": "characters/char_4119_wanqin/epoque#41/battle/Front/char_4119_wanqin_epoque#41.atlas",
+              "skel_filepath": "characters/char_4119_wanqin/epoque#41/battle/Front/char_4119_wanqin_epoque#41.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "characters/char_4119_wanqin/epoque#41/battle/Front/char_4119_wanqin_epoque#41.png",
               "animations": [
                 "Attack",
                 "Default",

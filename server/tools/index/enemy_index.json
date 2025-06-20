@@ -30105,6 +30105,94 @@
         }
       }
     },
+    "enemy_2092_skzamy": {
+      "skins": {
+        "default": {
+          "base": {},
+          "battle": {
+            "Front": {
+              "atlas_filepath": "enemies/enemy_2092_skzamy/default/battle/Front/enemy_2092_skzamy.atlas",
+              "skel_filepath": "enemies/enemy_2092_skzamy/default/battle/Front/enemy_2092_skzamy.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "enemies/enemy_2092_skzamy/default/battle/Front/enemy_2092_skzamy.png",
+              "animations": [
+                "A_Attack",
+                "A_Blink_Begin",
+                "A_Blink_End",
+                "A_Default",
+                "A_Idle",
+                "A_Move",
+                "A_Skill_Begin",
+                "A_Skill_End",
+                "A_Skill_Loop",
+                "B_Attack",
+                "B_Default",
+                "B_Die",
+                "B_Idle",
+                "B_Move",
+                "B_Skill_1",
+                "B_Skill_2",
+                "B_Skill_Begin",
+                "B_Skill_End",
+                "B_Skill_Loop",
+                "C_Die",
+                "C_Start",
+                "Revive_Begin",
+                "Revive_End",
+                "Revive_Loop"
+              ],
+              "spritesheet_data_filepath": ""
+            }
+          }
+        }
+      }
+    },
+    "enemy_2093_skzams": {
+      "skins": {
+        "default": {
+          "base": {},
+          "battle": {
+            "Front": {
+              "atlas_filepath": "enemies/enemy_2093_skzams/default/battle/Front/enemy_2093_skzams.atlas",
+              "skel_filepath": "enemies/enemy_2093_skzams/default/battle/Front/enemy_2093_skzams.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "enemies/enemy_2093_skzams/default/battle/Front/enemy_2093_skzams.png",
+              "animations": [
+                "Attack",
+                "Default",
+                "Die",
+                "Idle",
+                "Move"
+              ],
+              "spritesheet_data_filepath": ""
+            }
+          }
+        }
+      }
+    },
+    "enemy_2094_skzamb": {
+      "skins": {
+        "default": {
+          "base": {},
+          "battle": {
+            "Front": {
+              "atlas_filepath": "enemies/enemy_2094_skzamb/default/battle/Front/enemy_2094_skzamb.atlas",
+              "skel_filepath": "enemies/enemy_2094_skzamb/default/battle/Front/enemy_2094_skzamb.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "enemies/enemy_2094_skzamb/default/battle/Front/enemy_2094_skzamb.png",
+              "animations": [
+                "Default",
+                "Die",
+                "Idle",
+                "Move",
+                "Start"
+              ],
+              "spritesheet_data_filepath": ""
+            }
+          }
+        }
+      }
+    },
     "enemy_3001_upeopl": {
       "skins": {
         "default": {
@@ -33600,6 +33688,28 @@
                 "Die",
                 "Idle",
                 "Move"
+              ],
+              "spritesheet_data_filepath": ""
+            }
+          }
+        }
+      }
+    },
+    "trap_745_beer": {
+      "skins": {
+        "default": {
+          "base": {},
+          "battle": {
+            "Front": {
+              "atlas_filepath": "enemies/trap_745_beer/default/battle/Front/trap_745_beer.atlas",
+              "skel_filepath": "enemies/trap_745_beer/default/battle/Front/trap_745_beer.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "enemies/trap_745_beer/default/battle/Front/trap_745_beer.png",
+              "animations": [
+                "Default",
+                "End",
+                "Loop",
+                "Start"
               ],
               "spritesheet_data_filepath": ""
             }

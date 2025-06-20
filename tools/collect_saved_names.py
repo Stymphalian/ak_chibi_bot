@@ -9,6 +9,7 @@ def process_character_table(character_table_path: Path, saved_names):
     output_dict = defaultdict(list)
     with character_table_path.open("r", encoding="utf-8") as f:
         character_json = json.load(f)
+        character_json = character_json['Characters']
         
         for key, operator in character_json.items():
             if not key.startswith("char_"):

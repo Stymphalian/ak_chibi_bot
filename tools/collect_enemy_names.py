@@ -9,7 +9,7 @@ def process_enemy_table(enemy_table: Path, saved_names):
 
     with enemy_table.open("r", encoding="utf-8") as f:
         enemy_json = json.load(f)
-        enemy_json = enemy_json['enemyData']
+        enemy_json = enemy_json['EnemyData']
         output_dict = defaultdict(list)
         for key, enemy in enemy_json.items():
             if not key.startswith("enemy_"):
@@ -20,9 +20,9 @@ def process_enemy_table(enemy_table: Path, saved_names):
                 output_dict[key] = saved_names[key]
                 continue
 
-            enemyId = enemy['enemyId']
-            enemyIndex = enemy['enemyIndex']
-            name = enemy['name']
+            enemyId = enemy['EnemyId']
+            enemyIndex = enemy['EnemyIndex']
+            name = enemy['Name']
 
             assert enemyId == key, "{} != {}".format(enemyId, key)
             if enemyIndex in seen_enemy_index:

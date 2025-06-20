@@ -53,6 +53,7 @@ func run(assetDir string, outputDir string) error {
 
 // cd server/tools/index
 // go run create_asset_index.go -assetDir ../../../static/assets -outputDir .
+// go run create_asset_index.go -assetDir C:/dev/lab/ak_etl/output/organized -outputDir C:/dev/lab/ak_etl/output/organized
 func main() {
 	assetDirPtr := flag.String("assetDir", "", "path to the assets")
 	outputDirPtr := flag.String("outputDir", "", "path to the output directory")
