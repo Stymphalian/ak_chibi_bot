@@ -4824,6 +4824,106 @@
         "Fountain Soda Knight",
         "PM12"
     ],
+    "enemy_10050_cjmeat": [
+        "Breakfast",
+        "OR1"
+    ],
+    "enemy_10050_cjmeat_2": [
+        "Dinner",
+        "OR2"
+    ],
+    "enemy_10051_cjmag": [
+        "Diet",
+        "OR3"
+    ],
+    "enemy_10051_cjmag_2": [
+        "Fasting",
+        "OR4"
+    ],
+    "enemy_10052_cjshld": [
+        "Sated",
+        "OR5"
+    ],
+    "enemy_10052_cjshld_2": [
+        "Bloated",
+        "OR6"
+    ],
+    "enemy_10053_cjman": [
+        "Expletive",
+        "OR7"
+    ],
+    "enemy_10053_cjman_2": [
+        "Profanity",
+        "OR8"
+    ],
+    "enemy_10054_cjhot": [
+        "Boiling Pot",
+        "OR9"
+    ],
+    "enemy_10054_cjhot_2": [
+        "Drifting Aroma",
+        "OR10"
+    ],
+    "enemy_10055_cjgost": [
+        "Forethought",
+        "OR11"
+    ],
+    "enemy_10055_cjgost_2": [
+        "Sureness",
+        "OR12"
+    ],
+    "enemy_10056_cjfish": [
+        "Vanity",
+        "OR13"
+    ],
+    "enemy_10056_cjfish_2": [
+        "Humility",
+        "OR14"
+    ],
+    "enemy_10057_cjstel": [
+        "Reminiscence",
+        "OR15"
+    ],
+    "enemy_10057_cjstel_2": [
+        "Remembrance",
+        "OR16"
+    ],
+    "enemy_10058_cjfrog": [
+        "Wealth",
+        "OR17"
+    ],
+    "enemy_10058_cjfrog_2": [
+        "Prosperity",
+        "OR18"
+    ],
+    "enemy_10059_cjgfod": [
+        "Sapidity",
+        "OR19"
+    ],
+    "enemy_10060_cjbfod": [
+        "Vapidity",
+        "OR20"
+    ],
+    "enemy_10061_cjglon": [
+        "Sapid Auspice",
+        "OR21"
+    ],
+    "enemy_10062_cjblon": [
+        "Vapid Blight",
+        "OR22"
+    ],
+    "enemy_10063_cjdoor": [
+        "Mouth of Annihilation",
+        "OR23"
+    ],
+    "enemy_10063_cjdoor_2": [
+        "Mouth of Creation",
+        "OR24"
+    ],
+    "enemy_1562_cjtaot": [
+        "Gluttony",
+        "WY"
+    ],
     "enemy_1037_lunsabr": [
         "Spec Ops Soldier",
         "33"

@@ -372,6 +372,9 @@
     "char_4144_chilc": [
         "Chilchuck"
     ],
+    "char_4052_surfer": [
+        "Surfer"
+    ],
     "char_308_swire": [
         "Swire"
     ],
@@ -798,6 +801,9 @@
     "char_492_quercu": [
         "Quercus"
     ],
+    "char_4172_xingzh": [
+        "Xingzhu"
+    ],
     "char_4102_threye": [
         "Valarqvin"
     ],
@@ -983,6 +989,10 @@
     "char_4146_nymph": [
         "Nymph"
     ],
+    "char_1040_blaze2": [
+        "Blaze Alter",
+        "Blaze the Igniting Spark"
+    ],
     "char_206_gnosis": [
         "Gnosis"
     ],
@@ -1154,6 +1164,9 @@
         "Jessica the Liberated",
         "Jessica 2",
         "Jessica2"
+    ],
+    "char_2026_yu": [
+        "Yu"
     ],
     "char_264_f12yin": [
         "Mountain"

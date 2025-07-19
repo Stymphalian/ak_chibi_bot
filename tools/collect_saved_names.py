@@ -24,15 +24,15 @@ def process_character_table(character_table_path: Path, saved_names):
             try:
                 if key[len(key)-1].isdigit():
                     raise Exception("Unhandled alter operator id: " + key)
-                output_dict[key] = [operator["name"]]
+                output_dict[key] = [operator["Name"]]
 
                 # if len(output_dict[key].split(" ")) > 1:
-                #     raise Exception("Unhandled multi word name: ", key, output_dict[key])
+                #     raise Exception("Unhandled multi word Name: ", key, output_dict[key])
             except UnicodeEncodeError as e:
-                print("UnicodeEncodeError", key, operator["name"])
+                print("UnicodeEncodeError", key, operator["Name"])
                 raise e
             except:
-                print("Unhandled operator id: " + key, operator["name"])
+                print("Unhandled operator id: " + key, operator["Name"])
                 # output_dict[operator_id] = (unicodedata
                 #     .normalize("NFKD", operator["name"])
                 #     .encode('ascii', "ignore")
