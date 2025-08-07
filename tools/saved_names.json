@@ -610,6 +610,9 @@
     "char_436_whispr": [
         "Whisperain"
     ],
+    "char_4173_nowell": [
+        "Nowell"
+    ],
     "char_402_tuye": [
         "Tuye"
     ],
@@ -1258,9 +1261,15 @@
     ],
     "char_1032_excu2": [
         "Executor Alter",
+        "FedEx",
         "Executor the Ex Foedere",
         "Executor2",
         "Executor 2"
+    ],
+    "char_4010_etlchi": [
+        "Entelechia",
+        "Enchiladas",
+        "Enchilada"
     ],
     "char_4064_mlynar": [
         "Mlynar",
