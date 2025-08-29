@@ -749,6 +749,9 @@
     "char_4104_coldst": [
         "Coldshot"
     ],
+    "char_4177_brigid": [
+        "Brigid"
+    ],
     "char_4015_spuria": [
         "Spuria"
     ],
@@ -830,6 +833,9 @@
     ],
     "char_458_rfrost": [
         "Frost"
+    ],
+    "char_4171_wulfen": [
+        "Wulfenite"
     ],
     "char_369_bena": [
         "Bena"
@@ -995,6 +1001,12 @@
     "char_1040_blaze2": [
         "Blaze Alter",
         "Blaze the Igniting Spark"
+    ],
+    "char_450_necras": [
+        "Necrass",
+        "Eblana",
+        "Banana",
+        "Elbanana"
     ],
     "char_206_gnosis": [
         "Gnosis"

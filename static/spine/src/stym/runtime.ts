@@ -10,6 +10,7 @@ export interface RuntimeConfig {
     showChatMessagesFlag: boolean
     usernameBlacklist: string[]
     excessiveChibiMitigations: boolean
+    usePremultipliedAlpha: boolean
 }
 
 export class Runtime {
@@ -190,7 +191,7 @@ export class Runtime {
             scaleX: 0.45 * this.runtimeConfig.chibiScale * configScaleX,
             scaleY: 0.45 * this.runtimeConfig.chibiScale * configScaleY,
             maxSizePx: configMaxPixelSize,
-            premultipliedAlpha: true,
+            premultipliedAlpha: requestData["use_straight_alpha"] ? false : true,
             animationPlaySpeed: requestData["animation_speed"] ? requestData["animation_speed"] : 1.0,
             extraOffsetX: 0,
             extraOffsetY: 0,

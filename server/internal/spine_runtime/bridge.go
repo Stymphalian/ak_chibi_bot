@@ -312,6 +312,7 @@ func (s *SpineBridge) setInternalSpineOperator(
 		SkelFile:                skelFile,
 		SkelJsonFile:            skelJsonFile,
 		SpritesheetDataFilepath: spritesheetDataFilepath,
+		UseStraightAlpha:        spineData.UseStraightAlpha,
 
 		StartPos:            info.StartPos,
 		AnimationSpeed:      info.AnimationSpeed,

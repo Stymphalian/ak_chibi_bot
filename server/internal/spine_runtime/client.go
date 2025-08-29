@@ -44,6 +44,7 @@ type SetOperatorInternalRequest struct {
 	SkelFile                string                    `json:"skel_file"`
 	SkelJsonFile            string                    `json:"skel_json_file"`
 	SpritesheetDataFilepath string                    `json:"spritesheet_data_filepath"`
+	UseStraightAlpha        bool                      `json:"use_straight_alpha"`
 	StartPos                misc.Option[misc.Vector2] `json:"start_pos"`
 	AnimationSpeed          float64                   `json:"animation_speed"`
 	AvailableAnimations     []string                  `json:"available_animations"`

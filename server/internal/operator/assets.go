@@ -43,6 +43,7 @@ type SpineData struct {
 	PlaformIndieSkelJsonFilepath string   `json:"skel_json_filepath"`
 	PlaformIndiePngFilepath      string   `json:"png_filepath"`
 	Animations                   []string `json:"animations"`
+	UseStraightAlpha             bool     `json:"use_straight_alpha`
 
 	SpritesheetDataFilepath              string `json:"-"`
 	PlatformIndieSpritesheetDataFilepath string `json:"spritesheet_data_filepath"`
@@ -54,22 +55,26 @@ func NewSpineAssetMap() *SpineAssetMap {
 	}
 }
 
-func readJsonSkelAnimations(path string) ([]string, error) {
+type JsonSkelData struct {
+	Animations       []string `json:"animations"`
+	UseStraightAlpha bool     `json:"use_straight_alpha"`
+}
+
+func readJsonSkelAnimations(path string) (*JsonSkelData, error) {
 	file, err := os.Open(path)
 	if err != nil {
 		return nil, err
 	}
 	defer file.Close()
 
-	data := make(map[string][]string)
-
-	err = json.NewDecoder(file).Decode(&data)
+	// data := make(map[string][]string)
+	data := &JsonSkelData{}
+	err = json.NewDecoder(file).Decode(data)
 	if err != nil {
-
 		return nil, err
 	}
 
-	return data["animations"], nil
+	return data, nil
 }
 
 func (s *SpineAssetMap) MergeFromIndex(indexFile string) (err error) {
@@ -253,11 +258,12 @@ func (s *SpineAssetMap) Load(assetDir string, assetSubdir string) (err error) {
 			// spineData.SkelFullJsonFilepath = path
 		case ".json":
 			if strings.HasSuffix(newPathIndie, ".animations.json") {
-				animations, err := readJsonSkelAnimations(path)
+				skelData, err := readJsonSkelAnimations(path)
 				if err != nil {
 					log.Fatal("Failed to extract animations from skeleton json: ", err)
 				}
-				spineData.Animations = animations
+				spineData.Animations = skelData.Animations
+				spineData.UseStraightAlpha = skelData.UseStraightAlpha
 			} else if strings.HasSuffix(newPathIndie, ".spritesheet.json") {
 				spineData.SpritesheetDataFilepath = newPath
 				spineData.PlatformIndieSpritesheetDataFilepath = newPathIndie

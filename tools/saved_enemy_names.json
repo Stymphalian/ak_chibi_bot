@@ -3705,6 +3705,166 @@
         "Bel Canto Boatswain",
         "P16"
     ],
+    "enemy_10050_cjmeat": [
+        "Breakfast",
+        "OR1"
+    ],
+    "enemy_10050_cjmeat_2": [
+        "Dinner",
+        "OR2"
+    ],
+    "enemy_10051_cjmag": [
+        "Diet",
+        "OR3"
+    ],
+    "enemy_10051_cjmag_2": [
+        "Fasting",
+        "OR4"
+    ],
+    "enemy_10052_cjshld": [
+        "Sated",
+        "OR5"
+    ],
+    "enemy_10052_cjshld_2": [
+        "Bloated",
+        "OR6"
+    ],
+    "enemy_10053_cjman": [
+        "Expletive",
+        "OR7"
+    ],
+    "enemy_10053_cjman_2": [
+        "Profanity",
+        "OR8"
+    ],
+    "enemy_10054_cjhot": [
+        "Boiling Pot",
+        "OR9"
+    ],
+    "enemy_10054_cjhot_2": [
+        "Drifting Aroma",
+        "OR10"
+    ],
+    "enemy_10055_cjgost": [
+        "Forethought",
+        "OR11"
+    ],
+    "enemy_10055_cjgost_2": [
+        "Sureness",
+        "OR12"
+    ],
+    "enemy_10056_cjfish": [
+        "Vanity",
+        "OR13"
+    ],
+    "enemy_10056_cjfish_2": [
+        "Humility",
+        "OR14"
+    ],
+    "enemy_10057_cjstel": [
+        "Reminiscence",
+        "OR15"
+    ],
+    "enemy_10057_cjstel_2": [
+        "Remembrance",
+        "OR16"
+    ],
+    "enemy_10058_cjfrog": [
+        "Wealth",
+        "OR17"
+    ],
+    "enemy_10058_cjfrog_2": [
+        "Prosperity",
+        "OR18"
+    ],
+    "enemy_10059_cjgfod": [
+        "Sapidity",
+        "OR19"
+    ],
+    "enemy_10060_cjbfod": [
+        "Vapidity",
+        "OR20"
+    ],
+    "enemy_10061_cjglon": [
+        "Sapid Auspice",
+        "OR21"
+    ],
+    "enemy_10062_cjblon": [
+        "Vapid Blight",
+        "OR22"
+    ],
+    "enemy_10063_cjdoor": [
+        "Mouth of Annihilation",
+        "OR23"
+    ],
+    "enemy_10063_cjdoor_2": [
+        "Mouth of Creation",
+        "OR24"
+    ],
+    "enemy_10064_ftyzss": [
+        "Patrolling Foliage",
+        "EA1"
+    ],
+    "enemy_10064_ftyzss_2": [
+        "Patrolling Witherbush",
+        "EA2"
+    ],
+    "enemy_10065_ftzlc": [
+        "Cabbage Seedling",
+        "EA3"
+    ],
+    "enemy_10065_ftzlc_2": [
+        "Cabbage Weed",
+        "EA4"
+    ],
+    "enemy_10066_ftxjl": [
+        "Nest",
+        "EA5"
+    ],
+    "enemy_10066_ftxjl_2": [
+        "Cradle",
+        "EA6"
+    ],
+    "enemy_10067_ftsjc": [
+        "Burning Vine",
+        "EA7"
+    ],
+    "enemy_10067_ftsjc_2": [
+        "Burning Wick",
+        "EA8"
+    ],
+    "enemy_10068_ftxsr": [
+        "Guiding Sprout",
+        "EA9"
+    ],
+    "enemy_10068_ftxsr_2": [
+        "Guiding Shrub",
+        "EA10"
+    ],
+    "enemy_10069_ftlsj": [
+        "Tree Shield",
+        "EA11"
+    ],
+    "enemy_10069_ftlsj_2": [
+        "Tree Wall",
+        "EA12"
+    ],
+    "enemy_10070_ftkbtt": [
+        "Ash Creation",
+        "EA13"
+    ],
+    "enemy_10070_ftkbtt_2": [
+        "Ash Artwork",
+        "EA14"
+    ],
+    "enemy_10071_ftprg": [
+        "End Point",
+        "EA15"
+    ],
+    "enemy_10071_ftprg_2": [
+        "Middle Point",
+        "EA16"
+    ],
     "enemy_3006_tersia": [
         "Theresa, King of Sarkaz",
         "THA1"
@@ -4217,6 +4377,18 @@
     "enemy_1561_crzjdg": [
         "Anastasio, the Atoner",
         "AR"
+    ],
+    "enemy_1562_cjtaot": [
+        "Gluttony",
+        "WY"
+    ],
+    "enemy_1563_fthlgj": [
+        "All Flames Returned",
+        "DR"
+    ],
+    "enemy_1564_mpprts": [
+        "PRTS, Source Code",
+        "RI1"
     ],
     "enemy_2003_rockman": [
         "Lost Colossus",
@@ -4823,106 +4995,6 @@
     "enemy_5507_arctolm": [
         "Fountain Soda Knight",
         "PM12"
-    ],
-    "enemy_10050_cjmeat": [
-        "Breakfast",
-        "OR1"
-    ],
-    "enemy_10050_cjmeat_2": [
-        "Dinner",
-        "OR2"
-    ],
-    "enemy_10051_cjmag": [
-        "Diet",
-        "OR3"
-    ],
-    "enemy_10051_cjmag_2": [
-        "Fasting",
-        "OR4"
-    ],
-    "enemy_10052_cjshld": [
-        "Sated",
-        "OR5"
-    ],
-    "enemy_10052_cjshld_2": [
-        "Bloated",
-        "OR6"
-    ],
-    "enemy_10053_cjman": [
-        "Expletive",
-        "OR7"
-    ],
-    "enemy_10053_cjman_2": [
-        "Profanity",
-        "OR8"
-    ],
-    "enemy_10054_cjhot": [
-        "Boiling Pot",
-        "OR9"
-    ],
-    "enemy_10054_cjhot_2": [
-        "Drifting Aroma",
-        "OR10"
-    ],
-    "enemy_10055_cjgost": [
-        "Forethought",
-        "OR11"
-    ],
-    "enemy_10055_cjgost_2": [
-        "Sureness",
-        "OR12"
-    ],
-    "enemy_10056_cjfish": [
-        "Vanity",
-        "OR13"
-    ],
-    "enemy_10056_cjfish_2": [
-        "Humility",
-        "OR14"
-    ],
-    "enemy_10057_cjstel": [
-        "Reminiscence",
-        "OR15"
-    ],
-    "enemy_10057_cjstel_2": [
-        "Remembrance",
-        "OR16"
-    ],
-    "enemy_10058_cjfrog": [
-        "Wealth",
-        "OR17"
-    ],
-    "enemy_10058_cjfrog_2": [
-        "Prosperity",
-        "OR18"
-    ],
-    "enemy_10059_cjgfod": [
-        "Sapidity",
-        "OR19"
-    ],
-    "enemy_10060_cjbfod": [
-        "Vapidity",
-        "OR20"
-    ],
-    "enemy_10061_cjglon": [
-        "Sapid Auspice",
-        "OR21"
-    ],
-    "enemy_10062_cjblon": [
-        "Vapid Blight",
-        "OR22"
-    ],
-    "enemy_10063_cjdoor": [
-        "Mouth of Annihilation",
-        "OR23"
-    ],
-    "enemy_10063_cjdoor_2": [
-        "Mouth of Creation",
-        "OR24"
-    ],
-    "enemy_1562_cjtaot": [
-        "Gluttony",
-        "WY"
     ],
     "enemy_1037_lunsabr": [
         "Spec Ops Soldier",

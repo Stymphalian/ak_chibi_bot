@@ -15,6 +15,7 @@
                 "Move",
                 "Sit"
               ],
+              "UseStraightAlpha": false,
               "spritesheet_data_filepath": "custom/char_10000_bubu/default/base/Front/build_char_10000_bubu.spritesheet.json"
             }
           },
@@ -28,6 +29,7 @@
                 "Default",
                 "Idle"
               ],
+              "UseStraightAlpha": false,
               "spritesheet_data_filepath": "custom/char_10000_bubu/default/battle/Front/char_10000_bubu.spritesheet.json"
             }
           }
@@ -49,6 +51,7 @@
                 "Move",
                 "Special"
               ],
+              "UseStraightAlpha": false,
               "spritesheet_data_filepath": "custom/char_10001_solari/default/base/Front/build_char_10001_solari.spritesheet.json"
             }
           },
@@ -63,6 +66,7 @@
                 "Idle",
                 "Attack"
               ],
+              "UseStraightAlpha": false,
               "spritesheet_data_filepath": "custom/char_10001_solari/default/battle/Front/char_10001_solari.spritesheet.json"
             }
           }

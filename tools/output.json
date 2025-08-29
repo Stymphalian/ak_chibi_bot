@@ -1,4951 +1,1320 @@
 {
-    "enemy_1007_slime": [
-        "Originium Slug",
-        "B1"
-    ],
-    "enemy_1007_slime_2": [
-        "Originium Slug α",
-        "Originium Slug Alpha",
-        "Originium Slug a",
-        "B2"
-    ],
-    "enemy_1007_slime_3": [
-        "Originium Slug β",
-        "Originium Slug Beta",
-        "Originium Slug B",
-        "B3"
-    ],
-    "enemy_1004_mslime": [
-        "Acid Originium Slug",
-        "B4"
-    ],
-    "enemy_1004_mslime_2": [
-        "Acid Originium Slug α",
-        "Acid Originium Slug Alpha",
-        "Acid Originium Slug a",
-        "B5"
-    ],
-    "enemy_1021_bslime": [
-        "Infused Originium Slug",
-        "B6"
-    ],
-    "enemy_1021_bslime_2": [
-        "Infused Originium Slug α",
-        "Infused Originium Slug Alpha",
-        "Infused Originium Slug a",
-        "B7"
-    ],
-    "enemy_1000_gopro": [
-        "Hound",
-        "O1"
-    ],
-    "enemy_1000_gopro_2": [
-        "Hound Pro",
-        "O2"
-    ],
-    "enemy_1000_gopro_3": [
-        "Rabid Hound Pro",
-        "O3"
-    ],
-    "enemy_1002_nsabr": [
-        "Soldier",
-        "1"
-    ],
-    "enemy_1003_ncbow": [
-        "Crossbowman",
-        "A1"
-    ],
-    "enemy_1003_ncbow_2": [
-        "Crossbowman Leader",
-        "A2"
-    ],
-    "enemy_1011_wizard": [
-        "Caster",
-        "A3"
-    ],
-    "enemy_1011_wizard_2": [
-        "Caster Leader",
-        "A4"
-    ],
-    "enemy_1018_aoemag": [
-        "Senior Caster",
-        "A5"
-    ],
-    "enemy_1018_aoemag_2": [
-        "Senior Caster Leader",
-        "A6"
-    ],
-    "enemy_1013_airdrp": [
-        "Airborne Soldier",
-        "2"
-    ],
-    "enemy_1013_airdrp_2": [
-        "Airborne Soldier Leader",
-        "3"
-    ],
-    "enemy_1024_mortar": [
-        "Mortar Gunner",
-        "A7"
-    ],
-    "enemy_1024_mortar_2": [
-        "Mortar Gunner Leader",
-        "A8"
-    ],
-    "enemy_1014_rogue": [
-        "Dual Swordsman",
-        "4"
-    ],
-    "enemy_1014_rogue_2": [
-        "Dual Swordsman Leader",
-        "5"
-    ],
-    "enemy_1015_litamr": [
-        "Light-Armored Soldier",
-        "6"
+    "char_285_medic2": [
+        "Lancet",
+        "Lancet-2"
     ],
-    "enemy_1015_litamr_2": [
-        "Light-Armored Soldier Leader",
-        "7"
+    "char_286_cast3": [
+        "Castle",
+        "Castle-3",
+        "Castle3"
     ],
-    "enemy_1006_shield": [
-        "Heavy Defender",
-        "8"
+    "char_376_therex": [
+        "THRM",
+        "THRM-EX",
+        "Thermal EX",
+        "Thermal",
+        "Thermal X"
     ],
-    "enemy_1006_shield_2": [
-        "Heavy Defender Leader",
-        "9"
+    "char_4000_jnight": [
+        "Justice Knight",
+        "'Justice Knight'"
     ],
-    "enemy_1006_shield_3": [
-        "Heavy Defender Lieutenant",
-        "10"
+    "char_4077_palico": [
+        "Palico",
+        "Terra Research Commission"
     ],
-    "enemy_1001_bigbo": [
-        "Big Bob",
-        "11"
+    "char_4091_ulika": [
+        "UOfficial",
+        "U-Official"
     ],
-    "enemy_1001_bigbo_2": [
-        "Big Adam",
-        "12"
+    "char_4093_frston": [
+        "Friston",
+        "Friston-3",
+        "Friston 3"
     ],
-    "enemy_1016_diaman": [
-        "Metal Crab",
-        "B8"
+    "char_4136_phonor": [
+        "Phonor",
+        "Phonor-0",
+        "Logos Phone",
+        "Logos's Phone",
+        "PhonoR-0"
     ],
-    "enemy_1009_lurker": [
-        "Lurker",
-        "C0"
+    "char_502_nblade": [
+        "Yato"
     ],
-    "enemy_1008_ghost": [
-        "Wraith",
-        "13"
+    "char_500_noirc": [
+        "Noir Corne",
+        "NoirCorne"
     ],
-    "enemy_1005_yokai": [
-        "Monster",
-        "D1"
+    "char_503_rang": [
+        "Rangers"
     ],
-    "enemy_1005_yokai_2": [
-        "Monster Mk II",
-        "D2"
+    "char_501_durin": [
+        "Durin"
     ],
-    "enemy_1005_yokai_3": [
-        "Raptor",
-        "D3"
+    "char_009_12fce": [
+        "12F"
     ],
-    "enemy_1017_defdrn": [
-        "Defender-4",
-        "D4"
+    "char_123_fang": [
+        "Fang"
     ],
-    "enemy_1019_jshoot": [
-        "Invisible Crossbowman",
-        "C1"
+    "char_240_wyvern": [
+        "Vanilla"
     ],
-    "enemy_1019_jshoot_2": [
-        "Invisible Crossbowman Leader",
-        "C2"
+    "char_504_rguard": [
+        "Reserve Operator - Melee"
     ],
-    "enemy_1023_jmage": [
-        "Invisible Caster",
-        "C3"
+    "char_192_falco": [
+        "Plume"
     ],
-    "enemy_1023_jmage_2": [
-        "Invisible Caster Leader",
-        "C4"
+    "char_208_melan": [
+        "Melantha"
     ],
-    "enemy_1020_obsv": [
-        "Technical Scout"
-    ],
-    "enemy_1010_demon": [
-        "Sarkaz Greatswordsman",
-        "S1"
-    ],
-    "enemy_1010_demon_2": [
-        "Sarkaz Greatswordsman Leader",
-        "S2"
-    ],
-    "enemy_1012_dcross": [
-        "Sarkaz Crossbowman",
-        "S3"
-    ],
-    "enemy_1012_dcross_2": [
-        "Sarkaz Crossbowman Leader",
-        "S4"
+    "char_281_popka": [
+        "Popukar"
     ],
-    "enemy_1022_dmage": [
-        "Sarkaz Caster",
-        "S5"
-    ],
-    "enemy_1022_dmage_2": [
-        "Sarkaz Caster Leader",
-        "S6"
-    ],
-    "enemy_1501_demonk": [
-        "Sarkaz Centurion",
-        "SC"
-    ],
-    "enemy_1025_reveng": [
-        "Avenger",
-        "14"
-    ],
-    "enemy_1025_reveng_2": [
-        "Hateful Avenger",
-        "15"
-    ],
-    "enemy_1026_aghost": [
-        "Wraith Leader",
-        "16"
-    ],
-    "enemy_1027_mob": [
-        "Rioter",
-        "17"
-    ],
-    "enemy_1027_mob_2": [
-        "Rioter Leader",
-        "18"
-    ],
-    "enemy_1028_mocock": [
-        "Cocktail Thrower",
-        "A9"
-    ],
-    "enemy_1028_mocock_2": [
-        "Firebomb Thrower",
-        "A10"
-    ],
-    "enemy_1029_shdsbr": [
-        "Shielded Soldier",
-        "19"
-    ],
-    "enemy_1029_shdsbr_2": [
-        "Shielded Soldier Leader",
-        "20"
-    ],
-    "enemy_1030_wteeth": [
-        "Junkman",
-        "21"
-    ],
-    "enemy_1030_wteeth_2": [
-        "Veteran Junkman",
-        "22"
-    ],
-    "enemy_1031_mrogue": [
-        "Arts Guard",
-        "23"
-    ],
-    "enemy_1031_mrogue_2": [
-        "Arts Guard Leader",
-        "24"
-    ],
-    "enemy_1032_katar": [
-        "Bladed Fighter",
-        "25"
-    ],
-    "enemy_1032_katar_2": [
-        "Bladed Fighter Leader",
-        "26"
-    ],
-    "enemy_1033_handax": [
-        "Logger",
-        "27"
-    ],
-    "enemy_1033_handax_2": [
-        "Veteran Logger",
-        "28"
-    ],
-    "enemy_1034_laxe": [
-        "Butcher",
-        "29"
-    ],
-    "enemy_1034_laxe_2": [
-        "Veteran Butcher",
-        "30"
-    ],
-    "enemy_1035_haxe": [
-        "Armed Militant",
-        "31"
-    ],
-    "enemy_1035_haxe_2": [
-        "Senior Armed Militant",
-        "32"
-    ],
-    "enemy_1036_amraoe": [
-        "Shielded Senior Caster"
-    ],
-    "enemy_1037_lunsbr": [],
-    "enemy_1038_lunmag": [
-        "Spec Ops Caster",
-        "AL1"
-    ],
-    "enemy_1038_lunmag_2": [
-        "Spec Ops Caster Leader",
-        "AL2"
-    ],
-    "enemy_1039_breakr": [
-        "Breaker",
-        "34"
-    ],
-    "enemy_1039_breakr_2": [
-        "Breaker Leader",
-        "35"
-    ],
-    "enemy_1040_bombd": [
-        "Bombtail",
-        "D5"
-    ],
-    "enemy_1040_bombd_2": [
-        "Bombtail-G",
-        "D6"
-    ],
-    "enemy_1041_lazerd": [
-        "Arts Master A1",
-        "D7"
-    ],
-    "enemy_1041_lazerd_2": [
-        "Arts Master A2",
-        "D8"
-    ],
-    "enemy_1042_frostd": [
-        "Frost",
-        "D9"
-    ],
-    "enemy_1043_zomsbr": [],
-    "enemy_1043_zomsbr_2": [],
-    "enemy_1044_zomstr": [
-        "Possessed Junkman",
-        "P3"
-    ],
-    "enemy_1044_zomstr_2": [
-        "Possessed Veteran Junkman",
-        "P4"
-    ],
-    "enemy_1045_hammer": [
-        "Defense Crusher",
-        "36"
-    ],
-    "enemy_1045_hammer_2": [
-        "Defense Crusher Leader",
-        "37"
-    ],
-    "enemy_1046_agent": [
-        "Infantry",
-        "P01"
-    ],
-    "enemy_1046_agent_2": [
-        "Infantry Leader",
-        "P02"
-    ],
-    "enemy_1047_sagent": [
-        "Sniper",
-        "P03"
-    ],
-    "enemy_1047_sagent_2": [
-        "Sniper Leader",
-        "P04"
-    ],
-    "enemy_1048_hirman": [
-        "Rockbreaker",
-        "PB1"
-    ],
-    "enemy_1048_hirman_2": [
-        "Rockbreaker Leader",
-        "PB2"
-    ],
-    "enemy_1049_eagent": [
-        "Agent",
-        "PA1"
-    ],
-    "enemy_1049_eagent_2": [
-        "Agent Leader",
-        "PA2"
-    ],
-    "enemy_1051_norwiz": [
-        "Authorized Caster",
-        "P05"
-    ],
-    "enemy_1051_norwiz_2": [
-        "Authorized Caster Leader",
-        "P06"
-    ],
-    "enemy_1052_noramr": [
-        "Shielded Guard",
-        "P07"
-    ],
-    "enemy_1052_noramr_2": [
-        "Shielded Guard Leader",
-        "P08"
-    ],
-    "enemy_1053_norgst": [
-        "Ergate",
-        "PG1"
-    ],
-    "enemy_1053_norgst_2": [
-        "Ergate Leader",
-        "PG2"
-    ],
-    "enemy_1054_norshd": [
-        "Heavy Defender Type-N",
-        "P09"
-    ],
-    "enemy_1054_norshd_2": [
-        "Heavy Defender Type-S",
-        "P10 Defender"
-    ],
-    "enemy_1055_ganman": [
-        "Sicilian",
-        "G11"
-    ],
-    "enemy_1055_ganman_2": [
-        "Elite Sicilian",
-        "G12"
-    ],
-    "enemy_1056_ganwar": [
-        "Brawler",
-        "G13"
-    ],
-    "enemy_1056_ganwar_2": [
-        "Elite Brawler",
-        "G14"
-    ],
-    "enemy_1057_gansho": [
-        "Marksman",
-        "G15"
-    ],
-    "enemy_1057_gansho_2": [
-        "Elite Marksman",
-        "G16"
-    ],
-    "enemy_1058_traink": [
-        "Bully",
-        "G17"
-    ],
-    "enemy_1058_traink_2": [
-        "Bulldozer",
-        "G18"
-    ],
-    "enemy_1059_buster": [
-        "Fanatic",
-        "G19"
-    ],
-    "enemy_1059_buster_2": [
-        "Desperate Fanatic",
-        "G20"
-    ],
-    "enemy_1060_emouse": [
-        "Greytail",
-        "G21"
-    ],
-    "enemy_1060_emouse_2": [
-        "Greytail Leader",
-        "G22"
-    ],
-    "enemy_1061_zomshd": [
-        "Possessed Heavy Defender",
-        "P5"
-    ],
-    "enemy_1061_zomshd_2": [
-        "Possessed Heavy Defender Leader",
-        "P6"
-    ],
-    "enemy_1062_rager": [
-        "Enraged Possessed Soldier",
-        "P7"
-    ],
-    "enemy_1062_rager_2": [
-        "Enraged Possessed Leader",
-        "P8"
-    ],
-    "enemy_1063_rageth": [
-        "Enraged Possessed Thrower",
-        "P9"
-    ],
-    "enemy_1063_rageth_2": [
-        "Enraged Possessed Bonethrower",
-        "P10"
-    ],
-    "enemy_1064_snsbr": [
-        "Yeti Operative",
-        "Y1"
-    ],
-    "enemy_1065_snwolf": [
-        "Frostfang",
-        "O4"
-    ],
-    "enemy_1065_snwolf_2": [
-        "Razorfang",
-        "O5"
-    ],
-    "enemy_1066_snbow": [
-        "Yeti Sniper",
-        "Y2"
-    ],
-    "enemy_1066_snbow_2": [
-        "Yeti Sniper Leader",
-        "Y3"
-    ],
-    "enemy_1067_snslime": [
-        "Infused Glacial Originium Slug",
-        "B9"
-    ],
-    "enemy_1067_snslime_2": [
-        "Infused Glacial Originium Slug α",
-        "Infused Glacial Originium Slug Alpha",
-        "Infused Glacial Originium Slug a",
-        "B10"
-    ],
-    "enemy_1068_snmage": [
-        "Yeti Caster",
-        "Y4"
-    ],
-    "enemy_1068_snmage_2": [
-        "Yeti Caster Leader",
-        "Y5"
-    ],
-    "enemy_1069_icebrk": [
-        "Yeti Icecleaver",
-        "Y6"
-    ],
-    "enemy_1069_icebrk_2": [
-        "Yeti Icecleaver Leader",
-        "Y7"
-    ],
-    "enemy_1070_iced": [
-        "Oneiros",
-        "D10"
-    ],
-    "enemy_1071_dftman": [
-        "Sarkaz Swordsman",
-        "S7"
-    ],
-    "enemy_1071_dftman_2": [
-        "Sarkaz Blademaster",
-        "S8"
-    ],
-    "enemy_1072_dlancer": [
-        "Sarkaz Lancer",
-        "S9"
-    ],
-    "enemy_1072_dlancer_2": [
-        "Sarkaz Lancer Leader",
-        "S10"
-    ],
-    "enemy_1073_dscout": [
-        "Sarkaz Sentinel",
-        "S11"
-    ],
-    "enemy_1073_dscout_2": [
-        "Sarkaz Sentinel Leader",
-        "S12"
-    ],
-    "enemy_1074_dbskar": [
-        "Sarkaz Grudgebearer",
-        "S13"
-    ],
-    "enemy_1074_dbskar_2": [
-        "Sarkaz Worldcurser",
-        "S14"
-    ],
-    "enemy_1075_dmgswd": [
-        "Sarkaz Bladeweaver",
-        "S15"
-    ],
-    "enemy_1075_dmgswd_2": [
-        "Sarkaz Bladeweaver Leader",
-        "S16"
-    ],
-    "enemy_1076_bsthmr": [
-        "Demolitionist",
-        "38"
-    ],
-    "enemy_1076_bsthmr_2": [
-        "Demolitionist Leader",
-        "39"
-    ],
-    "enemy_1077_sotihd": [
-        "Guerrilla Hound",
-        "SI1"
-    ],
-    "enemy_1077_sotihd_2": [
-        "Guerrilla Hound Pro",
-        "SI2"
-    ],
-    "enemy_1078_sotisc": [
-        "Guerrilla Fighter",
-        "SI3"
-    ],
-    "enemy_1078_sotisc_2": [
-        "Guerrilla Fighter Leader",
-        "SI4"
-    ],
-    "enemy_1079_sotisp": [
-        "Guerrilla Sniper",
-        "SI5"
-    ],
-    "enemy_1079_sotisp_2": [
-        "Guerrilla Sniper Leader",
-        "SI6"
-    ],
-    "enemy_1080_sotidp": [
-        "Guerrilla Herald",
-        "SI7"
-    ],
-    "enemy_1080_sotidp_2": [
-        "Guerrilla Herald Leader",
-        "SI8"
-    ],
-    "enemy_1081_sotisd": [
-        "Guerrilla Shieldguard",
-        "SP0"
-    ],
-    "enemy_1081_sotisd_2": [
-        "Guerrilla Shieldguard Leader",
-        "SP1"
-    ],
-    "enemy_1082_soticn": [
-        "Guerrilla Mortar",
-        "SP2"
-    ],
-    "enemy_1082_soticn_2": [
-        "Guerrilla Mortar Leader",
-        "SP3"
-    ],
-    "enemy_1083_sotiab": [
-        "Guerrilla Siegebreaker",
-        "SP4"
-    ],
-    "enemy_1083_sotiab_2": [
-        "Guerrilla Siegebreaker Leader",
-        "SP5"
-    ],
-    "enemy_1084_sotidm": [
-        "Sarkaz Guerrilla Fighter",
-        "SP6"
-    ],
-    "enemy_1084_sotidm_2": [
-        "Sarkaz Guerrilla Fighter Leader",
-        "SP7"
-    ],
-    "enemy_1084_sotidm_3": [
-        "Mercenary Sarkaz Fighter",
-        "TL1"
-    ],
-    "enemy_1085_sotiwz": [
-        "Sarkaz Guerrilla Caster",
-        "SP8"
-    ],
-    "enemy_1085_sotiwz_2": [
-        "Sarkaz Guerrilla Caster Leader",
-        "SP9"
-    ],
-    "enemy_1085_sotiwz_3": [
-        "Mercenary Sarkaz Caster Leader",
-        "TL2"
-    ],
-    "enemy_1086_ltsodr": [
-        "Leithanian Rebel",
-        "L1"
-    ],
-    "enemy_1086_ltsodr_2": [
-        "Leithanian Rebel Leader",
-        "L2"
-    ],
-    "enemy_1087_ltwolf": [
-        "Winterwisp Hound",
-        "L3"
-    ],
-    "enemy_1087_ltwolf_2": [
-        "Winterwisp Hound Pro",
-        "L4"
-    ],
-    "enemy_1088_ltsmer": [
-        "Leithanian Whisperer",
-        "L5"
-    ],
-    "enemy_1088_ltsmer_2": [
-        "Leithanian Psalmist",
-        "L6"
-    ],
-    "enemy_1089_ltlntc": [
-        "Winterwisp Blood Shaman",
-        "L7"
-    ],
-    "enemy_1089_ltlntc_2": [
-        "Winterwisp Blood Magister",
-        "L8"
-    ],
-    "enemy_1090_mdsnpr": [
-        "Mudrock Matterllurgist",
-        "L9"
-    ],
-    "enemy_1090_mdsnpr_2": [
-        "Mudrock Matterllurgist Leader",
-        "L10"
-    ],
-    "enemy_1091_mdhmmr": [
-        "Mudrock Zealot",
-        "L11"
-    ],
-    "enemy_1091_mdhmmr_2": [
-        "Mudrock Zealot Leader",
-        "L12"
-    ],
-    "enemy_1092_mdgint": [
-        "Mudrock Colossus",
-        "L13"
-    ],
-    "enemy_1092_mdgint_2": [
-        "Hexed Colossus",
-        "L14"
-    ],
-    "enemy_1093_ccsbr": [
-        "Tiacauh Warrior",
-        "T1"
-    ],
-    "enemy_1093_ccsbr_2": [
-        "Tiacauh Guard",
-        "T2"
-    ],
-    "enemy_1094_ccspm": [
-        "Tiacauh Impaler",
-        "T3"
-    ],
-    "enemy_1094_ccspm_2": [
-        "Tiacauh Impaler Adept",
-        "T4"
-    ],
-    "enemy_1095_ccripr": [
-        "Tiacauh Fanatic",
-        "T5"
-    ],
-    "enemy_1095_ccripr_2": [
-        "Tiacauh Ripper",
-        "T6"
-    ],
-    "enemy_1096_ccwitch": [
-        "Tiacauh Ritualist",
-        "T7"
-    ],
-    "enemy_1096_ccwitch_2": [
-        "Tiacauh Shaman",
-        "T8"
-    ],
-    "enemy_1097_cclmbjk": [
-        "Tiacauh Shredder",
-        "T9"
-    ],
-    "enemy_1097_cclmbjk_2": [
-        "Tiacauh Annihilator",
-        "T10"
-    ],
-    "enemy_1098_cchmpn": [
-        "Tiacauh Brave",
-        "T11"
-    ],
-    "enemy_1098_cchmpn_2": [
-        "Tiacauh Champion",
-        "T12"
-    ],
-    "enemy_1099_nbkght": [
-        "Nameless Independent Knight",
-        "K1"
-    ],
-    "enemy_1099_nbkght_2": [
-        "Nameless Elite Knight",
-        "K2"
-    ],
-    "enemy_1100_scorpn": [
-        "Training Gloompincer",
-        "K3"
-    ],
-    "enemy_1100_scorpn_2": [
-        "Vicious Training Gloompincer",
-        "K4"
-    ],
-    "enemy_1101_plkght": [
-        "Roar Knightclub Trainee",
-        "K5"
-    ],
-    "enemy_1101_plkght_2": [
-        "Roar Knightclub Elite",
-        "K6"
-    ],
-    "enemy_1101_plkght_3": [
-        "Plastic Szewczyk",
-        "K7"
-    ],
-    "enemy_1102_sdkght": [
-        "Independent Knight Shielder",
-        "K8"
-    ],
-    "enemy_1102_sdkght_2": [
-        "Elite Knight Shielder",
-        "K9"
-    ],
-    "enemy_1103_wdkght": [
-        "Bloodboil Knightclub Trainee",
-        "K10"
-    ],
-    "enemy_1103_wdkght_2": [
-        "Bloodboil Knightclub Elite",
-        "K11"
-    ],
-    "enemy_1103_wdkght_3": [
-        "Brassrust Olmer Ingra",
-        "K12"
-    ],
-    "enemy_1104_lfkght": [
-        "Bladehelm Knightclub Trainee",
-        "K13"
-    ],
-    "enemy_1104_lfkght_2": [
-        "Bladehelm Knightclub Elite",
-        "K14"
-    ],
-    "enemy_1104_lfkght_3": [
-        "Left-hand Tytus Topola",
-        "K15"
-    ],
-    "enemy_1105_tyokai": [
-        "Sponsor Drone",
-        "TY1"
-    ],
-    "enemy_1105_tyokai_2": [
-        "Luxury Sponsor Drone",
-        "TY2"
-    ],
-    "enemy_1106_byokai": [
-        "Cheering Sponsor Drone",
-        "TY3"
-    ],
-    "enemy_1107_uoffcr": [
-        "Infected Patrol Captain",
-        "U1"
-    ],
-    "enemy_1107_uoffcr_2": [
-        "Elite Infected Patrol Captain",
-        "U2"
-    ],
-    "enemy_1108_uterer": [
-        "Ursus Mangler",
-        "U3"
-    ],
-    "enemy_1108_uterer_2": [
-        "Ursus Mangler Packmother",
-        "U4"
-    ],
-    "enemy_1109_uabone": [
-        "Ursus Assault Crossbowman",
-        "U5"
-    ],
-    "enemy_1109_uabone_2": [
-        "Elite Ursus Assault Crossbowman",
-        "U6"
-    ],
-    "enemy_1110_uamord": [
-        "Ursus Armored Caster",
-        "U7"
-    ],
-    "enemy_1110_uamord_2": [
-        "Elite Ursus Armored Caster",
-        "U8"
-    ],
-    "enemy_1111_ucommd": [
-        "Ursus Raider",
-        "U9"
-    ],
-    "enemy_1111_ucommd_2": [
-        "Ursus Raider Leader",
-        "U10"
-    ],
-    "enemy_1112_emppnt": [
-        "Imperial Artillery Targeteer",
-        "U11"
-    ],
-    "enemy_1112_emppnt_2": [
-        "Imperial Artillery Core Targeteer",
-        "U12"
-    ],
-    "enemy_1113_empace": [
-        "Imperial Striker",
-        "U13"
-    ],
-    "enemy_1113_empace_2": [
-        "Elite Imperial Striker",
-        "U14"
-    ],
-    "enemy_1114_rgrdmn": [
-        "Sarkaz Centurion Host",
-        "P11"
-    ],
-    "enemy_1114_rgrdmn_2": [
-        "Sarkaz Centurion Nidus Guard",
-        "P12"
-    ],
-    "enemy_1115_embald": [
-        "Emperors Blade",
-        "U15"
-    ],
-    "enemy_3001_upeopl": [
-        "Ursus Civilian",
-        "U16"
-    ],
-    "enemy_3002_ftrtal": [
-        "Talulah, the Fighter",
-        "U17"
-    ],
-    "enemy_1116_liprr": [
-        "Ordinary Prisoner",
-        "C11"
-    ],
-    "enemy_1116_liprr_2": [
-        "Seasoned Prisoner",
-        "C12"
-    ],
-    "enemy_1117_liiprr": [
-        "Sniper Prisoner",
-        "C13"
-    ],
-    "enemy_1117_liiprr_2": [
-        "Elite Sniper Prisoner",
-        "C14"
-    ],
-    "enemy_1118_lidbox": [
-        "Pugilist Prisoner",
-        "C15"
-    ],
-    "enemy_1118_lidbox_2": [
-        "Elite Pugilist Prisoner",
-        "C16"
-    ],
-    "enemy_1119_vofsd": [
-        "Strongman Prisoner",
-        "C17"
-    ],
-    "enemy_1119_vofsd_2": [
-        "Herculean Prisoner",
-        "C18"
-    ],
-    "enemy_1120_vofwiz": [
-        "Caster Prisoner",
-        "C19"
-    ],
-    "enemy_1120_vofwiz_2": [
-        "Deadly Caster Prisoner",
-        "C20"
-    ],
-    "enemy_1121_lifbos": [
-        "Recidivist",
-        "C21"
-    ],
-    "enemy_1121_lifbos_2": [
-        "Infamous Recidivist",
-        "C22"
-    ],
-    "enemy_1122_sphond": [
-        "Angry",
-        "SF01"
-    ],
-    "enemy_1122_sphond_2": [
-        "Anxious Angry",
-        "SF02"
-    ],
-    "enemy_1123_spsbr": [
-        "Bitey",
-        "SF03"
-    ],
-    "enemy_1123_spsbr_2": [
-        "Serious Bitey",
-        "SF04"
-    ],
-    "enemy_1124_spbow": [
-        "Stabby",
-        "SF05"
-    ],
-    "enemy_1124_spbow_2": [
-        "Flanking Stabby",
-        "SF06"
-    ],
-    "enemy_1125_spshld": [
-        "Lazy",
-        "SF07"
-    ],
-    "enemy_1125_spshld_2": [
-        "Unmoving Lazy",
-        "SF08"
-    ],
-    "enemy_1126_spslme": [
-        "Smarty",
-        "SF09"
-    ],
-    "enemy_1126_spslme_2": [
-        "Dazzled Smarty",
-        "SF10"
-    ],
-    "enemy_1127_sptrkg": [
-        "Blindey",
-        "SF11"
-    ],
-    "enemy_1127_sptrkg_2": [
-        "Indefatigable Blindey",
-        "SF12"
-    ],
-    "enemy_1128_spmage": [
-        "Envy",
-        "SF13"
-    ],
-    "enemy_1128_spmage_2": [
-        "Complicated Envy",
-        "SF14"
-    ],
-    "enemy_1129_spklr": [
-        "Fury",
-        "SF15"
-    ],
-    "enemy_1129_spklr_2": [
-        "Unbridled Fury",
-        "SF16"
-    ],
-    "enemy_1130_infstr": [
-        "Originiutant Puppet",
-        "R1"
-    ],
-    "enemy_1131_sbeast": [
-        "Mutant Sand Beast",
-        "R2"
-    ],
-    "enemy_1131_sbeast_2": [
-        "Mutant Sand Beast α",
-        "Mutant Sand Beast Alpha",
-        "Mutant Sand Beast a",
-        "R3"
-    ],
-    "enemy_1132_sarchn": [
-        "Mutant Rock Spider",
-        "R4"
-    ],
-    "enemy_1132_sarchn_2": [
-        "Mutant Rock Spider α",
-        "Mutant Rock Spider Alpha",
-        "Mutant Rock Spider a",
-        "R5"
-    ],
-    "enemy_1133_harchn": [
-        "Mutant Giant Rock Spider",
-        "R6"
-    ],
-    "enemy_1133_harchn_2": [
-        "Mutant Giant Rock Spider α",
-        "Mutant Giant Rock Spider Alpha",
-        "Mutant Giant Rock Spider a",
-        "R7"
-    ],
-    "enemy_1134_diamd": [
-        "Originiutant",
-        "R8"
-    ],
-    "enemy_1134_diamd_2": [
-        "Originiutant α",
-        "Originiutant Alpha",
-        "Originiutant a",
-        "R9"
-    ],
-    "enemy_1135_redman": [
-        "Redmark Eradicator",
-        "R10"
-    ],
-    "enemy_1135_redman_2": [
-        "Redmark Elite Eradicator",
-        "R11"
-    ],
-    "enemy_1136_redace": [
-        "Redmark Infiltrator",
-        "R12"
-    ],
-    "enemy_1136_redace_2": [
-        "Redmark Elite Infiltrator",
-        "R13"
-    ],
-    "enemy_1137_plasm": [
-        "Originiutant Excrescence",
-        "R14"
-    ],
-    "enemy_1138_tumor": [
-        "Originiutant Tumor",
-        "R15"
-    ],
-    "enemy_1139_hologc": [
-        "Holographic Mirage",
-        "R16"
-    ],
-    "enemy_1139_hologc_2": [
-        "Holographic Mirage MK2",
-        "R17"
-    ],
-    "enemy_1140_merhd": [
-        "Tactical Hound",
-        "PG3"
-    ],
-    "enemy_1140_merhd_2": [
-        "Tactical Hound Pro",
-        "PG4"
-    ],
-    "enemy_1141_merbow": [
-        "Tactical Crossbowman",
-        "PD1"
-    ],
-    "enemy_1141_merbow_2": [
-        "Tactical Crossbowman Leader",
-        "PD2"
-    ],
-    "enemy_1142_mershd": [
-        "Tactical Defender",
-        "PD3"
-    ],
-    "enemy_1142_mershd_2": [
-        "Tactical Defender Leader",
-        "PD4"
-    ],
-    "enemy_1143_merrpg": [
-        "Anti-Armor Infantry",
-        "PG5"
-    ],
-    "enemy_1143_merrpg_2": [
-        "Anti-Armor Infantry Leader",
-        "PG6"
-    ],
-    "enemy_1144_merlgd": [
-        "War Phantom",
-        "PD5"
-    ],
-    "enemy_1144_merlgd_2": [
-        "Legendary War Phantom",
-        "PD6"
-    ],
-    "enemy_1145_atkspd": [
-        "Scrap",
-        "PS1"
-    ],
-    "enemy_1145_atkspd_2": [
-        "Scrap Model-U",
-        "PS2"
-    ],
-    "enemy_1146_defspd": [
-        "Anvil",
-        "PS3"
-    ],
-    "enemy_1146_defspd_2": [
-        "Anvil Model-B",
-        "PS4"
-    ],
-    "enemy_1147_dshond": [
-        "Shell Sea Runner",
-        "SM1"
-    ],
-    "enemy_1147_dshond_2": [
-        "Nourished Runner",
-        "SM2"
-    ],
-    "enemy_1148_dssbr": [
-        "Deep Sea Slider",
-        "SM3"
-    ],
-    "enemy_1148_dssbr_2": [
-        "Nourished Slider",
-        "SM4"
-    ],
-    "enemy_1149_dsbow": [
-        "Ridge Sea Spitter",
-        "SM5"
-    ],
-    "enemy_1149_dsbow_2": [
-        "Nourished Spitter",
-        "SM6"
-    ],
-    "enemy_1150_dsjely": [
-        "Floating Sea Drifter",
-        "SM7"
-    ],
-    "enemy_1150_dsjely_2": [
-        "Nourished Drifter",
-        "SM8"
-    ],
-    "enemy_1151_dslntc": [
-        "Basin Sea Reaper",
-        "SM9"
-    ],
-    "enemy_1151_dslntc_2": [
-        "Nourished Reaper",
-        "SM10"
-    ],
-    "enemy_1152_dsurch": [
-        "Pocket Sea Crawler",
-        "SM11"
-    ],
-    "enemy_1152_dsurch_2": [
-        "Nourished Crawler",
-        "SM12"
-    ],
-    "enemy_1153_dsexcu": [
-        "Primal Sea Piercer",
-        "SM13"
-    ],
-    "enemy_1153_dsexcu_2": [
-        "Nourished Piercer",
-        "SM14"
-    ],
-    "enemy_1154_dsmant": [
-        "The First To Talk",
-        "FTT"
-    ],
-    "enemy_1155_dsrobt": [
-        "Automatic Maintenance Drone",
-        "RR"
-    ],
-    "enemy_1156_hymhr": [
-        "Hymnoi Hero",
-        "LK1"
-    ],
-    "enemy_1157_hymwr": [
-        "Hymnoi Warrior",
-        "LK2"
-    ],
-    "enemy_1158_divman": [
-        "Diver",
-        "DH1"
-    ],
-    "enemy_1158_divman_2": [
-        "Diver Leader",
-        "DH2"
-    ],
-    "enemy_1159_swfmob": [
-        "Delinquent",
-        "DH3"
-    ],
-    "enemy_1159_swfmob_2": [
-        "Delinquent Boss",
-        "DH4"
-    ],
-    "enemy_1160_hvyslr": [
-        "Dockworker",
-        "DH5"
-    ],
-    "enemy_1160_hvyslr_2": [
-        "Dockworker Leader",
-        "DH6"
-    ],
-    "enemy_1161_tidmag": [
-        "Tidal Caster",
-        "DH7"
-    ],
-    "enemy_1161_tidmag_2": [
-        "Tidal Leader",
-        "DH8"
-    ],
-    "enemy_1162_magmot": [
-        "Caster Speedboat",
-        "DH9"
-    ],
-    "enemy_1162_magmot_2": [
-        "Tidal Leader Speedboat",
-        "DH10"
-    ],
-    "enemy_1163_hvymot": [
-        "Dockworker Motorboat",
-        "DH11"
-    ],
-    "enemy_1163_hvymot_2": [
-        "Dockworker Leader Motorboat",
-        "DH12"
-    ],
-    "enemy_1164_bmbmot": [
-        "Unmanned Explosive Boat",
-        "DH13"
-    ],
-    "enemy_1164_bmbmot_2": [
-        "Unmanned Heavy Explosive Boat",
-        "DH14"
-    ],
-    "enemy_1164_bmbmot_3": [
-        "Panchos Explosive Boat",
-        "DH15"
-    ],
-    "enemy_3003_alymot": [
-        "Competition Transport Vessel",
-        "DH16"
-    ],
-    "enemy_1165_duhond": [
-        "Dublinn Sniffer Hound",
-        "DU1"
-    ],
-    "enemy_1165_duhond_2": [
-        "Dublinn Sniffer Hound Pro",
-        "DU2"
-    ],
-    "enemy_1166_dusbr": [
-        "Dublinn Scout",
-        "DU3"
-    ],
-    "enemy_1166_dusbr_2": [
-        "Dublinn Scout Leader",
-        "DU4"
-    ],
-    "enemy_1167_dubow": [
-        "Dublinn Sniper",
-        "DU5"
-    ],
-    "enemy_1167_dubow_2": [
-        "Dublinn Sniper Leader",
-        "DU6"
-    ],
-    "enemy_1168_dumage": [
-        "Dublinn Shadowcaster",
-        "DU7"
-    ],
-    "enemy_1168_dumage_2": [
-        "Dublinn Shadowcaster Leader",
-        "DU8"
-    ],
-    "enemy_1169_duphlx": [],
-    "enemy_1169_duphlx_2": [],
-    "enemy_1170_dushld": [
-        "Dublinn Heavy Defender",
-        "DU11"
-    ],
-    "enemy_1170_dushld_2": [
-        "Dublinn Heavy Defender Leader",
-        "DU12"
-    ],
-    "enemy_1171_durokt": [
-        "Dublinn Flying Soldier",
-        "DU13"
-    ],
-    "enemy_1171_durokt_2": [
-        "Dublinn Flying Squad Leader",
-        "DU14"
-    ],
-    "enemy_1172_dugago": [
-        "Tombkeeper Grotesque",
-        "GGY1"
-    ],
-    "enemy_1172_dugago_2": [
-        "Enraged Tombkeeper Grotesque",
-        "GGY2"
-    ],
-    "enemy_1173_duspfr": [
-        "Dublinn Flamerazer",
-        "DU15"
-    ],
-    "enemy_1173_duspfr_2": [
-        "Dublinn Flamerazer Leader",
-        "DU16"
-    ],
-    "enemy_1174_duholy": [
-        "Dublinn Companion Guard",
-        "DU17"
-    ],
-    "enemy_1174_duholy_2": [
-        "Dublinn Elite Companion Guard",
-        "DU18"
-    ],
-    "enemy_1175_dushdo": [
-        "Dublinn Companion Shadowblade",
-        "DU19"
-    ],
-    "enemy_1175_dushdo_2": [
-        "Dublinn Elite Companion Shadowblade",
-        "DU20"
-    ],
-    "enemy_1176_dusocr": [
-        "Dublinn Evocator",
-        "DU21"
-    ],
-    "enemy_1176_dusocr_2": [
-        "Dublinn Evocator Leader",
-        "DU22"
-    ],
-    "enemy_1178_dscorp": [
-        "Undertide Gloompincer",
-        "NL1"
-    ],
-    "enemy_1178_dscorp_2": [
-        "Undertide Gloompincer α",
-        "Undertide Gloompincer Alpha",
-        "Undertide Gloompincer a",
-        "NL2"
-    ],
-    "enemy_1179_aruarw": [
-        "Armorless Union Crossbowman",
-        "NL3"
-    ],
-    "enemy_1179_aruarw_2": [
-        "Armorless Union Crossbowman Leader",
-        "NL4"
-    ],
-    "enemy_1180_aruass": [
-        "Armorless Union Assassin",
-        "NL5"
-    ],
-    "enemy_1180_aruass_2": [
-        "Armorless Union Assassin Leader",
-        "NL6"
-    ],
-    "enemy_1181_napkgt": [
-        "Knight Territory Wanderer",
-        "NL7"
-    ],
-    "enemy_1181_napkgt_2": [
-        "Knight Territory Hibernator",
-        "NL8"
-    ],
-    "enemy_1182_flasrt": [
-        "Armorless Union Third Squad",
-        "NL9"
-    ],
-    "enemy_1182_flasrt_2": [
-        "Armorless Union Third Squad Leader",
-        "NL10"
-    ],
-    "enemy_1182_flasrt_3": [
-        "Lazurite, Monique",
-        "NL11"
-    ],
-    "enemy_1183_mlasrt": [
-        "Armorless Union Cleanup Squad",
-        "NL12"
-    ],
-    "enemy_1183_mlasrt_2": [
-        "Armorless Union Cleanup Squad Leader",
-        "NL13"
-    ],
-    "enemy_1183_mlasrt_3": [
-        "Lazurite, Roy",
-        "NL14"
-    ],
-    "enemy_1184_cadkgt": [
-        "Nova Knightclub Trainee",
-        "NL15"
-    ],
-    "enemy_1184_cadkgt_2": [
-        "Nova Knightclub Elite",
-        "NL16"
-    ],
-    "enemy_1184_cadkgt_3": [
-        "The Candle Knight Viviana",
-        "NL17"
-    ],
-    "enemy_1185_nmekgt": [
-        "Nightzmora Imitator",
-        "NL18"
-    ],
-    "enemy_1185_nmekgt_2": [
-        "Nightzmora Follower",
-        "NL19"
-    ],
-    "enemy_1185_nmekgt_3": [
-        "The Last Kheshig, Tola",
-        "NL20"
-    ],
-    "enemy_1186_bldbld": [
-        "Bloodblade",
-        "NL21"
-    ],
-    "enemy_1187_krghd": [
-        "Clawbeast",
-        "IL1"
-    ],
-    "enemy_1187_krghd_2": [
-        "Ferocious Clawbeast",
-        "IL2"
-    ],
-    "enemy_1188_krgdrn": [
-        "Frigid",
-        "IL3"
-    ],
-    "enemy_1188_krgdrn_2": [
-        "Frigid AS.T",
-        "IL4"
-    ],
-    "enemy_1189_krgaxe": [
-        "Icefield Warrior",
-        "IL5"
-    ],
-    "enemy_1189_krgaxe_2": [
-        "Icefield Warrior Leader",
-        "IL6"
-    ],
-    "enemy_1190_krgbow": [
-        "Icefield Hunter",
-        "IL7"
-    ],
-    "enemy_1190_krgbow_2": [
-        "Icefield Hunter Leader",
-        "IL8"
-    ],
-    "enemy_1191_krgrg": [
-        "Icefield Arts Fighter",
-        "IL9"
-    ],
-    "enemy_1191_krgrg_2": [
-        "Icefield Arts Guard",
-        "IL10"
-    ],
-    "enemy_1192_krgscr": [
-        "Icefield Caster",
-        "IL11"
-    ],
-    "enemy_1192_krgscr_2": [
-        "Icefield Caster Leader",
-        "IL12"
-    ],
-    "enemy_1193_krgbsk": [
-        "Icefield Berserker",
-        "IL13"
-    ],
-    "enemy_1193_krgbsk_2": [
-        "Icefield Berserker Leader",
-        "IL14"
-    ],
-    "enemy_1194_krgmtr": [
-        "Tschaggatta",
-        "Tschäggättä",
-        "IL15"
-    ],
-    "enemy_1194_krgmtr_2": [
-        "Tschaggatta Leader",
-        "Tschäggättä Leader",
-        "IL16"
-    ],
-    "enemy_1195_sfyin": [
-        "Grindstone",
-        "AN1"
-    ],
-    "enemy_1195_sfyin_2": [
-        "Brightmirror",
-        "AN2"
-    ],
-    "enemy_1196_msfyin": [
-        "Wooden Seal",
-        "AN3"
-    ],
-    "enemy_1196_msfyin_2": [
-        "Rosewood Seal",
-        "AN4"
-    ],
-    "enemy_1197_sfshu": [
-        "Vernacularism",
-        "AN5"
-    ],
-    "enemy_1197_sfshu_2": [
-        "Sophistication",
-        "AN6"
-    ],
-    "enemy_1198_msfshu": [
-        "Novel Scroll",
-        "AN7"
-    ],
-    "enemy_1198_msfshu_2": [
-        "Painting Scroll",
-        "AN8"
-    ],
-    "enemy_1199_sfjin": [
-        "Introspection",
-        "AN9"
-    ],
-    "enemy_1199_sfjin_2": [
-        "Scantwords",
-        "AN10"
-    ],
-    "enemy_1200_msfjin": [
-        "Bronze Mirror",
-        "AN11"
-    ],
-    "enemy_1200_msfjin_2": [
-        "Brass Mirror",
-        "AN12"
-    ],
-    "enemy_1201_sfzhi": [
-        "Inkwave",
-        "AN13"
-    ],
-    "enemy_1201_sfzhi_2": [
-        "Heartbillow",
-        "AN14"
-    ],
-    "enemy_1202_msfzhi": [
-        "Wooden Paperweight",
-        "AN15"
-    ],
-    "enemy_1202_msfzhi_2": [
-        "Rosewood Paperweight",
-        "AN16"
-    ],
-    "enemy_1203_sfhu": [
-        "Fountainboil",
-        "AN17"
-    ],
-    "enemy_1203_sfhu_2": [
-        "Rainbowbrew",
-        "AN18"
-    ],
-    "enemy_1204_msfhu": [
-        "Celadon Teaware",
-        "AN19"
-    ],
-    "enemy_1204_msfhu_2": [
-        "Porcelain Teaware",
-        "AN20"
-    ],
-    "enemy_1205_sfpin": [
-        "Blueflower",
-        "AN21"
-    ],
-    "enemy_1205_sfpin_2": [
-        "Scarletmist",
-        "AN22"
-    ],
-    "enemy_1206_msfpin": [
-        "Celadon Vase",
-        "AN23"
-    ],
-    "enemy_1206_msfpin_2": [
-        "Porcelain Vase",
-        "AN24"
-    ],
-    "enemy_1207_sfji": [
-        "Sinkingsand",
-        "AN25"
-    ],
-    "enemy_1207_sfji_2": [
-        "Sharpedge",
-        "AN26"
-    ],
-    "enemy_1208_msfji": [
-        "Bronze Spearhead",
-        "AN27"
-    ],
-    "enemy_1208_msfji_2": [
-        "Iron Spearhead",
-        "AN28"
-    ],
-    "enemy_1209_sfden": [
-        "Clarity",
-        "AN29"
-    ],
-    "enemy_1209_sfden_2": [
-        "Magnificence",
-        "AN30"
-    ],
-    "enemy_1210_msfden": [
-        "Bronze Lampstand",
-        "AN31"
-    ],
-    "enemy_1210_msfden_2": [
-        "Iron Lampstand",
-        "AN32"
-    ],
-    "enemy_1211_msfsui": [],
-    "enemy_1212_mtrfol": [
-        "Pathfinder Legionarius",
-        "SK1"
-    ],
-    "enemy_1212_mtrfol_2": [
-        "Pathfinder Legionarius Prefect",
-        "SK2"
-    ],
-    "enemy_1213_mtrsnp": [
-        "Pathfinder Sagittarius",
-        "SK3"
-    ],
-    "enemy_1213_mtrsnp_2": [
-        "Pathfinder Sagittarius Prefect",
-        "SK4"
-    ],
-    "enemy_1214_mtrmgc": [
-        "Pathfinder Artifex",
-        "SK5"
-    ],
-    "enemy_1214_mtrmgc_2": [
-        "Pathfinder Artifex Prefect",
-        "SK6"
-    ],
-    "enemy_1215_ptrarc": [
-        "Pathfinder Veles",
-        "SK7"
-    ],
-    "enemy_1215_ptrarc_2": [
-        "Pathfinder Veles Prefect",
-        "SK8"
-    ],
-    "enemy_1216_cansld": [
-        "Pathfinder Ballistarius",
-        "SK9"
-    ],
-    "enemy_1216_cansld_2": [
-        "Pathfinder Ballistarius Prefect",
-        "SK10"
-    ],
-    "enemy_1217_rescar": [
-        "Pathfinder Dessert Vendor",
-        "SK11"
-    ],
-    "enemy_1217_rescar_2": [
-        "Renowned Pathfinder Dessert Vendor",
-        "SK12"
-    ],
-    "enemy_1218_bomscr": [
-        "Snack Cart",
-        "SK13"
-    ],
-    "enemy_1218_bomscr_2": [
-        "Luscious Snack Cart",
-        "SK14"
-    ],
-    "enemy_1219_mtrbty": [
-        "Pathfinder Nuncio",
-        "SK15"
-    ],
-    "enemy_1219_mtrbty_2": [
-        "Oren, Legatus",
-        "SK16"
-    ],
-    "enemy_1220_dzoms": [
-        "Touch of the Sanguinarch",
-        "SCI1"
-    ],
-    "enemy_1220_dzoms_2": [
-        "Touch of Benevolence",
-        "SCI2"
-    ],
-    "enemy_1221_dzomg": [
-        "Gift of the Sanguinarch",
-        "SCI3"
-    ],
-    "enemy_1221_dzomg_2": [
-        "Gift of Magnanimity",
-        "SCI4"
-    ],
-    "enemy_1222_dpvt": [
-        "Sarkaz Heirbearer Warrior",
-        "SCI5"
-    ],
-    "enemy_1222_dpvt_2": [
-        "Sarkaz Heirbearer Warrior Captain",
-        "SCI6"
-    ],
-    "enemy_1223_dmech": [
-        "Sarkaz Heirbearer Artificer",
-        "SCI7"
-    ],
-    "enemy_1223_dmech_2": [
-        "Sarkaz Heirbearer Artificer Captain",
-        "SCI8"
-    ],
-    "enemy_1224_dsuply": [
-        "Sarkaz Heirbearer ASV",
-        "SCI9"
-    ],
-    "enemy_1224_dsuply_2": [
-        "Sarkaz Heirbearer Retrofit ASV",
-        "SCI10"
-    ],
-    "enemy_1225_dkmage": [
-        "Sarkaz Heirbearer Chain Caster",
-        "SCI11"
-    ],
-    "enemy_1225_dkmage_2": [
-        "Sarkaz Heirbearer Chain Caster Captain",
-        "SCI12"
-    ],
-    "enemy_1226_dklord": [
-        "Sarkaz Heirbearer Hatedrinker",
-        "SCI13"
-    ],
-    "enemy_1226_dklord_2": [
-        "Sarkaz Heirbearer Wrathgorger",
-        "SCI14"
-    ],
-    "enemy_1227_dair": [
-        "Sarkaz Requisitioned Engineering Drone",
-        "SCI15"
-    ],
-    "enemy_1227_dair_2": [
-        "Sarkaz Requisitioned Cutting-Edge Drone",
-        "SCI16"
-    ],
-    "enemy_1228_dslime": [
-        "Bloodthirsty Heir",
-        "SCI17"
-    ],
-    "enemy_1228_dslime_2": [
-        "Engorged Heir",
-        "SCI18"
-    ],
-    "enemy_1229_darmy": [
-        "Sarkaz Royal Court Soldier",
-        "SCI19"
-    ],
-    "enemy_1229_darmy_2": [
-        "Sarkaz Royal Court Elite Soldier",
-        "SCI20"
-    ],
-    "enemy_1230_dsbudr": [
-        "Nethersea Founder",
-        "SM15"
-    ],
-    "enemy_1230_dsbudr_2": [
-        "Nourished Founder",
-        "Regressed Founder",
-        "SM16",
-        "SM17"
-    ],
-    "enemy_1230_dsbudr_4": [],
-    "enemy_1231_dsrunr": [
-        "Nethersea Predator",
-        "SM18"
-    ],
-    "enemy_1231_dsrunr_2": [
-        "Nourished Predator",
-        "Regressed Predator",
-        "SM19",
-        "SM20"
-    ],
-    "enemy_1231_dsrunr_4": [],
-    "enemy_1232_dssalr": [
-        "Nethersea Brandguider",
-        "SM21"
-    ],
-    "enemy_1232_dssalr_2": [
-        "Nourished Brandguider",
-        "Regressed Brandguider",
-        "SM23",
-        "SM22"
-    ],
-    "enemy_1232_dssalr_4": [],
-    "enemy_1233_dsshtr": [
-        "Nethersea Spewer",
-        "SM24"
-    ],
-    "enemy_1233_dsshtr_2": [
-        "Nourished Spewer",
-        "SM25"
-    ],
-    "enemy_1233_dsshtr_4": [],
-    "enemy_1234_dsubrl": [
-        "Nethersea Swarmcaller",
-        "SM27"
-    ],
-    "enemy_1234_dsubrl_2": [
-        "Nourished Swarmcaller",
-        "Regressed Swarmcaller",
-        "SM28",
-        "SM29"
-    ],
-    "enemy_1234_dsubrl_4": [],
-    "enemy_1235_dsbskr": [
-        "Nethersea Reefbreaker",
-        "SM30"
-    ],
-    "enemy_1235_dsbskr_2": [
-        "Nourished Reefbreaker",
-        "Regressed Reefbreaker",
-        "SM31",
-        "SM32"
-    ],
-    "enemy_1235_dsbskr_4": [],
-    "enemy_1238_ltmob": [
-        "Street Layabout",
-        "LE1"
-    ],
-    "enemy_1238_ltmob_2": [
-        "Street Drunk",
-        "LE2"
-    ],
-    "enemy_1239_ltbow": [
-        "Street Performer",
-        "LE3"
-    ],
-    "enemy_1239_ltbow_2": [
-        "Street Musician",
-        "LE4"
-    ],
-    "enemy_1240_ltgint": [
-        "Mass-Produced Colossus",
-        "LE5"
-    ],
-    "enemy_1240_ltgint_2": [
-        "Enhanced Mass-Produced Colossus",
-        "LE6"
-    ],
-    "enemy_1241_ltmage": [
-        "Spire Caster",
-        "LE7"
-    ],
-    "enemy_1241_ltmage_2": [
-        "Battleworn Spire Caster",
-        "LE8"
-    ],
-    "enemy_1242_ltsmag": [
-        "Remnant Violinist",
-        "LE9"
-    ],
-    "enemy_1242_ltsmag_2": [
-        "Remnant Principal Violinist",
-        "LE10"
-    ],
-    "enemy_1243_ltswar": [
-        "Remnant Saxophonist",
-        "LE11"
-    ],
-    "enemy_1243_ltswar_2": [
-        "Remnant Official Saxophonist",
-        "LE12"
-    ],
-    "enemy_1244_ltssch": [
-        "Remnant Field Caster",
-        "LE13"
-    ],
-    "enemy_1244_ltssch_2": [
-        "Remnant Elite Field Caster",
-        "LE14"
-    ],
-    "enemy_1246_aslime": [
-        "Blackwater Originium Slug",
-        "LE15"
-    ],
-    "enemy_1246_aslime_2": [
-        "Blackwater Originium Slug α",
-        "Blackwater Originium Slug Alpha",
-        "Blackwater Originium Slug a",
-        "LE16"
-    ],
-    "enemy_1247_ltgtld": [
-        "Dame Gertrude",
-        "LE17"
-    ],
-    "enemy_1249_lysdb": [
-        "Rhine Defense Member",
-        "RO01"
-    ],
-    "enemy_1249_lysdb_2": [
-        "Rhine Defense Senior Member",
-        "RO02"
-    ],
-    "enemy_1250_lyengs": [
-        "Rhine Engineering Member",
-        "RO03"
-    ],
-    "enemy_1250_lyengs_2": [
-        "Rhine Engineering Senior Member",
-        "RO04"
-    ],
-    "enemy_1251_lysyta": [
-        "Dor-1 Failure",
-        "RO05"
-    ],
-    "enemy_1251_lysyta_2": [
-        "Dor-α Failure",
-        "Dor-Alpha Failure",
-        "Dor-a Failure",
-        "RO06"
-    ],
-    "enemy_1252_lysytb": [
-        "Dor-2 Replica",
-        "RO07"
-    ],
-    "enemy_1252_lysytb_2": [
-        "Dor-β Replica",
-        "Dor-Beta Replica",
-        "Dor-B Replica",
-        "RO08"
-    ],
-    "enemy_1253_lysytc": [
-        "Dor-3 Bionic",
-        "RO09"
-    ],
-    "enemy_1253_lysytc_2": [
-        "Dor-γ Bionic",
-        "Dor-Gamma Bionic",
-        "Dor-G Bionic",
-        "RO10"
-    ],
-    "enemy_1254_lypa": [
-        "Experimental Power Armor",
-        "RO11"
-    ],
-    "enemy_1254_lypa_2": [
-        "Test Power Armor",
-        "RO12"
-    ],
-    "enemy_1255_lybgpa": [
-        "R-31 Heavy Power Armor",
-        "RO13"
-    ],
-    "enemy_1255_lybgpa_2": [
-        "R-31a Heavy Power Armor",
-        "RO14"
-    ],
-    "enemy_1256_lyacpa": [
-        "R-11 Assault Power Armor",
-        "RO15"
-    ],
-    "enemy_1256_lyacpa_2": [
-        "R-11a Assault Power Armor",
-        "RO16"
-    ],
-    "enemy_1257_lydrty": [
-        "Dorothy",
-        "RO17"
-    ],
-    "enemy_1258_durman": [
-        "Alcohol Lover",
-        "DUR1"
-    ],
-    "enemy_1258_durman_2": [
-        "Alcohol Association Member",
-        "DUR2"
-    ],
-    "enemy_1259_durwar": [
-        "Lakeside Volunteer",
-        "DUR3"
-    ],
-    "enemy_1259_durwar_2": [
-        "Lakeside Lifeguard",
-        "DUR4"
-    ],
-    "enemy_1260_durmag": [
-        "Sandcastle Builder",
-        "DUR5"
-    ],
-    "enemy_1260_durmag_2": [
-        "Sandcastle Architect",
-        "DUR6"
-    ],
-    "enemy_1261_dursho": [
-        "Volleyball Serving Cart",
-        "DUR7"
-    ],
-    "enemy_1261_dursho_2": [
-        "Volleyball Spiking Cart",
-        "DUR8"
-    ],
-    "enemy_1262_durplc": [
-        "Full Metal Surfing Instructor",
-        "DUR9"
-    ],
-    "enemy_1262_durplc_2": [
-        "Alloy Surfing Instructor",
-        "DUR10"
-    ],
-    "enemy_1263_durbus": [
-        "Fully-Enclosed Beach Buggy",
-        "DUR11"
-    ],
-    "enemy_1263_durbus_2": [
-        "Competitive-Grade Beach Buggy",
-        "DUR12"
-    ],
-    "enemy_1264_durgrd": [
-        "Mead-Grade Waker-Upper",
-        "DUR13"
-    ],
-    "enemy_1264_durgrd_2": [
-        "Whiskey-Grade Waker-Upper",
-        "DUR14"
-    ],
-    "enemy_1265_durcar": [
-        "Self-Driving Cart",
-        "DUR0"
-    ],
-    "enemy_1266_nhapos": [
-        "Rot Eater",
-        "NAC1"
-    ],
-    "enemy_1267_nhpbr": [
-        "Sarkaz Witherer",
-        "NAC2"
-    ],
-    "enemy_1267_nhpbr_2": [
-        "Sarkaz Witherer Captain",
-        "NAC3"
-    ],
-    "enemy_1268_nhnrs": [
-        "Sarkaz Wither Caster",
-        "NAC4"
-    ],
-    "enemy_1268_nhnrs_2": [
-        "Sarkaz Wither Caster Captain",
-        "NAC5"
-    ],
-    "enemy_1269_nhfly": [
-        "Seed of Withering",
-        "NAC6"
-    ],
-    "enemy_1269_nhfly_2": [
-        "Seed of Decay",
-        "NAC7"
-    ],
-    "enemy_1270_nhstlk": [
-        "Rotchaser",
-        "NAC8"
-    ],
-    "enemy_1270_nhstlk_2": [
-        "Rampaging Rotchaser",
-        "NAC9"
-    ],
-    "enemy_1271_nhkodo": [
-        "Sarkaz Wither Devourer",
-        "NAC10"
-    ],
-    "enemy_1271_nhkodo_2": [
-        "Sarkaz Wither Maw",
-        "NAC11"
-    ],
-    "enemy_1272_nhtank": [
-        "Sarkaz Wither Tank",
-        "NAC12"
-    ],
-    "enemy_1272_nhtank_2": [
-        "Advanced Sarkaz Wither Tank",
-        "NAC13"
-    ],
-    "enemy_1273_stmgun": [
-        "Londinium Mobile Defense Artillery",
-        "LUD1"
-    ],
-    "enemy_1273_stmgun_2": [
-        "Londinium Precision Mobile Defense Artillery",
-        "LUD2"
-    ],
-    "enemy_1274_stmram": [
-        "Steam Tank",
-        "LUD3"
-    ],
-    "enemy_1274_stmram_2": [
-        "Scorching Steam Tank",
-        "LUD4"
-    ],
-    "enemy_1275_dwlock": [
-        "Sarkaz Royal Court Caster",
-        "NAC14"
-    ],
-    "enemy_1275_dwlock_2": [
-        "Sarkaz Royal Court Elite Caster",
-        "NAC15"
-    ],
-    "enemy_1276_telex": [
-        "Theresis",
-        "THE"
-    ],
-    "enemy_1277_sgman": [
-        "Famiglia Soldier"
-    ],
-    "enemy_1277_sgman_2": [
-        "Elite Famiglia Soldier"
-    ],
-    "enemy_1278_sgbow": [
-        "Famiglia Crossbowman",
-        "SA3"
-    ],
-    "enemy_1278_sgbow_2": [
-        "Elite Famiglia Crossbowman",
-        "SA4"
-    ],
-    "enemy_1279_sgbdg": [
-        "Famiglia Intimidator",
-        "SA5"
-    ],
-    "enemy_1279_sgbdg_2": [
-        "Famiglia Terrorizer",
-        "SA6"
-    ],
-    "enemy_1280_sgmag": [
-        "Famiglia Caster",
-        "SA7"
-    ],
-    "enemy_1280_sgmag_2": [
-        "Elite Famiglia Caster",
-        "SA8"
-    ],
-    "enemy_1281_sgcar": [
-        "Famiglia Limo",
-        "SA9"
-    ],
-    "enemy_1281_sgcar_2": [
-        "Famiglia Luxury Limo",
-        "SA10"
-    ],
-    "enemy_1282_sgelder": [
-        "Famiglia Capo",
-        "SA11"
-    ],
-    "enemy_1282_sgelder_2": [
-        "Famiglia Heavy Capo",
-        "SA12"
-    ],
-    "enemy_1283_sgkill": [
-        "Famiglia Cleaner",
-        "SA13"
-    ],
-    "enemy_1283_sgkill_2": [
-        "Famiglia Silent Cleaner",
-        "SA14"
-    ],
-    "enemy_1284_sgprst": [
-        "Father Agenir",
-        "SA15"
-    ],
-    "enemy_1285_sgwlf": [
-        "None of My Business",
-        "SA16"
-    ],
-    "enemy_3004_speople": [
-        "Siracusan Civilian",
-        "SA17"
-    ],
-    "enemy_1286_dumcy": [
-        "Special Forces Soldier",
-        "DU23"
-    ],
-    "enemy_1286_dumcy_2": [
-        "Special Forces Captain",
-        "DU24"
-    ],
-    "enemy_1287_ducrb": [
-        "Swamp Gloompincer",
-        "DU25"
-    ],
-    "enemy_1287_ducrb_2": [
-        "Enraged Swamp Gloompincer",
-        "DU26"
-    ],
-    "enemy_1288_duskls": [
-        "Dublinn Flamechaser Soldier",
-        "DU27"
-    ],
-    "enemy_1288_duskls_2": [
-        "Dublinn Flamechaser Elite Soldier",
-        "DU28"
-    ],
-    "enemy_1289_dubmb": [
-        "Dublinn Cannoneer",
-        "DU29"
-    ],
-    "enemy_1289_dubmb_2": [
-        "Dublinn Cannoneer Captain",
-        "DU30"
-    ],
-    "enemy_1290_duflm": [
-        "Dublinn Flamecaller",
-        "DU31"
-    ],
-    "enemy_1290_duflm_2": [
-        "Dublinn Flamecaller Captain",
-        "DU32"
-    ],
-    "enemy_1291_dusrch": [
-        "Swamp Rover",
-        "DU33"
-    ],
-    "enemy_1291_dusrch_2": [
-        "Heavy Swamp Rover",
-        "DU34"
-    ],
-    "enemy_1292_duskld": [
-        "Dublinn Flamechaser Guard",
-        "DU35"
-    ],
-    "enemy_1292_duskld_2": [
-        "Dublinn Flamechaser Elite Guard",
-        "DU36"
-    ],
-    "enemy_1293_duswrd": [
-        "Dublinn Spec Ops",
-        "DU37"
-    ],
-    "enemy_1293_duswrd_2": [
-        "Dublinn Elite Spec Ops",
-        "DU38"
-    ],
-    "enemy_1293_duswrd_3": [
-        "The Brigadier",
-        "DU39"
-    ],
-    "enemy_1295_ymph": [
-        "Di Beast",
-        "SH01"
-    ],
-    "enemy_1295_ymph_2": [
-        "Raging Di Beast",
-        "SH02"
-    ],
-    "enemy_1296_ymknif": [
-        "Shanhaizhong Skirmisher",
-        "SH03"
-    ],
-    "enemy_1296_ymknif_2": [
-        "Shanhaizhong Vigilante",
-        "SH04"
-    ],
-    "enemy_1297_ymflag": [
-        "Shanhaizhong Relayer",
-        "SH05"
-    ],
-    "enemy_1297_ymflag_2": [
-        "Shanhaizhong Harbinger",
-        "SH06"
-    ],
-    "enemy_1298_ymmonk": [
-        "Shanhaizhong Desperado",
-        "SH07"
-    ],
-    "enemy_1298_ymmonk_2": [
-        "Shanhaizhong Phalanx",
-        "SH08"
-    ],
-    "enemy_1299_ymkilr": [
-        "Shanhaizhong Ringleader",
-        "SH09"
-    ],
-    "enemy_1299_ymkilr_2": [
-        "Shanhaizhong Secret-Keeper",
-        "SH10"
-    ],
-    "enemy_1300_ymmir": [
-        "Shanhaizhong Seer",
-        "SH11"
-    ],
-    "enemy_1300_ymmir_2": [
-        "Shanhaizhong Oracle",
-        "SH12"
-    ],
-    "enemy_1301_ymcnon": [
-        "Wallbreaker",
-        "SH13"
-    ],
-    "enemy_1301_ymcnon_2": [
-        "Fortbreaker",
-        "SH14"
-    ],
-    "enemy_1302_ymtro": [
-        "Sandwalker",
-        "SH15"
-    ],
-    "enemy_1302_ymtro_2": [
-        "Sand Voyager",
-        "SH16"
-    ],
-    "enemy_1303_mhshep": [
-        "Hornbeast",
-        "HS01"
-    ],
-    "enemy_1303_mhshep_2": [
-        "Hardy Hornbeast",
-        "HS02"
-    ],
-    "enemy_1304_mhwolf": [
-        "Oxmane",
-        "HS03"
-    ],
-    "enemy_1304_mhwolf_2": [
-        "Keenfanged Oxmane",
-        "HS04"
-    ],
-    "enemy_1305_mhslim": [
-        "Blazing Originium Slug",
-        "HS05"
-    ],
-    "enemy_1305_mhslim_2": [
-        "Pyric Originium Slug",
-        "HS06"
-    ],
-    "enemy_1306_mhtrtl": [
-        "Chitotex Clawbeast",
-        "HS07"
-    ],
-    "enemy_1306_mhtrtl_2": [
-        "Keratex Clawbeast",
-        "HS08"
-    ],
-    "enemy_1307_mhrhcr": [
-        "Basorobeast",
-        "HS09"
-    ],
-    "enemy_1307_mhrhcr_2": [
-        "Gravorobeast",
-        "HS10"
-    ],
-    "enemy_1308_mheagl": [
-        "Serrant Fowlbeast",
-        "HS11"
-    ],
-    "enemy_1308_mheagl_2": [
-        "Daimoserrant Fowlbeast",
-        "HS12"
-    ],
-    "enemy_1309_mhboar": [
-        "Direswine",
-        "HS13"
-    ],
-    "enemy_1309_mhboar_2": [
-        "Raging Direswine",
-        "HS14"
-    ],
-    "enemy_1310_mhprpn": [
-        "Haribeast",
-        "HS15"
-    ],
-    "enemy_1310_mhprpn_2": [
-        "Rainer Haribeast",
-        "HS16"
-    ],
-    "enemy_1311_mhkryk": [
-        "Cautelotaur",
-        "HS17"
-    ],
-    "enemy_1311_mhkryk_2": [
-        "Kouaku Cautelotaur",
-        "HS18"
-    ],
-    "enemy_1312_ymillu": [],
-    "enemy_1313_wdfmr": [
-        "Norport Civilian",
-        "Norport Spy",
-        "LUD5",
-        "LUD6"
-    ],
-    "enemy_1313_wdfmr_2": [],
-    "enemy_1314_wdnjd": [
-        "Pathfinder Spy",
-        "LUD7"
-    ],
-    "enemy_1314_wdnjd_2": [
-        "Pathfinder Spymaster",
-        "LUD8"
-    ],
-    "enemy_1315_wdyjd": [
-        "Sentry Spy",
-        "LUD9"
-    ],
-    "enemy_1315_wdyjd_2": [
-        "Sentry Spymaster",
-        "LUD10"
-    ],
-    "enemy_1316_wdpjd": [
-        "Armed Spy",
-        "LUD11"
-    ],
-    "enemy_1316_wdpjd_2": [
-        "Armed Spymaster",
-        "LUD12"
-    ],
-    "enemy_1317_wdexg": [
-        "Sarkaz Absurdist Operative",
-        "SHD1"
-    ],
-    "enemy_1317_wdexg_2": [
-        "Sarkaz Absurdist Operative Leader",
-        "SHD2"
-    ],
-    "enemy_1318_wdsmgc": [
-        "Sarkaz Absurdist Splitcaster Apprentice",
-        "SHD3"
-    ],
-    "enemy_1318_wdsmgc_2": [
-        "Sarkaz Absurdist Splitcaster",
-        "SHD4"
-    ],
-    "enemy_1320_wdrrl": [
-        "Sarkaz Absurdist Tyrant",
-        "SHD5"
-    ],
-    "enemy_1320_wdrrl_2": [
-        "Sarkaz Absurdist Tyrant Captain",
-        "SHD6"
-    ],
-    "enemy_1319_wdfmpm": [
-        "Rebellion Instigator",
-        "SHD7"
-    ],
-    "enemy_1319_wdfmpm_2": [
-        "Rebellion Agitator",
-        "SHD8"
-    ],
-    "enemy_1321_wdarft": [
-        "Withering Collector Disciple",
-        "NAC16"
-    ],
-    "enemy_1321_wdarft_2": [
-        "Decaying Collector Disciple",
-        "NAC17"
-    ],
-    "enemy_1322_wdgyht": [
-        "Trilby Asher",
-        "LUD13"
-    ],
-    "enemy_1322_wdgyht_2": [
-        "Shadowing Trilby Asher",
-        "LUD14"
-    ],
-    "enemy_1323_wdbshd": [
-        "Deconstructed Distortion",
-        "DC2"
-    ],
-    "enemy_1325_cbgpro": [
-        "Military Hound",
-        "LT1"
-    ],
-    "enemy_1325_cbgpro_2": [
-        "Elite Military Hound",
-        "LT2"
-    ],
-    "enemy_1326_cbagen": [
-        "Trimounts City Defender",
-        "LT3"
-    ],
-    "enemy_1326_cbagen_2": [
-        "Trimounts City Defender Captain",
-        "LT4"
-    ],
-    "enemy_1327_cbrokt": [
-        "Arc Commando",
-        "LT5"
-    ],
-    "enemy_1327_cbrokt_2": [
-        "Arc Commando Captain",
-        "LT6"
-    ],
-    "enemy_1328_cbjedi": [
-        "Arc Frontliner",
-        "LT7"
-    ],
-    "enemy_1328_cbjedi_2": [
-        "Arc Frontliner Leader",
-        "LT8"
-    ],
-    "enemy_1329_cbshld": [
-        "Arc Screenguard",
-        "LT9"
-    ],
-    "enemy_1329_cbshld_2": [
-        "Arc Screenguard Captain",
-        "LT10"
-    ],
-    "enemy_1330_cbrush": [
-        "Offender Production Model",
-        "LT11"
-    ],
-    "enemy_1330_cbrush_2": [
-        "Offender Prototype",
-        "LT12"
-    ],
-    "enemy_1331_cbsisy": [
-        "Crossroads Production Model",
-        "LT13"
-    ],
-    "enemy_1331_cbsisy_2": [
-        "Crossroads Prototype",
-        "LT14"
-    ],
-    "enemy_1332_cbterm": [
-        "Traffic Tower Production Model",
-        "LT15"
-    ],
-    "enemy_1332_cbterm_2": [
-        "Traffic Tower Prototype",
-        "LT16"
-    ],
-    "enemy_1333_cbbgen": [
-        "Traffic Officer",
-        "LT17"
-    ],
-    "enemy_1333_cbbgen_2": [
-        "Traffic Officer Captain",
-        "LT18"
-    ],
-    "enemy_1334_ristar": [],
-    "enemy_1335_bldrat": [
-        "Gnawbeast",
-        "HE1"
-    ],
-    "enemy_1335_bldrat_2": [
-        "Starving Gnawbeast",
-        "HE2"
-    ],
-    "enemy_1336_bldbat": [
-        "Vesperwing",
-        "HE3"
-    ],
-    "enemy_1336_bldbat_2": [
-        "Startled Vesperwing",
-        "HE4"
-    ],
-    "enemy_1337_bhrknf": [
-        "Wasteland Robber",
-        "HE5"
-    ],
-    "enemy_1337_bhrknf_2": [
-        "Elite Wasteland Robber",
-        "HE6"
-    ],
-    "enemy_1338_bhrjst": [
-        "Wasteland Skulker",
-        "HE7"
-    ],
-    "enemy_1338_bhrjst_2": [
-        "Elite Wasteland Skulker",
-        "HE8"
-    ],
-    "enemy_1339_bhrgrd": [
-        "Wasteland Plunderer",
-        "HE9"
-    ],
-    "enemy_1339_bhrgrd_2": [
-        "Elite Wasteland Plunderer",
-        "HE10"
-    ],
-    "enemy_1340_bthtbw": [
-        "Bounty Hunter Crossbowman",
-        "BH1"
-    ],
-    "enemy_1340_bthtbw_2": [
-        "Bounty Hunter Crossbowman Captain",
-        "BH2"
-    ],
-    "enemy_1341_bthtms": [
-        "Bounty Hunter Disruptor",
-        "BH3"
-    ],
-    "enemy_1341_bthtms_2": [
-        "Bounty Hunter Disruptor Captain",
-        "BH4"
-    ],
-    "enemy_1342_frtuna": [
-        "Fortuna",
-        "Fallen Angel",
-        "Fortuna - Fallen Angel"
-    ],
-    "enemy_3005_lpeopl": [
-        "Monastery Inhabitant",
-        "Monastery Inhabitant 2",
-        "SA1",
-        "SA2"
-    ],
-    "enemy_3005_lpeopl_2": [],
-    "enemy_1344_ddlamb": [
-        "Hot Spring Mischievous Rascal",
-        "FF1"
-    ],
-    "enemy_1344_ddlamb_2": [
-        "Hot Spring Jolly Rascal",
-        "FF2"
-    ],
-    "enemy_1345_tplamb": [
-        "Fashion Street Hearty Heavy",
-        "FF3"
-    ],
-    "enemy_1345_tplamb_2": [
-        "Fashion Street Robust Heavy",
-        "FF4"
-    ],
-    "enemy_1346_ynshp": [
-        "Hot Spring Wandering Vagrant",
-        "FF5"
-    ],
-    "enemy_1346_ynshp_2": [
-        "Hot Spring Wandering Slider",
-        "FF6"
-    ],
-    "enemy_1347_fyshp": [
-        "Fashion Street Ordinary Aviator",
-        "FF7"
-    ],
-    "enemy_1347_fyshp_2": [
-        "Fashion Street Hyperactive Aviator",
-        "FF8"
-    ],
-    "enemy_1348_rllamb": [
-        "Urban Whirlwind Walker",
-        "FF9"
-    ],
-    "enemy_1348_rllamb_2": [
-        "Urban Tornado Trendsetter",
-        "FF10"
-    ],
-    "enemy_1349_rckshp": [
-        "Big Fella",
-        "FF11"
-    ],
-    "enemy_1349_rckshp_2": [
-        "Big Man",
-        "FF12"
-    ],
-    "enemy_1350_mgcshp": [
-        "Fashion Street Stellar Caster",
-        "FF13"
-    ],
-    "enemy_1350_mgcshp_2": [
-        "Fashion Street Supernova Caster",
-        "FF14"
-    ],
-    "enemy_1351_yhhshp": [
-        "Fluffy Buddy",
-        "FF15"
-    ],
-    "enemy_1352_eslime": [
-        "Radioactive Originium Slug",
-        "B11"
-    ],
-    "enemy_1352_eslime_2": [
-        "Radioactive Originium Slug α",
-        "Radioactive Originium Slug Alpha",
-        "Radioactive Originium Slug a",
-        "B12"
-    ],
-    "enemy_1353_esabr": [
-        "Paramilitary Gangster",
-        "EG1"
-    ],
-    "enemy_1353_esabr_2": [
-        "Paramilitary Gangster Leader",
-        "EG2"
-    ],
-    "enemy_1354_eghost": [
-        "Paramilitary Thief",
-        "EG3"
-    ],
-    "enemy_1354_eghost_2": [
-        "Paramilitary Thief Leader",
-        "EG4"
-    ],
-    "enemy_1355_mrfly": [
-        "Blocker",
-        "D11"
-    ],
-    "enemy_1355_mrfly_2": [
-        "Blocker-P",
-        "D12"
-    ],
-    "enemy_1356_egun": [
-        "Paramilitary Sniper",
-        "EG5"
-    ],
-    "enemy_1356_egun_2": [
-        "Paramilitary Sniper Leader",
-        "EG6"
-    ],
-    "enemy_1357_erob": [
-        "Paramilitary Axeman",
-        "EG7"
-    ],
-    "enemy_1357_erob_2": [
-        "Paramilitary Axeman Leader",
-        "EG8"
-    ],
-    "enemy_1358_esheld": [
-        "Paramilitary Defender",
-        "EG9"
-    ],
-    "enemy_1358_esheld_2": [
-        "Paramilitary Defender Leader",
-        "EG10"
-    ],
-    "enemy_1359_ekulsr": [
-        "Paramilitary Bombardier",
-        "EG11"
-    ],
-    "enemy_1359_ekulsr_2": [
-        "Paramilitary Bombardier Leader",
-        "EG12"
-    ],
-    "enemy_1360_dfello": [
-        "Bloodborn Spawn",
-        "SSK1"
-    ],
-    "enemy_1361_dthrow": [
-        "Sarkaz Heirbearer Bombardier",
-        "SCI21"
-    ],
-    "enemy_1361_dthrow_2": [
-        "Sarkaz Heirbearer Annihilator",
-        "SCI22"
-    ],
-    "enemy_1362_dfat": [
-        "Sarkaz Heirbearer Punisher",
-        "SCI23"
-    ],
-    "enemy_1362_dfat_2": [
-        "Sarkaz Heirbearer Scourger",
-        "SCI24"
-    ],
-    "enemy_1363_spnshd": [
-        "Sarkaz Boneguard",
-        "SSK2"
-    ],
-    "enemy_1363_spnshd_2": [
-        "Sarkaz Boneguard Captain",
-        "SSK3"
-    ],
-    "enemy_1364_spnaxe": [
-        "Sarkaz Boneguard Flayer",
-        "SSK4"
-    ],
-    "enemy_1364_spnaxe_2": [
-        "Sarkaz Boneguard Torturer",
-        "SSK5"
-    ],
-    "enemy_1365_spnwiz": [
-        "Sarkaz Boneguard Fluxcaster",
-        "SSK6"
-    ],
-    "enemy_1365_spnwiz_2": [
-        "Sarkaz Boneguard Fluxcaster Captain\n",
-        "SSK7"
-    ],
-    "enemy_1366_dcolle": [
-        "Sarkaz Bloodwalker",
-        "SSK8"
-    ],
-    "enemy_1366_dcolle_2": [
-        "Sarkaz Bloodnexus",
-        "SSK9"
-    ],
-    "enemy_1367_dseed": [
-        "Blood Amber",
-        "SSK10"
-    ],
-    "enemy_1368_spilot": [
-        "Commander Ulsulah",
-        "Commander Ulšulah",
-        "SSK11"
-    ],
-    "enemy_1369_bmbcar1": [
-        "Anti-Witchcraft Repositionable Bomb",
-        "LUD"
-    ],
-    "enemy_1371_ltnflu": [
-        "Remnant Orchestra Flautist",
-        "OCS1"
-    ],
-    "enemy_1371_ltnflu_2": [
-        "Witch Kings Orchestra Flautist",
-        "OCS2"
-    ],
-    "enemy_1372_ltntpt": [
-        "Remnant Orchestra Trumpeter",
-        "OCS3"
-    ],
-    "enemy_1372_ltntpt_2": [
-        "Witch Kings Orchestra Trumpeter",
-        "OCS4"
-    ],
-    "enemy_1373_ltnhor": [
-        "Remnant Orchestra Hornist",
-        "OCS5"
-    ],
-    "enemy_1373_ltnhor_2": [
-        "Witch Kings Orchestra Hornist",
-        "OCS6"
-    ],
-    "enemy_1374_ltnhap": [
-        "Remnant Orchestra Chorister",
-        "OCS7"
-    ],
-    "enemy_1374_ltnhap_2": [
-        "Witch Kings Orchestra Chorister",
-        "OCS8"
-    ],
-    "enemy_1375_ltnclr": [
-        "Remnant Orchestra Wind Player",
-        "OCS9"
-    ],
-    "enemy_1375_ltnclr_2": [
-        "Witch Kings Orchestra Wind Player",
-        "OCS10"
-    ],
-    "enemy_1376_ltndru": [
-        "Remnant Orchestra Drummer",
-        "OCS11"
-    ],
-    "enemy_1376_ltndru_2": [
-        "Witch Kings Orchestra Drummer",
-        "OCS12"
-    ],
-    "enemy_1377_ltnclo": [
-        "Remnant Orchestra Cellist",
-        "OCS13"
-    ],
-    "enemy_1377_ltnclo_2": [
-        "Witch Kings Orchestra Cellist",
-        "OCS14"
-    ],
-    "enemy_1378_ltnmst": [
-        "Remnant Orchestra Tuner",
-        "OCS15"
-    ],
-    "enemy_1378_ltnmst_2": [
-        "Witch Kings Orchestra Tuner",
-        "OCS16"
-    ],
-    "enemy_1379_ltncdt": [
-        "Remnant Orchestra Conductor",
-        "MST1"
-    ],
-    "enemy_1379_ltncdt_2": [
-        "Witch Kings Orchestra Conductor",
-        "MST2"
-    ],
-    "enemy_1381_winman": [
-        "Delegation Recruit",
-        "VM1"
-    ],
-    "enemy_1381_winman_2": [
-        "Delegation Veteran",
-        "VM2"
-    ],
-    "enemy_1382_winbal": [
-        "Delegation Assault Recruit",
-        "VM3"
-    ],
-    "enemy_1382_winbal_2": [
-        "Delegation Assault Veteran",
-        "VM4"
-    ],
-    "enemy_1383_windog": [
-        "Clockwork Patroller",
-        "VM5"
-    ],
-    "enemy_1383_windog_2": [
-        "Clockwork Warrior",
-        "VM6"
-    ],
-    "enemy_1384_winfrz": [
-        "Frozen Mountain Burdenbeast",
-        "VM7"
-    ],
-    "enemy_1384_winfrz_2": [
-        "Slumbering Mountain Burdenbeast",
-        "VM8"
-    ],
-    "enemy_1385_winbom": [
-        "Jet Canister",
-        "VM9"
-    ],
-    "enemy_1385_winbom_2": [
-        "Boom Canister",
-        "VM10"
-    ],
-    "enemy_1386_winmag": [
-        "Delegation Caster",
-        "VM11"
-    ],
-    "enemy_1386_winmag_2": [
-        "Delegation Caster Commander",
-        "VM12"
-    ],
-    "enemy_1387_winshd": [
-        "Delegation Shieldbearer",
-        "VM13"
-    ],
-    "enemy_1387_winshd_2": [
-        "Delegation Shieldbearer Captain",
-        "VM14"
-    ],
-    "enemy_1388_wingnt": [
-        "Catapult",
-        "VM15"
-    ],
-    "enemy_1388_wingnt_2": [
-        "Mortar",
-        "VM16"
-    ],
-    "enemy_1389_winbab": [
-        "Delegation Centurion",
-        "VM17"
-    ],
-    "enemy_1389_winbab_2": [
-        "Delegation Centurion Champion",
-        "VM18"
-    ],
-    "enemy_1390_dhsbr": [
-        "Filth",
-        "HSL1"
-    ],
-    "enemy_1390_dhsbr_2": [
-        "Expelled Filth",
-        "HSL2"
-    ],
-    "enemy_1391_dhbow": [
-        "Consumption",
-        "HSL3"
-    ],
-    "enemy_1391_dhbow_2": [
-        "Banished Consumption",
-        "HSL4"
-    ],
-    "enemy_1392_dhshld": [
-        "Scum",
-        "HSL5"
-    ],
-    "enemy_1392_dhshld_2": [
-        "Accursed Scum",
-        "HSL6"
-    ],
-    "enemy_1393_dhele": [
-        "Blemish",
-        "HSL7"
-    ],
-    "enemy_1393_dhele_2": [
-        "Renounced Blemish",
-        "HSL8"
-    ],
-    "enemy_1394_dhzts": [
-        "Miasma",
-        "HSL9"
-    ],
-    "enemy_1394_dhzts_2": [
-        "Basal Miasma",
-        "HSL10"
-    ],
-    "enemy_1395_dhxts": [
-        "Fieldmus",
-        "HSL11"
-    ],
-    "enemy_1395_dhxts_2": [
-        "Hard-Snouted Fieldmus",
-        "HSL12"
-    ],
-    "enemy_1396_dhdts": [
-        "Fieldmus Bruiser",
-        "HSL13"
-    ],
-    "enemy_1396_dhdts_2": [
-        "Fieldmus Ravager",
-        "HSL14"
-    ],
-    "enemy_1397_dhtsxt": [
-        "Fieldmus Flying Thief",
-        "HSL15"
-    ],
-    "enemy_1397_dhtsxt_2": [
-        "Fieldmus Heistmaster",
-        "HSL16"
-    ],
-    "enemy_1398_dhdcr": [
-        "Sky Pole - Jia",
-        "HSL17"
-    ],
-    "enemy_1398_dhdcr_2": [
-        "Out of Control Sky Pole - Jia",
-        "HSL18"
-    ],
-    "enemy_1399_dhtb": [
-        "Sky Pole - Yi",
-        "HSL19"
-    ],
-    "enemy_1399_dhtb_2": [
-        "Out of Control Sky Pole - Yi",
-        "HSL20"
-    ],
-    "enemy_1401_pogpro": [
-        "Coalition Army Hound",
-        "R18"
-    ],
-    "enemy_1401_pogpro_2": [
-        "Coalition Army Hound Pro",
-        "R19"
-    ],
-    "enemy_1402_tgshd": [
-        "Armored Scout",
-        "R20"
-    ],
-    "enemy_1402_tgshd_2": [
-        "Heavy Scout",
-        "R21"
-    ],
-    "enemy_1403_gunsho": [
-        "Light Rapid Crossbowman",
-        "R22"
-    ],
-    "enemy_1403_gunsho_2": [
-        "Heavy Rapid Crossbowman",
-        "R23"
-    ],
-    "enemy_1404_msnip": [
-        "Heavy Crossbowman Ambusher",
-        "R24"
-    ],
-    "enemy_1404_msnip_2": [
-        "Heavy Crossbowman Hunter",
-        "R25"
-    ],
-    "enemy_1405_boomer": [
-        "Reckless Grenadier",
-        "R26"
-    ],
-    "enemy_1405_boomer_2": [
-        "Impetuous Grenadier",
-        "R27"
-    ],
-    "enemy_1406_chghmr": [
-        "Battleline Advance Guard",
-        "R28"
-    ],
-    "enemy_1406_chghmr_2": [
-        "Battleline Breacher",
-        "R29"
-    ],
-    "enemy_1407_hummbd": [
-        "Farseer",
-        "R30"
-    ],
-    "enemy_1407_hummbd_2": [
-        "Farseer B",
-        "R31"
-    ],
-    "enemy_1408_scotcn": [
-        "Battlefield Observing Mortarman",
-        "R32"
-    ],
-    "enemy_1408_scotcn_2": [
-        "Battlefield Surveying Mortarman",
-        "R33"
-    ],
-    "enemy_1409_bdguad": [
-        "Mateos Security Guard",
-        "R34"
-    ],
-    "enemy_1409_bdguad_2": [
-        "Mateos Guard",
-        "R35"
-    ],
-    "enemy_1409_bdguad_3": [
-        "Mateos Bodyguard",
-        "R36"
-    ],
-    "enemy_1410_mmelee": [
-        "Flying Boots Mercenary",
-        "SMN1"
-    ],
-    "enemy_1410_mmelee_2": [
-        "Flying Boots Elite Mercenary",
-        "SMN2"
-    ],
-    "enemy_1411_mmrnge": [
-        "Pothelm Marksman",
-        "SMN3"
-    ],
-    "enemy_1411_mmrnge_2": [
-        "Pothelm Arbalest",
-        "SMN4"
-    ],
-    "enemy_1412_mmjump": [
-        "Scrap Assembler",
-        "SMN5"
-    ],
-    "enemy_1412_mmjump_2": [
-        "Scrap Inventor",
-        "SMN6"
-    ],
-    "enemy_1413_mmstck": [
-        "Bounty Hunter Knight",
-        "SMN7"
-    ],
-    "enemy_1413_mmstck_2": [
-        "Bounty Hunter Grand Knight",
-        "SMN8"
-    ],
-    "enemy_1414_mmleak": [
-        "Spatula Giant",
-        "SMN9"
-    ],
-    "enemy_1414_mmleak_2": [
-        "Enraged Spatula Giant",
-        "SMN10"
-    ],
-    "enemy_1415_mmkabi": [
-        "Armored Burdenbeast",
-        "SMN11"
-    ],
-    "enemy_1415_mmkabi_2": [
-        "Greater Armored Burdenbeast",
-        "SMN12"
-    ],
-    "enemy_1416_mmfarm": [
-        "Shearclaws",
-        "SMN13"
-    ],
-    "enemy_1416_mmfarm_2": [
-        "Weaver",
-        "SMN14"
-    ],
-    "enemy_1417_mmdudu": [
-        "Rogue Mercenary Bass",
-        "SMN15"
-    ],
-    "enemy_1417_mmdudu_2": [
-        "Rogue Mercenary Lead Guitar",
-        "SMN16"
-    ],
-    "enemy_1418_mmkonm": [
-        "Tinkerer",
-        "SMN17"
-    ],
-    "enemy_1418_mmkonm_2": [
-        "Mechanic",
-        "SMN18"
-    ],
-    "enemy_1419_mmcike": [
-        "Deathveil Assassin",
-        "UDF1"
-    ],
-    "enemy_1422_lrsldr": [
-        "Sarkaz Wither Vanguard",
-        "NAC18"
-    ],
-    "enemy_1422_lrsldr_2": [
-        "Elite Sarkaz Wither Vanguard",
-        "NAC19"
-    ],
-    "enemy_1423_lrfkkt": [
-        "Sarkaz Wither Bulwark",
-        "NAC20"
-    ],
-    "enemy_1423_lrfkkt_2": [
-        "Sarkaz Wither Aegis",
-        "NAC21"
-    ],
-    "enemy_1424_lrboom": [
-        "Caustic Originium Slug",
-        "B13"
-    ],
-    "enemy_1424_lrboom_2": [
-        "Caustic Originium Slug α",
-        "Caustic Originium Slug a",
-        "Caustic Originium Slug alpha",
-        "B14"
-    ],
-    "enemy_1425_lrcmra": [
-        "Profane Chimera",
-        "ABS1"
-    ],
-    "enemy_1425_lrcmra_2": [
-        "Sacrilegious Chimera",
-        "ABS2"
-    ],
-    "enemy_1426_lrthef": [
-        "Sarkaz Altar Keeper",
-        "NAC22"
-    ],
-    "enemy_1426_lrthef_2": [
-        "Sarkaz Altar Nourisher",
-        "NAC23"
-    ],
-    "enemy_1427_lrnazg": [
-        "Sudaram",
-        "NAC24"
-    ],
-    "enemy_1427_lrnazg_2": [
-        "Putrefied Sudaram",
-        "NAC25"
-    ],
-    "enemy_1428_lrsoul": [
-        "Soul Maelstrom",
-        "ABS3"
-    ],
-    "enemy_1429_lrwzrd": [
-        "Focused Soul Remnant",
-        "ABS4"
-    ],
-    "enemy_1429_lrwzrd_2": [
-        "Prism Soul Remnant",
-        "ABS5"
-    ],
-    "enemy_1430_lrrook": [
-        "Chalice of Regret",
-        "ABS6"
-    ],
-    "enemy_1430_lrrook_2": [
-        "Chalice of Mortality",
-        "ABS7"
-    ],
-    "enemy_1431_lrmzrd": [
-        "Infused Soul Husk",
-        "ABS8"
-    ],
-    "enemy_1431_lrmzrd_2": [
-        "Penumbral Soul Husk",
-        "ABS9"
-    ],
-    "enemy_1433_dsbasi": [
-        "Unicellular Predator",
-        "SM33"
-    ],
-    "enemy_1433_dsbasi_2": [
-        "Allotropic Predator",
-        "SM34"
-    ],
-    "enemy_1434_dsshel": [
-        "Exocellular Depositor",
-        "SM35"
-    ],
-    "enemy_1435_dsflys": [
-        "Toxocellular Drifter",
-        "SM36"
-    ],
-    "enemy_1435_dsflys_2": [
-        "Allotropic Drifter",
-        "SM37"
-    ],
-    "enemy_1436_dsdivi": [
-        "Divicellular Hoarder",
-        "SM38"
-    ],
-    "enemy_1436_dsdivi_2": [
-        "Allotropic Hoarder",
-        "SM39"
-    ],
-    "enemy_1437_dsfull": [
-        "Matrocellular Nurse",
-        "SM40"
-    ],
-    "enemy_1437_dsfull_2": [
-        "Allotropic Nurse",
-        "SM41"
-    ],
-    "enemy_1438_dspred": [
-        "Multicellular Herald",
-        "SM42"
-    ],
-    "enemy_1438_dspred_2": [
-        "Allotropic Herald",
-        "SM43"
-    ],
-    "enemy_1439_dslntf": [
-        "Nucleic Maleficent",
-        "SM44"
-    ],
-    "enemy_1439_dslntf_2": [
-        "Allotropic Maleficent",
-        "SM45"
-    ],
-    "enemy_1440_dselec": [
-        "The Abandoned",
-        "FC1"
-    ],
-    "enemy_1440_dselec_2": [
-        "The Cursed",
-        "FC2"
-    ],
-    "enemy_10001_trslim": [
-        "Basic Slug",
-        "DT1"
-    ],
-    "enemy_10001_trslim_2": [
-        "Gourmet Slug",
-        "DT2"
-    ],
-    "enemy_10002_trtrsl": [
-        "Berry Slug",
-        "DT3"
-    ],
-    "enemy_10002_trtrsl_2": [
-        "Fruit Slug",
-        "DT4"
-    ],
-    "enemy_10003_trwlpl": [
-        "Raging Slug Eater",
-        "DT5"
-    ],
-    "enemy_10003_trwlpl_2": [
-        "Raging Man Eater",
-        "DT6"
-    ],
-    "enemy_10004_trdiam": [
-        "Berry Metal Crab",
-        "DT7"
-    ],
-    "enemy_10004_trdiam_2": [
-        "Fruit Metal Crab",
-        "DT8"
-    ],
-    "enemy_10005_trsmsb": [
-        "Corrupted Soldier",
-        "DT9"
-    ],
-    "enemy_10005_trsmsb_2": [
-        "Corrupted Warrior",
-        "DT10"
-    ],
-    "enemy_10006_trsmgi": [
-        "Corrupted Golem",
-        "DT11"
-    ],
-    "enemy_10006_trsmgi_2": [
-        "Warped Golem",
-        "DT12"
-    ],
-    "enemy_10007_trspsb": [
-        "Ink Brew",
-        "DT13"
-    ],
-    "enemy_10007_trspsb_2": [
-        "Merry Ink Brew",
-        "DT14"
-    ],
-    "enemy_10008_trbbox": [
-        "Sea Terror Chest",
-        "DT15"
-    ],
-    "enemy_10008_trbbox_2": [
-        "Sea Monster Chest",
-        "DT16"
-    ],
-    "enemy_10010_sgnja": [
-        "Street Bandit",
-        "GS1"
-    ],
-    "enemy_10010_sgnja_2": [
-        "Roaming Street Bandit",
-        "GS2"
-    ],
-    "enemy_10011_sgshot": [
-        "Street Hunter",
-        "GS3"
-    ],
-    "enemy_10011_sgshot_2": [
-        "Roaming Street Hunter",
-        "GS4"
-    ],
-    "enemy_10012_sgbtle": [
-        "Exhibit 237-1",
-        "GS5"
-    ],
-    "enemy_10012_sgbtle_2": [
-        "Exhibit 237-2",
-        "GS6"
-    ],
-    "enemy_10013_sgrob": [
-        "Small Bejeweled Wagon",
-        "GS7"
-    ],
-    "enemy_10013_sgrob_2": [
-        "Large Bejeweled Wagon",
-        "GS8"
-    ],
-    "enemy_10014_sgrich": [
-        "Small Broken Vessel",
-        "GS9"
-    ],
-    "enemy_10014_sgrich_2": [
-        "Large Broken Vessel",
-        "GS10"
-    ],
-    "enemy_10015_sgbird": [
-        "Gliding Toy",
-        "GS11"
-    ],
-    "enemy_10015_sgbird_2": [
-        "Gliding Crown",
-        "GS12"
-    ],
-    "enemy_10016_sggint": [
-        "Angry Stampede",
-        "GS13"
-    ],
-    "enemy_10016_sggint_2": [
-        "Angry Rampage",
-        "GS14"
-    ],
-    "enemy_10017_sgass": [
-        "Hall Statue (Left)",
-        "GS15"
-    ],
-    "enemy_10017_sgass_2": [
-        "Hall Statue (Right)",
-        "GS16"
-    ],
-    "enemy_10018_sgrobh": [
-        "Unicycle Toy",
-        "GS17"
-    ],
-    "enemy_10018_sgrobh_2": [
-        "Bouncing Unicycle",
-        "GS18"
-    ],
-    "enemy_10019_sgmum": [
-        "Bejeweled Slab Defender",
-        "GS19"
-    ],
-    "enemy_10019_sgmum_2": [
-        "Bejeweled Slab Guardian",
-        "GS20"
-    ],
-    "enemy_10020_sgcat": [
-        "Mio, the Eager Examinant",
-        "MA"
-    ],
-    "enemy_10021_vtcar": [
-        "Freight Car",
-        "LUD15"
-    ],
-    "enemy_10022_vtskny": [
-        "Novice Junkman",
-        "LUD16"
-    ],
-    "enemy_10022_vtskny_2": [
-        "Seasoned Junkman",
-        "LUD17"
-    ],
-    "enemy_10023_vtsnky": [
-        "Goggles Gang Thief",
-        "LUD18"
-    ],
-    "enemy_10023_vtsnky_2": [
-        "Goggles Gang Thug",
-        "LUD19"
-    ],
-    "enemy_10024_vtstrn": [
-        "Neighborhood Watch Member",
-        "LUD20"
-    ],
-    "enemy_10024_vtstrn_2": [
-        "Neighborhood Watch Leader",
-        "LUD21"
-    ],
-    "enemy_10025_vtmstr": [
-        "Millscar Mercenary",
-        "LUD22"
-    ],
-    "enemy_10025_vtmstr_2": [
-        "Millscar Elite Mercenary",
-        "LUD23"
-    ],
-    "enemy_10026_vtzepl": [
-        "Transport Vessel",
-        "LUD24"
-    ],
-    "enemy_10026_vtzepl_2": [
-        "Heavy Transport Vessel",
-        "LUD25"
-    ],
-    "enemy_10027_vtsk": [
-        "Armor of the Empire",
-        "VSK1"
-    ],
-    "enemy_10028_vtswd": [
-        "Unequipped Blade",
-        "LUD26"
-    ],
-    "enemy_10029_vtshld": [
-        "Protective Vest",
-        "LUD27"
-    ],
-    "enemy_10030_vtwand": [
-        "Assault Arts Unit",
-        "LUD28"
-    ],
-    "enemy_10031_cnvsld": [
-        "Amateur Performer",
-        "CNV1"
-    ],
-    "enemy_10031_cnvsld_2": [
-        "Professional Performer",
-        "CNV2"
-    ],
-    "enemy_10032_cnvsnp": [
-        "Fireworks Merchant",
-        "CNV3"
-    ],
-    "enemy_10032_cnvsnp_2": [
-        "Fireworks Dealer",
-        "CNV4"
-    ],
-    "enemy_10033_cnvbsk": [
-        "Streetside Fire Juggler",
-        "CNV5"
-    ],
-    "enemy_10033_cnvbsk_2": [
-        "Streetside Fire Maestro",
-        "CNV6"
-    ],
-    "enemy_10034_cnvsax": [
-        "Festival Jazz Musician",
-        "CNV7"
-    ],
-    "enemy_10034_cnvsax_2": [
-        "Parading Jazz Musician",
-        "CNV8"
-    ],
-    "enemy_10035_cnvdnc": [
-        "Entusiasta Dancer",
-        "CNV9"
-    ],
-    "enemy_10035_cnvdnc_2": [
-        "Entusiasta Lead Dancer",
-        "CNV10"
-    ],
-    "enemy_10036_cnvpvd": [
-        "Carnevale Snack Seller",
-        "CNV11"
-    ],
-    "enemy_10036_cnvpvd_2": [
-        "Parade Snack Seller",
-        "CNV12"
-    ],
-    "enemy_10037_cnvpcar": [
-        "Carnevale Snack Cart",
-        "CNV13"
-    ],
-    "enemy_10037_cnvpcar_2": [
-        "Parade Snack Cart",
-        "CNV14"
-    ],
-    "enemy_10038_cnvpiz": [
-        "Convenient Eats",
-        "CNV15"
-    ],
-    "enemy_10038_cnvpiz_2": [
-        "Gourmet Delivery",
-        "CNV16"
-    ],
-    "enemy_10039_cnvber": [
-        "Happy Drinking",
-        "CNV17"
-    ],
-    "enemy_10039_cnvber_2": [
-        "Merrymaker Express",
-        "CNV18"
-    ],
-    "enemy_10040_cnvbln": [
-        "Carnevale Balloon",
-        "CNV19"
-    ],
-    "enemy_10040_cnvbln_2": [
-        "Parade Balloon",
-        "CNV20"
-    ],
-    "enemy_10042_prtrop": [
-        "Bridge Builder",
-        "PI1"
-    ],
-    "enemy_10042_prtrop_2": [
-        "Bridge Holder",
-        "PI2"
-    ],
-    "enemy_10043_sailor": [
-        "Risk-seeking Sailor",
-        "PI3"
-    ],
-    "enemy_10043_sailor_2": [
-        "Risk-surviving Sailor",
-        "PI4"
-    ],
-    "enemy_10044_wintun": [
-        "Garum Gourmet",
-        "PI5"
-    ],
-    "enemy_10044_wintun_2": [
-        "Rum Gourmet",
-        "PI6"
-    ],
-    "enemy_10045_parrot": [
-        "Lucky Flyfin",
-        "PI7"
-    ],
-    "enemy_10045_parrot_2": [
-        "Unlucky Flyfin",
-        "PI8"
-    ],
-    "enemy_10046_pshark": [
-        "Saltfin Shaker",
-        "PI9"
-    ],
-    "enemy_10046_pshark_2": [
-        "Saltfin Breaker",
-        "P10"
-    ],
-    "enemy_10047_shrknt": [
-        "Explosion Chaser",
-        "P11"
-    ],
-    "enemy_10047_shrknt_2": [
-        "Explosion Devotee",
-        "P12"
-    ],
-    "enemy_10048_prtsld": [
-        "Bloody Chef",
-        "P13"
-    ],
-    "enemy_10048_prtsld_2": [
-        "Terrible Chef",
-        "P14"
-    ],
-    "enemy_10049_pcaptn": [
-        "Cacophonous Boatswain",
-        "P15"
-    ],
-    "enemy_10049_pcaptn_2": [
-        "Bel Canto Boatswain",
-        "P16"
-    ],
-    "enemy_3006_tersia": [
-        "Theresa, King of Sarkaz",
-        "THA1"
-    ],
-    "enemy_2001_duckmi": [
-        "Duck Lord",
-        "DLD"
-    ],
-    "enemy_2002_bearmi": [
-        "Gopnik",
-        "GPN"
-    ],
-    "enemy_2034_sythef": [
-        "Crying Thief",
-        "THF"
-    ],
-    "enemy_2085_skzjxd": [
-        "Fatty",
-        "FAT"
-    ],
-    "enemy_2009_csaudc": [
-        "Derisive Audience",
-        "CS1"
-    ],
-    "enemy_2010_csdcr": [
-        "Scarlet Singer",
-        "CS2"
-    ],
-    "enemy_2011_csppt": [
-        "Theater Golem",
-        "CS3"
-    ],
-    "enemy_2012_csbln": [
-        "Small Surprise",
-        "CS4"
-    ],
-    "enemy_2017_csphts": [
-        "Ominous Apparition",
-        "PTS"
-    ],
-    "enemy_2021_syfish": [
-        "Bone Sea Drifter",
-        "SY1"
-    ],
-    "enemy_2022_syzeni": [
-        "Ocean Stonecutter",
-        "SY2"
-    ],
-    "enemy_2023_sypult": [
-        "Retching Broodmother",
-        "SY3"
-    ],
-    "enemy_2024_synut": [
-        "Baleful Broodling",
-        "SY4"
-    ],
-    "enemy_2025_syufo": [
-        "Skimming Sea Drifter",
-        "SY5"
-    ],
-    "enemy_2033_syboys": [
-        "Pathshaper Fractal",
-        "SY6"
-    ],
-    "enemy_2040_syrott": [],
-    "enemy_2041_syjely": [
-        "Izumiks Offspring",
-        "SY8"
-    ],
-    "enemy_2035_sybox": [
-        "Chest Seaborn",
-        "SY9"
-    ],
-    "enemy_2043_smsbr": [
-        "Tainted Carcass",
-        "EJ1"
-    ],
-    "enemy_2044_smwiz": [
-        "Distorted Caster",
-        "EJ2"
-    ],
-    "enemy_2045_smdrn": [
-        "Collapsed Construct",
-        "EJ3"
-    ],
-    "enemy_2046_smwar": [
-        "Shattered Champion",
-        "EJ4"
-    ],
-    "enemy_2059_smbox": [
-        "Testaceous Vinecreeps",
-        "EJ5"
-    ],
-    "enemy_2047_smtree": [],
-    "enemy_2060_smshdw": [
-        "Khaganshadow",
-        "EJ6"
-    ],
-    "enemy_2061_smhond": [
-        "Royal Companion",
-        "EJ7"
-    ],
-    "enemy_2063_skzlch": [
-        "Sarkaz Maze Guide",
-        "SFF1"
-    ],
-    "enemy_2064_skzwdd": [
-        "Sarkaz Maze Returner",
-        "SFF2"
-    ],
-    "enemy_2065_skzjs": [
-        "Dreadkaz",
-        "SFF3"
-    ],
-    "enemy_2066_skzlcp": [
-        "Sarkaz Maze Spellweaver",
-        "SFF4"
-    ],
-    "enemy_2067_skzcy": [
-        "Portal",
-        "SFF5"
-    ],
-    "enemy_2068_skzirn": [
-        "Holy Automaton",
-        "SFF6"
-    ],
-    "enemy_2069_skzbox": [
-        "Lost Contraption",
-        "SFF7"
-    ],
-    "enemy_2070_skzfbx": [
-        "Lost Hovercraft",
-        "SFF8"
-    ],
-    "enemy_2090_skzjbc": [
-        "Padmasana of Rebirth",
-        "SFF9"
-    ],
-    "enemy_2091_skzgds": [
-        "Window",
-        "SFF10"
-    ],
-    "enemy_2093_skzams": [
-        "Finale Cadence",
-        "SFF11"
-    ],
-    "enemy_4001_toxcar": [
-        "Retrofitted Gastruck",
-        "MU1"
-    ],
-    "enemy_4001_toxcar_2": [
-        "Supercharged Gastruck",
-        "MU2"
-    ],
-    "enemy_4002_syokai": [
-        "Cheap Second-hand Drone",
-        "MU3"
-    ],
-    "enemy_4002_syokai_2": [
-        "Remodeled Second-hand Drone",
-        "MU4"
-    ],
-    "enemy_4003_pbank": [
-        "Mobile Power Source",
-        "MU5"
-    ],
-    "enemy_4004_muvltr": [
-        "Supply Wagon",
-        "IB1"
-    ],
-    "enemy_4004_muvltr_2": [
-        "Soda POP! Supply Wagon",
-        "IB2"
-    ],
-    "enemy_4005_musqrl": [
-        "Musbeast Supplier",
-        "IB3"
-    ],
-    "enemy_4005_musqrl_2": [
-        "Big Brawn Musbeast Supplier",
-        "IB4"
-    ],
-    "enemy_4006_mumole": [
-        "Sandbeast Supplier",
-        "IB5"
-    ],
-    "enemy_4006_mumole_2": [
-        "Faircare Sandbeast Supplier",
-        "IB6"
-    ],
-    "enemy_4007_murino": [
-        "Burdenbeast Supplier",
-        "IB7"
-    ],
-    "enemy_4007_murino_2": [
-        "Timidthy Burdenbeast Supplier",
-        "IB8"
-    ],
-    "enemy_4008_mucat": [
-        "Hammer Supplier",
-        "IB9"
-    ],
-    "enemy_4008_mucat_2": [
-        "Rampage Hammer Supplier",
-        "IB10"
-    ],
-    "enemy_4009_murgby": [
-        "Ironhead Forward",
-        "IB11"
-    ],
-    "enemy_4009_murgby_2": [
-        "Charger Ironhead Forward",
-        "IB12"
-    ],
-    "enemy_4010_mubsbl": [
-        "Long-Armed Pitcher",
-        "IB13"
-    ],
-    "enemy_4010_mubsbl_2": [
-        "True Shot Long-Armed Pitcher",
-        "IB14"
-    ],
-    "enemy_4012_mumssi": [
-        "Field Shooter",
-        "IB17"
-    ],
-    "enemy_4012_mumssi_2": [
-        "Longshot Field Shooter",
-        "IB18"
-    ],
-    "enemy_4013_mubufn": [
-        "Field Goalie",
-        "IB19"
-    ],
-    "enemy_4013_mubufn_2": [
-        "Brain Barrier Field Goalie",
-        "IB20"
-    ],
-    "enemy_4014_mugnfu": [
-        "Field Bludgeoner",
-        "IB21"
-    ],
-    "enemy_4014_mugnfu_2": [
-        "Basher Field Bludgeoner",
-        "IB22"
-    ],
-    "enemy_4015_musucr": [
-        "RMA70 Spikeball",
-        "IB23"
-    ],
-    "enemy_4016_mubuln": [
-        "Fluffy Pink Balloon",
-        "IB24"
-    ],
-    "enemy_4017_muinbl": [
-        "Compressed Ball",
-        "IB25"
-    ],
-    "enemy_4018_muboom": [
-        "Infused Originium Ball",
-        "IB26"
-    ],
-    "enemy_4019_mugold": [
-        "Originite Prime Ball",
-        "IB27"
-    ],
-    "enemy_4020_muboun": [
-        "Perpetual Rebounder",
-        "IB28"
-    ],
-    "enemy_1050_lslime": [
-        "Pompeii",
-        "UM1"
-    ],
-    "enemy_1500_skulsr": [
-        "Skullshatterer",
-        "SS"
-    ],
-    "enemy_1502_crowns": [
-        "Crownslayer",
-        "CS"
-    ],
-    "enemy_1503_talula": [
-        "Talulah",
-        "TA"
-    ],
-    "enemy_1504_cqbw": [
+    "char_209_ardign": [
+        "Cardigan"
+    ],
+    "char_122_beagle": [
+        "Beagle"
+    ],
+    "char_514_rdfend": [
+        "Reserve Operator - Defender"
+    ],
+    "char_284_spot": [
+        "Spot"
+    ],
+    "char_124_kroos": [
+        "Kroos"
+    ],
+    "char_211_adnach": [
+        "Adnachiel"
+    ],
+    "char_507_rsnipe": [
+        " 2"
+    ],
+    "char_121_lava": [
+        "Lava"
+    ],
+    "char_120_hibisc": [
+        "Hibiscus"
+    ],
+    "char_212_ansel": [
+        "Ansel"
+    ],
+    "char_506_rmedic": [
+        "Reserve Operator - Logistics"
+    ],
+    "char_210_stward": [
+        "Steward"
+    ],
+    "char_505_rcast": [
+        "Reserve Operator - Caster"
+    ],
+    "char_278_orchid": [
+        "Orchid"
+    ],
+    "char_141_nights": [
+        "Haze"
+    ],
+    "char_604_ccast": [
+        "Reserve Operator - Caster2"
+    ],
+    "char_109_fmout": [
+        "Gitano"
+    ],
+    "char_253_greyy": [
+        "Greyy"
+    ],
+    "char_328_cammou": [
+        "Click"
+    ],
+    "char_469_indigo": [
+        "Indigo"
+    ],
+    "char_4004_pudd": [
+        "Pudding"
+    ],
+    "char_235_jesica": [
+        "Jessica"
+    ],
+    "char_126_shotst": [
+        "Meteor"
+    ],
+    "char_190_clour": [
+        "Vermeil"
+    ],
+    "char_133_mm": [
+        "May"
+    ],
+    "char_603_csnipe": [
+        "Reserve Operator - Sniper 2"
+    ],
+    "char_118_yuki": [
+        "Shirayuki"
+    ],
+    "char_440_pinecn": [
+        "Pinecone"
+    ],
+    "char_302_glaze": [
+        "Ambriel"
+    ],
+    "char_366_acdrop": [
+        "Aciddrop"
+    ],
+    "char_4062_totter": [
+        "Totter"
+    ],
+    "char_4100_caper": [
+        "Caper"
+    ],
+    "char_198_blackd": [
+        "Courier"
+    ],
+    "char_149_scave": [
+        "Scavenger"
+    ],
+    "char_600_cpione": [
+        "Reserve Operator - Vanguard 2"
+    ],
+    "char_290_vigna": [
+        "Vigna"
+    ],
+    "char_151_myrtle": [
+        "Myrtle"
+    ],
+    "char_452_bstalk": [
+        "Beanstalk"
+    ],
+    "char_130_doberm": [
+        "Dobermann"
+    ],
+    "char_289_gyuki": [
+        "Matoimaru"
+    ],
+    "char_159_peacok": [
+        "Conviction"
+    ],
+    "char_601_cguard": [
+        "Reserve Operator - Guard 2"
+    ],
+    "char_193_frostl": [
+        "Frostleaf"
+    ],
+    "char_127_estell": [
+        "Estelle"
+    ],
+    "char_185_frncat": [
+        "Mousse"
+    ],
+    "char_301_cutter": [
+        "Cutter"
+    ],
+    "char_337_utage": [
+        "Utage"
+    ],
+    "char_271_spikes": [
+        "Arene"
+    ],
+    "char_4067_lolxh": [
+        "Luo Xiaohei"
+    ],
+    "char_4063_quartz": [
+        "Quartz"
+    ],
+    "char_491_humus": [
+        "Humus"
+    ],
+    "char_237_gravel": [
+        "Gravel"
+    ],
+    "char_607_cspec": [
+        "Reserve Operator - Specialist 2"
+    ],
+    "char_272_strong": [
+        "Jaye"
+    ],
+    "char_236_rope": [
+        "Rope"
+    ],
+    "char_117_myrrh": [
+        "Myrrh"
+    ],
+    "char_187_ccheal": [
+        "Gavial"
+    ],
+    "char_298_susuro": [
+        "Sussurro"
+    ],
+    "char_605_cmedic": [
+        "Reserve Operator - Medic 2"
+    ],
+    "char_181_flower": [
+        "Perfumer"
+    ],
+    "char_385_finlpp": [
+        "Purestream"
+    ],
+    "char_4041_chnut": [
+        "Chestnut"
+    ],
+    "char_199_yak": [
+        "Matterhorn"
+    ],
+    "char_150_snakek": [
+        "Cuora"
+    ],
+    "char_381_bubble": [
+        "Bubble"
+    ],
+    "char_602_cdfend": [
+        "Reserve Operator - Defender 2"
+    ],
+    "char_4130_luton": [
+        "Lutonada",
+        "Luto"
+    ],
+    "char_196_sunbr": [
+        "Gummy"
+    ],
+    "char_260_durnar": [
+        "Durnar",
+        "Dur-nar"
+    ],
+    "char_110_deepcl": [
+        "Deepcolor"
+    ],
+    "char_183_skgoat": [
+        "Earthspirit"
+    ],
+    "char_258_podego": [
+        "Podenco"
+    ],
+    "char_606_csuppo": [
+        "Reserve Operator - Supporter 2"
+    ],
+    "char_484_robrta": [
+        "Roberta"
+    ],
+    "char_355_ethan": [
+        "Ethan"
+    ],
+    "char_277_sqrrel": [
+        "Shaw"
+    ],
+    "char_4107_vrdant": [
+        "Verdant"
+    ],
+    "char_4165_ctrail": [
+        "Contrail"
+    ],
+    "char_128_plosis": [
+        "Ptilopsis"
+    ],
+    "char_275_breeze": [
+        "Breeze"
+    ],
+    "char_4163_rosesa": [
+        "Rose Salt",
+        "rosesalt"
+    ],
+    "char_115_headbr": [
+        "Zima"
+    ],
+    "char_102_texas": [
+        "Texas"
+    ],
+    "char_349_chiave": [
+        "Chiave"
+    ],
+    "char_488_buildr": [
+        "Poncirus"
+    ],
+    "char_513_apionr": [
+        "Tulip"
+    ],
+    "char_4023_rfalcn": [
+        "Kestrel"
+    ],
+    "char_261_sddrag": [
+        "Reed"
+    ],
+    "char_496_wildmn": [
+        "Wild Mane"
+    ],
+    "char_1036_fang2": [
+        "Fang Alter",
+        "Fang 2",
+        "Fang2",
+        "Fang the Fire-Sharpened",
+        "Fang the Fire Sharpened"
+    ],
+    "char_401_elysm": [
+        "Elysium"
+    ],
+    "char_4119_wanqin": [
+        "Wanqing",
+        "Wanking"
+    ],
+    "char_476_blkngt": [
+        "Blacknight"
+    ],
+    "char_4147_mitm": [
+        "Mitm"
+    ],
+    "char_497_ctable": [
+        "Cantabile"
+    ],
+    "char_4017_puzzle": [
+        "Puzzle"
+    ],
+    "char_4144_chilc": [
+        "Chilchuck"
+    ],
+    "char_4052_surfer": [
+        "Surfer"
+    ],
+    "char_308_swire": [
+        "Swire"
+    ],
+    "char_265_sophia": [
+        "Whislash"
+    ],
+    "char_4106_bryota": [
+        "Bryophyta"
+    ],
+    "char_4125_rdoc": [
+        "Doc"
+    ],
+    "char_106_franka": [
+        "Franka"
+    ],
+    "char_131_flameb": [
+        "Flamebringer"
+    ],
+    "char_154_morgan": [
+        "Morgan"
+    ],
+    "char_508_aguard": [
+        "Sharp"
+    ],
+    "char_4142_laios": [
+        "Laios"
+    ],
+    "char_155_tiger": [
+        "Indra"
+    ],
+    "char_415_flint": [
+        "Flint"
+    ],
+    "char_157_dagda": [
+        "Dagda"
+    ],
+    "char_140_whitew": [
+        "Lappland",
+        "Lappy"
+    ],
+    "char_294_ayer": [
+        "Ayerscarpe"
+    ],
+    "char_194_leto": [
+        "Leto"
+    ],
+    "char_4083_chimes": [
+        "Wind Chimes"
+    ],
+    "char_252_bibeak": [
+        "Bibeak"
+    ],
+    "char_459_tachak": [
+        "Tachanka"
+    ],
+    "char_143_ghost": [
+        "Specter"
+    ],
+    "char_356_broca": [
+        "Broca"
+    ],
+    "char_4126_fuze": [
+        "Fuze"
+    ],
+    "char_274_astesi": [
+        "Astesia"
+    ],
+    "char_333_sidero": [
+        "Sideroca"
+    ],
+    "char_475_akafyu": [
+        "Akafuyu"
+    ],
+    "char_1030_noirc2": [
+        "Noir Corne Alter",
+        "Rathalos S Noir Corne",
+        "NoirCorne Alter",
+        "Rathalos",
+        "NoirCorne 2",
+        "Noir Corne 2"
+    ],
+    "char_421_crow": [
+        "La Pluma"
+    ],
+    "char_4066_highmo": [
+        "Highmore"
+    ],
+    "char_486_takila": [
+        "Tequila"
+    ],
+    "char_4131_odda": [
+        "Odda"
+    ],
+    "char_129_bluep": [
+        "Blue Poison"
+    ],
+    "char_204_platnm": [
+        "Platinum"
+    ],
+    "char_367_swllow": [
+        "GreyThroat"
+    ],
+    "char_511_asnipe": [
+        "Stormeye"
+    ],
+    "char_365_aprl": [
+        "April"
+    ],
+    "char_1021_kroos2": [
+        "Kroos Alter",
+        "Kroos the Keen Glint",
+        "Kroos 2",
+        "Kroos2"
+    ],
+    "char_498_inside": [
+        "Insider"
+    ],
+    "char_219_meteo": [
+        "Meteorite"
+    ],
+    "char_379_sesa": [
+        "Sesa"
+    ],
+    "char_4078_bdhkgt": [
+        "Jieyun"
+    ],
+    "char_279_excu": [
+        "Executor"
+    ],
+    "char_346_aosta": [
+        "Aosta"
+    ],
+    "char_002_amiya": [
+        "Amiya",
+        "Caster Amiya"
+    ],
+    "char_405_absin": [
+        "Absinthe"
+    ],
+    "char_411_tomimi": [
+        "Tomimi"
+    ],
+    "char_466_qanik": [
+        "Qanipalaat"
+    ],
+    "char_166_skfire": [
+        "Skyfire"
+    ],
+    "char_509_acast": [
+        "Pith"
+    ],
+    "char_306_leizi": [
+        "Leizi"
+    ],
+    "char_135_halo": [
+        "Astgenne"
+    ],
+    "char_344_beewax": [
+        "Beeswax"
+    ],
+    "char_373_lionhd": [
+        "Leonhardt"
+    ],
+    "char_341_sntlla": [
+        "Santalla"
+    ],
+    "char_388_mint": [
+        "Mint"
+    ],
+    "char_338_iris": [
+        "Iris"
+    ],
+    "char_297_hamoni": [
+        "Harmonie"
+    ],
+    "char_4110_delphn": [
+        "Delphine"
+    ],
+    "char_1011_lava2": [
+        "Lava Alter",
+        "Lava the Purgatory",
+        "Lava 2"
+    ],
+    "char_489_serum": [
+        "Corroserum"
+    ],
+    "char_446_aroma": [
+        "Aroma"
+    ],
+    "char_4013_kjera": [
+        "Kjera"
+    ],
+    "char_4040_rockr": [
+        "Rockrock"
+    ],
+    "char_4054_malist": [
+        "Minimalist"
+    ],
+    "char_499_kaitou": [
+        "Diamante"
+    ],
+    "char_4081_warmy": [
+        "Warmy",
+        "Potlid"
+    ],
+    "char_4164_tecno": [
+        "Tecno"
+    ],
+    "char_242_otter": [
+        "Mayer"
+    ],
+    "char_336_folivo": [
+        "Scene"
+    ],
+    "char_4140_lasher": [
+        "Sand Reckoner"
+    ],
+    "char_108_silent": [
+        "Silence"
+    ],
+    "char_171_bldsk": [
+        "Warfarin"
+    ],
+    "char_345_folnic": [
+        "Folinic"
+    ],
+    "char_510_amedic": [
+        "Touch"
+    ],
+    "char_348_ceylon": [
+        "Ceylon"
+    ],
+    "char_436_whispr": [
+        "Whisperain"
+    ],
+    "char_4173_nowell": [
+        "Nowell"
+    ],
+    "char_402_tuye": [
+        "Tuye"
+    ],
+    "char_473_mberry": [
+        "Mulberry"
+    ],
+    "char_449_glider": [
+        "Honeyberry"
+    ],
+    "char_4114_harold": [
+        "Harold"
+    ],
+    "char_1024_hbisc2": [
+        "Hibiscus Alter",
+        "Hibiscus the Purifier",
+        "Hibiscus 2",
+        "HibiAlter"
+    ],
+    "char_494_vendla": [
+        "Vendela"
+    ],
+    "char_4071_peper": [
+        "Paprika"
+    ],
+    "char_4139_papyrs": [
+        "Papyrus",
+        "Mari"
+    ],
+    "char_148_nearl": [
+        "Nearl"
+    ],
+    "char_226_hmau": [
+        "Hung"
+    ],
+    "char_4109_baslin": [
+        "Bassline"
+    ],
+    "char_4143_sensi": [
+        "Senshi"
+    ],
+    "char_144_red": [
+        "Projekt Red",
+        "Project Red",
+        "Red"
+    ],
+    "char_243_waaifu": [
+        "Waai Fu"
+    ],
+    "char_214_kafka": [
+        "Kafka"
+    ],
+    "char_455_nothin": [
+        "Mr. Nothing",
+        "Mr Nothing",
+        "MrNothing"
+    ],
+    "char_4155_talr": [
+        "Figurino"
+    ],
+    "char_107_liskam": [
+        "Liskarm"
+    ],
+    "char_4137_udflow": [
+        "Underflow"
+    ],
+    "char_201_moeshd": [
+        "Croissant"
+    ],
+    "char_325_bison": [
+        "Bison"
+    ],
+    "char_163_hpsts": [
+        "Vulcan"
+    ],
+    "char_378_asbest": [
+        "Asbestos"
+    ],
+    "char_512_aprot": [
+        "Shalem2"
+    ],
+    "char_4025_aprot2": [
+        "Shalem"
+    ],
+    "char_4047_pianst": [
+        "Czerny"
+    ],
+    "char_457_blitz": [
+        "Blitz"
+    ],
+    "char_304_zebra": [
+        "Heavyrain"
+    ],
+    "char_431_ashlok": [
+        "Ashlock"
+    ],
+    "char_493_firwhl": [
+        "Firewhistle"
+    ],
+    "char_422_aurora": [
+        "Aurora"
+    ],
+    "char_464_cement": [
+        "Cement"
+    ],
+    "char_4148_philae": [
+        "Philae"
+    ],
+    "char_145_prove": [
+        "Provence"
+    ],
+    "char_4006_melnte": [
+        "Melanite"
+    ],
+    "char_158_milu": [
+        "Firewatch"
+    ],
+    "char_218_cuttle": [
+        "Andreana"
+    ],
+    "char_4014_lunacu": [
+        "Lunacub"
+    ],
+    "char_363_toddi": [
+        "Toddifons"
+    ],
+    "char_4043_erato": [
+        "Erato"
+    ],
+    "char_1027_greyy2": [
+        "Greyy Alter",
+        "Greyy the Lightningbearer",
+        "Greyy 2"
+    ],
+    "char_4104_coldst": [
+        "Coldshot"
+    ],
+    "char_4177_brigid": [
+        "Brigid"
+    ],
+    "char_4015_spuria": [
+        "Spuria"
+    ],
+    "char_173_slchan": [
+        "Cliffheart"
+    ],
+    "char_383_snsant": [
+        "Snowsant"
+    ],
+    "char_4105_almond": [
+        "Almond"
+    ],
+    "char_174_slbell": [
+        "Pramanix"
+    ],
+    "char_254_vodfox": [
+        "Shamare"
+    ],
+    "char_4079_haini": [
+        "Lucilla"
+    ],
+    "char_195_glassb": [
+        "Istina"
+    ],
+    "char_326_glacus": [
+        "Glaucus"
+    ],
+    "char_4032_provs": [
+        "Proviso"
+    ],
+    "char_4122_grabds": [
+        "Grain Buds",
+        "Grainbuds"
+    ],
+    "char_433_windft": [
+        "Windflit"
+    ],
+    "char_4162_cathy": [
+        "Catherine"
+    ],
+    "char_101_sora": [
+        "Sora"
+    ],
+    "char_4045_heidi": [
+        "Heidi"
+    ],
+    "char_343_tknogi": [
+        "Tsukinogi"
+    ],
+    "char_4019_ncdeer": [
+        "Nine-Colored Deer"
+    ],
+    "char_492_quercu": [
+        "Quercus"
+    ],
+    "char_4172_xingzh": [
+        "Xingzhu"
+    ],
+    "char_4102_threye": [
+        "Valarqvin"
+    ],
+    "char_487_bobb": [
+        "Bobbing"
+    ],
+    "char_215_mantic": [
+        "Manticore"
+    ],
+    "char_478_kirara": [
+        "Kirara"
+    ],
+    "char_241_panda": [
+        "FEater"
+    ],
+    "char_4036_forcer": [
+        "Enforcer"
+    ],
+    "char_451_robin": [
+        "Robin"
+    ],
+    "char_458_rfrost": [
+        "Frost"
+    ],
+    "char_4171_wulfen": [
+        "Wulfenite"
+    ],
+    "char_369_bena": [
+        "Bena"
+    ],
+    "char_4016_kazema": [
+        "Kazemaru"
+    ],
+    "char_4124_iana": [
+        "Iana"
+    ],
+    "char_4151_tinman": [
+        "Tin Man",
+        "Tinman"
+    ],
+    "char_103_angel": [
+        "Exusiai"
+    ],
+    "char_332_archet": [
+        "Archetto"
+    ],
+    "char_456_ash": [
+        "Ash"
+    ],
+    "char_611_acnipe": [
+        "Stormeye Alt"
+    ],
+    "char_340_shwaz": [
+        "Schwarz"
+    ],
+    "char_4055_bgsnow": [
+        "Pozemka",
+        "Pozëmka"
+    ],
+    "char_430_fartth": [
+        "Fartooth"
+    ],
+    "char_113_cqbw": [
         "W"
     ],
-    "enemy_1505_frstar": [
-        "FrostNova",
-        "FN"
+    "char_300_phenxi": [
+        "Fiammetta"
     ],
-    "enemy_1507_mephi": [
-        "Mephisto",
-        "MP"
+    "char_197_poca": [
+        "Rosa"
     ],
-    "enemy_1508_faust": [
-        "Faust",
-        "FA"
+    "char_2012_typhon": [
+        "Typhon"
     ],
-    "enemy_1509_mousek": [
-        "Rat King",
-        "MK"
+    "char_391_rosmon": [
+        "Rosmontis"
     ],
-    "enemy_1510_frstar2": [
-        "FrostNova, Winters Scar",
-        "FNF"
+    "char_1035_wisdel": [
+        "Wisadel",
+        "Wis'adel",
+        "Walter",
+        "W Alter",
+        "Walter White",
+        "Breaking Bad",
+        "Wiš'adel"
     ],
-    "enemy_1506_patrt": [
-        "Patriot",
-        "PT"
+    "char_1013_chen2": [
+        "Chen Alter",
+        "Ch'en Alter",
+        "Ch'en the Holungday",
+        "Chen 2",
+        "Chen2"
     ],
-    "enemy_1511_mdrock": [
-        "Mudrock",
-        "MR"
+    "char_4117_ray": [
+        "Ray"
     ],
-    "enemy_1512_mcmstr": [
-        "The Big Ugly Thing",
-        "BU"
+    "char_4138_narant": [
+        "Narantuya"
     ],
-    "enemy_1513_dekght": [
-        "Corrupted Knight",
-        "DK1"
+    "char_112_siege": [
+        "Siege"
     ],
-    "enemy_1513_dekght_2": [
-        "Withered Knight",
-        "DK2"
+    "char_222_bpipe": [
+        "Bagpipe"
     ],
-    "enemy_1514_smephi": [
-        "Mephisto, The Singer",
-        "SMP"
+    "char_362_saga": [
+        "Saga"
     ],
-    "enemy_1515_bsnake": [
-        "Deathless Black Snake",
-        "BSN"
+    "char_4026_vulpis": [
+        "Vulpisfoglia",
+        "Vulpis",
+        "Suzumom"
     ],
-    "enemy_1516_jakill": [
-        "Jesselton Williams",
-        "JAK"
+    "char_479_sleach": [
+        "Saileach"
     ],
-    "enemy_1517_xi": [
-        "Free",
-        "DSK"
+    "char_420_flamtl": [
+        "Flametail"
     ],
-    "enemy_1519_bgball": [
-        "Essence of Evolution",
-        "BB"
+    "char_608_acpion": [
+        "Tulip Alt"
     ],
-    "enemy_1520_empgrd": [
-        "Emperors Blade, Pursuer",
-        "EMG"
+    "char_427_vigil": [
+        "Vigil"
     ],
-    "enemy_1521_dslily": [
-        "Sal Viento Bishop Quintus",
-        "SVK"
+    "char_249_mlyss": [
+        "Muelsyse",
+        "mumu"
     ],
-    "enemy_1522_captan": [
-        "Pancho Salas",
-        "CPS"
+    "char_4087_ines": [
+        "Ines"
     ],
-    "enemy_1523_mandra": [
-        "Mandragora",
-        "MD"
+    "char_134_ifrit": [
+        "Ifrit"
     ],
-    "enemy_1524_bldkgt": [
-        "The Blood Knight Dikaiopolis",
-        "BK"
+    "char_213_mostma": [
+        "Mostima"
     ],
-    "enemy_1525_blkswb": [
-        "Degenbrecher",
-        "BJ"
+    "char_180_amgoat": [
+        "Eyja",
+        "Eyjafjalla",
+        "Hallelujah"
     ],
-    "enemy_1526_sfsui": [
-        "Sui-Xiang",
-        "SUI"
+    "char_2013_cerber": [
+        "Ceobe"
     ],
-    "enemy_1527_martyr": [
-        "Andoain, the Martyr",
-        "AND"
+    "char_4027_heyak": [
+        "Ho'olheyak",
+        "Holoheyak",
+        "Hoolheyak",
+        "Ho'loheyak"
     ],
-    "enemy_1528_manfri": [
-        "Manfred",
-        "MAN"
+    "char_4133_logos": [
+        "Logos"
     ],
-    "enemy_1529_dsdevr": [
-        "The Endspeaker, Will of We Many",
-        "AMA"
+    "char_2015_dusk": [
+        "Dusk"
     ],
-    "enemy_1530_white": [
-        "Kreide, Worldly Remains",
-        "KRE"
+    "char_4141_marcil": [
+        "Marcille"
     ],
-    "enemy_1531_bbrain": [
-        "Awaken",
-        "BBR"
+    "char_612_accast": [
+        "Pith Alt"
     ],
-    "enemy_1532_minima": [
-        "Materialist Antagonizer",
-        "CST"
+    "char_472_pasngr": [
+        "Passenger"
     ],
-    "enemy_1533_stmkgt": [
-        "The Last Steam Knight",
-        "LYN"
+    "char_426_billro": [
+        "Carnelian"
     ],
-    "enemy_1535_wlfmster": [
-        "Zaaro, Signore dei Lupi",
-        "ZA"
+    "char_4080_lin": [
+        "Lin"
     ],
-    "enemy_1536_ncrmcr": [
-        "The Leader"
+    "char_377_gdglow": [
+        "Goldenglow"
     ],
-    "enemy_1538_ymmons": [
-        "Ya",
-        "YA01"
+    "char_1038_whitw2": [
+        "Lappland Alter",
+        "Lappland the Decadenza",
+        "Lappy Alter",
+        "Laptop"
     ],
-    "enemy_1538_ymmons_2": [],
-    "enemy_1538_ymmons_3": [],
-    "enemy_1537_mhrors": [
-        "Rathalos",
-        "6935"
+    "char_4046_ebnhlz": [
+        "Ebenholz"
     ],
-    "enemy_1539_reid": [
-        "Red",
-        "The Hateful Avenger",
-        "A15"
+    "char_4146_nymph": [
+        "Nymph"
     ],
-    "enemy_1540_wdncr": [
-        "Eblana",
-        "EB"
+    "char_1040_blaze2": [
+        "Blaze Alter",
+        "Blaze the Igniting Spark"
     ],
-    "enemy_1541_wdslms": [
-        "Damazti Cluster Citizen",
-        "DC3"
+    "char_450_necras": [
+        "Necrass"
     ],
-    "enemy_1542_wdslm": [
-        "Damazti Cluster",
-        "DC1"
+    "char_206_gnosis": [
+        "Gnosis"
     ],
-    "enemy_1543_cstlrs": [
-        "Kristen",
-        "KW"
+    "char_291_aglina": [
+        "Angelina"
     ],
-    "enemy_1544_cledub": [
-        "The Gardener",
-        "CD"
+    "char_358_lisa": [
+        "Suzuran",
+        "Suzu"
     ],
-    "enemy_1545_shpkg": [
-        "Dolly, Sovereign of Sheep",
-        "DLY"
+    "char_614_acsupo": [
+        "Raidian"
     ],
-    "enemy_1546_cliff": [
-        "Clip Cliff",
-        "BSC"
+    "char_248_mgllan": [
+        "Magallan"
     ],
-    "enemy_1547_blord": [
-        "Duqarael, Regents Crimson",
-        "PB"
+    "char_1012_skadi2": [
+        "Skadi Alter",
+        "Skadi the Corrupting Heart",
+        "Skadi2",
+        "Skadi 2"
     ],
-    "enemy_1548_ltniak": [
-        "Herkunftshorn, Witch King",
-        "HH"
-    ],
-    "enemy_1549_windoc": [
-        "Harold",
-        "Harold Craigavon",
-        "HC"
-    ],
-    "enemy_1550_dhnzzh": [
-        "Slumbering of Sui"
-    ],
-    "enemy_1551_bolicp": [
-        "Captain Mateo",
-        "EC"
-    ],
-    "enemy_1552_mmamiy": [
-        "Amiya",
-        "THA2"
-    ],
-    "enemy_1553_lrdead": [
-        "Kindling Revenant",
-        "DS"
-    ],
-    "enemy_1554_lrtsia": [
+    "char_4134_cetsyr": [
+        "Civilight Eterna",
         "Theresa",
-        "THA3"
-    ],
-    "enemy_1556_dsbish": [
-        "Martus",
-        "Martus Seaborn",
-        "Mártus Seaborn",
-        "MSB"
-    ],
-    "enemy_1557_trcerb": [
-        "Tri-Maw",
-        "DT"
-    ],
-    "enemy_1558_sgactr": [
-        "Zubayidamu the Timeless",
-        "ZYA"
-    ],
-    "enemy_1559_vtlionk": [
-        "Alistair, Final Flame of the Empire",
-        "ALS"
-    ],
-    "enemy_1560_cnvlap": [
-        "La Signora del Carnevale",
-        "LOM"
-    ],
-    "enemy_1561_crzjdg": [
-        "Anastasio, the Atoner",
-        "AR"
-    ],
-    "enemy_2003_rockman": [
-        "Lost Colossus",
-        "WDG"
-    ],
-    "enemy_2004_balloon": [
-        "Jetman",
-        "JTM"
-    ],
-    "enemy_2005_axetro": [
-        "Forsaken One",
-        "FSK"
-    ],
-    "enemy_2006_flsnip": [
-        "Rusthammer Warrior",
-        "RSH"
-    ],
-    "enemy_2007_flwitch": [
-        "Frozen Monstrosity",
-        "FZM"
-    ],
-    "enemy_2008_flking": [
-        "Gravestone",
-        "GST"
-    ],
-    "enemy_2013_csbot": [
-        "Wandering Puppet",
-        "MSC"
-    ],
-    "enemy_2014_csicer": [
-        "Snow Doe",
-        "ICR"
-    ],
-    "enemy_2015_csicem": [
-        "Frost Buck",
-        "ICM"
-    ],
-    "enemy_2016_csphtm": [
-        "Lucian, Blood Diamond",
-        "PTM"
-    ],
-    "enemy_2018_csdoll": [
-        "Big Sad Lock",
-        "DOL"
-    ],
-    "enemy_2019_cshost": [
-        "Troupe Mouthpiece",
-        "HST"
-    ],
-    "enemy_2020_cswrtr": [
-        "Playwright",
-        "WRT"
-    ],
-    "enemy_2026_syudg": [
-        "Saint Carmen",
-        "UGF"
-    ],
-    "enemy_2027_syudg2": [
-        "Saint Iberia",
-        "UGS"
-    ],
-    "enemy_2028_syevil": [
-        "Tidelinked Bishop",
-        "SEV"
-    ],
-    "enemy_2029_symon": [
-        "Tidelinked Archon",
-        "SMF"
-    ],
-    "enemy_2030_symon2": [
-        "Tidelinked Immortal",
-        "SMS"
-    ],
-    "enemy_2031_syboy": [
-        "Pathshaper",
-        "SRF"
-    ],
-    "enemy_2032_syboy2": [
-        "Lingering Pathshaper",
-        "SRS"
-    ],
-    "enemy_2037_sygirl": [
-        "Paranoia Illusion",
-        "GIR"
-    ],
-    "enemy_2038_sydonq": [
-        "The Last Knight",
-        "DOQ"
-    ],
-    "enemy_2039_syskad": [
-        "Isharmla, Heart of Corruption",
-        "SKA"
-    ],
-    "enemy_2042_syboss": [
-        "Izumik, Source of Ecology",
-        "MZK"
-    ],
-    "enemy_2036_syshop": [
-        "Cannot",
-        "KNT"
-    ],
-    "enemy_2048_smgrd": [
-        "Demons Blade",
-        "DB"
-    ],
-    "enemy_2049_smgrd2": [
-        "Demons Blade, the Vagabond",
-        "DBV"
-    ],
-    "enemy_2050_smsha": [
-        "Fallen Snowpriest",
-        "FSP"
-    ],
-    "enemy_2051_smsha2": [
-        "Hollow Snowpriest",
-        "HSP"
-    ],
-    "enemy_2052_smgia": [
-        "Weaving Vinecreeps",
-        "WVC"
-    ],
-    "enemy_2053_smgia2": [
-        "Elder Vinecreeps",
-        "EVC"
-    ],
-    "enemy_2054_smdeer": [
-        "Samivilinn, the Resolution of the Very North",
-        "SAM"
-    ],
-    "enemy_2055_smlead": [
-        "Eikthyrnir, the Scar of the Shattered",
-        "EIK"
-    ],
-    "enemy_2056_smedzi": [
-        "Crazelyseon, the Ascendant of Cosmoi",
-        "CES"
-    ],
-    "enemy_2057_smkght": [
-        "Kharanduu Khagan, the Scourge of the Land",
-        "KSL"
-    ],
-    "enemy_2058_smlion": [
-        "Lugalszargus, the Overlord of Ages",
-        "LOA"
-    ],
-    "enemy_2062_smcar": [
-        "Self-Driving Recon Cart",
-        "SMC0"
-    ],
-    "enemy_2071_skzdny": [
-        "Laqeramaline",
-        "LMR"
-    ],
-    "enemy_2072_skdny2": [
-        "The Tear Weaver",
-        "LMS"
-    ],
-    "enemy_2074_skzgly": [
-        "Goliath",
-        "GLT"
-    ],
-    "enemy_2075_skgly2": [
-        "Champion of Lost Agonies",
-        "GLS"
-    ],
-    "enemy_2076_skzklz": [
-        "Kaltsit",
-        "KST"
-    ],
-    "enemy_2077_skklz2": [
-        "The Doomsday Prophet",
-        "KSS"
-    ],
-    "enemy_2078_skzmst": [
-        "Mon2tr",
-        "M2T"
-    ],
-    "enemy_2079_skmst2": [
-        "Evolving Monster",
-        "M2S"
-    ],
-    "enemy_2080_skzlwy": [
-        "Fremont, Enlightener of Minds",
-        "FMT"
-    ],
-    "enemy_2081_skztxs": [
-        "Theresis, Black Crowned Lord",
-        "TRS"
-    ],
-    "enemy_2082_skzdd": [
-        "Buldrokkastee, Holy Gun-Knight",
-        "SPT"
-    ],
-    "enemy_2084_skzcan": [
-        "Mr. Goodenough",
-        "KNS"
-    ],
-    "enemy_2089_skzjkl": [
-        "Quilon, Avatar of the Mahasattva",
-        "QLN"
-    ],
-    "enemy_2092_skzamy": [
-        "Amiya, Furnaces Finale",
-        "AFF"
-    ],
-    "enemy_2097_skzfdd": [
-        "Buldrokkastee, Holy Gun-Knight",
-        "SPT-2"
-    ],
-    "enemy_2098_skzftx": [
-        "Theresis, Black Crowned Lord",
-        "TRS-2"
-    ],
-    "enemy_2099_skzfkl": [
-        "Quilon, Avatar of the Mahasattva",
-        "QLN-2"
-    ],
-    "enemy_2100_skzfmf": [
-        "Manfred",
-        "MAN-2"
-    ],
-    "enemy_5008_cstrwd": [],
-    "enemy_5009_shtrwd": [],
-    "enemy_5010_catrdg": [],
-    "enemy_6001_trsgst": [
-        "Fleet-footed Thief",
-        "DL1"
-    ],
-    "enemy_6002_trswlf": [
-        "Teary Detective",
-        "DL2"
-    ],
-    "enemy_6003_trsslm": [
-        "Shiny Pooloo",
-        "DL3"
-    ],
-    "enemy_6004_pleslm": [
-        "Milan",
-        "DL4"
-    ],
-    "enemy_6005_llstone": [
-        "Spherical Colossus",
-        "DL5"
-    ],
-    "enemy_6006_fystone": [],
-    "enemy_6007_mtslm": [
-        "Drifting Cabin",
-        "DL7"
-    ],
-    "enemy_6008_mtslms": [
-        "Fluorescent Originium Slug",
-        "DL8"
-    ],
-    "enemy_6009_nlkgtbs": [
-        "Fruit of Gluttony",
-        "DL9"
-    ],
-    "enemy_6010_boxing": [
-        "Boy Wonder Sandel",
-        "DL10"
-    ],
-    "enemy_6011_planty": [
-        "Natures Compromise",
-        "DL11"
-    ],
-    "enemy_6012_plants": [
-        "Small Symbiont",
-        "DL12"
-    ],
-    "enemy_6013_smith": [
-        "Mamas Rebel Girl",
-        "DL13"
-    ],
-    "enemy_6014_crzgas": [
-        "Tumor",
-        "DL14"
-    ],
-    "enemy_6015_ictruck": [
-        "Supersweetie Smiley",
-        "DL15"
-    ],
-    "enemy_6016_splash": [
-        "Thirster",
-        "DL16"
-    ],
-    "enemy_6017_icdrone": [
-        "Supersweetie Delivery Drone",
-        "DL17"
-    ],
-    "enemy_6018_carrier": [
-        "Hatred Without Root",
-        "DL18"
-    ],
-    "enemy_6019_escort": [
-        "Seeding Drone",
-        "DL19"
-    ],
-    "enemy_6020_orang": [
-        "Spirit of Liquor",
-        "DL20"
-    ],
-    "enemy_6021_cask": [
-        "Aged Mead",
-        "DL21"
-    ],
-    "enemy_6022_m2cnt": [
-        "Count Grimscore",
-        "DL22"
-    ],
-    "enemy_6023_crane": [
-        "Greedy Catcher",
-        "DL23"
-    ],
-    "enemy_6024_crnbug": [
-        "Really Unruly Creature",
-        "DL24"
-    ],
-    "enemy_6025_tinker": [
-        "Altar of Hatred",
-        "DL25"
-    ],
-    "enemy_6026_techn": [
-        "Witchcraft Orb",
-        "DL26"
-    ],
-    "enemy_6027_bqthie": [
-        "Ye Wuqing, Rooftop Runner",
-        "DL27"
-    ],
-    "enemy_6028_cosgia": [
-        "Song of the Pack",
-        "DL28"
-    ],
-    "enemy_7001_blwzad": [
-        "Tribal Shaman",
-        "SD1"
-    ],
-    "enemy_7001_blwzad_2": [
-        "Lord Ameer Shaman",
-        "SD2"
-    ],
-    "enemy_7002_veingd": [
-        "Vein Guardian",
-        "SD3"
-    ],
-    "enemy_7002_veingd_2": [
-        "Maddened Vein Guardian",
-        "SD4"
-    ],
-    "enemy_7003_catapt": [
-        "Anything Can Be Broken",
-        "SD5"
-    ],
-    "enemy_7003_catapt_2": [
-        "Everything Should Be Smashed",
-        "SD6"
-    ],
-    "enemy_7004_xbdeer": [
-        "Leporibeast Shorthorn",
-        "SD7"
-    ],
-    "enemy_7004_xbdeer_2": [
-        "Leporibeast Longhorn",
-        "SD8"
-    ],
-    "enemy_7005_xbbull": [
-        "Mossback Beast",
-        "SD9"
-    ],
-    "enemy_7005_xbbull_2": [
-        "Lush Mossback Beast",
-        "SD10"
-    ],
-    "enemy_7006_xbcrab": [
-        "Cragpincer",
-        "SD11"
-    ],
-    "enemy_7006_xbcrab_2": [
-        "Crystalline Cragpincer",
-        "SD12"
-    ],
-    "enemy_7015_xbcrab2": [
-        "Consortium of Pincers",
-        "SD13"
-    ],
-    "enemy_7007_xbbird": [],
-    "enemy_7008_wrkwrk": [
-        "Basic Harvester",
-        "SD15"
-    ],
-    "enemy_7009_mtmoun": [
-        "The Immortal",
-        "SD16"
-    ],
-    "enemy_7010_bldrgn": [
-        "Great Wingbeast",
-        "SD17"
-    ],
-    "enemy_7011_paki": [
-        "Sargonian Contract Assassin",
-        "SD18"
-    ],
-    "enemy_7012_wilder": [
-        "Dauntless Linebreaker",
-        "SD19"
-    ],
-    "enemy_7013_slwazd": [
-        "The Ruinbringer",
-        "SD20"
-    ],
-    "enemy_7014_dva": [
-        "Al-Rafiq",
-        "SD21"
-    ],
-    "enemy_8006_flmgd": [
-        "Reforged Retinue",
-        "SFR02"
-    ],
-    "enemy_8008_eltswd": [
-        "V.T.E.",
-        "SFR04"
-    ],
-    "enemy_8009_eltufo": [
-        "Rosmontiss Drone",
-        "SFR05"
-    ],
-    "enemy_8001_flmlod": [
-        "Sverdsmeltr",
-        "Sverdsmeltr, Guardian Ember of the King",
-        "SFR01"
-    ],
-    "enemy_8001_flmlod_2": [],
-    "enemy_8001_flmlod_3": [],
-    "enemy_8007_eltrsm": [
-        "Rosmontis, Simulated Sentry I",
-        "SFR03"
-    ],
-    "enemy_8007_eltrsm_2": [
-        "Rosmontis, Simulated Sentry II",
-        "SFR032"
-    ],
-    "enemy_8007_eltrsm_3": [
-        "Rosmontis, Simulated Sentry III",
-        "SFR033"
-    ],
-    "enemy_7016_shushu": [
-        "Barrenlands Musbeast",
-        "SD22"
-    ],
-    "enemy_7017_miner": [
-        "Mine Drudge",
-        "SD23"
-    ],
-    "enemy_7018_scarab": [
-        "Volatile Originium Slug",
-        "SD24"
-    ],
-    "enemy_7019_thief": [
-        "Wilderness Rogue",
-        "SD25"
-    ],
-    "enemy_7020_xbtor": [
-        "Spined Shellbeast",
-        "SD26"
-    ],
-    "enemy_7021_xbmoth": [
-        "Luminous Fowlbeast",
-        "SD27"
-    ],
-    "enemy_7022_gatgod": [
-        "Zumrutruyasl Priestess",
-        "Zümrütrüyası Priestess",
-        "SD28"
-    ],
-    "enemy_7023_gatbb": [
-        "Zumrutruyasl Acolyte",
-        "Zümrütrüyası Acolyte",
-        "SD29"
-    ],
-    "enemy_7024_clking": [
-        "Wandering Troubadour",
-        "SD30"
-    ],
-    "enemy_7025_clbb": [
-        "Wandering Apprentice",
-        "SD31"
-    ],
-    "enemy_7026_xbele": [
-        "Timestream Guardian",
-        "SD32"
-    ],
-    "enemy_7027_xbbtl": [
-        "Crystalline Titanibeast",
-        "SD33"
-    ],
-    "enemy_7028_xbscp": [
-        "Crystalline Oberobeast",
-        "SD34"
-    ],
-    "enemy_7029_pilot": [
-        "Sailraider",
-        "SD35"
-    ],
-    "enemy_7030_skodo": [
-        "Dustweaver",
-        "SD36"
-    ],
-    "enemy_7031_ghking": [
-        "Annihilator",
-        "SD37"
-    ],
-    "enemy_7034_xbmsn": [
-        "Diligent Laborer",
-        "SD38"
-    ],
-    "enemy_7044_xblbug": [
-        "Flying Originium Slug",
-        "SD39"
-    ],
-    "enemy_7045_xbtd": [
-        "Charging Originium Slug",
-        "SD40"
-    ],
-    "enemy_7046_xbslug": [
-        "Armored Originium Slug",
-        "SD41"
-    ],
-    "enemy_7047_xbdit": [
-        "Liquid Shifter",
-        "SD42"
-    ],
-    "enemy_7049_xbnum": [
-        "Rogue Burdenbeast",
-        "SD43"
-    ],
-    "enemy_7051_xbcas": [
-        "Thalebeast",
-        "SD44"
-    ],
-    "enemy_7053_xbcasz": [
-        "Thalebeast Alt",
-        "SD45"
-    ],
-    "enemy_7054_xbsmi": [
-        "Vanillawing",
-        "SD46"
-    ],
-    "enemy_7056_xbsmiz": [
-        "Vanillawing Alt",
-        "SD47"
-    ],
-    "enemy_7057_xbrok": [
-        "Quicksand Beast",
-        "SD48"
-    ],
-    "enemy_7059_xbrokz": [
-        "Quicksand Beast Alt",
-        "SD49"
-    ],
-    "enemy_9001_ayokai": [
-        "Surprise Sponsor Drone",
-        "PM01"
-    ],
-    "enemy_9002_adsham": [
-        "Sarkaz Bloodthirst Caster",
-        "PM02"
-    ],
-    "enemy_9003_askate": [
-        "Pathfinder Armicustos",
-        "PM03"
-    ],
-    "enemy_9004_anlock": [
-        "Technician Prisoner",
-        "PM04"
-    ],
-    "enemy_9005_aicemn": [
-        "Glacial Archer",
-        "PM05"
-    ],
-    "enemy_5501_arcbank": [
-        "Tycoon",
-        "PM06"
-    ],
-    "enemy_5502_arcthf": [
-        "Treasure Thief",
-        "PM07"
-    ],
-    "enemy_5503_arcslma": [
-        "Jelly Kid",
-        "PM08"
-    ],
-    "enemy_5504_arcslmi": [
-        "Jello",
-        "PM09"
-    ],
-    "enemy_5505_arctxi": [
-        "The Amphibian Ship-Car",
-        "PM10"
-    ],
-    "enemy_5506_arcgo": [
-        "Washed-Up Parts",
-        "PM11"
-    ],
-    "enemy_5507_arctolm": [
-        "Fountain Soda Knight",
-        "PM12"
-    ],
-    "enemy_10050_cjmeat": [
-        "Breakfast",
-        "OR1"
-    ],
-    "enemy_10050_cjmeat_2": [
-        "Dinner",
-        "OR2"
-    ],
-    "enemy_10051_cjmag": [
-        "Diet",
-        "OR3"
-    ],
-    "enemy_10051_cjmag_2": [
-        "Fasting",
-        "OR4"
-    ],
-    "enemy_10052_cjshld": [
-        "Sated",
-        "OR5"
-    ],
-    "enemy_10052_cjshld_2": [
-        "Bloated",
-        "OR6"
-    ],
-    "enemy_10053_cjman": [
-        "Expletive",
-        "OR7"
-    ],
-    "enemy_10053_cjman_2": [
-        "Profanity",
-        "OR8"
-    ],
-    "enemy_10054_cjhot": [
-        "Boiling Pot",
-        "OR9"
-    ],
-    "enemy_10054_cjhot_2": [
-        "Drifting Aroma",
-        "OR10"
-    ],
-    "enemy_10055_cjgost": [
-        "Forethought",
-        "OR11"
-    ],
-    "enemy_10055_cjgost_2": [
-        "Sureness",
-        "OR12"
-    ],
-    "enemy_10056_cjfish": [
-        "Vanity",
-        "OR13"
-    ],
-    "enemy_10056_cjfish_2": [
-        "Humility",
-        "OR14"
-    ],
-    "enemy_10057_cjstel": [
-        "Reminiscence",
-        "OR15"
-    ],
-    "enemy_10057_cjstel_2": [
-        "Remembrance",
-        "OR16"
-    ],
-    "enemy_10058_cjfrog": [
-        "Wealth",
-        "OR17"
-    ],
-    "enemy_10058_cjfrog_2": [
-        "Prosperity",
-        "OR18"
-    ],
-    "enemy_10059_cjgfod": [
-        "Sapidity",
-        "OR19"
-    ],
-    "enemy_10060_cjbfod": [
-        "Vapidity",
-        "OR20"
-    ],
-    "enemy_10061_cjglon": [
-        "Sapid Auspice",
-        "OR21"
-    ],
-    "enemy_10062_cjblon": [
-        "Vapid Blight",
-        "OR22"
-    ],
-    "enemy_10063_cjdoor": [
-        "Mouth of Annihilation",
-        "OR23"
-    ],
-    "enemy_10063_cjdoor_2": [
-        "Mouth of Creation",
-        "OR24"
-    ],
-    "enemy_1562_cjtaot": [
-        "Gluttony",
-        "WY"
-    ],
-    "enemy_1037_lunsabr": [
-        "Spec Ops Soldier",
-        "33"
-    ],
-    "enemy_1043_zomsabr": [
-        "Possessed Soldier",
-        "P1"
-    ],
-    "enemy_1043_zomsabr_2": [
-        "Possessed Soldier Leader",
-        "P2"
-    ],
-    "enemy_1169_duphx": [
-        "Dublinn Phalanx Infantry",
-        "DU9"
-    ],
-    "enemy_1169_duphx_2": [
-        "Dublinn Phalanx Commander",
-        "DU10"
-    ],
-    "enemy_7007_xbbird_3": [
-        "Sandfall Crystalhoof",
-        "SD14"
+        "Civilight",
+        "Eterna"
+    ],
+    "char_1031_slent2": [
+        "Silence Alter",
+        "Silence the Paradigmatic",
+        "Silence 2",
+        "Silence2"
+    ],
+    "char_2023_ling": [
+        "Ling"
+    ],
+    "char_4072_ironmn": [
+        "Stainless"
+    ],
+    "char_245_cello": [
+        "Virtuosa"
+    ],
+    "char_250_phatom": [
+        "Phantom"
+    ],
+    "char_1028_texas2": [
+        "Texas Alter",
+        "Texas the Omertosa",
+        "Texas 2",
+        "Texas2"
+    ],
+    "char_1029_yato2": [
+        "Yato Alter",
+        "Kirin R Yato",
+        "Yato2",
+        "Yato 2"
+    ],
+    "char_1502_crosly": [
+        "CrownSlayer"
+    ],
+    "char_615_acspec": [
+        "Misery"
+    ],
+    "char_322_lmlee": [
+        "Lee"
+    ],
+    "char_1033_swire2": [
+        "Swire Alter",
+        "Swire the Elegant Wit",
+        "Swire 2",
+        "Swire2"
+    ],
+    "char_400_weedy": [
+        "Weedy"
+    ],
+    "char_225_haak": [
+        "Aak"
+    ],
+    "char_474_glady": [
+        "Gladiia"
+    ],
+    "char_437_mizuki": [
+        "Mizuki"
+    ],
+    "char_4132_ascln": [
+        "Ascalon"
+    ],
+    "char_1023_ghost2": [
+        "Specter Alter",
+        "Specter the Unchained",
+        "Specter 2",
+        "Specter2"
+    ],
+    "char_4048_doroth": [
+        "Dorothy"
+    ],
+    "char_4123_ela": [
+        "Ela"
+    ],
+    "char_1039_thorn2": [
+        "Thorns Alter",
+        "Thorns the Lodestar",
+        "Thorns the lobster"
+    ],
+    "char_147_shining": [
+        "Shining"
+    ],
+    "char_613_acmedc": [
+        "Touch Alt"
+    ],
+    "char_179_cgbird": [
+        "Nightingale"
+    ],
+    "char_003_kalts": [
+        "Kal'tsit",
+        "Kaltsit"
+    ],
+    "char_4042_lumen": [
+        "Lumen"
+    ],
+    "char_1016_agoat2": [
+        "Eyja Alter",
+        "Eyjafjalla the Hvít Aska",
+        "Eyjafjalla Alter",
+        "EyjaAlter",
+        "Eyja 2",
+        "Eyja2",
+        "Hallelujah Alter"
+    ],
+    "char_1020_reed2": [
+        "Reed Alter",
+        "Reed the Flame Shadow",
+        "Reed2",
+        "Reed 2"
+    ],
+    "char_136_hsguma": [
+        "Hoshiguma"
+    ],
+    "char_610_acfend": [
+        "Mechanist"
+    ],
+    "char_202_demkni": [
+        "Saria"
+    ],
+    "char_423_blemsh": [
+        "Blemishine"
+    ],
+    "char_2025_shu": [
+        "Shu"
+    ],
+    "char_2014_nian": [
+        "Nian"
+    ],
+    "char_311_mudrok": [
+        "Mudrock"
+    ],
+    "char_4065_judge": [
+        "Penance"
+    ],
+    "char_416_zumama": [
+        "Eunectes"
+    ],
+    "char_4039_horn": [
+        "Horn"
+    ],
+    "char_1034_jesca2": [
+        "Jessica Alter",
+        "Jessica the Liberated",
+        "Jessica 2",
+        "Jessica2"
+    ],
+    "char_2026_yu": [
+        "Yu"
+    ],
+    "char_264_f12yin": [
+        "Mountain"
+    ],
+    "char_2024_chyue": [
+        "Chongyue",
+        "chongus",
+        "chungus"
+    ],
+    "char_172_svrash": [
+        "SilverAsh"
+    ],
+    "char_293_thorns": [
+        "Thorns"
+    ],
+    "char_4082_qiubai": [
+        "Qiubai",
+        "quibai"
+    ],
+    "char_4088_hodrer": [
+        "Hoederer"
+    ],
+    "char_4145_ulpia": [
+        "Ulpianus",
+        "Ulpipi",
+        "Ulpapi"
+    ],
+    "char_4058_pepe": [
+        "Pepe",
+        "Pepega",
+        "Paypay",
+        "Paypal",
+        "Namie's 3rd Child"
+    ],
+    "char_010_chen": [
+        "Ch'en",
+        "Chen"
+    ],
+    "char_4009_irene": [
+        "Irene"
+    ],
+    "char_4116_blkkgt": [
+        "Degenbrecher",
+        "Degen"
+    ],
+    "char_017_huang": [
+        "Blaze"
+    ],
+    "char_1026_gvial2": [
+        "Gavial Alter",
+        "Gavial the Invincible",
+        "Gavial 2",
+        "Gavial2"
+    ],
+    "char_350_surtr": [
+        "Surtr"
+    ],
+    "char_4098_vvana": [
+        "Viviana"
+    ],
+    "char_1019_siege2": [
+        "Vina Victoria",
+        "Vina",
+        "Siege Alter",
+        "Siege2"
+    ],
+    "char_188_helage": [
+        "Hellagur"
+    ],
+    "char_4121_zuole": [
+        "Zuo Le",
+        "Zuole"
+    ],
+    "char_485_pallas": [
+        "Pallas"
+    ],
+    "char_1014_nearl2": [
+        "Nearl Alter",
+        "Nearl the Radiant Knight",
+        "NTRKnight",
+        "Nearl 2",
+        "Nearl2"
+    ],
+    "char_4011_lessng": [
+        "Lessing"
+    ],
+    "char_609_acguad": [
+        "Sharp Alt"
+    ],
+    "char_1032_excu2": [
+        "Executor Alter",
+        "FedEx",
+        "Executor the Ex Foedere",
+        "Executor2",
+        "Executor 2"
+    ],
+    "char_4010_etlchi": [
+        "Entelechia",
+        "Enchiladas",
+        "Enchilada"
+    ],
+    "char_4064_mlynar": [
+        "Mlynar",
+        "Młynar",
+        "Mylnar"
+    ],
+    "char_230_savage": [
+        "Savage"
+    ],
+    "char_282_catap": [
+        "Catapult"
+    ],
+    "char_283_midn": [
+        "Midnight"
+    ],
+    "char_137_brownb": [
+        "Beehunter",
+        "oraoraora"
+    ],
+    "char_347_jaksel": [
+        "Jackie"
+    ],
+    "char_164_nightm": [
+        "Nightmare"
+    ],
+    "char_220_grani": [
+        "Grani"
+    ],
+    "char_263_skadi": [
+        "Skadi"
+    ],
+    "char_1001_amiya2": [
+        "Guard Amiya",
+        "Gaurd Amiya"
+    ],
+    "char_1037_amiya3": [
+        "Medic Amiya"
     ]
 }
