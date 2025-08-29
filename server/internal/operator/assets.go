@@ -43,7 +43,7 @@ type SpineData struct {
 	PlaformIndieSkelJsonFilepath string   `json:"skel_json_filepath"`
 	PlaformIndiePngFilepath      string   `json:"png_filepath"`
 	Animations                   []string `json:"animations"`
-	UseStraightAlpha             bool     `json:"use_straight_alpha`
+	UseStraightAlpha             bool     `json:"use_straight_alpha"`
 
 	SpritesheetDataFilepath              string `json:"-"`
 	PlatformIndieSpritesheetDataFilepath string `json:"spritesheet_data_filepath"`

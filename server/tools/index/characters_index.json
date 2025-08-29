@@ -18773,7 +18773,7 @@
                 "Sleep",
                 "Special"
               ],
-              "UseStraightAlpha": true,
+              "UseStraightAlpha": false,
               "spritesheet_data_filepath": ""
             }
           },
@@ -35263,7 +35263,7 @@
                 "Sleep",
                 "Special"
               ],
-              "UseStraightAlpha": true,
+              "UseStraightAlpha": false,
               "spritesheet_data_filepath": ""
             }
           },
@@ -38821,7 +38821,7 @@
                 "Sleep",
                 "Special"
               ],
-              "UseStraightAlpha": true,
+              "UseStraightAlpha": false,
               "spritesheet_data_filepath": ""
             }
           },
@@ -39726,7 +39726,7 @@
                 "Sit",
                 "Sleep"
               ],
-              "UseStraightAlpha": true,
+              "UseStraightAlpha": false,
               "spritesheet_data_filepath": ""
             }
           },
@@ -39905,7 +39905,7 @@
                 "Sit",
                 "Sleep"
               ],
-              "UseStraightAlpha": true,
+              "UseStraightAlpha": false,
               "spritesheet_data_filepath": ""
             }
           },
@@ -41924,7 +41924,7 @@
                 "Sit",
                 "Sleep"
               ],
-              "UseStraightAlpha": true,
+              "UseStraightAlpha": false,
               "spritesheet_data_filepath": ""
             }
           },
