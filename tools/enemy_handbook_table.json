@@ -31511,6 +31511,778 @@
       "OverrideKillCntInfos": null,
       "SortId": 1057
     },
+    "enemy_4022_mushtm": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Shoots quicker and aims in a direction where there are no <Positional Barriers>",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        0
+      ],
+      "DamageTypeAsNumpy": [
+        0
+      ],
+      "Description": "The Tactical Team is known for its tactical acumen and superb tactical equipment. Tactical Team Shooters equipped with thermal-imaging goggles can shoot with unerring accuracy in any condition, which is why they prefer to play in fog.",
+      "EnemyId": "enemy_4022_mushtm",
+      "EnemyIndex": "IB29",
+      "EnemyLevel": 0,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "Tactical Team Shooter",
+      "OverrideKillCntInfos": null,
+      "SortId": 1058
+    },
+    "enemy_4022_mushtm_2": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Shoots quicker and aims in a direction where there are no <Positional Barriers>",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        0
+      ],
+      "DamageTypeAsNumpy": [
+        0
+      ],
+      "Description": "Elite members of the Tactical Team are said to have been baptized by fire in battle. Elite Tactical Team Shooters equipped with thermal-imaging goggles can shoot with unerring accuracy in any condition, which is why they prefer to play in fog.",
+      "EnemyId": "enemy_4022_mushtm_2",
+      "EnemyIndex": "IB30",
+      "EnemyLevel": 0,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "Elite Tactical Team Shooter",
+      "OverrideKillCntInfos": null,
+      "SortId": 1059
+    },
+    "enemy_4023_mushtb": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Kickoffs are more powerful and aims in a direction where there are no <Positional Barriers>",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        0
+      ],
+      "DamageTypeAsNumpy": [
+        0
+      ],
+      "Description": "The Tactical Team is known for its tactical acumen and superb tactical equipment. Tactical Team Goalies equipped with binocular goggles can find any gaps in the opposing formation and kick the ball directly into the opposing goal.",
+      "EnemyId": "enemy_4023_mushtb",
+      "EnemyIndex": "IB31",
+      "EnemyLevel": 0,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "Tactical Team Goalie",
+      "OverrideKillCntInfos": null,
+      "SortId": 1060
+    },
+    "enemy_4023_mushtb_2": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Kickoffs are more powerful and aims in a direction where there are no <Positional Barriers>",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        0
+      ],
+      "DamageTypeAsNumpy": [
+        0
+      ],
+      "Description": "Elite members of the Tactical Team are said to have been baptized by fire in battle. Elite Tactical Team Goalies equipped with binocular goggles can find any gaps in the opposing formation and kick the ball directly into the opposing goal.",
+      "EnemyId": "enemy_4023_mushtb_2",
+      "EnemyIndex": "IB32",
+      "EnemyLevel": 0,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "Elite Tactical Team Goalie",
+      "OverrideKillCntInfos": null,
+      "SortId": 1061
+    },
+    "enemy_4024_mushtg": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Prioritizes searching for your units that dealt damage to opposing players\n",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        0
+      ],
+      "DamageTypeAsNumpy": [
+        0
+      ],
+      "Description": "The Tactical Team is known for its tactical acumen and superb tactical equipment. Tactical Team Hitters equipped with vital monitors and warning systems can quickly locate opposing players attempting to hurt their teammates. Watch out—they have already found you.",
+      "EnemyId": "enemy_4024_mushtg",
+      "EnemyIndex": "IB33",
+      "EnemyLevel": 0,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "Tactical Team Hitter",
+      "OverrideKillCntInfos": null,
+      "SortId": 1062
+    },
+    "enemy_4024_mushtg_2": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Prioritizes searching for your units that dealt damage to opposing players\n",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        0
+      ],
+      "DamageTypeAsNumpy": [
+        0
+      ],
+      "Description": "Elite members of the Tactical Team are said to have been baptized by fire in battle. Elite Tactical Team Hitters equipped with vital monitors and warning systems can quickly locate opposing players attempting to hurt their teammates. Watch out—they have already found you.",
+      "EnemyId": "enemy_4024_mushtg_2",
+      "EnemyIndex": "IB34",
+      "EnemyLevel": 0,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "Elite Tactical Team Hitter",
+      "OverrideKillCntInfos": null,
+      "SortId": 1063
+    },
+    "enemy_4025_muhrym": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Dribbles for a period of time after touching the ball, increasing movement speed and taking up +1 Block\n",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        0
+      ],
+      "DamageTypeAsNumpy": [
+        0
+      ],
+      "Description": "Members of the Ball Mania Club have such love for football that they have taken to the field dressed up as one. Ball is love, ball is life.",
+      "EnemyId": "enemy_4025_muhrym",
+      "EnemyIndex": "IB35",
+      "EnemyLevel": 0,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "Ball Mania Club Shooter",
+      "OverrideKillCntInfos": null,
+      "SortId": 1064
+    },
+    "enemy_4025_muhrym_2": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Dribbles for a period of time after touching the ball, increasing movement speed and taking up +1 Block\n",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        0
+      ],
+      "DamageTypeAsNumpy": [
+        0
+      ],
+      "Description": "Honorary members of the Ball Mania Club are one with the ball, physically and spiritually. Ball is love, ball is life.",
+      "EnemyId": "enemy_4025_muhrym_2",
+      "EnemyIndex": "IB36",
+      "EnemyLevel": 0,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "Ball Mania Club Honorary Shooter",
+      "OverrideKillCntInfos": null,
+      "SortId": 1065
+    },
+    "enemy_4026_muhryb": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Prioritizes kicking off the ball to a shooter",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        0
+      ],
+      "DamageTypeAsNumpy": [
+        0
+      ],
+      "Description": "Members of the Ball Mania Club have such love for football that they have taken to the field dressed up as one. These goalies are so attuned to the ball that their passes never miss their mark.",
+      "EnemyId": "enemy_4026_muhryb",
+      "EnemyIndex": "IB37",
+      "EnemyLevel": 0,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "Ball Mania Club Goalie",
+      "OverrideKillCntInfos": null,
+      "SortId": 1066
+    },
+    "enemy_4026_muhryb_2": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Prioritizes kicking off the ball to a shooter",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        0
+      ],
+      "DamageTypeAsNumpy": [
+        0
+      ],
+      "Description": "Honorary members of the Ball Mania Club are one with the ball, physically and spiritually. These goalies are so attuned to the ball that their passes never miss their mark.",
+      "EnemyId": "enemy_4026_muhryb_2",
+      "EnemyIndex": "IB38",
+      "EnemyLevel": 0,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "Ball Mania Club Honorary Goalie",
+      "OverrideKillCntInfos": null,
+      "SortId": 1067
+    },
+    "enemy_4027_muhryg": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Prioritizes searching for your units near the ball",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        0
+      ],
+      "DamageTypeAsNumpy": [
+        0
+      ],
+      "Description": "Members of the Ball Mania Club have such love for football that they have taken to the field dressed up as one. This love has slowly grown into a dangerous obsession. Careful, you may not want to let them see you kick their beloved ball.",
+      "EnemyId": "enemy_4027_muhryg",
+      "EnemyIndex": "IB39",
+      "EnemyLevel": 0,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "Ball Mania Club Hitter",
+      "OverrideKillCntInfos": null,
+      "SortId": 1068
+    },
+    "enemy_4027_muhryg_2": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Prioritizes searching for your units near the ball",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        0
+      ],
+      "DamageTypeAsNumpy": [
+        0
+      ],
+      "Description": "Honorary members of the Ball Mania Club are one with the ball, physically and spiritually. The ball is all that matters to them, nothing else. Careful, you may not want to let them see you kick their beloved ball.",
+      "EnemyId": "enemy_4027_muhryg_2",
+      "EnemyIndex": "IB40",
+      "EnemyLevel": 0,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "Ball Mania Club Honorary Hitter",
+      "OverrideKillCntInfos": null,
+      "SortId": 1069
+    },
+    "enemy_4028_mukfum": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Shots are more powerful, and the ball damages any of your units it touches\n",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        0
+      ],
+      "DamageTypeAsNumpy": [
+        0
+      ],
+      "Description": "For Sportsmen United, taking out all the opponent's players is the surest way to victory. The spikes on Sportsmen United Shooters make defending against them a daunting prospect.",
+      "EnemyId": "enemy_4028_mukfum",
+      "EnemyIndex": "IB41",
+      "EnemyLevel": 0,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "Sportsmen United Shooter",
+      "OverrideKillCntInfos": null,
+      "SortId": 1070
+    },
+    "enemy_4028_mukfum_2": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Shots are more powerful, and the ball damages any of your units it touches\n",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        0
+      ],
+      "DamageTypeAsNumpy": [
+        0
+      ],
+      "Description": "Sportsmen United veterans take it upon themselves to uphold the Positional Football tradition of taking out opposing players. The spikes on Sportsmen United Veteran Shooters make defending against them a daunting prospect.",
+      "EnemyId": "enemy_4028_mukfum_2",
+      "EnemyIndex": "IB42",
+      "EnemyLevel": 0,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "Sportsmen United Veteran Shooter",
+      "OverrideKillCntInfos": null,
+      "SortId": 1071
+    },
+    "enemy_4029_mukfub": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "When HP drops below 50%, gains increased ATK and DEF, temporarily stops defending the goal and starts attacking your players\n",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        0
+      ],
+      "DamageTypeAsNumpy": [
+        0
+      ],
+      "Description": "For Sportsmen United, taking out all the opponent's players is the surest way to victory. Sportsmen United Goalies may look mild-mannered, but they can be terrifying when angered.",
+      "EnemyId": "enemy_4029_mukfub",
+      "EnemyIndex": "IB43",
+      "EnemyLevel": 0,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "Sportsmen United Goalie",
+      "OverrideKillCntInfos": null,
+      "SortId": 1072
+    },
+    "enemy_4029_mukfub_2": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "When HP drops below 50%, gains increased ATK and DEF, temporarily stops defending the goal and starts attacking your players\n",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        0
+      ],
+      "DamageTypeAsNumpy": [
+        0
+      ],
+      "Description": "Sportsmen United veterans take it upon themselves to uphold the Positional Football tradition of taking out opposing players. Sportsmen United Veteran Goalies may look mild-mannered, but they can be terrifying when angered.",
+      "EnemyId": "enemy_4029_mukfub_2",
+      "EnemyIndex": "IB44",
+      "EnemyLevel": 0,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "Sportsmen United Veteran Goalie",
+      "OverrideKillCntInfos": null,
+      "SortId": 1073
+    },
+    "enemy_4030_mukfug": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Prioritizes attacking your units, high ATK",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        0
+      ],
+      "DamageTypeAsNumpy": [
+        0
+      ],
+      "Description": "For Sportsmen United, taking out all the opponent's players is the surest way to victory. No one knows if the hammers carried by Sportsmen United Hitters are really made of iron. No one wants to find out the hard way.",
+      "EnemyId": "enemy_4030_mukfug",
+      "EnemyIndex": "IB45",
+      "EnemyLevel": 0,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "Sportsmen United Hitter",
+      "OverrideKillCntInfos": null,
+      "SortId": 1074
+    },
+    "enemy_4030_mukfug_2": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Prioritizes attacking your units, high ATK",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        0
+      ],
+      "DamageTypeAsNumpy": [
+        0
+      ],
+      "Description": "Sportsmen United veterans take it upon themselves to uphold the Positional Football tradition of taking out opposing players. No one knows if the hammers carried by Sportsmen United Veteran Hitters are really made of iron. No one wants to find out the hard way.",
+      "EnemyId": "enemy_4030_mukfug_2",
+      "EnemyIndex": "IB46",
+      "EnemyLevel": 0,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "Sportsmen United Veteran Hitter",
+      "OverrideKillCntInfos": null,
+      "SortId": 1075
+    },
+    "enemy_4031_muftsn": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Becomes smaller when kicked, requiring less damage to move",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Can only be blocked by a Goalkeeper or unit with Block Count of 3 or higher.",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        3
+      ],
+      "DamageTypeAsNumpy": [
+        3
+      ],
+      "Description": "An Originium beetle plays the part of the football. It sucks in air to expand rapidly when it feels threatened, but this one seems to have a leak and keeps getting flatter as it rolls.",
+      "EnemyId": "enemy_4031_muftsn",
+      "EnemyIndex": "IB47",
+      "EnemyLevel": 0,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "Leaking Beetleball",
+      "OverrideKillCntInfos": null,
+      "SortId": 1076
+    },
+    "enemy_4032_muftmg": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Becomes bigger when kicked, requiring more damage to move",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Can only be blocked by a Goalkeeper or unit with Block Count of 3 or higher.",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        3
+      ],
+      "DamageTypeAsNumpy": [
+        3
+      ],
+      "Description": "An Originium beetle plays the part of the football. It sucks in air to expand rapidly when it feels threatened, to scare away predators, but this just makes it all the more adorable to those present.",
+      "EnemyId": "enemy_4032_muftmg",
+      "EnemyIndex": "IB48",
+      "EnemyLevel": 0,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "Bloated Beetleball",
+      "OverrideKillCntInfos": null,
+      "SortId": 1077
+    },
+    "enemy_4033_muftic": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Leaves behind slippery ice on the ground",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Can only be blocked by a Goalkeeper or unit with Block Count of 3 or higher.",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        3
+      ],
+      "DamageTypeAsNumpy": [
+        3
+      ],
+      "Description": "A ball made in the image of the indomitable will of the north. Like its inspiration, its mere presence summons snow and ice. Anyone up for a game of ice hockey?",
+      "EnemyId": "enemy_4033_muftic",
+      "EnemyIndex": "IB49",
+      "EnemyLevel": 0,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "Will of the North Ball",
+      "OverrideKillCntInfos": null,
+      "SortId": 1078
+    },
+    "enemy_4034_muftgl": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Leaves behind sticky slime on the ground",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Can only be blocked by a Goalkeeper or unit with Block Count of 3 or higher.",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        3
+      ],
+      "DamageTypeAsNumpy": [
+        3
+      ],
+      "Description": "A ball made in the image of a strange sea creature. Like its inspiration, it excretes a mucous slime, but it is unable to slide smoothly. Instead, it gets stuck in its own slime all the time.",
+      "EnemyId": "enemy_4034_muftgl",
+      "EnemyIndex": "IB50",
+      "EnemyLevel": 0,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "Deep Sea Slider Ball",
+      "OverrideKillCntInfos": null,
+      "SortId": 1079
+    },
+    "enemy_4035_mufbsa": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Gains significantly increased ASPD for every 20% HP lost",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        0
+      ],
+      "DamageTypeAsNumpy": [
+        0
+      ],
+      "Description": "Monument that Engineering made from leftover materials. A few had too much time on their hands and gave it the ability to move. After all, there is nothing in the rules that addresses what to do if the ball gets flattened into a pancake.",
+      "EnemyId": "enemy_4035_mufbsa",
+      "EnemyIndex": "IB51",
+      "EnemyLevel": 1,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "Monument to Force",
+      "OverrideKillCntInfos": null,
+      "SortId": 1080
+    },
+    "enemy_4036_mufbsb": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Takes up more Blocks for every 20% HP lost",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        0
+      ],
+      "DamageTypeAsNumpy": [
+        0
+      ],
+      "Description": "Monument that Engineering made from leftover materials. A few had too much time on their hands and gave it the ability to move. After all, no one is foolish enough to try to stop something this big on the field.\n",
+      "EnemyId": "enemy_4036_mufbsb",
+      "EnemyIndex": "IB52",
+      "EnemyLevel": 1,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "Monument to Toughness",
+      "OverrideKillCntInfos": null,
+      "SortId": 1081
+    },
+    "enemy_4037_mufbsc": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Gains significantly increased ATK for every 20% HP lost",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        0
+      ],
+      "DamageTypeAsNumpy": [
+        0
+      ],
+      "Description": "Monument that Engineering made from leftover materials. A few had too much time on their hands and gave it the ability to move. With enough skill, even a club can penetrate the target like a javelin.",
+      "EnemyId": "enemy_4037_mufbsc",
+      "EnemyIndex": "IB53",
+      "EnemyLevel": 1,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "Monument to Accuracy",
+      "OverrideKillCntInfos": null,
+      "SortId": 1082
+    },
+    "enemy_4038_mufbsd": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Gains significantly increased ATK for every 20% HP lost",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        1
+      ],
+      "DamageTypeAsNumpy": [
+        1
+      ],
+      "Description": "Monument that Engineering made from leftover materials. A few had too much time on their hands and gave it the ability to move. The fire in its hand never goes out. If it did though, all it would need to do is relight it from its head.",
+      "EnemyId": "enemy_4038_mufbsd",
+      "EnemyIndex": "IB54",
+      "EnemyLevel": 1,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "Monument to Passion",
+      "OverrideKillCntInfos": null,
+      "SortId": 1083
+    },
+    "enemy_4039_mufbse": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Gains significantly increased Movement Speed for every 20% HP lost",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        3
+      ],
+      "DamageTypeAsNumpy": [
+        3
+      ],
+      "Description": "Monument that Engineering made from leftover materials. A few had too much time on their hands and gave it the ability to move. No one notices that the cleaning cart at the head of the course is faster than any of the race cars.\n",
+      "EnemyId": "enemy_4039_mufbse",
+      "EnemyIndex": "IB55",
+      "EnemyLevel": 1,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "Monument to Swiftness",
+      "OverrideKillCntInfos": null,
+      "SortId": 1084
+    },
     "enemy_1050_lslime": {
       "Ability": null,
       "AbilityList": [

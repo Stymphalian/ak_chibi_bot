@@ -4135,6 +4135,114 @@
         "Perpetual Rebounder",
         "IB28"
     ],
+    "enemy_4022_mushtm": [
+        "Tactical Team Shooter",
+        "IB29"
+    ],
+    "enemy_4022_mushtm_2": [
+        "Elite Tactical Team Shooter",
+        "IB30"
+    ],
+    "enemy_4023_mushtb": [
+        "Tactical Team Goalie",
+        "IB31"
+    ],
+    "enemy_4023_mushtb_2": [
+        "Elite Tactical Team Goalie",
+        "IB32"
+    ],
+    "enemy_4024_mushtg": [
+        "Tactical Team Hitter",
+        "IB33"
+    ],
+    "enemy_4024_mushtg_2": [
+        "Elite Tactical Team Hitter",
+        "IB34"
+    ],
+    "enemy_4025_muhrym": [
+        "Ball Mania Club Shooter",
+        "IB35"
+    ],
+    "enemy_4025_muhrym_2": [
+        "Ball Mania Club Honorary Shooter",
+        "IB36"
+    ],
+    "enemy_4026_muhryb": [
+        "Ball Mania Club Goalie",
+        "IB37"
+    ],
+    "enemy_4026_muhryb_2": [
+        "Ball Mania Club Honorary Goalie",
+        "IB38"
+    ],
+    "enemy_4027_muhryg": [
+        "Ball Mania Club Hitter",
+        "IB39"
+    ],
+    "enemy_4027_muhryg_2": [
+        "Ball Mania Club Honorary Hitter",
+        "IB40"
+    ],
+    "enemy_4028_mukfum": [
+        "Sportsmen United Shooter",
+        "IB41"
+    ],
+    "enemy_4028_mukfum_2": [
+        "Sportsmen United Veteran Shooter",
+        "IB42"
+    ],
+    "enemy_4029_mukfub": [
+        "Sportsmen United Goalie",
+        "IB43"
+    ],
+    "enemy_4029_mukfub_2": [
+        "Sportsmen United Veteran Goalie",
+        "IB44"
+    ],
+    "enemy_4030_mukfug": [
+        "Sportsmen United Hitter",
+        "IB45"
+    ],
+    "enemy_4030_mukfug_2": [
+        "Sportsmen United Veteran Hitter",
+        "IB46"
+    ],
+    "enemy_4031_muftsn": [
+        "Leaking Beetleball",
+        "IB47"
+    ],
+    "enemy_4032_muftmg": [
+        "Bloated Beetleball",
+        "IB48"
+    ],
+    "enemy_4033_muftic": [
+        "Will of the North Ball",
+        "IB49"
+    ],
+    "enemy_4034_muftgl": [
+        "Deep Sea Slider Ball",
+        "IB50"
+    ],
+    "enemy_4035_mufbsa": [
+        "Monument to Force",
+        "IB51"
+    ],
+    "enemy_4036_mufbsb": [
+        "Monument to Toughness",
+        "IB52"
+    ],
+    "enemy_4037_mufbsc": [
+        "Monument to Accuracy",
+        "IB53"
+    ],
+    "enemy_4038_mufbsd": [
+        "Monument to Passion",
+        "IB54"
+    ],
+    "enemy_4039_mufbse": [
+        "Monument to Swiftness",
+        "IB55"
+    ],
     "enemy_1050_lslime": [
         "Pompeii",
         "UM1"
