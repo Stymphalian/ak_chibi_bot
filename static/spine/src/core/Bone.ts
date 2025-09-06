@@ -94,7 +94,7 @@ export class Bone implements Updatable {
 	ashearY = 0;
 
 	/** If true, the applied transform matches the world transform. If false, the world transform has been modified since it was
-	  * computed and {@link #updateAppliedTransform()} must be called before accessing the applied transform. */
+	 * computed and {@link #updateAppliedTransform()} must be called before accessing the applied transform. */
 	appliedValid = false;
 
 	/** Part of the world transform matrix for the X axis. If changed, {@link #appliedValid} should be set to false. */
@@ -129,7 +129,7 @@ export class Bone implements Updatable {
 	}
 
 	/** Returns false when the bone has not been computed because {@link BoneData#skinRequired} is true and the
-	  * {@link Skeleton#skin active skin} does not {@link Skin#bones contain} this bone. */
+	 * {@link Skeleton#skin active skin} does not {@link Skin#bones contain} this bone. */
 	isActive() {
 		return this.active;
 	}
@@ -201,10 +201,18 @@ export class Bone implements Updatable {
 				break;
 			}
 			case TransformMode.NoRotationOrReflection: {
+				// PATCHED CHANGES from version 4.2
+				let sx = 1 / this.skeleton.scaleX;
+				let sy = 1 / this.skeleton.scaleY;
+				pa *= sx;
+				pc *= sy;
+
 				let s = pa * pa + pc * pc;
 				let prx = 0;
 				if (s > 0.0001) {
-					s = Math.abs(pa * pd - pb * pc) / s;
+					// PATCHED CHANGES
+					// s = Math.abs(pa * pd - pb * pc) / s;
+					s = Math.abs(pa * pd * sy - pb * pc * sx) / s;
 					pb = pc * s;
 					pd = pa * s;
 					prx = Math.atan2(pc, pa) * MathUtils.radDeg;
@@ -223,15 +231,16 @@ export class Bone implements Updatable {
 				this.b = pa * lb - pb * ld;
 				this.c = pc * la + pd * lc;
 				this.d = pc * lb + pd * ld;
+				break;
 
-				// HACK!!!
-				// The transform mode specicially says no reflections
-				// But this is the only way for it to look good?
-				this.a *= Math.sign(this.skeleton.scaleX);
-				this.b *= Math.sign(this.skeleton.scaleX);
-				this.c *= Math.sign(this.skeleton.scaleY);
-				this.d *= Math.sign(this.skeleton.scaleY);
-				return;
+				// // HACK!!!
+				// // The transform mode specicially says no reflections
+				// // But this is the only way for it to look good?
+				// this.a *= Math.sign(this.skeleton.scaleX);
+				// this.b *= Math.sign(this.skeleton.scaleX);
+				// this.c *= Math.sign(this.skeleton.scaleY);
+				// this.d *= Math.sign(this.skeleton.scaleY);
+				// return;
 			}
 			case TransformMode.NoScale:
 			case TransformMode.NoScaleOrReflection: {
@@ -308,10 +317,11 @@ export class Bone implements Updatable {
 	 * calling this method is equivalent to the local tranform used to compute the world transform, but may not be identical. */
 	updateAppliedTransform() {
 		this.appliedValid = true;
+
 		let parent = this.parent;
-		if (parent == null) {
-			this.ax = this.worldX;
-			this.ay = this.worldY;
+		if (!parent) {
+			this.ax = this.worldX - this.skeleton.x;
+			this.ay = this.worldY - this.skeleton.y;
 			this.arotation = Math.atan2(this.c, this.a) * MathUtils.radDeg;
 			this.ascaleX = Math.sqrt(this.a * this.a + this.c * this.c);
 			this.ascaleY = Math.sqrt(this.b * this.b + this.d * this.d);
@@ -321,23 +331,60 @@ export class Bone implements Updatable {
 		}
 		let pa = parent.a, pb = parent.b, pc = parent.c, pd = parent.d;
 		let pid = 1 / (pa * pd - pb * pc);
+		let ia = pd * pid, ib = pb * pid, ic = pc * pid, id = pa * pid;
 		let dx = this.worldX - parent.worldX, dy = this.worldY - parent.worldY;
-		this.ax = (dx * pd * pid - dy * pb * pid);
-		this.ay = (dy * pa * pid - dx * pc * pid);
-		let ia = pid * pd;
-		let id = pid * pa;
-		let ib = pid * pb;
-		let ic = pid * pc;
-		let ra = ia * this.a - ib * this.c;
-		let rb = ia * this.b - ib * this.d;
-		let rc = id * this.c - ic * this.a;
-		let rd = id * this.d - ic * this.b;
+		this.ax = (dx * ia - dy * ib);
+		this.ay = (dy * id - dx * ic);
+
+		let ra, rb, rc, rd;
+		if (this.data.transformMode == TransformMode.OnlyTranslation) {
+			ra = this.a;
+			rb = this.b;
+			rc = this.c;
+			rd = this.d;
+		} else {
+			switch (this.data.transformMode) {
+				case TransformMode.NoRotationOrReflection: {
+					let s = Math.abs(pa * pd - pb * pc) / (pa * pa + pc * pc);
+					pb = -pc * this.skeleton.scaleX * s / this.skeleton.scaleY;
+					pd = pa * this.skeleton.scaleY * s / this.skeleton.scaleX;
+					pid = 1 / (pa * pd - pb * pc);
+					ia = pd * pid;
+					ib = pb * pid;
+					break;
+				}
+				case TransformMode.NoScale:
+				case TransformMode.NoScaleOrReflection:
+					let cos = MathUtils.cosDeg(this.rotation), sin = MathUtils.sinDeg(this.rotation);
+					pa = (pa * cos + pb * sin) / this.skeleton.scaleX;
+					pc = (pc * cos + pd * sin) / this.skeleton.scaleY;
+					let s = Math.sqrt(pa * pa + pc * pc);
+					if (s > 0.00001) s = 1 / s;
+					pa *= s;
+					pc *= s;
+					s = Math.sqrt(pa * pa + pc * pc);
+					if (this.data.transformMode == TransformMode.NoScale && pid < 0 != (this.skeleton.scaleX < 0 != this.skeleton.scaleY < 0)) s = -s;
+					let r = MathUtils.PI / 2 + Math.atan2(pc, pa);
+					pb = Math.cos(r) * s;
+					pd = Math.sin(r) * s;
+					pid = 1 / (pa * pd - pb * pc);
+					ia = pd * pid;
+					ib = pb * pid;
+					ic = pc * pid;
+					id = pa * pid;
+			}
+			ra = ia * this.a - ib * this.c;
+			rb = ia * this.b - ib * this.d;
+			rc = id * this.c - ic * this.a;
+			rd = id * this.d - ic * this.b;
+		}
+
 		this.ashearX = 0;
 		this.ascaleX = Math.sqrt(ra * ra + rc * rc);
 		if (this.ascaleX > 0.0001) {
 			let det = ra * rd - rb * rc;
 			this.ascaleY = det / this.ascaleX;
-			this.ashearY = Math.atan2(ra * rb + rc * rd, det) * MathUtils.radDeg;
+			this.ashearY = -Math.atan2(ra * rb + rc * rd, det) * MathUtils.radDeg;
 			this.arotation = Math.atan2(rc, ra) * MathUtils.radDeg;
 		} else {
 			this.ascaleX = 0;
@@ -345,6 +392,49 @@ export class Bone implements Updatable {
 			this.ashearY = 0;
 			this.arotation = 90 - Math.atan2(rd, rb) * MathUtils.radDeg;
 		}
+
+		// this.appliedValid = true;
+		// let parent = this.parent;
+		// if (parent == null) {
+		// 	this.ax = this.worldX - this.skeleton.x;
+		// 	this.ay = this.worldY - this.skeleton.y;
+		// 	// this.ax = this.worldX;
+		// 	// this.ay = this.worldY;
+		// 	this.arotation = Math.atan2(this.c, this.a) * MathUtils.radDeg;
+		// 	this.ascaleX = Math.sqrt(this.a * this.a + this.c * this.c);
+		// 	this.ascaleY = Math.sqrt(this.b * this.b + this.d * this.d);
+		// 	this.ashearX = 0;
+		// 	this.ashearY = Math.atan2(this.a * this.b + this.c * this.d, this.a * this.d - this.b * this.c) * MathUtils.radDeg;
+		// 	return;
+		// }
+		// let pa = parent.a, pb = parent.b, pc = parent.c, pd = parent.d;
+		// let pid = 1 / (pa * pd - pb * pc);
+		// let dx = this.worldX - parent.worldX, dy = this.worldY - parent.worldY;
+		// this.ax = (dx * pd * pid - dy * pb * pid);
+		// this.ay = (dy * pa * pid - dx * pc * pid);
+
+		// let ia = pid * pd;
+		// let id = pid * pa;
+		// let ib = pid * pb;
+		// let ic = pid * pc;
+		// let ra = ia * this.a - ib * this.c;
+		// let rb = ia * this.b - ib * this.d;
+		// let rc = id * this.c - ic * this.a;
+		// let rd = id * this.d - ic * this.b;
+
+		// this.ashearX = 0;
+		// this.ascaleX = Math.sqrt(ra * ra + rc * rc);
+		// if (this.ascaleX > 0.0001) {
+		// 	let det = ra * rd - rb * rc;
+		// 	this.ascaleY = det / this.ascaleX;
+		// 	this.ashearY = Math.atan2(ra * rb + rc * rd, det) * MathUtils.radDeg;
+		// 	this.arotation = Math.atan2(rc, ra) * MathUtils.radDeg;
+		// } else {
+		// 	this.ascaleX = 0;
+		// 	this.ascaleY = Math.sqrt(rb * rb + rd * rd);
+		// 	this.ashearY = 0;
+		// 	this.arotation = 90 - Math.atan2(rd, rb) * MathUtils.radDeg;
+		// }
 	}
 
 	/** Transforms a point from world coordinates to the bone's local coordinates. */

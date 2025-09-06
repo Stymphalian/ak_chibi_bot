@@ -712,6 +712,15 @@ export class Actor {
 	}
 
 	public DrawDebug(renderer: SceneRenderer) {
+		// renderer.skeletonDebugRenderer.drawBones = false;
+		// renderer.skeletonDebugRenderer.drawBoundingBoxes = false;
+		// renderer.skeletonDebugRenderer.drawClipping = false;
+		// renderer.skeletonDebugRenderer.drawMeshHull = false;
+		// renderer.skeletonDebugRenderer.drawPaths = false;
+		// renderer.skeletonDebugRenderer.drawRegionAttachments = true;
+		// renderer.skeletonDebugRenderer.drawMeshTriangles = false;
+		// renderer.drawSkeletonDebug(this.skeleton, this.config.premultipliedAlpha);
+
 		let actor_pos = this.getPosition3();
 		let bb = this.GetBoundingBox();
 		renderer.rect(

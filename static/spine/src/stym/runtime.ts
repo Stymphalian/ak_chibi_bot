@@ -188,8 +188,10 @@ export class Runtime {
 
             configScaleX: configScaleX,
             configScaleY: configScaleY,
-            scaleX: 0.45 * this.runtimeConfig.chibiScale * configScaleX,
-            scaleY: 0.45 * this.runtimeConfig.chibiScale * configScaleY,
+            // scaleX: 0.45 * this.runtimeConfig.chibiScale * configScaleX,
+            // scaleY: 0.45 * this.runtimeConfig.chibiScale * configScaleY,
+            scaleX: this.runtimeConfig.chibiScale * configScaleX,
+            scaleY: this.runtimeConfig.chibiScale * configScaleY,
             maxSizePx: configMaxPixelSize,
             premultipliedAlpha: requestData["use_straight_alpha"] ? false : true,
             animationPlaySpeed: requestData["animation_speed"] ? requestData["animation_speed"] : 1.0,
@@ -211,6 +213,12 @@ export class Runtime {
                 console.log(error);
             }
         };
+
+        const isSpritesheet = this.actorConfig.spritesheetDataUrl != null && this.actorConfig.spritesheetDataUrl != "";
+        if (isSpritesheet) {
+            this.actorConfig.scaleX *= 0.45;
+            this.actorConfig.scaleY *= 0.45;
+        }
 
         this.spinePlayer.addActorToUpdateQueue(username, this.actorConfig);
     }

@@ -397,6 +397,130 @@
 	width: 150px;
 }
 
+/** Scale Controls **/
+.spine-player-scale-controls {
+	display: flex;
+	flex-direction: column;
+	background: rgba(0, 0, 0, 0.5);
+	border-top-left-radius: 4px;
+	border-top-right-radius: 4px;
+	padding: 8px;
+	gap: 8px;
+}
+
+.spine-player-scale-section {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	gap: 8px;
+}
+
+.spine-player-scale-section label {
+	font-size: 12px;
+	min-width: 50px;
+	color: #ddd;
+}
+
+.spine-player-actor-select {
+	background: rgba(0, 0, 0, 0.7);
+	border: 1px solid #555;
+	border-radius: 3px;
+	color: #ddd;
+	padding: 4px 8px;
+	font-size: 12px;
+	min-width: 120px;
+}
+
+.spine-player-actor-select:focus {
+	outline: none;
+	border-color: #62B0EE;
+}
+
+.spine-player-scale-slider {
+	flex: 1;
+	height: 20px;
+	background: transparent;
+	outline: none;
+	-webkit-appearance: none;
+}
+
+.spine-player-scale-slider::-webkit-slider-track {
+	background: #555;
+	height: 4px;
+	border-radius: 2px;
+}
+
+.spine-player-scale-slider::-webkit-slider-thumb {
+	-webkit-appearance: none;
+	appearance: none;
+	width: 16px;
+	height: 16px;
+	background: #62B0EE;
+	border-radius: 50%;
+	cursor: pointer;
+}
+
+.spine-player-scale-slider::-webkit-slider-thumb:hover {
+	background: #4A9FE7;
+}
+
+.spine-player-scale-slider::-moz-range-track {
+	background: #555;
+	height: 4px;
+	border-radius: 2px;
+	border: none;
+}
+
+.spine-player-scale-slider::-moz-range-thumb {
+	width: 16px;
+	height: 16px;
+	background: #62B0EE;
+	border-radius: 50%;
+	cursor: pointer;
+	border: none;
+}
+
+.spine-player-scale-slider::-moz-range-thumb:hover {
+	background: #4A9FE7;
+}
+
+.spine-player-scale-input {
+	background: rgba(0, 0, 0, 0.7);
+	border: 1px solid #555;
+	border-radius: 3px;
+	color: #ddd;
+	padding: 4px 6px;
+	font-size: 12px;
+	width: 60px;
+	text-align: center;
+}
+
+.spine-player-scale-input:focus {
+	outline: none;
+	border-color: #62B0EE;
+}
+
+.spine-player-reset-button {
+	background: rgba(0, 0, 0, 0.7);
+	border: 1px solid #555;
+	border-radius: 3px;
+	color: #ddd;
+	padding: 4px 8px;
+	font-size: 12px;
+	cursor: pointer;
+	transition: background-color 0.2s;
+}
+
+.spine-player-reset-button:hover {
+	background: rgba(0, 0, 0, 0.9);
+	border-color: #62B0EE;
+}
+
+.spine-player-reset-button:disabled {
+	opacity: 0.5;
+	cursor: not-allowed;
+}
+
 /** Player editor **/
 .spine-player-editor-container {
 	display: flex;

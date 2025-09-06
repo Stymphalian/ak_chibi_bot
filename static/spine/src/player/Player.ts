@@ -187,6 +187,16 @@ export class SpinePlayer {
 	private timelineSlider: Slider;
 	private playButton: HTMLElement;
 
+	// private actorSelect: HTMLSelectElement;
+	// private scaleXSlider: HTMLInputElement;
+	// private scaleYSlider: HTMLInputElement;
+	// private scaleXYSlider: HTMLInputElement;
+	// private scaleXInput: HTMLInputElement;
+	// private scaleYInput: HTMLInputElement;
+	// private scaleXYInput: HTMLInputElement;
+	// private resetScaleButton: HTMLButtonElement;
+	// private selectedActorName: string = "";
+
 	private context: ManagedWebGLRenderingContext;
 	private loadingScreen: LoadingScreen;
 	private assetManager: AssetManager;
@@ -297,8 +307,10 @@ export class SpinePlayer {
 
 		if (config.configScaleX == undefined) { config.configScaleX = 1.0; }
 		if (config.configScaleY == undefined) { config.configScaleY = 1.0; }
-		if (config.scaleX == undefined) { config.scaleX = 0.45; }
-		if (config.scaleY == undefined) { config.scaleY = 0.45; }
+		// if (config.scaleX == undefined) { config.scaleX = 0.45; }
+		// if (config.scaleY == undefined) { config.scaleY = 0.45; }
+		if (config.scaleX == undefined) { config.scaleX = 1.0; }
+		if (config.scaleY == undefined) { config.scaleY = 1.0; }
 		if (config.maxSizePx == undefined) { config.maxSizePx = 350; }
 		if (config.startPosX == undefined) { config.startPosX = null; }
 		if (config.startPosY == undefined) { config.startPosY = null; }
@@ -341,6 +353,35 @@ export class SpinePlayer {
 	}
 
 	setupDom(): HTMLElement {
+		// let scaleControlDom = `
+		// 	<div class="spine-player-scale-controls">
+		// 		<div class="spine-player-scale-section">
+		// 			<label for="spine-player-actor-select">Actor:</label>
+		// 			<select id="spine-player-actor-select" class="spine-player-actor-select">
+		// 				<option value="">Select Actor</option>
+		// 			</select>
+		// 		</div>
+		// 		<div class="spine-player-scale-section">
+		// 			<label for="spine-player-scale-x">Scale X:</label>
+		// 			<input type="range" id="spine-player-scale-x" class="spine-player-scale-slider" min="0.1" max="2.0" step="0.01" value="0.45">
+		// 			<input type="number" id="spine-player-scale-x-value" class="spine-player-scale-input" min="0.1" max="2.0" step="0.01" value="0.45">
+		// 		</div>
+		// 		<div class="spine-player-scale-section">
+		// 			<label for="spine-player-scale-y">Scale Y:</label>
+		// 			<input type="range" id="spine-player-scale-y" class="spine-player-scale-slider" min="0.1" max="2.0" step="0.01" value="0.45">
+		// 			<input type="number" id="spine-player-scale-y-value" class="spine-player-scale-input" min="0.1" max="2.0" step="0.01" value="0.45">
+		// 		</div>
+		// 		<div class="spine-player-scale-section">
+		// 			<label for="spine-player-scale-xy">Scale XY:</label>
+		// 			<input type="range" id="spine-player-scale-xy" class="spine-player-scale-slider" min="0.1" max="2.0" step="0.01" value="0.45">
+		// 			<input type="number" id="spine-player-scale-xy-value" class="spine-player-scale-input" min="0.1" max="2.0" step="0.01" value="0.45">
+		// 		</div>
+		// 		<div class="spine-player-scale-section">
+		// 			<button id="spine-player-reset-scale" class="spine-player-button spine-player-reset-button">Reset Scale</button>
+		// 		</div>
+		// 	</div>
+		// `;
+
 		let dom = this.dom = createElement(/*html*/`
 				<div class="spine-player">
 					<div class="spine-player-error spine-player-hidden"></div>
@@ -409,10 +450,23 @@ export class SpinePlayer {
 		timeline.appendChild(this.timelineSlider.render());
 		this.playButton = findWithId(dom, "spine-player-button-play-pause")[0];
 
+		// // Setup scale controls
+		// this.actorSelect = findWithId(dom, "spine-player-actor-select")[0] as HTMLSelectElement;
+		// this.scaleXSlider = findWithId(dom, "spine-player-scale-x")[0] as HTMLInputElement;
+		// this.scaleYSlider = findWithId(dom, "spine-player-scale-y")[0] as HTMLInputElement;
+		// this.scaleXYSlider = findWithId(dom, "spine-player-scale-xy")[0] as HTMLInputElement;
+		// this.scaleXInput = findWithId(dom, "spine-player-scale-x-value")[0] as HTMLInputElement;
+		// this.scaleYInput = findWithId(dom, "spine-player-scale-y-value")[0] as HTMLInputElement;
+		// this.scaleXYInput = findWithId(dom, "spine-player-scale-xy-value")[0] as HTMLInputElement;
+		// this.resetScaleButton = findWithId(dom, "spine-player-reset-scale")[0] as HTMLButtonElement;
+
 		this.playButton.onclick = () => {
 			if (this.paused) this.play()
 			else this.pause();
 		}
+
+		// Setup scale control event listeners
+		// this.setupScaleControls();
 
 		// Register a global resize handler to redraw and avoid flicker
 		window.onresize = () => {
@@ -492,6 +546,8 @@ export class SpinePlayer {
 			this.setupActor(actor);
 			this.actors.set(actorName, actor);
 		}
+		// Update the actor dropdown
+		// this.updateActorDropdown();
 	}
 
 	public getActor(actorName: string): Actor {
@@ -504,6 +560,14 @@ export class SpinePlayer {
 
 	removeActor(actorName: string) {
 		this.actors.delete(actorName)
+
+		// // Update the actor dropdown
+		// this.updateActorDropdown();
+		// // If the removed actor was selected, clear selection
+		// if (this.selectedActorName === actorName) {
+		// 	this.selectedActorName = "";
+		// 	this.updateScaleControls();
+		// }
 	}
 
 	flashFindCharacter(actorName: string) {
@@ -818,6 +882,7 @@ export class SpinePlayer {
 		if (actor.config.jsonUrl) {
 			let jsonText = this.assetManager.get(actor.config.jsonUrl);
 			let json = new SkeletonJson(new AtlasAttachmentLoader(atlas));
+			json.scale = 0.45;
 			try {
 				skeletonData = json.readSkeletonData(jsonText);
 			} catch (e) {
@@ -827,6 +892,7 @@ export class SpinePlayer {
 		} else {
 			let binaryData = this.assetManager.get(actor.config.skelUrl);
 			let binary = new SkeletonBinary(new AtlasAttachmentLoader(atlas));
+			binary.scale = 0.45;
 			try {
 				skeletonData = binary.readSkeletonData(binaryData);
 			} catch (e) {
@@ -864,6 +930,8 @@ export class SpinePlayer {
 
 		actor.config.success(this, actor);
 		actor.loaded = true;
+		// // Update the actor dropdown when an actor finishes loading
+		// this.updateActorDropdown();
 	}
 
 	loadSpritesheetActor(actor: Actor) {
@@ -884,6 +952,8 @@ export class SpinePlayer {
 		actor.InitAnimationState();
 		actor.config.success(this, actor);
 		actor.loaded = true;
+		// // Update the actor dropdown when an actor finishes loading
+		// this.updateActorDropdown();
 	}
 
 	loadActor(actor: Actor) {
@@ -900,6 +970,255 @@ export class SpinePlayer {
 			this.loadSpineSkeleton(actor);
 		}
 	}
+
+	// private setupScaleControls() {
+	// 	// Update actor dropdown when actors change
+	// 	this.updateActorDropdown();
+
+	// 	// Actor selection change
+	// 	this.actorSelect.onchange = () => {
+	// 		this.selectedActorName = this.actorSelect.value;
+	// 		this.updateScaleControls();
+	// 	};
+
+	// 	// Scale X slider and input synchronization
+	// 	this.scaleXSlider.oninput = () => {
+	// 		const value = parseFloat(this.scaleXSlider.value);
+	// 		this.scaleXInput.value = value.toFixed(2);
+	// 		this.updateActorScale();
+	// 	};
+
+	// 	this.scaleXInput.oninput = () => {
+	// 		const value = parseFloat(this.scaleXInput.value);
+	// 		this.scaleXSlider.value = value.toString();
+	// 		this.updateActorScale();
+	// 	};
+
+	// 	// Scale Y slider and input synchronization
+	// 	this.scaleYSlider.oninput = () => {
+	// 		const value = parseFloat(this.scaleYSlider.value);
+	// 		this.scaleYInput.value = value.toFixed(2);
+	// 		this.updateActorScale();
+	// 	};
+
+	// 	this.scaleYInput.oninput = () => {
+	// 		const value = parseFloat(this.scaleYInput.value);
+	// 		this.scaleYSlider.value = value.toString();
+	// 		this.updateActorScale();
+	// 	};
+
+	// 	// Scale XY slider and input synchronization (uniform scaling)
+	// 	this.scaleXYSlider.oninput = () => {
+	// 		const value = parseFloat(this.scaleXYSlider.value);
+	// 		this.scaleXYInput.value = value.toFixed(2);
+	// 		this.updateActorScaleUniform(value);
+	// 	};
+
+	// 	this.scaleXYInput.oninput = () => {
+	// 		const value = parseFloat(this.scaleXYInput.value);
+	// 		this.scaleXYSlider.value = value.toString();
+	// 		this.updateActorScaleUniform(value);
+	// 	};
+
+	// 	// Reset scale button
+	// 	this.resetScaleButton.onclick = () => {
+	// 		this.resetActorScale();
+	// 	};
+	// }
+
+	// private updateActorDropdown() {
+	// 	// Clear existing options except the first one
+	// 	while (this.actorSelect.children.length > 1) {
+	// 		this.actorSelect.removeChild(this.actorSelect.lastChild);
+	// 	}
+
+	// 	// Add loaded actors to dropdown
+	// 	for (const [actorName, actor] of this.actors) {
+	// 		if (actor.loaded) {
+	// 			const option = document.createElement('option');
+	// 			option.value = actorName;
+	// 			option.textContent = actorName;
+	// 			this.actorSelect.appendChild(option);
+	// 		}
+	// 	}
+
+	// 	// If no actor is selected but we have actors, select the first one
+	// 	if (!this.selectedActorName && this.actorSelect.children.length > 1) {
+	// 		this.selectedActorName = (this.actorSelect.children[1] as HTMLOptionElement).value;
+	// 		this.actorSelect.value = this.selectedActorName;
+	// 		this.updateScaleControls();
+	// 	}
+	// }
+
+	// private updateScaleControls() {
+	// 	if (!this.selectedActorName || !this.actors.has(this.selectedActorName)) {
+	// 		this.scaleXSlider.disabled = true;
+	// 		this.scaleYSlider.disabled = true;
+	// 		this.scaleXYSlider.disabled = true;
+	// 		this.scaleXInput.disabled = true;
+	// 		this.scaleYInput.disabled = true;
+	// 		this.scaleXYInput.disabled = true;
+	// 		this.resetScaleButton.disabled = true;
+	// 		return;
+	// 	}
+
+	// 	const actor = this.actors.get(this.selectedActorName);
+	// 	if (!actor.loaded) {
+	// 		this.scaleXSlider.disabled = true;
+	// 		this.scaleYSlider.disabled = true;
+	// 		this.scaleXYSlider.disabled = true;
+	// 		this.scaleXInput.disabled = true;
+	// 		this.scaleYInput.disabled = true;
+	// 		this.scaleXYInput.disabled = true;
+	// 		this.resetScaleButton.disabled = true;
+	// 		return;
+	// 	}
+
+	// 	// Enable controls
+	// 	this.scaleXSlider.disabled = false;
+	// 	this.scaleYSlider.disabled = false;
+	// 	this.scaleXYSlider.disabled = false;
+	// 	this.scaleXInput.disabled = false;
+	// 	this.scaleYInput.disabled = false;
+	// 	this.scaleXYInput.disabled = false;
+	// 	this.resetScaleButton.disabled = false;
+
+	// 	// Update control values
+	// 	const scaleX = Math.abs(actor.getScaleX());
+	// 	const scaleY = Math.abs(actor.getScaleY());
+		
+	// 	this.scaleXSlider.value = scaleX.toString();
+	// 	this.scaleXInput.value = scaleX.toFixed(2);
+	// 	this.scaleYSlider.value = scaleY.toString();
+	// 	this.scaleYInput.value = scaleY.toFixed(2);
+		
+	// 	// For scaleXY, use the average of X and Y scales, or X if they're the same
+	// 	const scaleXY = Math.abs(scaleX - scaleY) < 0.01 ? scaleX : (scaleX + scaleY) / 2;
+	// 	this.scaleXYSlider.value = scaleXY.toString();
+	// 	this.scaleXYInput.value = scaleXY.toFixed(2);
+	// }
+
+	// private updateActorScale() {
+	// 	if (!this.selectedActorName || !this.actors.has(this.selectedActorName)) {
+	// 		return;
+	// 	}
+
+	// 	const actor = this.actors.get(this.selectedActorName);
+	// 	if (!actor.loaded) {
+	// 		return;
+	// 	}
+
+	// 	const scaleX = parseFloat(this.scaleXInput.value);
+	// 	const scaleY = parseFloat(this.scaleYInput.value);
+
+	// 	// Preserve the sign of the current scale (for direction)
+	// 	const currentScaleX = actor.getScaleX();
+	// 	const currentScaleY = actor.getScaleY();
+		
+	// 	actor.setScaleX(Math.sign(currentScaleX) * scaleX);
+	// 	actor.setScaleY(Math.sign(currentScaleY) * scaleY);
+
+	// 	// Update the actor's config as well
+	// 	actor.config.scaleX = scaleX;
+	// 	actor.config.scaleY = scaleY;
+
+	// 	// Apply to skeleton if it exists
+	// 	if (actor.skeleton) {
+	// 		actor.skeleton.scaleX = actor.getScaleX();
+	// 		actor.skeleton.scaleY = actor.getScaleY();
+	// 	}
+
+	// 	// Update the scaleXY controls to reflect the current values
+	// 	this.updateScaleXYControls();
+	// }
+
+	// private updateActorScaleUniform(uniformScale: number) {
+	// 	if (!this.selectedActorName || !this.actors.has(this.selectedActorName)) {
+	// 		return;
+	// 	}
+
+	// 	const actor = this.actors.get(this.selectedActorName);
+	// 	if (!actor.loaded) {
+	// 		return;
+	// 	}
+
+	// 	// Preserve the sign of the current scale (for direction)
+	// 	const currentScaleX = actor.getScaleX();
+	// 	const currentScaleY = actor.getScaleY();
+		
+	// 	actor.setScaleX(Math.sign(currentScaleX) * uniformScale);
+	// 	actor.setScaleY(Math.sign(currentScaleY) * uniformScale);
+
+	// 	// Update the actor's config as well
+	// 	actor.config.scaleX = uniformScale;
+	// 	actor.config.scaleY = uniformScale;
+
+	// 	// Apply to skeleton if it exists
+	// 	if (actor.skeleton) {
+	// 		actor.skeleton.scaleX = actor.getScaleX();
+	// 		actor.skeleton.scaleY = actor.getScaleY();
+	// 	}
+
+	// 	// Update the individual X and Y controls to reflect the uniform scale
+	// 	this.scaleXSlider.value = uniformScale.toString();
+	// 	this.scaleXInput.value = uniformScale.toFixed(2);
+	// 	this.scaleYSlider.value = uniformScale.toString();
+	// 	this.scaleYInput.value = uniformScale.toFixed(2);
+	// }
+
+	// private updateScaleXYControls() {
+	// 	if (!this.selectedActorName || !this.actors.has(this.selectedActorName)) {
+	// 		return;
+	// 	}
+
+	// 	const actor = this.actors.get(this.selectedActorName);
+	// 	if (!actor.loaded) {
+	// 		return;
+	// 	}
+
+	// 	const scaleX = Math.abs(actor.getScaleX());
+	// 	const scaleY = Math.abs(actor.getScaleY());
+		
+	// 	// For scaleXY, use the average of X and Y scales, or X if they're the same
+	// 	const scaleXY = Math.abs(scaleX - scaleY) < 0.01 ? scaleX : (scaleX + scaleY) / 2;
+	// 	this.scaleXYSlider.value = scaleXY.toString();
+	// 	this.scaleXYInput.value = scaleXY.toFixed(2);
+	// }
+
+	// private resetActorScale() {
+	// 	if (!this.selectedActorName || !this.actors.has(this.selectedActorName)) {
+	// 		return;
+	// 	}
+
+	// 	const actor = this.actors.get(this.selectedActorName);
+	// 	if (!actor.loaded) {
+	// 		return;
+	// 	}
+
+	// 	// Reset to config values
+	// 	const configScaleX = actor.config.configScaleX || 0.45;
+	// 	const configScaleY = actor.config.configScaleY || 0.45;
+
+	// 	// Preserve the sign of the current scale (for direction)
+	// 	const currentScaleX = actor.getScaleX();
+	// 	const currentScaleY = actor.getScaleY();
+		
+	// 	actor.setScaleX(Math.sign(currentScaleX) * configScaleX);
+	// 	actor.setScaleY(Math.sign(currentScaleY) * configScaleY);
+
+	// 	// Update the actor's config
+	// 	actor.config.scaleX = configScaleX;
+	// 	actor.config.scaleY = configScaleY;
+
+	// 	// Apply to skeleton if it exists
+	// 	if (actor.skeleton) {
+	// 		actor.skeleton.scaleX = actor.getScaleX();
+	// 		actor.skeleton.scaleY = actor.getScaleY();
+	// 	}
+
+	// 	// Update the controls
+	// 	this.updateScaleControls();
+	// }
 
 	private cancelId: any = 0;
 	private setupInput() {
