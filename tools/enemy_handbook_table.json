@@ -29433,6 +29433,591 @@
       "OverrideKillCntInfos": null,
       "SortId": 967
     },
+    "enemy_10072_mpprhd": {
+      "Ability": null,
+      "AbilityList": null,
+      "AttackType": null,
+      "DamageType": [
+        3
+      ],
+      "DamageTypeAsNumpy": [
+        3
+      ],
+      "Description": "'We've confirmed that PRTS has initiated an emergency reset triggered by unknown interference. We're also detecting a dangerous, unidentified instruction looping within the system. Look, see that mark that's been here all this time? ...What do you mean you can't see it?'",
+      "EnemyId": "enemy_10072_mpprhd",
+      "EnemyIndex": "PT1",
+      "EnemyLevel": 1,
+      "HideInHandbook": true,
+      "HideInStage": true,
+      "InvisibleDetail": true,
+      "IsInvalidKilled": true,
+      "LinkEnemies": null,
+      "Name": "Intrusive Call",
+      "OverrideKillCntInfos": null,
+      "SortId": 968
+    },
+    "enemy_10073_mpcar": {
+      "Ability": null,
+      "AbilityList": null,
+      "AttackType": null,
+      "DamageType": [
+        0
+      ],
+      "DamageTypeAsNumpy": [
+        0
+      ],
+      "Description": "Maintenance Helper whose pathfinding module has been disrupted by Originium. The meal delivery function added by the Engineering Department no longer works. 'You want a repair function? Look, we've already got plenty of engineers. As for Warfarin's food safety warning, we're working on it.'",
+      "EnemyId": "enemy_10073_mpcar",
+      "EnemyIndex": "OG1",
+      "EnemyLevel": 0,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": [
+        "enemy_10077_mpbarr"
+      ],
+      "Name": "Confused Maintenance Helper",
+      "OverrideKillCntInfos": null,
+      "SortId": 969
+    },
+    "enemy_10073_mpcar_2": {
+      "Ability": null,
+      "AbilityList": null,
+      "AttackType": null,
+      "DamageType": [
+        0
+      ],
+      "DamageTypeAsNumpy": [
+        0
+      ],
+      "Description": "Maintenance Helper whose IFF module has been disrupted by Originium. The drill carefully added by the Engineering Department with a safety clutch is now much more dangerous. 'Power output? Look, our priorities are providing our operators with a safe working environment and sufficient moral support, not making this thing do complex work.'",
+      "EnemyId": "enemy_10073_mpcar_2",
+      "EnemyIndex": "OG2",
+      "EnemyLevel": 0,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": [
+        "enemy_10077_mpbarr_2"
+      ],
+      "Name": "Rampaging Maintenance Helper",
+      "OverrideKillCntInfos": null,
+      "SortId": 970
+    },
+    "enemy_10074_mpcata": {
+      "Ability": null,
+      "AbilityList": null,
+      "AttackType": null,
+      "DamageType": [
+        0
+      ],
+      "DamageTypeAsNumpy": [
+        0
+      ],
+      "Description": "Cold drink machine that has had its trajectory computing module disrupted by Originium. It uncontrollably launches frozen beverage cans at operators who aren't even thirsty at all. Prize winner of the Engineering Department's 10th Ignoble Prize awards. No one can refuse a thoughtful fridge that automatically launches refreshing drinks at you while you work, after all. Just don't think too much about what the medics would say at your next checkup.",
+      "EnemyId": "enemy_10074_mpcata",
+      "EnemyIndex": "OG3",
+      "EnemyLevel": 0,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "Cold Drink Machine",
+      "OverrideKillCntInfos": null,
+      "SortId": 971
+    },
+    "enemy_10074_mpcata_2": {
+      "Ability": null,
+      "AbilityList": null,
+      "AttackType": null,
+      "DamageType": [
+        0
+      ],
+      "DamageTypeAsNumpy": [
+        0
+      ],
+      "Description": "Hot drink machine that has had its temperature control module disrupted by Originium. The super-heated drinks it delivers bring physical and psychological trauma. Prize winner of the Engineering Department's 10th Ignoble Prize awards, though it will not be long before the complaints overflow the department's inbox.",
+      "EnemyId": "enemy_10074_mpcata_2",
+      "EnemyIndex": "OG4",
+      "EnemyLevel": 0,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "Hot Drink Machine",
+      "OverrideKillCntInfos": null,
+      "SortId": 972
+    },
+    "enemy_10075_mpwrj": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Flying unit.",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Self-destructs immediately when there is an Operator nearby, dealing a large amount of Arts damage to surrounding units",
+          "TextFormat": 2
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        1
+      ],
+      "DamageTypeAsNumpy": [
+        1
+      ],
+      "Description": "It will brave the chaos and deliver the goods safely to their destination, even when all hell is breaking loose on Rhodes Island. Whether the goods themselves are dangerous is none of its concern.",
+      "EnemyId": "enemy_10075_mpwrj",
+      "EnemyIndex": "OG5",
+      "EnemyLevel": 0,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "Worry-Free Cargo Helper",
+      "OverrideKillCntInfos": null,
+      "SortId": 973
+    },
+    "enemy_10075_mpwrj_2": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Flying unit.",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Self-destructs immediately when there is an Operator nearby, dealing a large amount of Arts damage to surrounding units",
+          "TextFormat": 2
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        1
+      ],
+      "DamageTypeAsNumpy": [
+        1
+      ],
+      "Description": "It will brave the chaos and deliver the goods safely to their destination, even when all hell is breaking loose on Rhodes Island. Designed to transport dangerous cargo to begin with, it certainly could not care less whether they are dangerous.",
+      "EnemyId": "enemy_10075_mpwrj_2",
+      "EnemyIndex": "OG6",
+      "EnemyLevel": 0,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "Blast-Proof Cargo Helper",
+      "OverrideKillCntInfos": null,
+      "SortId": 974
+    },
+    "enemy_10076_mpgrou": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "When defeated, the tile underneath becomes unavailable for deployment",
+          "TextFormat": 2
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        1
+      ],
+      "DamageTypeAsNumpy": [
+        1
+      ],
+      "Description": "Originating from an archived enemy who was once a staunch defender of hearth and home. Originium has recorded and recreated her last waking moment before collapse. She suspects this place of being yet another illusion of the curse, and of her future fate.",
+      "EnemyId": "enemy_10076_mpgrou",
+      "EnemyIndex": "OG7",
+      "EnemyLevel": 1,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "'Frozen Monstrosity's Echo'",
+      "OverrideKillCntInfos": null,
+      "SortId": 975
+    },
+    "enemy_10076_mpgrou_2": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "When defeated, the tile underneath becomes unavailable for deployment",
+          "TextFormat": 2
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        1
+      ],
+      "DamageTypeAsNumpy": [
+        1
+      ],
+      "Description": "Originating from an archived enemy who was once a staunch defender of hearth and home. Originium has recorded and recreated her last waking moment before collapse. 'Espy the realm, every life seen; seek your sojourn path.'",
+      "EnemyId": "enemy_10076_mpgrou_2",
+      "EnemyIndex": "OG8",
+      "EnemyLevel": 1,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "'Shadow in the Snow'",
+      "OverrideKillCntInfos": null,
+      "SortId": 976
+    },
+    "enemy_10077_mpbarr": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Periodically summons 1 <Confused Maintenance Helper>",
+          "TextFormat": 2
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        0
+      ],
+      "DamageTypeAsNumpy": [
+        0
+      ],
+      "Description": "Cafeteria meal distributor that is still in beta testing. A busy operator had the bright idea to attach a maintenance helper to it—to save the effort of walking from the dorms to the cafeteria—but the timing of the test was unfortunate to say the least.",
+      "EnemyId": "enemy_10077_mpbarr",
+      "EnemyIndex": "OG9",
+      "EnemyLevel": 1,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": [
+        "enemy_10073_mpcar"
+      ],
+      "Name": "Mockup Auto Meal Distributor",
+      "OverrideKillCntInfos": null,
+      "SortId": 977
+    },
+    "enemy_10077_mpbarr_2": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Periodically summons 1 <Rampaging Maintenance Helper>",
+          "TextFormat": 2
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        0
+      ],
+      "DamageTypeAsNumpy": [
+        0
+      ],
+      "Description": "Prototype of a cafeteria meal distributor. A busy operator had the bright idea to attach a maintenance helper to it—to save the effort of walking from the dorms to the cafeteria—but the design was overzealous and caused even more trouble.",
+      "EnemyId": "enemy_10077_mpbarr_2",
+      "EnemyIndex": "OG10",
+      "EnemyLevel": 1,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": [
+        "enemy_10073_mpcar_2"
+      ],
+      "Name": "Prototype Auto Meal Distributor",
+      "OverrideKillCntInfos": null,
+      "SortId": 978
+    },
+    "enemy_10078_mprein": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Attacks deal splash damage",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        0
+      ],
+      "DamageTypeAsNumpy": [
+        0
+      ],
+      "Description": "Originating from an archived enemy—an experimental colossus created by spire casters, prone to getting lost. It has appeared in Rhodes Island in a form recreated by solidified Originium.",
+      "EnemyId": "enemy_10078_mprein",
+      "EnemyIndex": "OG11",
+      "EnemyLevel": 1,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "Solidified Originium Colossus",
+      "OverrideKillCntInfos": null,
+      "SortId": 979
+    },
+    "enemy_10078_mprein_2": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Attacks deal splash damage",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        0
+      ],
+      "DamageTypeAsNumpy": [
+        0
+      ],
+      "Description": "Originating from an archived enemy—an experimental colossus created by spire casters, prone to getting lost. It has appeared in Rhodes Island in a form recreated by dangerous active Originium.",
+      "EnemyId": "enemy_10078_mprein_2",
+      "EnemyIndex": "OG12",
+      "EnemyLevel": 1,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "Active Originium Colossus",
+      "OverrideKillCntInfos": null,
+      "SortId": 980
+    },
+    "enemy_10079_mpmage": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Temporarily halts your DP regeneration shortly after it enters the battlefield",
+          "TextFormat": 2
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        1
+      ],
+      "DamageTypeAsNumpy": [
+        1
+      ],
+      "Description": "Originating from an archived enemy. The Originium body of these Sarkaz casters has induced unknown changes to the Arts they use, which may pressure our defenses.",
+      "EnemyId": "enemy_10079_mpmage",
+      "EnemyIndex": "OG13",
+      "EnemyLevel": 1,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "Stable Sarkaz Caster Crystal",
+      "OverrideKillCntInfos": null,
+      "SortId": 981
+    },
+    "enemy_10079_mpmage_2": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Temporarily halts your DP regeneration shortly after it enters the battlefield",
+          "TextFormat": 2
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        1
+      ],
+      "DamageTypeAsNumpy": [
+        1
+      ],
+      "Description": "Originating from an archived enemy. The Originium body of these Sarkaz casters allows them to use previously unknown forms of Arts to interfere with our deployment, significantly pressuring our defenses.",
+      "EnemyId": "enemy_10079_mpmage_2",
+      "EnemyIndex": "OG14",
+      "EnemyLevel": 1,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "Active Sarkaz Caster Crystal",
+      "OverrideKillCntInfos": null,
+      "SortId": 982
+    },
+    "enemy_10080_mpiced": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Flying unit.",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Shortly after it enters the battle, throws a bomb to temporarily disable the Operator with the highest DP cost in your Deployment Waiting Zone",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        3
+      ],
+      "DamageTypeAsNumpy": [
+        3
+      ],
+      "Description": "Originating from an archived enemy. It seems unremarkable, but is able to strike before our operators take action. The mechanism by which it does so is unknown.",
+      "EnemyId": "enemy_10080_mpiced",
+      "EnemyIndex": "OG15",
+      "EnemyLevel": 1,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "Static Oneiros α",
+      "OverrideKillCntInfos": null,
+      "SortId": 983
+    },
+    "enemy_10080_mpiced_2": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Flying unit.",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Shortly after it enters the battle, throws a bomb to temporarily disable the Operator with the highest DP cost in your Deployment Waiting Zone",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        3
+      ],
+      "DamageTypeAsNumpy": [
+        3
+      ],
+      "Description": "Originating from an archived enemy. It seems unremarkable, but is able to strike before our operators take action. The mechanism by which it does so is associated with Originium.",
+      "EnemyId": "enemy_10080_mpiced_2",
+      "EnemyIndex": "OG16",
+      "EnemyLevel": 1,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "Static Oneiros β",
+      "OverrideKillCntInfos": null,
+      "SortId": 984
+    },
+    "enemy_10081_mpplai": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Does not initially attack; transforms into different forms when certain conditions are met",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Transforms into different forms once it has taken 4 Physical attacks, 4 Arts attacks, or if it is blocked",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        3
+      ],
+      "DamageTypeAsNumpy": [
+        3
+      ],
+      "Description": "Unknown entity born in the Abyss. It is passive if not attacked, but appears to be studying our movements.",
+      "EnemyId": "enemy_10081_mpplai",
+      "EnemyIndex": "OG17",
+      "EnemyLevel": 1,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "Decode Basis α",
+      "OverrideKillCntInfos": null,
+      "SortId": 985
+    },
+    "enemy_10081_mpplai_2": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Does not initially attack; transforms into different forms when certain conditions are met",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Transforms into different forms once it has taken 4 Physical attacks, 4 Arts attacks, or if it is blocked",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        3
+      ],
+      "DamageTypeAsNumpy": [
+        3
+      ],
+      "Description": "Unknown entity born in the Abyss. It is passive if not attacked, but appears to be nullifying our attacks.",
+      "EnemyId": "enemy_10081_mpplai_2",
+      "EnemyIndex": "OG18",
+      "EnemyLevel": 1,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "Decode Basis β",
+      "OverrideKillCntInfos": null,
+      "SortId": 986
+    },
+    "enemy_10082_mpweak": {
+      "Ability": null,
+      "AbilityList": null,
+      "AttackType": null,
+      "DamageType": [
+        3
+      ],
+      "DamageTypeAsNumpy": [
+        3
+      ],
+      "Description": "-",
+      "EnemyId": "enemy_10082_mpweak",
+      "EnemyIndex": "OG19",
+      "EnemyLevel": 0,
+      "HideInHandbook": true,
+      "HideInStage": true,
+      "InvisibleDetail": true,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "Weakening Node",
+      "OverrideKillCntInfos": null,
+      "SortId": 987
+    },
+    "enemy_3009_mpprss": {
+      "Ability": null,
+      "AbilityList": null,
+      "AttackType": null,
+      "DamageType": [
+        3
+      ],
+      "DamageTypeAsNumpy": [
+        3
+      ],
+      "Description": "CONGRATULATIONS ON FINDING ME.",
+      "EnemyId": "enemy_3009_mpprss",
+      "EnemyIndex": "RI3",
+      "EnemyLevel": 1,
+      "HideInHandbook": true,
+      "HideInStage": true,
+      "InvisibleDetail": true,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "EYESOFPRIESTESS",
+      "OverrideKillCntInfos": null,
+      "SortId": 988
+    },
     "enemy_3006_tersia": {
       "Ability": null,
       "AbilityList": [
@@ -35720,6 +36305,80 @@
       "Name": "PRTS, Source Code",
       "OverrideKillCntInfos": null,
       "SortId": 1149
+    },
+    "enemy_1565_mpprme": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "['Rebuild'] Until <PRTS, Source Code> is defeated, <Mimic Machine> recovers whenever it is defeated, increasing its ATK with each recovery, maxing out after 5 increases",
+          "TextFormat": 0
+        },
+        {
+          "Text": "[Write Restriction] Temporarily disables the 4 Operators with the highest DP in your Deployment Waiting Zone when it enters the battlefield; Becomes stronger after the first recovery, disabling more functions",
+          "TextFormat": 0
+        },
+        {
+          "Text": "[Heavy Ion Elastic Recoil] Fires a slow-moving orb towards the nearest unit, dealing Arts splash damage when it hits; The further the orb moves, the less damage it deals, and the smaller the splash area",
+          "TextFormat": 0
+        },
+        {
+          "Text": "[Dynamic Deployment] When grabbed by <PRTS, Source Code>, gains <$ba.float>Low-Altitude Hovering</>, Attack Range expands, Attack Interval shortens, and attacks 2 targets simultaneously; <Mimic Machine> can be shot down earlier by dealing a certain amount of damage; Becomes stronger after the first recovery",
+          "TextFormat": 0
+        },
+        {
+          "Text": "[Chain Reaction] Can be cast after the first recovery; When grabbed by <PRTS, Source Code>, gains <$ba.float>Low-Altitude Hovering</>, and fires a beam at all neutral or PRTS-activated Weakening Nodes, dealing damage to units in its path; <Mimic Machine> can be shot down earlier by dealing a certain amount of damage",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        1
+      ],
+      "DamageTypeAsNumpy": [
+        1
+      ],
+      "Description": "PRTS has transformed familiar objects on Rhodes Island into material threats. These machines do not know fear.",
+      "EnemyId": "enemy_1565_mpprme",
+      "EnemyIndex": "RI2",
+      "EnemyLevel": 2,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": [
+        "enemy_1564_mpprts"
+      ],
+      "Name": "Mimic Machine",
+      "OverrideKillCntInfos": null,
+      "SortId": 1150
+    },
+    "enemy_1566_mpascl": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "[Descent] After chanting for a short time, casts Originium Arts to hide herself in smoke while performing multiple attacks",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        0
+      ],
+      "DamageTypeAsNumpy": [
+        0
+      ],
+      "Description": "'A sword to slay the regent king, a spear to pierce the royal ring'? No, you're just the one from my memories.",
+      "EnemyId": "enemy_1566_mpascl",
+      "EnemyIndex": "AC",
+      "EnemyLevel": 2,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "'Ascalon'",
+      "OverrideKillCntInfos": null,
+      "SortId": 1151
     },
     "enemy_2003_rockman": {
       "Ability": null,

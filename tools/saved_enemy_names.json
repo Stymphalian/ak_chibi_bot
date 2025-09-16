@@ -3865,6 +3865,98 @@
         "Middle Point",
         "EA16"
     ],
+    "enemy_10072_mpprhd": [
+        "Intrusive Call",
+        "PT1"
+    ],
+    "enemy_10073_mpcar": [
+        "Confused Maintenance Helper",
+        "OG1"
+    ],
+    "enemy_10073_mpcar_2": [
+        "Rampaging Maintenance Helper",
+        "OG2"
+    ],
+    "enemy_10074_mpcata": [
+        "Cold Drink Machine",
+        "OG3"
+    ],
+    "enemy_10074_mpcata_2": [
+        "Hot Drink Machine",
+        "OG4"
+    ],
+    "enemy_10075_mpwrj": [
+        "Worry-Free Cargo Helper",
+        "OG5"
+    ],
+    "enemy_10075_mpwrj_2": [
+        "Blast-Proof Cargo Helper",
+        "OG6"
+    ],
+    "enemy_10076_mpgrou": [
+        "Frozen Monstrositys Echo",
+        "OG7"
+    ],
+    "enemy_10076_mpgrou_2": [
+        "Shadow in the Snow",
+        "OG8"
+    ],
+    "enemy_10077_mpbarr": [
+        "Mockup Auto Meal Distributor",
+        "OG9"
+    ],
+    "enemy_10077_mpbarr_2": [
+        "Prototype Auto Meal Distributor",
+        "OG10"
+    ],
+    "enemy_10078_mprein": [
+        "Solidified Originium Colossus",
+        "OG11"
+    ],
+    "enemy_10078_mprein_2": [
+        "Active Originium Colossus",
+        "OG12"
+    ],
+    "enemy_10079_mpmage": [
+        "Stable Sarkaz Caster Crystal",
+        "OG13"
+    ],
+    "enemy_10079_mpmage_2": [
+        "Active Sarkaz Caster Crystal",
+        "OG14"
+    ],
+    "enemy_10080_mpiced": [
+        "Static Oneiros α",
+        "Static Oneiros alpha",
+        "Static Oneiros A",
+        "OG15"
+    ],
+    "enemy_10080_mpiced_2": [
+        "Static Oneiros β",
+        "Static Oneiros beta",
+        "Static Oneiros b",
+        "OG16"
+    ],
+    "enemy_10081_mpplai": [
+        "Decode Basis α",
+        "Decode Basis alpha",
+        "Decode Basis α",
+        "OG17"
+    ],
+    "enemy_10081_mpplai_2": [
+        "Decode Basis β",
+        "Decode Basis beta",
+        "Decode Basis b",
+        "OG18"
+    ],
+    "enemy_10082_mpweak": [
+        "Weakening Node",
+        "OG19"
+    ],
+    "enemy_3009_mpprss": [
+        "EYESOFPRIESTESS",
+        "RI3"
+    ],
     "enemy_3006_tersia": [
         "Theresa, King of Sarkaz",
         "THA1"
@@ -4497,6 +4589,14 @@
     "enemy_1564_mpprts": [
         "PRTS, Source Code",
         "RI1"
+    ],
+    "enemy_1565_mpprme": [
+        "Mimic Machine",
+        "RI2"
+    ],
+    "enemy_1566_mpascl": [
+        "Ascalon",
+        "AC"
     ],
     "enemy_2003_rockman": [
         "Lost Colossus",

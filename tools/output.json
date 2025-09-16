@@ -226,6 +226,9 @@
     "char_491_humus": [
         "Humus"
     ],
+    "char_445_wscoot": [
+        "Windscoot"
+    ],
     "char_237_gravel": [
         "Gravel"
     ],
@@ -792,6 +795,9 @@
     "char_4162_cathy": [
         "Catherine"
     ],
+    "char_4178_alanna": [
+        "Alanna"
+    ],
     "char_101_sora": [
         "Sora"
     ],
@@ -1144,6 +1150,9 @@
         "Reed2",
         "Reed 2"
     ],
+    "char_4179_monstr": [
+        "Mon3tr"
+    ],
     "char_136_hsguma": [
         "Hoshiguma"
     ],
@@ -1313,11 +1322,11 @@
     "char_263_skadi": [
         "Skadi"
     ],
+    "char_1037_amiya3": [
+        "Medic Amiya"
+    ],
     "char_1001_amiya2": [
         "Guard Amiya",
         "Gaurd Amiya"
-    ],
-    "char_1037_amiya3": [
-        "Medic Amiya"
     ]
 }
