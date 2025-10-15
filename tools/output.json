@@ -39,6 +39,9 @@
         "Logos's Phone",
         "PhonoR-0"
     ],
+    "char_4188_confes": [
+        "CONFESS-47"
+    ],
     "char_502_nblade": [
         "Yato"
     ],
@@ -471,6 +474,9 @@
     "char_4131_odda": [
         "Odda"
     ],
+    "char_4187_graceb": [
+        "Gracebearer"
+    ],
     "char_129_bluep": [
         "Blue Poison"
     ],
@@ -582,6 +588,9 @@
     "char_4081_warmy": [
         "Warmy",
         "Potlid"
+    ],
+    "char_4198_christ": [
+        "Miss.Christine"
     ],
     "char_4164_tecno": [
         "Tecno"
@@ -878,6 +887,9 @@
     "char_430_fartth": [
         "Fartooth"
     ],
+    "char_4193_lemuen": [
+        "Lemuen"
+    ],
     "char_113_cqbw": [
         "W"
     ],
@@ -1093,6 +1105,12 @@
     "char_225_haak": [
         "Aak"
     ],
+    "char_1041_angel2": [
+        "Exusiai Alter",
+        "Exusiai the New Covenant",
+        "Exusiai2",
+        "Exusiai 2"
+    ],
     "char_474_glady": [
         "Gladiia"
     ],
@@ -1151,7 +1169,8 @@
         "Reed 2"
     ],
     "char_4179_monstr": [
-        "Mon3tr"
+        "Mon3tr",
+        "Monster"
     ],
     "char_136_hsguma": [
         "Hoshiguma"
@@ -1188,6 +1207,9 @@
         "Jessica the Liberated",
         "Jessica 2",
         "Jessica2"
+    ],
+    "char_4194_rmixer": [
+        "Sankta Miksaparato"
     ],
     "char_2026_yu": [
         "Yu"

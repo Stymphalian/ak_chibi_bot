@@ -3953,6 +3953,82 @@
         "Weakening Node",
         "OG19"
     ],
+    "enemy_10083_hlbird": [
+        "Wings of the Sankta",
+        "MT1"
+    ],
+    "enemy_10083_hlbird_2": [
+        "Flight of the Sankta",
+        "MT2"
+    ],
+    "enemy_10084_hlegle": [
+        "Eyes of the Sankta",
+        "MT3"
+    ],
+    "enemy_10084_hlegle_2": [
+        "Witness of the Sankta",
+        "MT4"
+    ],
+    "enemy_10085_hllevi": [
+        "Flippers of the Sankta",
+        "MT5"
+    ],
+    "enemy_10085_hllevi_2": [
+        "Pride of the Sankta",
+        "MT6"
+    ],
+    "enemy_10086_hltigr": [
+        "Claws of the Sankta",
+        "MT7"
+    ],
+    "enemy_10086_hltigr_2": [
+        "Crawl of the Sankta",
+        "MT8"
+    ],
+    "enemy_10087_hlchgr": [
+        "Shrine Swordsman",
+        "MT9"
+    ],
+    "enemy_10087_hlchgr_2": [
+        "Elite Shrine Swordsman",
+        "MT10"
+    ],
+    "enemy_10088_hlsnip": [
+        "Shrine Marksman",
+        "MT11"
+    ],
+    "enemy_10088_hlsnip_2": [
+        "Elite Shrine Marksman",
+        "MT12"
+    ],
+    "enemy_10089_hlsprt": [
+        "Shrine Nurturer",
+        "MT13"
+    ],
+    "enemy_10089_hlsprt_2": [
+        "Veteran Shrine Nurturer",
+        "MT14"
+    ],
+    "enemy_10090_hlgrd": [
+        "Shrine Preacher",
+        "MT15"
+    ],
+    "enemy_10090_hlgrd_2": [
+        "Veteran Shrine Preacher",
+        "MT16"
+    ],
+    "enemy_10091_hlsttu": [
+        "Saint Statue",
+        "MT17"
+    ],
+    "enemy_10091_hlsttu_2": [
+        "Praying Saint Statue",
+        "MT18"
+    ],
+    "enemy_10091_hlsttu_3": [
+        "Matriarch",
+        "MT19"
+    ],
     "enemy_3009_mpprss": [
         "EYESOFPRIESTESS",
         "RI3"
@@ -4598,6 +4674,10 @@
         "Ascalon",
         "AC"
     ],
+    "enemy_1567_pope": [
+        "Saint",
+        "ST"
+    ],
     "enemy_2003_rockman": [
         "Lost Colossus",
         "WDG"
@@ -4929,6 +5009,18 @@
     "enemy_6028_cosgia": [
         "Song of the Pack",
         "DL28"
+    ],
+    "enemy_6029_solzac": [
+        "Aubade",
+        "DL29"
+    ],
+    "enemy_6030_frgzac": [
+        "Twitter",
+        "DL30"
+    ],
+    "enemy_6031_visfrg": [
+        "Woodthreads",
+        "DL31"
     ],
     "enemy_7001_blwzad": [
         "Tribal Shaman",
