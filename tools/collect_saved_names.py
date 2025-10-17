@@ -63,8 +63,10 @@ def main():
         saved_names = json.loads(f.read().encode("utf-8"))
 
     output_dict = process_character_table(character_table_path, saved_names)
+
+    sorted_keys = sorted(output_dict.keys())
     with output_path.open("w", encoding="utf-8") as f:
-        json.dump(output_dict, f, indent=4, ensure_ascii=False)
+        json.dump({k: output_dict[k] for k in sorted_keys}, f, indent=4, ensure_ascii=False)
 
 if __name__ == "__main__":
     main()

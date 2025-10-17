@@ -63,8 +63,10 @@ def main():
 
     # curl https://raw.githubusercontent.com/Kengxxiao/ArknightsGameData_YoStar/main/en_US/gamedata/excel/enemy_handbook_table.json > enemy_handbook_table.json
     output_dict = process_enemy_table(Path("./enemy_handbook_table.json"), saved_names)
+
+    sorted_keys = sorted(output_dict.keys())
     with Path("./output.json").open("w", encoding="utf-8") as f:
-        json.dump(output_dict, f, indent=4, ensure_ascii=False)
+        json.dump({key: output_dict[key] for key in sorted_keys}, f, indent=4, ensure_ascii=False)
 
 if __name__ == "__main__":
     main()

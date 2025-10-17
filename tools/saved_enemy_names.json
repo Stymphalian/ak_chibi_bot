@@ -1,4 +1,642 @@
 {
+    "enemy_10001_trslim": [
+        "Basic Slug",
+        "DT1"
+    ],
+    "enemy_10001_trslim_2": [
+        "Gourmet Slug",
+        "DT2"
+    ],
+    "enemy_10002_trtrsl": [
+        "Berry Slug",
+        "DT3"
+    ],
+    "enemy_10002_trtrsl_2": [
+        "Fruit Slug",
+        "DT4"
+    ],
+    "enemy_10003_trwlpl": [
+        "Raging Slug Eater",
+        "DT5"
+    ],
+    "enemy_10003_trwlpl_2": [
+        "Raging Man Eater",
+        "DT6"
+    ],
+    "enemy_10004_trdiam": [
+        "Berry Metal Crab",
+        "DT7"
+    ],
+    "enemy_10004_trdiam_2": [
+        "Fruit Metal Crab",
+        "DT8"
+    ],
+    "enemy_10005_trsmsb": [
+        "Corrupted Soldier",
+        "DT9"
+    ],
+    "enemy_10005_trsmsb_2": [
+        "Corrupted Warrior",
+        "DT10"
+    ],
+    "enemy_10006_trsmgi": [
+        "Corrupted Golem",
+        "DT11"
+    ],
+    "enemy_10006_trsmgi_2": [
+        "Warped Golem",
+        "DT12"
+    ],
+    "enemy_10007_trspsb": [
+        "Ink Brew",
+        "DT13"
+    ],
+    "enemy_10007_trspsb_2": [
+        "Merry Ink Brew",
+        "DT14"
+    ],
+    "enemy_10008_trbbox": [
+        "Sea Terror Chest",
+        "DT15"
+    ],
+    "enemy_10008_trbbox_2": [
+        "Sea Monster Chest",
+        "DT16"
+    ],
+    "enemy_1000_gopro": [
+        "Hound",
+        "O1"
+    ],
+    "enemy_1000_gopro_2": [
+        "Hound Pro",
+        "O2"
+    ],
+    "enemy_1000_gopro_3": [
+        "Rabid Hound Pro",
+        "O3"
+    ],
+    "enemy_10010_sgnja": [
+        "Street Bandit",
+        "GS1"
+    ],
+    "enemy_10010_sgnja_2": [
+        "Roaming Street Bandit",
+        "GS2"
+    ],
+    "enemy_10011_sgshot": [
+        "Street Hunter",
+        "GS3"
+    ],
+    "enemy_10011_sgshot_2": [
+        "Roaming Street Hunter",
+        "GS4"
+    ],
+    "enemy_10012_sgbtle": [
+        "Exhibit 237-1",
+        "GS5"
+    ],
+    "enemy_10012_sgbtle_2": [
+        "Exhibit 237-2",
+        "GS6"
+    ],
+    "enemy_10013_sgrob": [
+        "Small Bejeweled Wagon",
+        "GS7"
+    ],
+    "enemy_10013_sgrob_2": [
+        "Large Bejeweled Wagon",
+        "GS8"
+    ],
+    "enemy_10014_sgrich": [
+        "Small Broken Vessel",
+        "GS9"
+    ],
+    "enemy_10014_sgrich_2": [
+        "Large Broken Vessel",
+        "GS10"
+    ],
+    "enemy_10015_sgbird": [
+        "Gliding Toy",
+        "GS11"
+    ],
+    "enemy_10015_sgbird_2": [
+        "Gliding Crown",
+        "GS12"
+    ],
+    "enemy_10016_sggint": [
+        "Angry Stampede",
+        "GS13"
+    ],
+    "enemy_10016_sggint_2": [
+        "Angry Rampage",
+        "GS14"
+    ],
+    "enemy_10017_sgass": [
+        "Hall Statue (Left)",
+        "GS15"
+    ],
+    "enemy_10017_sgass_2": [
+        "Hall Statue (Right)",
+        "GS16"
+    ],
+    "enemy_10018_sgrobh": [
+        "Unicycle Toy",
+        "GS17"
+    ],
+    "enemy_10018_sgrobh_2": [
+        "Bouncing Unicycle",
+        "GS18"
+    ],
+    "enemy_10019_sgmum": [
+        "Bejeweled Slab Defender",
+        "GS19"
+    ],
+    "enemy_10019_sgmum_2": [
+        "Bejeweled Slab Guardian",
+        "GS20"
+    ],
+    "enemy_1001_bigbo": [
+        "Big Bob",
+        "11"
+    ],
+    "enemy_1001_bigbo_2": [
+        "Big Adam",
+        "12"
+    ],
+    "enemy_10020_sgcat": [
+        "Mio, the Eager Examinant",
+        "MA"
+    ],
+    "enemy_10021_vtcar": [
+        "Freight Car",
+        "LUD15"
+    ],
+    "enemy_10022_vtskny": [
+        "Novice Junkman",
+        "LUD16"
+    ],
+    "enemy_10022_vtskny_2": [
+        "Seasoned Junkman",
+        "LUD17"
+    ],
+    "enemy_10023_vtsnky": [
+        "Goggles Gang Thief",
+        "LUD18"
+    ],
+    "enemy_10023_vtsnky_2": [
+        "Goggles Gang Thug",
+        "LUD19"
+    ],
+    "enemy_10024_vtstrn": [
+        "Neighborhood Watch Member",
+        "LUD20"
+    ],
+    "enemy_10024_vtstrn_2": [
+        "Neighborhood Watch Leader",
+        "LUD21"
+    ],
+    "enemy_10025_vtmstr": [
+        "Millscar Mercenary",
+        "LUD22"
+    ],
+    "enemy_10025_vtmstr_2": [
+        "Millscar Elite Mercenary",
+        "LUD23"
+    ],
+    "enemy_10026_vtzepl": [
+        "Transport Vessel",
+        "LUD24"
+    ],
+    "enemy_10026_vtzepl_2": [
+        "Heavy Transport Vessel",
+        "LUD25"
+    ],
+    "enemy_10027_vtsk": [
+        "Armor of the Empire",
+        "VSK1"
+    ],
+    "enemy_10028_vtswd": [
+        "Unequipped Blade",
+        "LUD26"
+    ],
+    "enemy_10029_vtshld": [
+        "Protective Vest",
+        "LUD27"
+    ],
+    "enemy_1002_nsabr": [
+        "Soldier",
+        "1"
+    ],
+    "enemy_10030_vtwand": [
+        "Assault Arts Unit",
+        "LUD28"
+    ],
+    "enemy_10031_cnvsld": [
+        "Amateur Performer",
+        "CNV1"
+    ],
+    "enemy_10031_cnvsld_2": [
+        "Professional Performer",
+        "CNV2"
+    ],
+    "enemy_10032_cnvsnp": [
+        "Fireworks Merchant",
+        "CNV3"
+    ],
+    "enemy_10032_cnvsnp_2": [
+        "Fireworks Dealer",
+        "CNV4"
+    ],
+    "enemy_10033_cnvbsk": [
+        "Streetside Fire Juggler",
+        "CNV5"
+    ],
+    "enemy_10033_cnvbsk_2": [
+        "Streetside Fire Maestro",
+        "CNV6"
+    ],
+    "enemy_10034_cnvsax": [
+        "Festival Jazz Musician",
+        "CNV7"
+    ],
+    "enemy_10034_cnvsax_2": [
+        "Parading Jazz Musician",
+        "CNV8"
+    ],
+    "enemy_10035_cnvdnc": [
+        "Entusiasta Dancer",
+        "CNV9"
+    ],
+    "enemy_10035_cnvdnc_2": [
+        "Entusiasta Lead Dancer",
+        "CNV10"
+    ],
+    "enemy_10036_cnvpvd": [
+        "Carnevale Snack Seller",
+        "CNV11"
+    ],
+    "enemy_10036_cnvpvd_2": [
+        "Parade Snack Seller",
+        "CNV12"
+    ],
+    "enemy_10037_cnvpcar": [
+        "Carnevale Snack Cart",
+        "CNV13"
+    ],
+    "enemy_10037_cnvpcar_2": [
+        "Parade Snack Cart",
+        "CNV14"
+    ],
+    "enemy_10038_cnvpiz": [
+        "Convenient Eats",
+        "CNV15"
+    ],
+    "enemy_10038_cnvpiz_2": [
+        "Gourmet Delivery",
+        "CNV16"
+    ],
+    "enemy_10039_cnvber": [
+        "Happy Drinking",
+        "CNV17"
+    ],
+    "enemy_10039_cnvber_2": [
+        "Merrymaker Express",
+        "CNV18"
+    ],
+    "enemy_1003_ncbow": [
+        "Crossbowman",
+        "A1"
+    ],
+    "enemy_1003_ncbow_2": [
+        "Crossbowman Leader",
+        "A2"
+    ],
+    "enemy_10040_cnvbln": [
+        "Carnevale Balloon",
+        "CNV19"
+    ],
+    "enemy_10040_cnvbln_2": [
+        "Parade Balloon",
+        "CNV20"
+    ],
+    "enemy_10042_prtrop": [
+        "Bridge Builder",
+        "PI1"
+    ],
+    "enemy_10042_prtrop_2": [
+        "Bridge Holder",
+        "PI2"
+    ],
+    "enemy_10043_sailor": [
+        "Risk-seeking Sailor",
+        "PI3"
+    ],
+    "enemy_10043_sailor_2": [
+        "Risk-surviving Sailor",
+        "PI4"
+    ],
+    "enemy_10044_wintun": [
+        "Garum Gourmet",
+        "PI5"
+    ],
+    "enemy_10044_wintun_2": [
+        "Rum Gourmet",
+        "PI6"
+    ],
+    "enemy_10045_parrot": [
+        "Lucky Flyfin",
+        "PI7"
+    ],
+    "enemy_10045_parrot_2": [
+        "Unlucky Flyfin",
+        "PI8"
+    ],
+    "enemy_10046_pshark": [
+        "Saltfin Shaker",
+        "PI9"
+    ],
+    "enemy_10046_pshark_2": [
+        "Saltfin Breaker",
+        "P10"
+    ],
+    "enemy_10047_shrknt": [
+        "Explosion Chaser",
+        "P11"
+    ],
+    "enemy_10047_shrknt_2": [
+        "Explosion Devotee",
+        "P12"
+    ],
+    "enemy_10048_prtsld": [
+        "Bloody Chef",
+        "P13"
+    ],
+    "enemy_10048_prtsld_2": [
+        "Terrible Chef",
+        "P14"
+    ],
+    "enemy_10049_pcaptn": [
+        "Cacophonous Boatswain",
+        "P15"
+    ],
+    "enemy_10049_pcaptn_2": [
+        "Bel Canto Boatswain",
+        "P16"
+    ],
+    "enemy_1004_mslime": [
+        "Acid Originium Slug",
+        "B4"
+    ],
+    "enemy_1004_mslime_2": [
+        "Acid Originium Slug α",
+        "Acid Originium Slug Alpha",
+        "Acid Originium Slug a",
+        "B5"
+    ],
+    "enemy_10050_cjmeat": [
+        "Breakfast",
+        "OR1"
+    ],
+    "enemy_10050_cjmeat_2": [
+        "Dinner",
+        "OR2"
+    ],
+    "enemy_10051_cjmag": [
+        "Diet",
+        "OR3"
+    ],
+    "enemy_10051_cjmag_2": [
+        "Fasting",
+        "OR4"
+    ],
+    "enemy_10052_cjshld": [
+        "Sated",
+        "OR5"
+    ],
+    "enemy_10052_cjshld_2": [
+        "Bloated",
+        "OR6"
+    ],
+    "enemy_10053_cjman": [
+        "Expletive",
+        "OR7"
+    ],
+    "enemy_10053_cjman_2": [
+        "Profanity",
+        "OR8"
+    ],
+    "enemy_10054_cjhot": [
+        "Boiling Pot",
+        "OR9"
+    ],
+    "enemy_10054_cjhot_2": [
+        "Drifting Aroma",
+        "OR10"
+    ],
+    "enemy_10055_cjgost": [
+        "Forethought",
+        "OR11"
+    ],
+    "enemy_10055_cjgost_2": [
+        "Sureness",
+        "OR12"
+    ],
+    "enemy_10056_cjfish": [
+        "Vanity",
+        "OR13"
+    ],
+    "enemy_10056_cjfish_2": [
+        "Humility",
+        "OR14"
+    ],
+    "enemy_10057_cjstel": [
+        "Reminiscence",
+        "OR15"
+    ],
+    "enemy_10057_cjstel_2": [
+        "Remembrance",
+        "OR16"
+    ],
+    "enemy_10058_cjfrog": [
+        "Wealth",
+        "OR17"
+    ],
+    "enemy_10058_cjfrog_2": [
+        "Prosperity",
+        "OR18"
+    ],
+    "enemy_10059_cjgfod": [
+        "Sapidity",
+        "OR19"
+    ],
+    "enemy_1005_yokai": [
+        "Monster",
+        "D1"
+    ],
+    "enemy_1005_yokai_2": [
+        "Monster Mk II",
+        "D2"
+    ],
+    "enemy_1005_yokai_3": [
+        "Raptor",
+        "D3"
+    ],
+    "enemy_10060_cjbfod": [
+        "Vapidity",
+        "OR20"
+    ],
+    "enemy_10061_cjglon": [
+        "Sapid Auspice",
+        "OR21"
+    ],
+    "enemy_10062_cjblon": [
+        "Vapid Blight",
+        "OR22"
+    ],
+    "enemy_10063_cjdoor": [
+        "Mouth of Annihilation",
+        "OR23"
+    ],
+    "enemy_10063_cjdoor_2": [
+        "Mouth of Creation",
+        "OR24"
+    ],
+    "enemy_10064_ftyzss": [
+        "Patrolling Foliage",
+        "EA1"
+    ],
+    "enemy_10064_ftyzss_2": [
+        "Patrolling Witherbush",
+        "EA2"
+    ],
+    "enemy_10065_ftzlc": [
+        "Cabbage Seedling",
+        "EA3"
+    ],
+    "enemy_10065_ftzlc_2": [
+        "Cabbage Weed",
+        "EA4"
+    ],
+    "enemy_10066_ftxjl": [
+        "Nest",
+        "EA5"
+    ],
+    "enemy_10066_ftxjl_2": [
+        "Cradle",
+        "EA6"
+    ],
+    "enemy_10067_ftsjc": [
+        "Burning Vine",
+        "EA7"
+    ],
+    "enemy_10067_ftsjc_2": [
+        "Burning Wick",
+        "EA8"
+    ],
+    "enemy_10068_ftxsr": [
+        "Guiding Sprout",
+        "EA9"
+    ],
+    "enemy_10068_ftxsr_2": [
+        "Guiding Shrub",
+        "EA10"
+    ],
+    "enemy_10069_ftlsj": [
+        "Tree Shield",
+        "EA11"
+    ],
+    "enemy_10069_ftlsj_2": [
+        "Tree Wall",
+        "EA12"
+    ],
+    "enemy_1006_shield": [
+        "Heavy Defender",
+        "8"
+    ],
+    "enemy_1006_shield_2": [
+        "Heavy Defender Leader",
+        "9"
+    ],
+    "enemy_1006_shield_3": [
+        "Heavy Defender Lieutenant",
+        "10"
+    ],
+    "enemy_10070_ftkbtt": [
+        "Ash Creation",
+        "EA13"
+    ],
+    "enemy_10070_ftkbtt_2": [
+        "Ash Artwork",
+        "EA14"
+    ],
+    "enemy_10071_ftprg": [
+        "End Point",
+        "EA15"
+    ],
+    "enemy_10071_ftprg_2": [
+        "Middle Point",
+        "EA16"
+    ],
+    "enemy_10072_mpprhd": [
+        "Intrusive Call",
+        "PT1"
+    ],
+    "enemy_10073_mpcar": [
+        "Confused Maintenance Helper",
+        "OG1"
+    ],
+    "enemy_10073_mpcar_2": [
+        "Rampaging Maintenance Helper",
+        "OG2"
+    ],
+    "enemy_10074_mpcata": [
+        "Cold Drink Machine",
+        "OG3"
+    ],
+    "enemy_10074_mpcata_2": [
+        "Hot Drink Machine",
+        "OG4"
+    ],
+    "enemy_10075_mpwrj": [
+        "Worry-Free Cargo Helper",
+        "OG5"
+    ],
+    "enemy_10075_mpwrj_2": [
+        "Blast-Proof Cargo Helper",
+        "OG6"
+    ],
+    "enemy_10076_mpgrou": [
+        "Frozen Monstrositys Echo",
+        "OG7"
+    ],
+    "enemy_10076_mpgrou_2": [
+        "Shadow in the Snow",
+        "OG8"
+    ],
+    "enemy_10077_mpbarr": [
+        "Mockup Auto Meal Distributor",
+        "OG9"
+    ],
+    "enemy_10077_mpbarr_2": [
+        "Prototype Auto Meal Distributor",
+        "OG10"
+    ],
+    "enemy_10078_mprein": [
+        "Solidified Originium Colossus",
+        "OG11"
+    ],
+    "enemy_10078_mprein_2": [
+        "Active Originium Colossus",
+        "OG12"
+    ],
+    "enemy_10079_mpmage": [
+        "Stable Sarkaz Caster Crystal",
+        "OG13"
+    ],
+    "enemy_10079_mpmage_2": [
+        "Active Sarkaz Caster Crystal",
+        "OG14"
+    ],
     "enemy_1007_slime": [
         "Originium Slug",
         "B1"
@@ -15,49 +653,125 @@
         "Originium Slug B",
         "B3"
     ],
-    "enemy_1004_mslime": [
-        "Acid Originium Slug",
-        "B4"
+    "enemy_10080_mpiced": [
+        "Static Oneiros α",
+        "Static Oneiros alpha",
+        "Static Oneiros A",
+        "OG15"
     ],
-    "enemy_1004_mslime_2": [
-        "Acid Originium Slug α",
-        "Acid Originium Slug Alpha",
-        "Acid Originium Slug a",
-        "B5"
+    "enemy_10080_mpiced_2": [
+        "Static Oneiros β",
+        "Static Oneiros beta",
+        "Static Oneiros b",
+        "OG16"
     ],
-    "enemy_1021_bslime": [
-        "Infused Originium Slug",
-        "B6"
+    "enemy_10081_mpplai": [
+        "Decode Basis α",
+        "Decode Basis alpha",
+        "Decode Basis α",
+        "OG17"
     ],
-    "enemy_1021_bslime_2": [
-        "Infused Originium Slug α",
-        "Infused Originium Slug Alpha",
-        "Infused Originium Slug a",
-        "B7"
+    "enemy_10081_mpplai_2": [
+        "Decode Basis β",
+        "Decode Basis beta",
+        "Decode Basis b",
+        "OG18"
     ],
-    "enemy_1000_gopro": [
-        "Hound",
-        "O1"
+    "enemy_10082_mpweak": [
+        "Weakening Node",
+        "OG19"
     ],
-    "enemy_1000_gopro_2": [
-        "Hound Pro",
-        "O2"
+    "enemy_10083_hlbird": [
+        "Wings of the Sankta",
+        "MT1"
     ],
-    "enemy_1000_gopro_3": [
-        "Rabid Hound Pro",
-        "O3"
+    "enemy_10083_hlbird_2": [
+        "Flight of the Sankta",
+        "MT2"
     ],
-    "enemy_1002_nsabr": [
-        "Soldier",
-        "1"
+    "enemy_10084_hlegle": [
+        "Eyes of the Sankta",
+        "MT3"
     ],
-    "enemy_1003_ncbow": [
-        "Crossbowman",
-        "A1"
+    "enemy_10084_hlegle_2": [
+        "Witness of the Sankta",
+        "MT4"
     ],
-    "enemy_1003_ncbow_2": [
-        "Crossbowman Leader",
-        "A2"
+    "enemy_10085_hllevi": [
+        "Flippers of the Sankta",
+        "MT5"
+    ],
+    "enemy_10085_hllevi_2": [
+        "Pride of the Sankta",
+        "MT6"
+    ],
+    "enemy_10086_hltigr": [
+        "Claws of the Sankta",
+        "MT7"
+    ],
+    "enemy_10086_hltigr_2": [
+        "Crawl of the Sankta",
+        "MT8"
+    ],
+    "enemy_10087_hlchgr": [
+        "Shrine Swordsman",
+        "MT9"
+    ],
+    "enemy_10087_hlchgr_2": [
+        "Elite Shrine Swordsman",
+        "MT10"
+    ],
+    "enemy_10088_hlsnip": [
+        "Shrine Marksman",
+        "MT11"
+    ],
+    "enemy_10088_hlsnip_2": [
+        "Elite Shrine Marksman",
+        "MT12"
+    ],
+    "enemy_10089_hlsprt": [
+        "Shrine Nurturer",
+        "MT13"
+    ],
+    "enemy_10089_hlsprt_2": [
+        "Veteran Shrine Nurturer",
+        "MT14"
+    ],
+    "enemy_1008_ghost": [
+        "Wraith",
+        "13"
+    ],
+    "enemy_10090_hlgrd": [
+        "Shrine Preacher",
+        "MT15"
+    ],
+    "enemy_10090_hlgrd_2": [
+        "Veteran Shrine Preacher",
+        "MT16"
+    ],
+    "enemy_10091_hlsttu": [
+        "Saint Statue",
+        "MT17"
+    ],
+    "enemy_10091_hlsttu_2": [
+        "Praying Saint Statue",
+        "MT18"
+    ],
+    "enemy_10091_hlsttu_3": [
+        "Matriarch",
+        "MT19"
+    ],
+    "enemy_1009_lurker": [
+        "Lurker",
+        "C0"
+    ],
+    "enemy_1010_demon": [
+        "Sarkaz Greatswordsman",
+        "S1"
+    ],
+    "enemy_1010_demon_2": [
+        "Sarkaz Greatswordsman Leader",
+        "S2"
     ],
     "enemy_1011_wizard": [
         "Caster",
@@ -67,13 +781,13 @@
         "Caster Leader",
         "A4"
     ],
-    "enemy_1018_aoemag": [
-        "Senior Caster",
-        "A5"
+    "enemy_1012_dcross": [
+        "Sarkaz Crossbowman",
+        "S3"
     ],
-    "enemy_1018_aoemag_2": [
-        "Senior Caster Leader",
-        "A6"
+    "enemy_1012_dcross_2": [
+        "Sarkaz Crossbowman Leader",
+        "S4"
     ],
     "enemy_1013_airdrp": [
         "Airborne Soldier",
@@ -82,14 +796,6 @@
     "enemy_1013_airdrp_2": [
         "Airborne Soldier Leader",
         "3"
-    ],
-    "enemy_1024_mortar": [
-        "Mortar Gunner",
-        "A7"
-    ],
-    "enemy_1024_mortar_2": [
-        "Mortar Gunner Leader",
-        "A8"
     ],
     "enemy_1014_rogue": [
         "Dual Swordsman",
@@ -107,53 +813,21 @@
         "Light-Armored Soldier Leader",
         "7"
     ],
-    "enemy_1006_shield": [
-        "Heavy Defender",
-        "8"
-    ],
-    "enemy_1006_shield_2": [
-        "Heavy Defender Leader",
-        "9"
-    ],
-    "enemy_1006_shield_3": [
-        "Heavy Defender Lieutenant",
-        "10"
-    ],
-    "enemy_1001_bigbo": [
-        "Big Bob",
-        "11"
-    ],
-    "enemy_1001_bigbo_2": [
-        "Big Adam",
-        "12"
-    ],
     "enemy_1016_diaman": [
         "Metal Crab",
         "B8"
     ],
-    "enemy_1009_lurker": [
-        "Lurker",
-        "C0"
-    ],
-    "enemy_1008_ghost": [
-        "Wraith",
-        "13"
-    ],
-    "enemy_1005_yokai": [
-        "Monster",
-        "D1"
-    ],
-    "enemy_1005_yokai_2": [
-        "Monster Mk II",
-        "D2"
-    ],
-    "enemy_1005_yokai_3": [
-        "Raptor",
-        "D3"
-    ],
     "enemy_1017_defdrn": [
         "Defender-4",
         "D4"
+    ],
+    "enemy_1018_aoemag": [
+        "Senior Caster",
+        "A5"
+    ],
+    "enemy_1018_aoemag_2": [
+        "Senior Caster Leader",
+        "A6"
     ],
     "enemy_1019_jshoot": [
         "Invisible Crossbowman",
@@ -163,32 +837,18 @@
         "Invisible Crossbowman Leader",
         "C2"
     ],
-    "enemy_1023_jmage": [
-        "Invisible Caster",
-        "C3"
-    ],
-    "enemy_1023_jmage_2": [
-        "Invisible Caster Leader",
-        "C4"
-    ],
     "enemy_1020_obsv": [
         "Technical Scout"
     ],
-    "enemy_1010_demon": [
-        "Sarkaz Greatswordsman",
-        "S1"
+    "enemy_1021_bslime": [
+        "Infused Originium Slug",
+        "B6"
     ],
-    "enemy_1010_demon_2": [
-        "Sarkaz Greatswordsman Leader",
-        "S2"
-    ],
-    "enemy_1012_dcross": [
-        "Sarkaz Crossbowman",
-        "S3"
-    ],
-    "enemy_1012_dcross_2": [
-        "Sarkaz Crossbowman Leader",
-        "S4"
+    "enemy_1021_bslime_2": [
+        "Infused Originium Slug α",
+        "Infused Originium Slug Alpha",
+        "Infused Originium Slug a",
+        "B7"
     ],
     "enemy_1022_dmage": [
         "Sarkaz Caster",
@@ -198,9 +858,21 @@
         "Sarkaz Caster Leader",
         "S6"
     ],
-    "enemy_1501_demonk": [
-        "Sarkaz Centurion",
-        "SC"
+    "enemy_1023_jmage": [
+        "Invisible Caster",
+        "C3"
+    ],
+    "enemy_1023_jmage_2": [
+        "Invisible Caster Leader",
+        "C4"
+    ],
+    "enemy_1024_mortar": [
+        "Mortar Gunner",
+        "A7"
+    ],
+    "enemy_1024_mortar_2": [
+        "Mortar Gunner Leader",
+        "A8"
     ],
     "enemy_1025_reveng": [
         "Avenger",
@@ -289,6 +961,10 @@
     "enemy_1036_amraoe": [
         "Shielded Senior Caster"
     ],
+    "enemy_1037_lunsabr": [
+        "Spec Ops Soldier",
+        "33"
+    ],
     "enemy_1037_lunsbr": [],
     "enemy_1038_lunmag": [
         "Spec Ops Caster",
@@ -325,6 +1001,14 @@
     "enemy_1042_frostd": [
         "Frost",
         "D9"
+    ],
+    "enemy_1043_zomsabr": [
+        "Possessed Soldier",
+        "P1"
+    ],
+    "enemy_1043_zomsabr_2": [
+        "Possessed Soldier Leader",
+        "P2"
     ],
     "enemy_1043_zomsbr": [],
     "enemy_1043_zomsbr_2": [],
@@ -375,6 +1059,10 @@
     "enemy_1049_eagent_2": [
         "Agent Leader",
         "PA2"
+    ],
+    "enemy_1050_lslime": [
+        "Pompeii",
+        "UM1"
     ],
     "enemy_1051_norwiz": [
         "Authorized Caster",
@@ -902,14 +1590,6 @@
         "Emperors Blade",
         "U15"
     ],
-    "enemy_3001_upeopl": [
-        "Ursus Civilian",
-        "U16"
-    ],
-    "enemy_3002_ftrtal": [
-        "Talulah, the Fighter",
-        "U17"
-    ],
     "enemy_1116_liprr": [
         "Ordinary Prisoner",
         "C11"
@@ -1286,10 +1966,6 @@
         "Panchos Explosive Boat",
         "DH15"
     ],
-    "enemy_3003_alymot": [
-        "Competition Transport Vessel",
-        "DH16"
-    ],
     "enemy_1165_duhond": [
         "Dublinn Sniffer Hound",
         "DU1"
@@ -1324,6 +2000,14 @@
     ],
     "enemy_1169_duphlx": [],
     "enemy_1169_duphlx_2": [],
+    "enemy_1169_duphx": [
+        "Dublinn Phalanx Infantry",
+        "DU9"
+    ],
+    "enemy_1169_duphx_2": [
+        "Dublinn Phalanx Commander",
+        "DU10"
+    ],
     "enemy_1170_dushld": [
         "Dublinn Heavy Defender",
         "DU11"
@@ -2215,10 +2899,6 @@
         "None of My Business",
         "SA16"
     ],
-    "enemy_3004_speople": [
-        "Siracusan Civilian",
-        "SA17"
-    ],
     "enemy_1286_dumcy": [
         "Special Forces Soldier",
         "DU23"
@@ -2471,14 +3151,6 @@
         "Sarkaz Absurdist Splitcaster",
         "SHD4"
     ],
-    "enemy_1320_wdrrl": [
-        "Sarkaz Absurdist Tyrant",
-        "SHD5"
-    ],
-    "enemy_1320_wdrrl_2": [
-        "Sarkaz Absurdist Tyrant Captain",
-        "SHD6"
-    ],
     "enemy_1319_wdfmpm": [
         "Rebellion Instigator",
         "SHD7"
@@ -2486,6 +3158,14 @@
     "enemy_1319_wdfmpm_2": [
         "Rebellion Agitator",
         "SHD8"
+    ],
+    "enemy_1320_wdrrl": [
+        "Sarkaz Absurdist Tyrant",
+        "SHD5"
+    ],
+    "enemy_1320_wdrrl_2": [
+        "Sarkaz Absurdist Tyrant Captain",
+        "SHD6"
     ],
     "enemy_1321_wdarft": [
         "Withering Collector Disciple",
@@ -2641,13 +3321,6 @@
         "Fallen Angel",
         "Fortuna - Fallen Angel"
     ],
-    "enemy_3005_lpeopl": [
-        "Monastery Inhabitant",
-        "Monastery Inhabitant 2",
-        "SA1",
-        "SA2"
-    ],
-    "enemy_3005_lpeopl_2": [],
     "enemy_1344_ddlamb": [
         "Hot Spring Mischievous Rascal",
         "FF1"
@@ -3353,689 +4026,272 @@
         "The Cursed",
         "FC2"
     ],
-    "enemy_10001_trslim": [
-        "Basic Slug",
-        "DT1"
-    ],
-    "enemy_10001_trslim_2": [
-        "Gourmet Slug",
-        "DT2"
-    ],
-    "enemy_10002_trtrsl": [
-        "Berry Slug",
-        "DT3"
-    ],
-    "enemy_10002_trtrsl_2": [
-        "Fruit Slug",
-        "DT4"
-    ],
-    "enemy_10003_trwlpl": [
-        "Raging Slug Eater",
-        "DT5"
-    ],
-    "enemy_10003_trwlpl_2": [
-        "Raging Man Eater",
-        "DT6"
-    ],
-    "enemy_10004_trdiam": [
-        "Berry Metal Crab",
-        "DT7"
-    ],
-    "enemy_10004_trdiam_2": [
-        "Fruit Metal Crab",
-        "DT8"
-    ],
-    "enemy_10005_trsmsb": [
-        "Corrupted Soldier",
-        "DT9"
-    ],
-    "enemy_10005_trsmsb_2": [
-        "Corrupted Warrior",
-        "DT10"
-    ],
-    "enemy_10006_trsmgi": [
-        "Corrupted Golem",
-        "DT11"
-    ],
-    "enemy_10006_trsmgi_2": [
-        "Warped Golem",
-        "DT12"
-    ],
-    "enemy_10007_trspsb": [
-        "Ink Brew",
-        "DT13"
-    ],
-    "enemy_10007_trspsb_2": [
-        "Merry Ink Brew",
-        "DT14"
-    ],
-    "enemy_10008_trbbox": [
-        "Sea Terror Chest",
-        "DT15"
-    ],
-    "enemy_10008_trbbox_2": [
-        "Sea Monster Chest",
-        "DT16"
-    ],
-    "enemy_10010_sgnja": [
-        "Street Bandit",
-        "GS1"
-    ],
-    "enemy_10010_sgnja_2": [
-        "Roaming Street Bandit",
-        "GS2"
-    ],
-    "enemy_10011_sgshot": [
-        "Street Hunter",
-        "GS3"
-    ],
-    "enemy_10011_sgshot_2": [
-        "Roaming Street Hunter",
-        "GS4"
-    ],
-    "enemy_10012_sgbtle": [
-        "Exhibit 237-1",
-        "GS5"
-    ],
-    "enemy_10012_sgbtle_2": [
-        "Exhibit 237-2",
-        "GS6"
-    ],
-    "enemy_10013_sgrob": [
-        "Small Bejeweled Wagon",
-        "GS7"
-    ],
-    "enemy_10013_sgrob_2": [
-        "Large Bejeweled Wagon",
-        "GS8"
-    ],
-    "enemy_10014_sgrich": [
-        "Small Broken Vessel",
-        "GS9"
-    ],
-    "enemy_10014_sgrich_2": [
-        "Large Broken Vessel",
-        "GS10"
-    ],
-    "enemy_10015_sgbird": [
-        "Gliding Toy",
-        "GS11"
-    ],
-    "enemy_10015_sgbird_2": [
-        "Gliding Crown",
-        "GS12"
-    ],
-    "enemy_10016_sggint": [
-        "Angry Stampede",
-        "GS13"
-    ],
-    "enemy_10016_sggint_2": [
-        "Angry Rampage",
-        "GS14"
-    ],
-    "enemy_10017_sgass": [
-        "Hall Statue (Left)",
-        "GS15"
-    ],
-    "enemy_10017_sgass_2": [
-        "Hall Statue (Right)",
-        "GS16"
-    ],
-    "enemy_10018_sgrobh": [
-        "Unicycle Toy",
-        "GS17"
-    ],
-    "enemy_10018_sgrobh_2": [
-        "Bouncing Unicycle",
-        "GS18"
-    ],
-    "enemy_10019_sgmum": [
-        "Bejeweled Slab Defender",
-        "GS19"
-    ],
-    "enemy_10019_sgmum_2": [
-        "Bejeweled Slab Guardian",
-        "GS20"
-    ],
-    "enemy_10020_sgcat": [
-        "Mio, the Eager Examinant",
-        "MA"
-    ],
-    "enemy_10021_vtcar": [
-        "Freight Car",
-        "LUD15"
-    ],
-    "enemy_10022_vtskny": [
-        "Novice Junkman",
-        "LUD16"
-    ],
-    "enemy_10022_vtskny_2": [
-        "Seasoned Junkman",
-        "LUD17"
-    ],
-    "enemy_10023_vtsnky": [
-        "Goggles Gang Thief",
-        "LUD18"
-    ],
-    "enemy_10023_vtsnky_2": [
-        "Goggles Gang Thug",
-        "LUD19"
-    ],
-    "enemy_10024_vtstrn": [
-        "Neighborhood Watch Member",
-        "LUD20"
-    ],
-    "enemy_10024_vtstrn_2": [
-        "Neighborhood Watch Leader",
-        "LUD21"
-    ],
-    "enemy_10025_vtmstr": [
-        "Millscar Mercenary",
-        "LUD22"
-    ],
-    "enemy_10025_vtmstr_2": [
-        "Millscar Elite Mercenary",
-        "LUD23"
-    ],
-    "enemy_10026_vtzepl": [
-        "Transport Vessel",
-        "LUD24"
-    ],
-    "enemy_10026_vtzepl_2": [
-        "Heavy Transport Vessel",
-        "LUD25"
-    ],
-    "enemy_10027_vtsk": [
-        "Armor of the Empire",
-        "VSK1"
-    ],
-    "enemy_10028_vtswd": [
-        "Unequipped Blade",
-        "LUD26"
-    ],
-    "enemy_10029_vtshld": [
-        "Protective Vest",
-        "LUD27"
-    ],
-    "enemy_10030_vtwand": [
-        "Assault Arts Unit",
-        "LUD28"
-    ],
-    "enemy_10031_cnvsld": [
-        "Amateur Performer",
-        "CNV1"
-    ],
-    "enemy_10031_cnvsld_2": [
-        "Professional Performer",
-        "CNV2"
-    ],
-    "enemy_10032_cnvsnp": [
-        "Fireworks Merchant",
-        "CNV3"
-    ],
-    "enemy_10032_cnvsnp_2": [
-        "Fireworks Dealer",
-        "CNV4"
-    ],
-    "enemy_10033_cnvbsk": [
-        "Streetside Fire Juggler",
-        "CNV5"
-    ],
-    "enemy_10033_cnvbsk_2": [
-        "Streetside Fire Maestro",
-        "CNV6"
-    ],
-    "enemy_10034_cnvsax": [
-        "Festival Jazz Musician",
-        "CNV7"
-    ],
-    "enemy_10034_cnvsax_2": [
-        "Parading Jazz Musician",
-        "CNV8"
-    ],
-    "enemy_10035_cnvdnc": [
-        "Entusiasta Dancer",
-        "CNV9"
-    ],
-    "enemy_10035_cnvdnc_2": [
-        "Entusiasta Lead Dancer",
-        "CNV10"
-    ],
-    "enemy_10036_cnvpvd": [
-        "Carnevale Snack Seller",
-        "CNV11"
-    ],
-    "enemy_10036_cnvpvd_2": [
-        "Parade Snack Seller",
-        "CNV12"
-    ],
-    "enemy_10037_cnvpcar": [
-        "Carnevale Snack Cart",
-        "CNV13"
-    ],
-    "enemy_10037_cnvpcar_2": [
-        "Parade Snack Cart",
-        "CNV14"
-    ],
-    "enemy_10038_cnvpiz": [
-        "Convenient Eats",
-        "CNV15"
-    ],
-    "enemy_10038_cnvpiz_2": [
-        "Gourmet Delivery",
-        "CNV16"
-    ],
-    "enemy_10039_cnvber": [
-        "Happy Drinking",
-        "CNV17"
-    ],
-    "enemy_10039_cnvber_2": [
-        "Merrymaker Express",
-        "CNV18"
-    ],
-    "enemy_10040_cnvbln": [
-        "Carnevale Balloon",
-        "CNV19"
-    ],
-    "enemy_10040_cnvbln_2": [
-        "Parade Balloon",
-        "CNV20"
-    ],
-    "enemy_10042_prtrop": [
-        "Bridge Builder",
-        "PI1"
-    ],
-    "enemy_10042_prtrop_2": [
-        "Bridge Holder",
-        "PI2"
-    ],
-    "enemy_10043_sailor": [
-        "Risk-seeking Sailor",
-        "PI3"
-    ],
-    "enemy_10043_sailor_2": [
-        "Risk-surviving Sailor",
-        "PI4"
-    ],
-    "enemy_10044_wintun": [
-        "Garum Gourmet",
-        "PI5"
-    ],
-    "enemy_10044_wintun_2": [
-        "Rum Gourmet",
-        "PI6"
-    ],
-    "enemy_10045_parrot": [
-        "Lucky Flyfin",
-        "PI7"
-    ],
-    "enemy_10045_parrot_2": [
-        "Unlucky Flyfin",
-        "PI8"
-    ],
-    "enemy_10046_pshark": [
-        "Saltfin Shaker",
-        "PI9"
-    ],
-    "enemy_10046_pshark_2": [
-        "Saltfin Breaker",
-        "P10"
-    ],
-    "enemy_10047_shrknt": [
-        "Explosion Chaser",
-        "P11"
-    ],
-    "enemy_10047_shrknt_2": [
-        "Explosion Devotee",
-        "P12"
-    ],
-    "enemy_10048_prtsld": [
-        "Bloody Chef",
-        "P13"
-    ],
-    "enemy_10048_prtsld_2": [
-        "Terrible Chef",
-        "P14"
-    ],
-    "enemy_10049_pcaptn": [
-        "Cacophonous Boatswain",
-        "P15"
-    ],
-    "enemy_10049_pcaptn_2": [
-        "Bel Canto Boatswain",
-        "P16"
-    ],
-    "enemy_10050_cjmeat": [
-        "Breakfast",
-        "OR1"
-    ],
-    "enemy_10050_cjmeat_2": [
-        "Dinner",
-        "OR2"
-    ],
-    "enemy_10051_cjmag": [
-        "Diet",
-        "OR3"
-    ],
-    "enemy_10051_cjmag_2": [
-        "Fasting",
-        "OR4"
-    ],
-    "enemy_10052_cjshld": [
-        "Sated",
-        "OR5"
-    ],
-    "enemy_10052_cjshld_2": [
-        "Bloated",
-        "OR6"
-    ],
-    "enemy_10053_cjman": [
-        "Expletive",
-        "OR7"
-    ],
-    "enemy_10053_cjman_2": [
-        "Profanity",
-        "OR8"
-    ],
-    "enemy_10054_cjhot": [
-        "Boiling Pot",
-        "OR9"
-    ],
-    "enemy_10054_cjhot_2": [
-        "Drifting Aroma",
-        "OR10"
-    ],
-    "enemy_10055_cjgost": [
-        "Forethought",
-        "OR11"
-    ],
-    "enemy_10055_cjgost_2": [
-        "Sureness",
-        "OR12"
-    ],
-    "enemy_10056_cjfish": [
-        "Vanity",
-        "OR13"
-    ],
-    "enemy_10056_cjfish_2": [
-        "Humility",
-        "OR14"
-    ],
-    "enemy_10057_cjstel": [
-        "Reminiscence",
-        "OR15"
-    ],
-    "enemy_10057_cjstel_2": [
-        "Remembrance",
-        "OR16"
-    ],
-    "enemy_10058_cjfrog": [
-        "Wealth",
-        "OR17"
-    ],
-    "enemy_10058_cjfrog_2": [
-        "Prosperity",
-        "OR18"
-    ],
-    "enemy_10059_cjgfod": [
-        "Sapidity",
-        "OR19"
-    ],
-    "enemy_10060_cjbfod": [
-        "Vapidity",
-        "OR20"
-    ],
-    "enemy_10061_cjglon": [
-        "Sapid Auspice",
-        "OR21"
-    ],
-    "enemy_10062_cjblon": [
-        "Vapid Blight",
-        "OR22"
-    ],
-    "enemy_10063_cjdoor": [
-        "Mouth of Annihilation",
-        "OR23"
-    ],
-    "enemy_10063_cjdoor_2": [
-        "Mouth of Creation",
-        "OR24"
-    ],
-    "enemy_10064_ftyzss": [
-        "Patrolling Foliage",
-        "EA1"
-    ],
-    "enemy_10064_ftyzss_2": [
-        "Patrolling Witherbush",
-        "EA2"
-    ],
-    "enemy_10065_ftzlc": [
-        "Cabbage Seedling",
-        "EA3"
-    ],
-    "enemy_10065_ftzlc_2": [
-        "Cabbage Weed",
-        "EA4"
-    ],
-    "enemy_10066_ftxjl": [
-        "Nest",
-        "EA5"
-    ],
-    "enemy_10066_ftxjl_2": [
-        "Cradle",
-        "EA6"
-    ],
-    "enemy_10067_ftsjc": [
-        "Burning Vine",
-        "EA7"
-    ],
-    "enemy_10067_ftsjc_2": [
-        "Burning Wick",
-        "EA8"
-    ],
-    "enemy_10068_ftxsr": [
-        "Guiding Sprout",
-        "EA9"
-    ],
-    "enemy_10068_ftxsr_2": [
-        "Guiding Shrub",
-        "EA10"
-    ],
-    "enemy_10069_ftlsj": [
-        "Tree Shield",
-        "EA11"
-    ],
-    "enemy_10069_ftlsj_2": [
-        "Tree Wall",
-        "EA12"
-    ],
-    "enemy_10070_ftkbtt": [
-        "Ash Creation",
-        "EA13"
-    ],
-    "enemy_10070_ftkbtt_2": [
-        "Ash Artwork",
-        "EA14"
-    ],
-    "enemy_10071_ftprg": [
-        "End Point",
-        "EA15"
-    ],
-    "enemy_10071_ftprg_2": [
-        "Middle Point",
-        "EA16"
-    ],
-    "enemy_10072_mpprhd": [
-        "Intrusive Call",
-        "PT1"
-    ],
-    "enemy_10073_mpcar": [
-        "Confused Maintenance Helper",
-        "OG1"
-    ],
-    "enemy_10073_mpcar_2": [
-        "Rampaging Maintenance Helper",
-        "OG2"
-    ],
-    "enemy_10074_mpcata": [
-        "Cold Drink Machine",
-        "OG3"
-    ],
-    "enemy_10074_mpcata_2": [
-        "Hot Drink Machine",
-        "OG4"
-    ],
-    "enemy_10075_mpwrj": [
-        "Worry-Free Cargo Helper",
-        "OG5"
-    ],
-    "enemy_10075_mpwrj_2": [
-        "Blast-Proof Cargo Helper",
-        "OG6"
-    ],
-    "enemy_10076_mpgrou": [
-        "Frozen Monstrositys Echo",
-        "OG7"
-    ],
-    "enemy_10076_mpgrou_2": [
-        "Shadow in the Snow",
-        "OG8"
-    ],
-    "enemy_10077_mpbarr": [
-        "Mockup Auto Meal Distributor",
-        "OG9"
-    ],
-    "enemy_10077_mpbarr_2": [
-        "Prototype Auto Meal Distributor",
-        "OG10"
-    ],
-    "enemy_10078_mprein": [
-        "Solidified Originium Colossus",
-        "OG11"
-    ],
-    "enemy_10078_mprein_2": [
-        "Active Originium Colossus",
-        "OG12"
-    ],
-    "enemy_10079_mpmage": [
-        "Stable Sarkaz Caster Crystal",
-        "OG13"
-    ],
-    "enemy_10079_mpmage_2": [
-        "Active Sarkaz Caster Crystal",
-        "OG14"
-    ],
-    "enemy_10080_mpiced": [
-        "Static Oneiros α",
-        "Static Oneiros alpha",
-        "Static Oneiros A",
-        "OG15"
-    ],
-    "enemy_10080_mpiced_2": [
-        "Static Oneiros β",
-        "Static Oneiros beta",
-        "Static Oneiros b",
-        "OG16"
-    ],
-    "enemy_10081_mpplai": [
-        "Decode Basis α",
-        "Decode Basis alpha",
-        "Decode Basis α",
-        "OG17"
-    ],
-    "enemy_10081_mpplai_2": [
-        "Decode Basis β",
-        "Decode Basis beta",
-        "Decode Basis b",
-        "OG18"
-    ],
-    "enemy_10082_mpweak": [
-        "Weakening Node",
-        "OG19"
-    ],
-    "enemy_10083_hlbird": [
-        "Wings of the Sankta",
-        "MT1"
-    ],
-    "enemy_10083_hlbird_2": [
-        "Flight of the Sankta",
-        "MT2"
-    ],
-    "enemy_10084_hlegle": [
-        "Eyes of the Sankta",
-        "MT3"
-    ],
-    "enemy_10084_hlegle_2": [
-        "Witness of the Sankta",
-        "MT4"
-    ],
-    "enemy_10085_hllevi": [
-        "Flippers of the Sankta",
-        "MT5"
-    ],
-    "enemy_10085_hllevi_2": [
-        "Pride of the Sankta",
-        "MT6"
-    ],
-    "enemy_10086_hltigr": [
-        "Claws of the Sankta",
-        "MT7"
-    ],
-    "enemy_10086_hltigr_2": [
-        "Crawl of the Sankta",
-        "MT8"
-    ],
-    "enemy_10087_hlchgr": [
-        "Shrine Swordsman",
-        "MT9"
-    ],
-    "enemy_10087_hlchgr_2": [
-        "Elite Shrine Swordsman",
-        "MT10"
-    ],
-    "enemy_10088_hlsnip": [
-        "Shrine Marksman",
-        "MT11"
-    ],
-    "enemy_10088_hlsnip_2": [
-        "Elite Shrine Marksman",
-        "MT12"
-    ],
-    "enemy_10089_hlsprt": [
-        "Shrine Nurturer",
-        "MT13"
-    ],
-    "enemy_10089_hlsprt_2": [
-        "Veteran Shrine Nurturer",
-        "MT14"
-    ],
-    "enemy_10090_hlgrd": [
-        "Shrine Preacher",
-        "MT15"
-    ],
-    "enemy_10090_hlgrd_2": [
-        "Veteran Shrine Preacher",
-        "MT16"
-    ],
-    "enemy_10091_hlsttu": [
-        "Saint Statue",
-        "MT17"
-    ],
-    "enemy_10091_hlsttu_2": [
-        "Praying Saint Statue",
-        "MT18"
-    ],
-    "enemy_10091_hlsttu_3": [
-        "Matriarch",
-        "MT19"
-    ],
-    "enemy_3009_mpprss": [
-        "EYESOFPRIESTESS",
-        "RI3"
-    ],
-    "enemy_3006_tersia": [
-        "Theresa, King of Sarkaz",
-        "THA1"
+    "enemy_1500_skulsr": [
+        "Skullshatterer",
+        "SS"
+    ],
+    "enemy_1501_demonk": [
+        "Sarkaz Centurion",
+        "SC"
+    ],
+    "enemy_1502_crowns": [
+        "Crownslayer",
+        "CS"
+    ],
+    "enemy_1503_talula": [
+        "Talulah",
+        "TA"
+    ],
+    "enemy_1504_cqbw": [
+        "W"
+    ],
+    "enemy_1505_frstar": [
+        "FrostNova",
+        "FN"
+    ],
+    "enemy_1506_patrt": [
+        "Patriot",
+        "PT"
+    ],
+    "enemy_1507_mephi": [
+        "Mephisto",
+        "MP"
+    ],
+    "enemy_1508_faust": [
+        "Faust",
+        "FA"
+    ],
+    "enemy_1509_mousek": [
+        "Rat King",
+        "MK"
+    ],
+    "enemy_1510_frstar2": [
+        "FrostNova, Winters Scar",
+        "FNF"
+    ],
+    "enemy_1511_mdrock": [
+        "Mudrock",
+        "MR"
+    ],
+    "enemy_1512_mcmstr": [
+        "The Big Ugly Thing",
+        "BU"
+    ],
+    "enemy_1513_dekght": [
+        "Corrupted Knight",
+        "DK1"
+    ],
+    "enemy_1513_dekght_2": [
+        "Withered Knight",
+        "DK2"
+    ],
+    "enemy_1514_smephi": [
+        "Mephisto, The Singer",
+        "SMP"
+    ],
+    "enemy_1515_bsnake": [
+        "Deathless Black Snake",
+        "BSN"
+    ],
+    "enemy_1516_jakill": [
+        "Jesselton Williams",
+        "JAK"
+    ],
+    "enemy_1517_xi": [
+        "Free",
+        "DSK"
+    ],
+    "enemy_1519_bgball": [
+        "Essence of Evolution",
+        "BB"
+    ],
+    "enemy_1520_empgrd": [
+        "Emperors Blade, Pursuer",
+        "EMG"
+    ],
+    "enemy_1521_dslily": [
+        "Sal Viento Bishop Quintus",
+        "SVK"
+    ],
+    "enemy_1522_captan": [
+        "Pancho Salas",
+        "CPS"
+    ],
+    "enemy_1523_mandra": [
+        "Mandragora",
+        "MD"
+    ],
+    "enemy_1524_bldkgt": [
+        "The Blood Knight Dikaiopolis",
+        "BK"
+    ],
+    "enemy_1525_blkswb": [
+        "Degenbrecher",
+        "BJ"
+    ],
+    "enemy_1526_sfsui": [
+        "Sui-Xiang",
+        "SUI"
+    ],
+    "enemy_1527_martyr": [
+        "Andoain, the Martyr",
+        "AND"
+    ],
+    "enemy_1528_manfri": [
+        "Manfred",
+        "MAN"
+    ],
+    "enemy_1529_dsdevr": [
+        "The Endspeaker, Will of We Many",
+        "AMA"
+    ],
+    "enemy_1530_white": [
+        "Kreide, Worldly Remains",
+        "KRE"
+    ],
+    "enemy_1531_bbrain": [
+        "Awaken",
+        "BBR"
+    ],
+    "enemy_1532_minima": [
+        "Materialist Antagonizer",
+        "CST"
+    ],
+    "enemy_1533_stmkgt": [
+        "The Last Steam Knight",
+        "LYN"
+    ],
+    "enemy_1535_wlfmster": [
+        "Zaaro, Signore dei Lupi",
+        "ZA"
+    ],
+    "enemy_1536_ncrmcr": [
+        "The Leader"
+    ],
+    "enemy_1537_mhrors": [
+        "Rathalos",
+        "6935"
+    ],
+    "enemy_1538_ymmons": [
+        "Ya",
+        "YA01"
+    ],
+    "enemy_1538_ymmons_2": [],
+    "enemy_1538_ymmons_3": [],
+    "enemy_1539_reid": [
+        "Red",
+        "The Hateful Avenger",
+        "A15"
+    ],
+    "enemy_1540_wdncr": [
+        "Eblana",
+        "EB"
+    ],
+    "enemy_1541_wdslms": [
+        "Damazti Cluster Citizen",
+        "DC3"
+    ],
+    "enemy_1542_wdslm": [
+        "Damazti Cluster",
+        "DC1"
+    ],
+    "enemy_1543_cstlrs": [
+        "Kristen",
+        "KW"
+    ],
+    "enemy_1544_cledub": [
+        "The Gardener",
+        "CD"
+    ],
+    "enemy_1545_shpkg": [
+        "Dolly, Sovereign of Sheep",
+        "DLY"
+    ],
+    "enemy_1546_cliff": [
+        "Clip Cliff",
+        "BSC"
+    ],
+    "enemy_1547_blord": [
+        "Duqarael, Regents Crimson",
+        "PB"
+    ],
+    "enemy_1548_ltniak": [
+        "Herkunftshorn, Witch King",
+        "HH"
+    ],
+    "enemy_1549_windoc": [
+        "Harold",
+        "Harold Craigavon",
+        "HC"
+    ],
+    "enemy_1550_dhnzzh": [
+        "Slumbering of Sui"
+    ],
+    "enemy_1551_bolicp": [
+        "Captain Mateo",
+        "EC"
+    ],
+    "enemy_1552_mmamiy": [
+        "Amiya",
+        "THA2"
+    ],
+    "enemy_1553_lrdead": [
+        "Kindling Revenant",
+        "DS"
+    ],
+    "enemy_1554_lrtsia": [
+        "Theresa",
+        "THA3"
+    ],
+    "enemy_1556_dsbish": [
+        "Martus",
+        "Martus Seaborn",
+        "Mártus Seaborn",
+        "MSB"
+    ],
+    "enemy_1557_trcerb": [
+        "Tri-Maw",
+        "DT"
+    ],
+    "enemy_1558_sgactr": [
+        "Zubayidamu the Timeless",
+        "ZYA"
+    ],
+    "enemy_1559_vtlionk": [
+        "Alistair, Final Flame of the Empire",
+        "ALS"
+    ],
+    "enemy_1560_cnvlap": [
+        "La Signora del Carnevale",
+        "LOM"
+    ],
+    "enemy_1561_crzjdg": [
+        "Anastasio, the Atoner",
+        "AR"
+    ],
+    "enemy_1562_cjtaot": [
+        "Gluttony",
+        "WY"
+    ],
+    "enemy_1563_fthlgj": [
+        "All Flames Returned",
+        "DR"
+    ],
+    "enemy_1564_mpprts": [
+        "PRTS, Source Code",
+        "RI1"
+    ],
+    "enemy_1565_mpprme": [
+        "Mimic Machine",
+        "RI2"
+    ],
+    "enemy_1566_mpascl": [
+        "Ascalon",
+        "AC"
+    ],
+    "enemy_1567_pope": [
+        "Saint",
+        "ST"
     ],
     "enemy_2001_duckmi": [
         "Duck Lord",
@@ -4045,13 +4301,29 @@
         "Gopnik",
         "GPN"
     ],
-    "enemy_2034_sythef": [
-        "Crying Thief",
-        "THF"
+    "enemy_2003_rockman": [
+        "Lost Colossus",
+        "WDG"
     ],
-    "enemy_2085_skzjxd": [
-        "Fatty",
-        "FAT"
+    "enemy_2004_balloon": [
+        "Jetman",
+        "JTM"
+    ],
+    "enemy_2005_axetro": [
+        "Forsaken One",
+        "FSK"
+    ],
+    "enemy_2006_flsnip": [
+        "Rusthammer Warrior",
+        "RSH"
+    ],
+    "enemy_2007_flwitch": [
+        "Frozen Monstrosity",
+        "FZM"
+    ],
+    "enemy_2008_flking": [
+        "Gravestone",
+        "GST"
     ],
     "enemy_2009_csaudc": [
         "Derisive Audience",
@@ -4069,9 +4341,37 @@
         "Small Surprise",
         "CS4"
     ],
+    "enemy_2013_csbot": [
+        "Wandering Puppet",
+        "MSC"
+    ],
+    "enemy_2014_csicer": [
+        "Snow Doe",
+        "ICR"
+    ],
+    "enemy_2015_csicem": [
+        "Frost Buck",
+        "ICM"
+    ],
+    "enemy_2016_csphtm": [
+        "Lucian, Blood Diamond",
+        "PTM"
+    ],
     "enemy_2017_csphts": [
         "Ominous Apparition",
         "PTS"
+    ],
+    "enemy_2018_csdoll": [
+        "Big Sad Lock",
+        "DOL"
+    ],
+    "enemy_2019_cshost": [
+        "Troupe Mouthpiece",
+        "HST"
+    ],
+    "enemy_2020_cswrtr": [
+        "Playwright",
+        "WRT"
     ],
     "enemy_2021_syfish": [
         "Bone Sea Drifter",
@@ -4093,18 +4393,70 @@
         "Skimming Sea Drifter",
         "SY5"
     ],
+    "enemy_2026_syudg": [
+        "Saint Carmen",
+        "UGF"
+    ],
+    "enemy_2027_syudg2": [
+        "Saint Iberia",
+        "UGS"
+    ],
+    "enemy_2028_syevil": [
+        "Tidelinked Bishop",
+        "SEV"
+    ],
+    "enemy_2029_symon": [
+        "Tidelinked Archon",
+        "SMF"
+    ],
+    "enemy_2030_symon2": [
+        "Tidelinked Immortal",
+        "SMS"
+    ],
+    "enemy_2031_syboy": [
+        "Pathshaper",
+        "SRF"
+    ],
+    "enemy_2032_syboy2": [
+        "Lingering Pathshaper",
+        "SRS"
+    ],
     "enemy_2033_syboys": [
         "Pathshaper Fractal",
         "SY6"
+    ],
+    "enemy_2034_sythef": [
+        "Crying Thief",
+        "THF"
+    ],
+    "enemy_2035_sybox": [
+        "Chest Seaborn",
+        "SY9"
+    ],
+    "enemy_2036_syshop": [
+        "Cannot",
+        "KNT"
+    ],
+    "enemy_2037_sygirl": [
+        "Paranoia Illusion",
+        "GIR"
+    ],
+    "enemy_2038_sydonq": [
+        "The Last Knight",
+        "DOQ"
+    ],
+    "enemy_2039_syskad": [
+        "Isharmla, Heart of Corruption",
+        "SKA"
     ],
     "enemy_2040_syrott": [],
     "enemy_2041_syjely": [
         "Izumiks Offspring",
         "SY8"
     ],
-    "enemy_2035_sybox": [
-        "Chest Seaborn",
-        "SY9"
+    "enemy_2042_syboss": [
+        "Izumik, Source of Ecology",
+        "MZK"
     ],
     "enemy_2043_smsbr": [
         "Tainted Carcass",
@@ -4122,11 +4474,55 @@
         "Shattered Champion",
         "EJ4"
     ],
+    "enemy_2047_smtree": [],
+    "enemy_2048_smgrd": [
+        "Demons Blade",
+        "DB"
+    ],
+    "enemy_2049_smgrd2": [
+        "Demons Blade, the Vagabond",
+        "DBV"
+    ],
+    "enemy_2050_smsha": [
+        "Fallen Snowpriest",
+        "FSP"
+    ],
+    "enemy_2051_smsha2": [
+        "Hollow Snowpriest",
+        "HSP"
+    ],
+    "enemy_2052_smgia": [
+        "Weaving Vinecreeps",
+        "WVC"
+    ],
+    "enemy_2053_smgia2": [
+        "Elder Vinecreeps",
+        "EVC"
+    ],
+    "enemy_2054_smdeer": [
+        "Samivilinn, the Resolution of the Very North",
+        "SAM"
+    ],
+    "enemy_2055_smlead": [
+        "Eikthyrnir, the Scar of the Shattered",
+        "EIK"
+    ],
+    "enemy_2056_smedzi": [
+        "Crazelyseon, the Ascendant of Cosmoi",
+        "CES"
+    ],
+    "enemy_2057_smkght": [
+        "Kharanduu Khagan, the Scourge of the Land",
+        "KSL"
+    ],
+    "enemy_2058_smlion": [
+        "Lugalszargus, the Overlord of Ages",
+        "LOA"
+    ],
     "enemy_2059_smbox": [
         "Testaceous Vinecreeps",
         "EJ5"
     ],
-    "enemy_2047_smtree": [],
     "enemy_2060_smshdw": [
         "Khaganshadow",
         "EJ6"
@@ -4134,6 +4530,10 @@
     "enemy_2061_smhond": [
         "Royal Companion",
         "EJ7"
+    ],
+    "enemy_2062_smcar": [
+        "Self-Driving Recon Cart",
+        "SMC0"
     ],
     "enemy_2063_skzlch": [
         "Sarkaz Maze Guide",
@@ -4167,6 +4567,62 @@
         "Lost Hovercraft",
         "SFF8"
     ],
+    "enemy_2071_skzdny": [
+        "Laqeramaline",
+        "LMR"
+    ],
+    "enemy_2072_skdny2": [
+        "The Tear Weaver",
+        "LMS"
+    ],
+    "enemy_2074_skzgly": [
+        "Goliath",
+        "GLT"
+    ],
+    "enemy_2075_skgly2": [
+        "Champion of Lost Agonies",
+        "GLS"
+    ],
+    "enemy_2076_skzklz": [
+        "Kaltsit",
+        "KST"
+    ],
+    "enemy_2077_skklz2": [
+        "The Doomsday Prophet",
+        "KSS"
+    ],
+    "enemy_2078_skzmst": [
+        "Mon2tr",
+        "M2T"
+    ],
+    "enemy_2079_skmst2": [
+        "Evolving Monster",
+        "M2S"
+    ],
+    "enemy_2080_skzlwy": [
+        "Fremont, Enlightener of Minds",
+        "FMT"
+    ],
+    "enemy_2081_skztxs": [
+        "Theresis, Black Crowned Lord",
+        "TRS"
+    ],
+    "enemy_2082_skzdd": [
+        "Buldrokkastee, Holy Gun-Knight",
+        "SPT"
+    ],
+    "enemy_2084_skzcan": [
+        "Mr. Goodenough",
+        "KNS"
+    ],
+    "enemy_2085_skzjxd": [
+        "Fatty",
+        "FAT"
+    ],
+    "enemy_2089_skzjkl": [
+        "Quilon, Avatar of the Mahasattva",
+        "QLN"
+    ],
     "enemy_2090_skzjbc": [
         "Padmasana of Rebirth",
         "SFF9"
@@ -4175,9 +4631,60 @@
         "Window",
         "SFF10"
     ],
+    "enemy_2092_skzamy": [
+        "Amiya, Furnaces Finale",
+        "AFF"
+    ],
     "enemy_2093_skzams": [
         "Finale Cadence",
         "SFF11"
+    ],
+    "enemy_2097_skzfdd": [
+        "Buldrokkastee, Holy Gun-Knight",
+        "SPT-2"
+    ],
+    "enemy_2098_skzftx": [
+        "Theresis, Black Crowned Lord",
+        "TRS-2"
+    ],
+    "enemy_2099_skzfkl": [
+        "Quilon, Avatar of the Mahasattva",
+        "QLN-2"
+    ],
+    "enemy_2100_skzfmf": [
+        "Manfred",
+        "MAN-2"
+    ],
+    "enemy_3001_upeopl": [
+        "Ursus Civilian",
+        "U16"
+    ],
+    "enemy_3002_ftrtal": [
+        "Talulah, the Fighter",
+        "U17"
+    ],
+    "enemy_3003_alymot": [
+        "Competition Transport Vessel",
+        "DH16"
+    ],
+    "enemy_3004_speople": [
+        "Siracusan Civilian",
+        "SA17"
+    ],
+    "enemy_3005_lpeopl": [
+        "Monastery Inhabitant",
+        "Monastery Inhabitant 2",
+        "SA1",
+        "SA2"
+    ],
+    "enemy_3005_lpeopl_2": [],
+    "enemy_3006_tersia": [
+        "Theresa, King of Sarkaz",
+        "THA1"
+    ],
+    "enemy_3009_mpprss": [
+        "EYESOFPRIESTESS",
+        "RI3"
     ],
     "enemy_4001_toxcar": [
         "Retrofitted Gastruck",
@@ -4411,496 +4918,37 @@
         "Monument to Swiftness",
         "IB55"
     ],
-    "enemy_1050_lslime": [
-        "Pompeii",
-        "UM1"
-    ],
-    "enemy_1500_skulsr": [
-        "Skullshatterer",
-        "SS"
-    ],
-    "enemy_1502_crowns": [
-        "Crownslayer",
-        "CS"
-    ],
-    "enemy_1503_talula": [
-        "Talulah",
-        "TA"
-    ],
-    "enemy_1504_cqbw": [
-        "W"
-    ],
-    "enemy_1505_frstar": [
-        "FrostNova",
-        "FN"
-    ],
-    "enemy_1507_mephi": [
-        "Mephisto",
-        "MP"
-    ],
-    "enemy_1508_faust": [
-        "Faust",
-        "FA"
-    ],
-    "enemy_1509_mousek": [
-        "Rat King",
-        "MK"
-    ],
-    "enemy_1510_frstar2": [
-        "FrostNova, Winters Scar",
-        "FNF"
-    ],
-    "enemy_1506_patrt": [
-        "Patriot",
-        "PT"
-    ],
-    "enemy_1511_mdrock": [
-        "Mudrock",
-        "MR"
-    ],
-    "enemy_1512_mcmstr": [
-        "The Big Ugly Thing",
-        "BU"
-    ],
-    "enemy_1513_dekght": [
-        "Corrupted Knight",
-        "DK1"
-    ],
-    "enemy_1513_dekght_2": [
-        "Withered Knight",
-        "DK2"
-    ],
-    "enemy_1514_smephi": [
-        "Mephisto, The Singer",
-        "SMP"
-    ],
-    "enemy_1515_bsnake": [
-        "Deathless Black Snake",
-        "BSN"
-    ],
-    "enemy_1516_jakill": [
-        "Jesselton Williams",
-        "JAK"
-    ],
-    "enemy_1517_xi": [
-        "Free",
-        "DSK"
-    ],
-    "enemy_1519_bgball": [
-        "Essence of Evolution",
-        "BB"
-    ],
-    "enemy_1520_empgrd": [
-        "Emperors Blade, Pursuer",
-        "EMG"
-    ],
-    "enemy_1521_dslily": [
-        "Sal Viento Bishop Quintus",
-        "SVK"
-    ],
-    "enemy_1522_captan": [
-        "Pancho Salas",
-        "CPS"
-    ],
-    "enemy_1523_mandra": [
-        "Mandragora",
-        "MD"
-    ],
-    "enemy_1524_bldkgt": [
-        "The Blood Knight Dikaiopolis",
-        "BK"
-    ],
-    "enemy_1525_blkswb": [
-        "Degenbrecher",
-        "BJ"
-    ],
-    "enemy_1526_sfsui": [
-        "Sui-Xiang",
-        "SUI"
-    ],
-    "enemy_1527_martyr": [
-        "Andoain, the Martyr",
-        "AND"
-    ],
-    "enemy_1528_manfri": [
-        "Manfred",
-        "MAN"
-    ],
-    "enemy_1529_dsdevr": [
-        "The Endspeaker, Will of We Many",
-        "AMA"
-    ],
-    "enemy_1530_white": [
-        "Kreide, Worldly Remains",
-        "KRE"
-    ],
-    "enemy_1531_bbrain": [
-        "Awaken",
-        "BBR"
-    ],
-    "enemy_1532_minima": [
-        "Materialist Antagonizer",
-        "CST"
-    ],
-    "enemy_1533_stmkgt": [
-        "The Last Steam Knight",
-        "LYN"
-    ],
-    "enemy_1535_wlfmster": [
-        "Zaaro, Signore dei Lupi",
-        "ZA"
-    ],
-    "enemy_1536_ncrmcr": [
-        "The Leader"
-    ],
-    "enemy_1538_ymmons": [
-        "Ya",
-        "YA01"
-    ],
-    "enemy_1538_ymmons_2": [],
-    "enemy_1538_ymmons_3": [],
-    "enemy_1537_mhrors": [
-        "Rathalos",
-        "6935"
-    ],
-    "enemy_1539_reid": [
-        "Red",
-        "The Hateful Avenger",
-        "A15"
-    ],
-    "enemy_1540_wdncr": [
-        "Eblana",
-        "EB"
-    ],
-    "enemy_1541_wdslms": [
-        "Damazti Cluster Citizen",
-        "DC3"
-    ],
-    "enemy_1542_wdslm": [
-        "Damazti Cluster",
-        "DC1"
-    ],
-    "enemy_1543_cstlrs": [
-        "Kristen",
-        "KW"
-    ],
-    "enemy_1544_cledub": [
-        "The Gardener",
-        "CD"
-    ],
-    "enemy_1545_shpkg": [
-        "Dolly, Sovereign of Sheep",
-        "DLY"
-    ],
-    "enemy_1546_cliff": [
-        "Clip Cliff",
-        "BSC"
-    ],
-    "enemy_1547_blord": [
-        "Duqarael, Regents Crimson",
-        "PB"
-    ],
-    "enemy_1548_ltniak": [
-        "Herkunftshorn, Witch King",
-        "HH"
-    ],
-    "enemy_1549_windoc": [
-        "Harold",
-        "Harold Craigavon",
-        "HC"
-    ],
-    "enemy_1550_dhnzzh": [
-        "Slumbering of Sui"
-    ],
-    "enemy_1551_bolicp": [
-        "Captain Mateo",
-        "EC"
-    ],
-    "enemy_1552_mmamiy": [
-        "Amiya",
-        "THA2"
-    ],
-    "enemy_1553_lrdead": [
-        "Kindling Revenant",
-        "DS"
-    ],
-    "enemy_1554_lrtsia": [
-        "Theresa",
-        "THA3"
-    ],
-    "enemy_1556_dsbish": [
-        "Martus",
-        "Martus Seaborn",
-        "Mártus Seaborn",
-        "MSB"
-    ],
-    "enemy_1557_trcerb": [
-        "Tri-Maw",
-        "DT"
-    ],
-    "enemy_1558_sgactr": [
-        "Zubayidamu the Timeless",
-        "ZYA"
-    ],
-    "enemy_1559_vtlionk": [
-        "Alistair, Final Flame of the Empire",
-        "ALS"
-    ],
-    "enemy_1560_cnvlap": [
-        "La Signora del Carnevale",
-        "LOM"
-    ],
-    "enemy_1561_crzjdg": [
-        "Anastasio, the Atoner",
-        "AR"
-    ],
-    "enemy_1562_cjtaot": [
-        "Gluttony",
-        "WY"
-    ],
-    "enemy_1563_fthlgj": [
-        "All Flames Returned",
-        "DR"
-    ],
-    "enemy_1564_mpprts": [
-        "PRTS, Source Code",
-        "RI1"
-    ],
-    "enemy_1565_mpprme": [
-        "Mimic Machine",
-        "RI2"
-    ],
-    "enemy_1566_mpascl": [
-        "Ascalon",
-        "AC"
-    ],
-    "enemy_1567_pope": [
-        "Saint",
-        "ST"
-    ],
-    "enemy_2003_rockman": [
-        "Lost Colossus",
-        "WDG"
-    ],
-    "enemy_2004_balloon": [
-        "Jetman",
-        "JTM"
-    ],
-    "enemy_2005_axetro": [
-        "Forsaken One",
-        "FSK"
-    ],
-    "enemy_2006_flsnip": [
-        "Rusthammer Warrior",
-        "RSH"
-    ],
-    "enemy_2007_flwitch": [
-        "Frozen Monstrosity",
-        "FZM"
-    ],
-    "enemy_2008_flking": [
-        "Gravestone",
-        "GST"
-    ],
-    "enemy_2013_csbot": [
-        "Wandering Puppet",
-        "MSC"
-    ],
-    "enemy_2014_csicer": [
-        "Snow Doe",
-        "ICR"
-    ],
-    "enemy_2015_csicem": [
-        "Frost Buck",
-        "ICM"
-    ],
-    "enemy_2016_csphtm": [
-        "Lucian, Blood Diamond",
-        "PTM"
-    ],
-    "enemy_2018_csdoll": [
-        "Big Sad Lock",
-        "DOL"
-    ],
-    "enemy_2019_cshost": [
-        "Troupe Mouthpiece",
-        "HST"
-    ],
-    "enemy_2020_cswrtr": [
-        "Playwright",
-        "WRT"
-    ],
-    "enemy_2026_syudg": [
-        "Saint Carmen",
-        "UGF"
-    ],
-    "enemy_2027_syudg2": [
-        "Saint Iberia",
-        "UGS"
-    ],
-    "enemy_2028_syevil": [
-        "Tidelinked Bishop",
-        "SEV"
-    ],
-    "enemy_2029_symon": [
-        "Tidelinked Archon",
-        "SMF"
-    ],
-    "enemy_2030_symon2": [
-        "Tidelinked Immortal",
-        "SMS"
-    ],
-    "enemy_2031_syboy": [
-        "Pathshaper",
-        "SRF"
-    ],
-    "enemy_2032_syboy2": [
-        "Lingering Pathshaper",
-        "SRS"
-    ],
-    "enemy_2037_sygirl": [
-        "Paranoia Illusion",
-        "GIR"
-    ],
-    "enemy_2038_sydonq": [
-        "The Last Knight",
-        "DOQ"
-    ],
-    "enemy_2039_syskad": [
-        "Isharmla, Heart of Corruption",
-        "SKA"
-    ],
-    "enemy_2042_syboss": [
-        "Izumik, Source of Ecology",
-        "MZK"
-    ],
-    "enemy_2036_syshop": [
-        "Cannot",
-        "KNT"
-    ],
-    "enemy_2048_smgrd": [
-        "Demons Blade",
-        "DB"
-    ],
-    "enemy_2049_smgrd2": [
-        "Demons Blade, the Vagabond",
-        "DBV"
-    ],
-    "enemy_2050_smsha": [
-        "Fallen Snowpriest",
-        "FSP"
-    ],
-    "enemy_2051_smsha2": [
-        "Hollow Snowpriest",
-        "HSP"
-    ],
-    "enemy_2052_smgia": [
-        "Weaving Vinecreeps",
-        "WVC"
-    ],
-    "enemy_2053_smgia2": [
-        "Elder Vinecreeps",
-        "EVC"
-    ],
-    "enemy_2054_smdeer": [
-        "Samivilinn, the Resolution of the Very North",
-        "SAM"
-    ],
-    "enemy_2055_smlead": [
-        "Eikthyrnir, the Scar of the Shattered",
-        "EIK"
-    ],
-    "enemy_2056_smedzi": [
-        "Crazelyseon, the Ascendant of Cosmoi",
-        "CES"
-    ],
-    "enemy_2057_smkght": [
-        "Kharanduu Khagan, the Scourge of the Land",
-        "KSL"
-    ],
-    "enemy_2058_smlion": [
-        "Lugalszargus, the Overlord of Ages",
-        "LOA"
-    ],
-    "enemy_2062_smcar": [
-        "Self-Driving Recon Cart",
-        "SMC0"
-    ],
-    "enemy_2071_skzdny": [
-        "Laqeramaline",
-        "LMR"
-    ],
-    "enemy_2072_skdny2": [
-        "The Tear Weaver",
-        "LMS"
-    ],
-    "enemy_2074_skzgly": [
-        "Goliath",
-        "GLT"
-    ],
-    "enemy_2075_skgly2": [
-        "Champion of Lost Agonies",
-        "GLS"
-    ],
-    "enemy_2076_skzklz": [
-        "Kaltsit",
-        "KST"
-    ],
-    "enemy_2077_skklz2": [
-        "The Doomsday Prophet",
-        "KSS"
-    ],
-    "enemy_2078_skzmst": [
-        "Mon2tr",
-        "M2T"
-    ],
-    "enemy_2079_skmst2": [
-        "Evolving Monster",
-        "M2S"
-    ],
-    "enemy_2080_skzlwy": [
-        "Fremont, Enlightener of Minds",
-        "FMT"
-    ],
-    "enemy_2081_skztxs": [
-        "Theresis, Black Crowned Lord",
-        "TRS"
-    ],
-    "enemy_2082_skzdd": [
-        "Buldrokkastee, Holy Gun-Knight",
-        "SPT"
-    ],
-    "enemy_2084_skzcan": [
-        "Mr. Goodenough",
-        "KNS"
-    ],
-    "enemy_2089_skzjkl": [
-        "Quilon, Avatar of the Mahasattva",
-        "QLN"
-    ],
-    "enemy_2092_skzamy": [
-        "Amiya, Furnaces Finale",
-        "AFF"
-    ],
-    "enemy_2097_skzfdd": [
-        "Buldrokkastee, Holy Gun-Knight",
-        "SPT-2"
-    ],
-    "enemy_2098_skzftx": [
-        "Theresis, Black Crowned Lord",
-        "TRS-2"
-    ],
-    "enemy_2099_skzfkl": [
-        "Quilon, Avatar of the Mahasattva",
-        "QLN-2"
-    ],
-    "enemy_2100_skzfmf": [
-        "Manfred",
-        "MAN-2"
-    ],
     "enemy_5008_cstrwd": [],
     "enemy_5009_shtrwd": [],
     "enemy_5010_catrdg": [],
+    "enemy_5501_arcbank": [
+        "Tycoon",
+        "PM06"
+    ],
+    "enemy_5502_arcthf": [
+        "Treasure Thief",
+        "PM07"
+    ],
+    "enemy_5503_arcslma": [
+        "Jelly Kid",
+        "PM08"
+    ],
+    "enemy_5504_arcslmi": [
+        "Jello",
+        "PM09"
+    ],
+    "enemy_5505_arctxi": [
+        "The Amphibian Ship-Car",
+        "PM10"
+    ],
+    "enemy_5506_arcgo": [
+        "Washed-Up Parts",
+        "PM11"
+    ],
+    "enemy_5507_arctolm": [
+        "Fountain Soda Knight",
+        "PM12"
+    ],
     "enemy_6001_trsgst": [
         "Fleet-footed Thief",
         "DL1"
@@ -5070,11 +5118,11 @@
         "Crystalline Cragpincer",
         "SD12"
     ],
-    "enemy_7015_xbcrab2": [
-        "Consortium of Pincers",
-        "SD13"
-    ],
     "enemy_7007_xbbird": [],
+    "enemy_7007_xbbird_3": [
+        "Sandfall Crystalhoof",
+        "SD14"
+    ],
     "enemy_7008_wrkwrk": [
         "Basic Harvester",
         "SD15"
@@ -5103,36 +5151,9 @@
         "Al-Rafiq",
         "SD21"
     ],
-    "enemy_8006_flmgd": [
-        "Reforged Retinue",
-        "SFR02"
-    ],
-    "enemy_8008_eltswd": [
-        "V.T.E.",
-        "SFR04"
-    ],
-    "enemy_8009_eltufo": [
-        "Rosmontiss Drone",
-        "SFR05"
-    ],
-    "enemy_8001_flmlod": [
-        "Sverdsmeltr",
-        "Sverdsmeltr, Guardian Ember of the King",
-        "SFR01"
-    ],
-    "enemy_8001_flmlod_2": [],
-    "enemy_8001_flmlod_3": [],
-    "enemy_8007_eltrsm": [
-        "Rosmontis, Simulated Sentry I",
-        "SFR03"
-    ],
-    "enemy_8007_eltrsm_2": [
-        "Rosmontis, Simulated Sentry II",
-        "SFR032"
-    ],
-    "enemy_8007_eltrsm_3": [
-        "Rosmontis, Simulated Sentry III",
-        "SFR033"
+    "enemy_7015_xbcrab2": [
+        "Consortium of Pincers",
+        "SD13"
     ],
     "enemy_7016_shushu": [
         "Barrenlands Musbeast",
@@ -5248,6 +5269,37 @@
         "Quicksand Beast Alt",
         "SD49"
     ],
+    "enemy_8001_flmlod": [
+        "Sverdsmeltr",
+        "Sverdsmeltr, Guardian Ember of the King",
+        "SFR01"
+    ],
+    "enemy_8001_flmlod_2": [],
+    "enemy_8001_flmlod_3": [],
+    "enemy_8006_flmgd": [
+        "Reforged Retinue",
+        "SFR02"
+    ],
+    "enemy_8007_eltrsm": [
+        "Rosmontis, Simulated Sentry I",
+        "SFR03"
+    ],
+    "enemy_8007_eltrsm_2": [
+        "Rosmontis, Simulated Sentry II",
+        "SFR032"
+    ],
+    "enemy_8007_eltrsm_3": [
+        "Rosmontis, Simulated Sentry III",
+        "SFR033"
+    ],
+    "enemy_8008_eltswd": [
+        "V.T.E.",
+        "SFR04"
+    ],
+    "enemy_8009_eltufo": [
+        "Rosmontiss Drone",
+        "SFR05"
+    ],
     "enemy_9001_ayokai": [
         "Surprise Sponsor Drone",
         "PM01"
@@ -5267,57 +5319,5 @@
     "enemy_9005_aicemn": [
         "Glacial Archer",
         "PM05"
-    ],
-    "enemy_5501_arcbank": [
-        "Tycoon",
-        "PM06"
-    ],
-    "enemy_5502_arcthf": [
-        "Treasure Thief",
-        "PM07"
-    ],
-    "enemy_5503_arcslma": [
-        "Jelly Kid",
-        "PM08"
-    ],
-    "enemy_5504_arcslmi": [
-        "Jello",
-        "PM09"
-    ],
-    "enemy_5505_arctxi": [
-        "The Amphibian Ship-Car",
-        "PM10"
-    ],
-    "enemy_5506_arcgo": [
-        "Washed-Up Parts",
-        "PM11"
-    ],
-    "enemy_5507_arctolm": [
-        "Fountain Soda Knight",
-        "PM12"
-    ],
-    "enemy_1037_lunsabr": [
-        "Spec Ops Soldier",
-        "33"
-    ],
-    "enemy_1043_zomsabr": [
-        "Possessed Soldier",
-        "P1"
-    ],
-    "enemy_1043_zomsabr_2": [
-        "Possessed Soldier Leader",
-        "P2"
-    ],
-    "enemy_1169_duphx": [
-        "Dublinn Phalanx Infantry",
-        "DU9"
-    ],
-    "enemy_1169_duphx_2": [
-        "Dublinn Phalanx Commander",
-        "DU10"
-    ],
-    "enemy_7007_xbbird_3": [
-        "Sandfall Crystalhoof",
-        "SD14"
     ]
 }
