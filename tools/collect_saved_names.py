@@ -1,4 +1,5 @@
 
+import argparse
 import os
 import json
 from collections import defaultdict
@@ -48,6 +49,17 @@ def process_character_table(character_table_path: Path, saved_names):
 
 
 def main():
+    parser = argparse.ArgumentParser(
+        description="Collect saved character names from character table"
+    )
+    parser.add_argument(
+        "--output",
+        type=Path,
+        default=None,
+        help="Output filepath (default: ./output.json)"
+    )
+    args = parser.parse_args()
+    
     debug=False
     saved_names = {}
     
@@ -57,7 +69,7 @@ def main():
 
     saved_names_path = currentdir / Path("saved_names.json")
     character_table_path = currentdir / Path("character_table.json")
-    output_path =  currentdir / Path("output.json")
+    output_path = args.output if args.output else currentdir / Path("output.json")
 
     with saved_names_path.open(encoding="utf-8") as f:
         saved_names = json.loads(f.read().encode("utf-8"))

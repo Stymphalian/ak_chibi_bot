@@ -1,4 +1,5 @@
 
+import argparse
 import json
 from collections import defaultdict
 from pathlib import Path
@@ -57,6 +58,17 @@ def process_enemy_table(enemy_table: Path, saved_names):
 
 
 def main():
+    parser = argparse.ArgumentParser(
+        description="Collect enemy names from enemy handbook table"
+    )
+    parser.add_argument(
+        "--output",
+        type=Path,
+        default=Path("./output.json"),
+        help="Output filepath (default: ./output.json)"
+    )
+    args = parser.parse_args()
+    
     saved_names = {}
     with Path("./saved_enemy_names.json").open('r', encoding="utf-8") as f:
         saved_names = json.loads(f.read().encode("utf-8"))
@@ -65,7 +77,7 @@ def main():
     output_dict = process_enemy_table(Path("./enemy_handbook_table.json"), saved_names)
 
     sorted_keys = sorted(output_dict.keys())
-    with Path("./output.json").open("w", encoding="utf-8") as f:
+    with args.output.open("w", encoding="utf-8") as f:
         json.dump({key: output_dict[key] for key in sorted_keys}, f, indent=4, ensure_ascii=False)
 
 if __name__ == "__main__":

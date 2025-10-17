@@ -36,3 +36,4 @@ secrets/
 thirdparty/
 tmp/
 .env
+assets.zip
