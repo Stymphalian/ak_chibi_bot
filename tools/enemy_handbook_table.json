@@ -41099,6 +41099,130 @@
       "OverrideKillCntInfos": null,
       "SortId": 1303
     },
+    "enemy_8012_mcnd": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Takes greatly reduced Arts and Physical damage when force field is active; force field breaks when a large amount of damage is taken in a single instance",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        1
+      ],
+      "DamageTypeAsNumpy": [
+        1
+      ],
+      "Description": "Pith's student. Rational and good at math, with outstanding Originium Arts Assimilation. Chose to take to the battlefield as a defender operator to maintain an active mind.",
+      "EnemyId": "enemy_8012_mcnd",
+      "EnemyIndex": "SFR08",
+      "EnemyLevel": 1,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "Document",
+      "OverrideKillCntInfos": null,
+      "SortId": 1304
+    },
+    "enemy_8013_mcnrsh": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Unblockable",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Accelerates when moving, <$ba.stun>stuns</> units along her path for a few seconds, and deals Physical damage based on her current Movement Speed",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Temporarily gains a large <$ba.fragile>Fragile</> effect if movement is interrupted",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        3
+      ],
+      "DamageTypeAsNumpy": [
+        3
+      ],
+      "Description": "An orphan that Sharp brought to Rhodes Island. When in peak condition, she is fast enough to give Sharp a run for his money, and was thus recruited into his squad. Not happy with how Sharp often goes solo.",
+      "EnemyId": "enemy_8013_mcnrsh",
+      "EnemyIndex": "SFR09",
+      "EnemyLevel": 1,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "Leafcarpet",
+      "OverrideKillCntInfos": null,
+      "SortId": 1305
+    },
+    "enemy_8014_mcnelp": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Periodically increases the ASPD and Movement Speed of all enemies on the field when not blocked",
+          "TextFormat": 2
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        0
+      ],
+      "DamageTypeAsNumpy": [
+        0
+      ],
+      "Description": "Touch's translator and a former Sami crook who decided to go straight and join Rhodes Island after being rescued by Touch. Claims to understand all the words that Touch leaves unsaid, which Touch neither affirms nor denies.",
+      "EnemyId": "enemy_8014_mcnelp",
+      "EnemyIndex": "SFR10",
+      "EnemyLevel": 1,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "Stopwatch",
+      "OverrideKillCntInfos": null,
+      "SortId": 1306
+    },
+    "enemy_8015_mcnrhd": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Takes greatly reduced Physical and Arts damage when unblocked, then fires a rain of arrows, dealing splash damage to units around the damage source and greatly reducing their ASPD",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Rebirth",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        0
+      ],
+      "DamageTypeAsNumpy": [
+        0
+      ],
+      "Description": "Stormeye's drinking buddy who met him when he was still a wanderer, and later joined Rhodes Island together. She taught Stormeye how to hold his drink.",
+      "EnemyId": "enemy_8015_mcnrhd",
+      "EnemyIndex": "SFR11",
+      "EnemyLevel": 1,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "Uproar",
+      "OverrideKillCntInfos": null,
+      "SortId": 1307
+    },
     "enemy_8001_flmlod": {
       "Ability": null,
       "AbilityList": [
@@ -41453,6 +41577,320 @@
       "Name": "Rosmontis, Simulated Sentry",
       "OverrideKillCntInfos": null,
       "SortId": 1313
+    },
+    "enemy_8010_mcnist": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "[Self-Defense Arts] Periodically gains a shield that protects against Physical and Arts damage, which is broken after taking a certain number of attacks",
+          "TextFormat": 0
+        },
+        {
+          "Text": "First Form",
+          "TextFormat": 1
+        },
+        {
+          "Text": "When HP is reduced to 0, if <Structural Principle> is alive on the field, summons drones to restore HP and revives when HP is at max",
+          "TextFormat": 0
+        },
+        {
+          "Text": "[Organically Linked Formula] Fights in concert with <Structural Principle>. When shield is broken or HP is reduced to 0, <Structural Principle> is <$ba.stun>stunned</>, and [Reactive Defense Module] is temporarily disabled.",
+          "TextFormat": 0
+        },
+        {
+          "Text": "[Concentration Algorithm] Locks onto a target and bombards it, dealing Physical damage to it and units in the 8 surrounding tiles several times",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        0,
+        1
+      ],
+      "DamageTypeAsNumpy": [
+        0,
+        1
+      ],
+      "Description": "A Breakthrough Trainer simulating Mechanist at the peak of his combat prowess.\nThe engineer famous for his memory and scientific rigor can also write words as romantic as 'Love is like the second law of thermodynamics: the more one longs for eternity, the further one goes down the path of decline,' when he is drunk enough.",
+      "EnemyId": "enemy_8010_mcnist",
+      "EnemyIndex": "SFR06",
+      "EnemyLevel": 2,
+      "HideInHandbook": true,
+      "HideInStage": false,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": [
+        "enemy_8011_mcndog"
+      ],
+      "Name": "Mechanist, Mechanical Mind",
+      "OverrideKillCntInfos": null,
+      "SortId": 1314
+    },
+    "enemy_8010_mcnist_2": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "[Self-Defense Arts] Periodically gains a shield that protects against Physical and Arts damage, which is broken after taking a certain number of attacks",
+          "TextFormat": 0
+        },
+        {
+          "Text": "First Form",
+          "TextFormat": 1
+        },
+        {
+          "Text": "When HP is reduced to 0, if <Structural Principle> is alive on the field, summons drones to restore HP and revives when HP is at max",
+          "TextFormat": 0
+        },
+        {
+          "Text": "[Organically Linked Formula] Fights in concert with <Structural Principle>. When shield is broken or HP is reduced to 0, <Structural Principle> is <$ba.stun>stunned</>, and [Reactive Defense Module] is temporarily disabled.",
+          "TextFormat": 0
+        },
+        {
+          "Text": "[Concentration Algorithm] Locks onto a target and bombards it, dealing Physical damage to it and units in the 8 surrounding tiles several times",
+          "TextFormat": 0
+        },
+        {
+          "Text": "When <Mechanist, Mechanical Mind> and <Structural Principle> are both waiting to be revived, activates [Nirvana Program]: Locks onto the target with the highest Block every few seconds and attacks them, reduces their Max Block, each attack dealing Arts damage to all your units on the same row or column with the target. Enters second form when program is terminated",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Second Form",
+          "TextFormat": 1
+        },
+        {
+          "Text": "[Engineering Meteor Shower] Attacks the blocker continuously when <Structural Principle> is blocked, dealing Arts damage to all your units on the same row or column with the blocker, and temporarily reducing their Max Block",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        0,
+        1
+      ],
+      "DamageTypeAsNumpy": [
+        0,
+        1
+      ],
+      "Description": "A Breakthrough Trainer simulating Mechanist at the peak of his combat prowess.\nThe engineer famous for his memory and scientific rigor can also write words as romantic as 'Love is like the second law of thermodynamics: the more one longs for eternity, the further one goes down the path of decline,' when he is drunk enough.",
+      "EnemyId": "enemy_8010_mcnist_2",
+      "EnemyIndex": "SFR06",
+      "EnemyLevel": 2,
+      "HideInHandbook": true,
+      "HideInStage": false,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": [
+        "enemy_8011_mcndog_2"
+      ],
+      "Name": "Mechanist, Mechanical Mind",
+      "OverrideKillCntInfos": null,
+      "SortId": 1315
+    },
+    "enemy_8010_mcnist_3": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "[Self-Defense Arts] Periodically gains a shield that protects against Physical and Arts damage, which is broken after taking a certain number of attacks",
+          "TextFormat": 0
+        },
+        {
+          "Text": "First Form",
+          "TextFormat": 1
+        },
+        {
+          "Text": "When HP is reduced to 0, if <Structural Principle> is alive on the field, summons drones to restore HP and revives when HP is at max",
+          "TextFormat": 0
+        },
+        {
+          "Text": "[Organically Linked Formula] Fights in concert with <Structural Principle>. When shield is broken or HP is reduced to 0, <Structural Principle> is <$ba.stun>stunned</>, and [Reactive Defense Module] is temporarily disabled.",
+          "TextFormat": 0
+        },
+        {
+          "Text": "[Concentration Algorithm] Locks onto a target and bombards it, dealing Physical damage to it and units in the 8 surrounding tiles several times",
+          "TextFormat": 0
+        },
+        {
+          "Text": "When <Mechanist, Mechanical Mind> and <Structural Principle> are both waiting to be revived, activates [Nirvana Program]: Locks onto the target with the highest Block every few seconds and attacks them, reduces their Max Block, each attack dealing Arts damage to all your units on the same row or column with the target. Enters second form when program is terminated",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Second Form",
+          "TextFormat": 1
+        },
+        {
+          "Text": "[Engineering Meteor Shower] Attacks the blocker continuously when <Structural Principle> is blocked, dealing Arts damage to all your units on the same row or column with the blocker, and temporarily reducing their Max Block",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Activates [Nirvana Program] again when HP drops below 50% for the first time",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        0,
+        1
+      ],
+      "DamageTypeAsNumpy": [
+        0,
+        1
+      ],
+      "Description": "A Breakthrough Trainer simulating Mechanist at the peak of his combat prowess.\nThe engineer famous for his memory and scientific rigor can also write words as romantic as 'Love is like the second law of thermodynamics: the more one longs for eternity, the further one goes down the path of decline,' when he is drunk enough.",
+      "EnemyId": "enemy_8010_mcnist_3",
+      "EnemyIndex": "SFR06",
+      "EnemyLevel": 2,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": [
+        "enemy_8011_mcndog_3"
+      ],
+      "Name": "Mechanist, Mechanical Mind",
+      "OverrideKillCntInfos": null,
+      "SortId": 1316
+    },
+    "enemy_8011_mcndog": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "When HP is reduced to 0, if <Mechanist, Mechanical Mind> is alive on the field, summons drones to restore HP and revives when HP is at max",
+          "TextFormat": 0
+        },
+        {
+          "Text": "First Form",
+          "TextFormat": 1
+        },
+        {
+          "Text": "[Reactive Defense Module] Gains increased DEF and RES when damage is taken; buff quickly degrades several seconds after the last damage is taken",
+          "TextFormat": 0
+        },
+        {
+          "Text": "[Focus Module] Attacks inflict additional <$ba.dt.erosion>Corrosion Damage</> and continuously gains ASPD when attacking the same target (capped); resets when switching targets or not attacking for a few seconds",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        0
+      ],
+      "DamageTypeAsNumpy": [
+        0
+      ],
+      "Description": "A risk assessment machine built by Mechanist. His best friend.\nHe set twenty defensive programs to prevent Closure from meddling with it.",
+      "EnemyId": "enemy_8011_mcndog",
+      "EnemyIndex": "SFR07",
+      "EnemyLevel": 2,
+      "HideInHandbook": true,
+      "HideInStage": false,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": [
+        "enemy_8010_mcnist"
+      ],
+      "Name": "Structural Principle",
+      "OverrideKillCntInfos": null,
+      "SortId": 1317
+    },
+    "enemy_8011_mcndog_2": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "When HP is reduced to 0, if <Mechanist, Mechanical Mind> is alive on the field, summons drones to restore HP and revives when HP is at max",
+          "TextFormat": 0
+        },
+        {
+          "Text": "First Form",
+          "TextFormat": 1
+        },
+        {
+          "Text": "[Reactive Defense Module] Gains increased DEF and RES when damage is taken; buff quickly degrades several seconds after the last damage is taken",
+          "TextFormat": 0
+        },
+        {
+          "Text": "[Focus Module] Attacks inflict additional <$ba.dt.erosion>Corrosion Damage</> and continuously gains ASPD when attacking the same target (capped); resets when switching targets or not attacking for a few seconds",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Second Form",
+          "TextFormat": 1
+        },
+        {
+          "Text": "[Acceleration Module] Gradually accelerates when moving, and deals additional damage on the first attack after being blocked based upon Movement Speed",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        0
+      ],
+      "DamageTypeAsNumpy": [
+        0
+      ],
+      "Description": "A risk assessment machine built by Mechanist. His best friend.\nHe set twenty defensive programs to prevent Closure from meddling with it.",
+      "EnemyId": "enemy_8011_mcndog_2",
+      "EnemyIndex": "SFR07",
+      "EnemyLevel": 2,
+      "HideInHandbook": true,
+      "HideInStage": false,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": [
+        "enemy_8010_mcnist_2"
+      ],
+      "Name": "Structural Principle",
+      "OverrideKillCntInfos": null,
+      "SortId": 1318
+    },
+    "enemy_8011_mcndog_3": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "When HP is reduced to 0, if <Mechanist, Mechanical Mind> is alive on the field, summons drones to restore HP and revives when HP is at max",
+          "TextFormat": 0
+        },
+        {
+          "Text": "First Form",
+          "TextFormat": 1
+        },
+        {
+          "Text": "[Reactive Defense Module] Gains increased DEF and RES when damage is taken; buff quickly degrades several seconds after the last damage is taken",
+          "TextFormat": 0
+        },
+        {
+          "Text": "[Focus Module] Attacks inflict additional <$ba.dt.erosion>Corrosion Damage</> and continuously gains ASPD when attacking the same target (capped); resets when switching targets or not attacking for a few seconds",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Second Form",
+          "TextFormat": 1
+        },
+        {
+          "Text": "[Acceleration Module] Gradually accelerates when moving, and deals additional damage on the first attack after being blocked based upon Movement Speed",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        0
+      ],
+      "DamageTypeAsNumpy": [
+        0
+      ],
+      "Description": "A risk assessment machine built by Mechanist. His best friend.\nHe set twenty defensive programs to prevent Closure from meddling with it.",
+      "EnemyId": "enemy_8011_mcndog_3",
+      "EnemyIndex": "SFR07",
+      "EnemyLevel": 2,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": [
+        "enemy_8010_mcnist_3"
+      ],
+      "Name": "Structural Principle",
+      "OverrideKillCntInfos": null,
+      "SortId": 1319
     },
     "enemy_7016_shushu": {
       "Ability": null,

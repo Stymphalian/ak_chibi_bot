@@ -37947,6 +37947,190 @@
         }
       }
     },
+    "enemy_8010_mcnist": {
+      "skins": {
+        "default": {
+          "base": {},
+          "battle": {
+            "Front": {
+              "atlas_filepath": "enemies/enemy_8010_mcnist/default/battle/Front/enemy_8010_mcnist.atlas",
+              "skel_filepath": "enemies/enemy_8010_mcnist/default/battle/Front/enemy_8010_mcnist.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "enemies/enemy_8010_mcnist/default/battle/Front/enemy_8010_mcnist.png",
+              "animations": [
+                "A_Attack",
+                "A_Die_Begin",
+                "A_Die_End",
+                "A_Die_Loop",
+                "A_Skill_1",
+                "A_Skill_2",
+                "A_Skill_3_Begin",
+                "A_Skill_3_End",
+                "A_Skill_3_Loop",
+                "B_Attack_1",
+                "B_Attack_2",
+                "B_Die",
+                "B_Skill_1",
+                "B_Skill_2",
+                "Default",
+                "Idle",
+                "Move",
+                "Revive_Begin",
+                "Revive_End",
+                "Revive_Loop",
+                "Start"
+              ],
+              "use_straight_alpha": false,
+              "spritesheet_data_filepath": ""
+            }
+          }
+        }
+      }
+    },
+    "enemy_8011_mcndog": {
+      "skins": {
+        "default": {
+          "base": {},
+          "battle": {
+            "Front": {
+              "atlas_filepath": "enemies/enemy_8011_mcndog/default/battle/Front/enemy_8011_mcndog.atlas",
+              "skel_filepath": "enemies/enemy_8011_mcndog/default/battle/Front/enemy_8011_mcndog.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "enemies/enemy_8011_mcndog/default/battle/Front/enemy_8011_mcndog.png",
+              "animations": [
+                "A_Attack",
+                "A_Default",
+                "A_Die",
+                "A_Idle",
+                "A_Move",
+                "A_Skill",
+                "A_Skill_2_Begin",
+                "A_Skill_2_End",
+                "A_Skill_2_Loop",
+                "A_Start",
+                "Attack",
+                "Default",
+                "Idle",
+                "Move",
+                "Skill_Begin",
+                "Skill_End",
+                "Skill_Loop",
+                "Start"
+              ],
+              "use_straight_alpha": false,
+              "spritesheet_data_filepath": ""
+            }
+          }
+        }
+      }
+    },
+    "enemy_8012_mcnd": {
+      "skins": {
+        "default": {
+          "base": {},
+          "battle": {
+            "Front": {
+              "atlas_filepath": "enemies/enemy_8012_mcnd/default/battle/Front/enemy_8012_mcnd.atlas",
+              "skel_filepath": "enemies/enemy_8012_mcnd/default/battle/Front/enemy_8012_mcnd.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "enemies/enemy_8012_mcnd/default/battle/Front/enemy_8012_mcnd.png",
+              "animations": [
+                "Attack",
+                "Attack_2",
+                "Default",
+                "Die",
+                "Die_2",
+                "Idle",
+                "Idle_2",
+                "Move",
+                "Move_2",
+                "Skill"
+              ],
+              "use_straight_alpha": false,
+              "spritesheet_data_filepath": ""
+            }
+          }
+        }
+      }
+    },
+    "enemy_8013_mcnrsh": {
+      "skins": {
+        "default": {
+          "base": {},
+          "battle": {
+            "Front": {
+              "atlas_filepath": "enemies/enemy_8013_mcnrsh/default/battle/Front/enemy_8013_mcnrsh.atlas",
+              "skel_filepath": "enemies/enemy_8013_mcnrsh/default/battle/Front/enemy_8013_mcnrsh.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "enemies/enemy_8013_mcnrsh/default/battle/Front/enemy_8013_mcnrsh.png",
+              "animations": [
+                "Default",
+                "Die",
+                "Idle",
+                "Move",
+                "Move_Begin",
+                "Move_End"
+              ],
+              "use_straight_alpha": false,
+              "spritesheet_data_filepath": ""
+            }
+          }
+        }
+      }
+    },
+    "enemy_8014_mcnelp": {
+      "skins": {
+        "default": {
+          "base": {},
+          "battle": {
+            "Front": {
+              "atlas_filepath": "enemies/enemy_8014_mcnelp/default/battle/Front/enemy_8014_mcnelp.atlas",
+              "skel_filepath": "enemies/enemy_8014_mcnelp/default/battle/Front/enemy_8014_mcnelp.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "enemies/enemy_8014_mcnelp/default/battle/Front/enemy_8014_mcnelp.png",
+              "animations": [
+                "Attack",
+                "Default",
+                "Die",
+                "Idle",
+                "Move",
+                "Skill"
+              ],
+              "use_straight_alpha": false,
+              "spritesheet_data_filepath": ""
+            }
+          }
+        }
+      }
+    },
+    "enemy_8015_mcnrhd": {
+      "skins": {
+        "default": {
+          "base": {},
+          "battle": {
+            "Front": {
+              "atlas_filepath": "enemies/enemy_8015_mcnrhd/default/battle/Front/enemy_8015_mcnrhd.atlas",
+              "skel_filepath": "enemies/enemy_8015_mcnrhd/default/battle/Front/enemy_8015_mcnrhd.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "enemies/enemy_8015_mcnrhd/default/battle/Front/enemy_8015_mcnrhd.png",
+              "animations": [
+                "Attack",
+                "Default",
+                "Die_2",
+                "Die_Begin",
+                "Die_End",
+                "Die_Loop",
+                "Idle",
+                "Move",
+                "Skill"
+              ],
+              "use_straight_alpha": false,
+              "spritesheet_data_filepath": ""
+            }
+          }
+        }
+      }
+    },
     "enemy_9001_ayokai": {
       "skins": {
         "default": {

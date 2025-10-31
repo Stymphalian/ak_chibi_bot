@@ -5300,6 +5300,46 @@
         "Rosmontiss Drone",
         "SFR05"
     ],
+    "enemy_8010_mcnist": [
+        "Mechanist, Mechanical Mind",
+        "SFR06"
+    ],
+    "enemy_8010_mcnist_2": [
+        "Mechanist, Mechanical Mind 2",
+        "SFR06-2"
+    ],
+    "enemy_8010_mcnist_3": [
+        "Mechanist, Mechanical Mind 3",
+        "SFR06-3"
+    ],
+    "enemy_8011_mcndog": [
+        "Structural Principle",
+        "SFR07"
+    ],
+    "enemy_8011_mcndog_2": [
+        "Structural Principle 2",
+        "SFR07-2"
+    ],
+    "enemy_8011_mcndog_3": [
+        "Structural Principle 3",
+        "SFR07-3"
+    ],
+    "enemy_8012_mcnd": [
+        "Document",
+        "SFR08"
+    ],
+    "enemy_8013_mcnrsh": [
+        "Leafcarpet",
+        "SFR09"
+    ],
+    "enemy_8014_mcnelp": [
+        "Stopwatch",
+        "SFR10"
+    ],
+    "enemy_8015_mcnrhd": [
+        "Uproar",
+        "SFR11"
+    ],
     "enemy_9001_ayokai": [
         "Surprise Sponsor Drone",
         "PM01"

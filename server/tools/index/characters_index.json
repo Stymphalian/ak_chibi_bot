@@ -9994,6 +9994,60 @@
     },
     "char_163_hpsts": {
       "skins": {
+        "boc": {
+          "base": {
+            "Front": {
+              "atlas_filepath": "characters/char_163_hpsts/boc#10/base/Front/build_char_163_hpsts_boc#10.atlas",
+              "skel_filepath": "characters/char_163_hpsts/boc#10/base/Front/build_char_163_hpsts_boc#10.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "characters/char_163_hpsts/boc#10/base/Front/build_char_163_hpsts_boc#10.png",
+              "animations": [
+                "Default",
+                "Interact",
+                "Move",
+                "Relax",
+                "Sit",
+                "Sleep",
+                "Special"
+              ],
+              "use_straight_alpha": false,
+              "spritesheet_data_filepath": ""
+            }
+          },
+          "battle": {
+            "Back": {
+              "atlas_filepath": "characters/char_163_hpsts/boc#10/battle/Back/char_163_hpsts_boc#10.atlas",
+              "skel_filepath": "characters/char_163_hpsts/boc#10/battle/Back/char_163_hpsts_boc#10.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "characters/char_163_hpsts/boc#10/battle/Back/char_163_hpsts_boc#10.png",
+              "animations": [
+                "Attack",
+                "Default",
+                "Idle",
+                "Skill",
+                "Start"
+              ],
+              "use_straight_alpha": false,
+              "spritesheet_data_filepath": ""
+            },
+            "Front": {
+              "atlas_filepath": "characters/char_163_hpsts/boc#10/battle/Front/char_163_hpsts_boc#10.atlas",
+              "skel_filepath": "characters/char_163_hpsts/boc#10/battle/Front/char_163_hpsts_boc#10.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "characters/char_163_hpsts/boc#10/battle/Front/char_163_hpsts_boc#10.png",
+              "animations": [
+                "Attack",
+                "Default",
+                "Die",
+                "Idle",
+                "Skill",
+                "Start"
+              ],
+              "use_straight_alpha": false,
+              "spritesheet_data_filepath": ""
+            }
+          }
+        },
         "default": {
           "base": {
             "Front": {
@@ -38524,6 +38578,64 @@
               "skel_filepath": "characters/char_4130_luton/default/battle/Front/char_4130_luton.skel",
               "skel_json_filepath": "",
               "png_filepath": "characters/char_4130_luton/default/battle/Front/char_4130_luton.png",
+              "animations": [
+                "Attack",
+                "Default",
+                "Die",
+                "Idle",
+                "Skill_Begin",
+                "Skill_End",
+                "Skill_Loop",
+                "Start"
+              ],
+              "use_straight_alpha": false,
+              "spritesheet_data_filepath": ""
+            }
+          }
+        },
+        "yun": {
+          "base": {
+            "Front": {
+              "atlas_filepath": "characters/char_4130_luton/yun#6/base/Front/build_char_4130_luton_yun#6.atlas",
+              "skel_filepath": "characters/char_4130_luton/yun#6/base/Front/build_char_4130_luton_yun#6.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "characters/char_4130_luton/yun#6/base/Front/build_char_4130_luton_yun#6.png",
+              "animations": [
+                "Default",
+                "Interact",
+                "Move",
+                "Relax",
+                "Sit",
+                "Sleep",
+                "Special"
+              ],
+              "use_straight_alpha": false,
+              "spritesheet_data_filepath": ""
+            }
+          },
+          "battle": {
+            "Back": {
+              "atlas_filepath": "characters/char_4130_luton/yun#6/battle/Back/char_4130_luton_yun#6.atlas",
+              "skel_filepath": "characters/char_4130_luton/yun#6/battle/Back/char_4130_luton_yun#6.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "characters/char_4130_luton/yun#6/battle/Back/char_4130_luton_yun#6.png",
+              "animations": [
+                "Attack",
+                "Default",
+                "Idle",
+                "Skill_Begin",
+                "Skill_End",
+                "Skill_Loop",
+                "Start"
+              ],
+              "use_straight_alpha": false,
+              "spritesheet_data_filepath": ""
+            },
+            "Front": {
+              "atlas_filepath": "characters/char_4130_luton/yun#6/battle/Front/char_4130_luton_yun#6.atlas",
+              "skel_filepath": "characters/char_4130_luton/yun#6/battle/Front/char_4130_luton_yun#6.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "characters/char_4130_luton/yun#6/battle/Front/char_4130_luton_yun#6.png",
               "animations": [
                 "Attack",
                 "Default",

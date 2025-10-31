@@ -62,14 +62,16 @@ class DeploymentScript:
         logger.info("Step 1: Collecting enemy names...")
         
         # Output directly to static/assets/saved_enemy_names.json
+        current_output_path = self.tools_dir / "saved_enemy_names.json"
         output_path = self.static_assets_dir / "saved_enemy_names.json"
         
         if not self.run_command(
-            [sys.executable, "collect_enemy_names.py", "--output", str(output_path)],
+            [sys.executable, "collect_enemy_names.py", "--output", str(current_output_path)],
             cwd=self.tools_dir
         ):
             return False
-        
+
+        shutil.copy2(current_output_path, output_path)
         logger.info(f"Created {output_path}")
         return True
     
@@ -78,14 +80,16 @@ class DeploymentScript:
         logger.info("Step 2: Collecting saved character names...")
         
         # Output directly to static/assets/saved_names.json
+        current_output_path = self.tools_dir / "saved_names.json"
         output_path = self.static_assets_dir / "saved_names.json"
         
         if not self.run_command(
-            [sys.executable, "collect_saved_names.py", "--output", str(output_path)],
+            [sys.executable, "collect_saved_names.py", "--output", str(current_output_path)],
             cwd=self.tools_dir
         ):
             return False
         
+        shutil.copy2(current_output_path, output_path)
         logger.info(f"Created {output_path}")
         return True
     
