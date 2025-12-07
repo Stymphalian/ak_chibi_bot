@@ -4792,6 +4792,79 @@
         }
       }
     },
+    "char_1042_phatm2": {
+      "skins": {
+        "default": {
+          "base": {
+            "Front": {
+              "atlas_filepath": "characters/char_1042_phatm2/default/base/Front/build_char_1042_phatm2.atlas",
+              "skel_filepath": "characters/char_1042_phatm2/default/base/Front/build_char_1042_phatm2.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "characters/char_1042_phatm2/default/base/Front/build_char_1042_phatm2.png",
+              "animations": [
+                "Default",
+                "Interact",
+                "Move",
+                "Relax",
+                "Sit",
+                "Sleep"
+              ],
+              "use_straight_alpha": false,
+              "spritesheet_data_filepath": ""
+            }
+          },
+          "battle": {
+            "Back": {
+              "atlas_filepath": "characters/char_1042_phatm2/default/battle/Back/char_1042_phatm2.atlas",
+              "skel_filepath": "characters/char_1042_phatm2/default/battle/Back/char_1042_phatm2.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "characters/char_1042_phatm2/default/battle/Back/char_1042_phatm2.png",
+              "animations": [
+                "Attack_1",
+                "Attack_2",
+                "Default",
+                "Idle",
+                "Skill_1",
+                "Skill_2_Begin",
+                "Skill_2_Idle",
+                "Skill_2_Loop_1",
+                "Skill_2_Loop_2",
+                "Skill_3_Begin",
+                "Skill_3_End",
+                "Skill_3_Loop",
+                "Start"
+              ],
+              "use_straight_alpha": false,
+              "spritesheet_data_filepath": ""
+            },
+            "Front": {
+              "atlas_filepath": "characters/char_1042_phatm2/default/battle/Front/char_1042_phatm2.atlas",
+              "skel_filepath": "characters/char_1042_phatm2/default/battle/Front/char_1042_phatm2.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "characters/char_1042_phatm2/default/battle/Front/char_1042_phatm2.png",
+              "animations": [
+                "Attack_1",
+                "Attack_2",
+                "Default",
+                "Die",
+                "Idle",
+                "Skill_1",
+                "Skill_2_Begin",
+                "Skill_2_Idle",
+                "Skill_2_Loop_1",
+                "Skill_2_Loop_2",
+                "Skill_3_Begin",
+                "Skill_3_End",
+                "Skill_3_Loop",
+                "Start"
+              ],
+              "use_straight_alpha": false,
+              "spritesheet_data_filepath": ""
+            }
+          }
+        }
+      }
+    },
     "char_106_franka": {
       "skins": {
         "default": {
@@ -9529,6 +9602,62 @@
               "skel_filepath": "characters/char_154_morgan/default/battle/Front/char_154_morgan.skel",
               "skel_json_filepath": "",
               "png_filepath": "characters/char_154_morgan/default/battle/Front/char_154_morgan.png",
+              "animations": [
+                "Attack",
+                "Default",
+                "Die",
+                "Idle",
+                "Skill_1",
+                "Skill_2",
+                "Start"
+              ],
+              "use_straight_alpha": false,
+              "spritesheet_data_filepath": ""
+            }
+          }
+        },
+        "epoque": {
+          "base": {
+            "Front": {
+              "atlas_filepath": "characters/char_154_morgan/epoque#47/base/Front/build_char_154_morgan_epoque#47.atlas",
+              "skel_filepath": "characters/char_154_morgan/epoque#47/base/Front/build_char_154_morgan_epoque#47.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "characters/char_154_morgan/epoque#47/base/Front/build_char_154_morgan_epoque#47.png",
+              "animations": [
+                "Default",
+                "Interact",
+                "Move",
+                "Relax",
+                "Sit",
+                "Sleep",
+                "Special"
+              ],
+              "use_straight_alpha": false,
+              "spritesheet_data_filepath": ""
+            }
+          },
+          "battle": {
+            "Back": {
+              "atlas_filepath": "characters/char_154_morgan/epoque#47/battle/Back/char_154_morgan_epoque#47.atlas",
+              "skel_filepath": "characters/char_154_morgan/epoque#47/battle/Back/char_154_morgan_epoque#47.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "characters/char_154_morgan/epoque#47/battle/Back/char_154_morgan_epoque#47.png",
+              "animations": [
+                "Attack",
+                "Default",
+                "Idle",
+                "Skill_1",
+                "Skill_2",
+                "Start"
+              ],
+              "use_straight_alpha": false,
+              "spritesheet_data_filepath": ""
+            },
+            "Front": {
+              "atlas_filepath": "characters/char_154_morgan/epoque#47/battle/Front/char_154_morgan_epoque#47.atlas",
+              "skel_filepath": "characters/char_154_morgan/epoque#47/battle/Front/char_154_morgan_epoque#47.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "characters/char_154_morgan/epoque#47/battle/Front/char_154_morgan_epoque#47.png",
               "animations": [
                 "Attack",
                 "Default",
@@ -33958,6 +34087,68 @@
             }
           }
         },
+        "epoque": {
+          "base": {
+            "Front": {
+              "atlas_filepath": "characters/char_4066_highmo/epoque#45/base/Front/build_char_4066_highmo_epoque#45.atlas",
+              "skel_filepath": "characters/char_4066_highmo/epoque#45/base/Front/build_char_4066_highmo_epoque#45.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "characters/char_4066_highmo/epoque#45/base/Front/build_char_4066_highmo_epoque#45.png",
+              "animations": [
+                "Default",
+                "Interact",
+                "Move",
+                "Relax",
+                "Sit",
+                "Sleep",
+                "Special"
+              ],
+              "use_straight_alpha": false,
+              "spritesheet_data_filepath": ""
+            }
+          },
+          "battle": {
+            "Back": {
+              "atlas_filepath": "characters/char_4066_highmo/epoque#45/battle/Back/char_4066_highmo_epoque#45.atlas",
+              "skel_filepath": "characters/char_4066_highmo/epoque#45/battle/Back/char_4066_highmo_epoque#45.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "characters/char_4066_highmo/epoque#45/battle/Back/char_4066_highmo_epoque#45.png",
+              "animations": [
+                "Attack",
+                "Default",
+                "Idle",
+                "Skill_1",
+                "Skill_2_Attack",
+                "Skill_2_Begin",
+                "Skill_2_End",
+                "Skill_2_Idle",
+                "Start"
+              ],
+              "use_straight_alpha": false,
+              "spritesheet_data_filepath": ""
+            },
+            "Front": {
+              "atlas_filepath": "characters/char_4066_highmo/epoque#45/battle/Front/char_4066_highmo_epoque#45.atlas",
+              "skel_filepath": "characters/char_4066_highmo/epoque#45/battle/Front/char_4066_highmo_epoque#45.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "characters/char_4066_highmo/epoque#45/battle/Front/char_4066_highmo_epoque#45.png",
+              "animations": [
+                "Attack",
+                "Default",
+                "Die",
+                "Idle",
+                "Skill_1",
+                "Skill_2_Attack",
+                "Skill_2_Begin",
+                "Skill_2_End",
+                "Skill_2_Idle",
+                "Start"
+              ],
+              "use_straight_alpha": false,
+              "spritesheet_data_filepath": ""
+            }
+          }
+        },
         "nian": {
           "base": {
             "Front": {
@@ -34691,6 +34882,68 @@
               "skel_filepath": "characters/char_4079_haini/default/battle/Front/char_4079_haini.skel",
               "skel_json_filepath": "",
               "png_filepath": "characters/char_4079_haini/default/battle/Front/char_4079_haini.png",
+              "animations": [
+                "Attack",
+                "Default",
+                "Die",
+                "Idle",
+                "Skill_1",
+                "Skill_2_Begin",
+                "Skill_2_End",
+                "Skill_2_Idle",
+                "Skill_2_Loop",
+                "Start"
+              ],
+              "use_straight_alpha": false,
+              "spritesheet_data_filepath": ""
+            }
+          }
+        },
+        "epoque": {
+          "base": {
+            "Front": {
+              "atlas_filepath": "characters/char_4079_haini/epoque#45/base/Front/build_char_4079_haini_epoque#45.atlas",
+              "skel_filepath": "characters/char_4079_haini/epoque#45/base/Front/build_char_4079_haini_epoque#45.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "characters/char_4079_haini/epoque#45/base/Front/build_char_4079_haini_epoque#45.png",
+              "animations": [
+                "Default",
+                "Interact",
+                "Move",
+                "Relax",
+                "Sit",
+                "Sleep",
+                "Special"
+              ],
+              "use_straight_alpha": false,
+              "spritesheet_data_filepath": ""
+            }
+          },
+          "battle": {
+            "Back": {
+              "atlas_filepath": "characters/char_4079_haini/epoque#45/battle/Back/char_4079_haini_epoque#45.atlas",
+              "skel_filepath": "characters/char_4079_haini/epoque#45/battle/Back/char_4079_haini_epoque#45.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "characters/char_4079_haini/epoque#45/battle/Back/char_4079_haini_epoque#45.png",
+              "animations": [
+                "Attack",
+                "Default",
+                "Idle",
+                "Skill_1",
+                "Skill_2_Begin",
+                "Skill_2_End",
+                "Skill_2_Idle",
+                "Skill_2_Loop",
+                "Start"
+              ],
+              "use_straight_alpha": false,
+              "spritesheet_data_filepath": ""
+            },
+            "Front": {
+              "atlas_filepath": "characters/char_4079_haini/epoque#45/battle/Front/char_4079_haini_epoque#45.atlas",
+              "skel_filepath": "characters/char_4079_haini/epoque#45/battle/Front/char_4079_haini_epoque#45.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "characters/char_4079_haini/epoque#45/battle/Front/char_4079_haini_epoque#45.png",
               "animations": [
                 "Attack",
                 "Default",
@@ -38846,6 +39099,72 @@
               "spritesheet_data_filepath": ""
             }
           }
+        },
+        "iteration": {
+          "base": {
+            "Front": {
+              "atlas_filepath": "characters/char_4132_ascln/iteration#4/base/Front/build_char_4132_ascln_iteration#4.atlas",
+              "skel_filepath": "characters/char_4132_ascln/iteration#4/base/Front/build_char_4132_ascln_iteration#4.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "characters/char_4132_ascln/iteration#4/base/Front/build_char_4132_ascln_iteration#4.png",
+              "animations": [
+                "Default",
+                "Interact",
+                "Move",
+                "Relax",
+                "Sit",
+                "Sleep",
+                "Special"
+              ],
+              "use_straight_alpha": false,
+              "spritesheet_data_filepath": ""
+            }
+          },
+          "battle": {
+            "Back": {
+              "atlas_filepath": "characters/char_4132_ascln/iteration#4/battle/Back/char_4132_ascln_iteration#4.atlas",
+              "skel_filepath": "characters/char_4132_ascln/iteration#4/battle/Back/char_4132_ascln_iteration#4.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "characters/char_4132_ascln/iteration#4/battle/Back/char_4132_ascln_iteration#4.png",
+              "animations": [
+                "Attack_A",
+                "Attack_B",
+                "Default",
+                "Idle",
+                "Skill_1",
+                "Skill_2",
+                "Skill_3_Begin",
+                "Skill_3_End",
+                "Skill_3_Idle",
+                "Skill_3_Loop",
+                "Start"
+              ],
+              "use_straight_alpha": false,
+              "spritesheet_data_filepath": ""
+            },
+            "Front": {
+              "atlas_filepath": "characters/char_4132_ascln/iteration#4/battle/Front/char_4132_ascln_iteration#4.atlas",
+              "skel_filepath": "characters/char_4132_ascln/iteration#4/battle/Front/char_4132_ascln_iteration#4.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "characters/char_4132_ascln/iteration#4/battle/Front/char_4132_ascln_iteration#4.png",
+              "animations": [
+                "Attack_A",
+                "Attack_B",
+                "Default",
+                "Die",
+                "Idle",
+                "Skill_1",
+                "Skill_2",
+                "Skill_3_Begin",
+                "Skill_3_End",
+                "Skill_3_Idle",
+                "Skill_3_Loop",
+                "Start"
+              ],
+              "use_straight_alpha": false,
+              "spritesheet_data_filepath": ""
+            }
+          }
         }
       }
     },
@@ -39206,6 +39525,71 @@
               "skel_filepath": "characters/char_4137_udflow/default/battle/Front/char_4137_udflow.skel",
               "skel_json_filepath": "",
               "png_filepath": "characters/char_4137_udflow/default/battle/Front/char_4137_udflow.png",
+              "animations": [
+                "Attack",
+                "Attack_Down",
+                "Default",
+                "Die",
+                "Idle",
+                "Skill_2_Begin",
+                "Skill_2_End",
+                "Skill_2_Idle",
+                "Skill_2_Loop",
+                "Skill_Down_2_Begin",
+                "Skill_Down_2_End",
+                "Skill_Down_2_Idle",
+                "Skill_Down_2_Loop",
+                "Start"
+              ],
+              "use_straight_alpha": false,
+              "spritesheet_data_filepath": ""
+            }
+          }
+        },
+        "epoque": {
+          "base": {
+            "Front": {
+              "atlas_filepath": "characters/char_4137_udflow/epoque#46/base/Front/build_char_4137_udflow_epoque#46.atlas",
+              "skel_filepath": "characters/char_4137_udflow/epoque#46/base/Front/build_char_4137_udflow_epoque#46.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "characters/char_4137_udflow/epoque#46/base/Front/build_char_4137_udflow_epoque#46.png",
+              "animations": [
+                "Default",
+                "Interact",
+                "Move",
+                "Relax",
+                "Sit",
+                "Sleep",
+                "Special"
+              ],
+              "use_straight_alpha": false,
+              "spritesheet_data_filepath": ""
+            }
+          },
+          "battle": {
+            "Back": {
+              "atlas_filepath": "characters/char_4137_udflow/epoque#46/battle/Back/char_4137_udflow_epoque#46.atlas",
+              "skel_filepath": "characters/char_4137_udflow/epoque#46/battle/Back/char_4137_udflow_epoque#46.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "characters/char_4137_udflow/epoque#46/battle/Back/char_4137_udflow_epoque#46.png",
+              "animations": [
+                "Attack",
+                "Default",
+                "Idle",
+                "Skill_2_Begin",
+                "Skill_2_End",
+                "Skill_2_Idle",
+                "Skill_2_Loop",
+                "Start"
+              ],
+              "use_straight_alpha": false,
+              "spritesheet_data_filepath": ""
+            },
+            "Front": {
+              "atlas_filepath": "characters/char_4137_udflow/epoque#46/battle/Front/char_4137_udflow_epoque#46.atlas",
+              "skel_filepath": "characters/char_4137_udflow/epoque#46/battle/Front/char_4137_udflow_epoque#46.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "characters/char_4137_udflow/epoque#46/battle/Front/char_4137_udflow_epoque#46.png",
               "animations": [
                 "Attack",
                 "Attack_Down",
@@ -41366,6 +41750,78 @@
                 "Default",
                 "Die",
                 "Idle",
+                "Start"
+              ],
+              "use_straight_alpha": false,
+              "spritesheet_data_filepath": ""
+            }
+          }
+        }
+      }
+    },
+    "char_4191_tippi": {
+      "skins": {
+        "default": {
+          "base": {
+            "Front": {
+              "atlas_filepath": "characters/char_4191_tippi/default/base/Front/build_char_4191_tippi.atlas",
+              "skel_filepath": "characters/char_4191_tippi/default/base/Front/build_char_4191_tippi.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "characters/char_4191_tippi/default/base/Front/build_char_4191_tippi.png",
+              "animations": [
+                "Default",
+                "Interact",
+                "Move",
+                "Relax",
+                "Sit",
+                "Sleep"
+              ],
+              "use_straight_alpha": false,
+              "spritesheet_data_filepath": ""
+            }
+          },
+          "battle": {
+            "Back": {
+              "atlas_filepath": "characters/char_4191_tippi/default/battle/Back/char_4191_tippi.atlas",
+              "skel_filepath": "characters/char_4191_tippi/default/battle/Back/char_4191_tippi.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "characters/char_4191_tippi/default/battle/Back/char_4191_tippi.png",
+              "animations": [
+                "Attack",
+                "Default",
+                "Idle",
+                "Skill_2_Begin",
+                "Skill_2_End",
+                "Skill_2_Idle",
+                "Skill_2_Loop",
+                "Skill_Begin",
+                "Skill_End",
+                "Skill_Idle",
+                "Skill_Loop",
+                "Start"
+              ],
+              "use_straight_alpha": false,
+              "spritesheet_data_filepath": ""
+            },
+            "Front": {
+              "atlas_filepath": "characters/char_4191_tippi/default/battle/Front/char_4191_tippi.atlas",
+              "skel_filepath": "characters/char_4191_tippi/default/battle/Front/char_4191_tippi.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "characters/char_4191_tippi/default/battle/Front/char_4191_tippi.png",
+              "animations": [
+                "Attack",
+                "Default",
+                "Die",
+                "Die_2",
+                "Idle",
+                "Skill_2_Begin",
+                "Skill_2_End",
+                "Skill_2_Idle",
+                "Skill_2_Loop",
+                "Skill_Begin",
+                "Skill_End",
+                "Skill_Idle",
+                "Skill_Loop",
                 "Start"
               ],
               "use_straight_alpha": false,

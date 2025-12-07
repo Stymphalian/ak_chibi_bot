@@ -30579,6 +30579,626 @@
       "OverrideKillCntInfos": null,
       "SortId": 1006
     },
+    "enemy_10094_crstf": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "When outside the Filming Area, attacks inflict <$ba.dt.neural>Nervous Impairment</>",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        0
+      ],
+      "DamageTypeAsNumpy": [
+        0
+      ],
+      "Description": "A temporary crew member recruited from a Wrankwood studio plate. It is his first movie and he is eager to do his job, but he isn't sure why the mic refuses to record.",
+      "EnemyId": "enemy_10094_crstf",
+      "EnemyIndex": "WW01",
+      "EnemyLevel": 0,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "Audio Technician",
+      "OverrideKillCntInfos": null,
+      "SortId": 1007
+    },
+    "enemy_10094_crstf_2": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "When outside the Filming Area, attacks inflict <$ba.dt.neural>Nervous Impairment</>",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        0
+      ],
+      "DamageTypeAsNumpy": [
+        0
+      ],
+      "Description": "An experienced crew member who has worked on many films. He knows how to use his boom pole, and thrusts it anywhere he can get sound from.",
+      "EnemyId": "enemy_10094_crstf_2",
+      "EnemyIndex": "WW02",
+      "EnemyLevel": 0,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "Audio Engineer",
+      "OverrideKillCntInfos": null,
+      "SortId": 1008
+    },
+    "enemy_10095_crgst": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Can only be blocked by allied units inside the Filming Area",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        3
+      ],
+      "DamageTypeAsNumpy": [
+        3
+      ],
+      "Description": "An extra holding a clapperboard and pretending to be part of the crew. He started the shooting with his clapperboard in an attempt to get more screen time. He often improvises in front of the camera, trying to catch people's attention.",
+      "EnemyId": "enemy_10095_crgst",
+      "EnemyIndex": "WW03",
+      "EnemyLevel": 0,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "Zealous Extra",
+      "OverrideKillCntInfos": null,
+      "SortId": 1009
+    },
+    "enemy_10095_crgst_2": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Can only be blocked by allied units inside the Filming Area",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        3
+      ],
+      "DamageTypeAsNumpy": [
+        3
+      ],
+      "Description": "An extra holding a clapperboard and pretending to be part of the crew. He is not chasing a dream, just doing it for fun. He likes to hear the audience's screams, caring little about what he is doing in front of the camera.",
+      "EnemyId": "enemy_10095_crgst_2",
+      "EnemyIndex": "WW04",
+      "EnemyLevel": 0,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "Artistic Extra",
+      "OverrideKillCntInfos": null,
+      "SortId": 1010
+    },
+    "enemy_10096_crprp": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Places a Lighting Prop on the first empty ground tile within the Filming Area that it passes through",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        0
+      ],
+      "DamageTypeAsNumpy": [
+        0
+      ],
+      "Description": "The lighting props are too heavy for even this strong Forte prop technician, who has been crushed by the weight of stress and responsibility. He eagerly seeks any opportunity to take a break.",
+      "EnemyId": "enemy_10096_crprp",
+      "EnemyIndex": "WW05",
+      "EnemyLevel": 0,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "Tired Prop Technician",
+      "OverrideKillCntInfos": null,
+      "SortId": 1011
+    },
+    "enemy_10096_crprp_2": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Places a Lighting Prop on the first empty ground tile within the Filming Area that it passes through",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        0
+      ],
+      "DamageTypeAsNumpy": [
+        0
+      ],
+      "Description": "It is not rest but attention that this strong Forte prop technician needs. Everything he does in front of the camera catches people's eyes.",
+      "EnemyId": "enemy_10096_crprp_2",
+      "EnemyIndex": "WW06",
+      "EnemyLevel": 0,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "Attention-Seeking Prop Technician",
+      "OverrideKillCntInfos": null,
+      "SortId": 1012
+    },
+    "enemy_10097_crshd": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Takes less Physical/Arts damage from the front",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Afraid to face the camera. Turns around if facing the camera in the Filming Area",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Inflicts <$ba.dt.neural>Nervous Impairment</> on blocker when blocked",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        3
+      ],
+      "DamageTypeAsNumpy": [
+        3
+      ],
+      "Description": "A designer who has missed his deadline. He flees when he finds that he has accidentally entered the shot.",
+      "EnemyId": "enemy_10097_crshd",
+      "EnemyIndex": "WW07",
+      "EnemyLevel": 1,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "Uneasy Designer",
+      "OverrideKillCntInfos": null,
+      "SortId": 1013
+    },
+    "enemy_10097_crshd_2": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Takes less Physical/Arts damage from the front",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Afraid to face the camera. Turns around if facing the camera in the Filming Area",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Inflicts <$ba.dt.neural>Nervous Impairment</> on blocker when blocked",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        3
+      ],
+      "DamageTypeAsNumpy": [
+        3
+      ],
+      "Description": "A designer who always misses his deadlines. He will do whatever it takes to escape attention when he finds that he has accidentally entered the shot.",
+      "EnemyId": "enemy_10097_crshd_2",
+      "EnemyIndex": "WW08",
+      "EnemyLevel": 1,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "Anguished Designer",
+      "OverrideKillCntInfos": null,
+      "SortId": 1014
+    },
+    "enemy_10098_crhro": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Attacks inflict <$ba.dt.neural>Nervous Impairment</>.",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Attack range increases when inside the Filming Area, and prioritizes <Villain's Minion> and <Destined Villain>",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Rebirth",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        0
+      ],
+      "DamageTypeAsNumpy": [
+        0
+      ],
+      "Description": "The hero's sidekick. His motto is 'Never say die', and he will fight the villains to the bitter end to ensure the hero's final victory.",
+      "EnemyId": "enemy_10098_crhro",
+      "EnemyIndex": "WW09",
+      "EnemyLevel": 1,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": [
+        "enemy_10099_crvln",
+        "enemy_10099_crvln_2"
+      ],
+      "Name": "Hero's Sidekick",
+      "OverrideKillCntInfos": null,
+      "SortId": 1015
+    },
+    "enemy_10098_crhro_2": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Attacks inflict <$ba.dt.neural>Nervous Impairment</>.",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Attack range increases when inside the Filming Area, and prioritizes <Villain's Minion> and <Destined Villain>",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Rebirth",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        0
+      ],
+      "DamageTypeAsNumpy": [
+        0
+      ],
+      "Description": "The hero. His motto is 'Never say die', and he will see it done. His special effects sword decapitates his enemies, and he watches their blood spill on the floor with satisfaction while screams fill the set. He will fight to the bitter end.",
+      "EnemyId": "enemy_10098_crhro_2",
+      "EnemyIndex": "WW10",
+      "EnemyLevel": 1,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": [
+        "enemy_10099_crvln",
+        "enemy_10099_crvln_2"
+      ],
+      "Name": "Destined Hero",
+      "OverrideKillCntInfos": null,
+      "SortId": 1016
+    },
+    "enemy_10099_crvln": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Attacks inflict <$ba.dt.neural>Nervous Impairment</>.",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Attacks hit twice when inside the Filming Area, and prioritizes <Hero's Sidekick> and <Destined Hero>",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        1
+      ],
+      "DamageTypeAsNumpy": [
+        1
+      ],
+      "Description": "The villain's minion. Its motto is 'Never surrender', and it will fight the heroes to the bitter end to ensure its boss's final victory.",
+      "EnemyId": "enemy_10099_crvln",
+      "EnemyIndex": "WW11",
+      "EnemyLevel": 1,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": [
+        "enemy_10098_crhro",
+        "enemy_10098_crhro_2"
+      ],
+      "Name": "Villain's Minion",
+      "OverrideKillCntInfos": null,
+      "SortId": 1017
+    },
+    "enemy_10099_crvln_2": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Attacks inflict <$ba.dt.neural>Nervous Impairment</>.",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Attacks hit twice when inside the Filming Area, and prioritizes <Hero's Sidekick> and <Destined Hero>",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        1
+      ],
+      "DamageTypeAsNumpy": [
+        1
+      ],
+      "Description": "The villain. Its motto is 'Never surrender'. This position is reserved for the strong. It spits out special effects shockwaves and watches with glee as the hero's body is torn to pieces and all traces of his existence erased. It will fight to the bitter end.",
+      "EnemyId": "enemy_10099_crvln_2",
+      "EnemyIndex": "WW12",
+      "EnemyLevel": 1,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": [
+        "enemy_10098_crhro",
+        "enemy_10098_crhro_2"
+      ],
+      "Name": "Destined Villain",
+      "OverrideKillCntInfos": null,
+      "SortId": 1018
+    },
+    "enemy_10100_crrol": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Unblockable",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Deals Physical damage to your units along its path when moving",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Unable to move when inside the Filming Area and gains <$ba.fragile>Fragile</>",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Loses a percentage of Max HP each second after spending too much total time in the Filming Area",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        3
+      ],
+      "DamageTypeAsNumpy": [
+        3
+      ],
+      "Description": "A mannequin that nimbly darts through the set, controlled by the crew's Arts to carry props. It saves time and manpower, but runs into others from time to time.",
+      "EnemyId": "enemy_10100_crrol",
+      "EnemyIndex": "WW13",
+      "EnemyLevel": 1,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "Nimble Mannequin",
+      "OverrideKillCntInfos": null,
+      "SortId": 1019
+    },
+    "enemy_10100_crrol_2": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Unblockable",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Deals Physical damage to your units along its path when moving",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Unable to move when inside the Filming Area and gains <$ba.fragile>Fragile</>",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Loses a percentage of Max HP each second after spending too much total time in the Filming Area",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        3
+      ],
+      "DamageTypeAsNumpy": [
+        3
+      ],
+      "Description": "A mannequin that nimbly darts through the set. Its duty is to transport props. It will do so even when uncommanded, and it will disembowel anyone who stands in its way.",
+      "EnemyId": "enemy_10100_crrol_2",
+      "EnemyIndex": "WW14",
+      "EnemyLevel": 1,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "Sentient Mannequin",
+      "OverrideKillCntInfos": null,
+      "SortId": 1020
+    },
+    "enemy_10101_crgun": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Starts with 5 Film, firing them as ranged attacks. Performs melee attacks when out of Film or blocked",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Film explodes when it hits an allied unit or reaches the target location, dealing damage and inflicting Nervous Impairment, and dealing splash damage and inflicting Nervous Impairment on nearby allied units",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Film must be attacked 6 times to defeat",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Film flies much slower when inside the Filming Area",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        0
+      ],
+      "DamageTypeAsNumpy": [
+        0
+      ],
+      "Description": "Cameraman carrying heavy equipment. He is unhappy with his job, and he angrily throws film when a shot goes wrong.",
+      "EnemyId": "enemy_10101_crgun",
+      "EnemyIndex": "WW15",
+      "EnemyLevel": 1,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "Unhappy Cameraman",
+      "OverrideKillCntInfos": null,
+      "SortId": 1021
+    },
+    "enemy_10101_crgun_2": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Starts with 5 Film, firing them as ranged attacks. Performs melee attacks when out of Film or blocked",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Film explodes when it hits an allied unit or reaches the target location, dealing damage and inflicting Nervous Impairment, and dealing splash damage and inflicting Nervous Impairment on nearby allied units",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Film must be attacked 10 times to defeat",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Film flies much slower when inside the Filming Area",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        0
+      ],
+      "DamageTypeAsNumpy": [
+        0
+      ],
+      "Description": "Cameraman carrying heavy equipment. He is unhappy with everything, and has already angrily thrown film at whoever is nearest.",
+      "EnemyId": "enemy_10101_crgun_2",
+      "EnemyIndex": "WW16",
+      "EnemyLevel": 1,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "Violent Cameraman",
+      "OverrideKillCntInfos": null,
+      "SortId": 1022
+    },
+    "enemy_10102_crblt": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Film explodes when it hits an Operator or reaches the target location, dealing damage and inflicting <$ba.dt.neural>Nervous Impairment</>. Deals splash damage and inflicts <$ba.dt.neural>Nervous Impairment</> on nearby operators",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Film must be attacked 6 times to defeat",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Film flies much slower when inside the Filming Area",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        0
+      ],
+      "DamageTypeAsNumpy": [
+        0
+      ],
+      "Description": "A scrapped tape of film thrown by a cameraman after a shot went wrong.",
+      "EnemyId": "enemy_10102_crblt",
+      "EnemyIndex": "WW17",
+      "EnemyLevel": 0,
+      "HideInHandbook": true,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "Scrapped Film",
+      "OverrideKillCntInfos": null,
+      "SortId": 1023
+    },
+    "enemy_10102_crblt_2": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Film explodes when it hits an Operator or reaches the target location, dealing damage and inflicting <$ba.dt.neural>Nervous Impairment</>. Deals splash damage and inflicts <$ba.dt.neural>Nervous Impairment</> on nearby operators",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Film must be attacked 10 times to defeat",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Film flies much slower when inside the Filming Area",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        0
+      ],
+      "DamageTypeAsNumpy": [
+        0
+      ],
+      "Description": "A completely scrapped tape of film that explodes in front of the camera, resolved to go out in a blaze of glory.",
+      "EnemyId": "enemy_10102_crblt_2",
+      "EnemyIndex": "WW18",
+      "EnemyLevel": 0,
+      "HideInHandbook": true,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "Completely Scrapped Film",
+      "OverrideKillCntInfos": null,
+      "SortId": 1024
+    },
     "enemy_3009_mpprss": {
       "Ability": null,
       "AbilityList": null,
@@ -37017,6 +37637,66 @@
       "Name": "'Saint'",
       "OverrideKillCntInfos": null,
       "SortId": 1189
+    },
+    "enemy_1568_dirctr": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "[Unrealized] Takes greatly reduced Physical and Arts damage when attacked by your units located outside the Filming Area",
+          "TextFormat": 0
+        },
+        {
+          "Text": "[Interest Piqued] After a few attacks, the next attack gains increased ATK",
+          "TextFormat": 0
+        },
+        {
+          "Text": "First Form",
+          "TextFormat": 1
+        },
+        {
+          "Text": "[Dramatization] Whenever a <$ba.dt.neural>Nervous Impairment</> burst occurs on one of your units, deals damage to the units in the 4 adjacent tiles around that unit after a short delay, inflicting <$ba.dt.neural>Nervous Impairment</>",
+          "TextFormat": 0
+        },
+        {
+          "Text": "[Diffusing Absurdity] Creates a barrier on 1 camera (prioritizing active ones), disabling it. Barrier explodes if not destroyed within a time limit, dealing damage to your units in the 8 surrounding tiles",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Second Form",
+          "TextFormat": 1
+        },
+        {
+          "Text": "[Dramatization] Whenever a <$ba.dt.neural>Nervous Impairment</> burst occurs on one of your units, deals damage to the units in the 8 adjacent tiles around that unit after a short delay, inflicting <$ba.dt.neural>Nervous Impairment</>",
+          "TextFormat": 0
+        },
+        {
+          "Text": "[Diffusing Absurdity] Creates a barrier on 2 cameras (prioritizing active ones), disabling them. Barrier explodes if not destroyed within a time limit, dealing damage to your units in the 8 surrounding tiles",
+          "TextFormat": 0
+        },
+        {
+          "Text": "[Ceaseless Interlude] After charging, attacks your units within range that are inside the Filming Area, going from near to far. Attack inflicts additional <$ba.dt.neural>Nervous Impairment</>. Each hit increases the damage of the next attack for the skill duration",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        1
+      ],
+      "DamageTypeAsNumpy": [
+        1
+      ],
+      "Description": "Death is ever-present, and drama is eternal.",
+      "EnemyId": "enemy_1568_dirctr",
+      "EnemyIndex": "TR",
+      "EnemyLevel": 2,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "'Tragodia'",
+      "OverrideKillCntInfos": null,
+      "SortId": 1190
     },
     "enemy_2003_rockman": {
       "Ability": null,
