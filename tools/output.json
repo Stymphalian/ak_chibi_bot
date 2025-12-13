@@ -761,9 +761,81 @@
         "Matriarch",
         "MT19"
     ],
+    "enemy_10094_crstf": [
+        "Audio Technician",
+        "WW01"
+    ],
+    "enemy_10094_crstf_2": [
+        "Audio Engineer",
+        "WW02"
+    ],
+    "enemy_10095_crgst": [
+        "Zealous Extra",
+        "WW03"
+    ],
+    "enemy_10095_crgst_2": [
+        "Artistic Extra",
+        "WW04"
+    ],
+    "enemy_10096_crprp": [
+        "Tired Prop Technician",
+        "WW05"
+    ],
+    "enemy_10096_crprp_2": [
+        "Attention-Seeking Prop Technician",
+        "WW06"
+    ],
+    "enemy_10097_crshd": [
+        "Uneasy Designer",
+        "WW07"
+    ],
+    "enemy_10097_crshd_2": [
+        "Anguished Designer",
+        "WW08"
+    ],
+    "enemy_10098_crhro": [
+        "Heros Sidekick",
+        "WW09"
+    ],
+    "enemy_10098_crhro_2": [
+        "Destined Hero",
+        "WW10"
+    ],
+    "enemy_10099_crvln": [
+        "Villains Minion",
+        "WW11"
+    ],
+    "enemy_10099_crvln_2": [
+        "Destined Villain",
+        "WW12"
+    ],
     "enemy_1009_lurker": [
         "Lurker",
         "C0"
+    ],
+    "enemy_10100_crrol": [
+        "Nimble Mannequin",
+        "WW13"
+    ],
+    "enemy_10100_crrol_2": [
+        "Sentient Mannequin",
+        "WW14"
+    ],
+    "enemy_10101_crgun": [
+        "Unhappy Cameraman",
+        "WW15"
+    ],
+    "enemy_10101_crgun_2": [
+        "Violent Cameraman",
+        "WW16"
+    ],
+    "enemy_10102_crblt": [
+        "Scrapped Film",
+        "WW17"
+    ],
+    "enemy_10102_crblt_2": [
+        "Completely Scrapped Film",
+        "WW18"
     ],
     "enemy_1010_demon": [
         "Sarkaz Greatswordsman",
@@ -4293,6 +4365,10 @@
         "Saint",
         "ST"
     ],
+    "enemy_1568_dirctr": [
+        "Tragodia",
+        "TR"
+    ],
     "enemy_2001_duckmi": [
         "Duck Lord",
         "DLD"
@@ -5299,6 +5375,46 @@
     "enemy_8009_eltufo": [
         "Rosmontiss Drone",
         "SFR05"
+    ],
+    "enemy_8010_mcnist": [
+        "Mechanist, Mechanical Mind",
+        "SFR06"
+    ],
+    "enemy_8010_mcnist_2": [
+        "Mechanist, Mechanical Mind 2",
+        "SFR06-2"
+    ],
+    "enemy_8010_mcnist_3": [
+        "Mechanist, Mechanical Mind 3",
+        "SFR06-3"
+    ],
+    "enemy_8011_mcndog": [
+        "Structural Principle",
+        "SFR07"
+    ],
+    "enemy_8011_mcndog_2": [
+        "Structural Principle 2",
+        "SFR07-2"
+    ],
+    "enemy_8011_mcndog_3": [
+        "Structural Principle 3",
+        "SFR07-3"
+    ],
+    "enemy_8012_mcnd": [
+        "Document",
+        "SFR08"
+    ],
+    "enemy_8013_mcnrsh": [
+        "Leafcarpet",
+        "SFR09"
+    ],
+    "enemy_8014_mcnelp": [
+        "Stopwatch",
+        "SFR10"
+    ],
+    "enemy_8015_mcnrhd": [
+        "Uproar",
+        "SFR11"
     ],
     "enemy_9001_ayokai": [
         "Surprise Sponsor Drone",

@@ -194,6 +194,12 @@
         "Tragodia",
         "Phantom Alter"
     ],
+    "char_1043_leizi2": [
+        "Leizi Alter",
+        "Leizi the Thunderclap",
+        "Leizi 2",
+        "Leizi2"
+    ],
     "char_106_franka": [
         "Franka"
     ],
@@ -1107,6 +1113,9 @@
         "confess",
         "CONFESS-47"
     ],
+    "char_4191_tippi": [
+        "Tippi"
+    ],
     "char_4193_lemuen": [
         "Lemuen",
         "Lemon"
@@ -1114,6 +1123,9 @@
     "char_4194_rmixer": [
         "Sankta Miksaparato",
         "Grandpa Sankta"
+    ],
+    "char_4196_reckpr": [
+        "Record Keeper"
     ],
     "char_4198_christ": [
         "Miss.Christine"

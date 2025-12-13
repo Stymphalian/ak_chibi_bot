@@ -3,27 +3,33 @@ import argparse
 import json
 from collections import defaultdict
 from pathlib import Path
-                      
+
+FROM_INTERNAL_SOURCE = False
+EnemyDataKey = "EnemyData" if FROM_INTERNAL_SOURCE else "enemyData"
+EnemyId = "EnemyId" if FROM_INTERNAL_SOURCE else "enemyId"
+EnemyIndex = "EnemyIndex" if FROM_INTERNAL_SOURCE else "enemyIndex"
+EnemyName = "Name" if FROM_INTERNAL_SOURCE else "name"
+      
 def process_enemy_table(enemy_table: Path, saved_names):
     seen_enemy_index = set([])
     seen_enemy_name = set([])
 
     with enemy_table.open("r", encoding="utf-8") as f:
         enemy_json = json.load(f)
-        enemy_json = enemy_json['EnemyData']
+        enemy_json = enemy_json[EnemyDataKey]
         output_dict = defaultdict(list)
         for key, enemy in enemy_json.items():
             if not key.startswith("enemy_"):
                 continue
 
             if key in saved_names:
-                # print(saved_names[key])
                 output_dict[key] = saved_names[key]
                 continue
 
-            enemyId = enemy['EnemyId']
-            enemyIndex = enemy['EnemyIndex']
-            name = enemy['Name']
+            print("Processing {}".format(key))
+            enemyId = enemy[EnemyId]
+            enemyIndex = enemy[EnemyIndex]
+            name = enemy[EnemyName]
 
             assert enemyId == key, "{} != {}".format(enemyId, key)
             if enemyIndex in seen_enemy_index:
@@ -74,6 +80,7 @@ def main():
         saved_names = json.loads(f.read().encode("utf-8"))
 
     # curl https://raw.githubusercontent.com/Kengxxiao/ArknightsGameData_YoStar/main/en_US/gamedata/excel/enemy_handbook_table.json > enemy_handbook_table.json
+    # curl https://raw.githubusercontent.com/ArknightsAssets/ArknightsGamedata/refs/heads/master/en/gamedata/excel/enemy_handbook_table.json > enemy_handbook_table.json
     output_dict = process_enemy_table(Path("./enemy_handbook_table.json"), saved_names)
 
     sorted_keys = sorted(output_dict.keys())

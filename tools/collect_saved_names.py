@@ -5,16 +5,16 @@ import json
 from collections import defaultdict
 from pathlib import Path
 
-FROM_CONFIG = False
+FROM_INTERNAL_CONFIG = False
 CHARACTER_KEY = "Characters"
-NAME_KEY = "Name" if FROM_CONFIG else "name"
+NAME_KEY = "Name" if FROM_INTERNAL_CONFIG else "name"
                       
 def process_character_table(character_table_path: Path, saved_names):
     existing_saved_names = set(saved_names.keys())
     output_dict = defaultdict(list)
     with character_table_path.open("r", encoding="utf-8") as f:
         character_json = json.load(f)
-        character_json = character_json[CHARACTER_KEY] if FROM_CONFIG else character_json
+        character_json = character_json[CHARACTER_KEY] if FROM_INTERNAL_CONFIG else character_json
         
         for key, operator in character_json.items():
             if not key.startswith("char_"):
