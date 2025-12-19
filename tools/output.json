@@ -4731,6 +4731,94 @@
         "Manfred",
         "MAN-2"
     ],
+    "enemy_2101_dyspll": [
+        "Talisman",
+        "JY1"
+    ],
+    "enemy_2102_dytmbr": [
+        "Shadow Scholar",
+        "JY2"
+    ],
+    "enemy_2103_dykens": [
+        "Bottle Swordsman",
+        "JY3"
+    ],
+    "enemy_2104_dycast": [
+        "Mirror Tianshi",
+        "JY4"
+    ],
+    "enemy_2105_dyrnge": [
+        "Pseudomut",
+        "JY5"
+    ],
+    "enemy_2106_dyremy": [
+        "Strange Gourd",
+        "JY6"
+    ],
+    "enemy_2107_dycant": [
+        "Can Doe",
+        "JY"
+    ],
+    "enemy_2108_dypryg": [
+        "Dusk Beauty",
+        "XE"
+    ],
+    "enemy_2109_dypry2": [
+        "Lady of the Twin Moons",
+        "YZ"
+    ],
+    "enemy_2110_dyyrzf": [
+        "Ash Spear",
+        "TM"
+    ],
+    "enemy_2111_dyyrz2": [
+        "Lord Huan",
+        "HJ"
+    ],
+    "enemy_2112_dyhlgy": [
+        "Crimson Crescent Blade",
+        "ZM"
+    ],
+    "enemy_2113_dyhlg2": [
+        "Lord Wenheng",
+        "WHJ"
+    ],
+    "enemy_2114_dylbgg": [
+        "Jade Twin-Swords",
+        "YM"
+    ],
+    "enemy_2115_dylbg2": [
+        "Lord Zhaolie",
+        "ZLJ"
+    ],
+    "enemy_2116_dyyysg": [
+        "Revered Grandmaster",
+        "JSZ"
+    ],
+    "enemy_2117_dyyys2": [
+        "Grand Duke",
+        "JTG"
+    ],
+    "enemy_2118_dylbhm": [
+        "Yi",
+        "YI"
+    ],
+    "enemy_2119_dyshhj": [
+        "Sui",
+        "SUI"
+    ],
+    "enemy_2119_dyshhj_2": [
+        "Body of Sui",
+        "SQ"
+    ],
+    "enemy_2120_dywqgs": [
+        "Wang",
+        "WAN"
+    ],
+    "enemy_2122_dybgzd": [
+        "Liang",
+        "YIS"
+    ],
     "enemy_3001_upeopl": [
         "Ursus Civilian",
         "U16"
@@ -5145,6 +5233,10 @@
     "enemy_6031_visfrg": [
         "Woodthreads",
         "DL31"
+    ],
+    "enemy_6032_fxdjj": [
+        "Absolute Security Prototype",
+        "DL32"
     ],
     "enemy_7001_blwzad": [
         "Tribal Shaman",

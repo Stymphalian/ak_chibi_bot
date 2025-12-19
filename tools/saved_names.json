@@ -1124,6 +1124,9 @@
         "Sankta Miksaparato",
         "Grandpa Sankta"
     ],
+    "char_4195_radian": [
+        "Raidian"
+    ],
     "char_4196_reckpr": [
         "Record Keeper"
     ],
@@ -1365,7 +1368,7 @@
         "Touch Alt"
     ],
     "char_614_acsupo": [
-        "Raidian"
+        "Raidian (NPC)"
     ],
     "char_615_acspec": [
         "Misery"

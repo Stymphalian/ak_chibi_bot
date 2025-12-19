@@ -4,7 +4,7 @@ import json
 from collections import defaultdict
 from pathlib import Path
 
-FROM_INTERNAL_SOURCE = False
+FROM_INTERNAL_SOURCE = True
 EnemyDataKey = "EnemyData" if FROM_INTERNAL_SOURCE else "enemyData"
 EnemyId = "EnemyId" if FROM_INTERNAL_SOURCE else "enemyId"
 EnemyIndex = "EnemyIndex" if FROM_INTERNAL_SOURCE else "enemyIndex"

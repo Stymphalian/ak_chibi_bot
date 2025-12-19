@@ -5,7 +5,7 @@ import json
 from collections import defaultdict
 from pathlib import Path
 
-FROM_INTERNAL_CONFIG = False
+FROM_INTERNAL_CONFIG = True
 CHARACTER_KEY = "Characters"
 NAME_KEY = "Name" if FROM_INTERNAL_CONFIG else "name"
                       
