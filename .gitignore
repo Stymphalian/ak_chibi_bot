@@ -39,3 +39,4 @@ tmp/
 assets.zip
 .venv/
 third_party/
+compressed/
