@@ -416,7 +416,10 @@ export class SpinePlayer {
 			this.textCanvasContext.textBaseline = "bottom";
 
 			// var webglConfig = { alpha: config.alpha };
-			var webglConfig = { alpha: this.playerConfig.alpha };
+			var webglConfig = { 
+        alpha: this.playerConfig.alpha,
+        powerPreference: "low-power"
+      };
 			this.context = new ManagedWebGLRenderingContext(this.canvas, webglConfig);
 			// Setup the scene renderer and loading screen
 			this.sceneRenderer = new SceneRenderer(this.canvas, this.context);
