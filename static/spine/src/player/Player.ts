@@ -45,6 +45,7 @@ import { Camera } from "../webgl/Camera";
 import { readSpritesheetJsonConfig, SpritesheetActor } from "./Spritesheet";
 import { GLFrameBuffer } from "../webgl/GLFrameBuffer";
 import { OffscreenRender } from "./OffscreenRender";
+import { PerformancePanel } from "./PerformancePanel";
 
 export interface SpinePlayerConfig {
 	/* Optional: whether to show the player controls. Default: true. */
@@ -91,6 +92,9 @@ export interface SpinePlayerConfig {
 	// Configs to help with crowded chibis on the screen
 	// ----------
 	excessiveChibiMitigations: boolean
+	
+	// Performance monitoring
+	showFPS: boolean
 }
 
 class Slider {
@@ -210,6 +214,9 @@ export class SpinePlayer {
 	private lastRequestAnimationFrameId = 0;
 	private windowFpsFrameCount: number = 0;
 	private webSocket: WebSocket = null;
+	
+	// Performance panel
+	private performancePanel: PerformancePanel | null = null;
 	private renderCallbacks: RenderCallbackFn[] = [];
 	private actorQueue: { actorName: string, config: SpineActorConfig }[] = [];
 	private actorQueueIndex: any = null;
@@ -238,6 +245,7 @@ export class SpinePlayer {
 		if (!config) throw new Error("Please pass a configuration to new.SpinePlayer().");
 		if (!config.alpha) config.alpha = false;
 		if (!config.backgroundColor) config.backgroundColor = "#000000";
+		if (config.showFPS === undefined) config.showFPS = false;
 		if (typeof config.showControls === "undefined")
 			config.showControls = true;
 		if (!config.runtimeDebugInfoDumpIntervalSec) config.runtimeDebugInfoDumpIntervalSec = 60;
@@ -432,6 +440,19 @@ export class SpinePlayer {
 			this.playerConfig.cameraPerspectiveFar,
 			this.playerConfig.viewport
 		);
+		
+		// Initialize performance panel if enabled
+		if (this.playerConfig.showFPS) {
+			this.performancePanel = new PerformancePanel({
+				position: 'top-left',
+				padding: 10,
+				fontSize: 16,
+				backgroundColor: 'rgba(0, 0, 0, 0.7)'
+			});
+			
+			// Initialize GPU timing if available
+			this.performancePanel.initGPUTiming(this.context.gl);
+		}
 
 		// Setup rendering loop
 		this.lastRequestAnimationFrameId = requestAnimationFrame(() => this.drawFrame());
@@ -696,6 +717,11 @@ export class SpinePlayer {
 	}
 
 	updateActors(actorsZOrder: Array<string>) {
+		// Start GPU timing
+		if (this.performancePanel) {
+			this.performancePanel.beginGPUTiming();
+		}
+		
 		for (let key of actorsZOrder) {
 			let actor = this.actors.get(key);
 			actor.Update(this);
@@ -737,6 +763,11 @@ export class SpinePlayer {
 			actor.Draw(this.sceneRenderer)
 		}
 		this.sceneRenderer.end();
+		
+		// End GPU timing after rendering
+		if (this.performancePanel) {
+			this.performancePanel.endGPUTiming();
+		}
 
 		// Render the debug output with a fixed camera.
 		if (this.playerConfig.viewport.debugRender) {
@@ -756,6 +787,15 @@ export class SpinePlayer {
 				this.sceneRenderer.camera,
 				this.textCanvasContext,
 				this.playerConfig.showChatMessages)
+		}
+		
+		// Draw performance panel if enabled
+		if (this.performancePanel) {
+			this.performancePanel.draw(
+				this.textCanvasContext,
+				this.textCanvas.width,
+				this.textCanvas.height
+			);
 		}
 	}
 
@@ -825,6 +865,11 @@ export class SpinePlayer {
 			// console.log("Frame time: " + (endTime - startTime) + "ms", "Frame delay: " + (startTime - this.lastDrawCall) + "ms");
 		}
 		this.lastDrawCall = endTime;
+		
+		// Update performance panel
+		if (this.performancePanel) {
+			this.performancePanel.updateFPS(endTime);
+		}
 
 		if (requestNextFrame && !this.stopRequestAnimationFrame) {
 			this.lastRequestAnimationFrameId = requestAnimationFrame(() => this.drawFrame());

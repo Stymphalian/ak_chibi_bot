@@ -55,6 +55,7 @@ export function getRuntimeConfigFromQueryParams(searchParams: URLSearchParams): 
     const excessiveChibiMitigations = searchParams.get('chibi_ocean') === 'true';
     const usernameBlacklist = getUsernameBlacklist(searchParams);
     const usePremultipliedAlpha = searchParams.get("premultiplied_alpha") === "true";
+    const showFPS = searchParams.get('fps') === '1' || searchParams.get('fps') === 'true';
 
     const [containerWidth, containerHeight] = setContainerSizeFromQuery(searchParams);
     return {
@@ -65,6 +66,7 @@ export function getRuntimeConfigFromQueryParams(searchParams: URLSearchParams): 
         showChatMessagesFlag: showChatMessages,
         usernameBlacklist: usernameBlacklist,
         excessiveChibiMitigations: excessiveChibiMitigations,
-        usePremultipliedAlpha: usePremultipliedAlpha
+        usePremultipliedAlpha: usePremultipliedAlpha,
+        showFPS: showFPS
     }
 }
