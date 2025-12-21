@@ -46,6 +46,7 @@ import { readSpritesheetJsonConfig, SpritesheetActor } from "./Spritesheet";
 import { GLFrameBuffer } from "../webgl/GLFrameBuffer";
 import { OffscreenRender } from "./OffscreenRender";
 import { PerformancePanel } from "./PerformancePanel";
+import { detectCompressionCapabilities, logCompressionCapabilities, CompressionCapabilities } from "../webgl/CompressionCapabilities";
 
 export interface SpinePlayerConfig {
 	/* Optional: whether to show the player controls. Default: true. */
@@ -224,6 +225,7 @@ export class SpinePlayer {
 	// private offCanvas: HTMLCanvasElement|null;
 	private offscreenRender: OffscreenRender = null;
 	private actorHeightDirty = true;
+	private compressionCapabilities: CompressionCapabilities | null = null;
 
 	constructor(parent: HTMLElement | string, playerConfig: SpinePlayerConfig) {
 		if (typeof parent === "string") {
@@ -426,6 +428,10 @@ export class SpinePlayer {
 			this.loadingScreen = new LoadingScreen(this.sceneRenderer);
 			this.offscreenRender = new OffscreenRender(this.sceneRenderer);
 			this.assetManager = new AssetManager(this.context);
+
+			// Detect and log compression capabilities
+			this.compressionCapabilities = detectCompressionCapabilities(this.context.gl);
+			logCompressionCapabilities(this.compressionCapabilities);
 
 			if (this.playerConfig.viewport.debugRender) {
 				this.context.GetWebGLParameters();
@@ -1374,5 +1380,10 @@ export class SpinePlayer {
 	// Exposed only for testing.
 	public getSceneRenderer(): SceneRenderer {
 		return this.sceneRenderer;
+	}
+
+	// Get detected compression capabilities
+	public getCompressionCapabilities(): CompressionCapabilities | null {
+		return this.compressionCapabilities;
 	}
 }
