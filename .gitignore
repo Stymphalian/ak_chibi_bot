@@ -37,3 +37,5 @@ thirdparty/
 tmp/
 .env
 assets.zip
+.venv/
+third_party/
