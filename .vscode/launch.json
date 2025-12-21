@@ -21,7 +21,7 @@
             "showLog": true,
             "substitutePath": [
                 {
-                    "from": "C:\\Users\\Jordan\\Desktop\\dev\\lab\\twitch_bots\\StymphalianTestBot\\server",
+                    "from": "/home/jordan/dev/lab/StymphalianTestBot/server",
                     "to": "/app/server",
                 }
             ]

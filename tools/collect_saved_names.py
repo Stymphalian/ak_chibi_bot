@@ -1,4 +1,3 @@
-
 import argparse
 import os
 import json
@@ -8,14 +7,17 @@ from pathlib import Path
 FROM_INTERNAL_CONFIG = True
 CHARACTER_KEY = "Characters"
 NAME_KEY = "Name" if FROM_INTERNAL_CONFIG else "name"
-                      
+
+
 def process_character_table(character_table_path: Path, saved_names):
     existing_saved_names = set(saved_names.keys())
     output_dict = defaultdict(list)
     with character_table_path.open("r", encoding="utf-8") as f:
         character_json = json.load(f)
-        character_json = character_json[CHARACTER_KEY] if FROM_INTERNAL_CONFIG else character_json
-        
+        character_json = (
+            character_json[CHARACTER_KEY] if FROM_INTERNAL_CONFIG else character_json
+        )
+
         for key, operator in character_json.items():
             if not key.startswith("char_"):
                 continue
@@ -27,7 +29,7 @@ def process_character_table(character_table_path: Path, saved_names):
                 continue
 
             try:
-                if key[len(key)-1].isdigit():
+                if key[len(key) - 1].isdigit():
                     raise Exception("Unhandled alter operator id: " + key)
                 output_dict[key] = [operator[NAME_KEY]]
 
@@ -41,7 +43,7 @@ def process_character_table(character_table_path: Path, saved_names):
                 # output_dict[operator_id] = (unicodedata
                 #     .normalize("NFKD", operator["name"])
                 #     .encode('ascii', "ignore")
-                #     .decode())  
+                #     .decode())
 
     for key in existing_saved_names:
         output_dict[key] = saved_names[key]
@@ -56,13 +58,13 @@ def main():
         "--output",
         type=Path,
         default=None,
-        help="Output filepath (default: ./output.json)"
+        help="Output filepath (default: ./output.json)",
     )
     args = parser.parse_args()
-    
-    debug=False
+
+    debug = False
     saved_names = {}
-    
+
     currentdir = Path(os.getcwd())
     if debug:
         currentdir = currentdir / "tools"
@@ -78,7 +80,10 @@ def main():
 
     sorted_keys = sorted(output_dict.keys())
     with output_path.open("w", encoding="utf-8") as f:
-        json.dump({k: output_dict[k] for k in sorted_keys}, f, indent=4, ensure_ascii=False)
+        json.dump(
+            {k: output_dict[k] for k in sorted_keys}, f, indent=4, ensure_ascii=False
+        )
+
 
 if __name__ == "__main__":
     main()

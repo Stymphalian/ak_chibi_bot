@@ -185,7 +185,7 @@ func (c *Context) Run(opId string, skin string, stance operator.ChibiStanceEnum,
 	}
 }
 
-// go run main.go -assetDir ..\..\..\static\assets -authToken xxxxx
+// go run main.go -assetDir ../../../static/assets -authToken xxxxx
 func main() {
 	var err error
 	assetDir := flag.String("assetDir", "", "path to the assets")
