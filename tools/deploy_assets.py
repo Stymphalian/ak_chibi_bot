@@ -146,13 +146,62 @@ class DeploymentScript:
 
         return True
 
+    def step_compress_textures(self) -> bool:
+        """Step 5: Compress textures using compress_textures.py."""
+        logger.info("Step 6: Compressing textures...")
+
+        # Compress characters
+        characters_dir = self.static_assets_dir / "characters"
+        if characters_dir.exists():
+            logger.info("  Compressing character textures...")
+            if not self.run_command(
+                [
+                    sys.executable,
+                    "compress_textures.py",
+                    str(characters_dir),
+                    str(characters_dir),
+                    "--format",
+                    "BC2",
+                    "--ignore-validation",
+                ],
+                cwd=self.tools_dir,
+            ):
+                logger.error("Failed to compress character textures")
+                return False
+        else:
+            logger.warning("Characters directory not found, skipping")
+
+        # Compress enemies
+        enemies_dir = self.static_assets_dir / "enemies"
+        if enemies_dir.exists():
+            logger.info("  Compressing enemy textures...")
+            if not self.run_command(
+                [
+                    sys.executable,
+                    "compress_textures.py",
+                    str(enemies_dir),
+                    str(enemies_dir),
+                    "--format",
+                    "BC2",
+                    "--ignore-validation",
+                ],
+                cwd=self.tools_dir,
+            ):
+                logger.error("Failed to compress enemy textures")
+                return False
+        else:
+            logger.warning("Enemies directory not found, skipping")
+
+        logger.info("Texture compression completed")
+        return True
+
     def step_create_zip(self) -> bool:
-        """Step 5: Create assets.zip with required files."""
+        """Step 6: Create assets.zip with required files."""
         if self.skip_zip:
-            logger.info("Step 6: Skipping ZIP creation (--skip-zip)")
+            logger.info("Step 7: Skipping ZIP creation (--skip-zip)")
             return True
 
-        logger.info("Step 6: Creating assets.zip...")
+        logger.info("Step 7: Creating assets.zip...")
 
         zip_path = self.project_root / "assets.zip"
 
@@ -209,6 +258,7 @@ class DeploymentScript:
             ("Collect saved names", self.step_collect_saved_names),
             ("Generate index files", self.step_generate_index_files),
             ("Copy index to assets", self.step_copy_index_to_assets),
+            ("Compress textures", self.step_compress_textures),
             ("Create assets.zip", self.step_create_zip),
         ]
 

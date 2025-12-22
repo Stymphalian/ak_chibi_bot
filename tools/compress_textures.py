@@ -3,26 +3,30 @@ A tool which compresses textures files in a given directory into compatible webg
 compressed formats.
 
 Usage:
-    python tools/compress_textures.py <input_directory> <output_directory>
-    python tools/compress_textures.py static/assets/characters compressed/characters/
-    python tools/compress_textures.py static/assets/enemies compressed/enemies/
+    python tools/compress_textures.py <input_directory> <output_directory> [--format BC3]
+    python compress_textures.py ../static/assets/enemies ../static/assets/enemies --format BC2 --ignore-validation
+    python compress_textures.py ../static/assets/characters ../static/assets/characters --format BC2 --ignore-validation
+When output_directory is the same as input_directory, compressed files are placed
+alongside the originals with .dds extension:
+    input:  static/assets/characters/char_002_amiya/default/Base/amiya.png
+    output: static/assets/characters/char_002_amiya/default/Base/amiya.dds
 
 Steps:
 1. Scan the input directory for texture files (e.g., PNG, JPEG).
-2. For each texture file, convert it into compressed formats.
+2. For each texture file, convert it into the specified compressed format.
 2.1 Use the compressonator library command (it should be in the thirdparty/compressonatorcli-4.5.52-Linux folder)
+    https://github.com/GPUOpen-Tools/compressonator
 3. Run in parallel processes to speed up the conversion
 
-Compressed formats generated:
+Compressed formats available:
 - BC1 (DXT1) - RGB, no alpha, 6:1 compression
 - BC2 (DXT3) - RGBA, explicit alpha, 4:1 compression
-- BC3 (DXT5) - RGBA, interpolated alpha, 4:1 compression
+- BC3 (DXT5) - RGBA, interpolated alpha, 4:1 compression (default)
 
 For WEBGL_compressed_texture_s3tc extension.
 Mipmaps are NOT generated offline (will be done in renderer).
 """
 
-import os
 import sys
 import argparse
 import subprocess
@@ -40,12 +44,12 @@ COMPRESSONATOR_CLI = PROJECT_ROOT / "thirdparty" / "compressonatorcli-4.5.52-Lin
 # Supported input formats
 INPUT_EXTENSIONS = {'.png', '.jpg', '.jpeg', '.tga', '.bmp'}
 
-# Compression formats to generate (format_name, extension, compressonator_format)
-COMPRESSION_FORMATS = [
-    ('BC1', '.dds', 'BC1'),  # DXT1 - RGB, no alpha, 6:1 compression
-    ('BC2', '.dds', 'BC2'),  # DXT3 - RGBA, explicit alpha, 4:1 compression
-    ('BC3', '.dds', 'BC3'),  # DXT5 - RGBA, interpolated alpha, 4:1 compression
-]
+# Available compression formats (format_name, extension, compressonator_format, description)
+AVAILABLE_FORMATS = {
+    'BC1': ('BC1', '.dds', 'BC1', 'DXT1 - RGB, no alpha, 6:1 compression'),
+    'BC2': ('BC2', '.dds', 'BC2', 'DXT3 - RGBA, explicit alpha, 4:1 compression'),
+    'BC3': ('BC3', '.dds', 'BC3', 'DXT5 - RGBA, interpolated alpha, 4:1 compression'),
+}
 
 
 def is_power_of_2(n: int) -> bool:
@@ -107,7 +111,7 @@ def find_texture_files(input_dir: Path) -> List[Path]:
 
 
 def get_output_path(input_path: Path, input_dir: Path, output_dir: Path, 
-                    format_name: str, extension: str) -> Path:
+                    extension: str, same_dir_output: bool = False) -> Path:
     """
     Generate output path maintaining directory structure.
     
@@ -115,19 +119,23 @@ def get_output_path(input_path: Path, input_dir: Path, output_dir: Path,
         input_path: Full path to input file
         input_dir: Root input directory
         output_dir: Root output directory
-        format_name: Name of compression format (e.g., 'BC1')
         extension: File extension for output (e.g., '.dds')
+        same_dir_output: If True, place output in same directory as input
         
     Returns:
         Path object for output file
     """
-    # Get relative path from input_dir
-    relative_path = input_path.relative_to(input_dir)
-    
-    # Change extension and add format subdirectory
-    output_path = output_dir / format_name / relative_path.parent / (relative_path.stem + extension)
-    
-    return output_path
+    if same_dir_output:
+        # Output in same directory as input, just change extension
+        return input_path.with_suffix(extension)
+    else:
+        # Get relative path from input_dir
+        relative_path = input_path.relative_to(input_dir)
+        
+        # Change extension and maintain directory structure
+        output_path = output_dir / relative_path.parent / (relative_path.stem + extension)
+        
+        return output_path
 
 
 def compress_texture(args: Tuple[Path, Path, Path]) -> Tuple[bool, str]:
@@ -176,20 +184,40 @@ def compress_texture(args: Tuple[Path, Path, Path]) -> Tuple[bool, str]:
         return (False, f"✗ {input_path.name}: {str(e)}")
 
 
-def process_textures(input_dir: Path, output_dir: Path, ignore_validation: bool = False):
+def process_textures(input_dir: Path, output_dir: Path, format_code: str = 'BC3', 
+                    ignore_validation: bool = False):
     """
     Process all textures in input directory, generating compressed versions.
     
     Args:
         input_dir: Input directory containing textures
         output_dir: Output directory for compressed textures
-        num_processes: Number of parallel processes (default: CPU count)
+        format_code: Compression format to use (BC1, BC2, or BC3)
+        ignore_validation: Skip dimension validation if True
     """
     # Validate compressonator CLI exists
     if not COMPRESSONATOR_CLI.exists():
         print(f"Error: Compressonator CLI not found at: {COMPRESSONATOR_CLI}")
         print("Please ensure the tool is installed in thirdparty/compressonatorcli-4.5.52-Linux/")
         sys.exit(1)
+    
+    # Validate format
+    if format_code not in AVAILABLE_FORMATS:
+        print(f"Error: Invalid format '{format_code}'")
+        print(f"Available formats: {', '.join(AVAILABLE_FORMATS.keys())}")
+        sys.exit(1)
+    
+    format_name, extension, comp_format, description = AVAILABLE_FORMATS[format_code]
+    
+    # Check if outputting to same directory
+    same_dir_output = input_dir == output_dir
+    
+    print(f"Compression format: {format_name} ({description})")
+    if same_dir_output:
+        print(f"Output mode: In-place (alongside source files with {extension} extension)")
+    else:
+        print(f"Output directory: {output_dir}")
+    print()
     
     # Find all texture files
     print(f"Scanning {input_dir} for texture files...")
@@ -237,22 +265,18 @@ def process_textures(input_dir: Path, output_dir: Path, ignore_validation: bool 
     
     print("✓ All textures have valid dimensions")
     print()
-    print(f"Generating {len(COMPRESSION_FORMATS)} format(s) per texture")
-    print(f"Total operations: {len(texture_files) * len(COMPRESSION_FORMATS)}")
-    print()
     
     # Build list of compression jobs
     jobs = []
     for input_path in texture_files:
-        for format_name, extension, format_code in COMPRESSION_FORMATS:
-            output_path = get_output_path(input_path, input_dir, output_dir, format_name, extension)
-            jobs.append((input_path, output_path, format_code))
+        output_path = get_output_path(input_path, input_dir, output_dir, extension, same_dir_output)
+        jobs.append((input_path, output_path, comp_format))
     
     # Determine number of processes
     num_processes = max(1, cpu_count() - 1)  # Leave one CPU free
     
     print(f"Using {num_processes} parallel processes")
-    print("Compressing textures...")
+    print(f"Compressing {len(jobs)} texture(s)...")
     print()
     
     # Process in parallel
@@ -272,7 +296,8 @@ def process_textures(input_dir: Path, output_dir: Path, ignore_validation: bool 
     print(f"Compression complete!")
     print(f"Success: {success_count}")
     print(f"Failed: {failure_count}")
-    print(f"Output directory: {output_dir}")
+    if not same_dir_output:
+        print(f"Output directory: {output_dir}")
     print("=" * 60)
 
 
@@ -282,14 +307,25 @@ def main():
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Examples:
-  # Compress all textures in assets/characters to compressed/
+  # Compress textures in-place using BC3 format (default)
+  python tools/compress_textures.py static/assets/characters static/assets/characters
+  
+  # Compress using BC1 format
+  python tools/compress_textures.py static/assets/characters static/assets/characters --format BC1
+  
+  # Compress to separate output directory
   python tools/compress_textures.py static/assets/characters compressed/
 
-Output Structure:
-  compressed/
-    BC1/       - DXT1 format (.dds) RGB, no alpha
-    BC2/       - DXT3 format (.dds) RGBA, explicit alpha
-    BC3/       - DXT5 format (.dds) RGBA, interpolated alpha
+Available Formats:
+  BC1 (DXT1) - RGB, no alpha, 6:1 compression
+  BC2 (DXT3) - RGBA, explicit alpha, 4:1 compression
+  BC3 (DXT5) - RGBA, interpolated alpha, 4:1 compression [default]
+
+Output:
+  When input and output directories are the same, compressed files are placed
+  alongside originals:
+    input:  static/assets/characters/char_002/amiya.png
+    output: static/assets/characters/char_002/amiya.dds
         """
     )
     
@@ -302,8 +338,17 @@ Output Structure:
     parser.add_argument(
         'output_directory',
         type=str,
-        help='Output directory for compressed textures'
+        help='Output directory for compressed textures (can be same as input)'
     )
+    
+    parser.add_argument(
+        '--format',
+        type=str,
+        default='BC2',
+        choices=['BC1', 'BC2', 'BC3'],
+        help='Compression format to use (default: BC2/DXT3)'
+    )
+    
     parser.add_argument(
         "--ignore-validation",
         action="store_true",
@@ -321,15 +366,16 @@ Output Structure:
         print(f"Error: Input directory does not exist: {input_dir}")
         sys.exit(1)
     
-    if not input_dir.is_dir():
-        print(f"Error: Input path is not a directory: {input_dir}")
+    if not output_dir.is_dir():
+        print(f"Error: Output path is not a directory: {output_dir}")
         sys.exit(1)
     
-    # Create output directory if it doesn't exist
-    output_dir.mkdir(parents=True, exist_ok=True)
+    # Create output directory if it doesn't exist (unless same as input)
+    if input_dir != output_dir:
+        output_dir.mkdir(parents=True, exist_ok=True)
     
     # Process textures
-    process_textures(input_dir, output_dir, ignore_validation=args.ignore_validation)
+    process_textures(input_dir, output_dir, args.format, ignore_validation=args.ignore_validation)
 
 
 if __name__ == "__main__":

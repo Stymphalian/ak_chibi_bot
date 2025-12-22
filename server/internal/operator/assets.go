@@ -274,6 +274,8 @@ func (s *SpineAssetMap) Load(assetDir string, assetSubdir string) (err error) {
 			} else {
 				log.Fatal("Unknown secondary extension: ", info.Name())
 			}
+		case ".dds":
+			// Ignore dds files
 		default:
 			log.Fatal("Unknown extension: ", info.Name())
 		}
