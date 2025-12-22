@@ -139,8 +139,15 @@ export function parseDDS(buffer: ArrayBuffer): DDSInfo | null {
  */
 export function loadDDS(url: string): Promise<DDSInfo | null> {
     return new Promise((resolve, reject) => {
-        const xhr = new XMLHttpRequest();
-        xhr.open('GET', url, true);
+        const xhr = new XMLHttpRequest()
+        // URL-encode special characters like # which have special meaning in URLs
+        // Split by / to preserve path structure, encode each segment, then rejoin
+        const urlParts = url.split('/');
+        const encodedUrl = urlParts.map(part => encodeURIComponent(part)).join('/');
+        // Decode the protocol part if present (http:// or https://)
+        const finalUrl = encodedUrl.replace(/^http%3A%2F%2F/, 'http://').replace(/^https%3A%2F%2F/, 'https://');
+        
+        xhr.open('GET', finalUrl, true);
         xhr.responseType = 'arraybuffer';
         
         xhr.onload = () => {
