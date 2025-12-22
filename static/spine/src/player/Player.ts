@@ -46,7 +46,7 @@ import { readSpritesheetJsonConfig, SpritesheetActor } from "./Spritesheet";
 import { OffscreenRender } from "./OffscreenRender";
 import { PerformancePanel } from "./PerformancePanel";
 import { detectCompressionCapabilities, logCompressionCapabilities, CompressionCapabilities } from "../webgl/CompressionCapabilities";
-import 'webgl-memory';
+// import 'webgl-memory';
 
 export interface SpinePlayerConfig {
 	/* Optional: whether to show the player controls. Default: true. */
