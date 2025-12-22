@@ -66,6 +66,18 @@ export class GLTexture extends Texture implements Disposable, Restorable {
 		return this._id;
 	}
 
+	getImage(): HTMLImageElement {
+		// If we don't have an actual image (e.g., compressed textures),
+		// return a dummy object with width/height for atlas parsing
+		if (!this._image) {
+			return {
+				width: this.textureWidth,
+				height: this.textureHeight
+			} as HTMLImageElement;
+		}
+		return this._image;
+	}
+
 	setFilters (minFilter: TextureFilter, magFilter: TextureFilter) {
 		let gl = this.context.gl;
 		this.bind();

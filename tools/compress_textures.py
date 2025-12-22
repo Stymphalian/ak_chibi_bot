@@ -4,6 +4,8 @@ compressed formats.
 
 Usage:
     python tools/compress_textures.py <input_directory> <output_directory>
+    python tools/compress_textures.py static/assets/characters compressed/characters/
+    python tools/compress_textures.py static/assets/enemies compressed/enemies/
 
 Steps:
 1. Scan the input directory for texture files (e.g., PNG, JPEG).
@@ -174,7 +176,7 @@ def compress_texture(args: Tuple[Path, Path, Path]) -> Tuple[bool, str]:
         return (False, f"✗ {input_path.name}: {str(e)}")
 
 
-def process_textures(input_dir: Path, output_dir: Path):
+def process_textures(input_dir: Path, output_dir: Path, ignore_validation: bool = False):
     """
     Process all textures in input directory, generating compressed versions.
     
@@ -221,7 +223,11 @@ def process_textures(input_dir: Path, output_dir: Path):
         print()
         print("DXT compression requires dimensions to be multiples of 4.")
         print("Please resize these images before compressing.")
-        sys.exit(1)
+        if not ignore_validation:
+            sys.exit(1)
+        else:
+            print("Ignoring validation errors as per --ignore-validation flag.")
+            print()
     
     if validation_warnings:
         print("⚠️  Warnings (textures will compress but may have compatibility issues):")
@@ -298,6 +304,11 @@ Output Structure:
         type=str,
         help='Output directory for compressed textures'
     )
+    parser.add_argument(
+        "--ignore-validation",
+        action="store_true",
+        help="Ignore texture dimension validation warnings and errors"
+    )
     
     args = parser.parse_args()
     
@@ -318,7 +329,7 @@ Output Structure:
     output_dir.mkdir(parents=True, exist_ok=True)
     
     # Process textures
-    process_textures(input_dir, output_dir)
+    process_textures(input_dir, output_dir, ignore_validation=args.ignore_validation)
 
 
 if __name__ == "__main__":

@@ -272,6 +272,10 @@ func (s *MainServer) HandleRoom(w http.ResponseWriter, r *http.Request) error {
 	if len(usernameBlacklist) > 0 {
 		extraQueryArgs += "&blacklist=" + url.QueryEscape(usernameBlacklist)
 	}
+	useCompression := r.URL.Query().Get("compressed")
+	if useCompression == "true" || useCompression == "false" || useCompression == "1" || useCompression == "0" {
+		extraQueryArgs += "&compressed=" + useCompression
+	}
 
 	log.Printf("CreateRoom request from %s for %s", r.RemoteAddr, channelName)
 	log.Printf("CreateRoom request from x-forwarded-for %v for %s", r.Header[http.CanonicalHeaderKey("X-FORWARDED-FOR")], channelName)

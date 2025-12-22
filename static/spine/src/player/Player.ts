@@ -96,6 +96,9 @@ export interface SpinePlayerConfig {
 	
 	// Performance monitoring
 	showFPS: boolean
+	
+	// Texture compression
+	useCompressedTextures: boolean
 }
 
 class Slider {
@@ -248,6 +251,7 @@ export class SpinePlayer {
 		if (!config.alpha) config.alpha = false;
 		if (!config.backgroundColor) config.backgroundColor = "#000000";
 		if (config.showFPS === undefined) config.showFPS = false;
+		if (config.useCompressedTextures === undefined) config.useCompressedTextures = true;
 		if (typeof config.showControls === "undefined")
 			config.showControls = true;
 		if (!config.runtimeDebugInfoDumpIntervalSec) config.runtimeDebugInfoDumpIntervalSec = 60;
@@ -427,14 +431,18 @@ export class SpinePlayer {
 			this.sceneRenderer = new SceneRenderer(this.canvas, this.context);
 			this.loadingScreen = new LoadingScreen(this.sceneRenderer);
 			this.offscreenRender = new OffscreenRender(this.sceneRenderer);
-			this.assetManager = new AssetManager(this.context);
-
+			
 			// Detect and log compression capabilities
 			this.compressionCapabilities = detectCompressionCapabilities(this.context.gl);
-			logCompressionCapabilities(this.compressionCapabilities);
+			
+			
+			// Create asset manager with compression capabilities (if enabled)
+			const compressionCaps = this.playerConfig.useCompressedTextures ? this.compressionCapabilities : null;
+			this.assetManager = new AssetManager(this.context, "", compressionCaps);
 
 			if (this.playerConfig.viewport.debugRender) {
 				this.context.GetWebGLParameters();
+        logCompressionCapabilities(this.compressionCapabilities);
 			}
 		} catch (e) {
 			// this.showError("Sorry, your browser does not support WebGL.<br><br>Please use the latest version of Firefox, Chrome, Edge, or Safari.");
@@ -461,6 +469,18 @@ export class SpinePlayer {
 			
 			// Initialize GPU timing if available
 			this.performancePanel.initGPUTiming(this.context.gl);
+			
+			// Add VRAM usage metric
+			this.performancePanel.addMetric({
+				label: 'VRAM',
+				getValue: () => this.assetManager.getEstimatedVRAMUsage(),
+				format: (value) => `${value.toFixed(1)}MB`,
+				getColor: (value) => {
+					if (value < 100) return '#00ff00';      // Green (<100MB)
+					if (value < 300) return '#ffff00';      // Yellow (100-300MB)
+					return '#ff0000';                        // Red (>300MB)
+				}
+			});
 		}
 
 		// Setup rendering loop

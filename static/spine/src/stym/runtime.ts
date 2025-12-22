@@ -11,7 +11,8 @@ export interface RuntimeConfig {
     usernameBlacklist: string[]
     excessiveChibiMitigations: boolean
     usePremultipliedAlpha: boolean
-    showFPS: boolean
+    showFPS: boolean,
+    useCompressedTextures: boolean
 }
 
 export class Runtime {
@@ -67,6 +68,7 @@ export class Runtime {
                 showChatMessages: this.runtimeConfig.showChatMessagesFlag,
                 excessiveChibiMitigations: this.runtimeConfig.excessiveChibiMitigations,
                 showFPS: this.runtimeConfig.showFPS,
+                useCompressedTextures: this.runtimeConfig.useCompressedTextures,
             };
 
             console.log("Creating a new spine player");

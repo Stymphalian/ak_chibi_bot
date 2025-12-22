@@ -56,6 +56,7 @@ export function getRuntimeConfigFromQueryParams(searchParams: URLSearchParams): 
     const usernameBlacklist = getUsernameBlacklist(searchParams);
     const usePremultipliedAlpha = searchParams.get("premultiplied_alpha") === "true";
     const showFPS = searchParams.get('fps') === '1' || searchParams.get('fps') === 'true';
+    const useCompressedTextures = searchParams.get('compressed') !== '0' && searchParams.get('compressed') !== 'false';
 
     const [containerWidth, containerHeight] = setContainerSizeFromQuery(searchParams);
     return {
@@ -67,6 +68,7 @@ export function getRuntimeConfigFromQueryParams(searchParams: URLSearchParams): 
         usernameBlacklist: usernameBlacklist,
         excessiveChibiMitigations: excessiveChibiMitigations,
         usePremultipliedAlpha: usePremultipliedAlpha,
-        showFPS: showFPS
+        showFPS: showFPS,
+        useCompressedTextures: useCompressedTextures
     }
 }

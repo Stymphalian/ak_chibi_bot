@@ -40,3 +40,5 @@ assets.zip
 .venv/
 third_party/
 compressed/
+*.scratch
+**/.scratch
