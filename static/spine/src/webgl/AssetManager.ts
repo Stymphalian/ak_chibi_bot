@@ -194,36 +194,6 @@ export class AssetManager extends spineAssetManager {
 			super.loadTexture(path, success, error);
 		});
 	}
-	
-	/**
-	 * Calculate estimated VRAM usage from loaded textures
-	 * @returns VRAM usage in megabytes
-	 */
-	getEstimatedVRAMUsage(): number {
-		let totalBytes = 0;
-		
-		// Calculate bytes for all loaded textures
-		this.seenImages.forEach((texture) => {
-			const img = texture.getImage();
-			if (img) {
-				const width = img.width;
-				const height = img.height;
-				
-				// Check if this is a compressed texture
-				if (texture instanceof GLCompressedTexture) {
-					// DXT1 = 0.5 bytes per pixel, DXT3/5 = 1 byte per pixel
-					// We'll assume DXT5 (worst case) = 1 byte per pixel
-					totalBytes += width * height * 1;
-				} else {
-					// Uncompressed RGBA = 4 bytes per pixel
-					totalBytes += width * height * 4;
-				}
-			}
-		});
-		
-		// Convert to megabytes
-		return totalBytes / (1024 * 1024);
-	}
 
 	dispose() {
 		super.dispose();

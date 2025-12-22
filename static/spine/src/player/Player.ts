@@ -43,10 +43,10 @@ import { Actor, SpineActorConfig } from "./Actor"
 import { createElement, findWithClass, escapeHtml, isAlphanumeric, findWithId, configurePerspectiveCamera, updateCameraSettings, BoundingBox, Viewport, isValidTwitchUserDisplayName } from "./Utils";
 import { Camera } from "../webgl/Camera";
 import { readSpritesheetJsonConfig, SpritesheetActor } from "./Spritesheet";
-import { GLFrameBuffer } from "../webgl/GLFrameBuffer";
 import { OffscreenRender } from "./OffscreenRender";
 import { PerformancePanel } from "./PerformancePanel";
 import { detectCompressionCapabilities, logCompressionCapabilities, CompressionCapabilities } from "../webgl/CompressionCapabilities";
+import 'webgl-memory';
 
 export interface SpinePlayerConfig {
 	/* Optional: whether to show the player controls. Default: true. */
@@ -229,6 +229,7 @@ export class SpinePlayer {
 	private offscreenRender: OffscreenRender = null;
 	private actorHeightDirty = true;
 	private compressionCapabilities: CompressionCapabilities | null = null;
+	private webglMemoryExt: any = null;
 
 	constructor(parent: HTMLElement | string, playerConfig: SpinePlayerConfig) {
 		if (typeof parent === "string") {
@@ -435,6 +436,16 @@ export class SpinePlayer {
 			// Detect and log compression capabilities
 			this.compressionCapabilities = detectCompressionCapabilities(this.context.gl);
 			
+			// Initialize webgl-memory extension for VRAM tracking
+      if (this.playerConfig.showFPS) {
+        this.webglMemoryExt = this.context.gl.getExtension('GMAN_webgl_memory');
+        if (this.webglMemoryExt) {
+          console.log('📊 WebGL memory tracking enabled');
+        } else {
+          console.warn('⚠️  WebGL memory tracking not available');
+        }
+      }
+			
 			
 			// Create asset manager with compression capabilities (if enabled)
 			const compressionCaps = this.playerConfig.useCompressedTextures ? this.compressionCapabilities : null;
@@ -470,10 +481,17 @@ export class SpinePlayer {
 			// Initialize GPU timing if available
 			this.performancePanel.initGPUTiming(this.context.gl);
 			
-			// Add VRAM usage metric
+			// Add VRAM usage metric using webgl-memory
 			this.performancePanel.addMetric({
 				label: 'VRAM',
-				getValue: () => this.assetManager.getEstimatedVRAMUsage(),
+				getValue: () => {
+					if (this.webglMemoryExt) {
+						const memInfo = this.webglMemoryExt.getMemoryInfo();
+						// Return total memory in MB
+						return memInfo.memory.total / (1024 * 1024);
+					}
+					return 0;
+				},
 				format: (value) => `${value.toFixed(1)}MB`,
 				getColor: (value) => {
 					if (value < 100) return '#00ff00';      // Green (<100MB)
