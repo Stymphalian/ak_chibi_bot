@@ -946,6 +946,69 @@
               "spritesheet_data_filepath": ""
             }
           }
+        },
+        "sale": {
+          "base": {
+            "Front": {
+              "atlas_filepath": "characters/char_1001_amiya2/sale#16/base/Front/build_char_1001_amiya2_sale#16.atlas",
+              "skel_filepath": "characters/char_1001_amiya2/sale#16/base/Front/build_char_1001_amiya2_sale#16.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "characters/char_1001_amiya2/sale#16/base/Front/build_char_1001_amiya2_sale#16.png",
+              "animations": [
+                "Default",
+                "Interact",
+                "Move",
+                "Relax",
+                "Sit",
+                "Sleep",
+                "Special"
+              ],
+              "use_straight_alpha": false,
+              "spritesheet_data_filepath": ""
+            }
+          },
+          "battle": {
+            "Back": {
+              "atlas_filepath": "characters/char_1001_amiya2/sale#16/battle/Back/char_1001_amiya2_sale#16.atlas",
+              "skel_filepath": "characters/char_1001_amiya2/sale#16/battle/Back/char_1001_amiya2_sale#16.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "characters/char_1001_amiya2/sale#16/battle/Back/char_1001_amiya2_sale#16.png",
+              "animations": [
+                "Attack",
+                "Default",
+                "Idle",
+                "Skill_1",
+                "Skill_2",
+                "Skill_2_End",
+                "Skill_2_Idle",
+                "Skill_2_Loop",
+                "Start"
+              ],
+              "use_straight_alpha": false,
+              "spritesheet_data_filepath": ""
+            },
+            "Front": {
+              "atlas_filepath": "characters/char_1001_amiya2/sale#16/battle/Front/char_1001_amiya2_sale#16.atlas",
+              "skel_filepath": "characters/char_1001_amiya2/sale#16/battle/Front/char_1001_amiya2_sale#16.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "characters/char_1001_amiya2/sale#16/battle/Front/char_1001_amiya2_sale#16.png",
+              "animations": [
+                "Attack",
+                "Default",
+                "Die",
+                "Idle",
+                "Skill_1",
+                "Skill_2",
+                "Skill_2_End",
+                "Skill_2_Idle",
+                "Skill_2_Loop",
+                "Start",
+                "Stun"
+              ],
+              "use_straight_alpha": false,
+              "spritesheet_data_filepath": ""
+            }
+          }
         }
       }
     },
@@ -29196,6 +29259,70 @@
               "spritesheet_data_filepath": ""
             }
           }
+        },
+        "sale": {
+          "base": {
+            "Front": {
+              "atlas_filepath": "characters/char_391_rosmon/sale#16/base/Front/build_char_391_rosmon_sale#16.atlas",
+              "skel_filepath": "characters/char_391_rosmon/sale#16/base/Front/build_char_391_rosmon_sale#16.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "characters/char_391_rosmon/sale#16/base/Front/build_char_391_rosmon_sale#16.png",
+              "animations": [
+                "Default",
+                "Interact",
+                "Move",
+                "Relax",
+                "Sit",
+                "Sleep",
+                "Special"
+              ],
+              "use_straight_alpha": false,
+              "spritesheet_data_filepath": ""
+            }
+          },
+          "battle": {
+            "Back": {
+              "atlas_filepath": "characters/char_391_rosmon/sale#16/battle/Back/char_391_rosmon_sale#16.atlas",
+              "skel_filepath": "characters/char_391_rosmon/sale#16/battle/Back/char_391_rosmon_sale#16.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "characters/char_391_rosmon/sale#16/battle/Back/char_391_rosmon_sale#16.png",
+              "animations": [
+                "Attack_A",
+                "Attack_B",
+                "Default",
+                "Idle",
+                "Skill_2",
+                "Skill_3_Begin",
+                "Skill_3_End",
+                "Skill_3_Loop",
+                "Start"
+              ],
+              "use_straight_alpha": false,
+              "spritesheet_data_filepath": ""
+            },
+            "Front": {
+              "atlas_filepath": "characters/char_391_rosmon/sale#16/battle/Front/char_391_rosmon_sale#16.atlas",
+              "skel_filepath": "characters/char_391_rosmon/sale#16/battle/Front/char_391_rosmon_sale#16.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "characters/char_391_rosmon/sale#16/battle/Front/char_391_rosmon_sale#16.png",
+              "animations": [
+                "Attack_A",
+                "Attack_B",
+                "Default",
+                "Die",
+                "Idle",
+                "Skill_2",
+                "Skill_3_Begin",
+                "Skill_3_End",
+                "Skill_3_Loop",
+                "Start",
+                "Stun",
+                "Stun_SKill_3"
+              ],
+              "use_straight_alpha": false,
+              "spritesheet_data_filepath": ""
+            }
+          }
         }
       }
     },
@@ -38519,6 +38646,78 @@
               "skel_filepath": "characters/char_4121_zuole/nian#11/battle/Front/char_4121_zuole_nian#11.skel",
               "skel_json_filepath": "",
               "png_filepath": "characters/char_4121_zuole/nian#11/battle/Front/char_4121_zuole_nian#11.png",
+              "animations": [
+                "Attack",
+                "Attack_Begin",
+                "Attack_End",
+                "Default",
+                "Die",
+                "Idle",
+                "Skill_1_Begin",
+                "Skill_1_End",
+                "Skill_1_Loop",
+                "Skill_2_Begin",
+                "Skill_2_End",
+                "Skill_2_Idle",
+                "Skill_2_Loop",
+                "Skill_3",
+                "Start"
+              ],
+              "use_straight_alpha": false,
+              "spritesheet_data_filepath": ""
+            }
+          }
+        },
+        "sale": {
+          "base": {
+            "Front": {
+              "atlas_filepath": "characters/char_4121_zuole/sale#16/base/Front/build_char_4121_zuole_sale#16.atlas",
+              "skel_filepath": "characters/char_4121_zuole/sale#16/base/Front/build_char_4121_zuole_sale#16.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "characters/char_4121_zuole/sale#16/base/Front/build_char_4121_zuole_sale#16.png",
+              "animations": [
+                "Default",
+                "Interact",
+                "Move",
+                "Relax",
+                "Sit",
+                "Sleep",
+                "Special"
+              ],
+              "use_straight_alpha": false,
+              "spritesheet_data_filepath": ""
+            }
+          },
+          "battle": {
+            "Back": {
+              "atlas_filepath": "characters/char_4121_zuole/sale#16/battle/Back/char_4121_zuole_sale#16.atlas",
+              "skel_filepath": "characters/char_4121_zuole/sale#16/battle/Back/char_4121_zuole_sale#16.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "characters/char_4121_zuole/sale#16/battle/Back/char_4121_zuole_sale#16.png",
+              "animations": [
+                "Attack",
+                "Attack_Begin",
+                "Attack_End",
+                "Default",
+                "Idle",
+                "Skill_1_Begin",
+                "Skill_1_End",
+                "Skill_1_Loop",
+                "Skill_2_Begin",
+                "Skill_2_End",
+                "Skill_2_Idle",
+                "Skill_2_Loop",
+                "Skill_3",
+                "Start"
+              ],
+              "use_straight_alpha": false,
+              "spritesheet_data_filepath": ""
+            },
+            "Front": {
+              "atlas_filepath": "characters/char_4121_zuole/sale#16/battle/Front/char_4121_zuole_sale#16.atlas",
+              "skel_filepath": "characters/char_4121_zuole/sale#16/battle/Front/char_4121_zuole_sale#16.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "characters/char_4121_zuole/sale#16/battle/Front/char_4121_zuole_sale#16.png",
               "animations": [
                 "Attack",
                 "Attack_Begin",
