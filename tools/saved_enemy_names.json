@@ -845,6 +845,74 @@
         "Sarkaz Greatswordsman Leader",
         "S2"
     ],
+    "enemy_10111_ymgpck": [
+        "Certain Fates",
+        "HI01"
+    ],
+    "enemy_10111_ymgpck_2": [
+        "Certain Fates",
+        "HI02"
+    ],
+    "enemy_10112_ymgds": [
+        "Careless Underling",
+        "HI03"
+    ],
+    "enemy_10112_ymgds_2": [
+        "Veteran Underling",
+        "HI04"
+    ],
+    "enemy_10113_ymgung": [
+        "Raiton Ninja",
+        "HI05"
+    ],
+    "enemy_10113_ymgung_2": [
+        "Raiton Master",
+        "HI06"
+    ],
+    "enemy_10114_ymgsld": [
+        "Pessimistic Oath-Brother",
+        "HI07"
+    ],
+    "enemy_10114_ymgsld_2": [
+        "Desperate Oath-Brother",
+        "HI08"
+    ],
+    "enemy_10115_ymghol": [
+        "Doton Ninja",
+        "HI09"
+    ],
+    "enemy_10115_ymghol_2": [
+        "Doton Master",
+        "HI10"
+    ],
+    "enemy_10116_ymgtop": [
+        "Suiton Ninja",
+        "HI11"
+    ],
+    "enemy_10116_ymgtop_2": [
+        "Suiton Master",
+        "HI12"
+    ],
+    "enemy_10117_ymggld": [
+        "Fuuton Ninja",
+        "HI13"
+    ],
+    "enemy_10117_ymggld_2": [
+        "Fuuton Master",
+        "HI14"
+    ],
+    "enemy_10118_ymgprc": [
+        "Mio",
+        "MI01"
+    ],
+    "enemy_10119_ymgbxm": [
+        "Stress-Relief Helper",
+        "HI15"
+    ],
+    "enemy_10119_ymgbxm_2": [
+        "Zero-Stress Helper",
+        "HI16"
+    ],
     "enemy_1011_wizard": [
         "Caster",
         "A3"
@@ -4368,6 +4436,10 @@
     "enemy_1568_dirctr": [
         "Tragodia",
         "TR"
+    ],
+    "enemy_1570_ymgscm": [
+        "Kouhei Mifune",
+        "MF"
     ],
     "enemy_2001_duckmi": [
         "Duck Lord",

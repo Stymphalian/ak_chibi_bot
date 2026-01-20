@@ -31199,6 +31199,565 @@
       "OverrideKillCntInfos": null,
       "SortId": 1024
     },
+    "enemy_10111_ymgpck": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Gain 'Favor' when it collides with an enemy",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Disappears when it stops moving",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Disappears after a while",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        3
+      ],
+      "DamageTypeAsNumpy": [
+        3
+      ],
+      "Description": "The size of a fingertip, the weight of a murmur of fate and inertia. It does not intend to destroy, not even to arrive. It only follows the shortest path of inevitability and the longest path of coincidence, spinning and moving forward. In its own time, the world is simply walls to collide with, propositions to bounce off, cacophonous and silent.",
+      "EnemyId": "enemy_10111_ymgpck",
+      "EnemyIndex": "HI01",
+      "EnemyLevel": 0,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "'Certain Fates'",
+      "OverrideKillCntInfos": null,
+      "SortId": 1025
+    },
+    "enemy_10111_ymgpck_2": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Gain 'Favor' when it collides with an enemy",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Disappears when it stops moving",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Disappears after a while",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        3
+      ],
+      "DamageTypeAsNumpy": [
+        3
+      ],
+      "Description": "The size of a fingertip, the weight of a murmur of fate and inertia. It does not intend to destroy, not even to arrive. It only follows the shortest path of inevitability and the longest path of coincidence, spinning and moving forward. In its own time, the world is simply walls to collide with, propositions to bounce off, cacophonous and silent. The most glancing impact is enough to make life and chaos collide with each other.",
+      "EnemyId": "enemy_10111_ymgpck_2",
+      "EnemyIndex": "HI02",
+      "EnemyLevel": 0,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "'Certain Fates'",
+      "OverrideKillCntInfos": null,
+      "SortId": 1026
+    },
+    "enemy_10112_ymgds": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Becomes temporarily <$ba.stun>stunned</> when shifted",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        0
+      ],
+      "DamageTypeAsNumpy": [
+        0
+      ],
+      "Description": "A Kinsekikai underling who goes into deep self-doubt if he falls, stopping to philosophize about his own existence. That is why he remains an underling.",
+      "EnemyId": "enemy_10112_ymgds",
+      "EnemyIndex": "HI03",
+      "EnemyLevel": 0,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "Careless Underling",
+      "OverrideKillCntInfos": null,
+      "SortId": 1027
+    },
+    "enemy_10112_ymgds_2": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Becomes temporarily <$ba.stun>stunned</> when shifted",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        0
+      ],
+      "DamageTypeAsNumpy": [
+        0
+      ],
+      "Description": "A veteran Kinsekikai underling who has fallen many times and gotten back up, but still cannot help but philosophize about his own existence and if he is suited to this line of work. That is why he remains an underling, despite his experience.",
+      "EnemyId": "enemy_10112_ymgds_2",
+      "EnemyIndex": "HI04",
+      "EnemyLevel": 0,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "Veteran Underling",
+      "OverrideKillCntInfos": null,
+      "SortId": 1028
+    },
+    "enemy_10113_ymgung": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Briefly takes off when colliding with <'Certain Fates'>, blocked, or encountering a Hole.",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        0
+      ],
+      "DamageTypeAsNumpy": [
+        0
+      ],
+      "Description": "A ninja who loves technology, wielding a kendama-shaped flash drive as a weapon. Unbound by anyone, they leap to avoid danger.",
+      "EnemyId": "enemy_10113_ymgung",
+      "EnemyIndex": "HI05",
+      "EnemyLevel": 0,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": [
+        "enemy_10111_ymgpck",
+        "enemy_10111_ymgpck_2"
+      ],
+      "Name": "Raiton Ninja",
+      "OverrideKillCntInfos": null,
+      "SortId": 1029
+    },
+    "enemy_10113_ymgung_2": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Briefly takes off when colliding with <'Certain Fates'>, blocked, or encountering a Hole.",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        0
+      ],
+      "DamageTypeAsNumpy": [
+        0
+      ],
+      "Description": "A ninja obsessed with technology, wielding a kendama-shaped flash drive filled with deadly spam. Completely unbound by anyone, they quickly leap to avoid danger.",
+      "EnemyId": "enemy_10113_ymgung_2",
+      "EnemyIndex": "HI06",
+      "EnemyLevel": 0,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": [
+        "enemy_10111_ymgpck",
+        "enemy_10111_ymgpck_2"
+      ],
+      "Name": "Raiton Master",
+      "OverrideKillCntInfos": null,
+      "SortId": 1030
+    },
+    "enemy_10114_ymgsld": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Has Barrier, and loses Barrier when shifted",
+          "TextFormat": 0
+        },
+        {
+          "Text": "DEF is reduced when Barrier is lost",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        0
+      ],
+      "DamageTypeAsNumpy": [
+        0
+      ],
+      "Description": "A shield-wielding elite Kinsekikai bruiser who believes that life is a constant cycle of losing one's balance and starting over.",
+      "EnemyId": "enemy_10114_ymgsld",
+      "EnemyIndex": "HI07",
+      "EnemyLevel": 1,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "Pessimistic Oath-Brother",
+      "OverrideKillCntInfos": null,
+      "SortId": 1031
+    },
+    "enemy_10114_ymgsld_2": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Has Barrier, and loses Barrier when shifted",
+          "TextFormat": 0
+        },
+        {
+          "Text": "DEF is reduced when Barrier is lost",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        0
+      ],
+      "DamageTypeAsNumpy": [
+        0
+      ],
+      "Description": "An elite Kinsekikai bruiser obsessed with his shield, which seems to have a habit of abandoning him when he needs it the most, leaving him in despair.",
+      "EnemyId": "enemy_10114_ymgsld_2",
+      "EnemyIndex": "HI08",
+      "EnemyLevel": 1,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "Desperate Oath-Brother",
+      "OverrideKillCntInfos": null,
+      "SortId": 1032
+    },
+    "enemy_10115_ymghol": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "When on the battlefield, has <$ba.invisible>Invisibility</> and disguises as a Hole",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Becomes hostile after losing <$ba.invisible>Invisibility</> or absorbing <'Certain Fates'>",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Permanently loses <$ba.invisible>Invisibility</> when becoming hostile",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        1
+      ],
+      "DamageTypeAsNumpy": [
+        1
+      ],
+      "Description": "An introverted ninja disguising himself as a hole. He may look ridiculous, but he is harder to detect than you might expect.",
+      "EnemyId": "enemy_10115_ymghol",
+      "EnemyIndex": "HI09",
+      "EnemyLevel": 0,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": [
+        "enemy_10111_ymgpck",
+        "enemy_10111_ymgpck_2"
+      ],
+      "Name": "Doton Ninja",
+      "OverrideKillCntInfos": null,
+      "SortId": 1033
+    },
+    "enemy_10115_ymghol_2": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "When on the battlefield, has <$ba.invisible>Invisibility</> and disguises as a Hole",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Becomes hostile after losing <$ba.invisible>Invisibility</> or absorbing <'Certain Fates'>",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Permanently loses <$ba.invisible>Invisibility</> when becoming hostile",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        1
+      ],
+      "DamageTypeAsNumpy": [
+        1
+      ],
+      "Description": "A professional ninja who has carefully studied the texture and scent of the soil to improve his disguise. Still not that much harder to detect, despite his efforts.",
+      "EnemyId": "enemy_10115_ymghol_2",
+      "EnemyIndex": "HI10",
+      "EnemyLevel": 0,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": [
+        "enemy_10111_ymgpck",
+        "enemy_10111_ymgpck_2"
+      ],
+      "Name": "Doton Master",
+      "OverrideKillCntInfos": null,
+      "SortId": 1034
+    },
+    "enemy_10116_ymgtop": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Deals Physical damage to surroundings while spinning, and stops spinning when shifted",
+          "TextFormat": 2
+        },
+        {
+          "Text": "Bounces <'Certain Fates'>",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        0
+      ],
+      "DamageTypeAsNumpy": [
+        0
+      ],
+      "Description": "A ninja who can spin in place for a long time. He claims that there is water surrounding him; your vision is just too poor to see it. Never stops spinning unless tripped.",
+      "EnemyId": "enemy_10116_ymgtop",
+      "EnemyIndex": "HI11",
+      "EnemyLevel": 1,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": [
+        "enemy_10111_ymgpck",
+        "enemy_10111_ymgpck_2"
+      ],
+      "Name": "Suiton Ninja",
+      "OverrideKillCntInfos": null,
+      "SortId": 1035
+    },
+    "enemy_10116_ymgtop_2": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Deals Physical damage to surroundings while spinning, and stops spinning when shifted",
+          "TextFormat": 2
+        },
+        {
+          "Text": "Bounces <'Certain Fates'>",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        0
+      ],
+      "DamageTypeAsNumpy": [
+        0
+      ],
+      "Description": "A ninja that attacks by spinning in place. Claims that creating a vortex from air is a type of suiton too, even without water around him. Nobody wants to go out with him because he refuses to walk properly.",
+      "EnemyId": "enemy_10116_ymgtop_2",
+      "EnemyIndex": "HI12",
+      "EnemyLevel": 1,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": [
+        "enemy_10111_ymgpck",
+        "enemy_10111_ymgpck_2"
+      ],
+      "Name": "Suiton Master",
+      "OverrideKillCntInfos": null,
+      "SortId": 1036
+    },
+    "enemy_10117_ymggld": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Continuously accelerates, taking off after reaching a certain speed.",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        0
+      ],
+      "DamageTypeAsNumpy": [
+        0
+      ],
+      "Description": "A fast ninja who is able to take flight briefly. A visiting Columbian delegate looked at him suspiciously for a long time.",
+      "EnemyId": "enemy_10117_ymggld",
+      "EnemyIndex": "HI13",
+      "EnemyLevel": 0,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "Fuuton Ninja",
+      "OverrideKillCntInfos": null,
+      "SortId": 1037
+    },
+    "enemy_10117_ymggld_2": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Continuously accelerates, taking off after reaching a certain speed.",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        0
+      ],
+      "DamageTypeAsNumpy": [
+        0
+      ],
+      "Description": "A very fast ninja who is able to glide longer. Ancient techniques meet the latest technology.",
+      "EnemyId": "enemy_10117_ymggld_2",
+      "EnemyIndex": "HI14",
+      "EnemyLevel": 0,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "Fuuton Master",
+      "OverrideKillCntInfos": null,
+      "SortId": 1038
+    },
+    "enemy_10118_ymgprc": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Attacks hit 2 times",
+          "TextFormat": 0
+        },
+        {
+          "Text": "[Icy Gaze] After several attacks, the next attack strikes twice with higher damage",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Bounces <'Certain Fates'>",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        0
+      ],
+      "DamageTypeAsNumpy": [
+        0
+      ],
+      "Description": "Drive out oni, and you drive out dreams. Welcome in curses, and you welcome in kindness. Ask not of right or wrong, or good and evil. She simply draws her sword in silence.",
+      "EnemyId": "enemy_10118_ymgprc",
+      "EnemyIndex": "MI01",
+      "EnemyLevel": 1,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": [
+        "enemy_10111_ymgpck",
+        "enemy_10111_ymgpck_2"
+      ],
+      "Name": "Mio",
+      "OverrideKillCntInfos": null,
+      "SortId": 1039
+    },
+    "enemy_10119_ymgbxm": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Bounces <'Certain Fates'>",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        0
+      ],
+      "DamageTypeAsNumpy": [
+        0
+      ],
+      "Description": "Punching robot used for stress relief by gang members. It would very much like to be on the punching side for once. The gang members who use it do not know that their stress has simply been transferred from human to robot, and it will return the favor someday.",
+      "EnemyId": "enemy_10119_ymgbxm",
+      "EnemyIndex": "HI15",
+      "EnemyLevel": 1,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": [
+        "enemy_10111_ymgpck",
+        "enemy_10111_ymgpck_2"
+      ],
+      "Name": "Stress-Relief Helper",
+      "OverrideKillCntInfos": null,
+      "SortId": 1040
+    },
+    "enemy_10119_ymgbxm_2": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Bounces <'Certain Fates'>",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        0
+      ],
+      "DamageTypeAsNumpy": [
+        0
+      ],
+      "Description": "Punching robot used to increase gang member morale, which has gotten addicted to the feeling of punching people. Victims claim to hear angry shouts of 'payback a hundred-fold' when being attacked, but they must be hearing things.",
+      "EnemyId": "enemy_10119_ymgbxm_2",
+      "EnemyIndex": "HI16",
+      "EnemyLevel": 1,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": [
+        "enemy_10111_ymgpck",
+        "enemy_10111_ymgpck_2"
+      ],
+      "Name": "Zero-Stress Helper",
+      "OverrideKillCntInfos": null,
+      "SortId": 1041
+    },
     "enemy_3009_mpprss": {
       "Ability": null,
       "AbilityList": null,
@@ -37915,6 +38474,74 @@
       "Name": "'Tragodia'",
       "OverrideKillCntInfos": null,
       "SortId": 1214
+    },
+    "enemy_1570_ymgscm": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "First Form",
+          "TextFormat": 1
+        },
+        {
+          "Text": "None",
+          "TextFormat": 0
+        },
+        {
+          "Text": "[Garyui Iai - Issen] Immediately moves a certain distance towards the next checkpoint when blocked",
+          "TextFormat": 0
+        },
+        {
+          "Text": "ATK and DEF increase as HP drops",
+          "TextFormat": 0
+        },
+        {
+          "Text": "The first time HP drops to 0, enters second form and casts [Manipulate Opinion]",
+          "TextFormat": 0
+        },
+        {
+          "Text": "[Manipulate Opinion] Removes all 'Favor' and stops current 'Lucksack'",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Second Form",
+          "TextFormat": 1
+        },
+        {
+          "Text": "[Garyui Iai - Ketsujin] Immediately moves a certain distance towards the next checkpoint when blocked; recovers all SP when the blocked unit is defeated or retreats",
+          "TextFormat": 0
+        },
+        {
+          "Text": "[Canvas of Strategy] Periodically gains a 'Zan'",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Attacks deal damage one more time for every 'Zan' possessed",
+          "TextFormat": 0
+        },
+        {
+          "Text": "ATK and DEF increase as HP drops",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        0
+      ],
+      "DamageTypeAsNumpy": [
+        0
+      ],
+      "Description": "His sword speaks not of honor or loyalty, only the obsession to cut away all obstacles in the way of the tide, even if he himself is destined to become a nameless bubble within before the end.",
+      "EnemyId": "enemy_1570_ymgscm",
+      "EnemyIndex": "MF",
+      "EnemyLevel": 2,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "Kouhei Mifune",
+      "OverrideKillCntInfos": null,
+      "SortId": 1215
     },
     "enemy_2003_rockman": {
       "Ability": null,
