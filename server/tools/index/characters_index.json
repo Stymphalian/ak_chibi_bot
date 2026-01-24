@@ -27802,6 +27802,58 @@
             }
           }
         },
+        "summer": {
+          "base": {
+            "Front": {
+              "atlas_filepath": "characters/char_366_acdrop/summer#21/base/Front/build_char_366_acdrop_summer#21.atlas",
+              "skel_filepath": "characters/char_366_acdrop/summer#21/base/Front/build_char_366_acdrop_summer#21.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "characters/char_366_acdrop/summer#21/base/Front/build_char_366_acdrop_summer#21.png",
+              "animations": [
+                "Default",
+                "Interact",
+                "Move",
+                "Relax",
+                "Sit",
+                "Sleep",
+                "Special"
+              ],
+              "use_straight_alpha": false,
+              "spritesheet_data_filepath": ""
+            }
+          },
+          "battle": {
+            "Back": {
+              "atlas_filepath": "characters/char_366_acdrop/summer#21/battle/Back/char_366_acdrop_summer#21.atlas",
+              "skel_filepath": "characters/char_366_acdrop/summer#21/battle/Back/char_366_acdrop_summer#21.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "characters/char_366_acdrop/summer#21/battle/Back/char_366_acdrop_summer#21.png",
+              "animations": [
+                "Attack",
+                "Default",
+                "Idle",
+                "Start"
+              ],
+              "use_straight_alpha": false,
+              "spritesheet_data_filepath": ""
+            },
+            "Front": {
+              "atlas_filepath": "characters/char_366_acdrop/summer#21/battle/Front/char_366_acdrop_summer#21.atlas",
+              "skel_filepath": "characters/char_366_acdrop/summer#21/battle/Front/char_366_acdrop_summer#21.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "characters/char_366_acdrop/summer#21/battle/Front/char_366_acdrop_summer#21.png",
+              "animations": [
+                "Attack",
+                "Default",
+                "Die",
+                "Idle",
+                "Start"
+              ],
+              "use_straight_alpha": false,
+              "spritesheet_data_filepath": ""
+            }
+          }
+        },
         "whirlwind": {
           "base": {
             "Front": {
