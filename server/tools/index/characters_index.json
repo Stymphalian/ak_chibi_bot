@@ -1132,6 +1132,66 @@
               "spritesheet_data_filepath": ""
             }
           }
+        },
+        "whirlwind": {
+          "base": {
+            "Front": {
+              "atlas_filepath": "characters/char_1011_lava2/whirlwind#9/base/Front/build_char_1011_lava2_whirlwind#9.atlas",
+              "skel_filepath": "characters/char_1011_lava2/whirlwind#9/base/Front/build_char_1011_lava2_whirlwind#9.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "characters/char_1011_lava2/whirlwind#9/base/Front/build_char_1011_lava2_whirlwind#9.png",
+              "animations": [
+                "Default",
+                "Interact",
+                "Move",
+                "Relax",
+                "Sit",
+                "Sleep",
+                "Special"
+              ],
+              "use_straight_alpha": false,
+              "spritesheet_data_filepath": ""
+            }
+          },
+          "battle": {
+            "Back": {
+              "atlas_filepath": "characters/char_1011_lava2/whirlwind#9/battle/Back/char_1011_lava2_whirlwind#9.atlas",
+              "skel_filepath": "characters/char_1011_lava2/whirlwind#9/battle/Back/char_1011_lava2_whirlwind#9.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "characters/char_1011_lava2/whirlwind#9/battle/Back/char_1011_lava2_whirlwind#9.png",
+              "animations": [
+                "Attack",
+                "Default",
+                "Idle",
+                "Skill_1",
+                "Skill_2_Begin",
+                "Skill_2_End",
+                "Skill_2_Loop",
+                "Start"
+              ],
+              "use_straight_alpha": false,
+              "spritesheet_data_filepath": ""
+            },
+            "Front": {
+              "atlas_filepath": "characters/char_1011_lava2/whirlwind#9/battle/Front/char_1011_lava2_whirlwind#9.atlas",
+              "skel_filepath": "characters/char_1011_lava2/whirlwind#9/battle/Front/char_1011_lava2_whirlwind#9.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "characters/char_1011_lava2/whirlwind#9/battle/Front/char_1011_lava2_whirlwind#9.png",
+              "animations": [
+                "Attack",
+                "Default",
+                "Die",
+                "Idle",
+                "Skill_1",
+                "Skill_2_Begin",
+                "Skill_2_End",
+                "Skill_2_Loop",
+                "Start"
+              ],
+              "use_straight_alpha": false,
+              "spritesheet_data_filepath": ""
+            }
+          }
         }
       }
     },
@@ -3005,7 +3065,7 @@
             },
             "Front": {
               "atlas_filepath": "characters/char_1028_texas2/epoque#36/battle/Front/char_1028_texas2_epoque#36.atlas",
-              "skel_filepath": "",
+              "skel_filepath": "characters/char_1028_texas2/epoque#36/battle/Front/char_1028_texas2_epoque#36.skel",
               "skel_json_filepath": "characters/char_1028_texas2/epoque#36/battle/Front/char_1028_texas2_epoque#36.jskel",
               "png_filepath": "characters/char_1028_texas2/epoque#36/battle/Front/char_1028_texas2_epoque#36.png",
               "animations": [
@@ -4162,7 +4222,7 @@
             },
             "Front": {
               "atlas_filepath": "characters/char_1035_wisdel/sale#14/battle/Front/char_1035_wisdel_sale#14.atlas",
-              "skel_filepath": "",
+              "skel_filepath": "characters/char_1035_wisdel/sale#14/battle/Front/char_1035_wisdel_sale#14.skel",
               "skel_json_filepath": "characters/char_1035_wisdel/sale#14/battle/Front/char_1035_wisdel_sale#14.jskel",
               "png_filepath": "characters/char_1035_wisdel/sale#14/battle/Front/char_1035_wisdel_sale#14.png",
               "animations": [
@@ -7099,7 +7159,7 @@
             },
             "Front": {
               "atlas_filepath": "characters/char_124_kroos/sale#14/battle/Front/char_124_kroos_sale#14.atlas",
-              "skel_filepath": "",
+              "skel_filepath": "characters/char_124_kroos/sale#14/battle/Front/char_124_kroos_sale#14.skel",
               "skel_json_filepath": "characters/char_124_kroos/sale#14/battle/Front/char_124_kroos_sale#14.jskel",
               "png_filepath": "characters/char_124_kroos/sale#14/battle/Front/char_124_kroos_sale#14.png",
               "animations": [
@@ -10067,7 +10127,7 @@
           "battle": {
             "Back": {
               "atlas_filepath": "characters/char_151_myrtle/taiko#1/battle/Back/char_151_myrtle_taiko#1.atlas",
-              "skel_filepath": "",
+              "skel_filepath": "characters/char_151_myrtle/taiko#1/battle/Back/char_151_myrtle_taiko#1.skel",
               "skel_json_filepath": "characters/char_151_myrtle/taiko#1/battle/Back/char_151_myrtle_taiko#1.jskel",
               "png_filepath": "characters/char_151_myrtle/taiko#1/battle/Back/char_151_myrtle_taiko#1.png",
               "animations": [
@@ -16309,7 +16369,7 @@
             },
             "Front": {
               "atlas_filepath": "characters/char_213_mostma/ambienceSynesthesia#6/battle/Front/char_213_mostma_ambienceSynesthesia#6.atlas",
-              "skel_filepath": "",
+              "skel_filepath": "characters/char_213_mostma/ambienceSynesthesia#6/battle/Front/char_213_mostma_ambienceSynesthesia#6.skel",
               "skel_json_filepath": "characters/char_213_mostma/ambienceSynesthesia#6/battle/Front/char_213_mostma_ambienceSynesthesia#6.jskel",
               "png_filepath": "characters/char_213_mostma/ambienceSynesthesia#6/battle/Front/char_213_mostma_ambienceSynesthesia#6.png",
               "animations": [
@@ -19780,6 +19840,58 @@
               "skel_filepath": "characters/char_254_vodfox/witch#2/battle/Front/char_254_vodfox_witch#2.skel",
               "skel_json_filepath": "",
               "png_filepath": "characters/char_254_vodfox/witch#2/battle/Front/char_254_vodfox_witch#2.png",
+              "animations": [
+                "Attack",
+                "Default",
+                "Die",
+                "Idle",
+                "Start"
+              ],
+              "use_straight_alpha": false,
+              "spritesheet_data_filepath": ""
+            }
+          }
+        },
+        "yun": {
+          "base": {
+            "Front": {
+              "atlas_filepath": "characters/char_254_vodfox/yun#8/base/Front/build_char_254_vodfox_yun#8.atlas",
+              "skel_filepath": "characters/char_254_vodfox/yun#8/base/Front/build_char_254_vodfox_yun#8.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "characters/char_254_vodfox/yun#8/base/Front/build_char_254_vodfox_yun#8.png",
+              "animations": [
+                "Default",
+                "Interact",
+                "Move",
+                "Relax",
+                "Sit",
+                "Sleep",
+                "Special"
+              ],
+              "use_straight_alpha": false,
+              "spritesheet_data_filepath": ""
+            }
+          },
+          "battle": {
+            "Back": {
+              "atlas_filepath": "characters/char_254_vodfox/yun#8/battle/Back/char_254_vodfox_yun#8.atlas",
+              "skel_filepath": "characters/char_254_vodfox/yun#8/battle/Back/char_254_vodfox_yun#8.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "characters/char_254_vodfox/yun#8/battle/Back/char_254_vodfox_yun#8.png",
+              "animations": [
+                "Attack",
+                "Default",
+                "Idle",
+                "Start"
+              ],
+              "use_straight_alpha": false,
+              "spritesheet_data_filepath": ""
+            },
+            "Front": {
+              "atlas_filepath": "characters/char_254_vodfox/yun#8/battle/Front/char_254_vodfox_yun#8.atlas",
+              "skel_filepath": "characters/char_254_vodfox/yun#8/battle/Front/char_254_vodfox_yun#8.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "characters/char_254_vodfox/yun#8/battle/Front/char_254_vodfox_yun#8.png",
               "animations": [
                 "Attack",
                 "Default",
@@ -40233,7 +40345,7 @@
             },
             "Front": {
               "atlas_filepath": "characters/char_4133_logos/ambienceSynesthesia#6/battle/Front/char_4133_logos_ambienceSynesthesia#6.atlas",
-              "skel_filepath": "",
+              "skel_filepath": "characters/char_4133_logos/ambienceSynesthesia#6/battle/Front/char_4133_logos_ambienceSynesthesia#6.skel",
               "skel_json_filepath": "characters/char_4133_logos/ambienceSynesthesia#6/battle/Front/char_4133_logos_ambienceSynesthesia#6.jskel",
               "png_filepath": "characters/char_4133_logos/ambienceSynesthesia#6/battle/Front/char_4133_logos_ambienceSynesthesia#6.png",
               "animations": [
@@ -42519,7 +42631,7 @@
             },
             "Front": {
               "atlas_filepath": "characters/char_4172_xingzh/default/battle/Front/char_4172_xingzh.atlas",
-              "skel_filepath": "",
+              "skel_filepath": "characters/char_4172_xingzh/default/battle/Front/char_4172_xingzh.skel",
               "skel_json_filepath": "characters/char_4172_xingzh/default/battle/Front/char_4172_xingzh.jskel",
               "png_filepath": "characters/char_4172_xingzh/default/battle/Front/char_4172_xingzh.png",
               "animations": [
@@ -42798,6 +42910,631 @@
                 "Skill_3_Idle",
                 "Skill_3_Loop",
                 "Skill_3_ReStart",
+                "Start"
+              ],
+              "use_straight_alpha": false,
+              "spritesheet_data_filepath": ""
+            }
+          }
+        }
+      }
+    },
+    "char_4182_oblvns": {
+      "skins": {
+        "avemujica": {
+          "base": {
+            "Front": {
+              "atlas_filepath": "characters/char_4182_oblvns/avemujica#1/base/Front/build_char_4182_oblvns_avemujica#1.atlas",
+              "skel_filepath": "characters/char_4182_oblvns/avemujica#1/base/Front/build_char_4182_oblvns_avemujica#1.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "characters/char_4182_oblvns/avemujica#1/base/Front/build_char_4182_oblvns_avemujica#1.png",
+              "animations": [
+                "Default",
+                "Interact",
+                "Move",
+                "Relax",
+                "Sit",
+                "Sleep",
+                "Special"
+              ],
+              "use_straight_alpha": false,
+              "spritesheet_data_filepath": ""
+            }
+          },
+          "battle": {
+            "Back": {
+              "atlas_filepath": "characters/char_4182_oblvns/avemujica#1/battle/Back/char_4182_oblvns_avemujica#1.atlas",
+              "skel_filepath": "characters/char_4182_oblvns/avemujica#1/battle/Back/char_4182_oblvns_avemujica#1.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "characters/char_4182_oblvns/avemujica#1/battle/Back/char_4182_oblvns_avemujica#1.png",
+              "animations": [
+                "Attack",
+                "Combat",
+                "Default",
+                "Die",
+                "Idle",
+                "Skill_1",
+                "Skill_2_Idle_A",
+                "Skill_2_Idle_B",
+                "Skill_2_Loop_A",
+                "Skill_2_Loop_B",
+                "Skill_2_Start",
+                "Skill_2_Trans_A",
+                "Skill_2_Trans_B",
+                "Skill_3_Begin",
+                "Skill_3_End",
+                "Skill_3_Idle",
+                "Skill_3_Loop",
+                "Start"
+              ],
+              "use_straight_alpha": false,
+              "spritesheet_data_filepath": ""
+            },
+            "Front": {
+              "atlas_filepath": "characters/char_4182_oblvns/avemujica#1/battle/Front/char_4182_oblvns_avemujica#1.atlas",
+              "skel_filepath": "characters/char_4182_oblvns/avemujica#1/battle/Front/char_4182_oblvns_avemujica#1.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "characters/char_4182_oblvns/avemujica#1/battle/Front/char_4182_oblvns_avemujica#1.png",
+              "animations": [
+                "Attack",
+                "Combat",
+                "Default",
+                "Die",
+                "Idle",
+                "Skill_1",
+                "Skill_2_Idle_A",
+                "Skill_2_Idle_B",
+                "Skill_2_Loop_A",
+                "Skill_2_Loop_B",
+                "Skill_2_Start",
+                "Skill_2_Trans_A",
+                "Skill_2_Trans_B",
+                "Skill_3_Begin",
+                "Skill_3_End",
+                "Skill_3_Idle",
+                "Skill_3_Loop",
+                "Start"
+              ],
+              "use_straight_alpha": false,
+              "spritesheet_data_filepath": ""
+            }
+          }
+        },
+        "default": {
+          "base": {
+            "Front": {
+              "atlas_filepath": "characters/char_4182_oblvns/default/base/Front/build_char_4182_oblvns.atlas",
+              "skel_filepath": "characters/char_4182_oblvns/default/base/Front/build_char_4182_oblvns.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "characters/char_4182_oblvns/default/base/Front/build_char_4182_oblvns.png",
+              "animations": [
+                "Default",
+                "Interact",
+                "Move",
+                "Relax",
+                "Sit",
+                "Sleep"
+              ],
+              "use_straight_alpha": false,
+              "spritesheet_data_filepath": ""
+            }
+          },
+          "battle": {
+            "Back": {
+              "atlas_filepath": "characters/char_4182_oblvns/default/battle/Back/char_4182_oblvns.atlas",
+              "skel_filepath": "characters/char_4182_oblvns/default/battle/Back/char_4182_oblvns.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "characters/char_4182_oblvns/default/battle/Back/char_4182_oblvns.png",
+              "animations": [
+                "Attack",
+                "Combat",
+                "Default",
+                "Die",
+                "Idle",
+                "Skill_1",
+                "Skill_2_Idle_A",
+                "Skill_2_Idle_B",
+                "Skill_2_Loop_A",
+                "Skill_2_Loop_B",
+                "Skill_2_Start",
+                "Skill_2_Trans_A",
+                "Skill_2_Trans_B",
+                "Skill_3_Begin",
+                "Skill_3_End",
+                "Skill_3_Idle",
+                "Skill_3_Loop",
+                "Start"
+              ],
+              "use_straight_alpha": false,
+              "spritesheet_data_filepath": ""
+            },
+            "Front": {
+              "atlas_filepath": "characters/char_4182_oblvns/default/battle/Front/char_4182_oblvns.atlas",
+              "skel_filepath": "characters/char_4182_oblvns/default/battle/Front/char_4182_oblvns.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "characters/char_4182_oblvns/default/battle/Front/char_4182_oblvns.png",
+              "animations": [
+                "Attack",
+                "Combat",
+                "Default",
+                "Die",
+                "Idle",
+                "Skill_1",
+                "Skill_2_Idle_A",
+                "Skill_2_Idle_B",
+                "Skill_2_Loop_A",
+                "Skill_2_Loop_B",
+                "Skill_2_Start",
+                "Skill_2_Trans_A",
+                "Skill_2_Trans_B",
+                "Skill_3_Begin",
+                "Skill_3_End",
+                "Skill_3_Idle",
+                "Skill_3_Loop",
+                "Start"
+              ],
+              "use_straight_alpha": false,
+              "spritesheet_data_filepath": ""
+            }
+          }
+        }
+      }
+    },
+    "char_4183_mortis": {
+      "skins": {
+        "avemujica": {
+          "base": {
+            "Front": {
+              "atlas_filepath": "characters/char_4183_mortis/avemujica#1/base/Front/build_char_4183_mortis_avemujica#1.atlas",
+              "skel_filepath": "characters/char_4183_mortis/avemujica#1/base/Front/build_char_4183_mortis_avemujica#1.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "characters/char_4183_mortis/avemujica#1/base/Front/build_char_4183_mortis_avemujica#1.png",
+              "animations": [
+                "Default",
+                "Interact",
+                "Move",
+                "Relax",
+                "Sit",
+                "Sleep",
+                "Special"
+              ],
+              "use_straight_alpha": false,
+              "spritesheet_data_filepath": ""
+            }
+          },
+          "battle": {
+            "Back": {
+              "atlas_filepath": "characters/char_4183_mortis/avemujica#1/battle/Back/char_4183_mortis_avemujica#1.atlas",
+              "skel_filepath": "characters/char_4183_mortis/avemujica#1/battle/Back/char_4183_mortis_avemujica#1.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "characters/char_4183_mortis/avemujica#1/battle/Back/char_4183_mortis_avemujica#1.png",
+              "animations": [
+                "Attack",
+                "Default",
+                "Doll_Default",
+                "Doll_Idle",
+                "Doll_SwitchOut",
+                "Doll_Switchin",
+                "Idle",
+                "Skill_1",
+                "Skill_2",
+                "Start"
+              ],
+              "use_straight_alpha": false,
+              "spritesheet_data_filepath": ""
+            },
+            "Front": {
+              "atlas_filepath": "characters/char_4183_mortis/avemujica#1/battle/Front/char_4183_mortis_avemujica#1.atlas",
+              "skel_filepath": "characters/char_4183_mortis/avemujica#1/battle/Front/char_4183_mortis_avemujica#1.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "characters/char_4183_mortis/avemujica#1/battle/Front/char_4183_mortis_avemujica#1.png",
+              "animations": [
+                "Attack",
+                "Default",
+                "Doll_Default",
+                "Doll_Die",
+                "Doll_Idle",
+                "Doll_SwitchOut",
+                "Doll_Switchin",
+                "Idle",
+                "Skill_1",
+                "Skill_2",
+                "Start",
+                "Stun",
+                "SwitchOut"
+              ],
+              "use_straight_alpha": false,
+              "spritesheet_data_filepath": ""
+            }
+          }
+        },
+        "default": {
+          "base": {
+            "Front": {
+              "atlas_filepath": "characters/char_4183_mortis/default/base/Front/build_char_4183_mortis.atlas",
+              "skel_filepath": "characters/char_4183_mortis/default/base/Front/build_char_4183_mortis.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "characters/char_4183_mortis/default/base/Front/build_char_4183_mortis.png",
+              "animations": [
+                "Default",
+                "Interact",
+                "Move",
+                "Relax",
+                "Sit",
+                "Sleep"
+              ],
+              "use_straight_alpha": false,
+              "spritesheet_data_filepath": ""
+            }
+          },
+          "battle": {
+            "Back": {
+              "atlas_filepath": "characters/char_4183_mortis/default/battle/Back/char_4183_mortis.atlas",
+              "skel_filepath": "characters/char_4183_mortis/default/battle/Back/char_4183_mortis.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "characters/char_4183_mortis/default/battle/Back/char_4183_mortis.png",
+              "animations": [
+                "Attack",
+                "Default",
+                "Doll_Default",
+                "Doll_Die",
+                "Doll_Idle",
+                "Doll_SwitchOut",
+                "Doll_Switchin",
+                "Idle",
+                "Skill_1",
+                "Skill_2",
+                "Start",
+                "Stun",
+                "SwitchOut"
+              ],
+              "use_straight_alpha": false,
+              "spritesheet_data_filepath": ""
+            },
+            "Front": {
+              "atlas_filepath": "characters/char_4183_mortis/default/battle/Front/char_4183_mortis.atlas",
+              "skel_filepath": "characters/char_4183_mortis/default/battle/Front/char_4183_mortis.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "characters/char_4183_mortis/default/battle/Front/char_4183_mortis.png",
+              "animations": [
+                "Attack",
+                "Default",
+                "Doll_Default",
+                "Doll_Idle",
+                "Doll_SwitchOut",
+                "Doll_Switchin",
+                "Idle",
+                "Skill_1",
+                "Skill_2",
+                "Start"
+              ],
+              "use_straight_alpha": false,
+              "spritesheet_data_filepath": ""
+            }
+          }
+        }
+      }
+    },
+    "char_4184_dolris": {
+      "skins": {
+        "avemujica": {
+          "base": {
+            "Front": {
+              "atlas_filepath": "characters/char_4184_dolris/avemujica#1/base/Front/build_char_4184_dolris_avemujica#1.atlas",
+              "skel_filepath": "characters/char_4184_dolris/avemujica#1/base/Front/build_char_4184_dolris_avemujica#1.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "characters/char_4184_dolris/avemujica#1/base/Front/build_char_4184_dolris_avemujica#1.png",
+              "animations": [
+                "Default",
+                "Interact",
+                "Move",
+                "Relax",
+                "Sit",
+                "Sleep",
+                "Special"
+              ],
+              "use_straight_alpha": false,
+              "spritesheet_data_filepath": ""
+            }
+          },
+          "battle": {
+            "Front": {
+              "atlas_filepath": "characters/char_4184_dolris/avemujica#1/battle/Front/char_4184_dolris_avemujica#1.atlas",
+              "skel_filepath": "characters/char_4184_dolris/avemujica#1/battle/Front/char_4184_dolris_avemujica#1.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "characters/char_4184_dolris/avemujica#1/battle/Front/char_4184_dolris_avemujica#1.png",
+              "animations": [
+                "Default",
+                "Die",
+                "Idle",
+                "Skill_1_Begin",
+                "Skill_1_End",
+                "Skill_1_Loop",
+                "Skill_2_Begin",
+                "Skill_2_End",
+                "Skill_2_Loop",
+                "Start"
+              ],
+              "use_straight_alpha": false,
+              "spritesheet_data_filepath": ""
+            }
+          }
+        },
+        "default": {
+          "base": {
+            "Front": {
+              "atlas_filepath": "characters/char_4184_dolris/default/base/Front/build_char_4184_dolris.atlas",
+              "skel_filepath": "characters/char_4184_dolris/default/base/Front/build_char_4184_dolris.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "characters/char_4184_dolris/default/base/Front/build_char_4184_dolris.png",
+              "animations": [
+                "Default",
+                "Interact",
+                "Move",
+                "Relax",
+                "Sit",
+                "Sleep"
+              ],
+              "use_straight_alpha": false,
+              "spritesheet_data_filepath": ""
+            }
+          },
+          "battle": {
+            "Front": {
+              "atlas_filepath": "characters/char_4184_dolris/default/battle/Front/char_4184_dolris.atlas",
+              "skel_filepath": "characters/char_4184_dolris/default/battle/Front/char_4184_dolris.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "characters/char_4184_dolris/default/battle/Front/char_4184_dolris.png",
+              "animations": [
+                "Default",
+                "Die",
+                "Idle",
+                "Skill_1_Begin",
+                "Skill_1_End",
+                "Skill_1_Loop",
+                "Skill_2_Begin",
+                "Skill_2_End",
+                "Skill_2_Loop",
+                "Start"
+              ],
+              "use_straight_alpha": false,
+              "spritesheet_data_filepath": ""
+            }
+          }
+        }
+      }
+    },
+    "char_4185_amoris": {
+      "skins": {
+        "avemujica": {
+          "base": {
+            "Front": {
+              "atlas_filepath": "characters/char_4185_amoris/avemujica#1/base/Front/build_char_4185_amoris_avemujica#1.atlas",
+              "skel_filepath": "characters/char_4185_amoris/avemujica#1/base/Front/build_char_4185_amoris_avemujica#1.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "characters/char_4185_amoris/avemujica#1/base/Front/build_char_4185_amoris_avemujica#1.png",
+              "animations": [
+                "Default",
+                "Interact",
+                "Move",
+                "Relax",
+                "Sit",
+                "Sleep",
+                "Special"
+              ],
+              "use_straight_alpha": false,
+              "spritesheet_data_filepath": ""
+            }
+          },
+          "battle": {
+            "Back": {
+              "atlas_filepath": "characters/char_4185_amoris/avemujica#1/battle/Back/char_4185_amoris_avemujica#1.atlas",
+              "skel_filepath": "characters/char_4185_amoris/avemujica#1/battle/Back/char_4185_amoris_avemujica#1.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "characters/char_4185_amoris/avemujica#1/battle/Back/char_4185_amoris_avemujica#1.png",
+              "animations": [
+                "Attack",
+                "Default",
+                "Die",
+                "Idle",
+                "Skill_1",
+                "Skill_2",
+                "Start"
+              ],
+              "use_straight_alpha": false,
+              "spritesheet_data_filepath": ""
+            },
+            "Front": {
+              "atlas_filepath": "characters/char_4185_amoris/avemujica#1/battle/Front/char_4185_amoris_avemujica#1.atlas",
+              "skel_filepath": "characters/char_4185_amoris/avemujica#1/battle/Front/char_4185_amoris_avemujica#1.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "characters/char_4185_amoris/avemujica#1/battle/Front/char_4185_amoris_avemujica#1.png",
+              "animations": [
+                "Attack",
+                "Default",
+                "Die",
+                "Idle",
+                "Skill_1",
+                "Skill_2",
+                "Start"
+              ],
+              "use_straight_alpha": false,
+              "spritesheet_data_filepath": ""
+            }
+          }
+        },
+        "default": {
+          "base": {
+            "Front": {
+              "atlas_filepath": "characters/char_4185_amoris/default/base/Front/build_char_4185_amoris.atlas",
+              "skel_filepath": "characters/char_4185_amoris/default/base/Front/build_char_4185_amoris.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "characters/char_4185_amoris/default/base/Front/build_char_4185_amoris.png",
+              "animations": [
+                "Default",
+                "Interact",
+                "Move",
+                "Relax",
+                "Sit",
+                "Sleep"
+              ],
+              "use_straight_alpha": false,
+              "spritesheet_data_filepath": ""
+            }
+          },
+          "battle": {
+            "Back": {
+              "atlas_filepath": "characters/char_4185_amoris/default/battle/Back/char_4185_amoris.atlas",
+              "skel_filepath": "characters/char_4185_amoris/default/battle/Back/char_4185_amoris.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "characters/char_4185_amoris/default/battle/Back/char_4185_amoris.png",
+              "animations": [
+                "Attack",
+                "Default",
+                "Die",
+                "Idle",
+                "Skill_1",
+                "Skill_2",
+                "Start"
+              ],
+              "use_straight_alpha": false,
+              "spritesheet_data_filepath": ""
+            },
+            "Front": {
+              "atlas_filepath": "characters/char_4185_amoris/default/battle/Front/char_4185_amoris.atlas",
+              "skel_filepath": "characters/char_4185_amoris/default/battle/Front/char_4185_amoris.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "characters/char_4185_amoris/default/battle/Front/char_4185_amoris.png",
+              "animations": [
+                "Attack",
+                "Default",
+                "Die",
+                "Idle",
+                "Skill_1",
+                "Skill_2",
+                "Start"
+              ],
+              "use_straight_alpha": false,
+              "spritesheet_data_filepath": ""
+            }
+          }
+        }
+      }
+    },
+    "char_4186_tmoris": {
+      "skins": {
+        "avemujica": {
+          "base": {
+            "Front": {
+              "atlas_filepath": "characters/char_4186_tmoris/avemujica#1/base/Front/build_char_4186_tmoris_avemujica#1.atlas",
+              "skel_filepath": "characters/char_4186_tmoris/avemujica#1/base/Front/build_char_4186_tmoris_avemujica#1.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "characters/char_4186_tmoris/avemujica#1/base/Front/build_char_4186_tmoris_avemujica#1.png",
+              "animations": [
+                "Default",
+                "Interact",
+                "Move",
+                "Relax",
+                "Sit",
+                "Sleep",
+                "Special"
+              ],
+              "use_straight_alpha": false,
+              "spritesheet_data_filepath": ""
+            }
+          },
+          "battle": {
+            "Back": {
+              "atlas_filepath": "characters/char_4186_tmoris/avemujica#1/battle/Back/char_4186_tmoris_avemujica#1.atlas",
+              "skel_filepath": "characters/char_4186_tmoris/avemujica#1/battle/Back/char_4186_tmoris_avemujica#1.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "characters/char_4186_tmoris/avemujica#1/battle/Back/char_4186_tmoris_avemujica#1.png",
+              "animations": [
+                "Attack",
+                "Default",
+                "Idle",
+                "Skill_1",
+                "Skill_2_Begin",
+                "Skill_2_End",
+                "Skill_2_Loop",
+                "Start"
+              ],
+              "use_straight_alpha": false,
+              "spritesheet_data_filepath": ""
+            },
+            "Front": {
+              "atlas_filepath": "characters/char_4186_tmoris/avemujica#1/battle/Front/char_4186_tmoris_avemujica#1.atlas",
+              "skel_filepath": "characters/char_4186_tmoris/avemujica#1/battle/Front/char_4186_tmoris_avemujica#1.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "characters/char_4186_tmoris/avemujica#1/battle/Front/char_4186_tmoris_avemujica#1.png",
+              "animations": [
+                "Attack",
+                "Default",
+                "Die",
+                "Idle",
+                "Skill_1",
+                "Skill_2_Begin",
+                "Skill_2_End",
+                "Skill_2_Loop",
+                "Start"
+              ],
+              "use_straight_alpha": false,
+              "spritesheet_data_filepath": ""
+            }
+          }
+        },
+        "default": {
+          "base": {
+            "Front": {
+              "atlas_filepath": "characters/char_4186_tmoris/default/base/Front/build_char_4186_tmoris.atlas",
+              "skel_filepath": "characters/char_4186_tmoris/default/base/Front/build_char_4186_tmoris.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "characters/char_4186_tmoris/default/base/Front/build_char_4186_tmoris.png",
+              "animations": [
+                "Default",
+                "Interact",
+                "Move",
+                "Relax",
+                "Sit",
+                "Sleep"
+              ],
+              "use_straight_alpha": false,
+              "spritesheet_data_filepath": ""
+            }
+          },
+          "battle": {
+            "Back": {
+              "atlas_filepath": "characters/char_4186_tmoris/default/battle/Back/char_4186_tmoris.atlas",
+              "skel_filepath": "characters/char_4186_tmoris/default/battle/Back/char_4186_tmoris.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "characters/char_4186_tmoris/default/battle/Back/char_4186_tmoris.png",
+              "animations": [
+                "Attack",
+                "Default",
+                "Idle",
+                "Skill_1",
+                "Skill_2_Begin",
+                "Skill_2_End",
+                "Skill_2_Loop",
+                "Start"
+              ],
+              "use_straight_alpha": false,
+              "spritesheet_data_filepath": ""
+            },
+            "Front": {
+              "atlas_filepath": "characters/char_4186_tmoris/default/battle/Front/char_4186_tmoris.atlas",
+              "skel_filepath": "characters/char_4186_tmoris/default/battle/Front/char_4186_tmoris.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "characters/char_4186_tmoris/default/battle/Front/char_4186_tmoris.png",
+              "animations": [
+                "Attack",
+                "Default",
+                "Die",
+                "Idle",
+                "Skill_1",
+                "Skill_2_Begin",
+                "Skill_2_End",
+                "Skill_2_Loop",
                 "Start"
               ],
               "use_straight_alpha": false,
@@ -45048,7 +45785,7 @@
           "battle": {
             "Back": {
               "atlas_filepath": "characters/char_437_mizuki/game#6/battle/Back/char_437_mizuki_game#6.atlas",
-              "skel_filepath": "",
+              "skel_filepath": "characters/char_437_mizuki/game#6/battle/Back/char_437_mizuki_game#6.skel",
               "skel_json_filepath": "characters/char_437_mizuki/game#6/battle/Back/char_437_mizuki_game#6.jskel",
               "png_filepath": "characters/char_437_mizuki/game#6/battle/Back/char_437_mizuki_game#6.png",
               "animations": [
@@ -48765,6 +49502,66 @@
               "skel_filepath": "characters/char_487_bobb/default/battle/Front/char_487_bobb.skel",
               "skel_json_filepath": "",
               "png_filepath": "characters/char_487_bobb/default/battle/Front/char_487_bobb.png",
+              "animations": [
+                "Attack",
+                "Default",
+                "Die",
+                "Idle",
+                "Skill_1",
+                "Skill_2_Begin",
+                "Skill_2_End",
+                "Skill_2_Idle",
+                "Start"
+              ],
+              "use_straight_alpha": false,
+              "spritesheet_data_filepath": ""
+            }
+          }
+        },
+        "kitchen": {
+          "base": {
+            "Front": {
+              "atlas_filepath": "characters/char_487_bobb/kitchen#4/base/Front/build_char_487_bobb_kitchen#4.atlas",
+              "skel_filepath": "characters/char_487_bobb/kitchen#4/base/Front/build_char_487_bobb_kitchen#4.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "characters/char_487_bobb/kitchen#4/base/Front/build_char_487_bobb_kitchen#4.png",
+              "animations": [
+                "Default",
+                "Interact",
+                "Move",
+                "Relax",
+                "Sit",
+                "Sleep",
+                "Special"
+              ],
+              "use_straight_alpha": false,
+              "spritesheet_data_filepath": ""
+            }
+          },
+          "battle": {
+            "Back": {
+              "atlas_filepath": "characters/char_487_bobb/kitchen#4/battle/Back/char_487_bobb_kitchen#4.atlas",
+              "skel_filepath": "characters/char_487_bobb/kitchen#4/battle/Back/char_487_bobb_kitchen#4.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "characters/char_487_bobb/kitchen#4/battle/Back/char_487_bobb_kitchen#4.png",
+              "animations": [
+                "Attack",
+                "Default",
+                "Idle",
+                "Skill_1",
+                "Skill_2_Begin",
+                "Skill_2_End",
+                "Skill_2_Idle",
+                "Start"
+              ],
+              "use_straight_alpha": false,
+              "spritesheet_data_filepath": ""
+            },
+            "Front": {
+              "atlas_filepath": "characters/char_487_bobb/kitchen#4/battle/Front/char_487_bobb_kitchen#4.atlas",
+              "skel_filepath": "characters/char_487_bobb/kitchen#4/battle/Front/char_487_bobb_kitchen#4.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "characters/char_487_bobb/kitchen#4/battle/Front/char_487_bobb_kitchen#4.png",
               "animations": [
                 "Attack",
                 "Default",

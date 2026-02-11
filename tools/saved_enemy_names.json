@@ -837,6 +837,62 @@
         "Completely Scrapped Film",
         "WW18"
     ],
+    "enemy_10103_mjcppp": [
+        "Snoozing Molar",
+        "SS01"
+    ],
+    "enemy_10103_mjcppp_2": [
+        "Slumbering Molar",
+        "SS02"
+    ],
+    "enemy_10104_mjcbln": [
+        "Background Clown",
+        "SS03"
+    ],
+    "enemy_10104_mjcbln_2": [
+        "Background Master",
+        "SS04"
+    ],
+    "enemy_10105_mjcdol": [
+        "Clockwork Servant",
+        "SS05"
+    ],
+    "enemy_10105_mjcdol_2": [
+        "Dark Clockwork Servant",
+        "SS06"
+    ],
+    "enemy_10106_mjcbat": [
+        "Playful Coretton",
+        "SS07"
+    ],
+    "enemy_10106_mjcbat_2": [
+        "Joyful Coretton",
+        "SS08"
+    ],
+    "enemy_10107_mjcdog": [
+        "Sleep Companion Beast",
+        "SS09"
+    ],
+    "enemy_10107_mjcdog_2": [
+        "Slumber Companion Beast",
+        "SS10"
+    ],
+    "enemy_10108_mjclun": [
+        "Sleepwalking Valet",
+        "SS11"
+    ],
+    "enemy_10108_mjclun_2": [
+        "Sleepwalking Butler",
+        "SS12"
+    ],
+    "enemy_10109_mjcgst": [
+        "Wolffs Shadow",
+        "SS13"
+    ],
+    "enemy_10109_mjcgst_2": [
+        "Wolff Phantom",
+        "SS14"
+    ],
     "enemy_1010_demon": [
         "Sarkaz Greatswordsman",
         "S1"
@@ -844,6 +900,14 @@
     "enemy_1010_demon_2": [
         "Sarkaz Greatswordsman Leader",
         "S2"
+    ],
+    "enemy_10110_mjcsdw": [
+        "Dream of Eclosion",
+        "SS15"
+    ],
+    "enemy_10110_mjcsdw_2": [
+        "Dream of Metamorphosis",
+        "SS16"
     ],
     "enemy_10111_ymgpck": [
         "Certain Fates",
@@ -4435,6 +4499,10 @@
     ],
     "enemy_1568_dirctr": [
         "Tragodia",
+        "TR"
+    ],
+    "enemy_1569_ldevil": [
+        "Morpheus",
         "TR"
     ],
     "enemy_1570_ymgscm": [

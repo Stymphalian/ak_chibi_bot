@@ -5228,6 +5228,382 @@
         }
       }
     },
+    "enemy_10103_mjcppp": {
+      "skins": {
+        "default": {
+          "base": {},
+          "battle": {
+            "Front": {
+              "atlas_filepath": "enemies/enemy_10103_mjcppp/default/battle/Front/enemy_10103_mjcppp.atlas",
+              "skel_filepath": "enemies/enemy_10103_mjcppp/default/battle/Front/enemy_10103_mjcppp.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "enemies/enemy_10103_mjcppp/default/battle/Front/enemy_10103_mjcppp.png",
+              "animations": [
+                "Attack",
+                "Default",
+                "Die",
+                "Idle_A",
+                "Idle_B",
+                "Move_A",
+                "Move_B",
+                "Revive",
+                "Start"
+              ],
+              "use_straight_alpha": false,
+              "spritesheet_data_filepath": ""
+            }
+          }
+        }
+      }
+    },
+    "enemy_10103_mjcppp_2": {
+      "skins": {
+        "default": {
+          "base": {},
+          "battle": {
+            "Front": {
+              "atlas_filepath": "enemies/enemy_10103_mjcppp_2/default/battle/Front/enemy_10103_mjcppp_2.atlas",
+              "skel_filepath": "enemies/enemy_10103_mjcppp_2/default/battle/Front/enemy_10103_mjcppp_2.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "enemies/enemy_10103_mjcppp_2/default/battle/Front/enemy_10103_mjcppp_2.png",
+              "animations": [
+                "Attack",
+                "Default",
+                "Die",
+                "Idle_A",
+                "Idle_B",
+                "Move_A",
+                "Move_B",
+                "Revive",
+                "Start"
+              ],
+              "use_straight_alpha": false,
+              "spritesheet_data_filepath": ""
+            }
+          }
+        }
+      }
+    },
+    "enemy_10104_mjcbln": {
+      "skins": {
+        "default": {
+          "base": {},
+          "battle": {
+            "Front": {
+              "atlas_filepath": "enemies/enemy_10104_mjcbln/default/battle/Front/enemy_10104_mjcbln.atlas",
+              "skel_filepath": "enemies/enemy_10104_mjcbln/default/battle/Front/enemy_10104_mjcbln.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "enemies/enemy_10104_mjcbln/default/battle/Front/enemy_10104_mjcbln.png",
+              "animations": [
+                "Attack",
+                "Attack_Max",
+                "Default",
+                "Die_1",
+                "Die_1_Max",
+                "Die_2",
+                "Down",
+                "Idle_1",
+                "Idle_1_Max",
+                "Idle_2",
+                "Move_1",
+                "Move_1_Max",
+                "Move_2",
+                "Start",
+                "Takeoff"
+              ],
+              "use_straight_alpha": false,
+              "spritesheet_data_filepath": ""
+            }
+          }
+        }
+      }
+    },
+    "enemy_10104_mjcbln_2": {
+      "skins": {
+        "default": {
+          "base": {},
+          "battle": {
+            "Front": {
+              "atlas_filepath": "enemies/enemy_10104_mjcbln_2/default/battle/Front/enemy_10104_mjcbln_2.atlas",
+              "skel_filepath": "enemies/enemy_10104_mjcbln_2/default/battle/Front/enemy_10104_mjcbln_2.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "enemies/enemy_10104_mjcbln_2/default/battle/Front/enemy_10104_mjcbln_2.png",
+              "animations": [
+                "Attack",
+                "Attack_Max",
+                "Default",
+                "Die_1",
+                "Die_1_Max",
+                "Die_2",
+                "Down",
+                "Idle_1",
+                "Idle_1_Max",
+                "Idle_2",
+                "Move_1",
+                "Move_1_Max",
+                "Move_2",
+                "Start",
+                "Takeoff"
+              ],
+              "use_straight_alpha": false,
+              "spritesheet_data_filepath": ""
+            }
+          }
+        }
+      }
+    },
+    "enemy_10105_mjcdol": {
+      "skins": {
+        "default": {
+          "base": {},
+          "battle": {
+            "Front": {
+              "atlas_filepath": "enemies/enemy_10105_mjcdol/default/battle/Front/enemy_10105_mjcdol.atlas",
+              "skel_filepath": "enemies/enemy_10105_mjcdol/default/battle/Front/enemy_10105_mjcdol.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "enemies/enemy_10105_mjcdol/default/battle/Front/enemy_10105_mjcdol.png",
+              "animations": [
+                "A_Die",
+                "A_Idle",
+                "A_Move",
+                "AtoB",
+                "B_Attack",
+                "B_Die",
+                "B_Idle",
+                "B_Move",
+                "BtoA",
+                "Default",
+                "Start"
+              ],
+              "use_straight_alpha": false,
+              "spritesheet_data_filepath": ""
+            }
+          }
+        }
+      }
+    },
+    "enemy_10106_mjcbat": {
+      "skins": {
+        "default": {
+          "base": {},
+          "battle": {
+            "Front": {
+              "atlas_filepath": "enemies/enemy_10106_mjcbat/default/battle/Front/enemy_10106_mjcbat.atlas",
+              "skel_filepath": "enemies/enemy_10106_mjcbat/default/battle/Front/enemy_10106_mjcbat.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "enemies/enemy_10106_mjcbat/default/battle/Front/enemy_10106_mjcbat.png",
+              "animations": [
+                "Attack",
+                "Default",
+                "Die",
+                "Idle",
+                "Move",
+                "Run",
+                "Start"
+              ],
+              "use_straight_alpha": false,
+              "spritesheet_data_filepath": ""
+            }
+          }
+        }
+      }
+    },
+    "enemy_10106_mjcbat_2": {
+      "skins": {
+        "default": {
+          "base": {},
+          "battle": {
+            "Front": {
+              "atlas_filepath": "enemies/enemy_10106_mjcbat_2/default/battle/Front/enemy_10106_mjcbat_2.atlas",
+              "skel_filepath": "enemies/enemy_10106_mjcbat_2/default/battle/Front/enemy_10106_mjcbat_2.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "enemies/enemy_10106_mjcbat_2/default/battle/Front/enemy_10106_mjcbat_2.png",
+              "animations": [
+                "Attack",
+                "Default",
+                "Die",
+                "Idle",
+                "Move",
+                "Run",
+                "Start"
+              ],
+              "use_straight_alpha": false,
+              "spritesheet_data_filepath": ""
+            }
+          }
+        }
+      }
+    },
+    "enemy_10107_mjcdog": {
+      "skins": {
+        "default": {
+          "base": {},
+          "battle": {
+            "Front": {
+              "atlas_filepath": "enemies/enemy_10107_mjcdog/default/battle/Front/enemy_10107_mjcdog.atlas",
+              "skel_filepath": "enemies/enemy_10107_mjcdog/default/battle/Front/enemy_10107_mjcdog.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "enemies/enemy_10107_mjcdog/default/battle/Front/enemy_10107_mjcdog.png",
+              "animations": [
+                "A_Attack",
+                "A_Idle",
+                "A_Move",
+                "AtoB",
+                "AtoC",
+                "B_Attack",
+                "B_Idle",
+                "B_Move",
+                "C_Attack",
+                "C_Idle",
+                "C_Move",
+                "Default",
+                "Die",
+                "Start"
+              ],
+              "use_straight_alpha": false,
+              "spritesheet_data_filepath": ""
+            }
+          }
+        }
+      }
+    },
+    "enemy_10107_mjcdog_2": {
+      "skins": {
+        "default": {
+          "base": {},
+          "battle": {
+            "Front": {
+              "atlas_filepath": "enemies/enemy_10107_mjcdog_2/default/battle/Front/enemy_10107_mjcdog_2.atlas",
+              "skel_filepath": "enemies/enemy_10107_mjcdog_2/default/battle/Front/enemy_10107_mjcdog_2.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "enemies/enemy_10107_mjcdog_2/default/battle/Front/enemy_10107_mjcdog_2.png",
+              "animations": [
+                "A_Attack",
+                "A_Idle",
+                "A_Move",
+                "AtoB",
+                "AtoC",
+                "B_Attack",
+                "B_Idle",
+                "B_Move",
+                "C_Attack",
+                "C_Idle",
+                "C_Move",
+                "Default",
+                "Die",
+                "Start"
+              ],
+              "use_straight_alpha": false,
+              "spritesheet_data_filepath": ""
+            }
+          }
+        }
+      }
+    },
+    "enemy_10108_mjclun": {
+      "skins": {
+        "default": {
+          "base": {},
+          "battle": {
+            "Front": {
+              "atlas_filepath": "enemies/enemy_10108_mjclun/default/battle/Front/enemy_10108_mjclun.atlas",
+              "skel_filepath": "enemies/enemy_10108_mjclun/default/battle/Front/enemy_10108_mjclun.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "enemies/enemy_10108_mjclun/default/battle/Front/enemy_10108_mjclun.png",
+              "animations": [
+                "Attack",
+                "Default",
+                "Die",
+                "Idle",
+                "Move",
+                "Start"
+              ],
+              "use_straight_alpha": false,
+              "spritesheet_data_filepath": ""
+            }
+          }
+        }
+      }
+    },
+    "enemy_10108_mjclun_2": {
+      "skins": {
+        "default": {
+          "base": {},
+          "battle": {
+            "Front": {
+              "atlas_filepath": "enemies/enemy_10108_mjclun_2/default/battle/Front/enemy_10108_mjclun_2.atlas",
+              "skel_filepath": "enemies/enemy_10108_mjclun_2/default/battle/Front/enemy_10108_mjclun_2.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "enemies/enemy_10108_mjclun_2/default/battle/Front/enemy_10108_mjclun_2.png",
+              "animations": [
+                "Attack",
+                "Default",
+                "Die",
+                "Idle",
+                "Move",
+                "Start"
+              ],
+              "use_straight_alpha": false,
+              "spritesheet_data_filepath": ""
+            }
+          }
+        }
+      }
+    },
+    "enemy_10109_mjcgst": {
+      "skins": {
+        "default": {
+          "base": {},
+          "battle": {
+            "Front": {
+              "atlas_filepath": "enemies/enemy_10109_mjcgst/default/battle/Front/enemy_10109_mjcgst.atlas",
+              "skel_filepath": "enemies/enemy_10109_mjcgst/default/battle/Front/enemy_10109_mjcgst.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "enemies/enemy_10109_mjcgst/default/battle/Front/enemy_10109_mjcgst.png",
+              "animations": [
+                "Attack",
+                "Default",
+                "Die",
+                "Idle",
+                "Idle_2",
+                "Move",
+                "Move_2",
+                "Start"
+              ],
+              "use_straight_alpha": false,
+              "spritesheet_data_filepath": ""
+            }
+          }
+        }
+      }
+    },
+    "enemy_10109_mjcgst_2": {
+      "skins": {
+        "default": {
+          "base": {},
+          "battle": {
+            "Front": {
+              "atlas_filepath": "enemies/enemy_10109_mjcgst_2/default/battle/Front/enemy_10109_mjcgst_2.atlas",
+              "skel_filepath": "enemies/enemy_10109_mjcgst_2/default/battle/Front/enemy_10109_mjcgst_2.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "enemies/enemy_10109_mjcgst_2/default/battle/Front/enemy_10109_mjcgst_2.png",
+              "animations": [
+                "Attack",
+                "Default",
+                "Die",
+                "Idle",
+                "Idle_2",
+                "Move",
+                "Move_2",
+                "Start"
+              ],
+              "use_straight_alpha": false,
+              "spritesheet_data_filepath": ""
+            }
+          }
+        }
+      }
+    },
     "enemy_1010_demon": {
       "skins": {
         "default": {
@@ -5274,6 +5650,56 @@
                 "Die",
                 "Idle",
                 "Move_Loop"
+              ],
+              "use_straight_alpha": false,
+              "spritesheet_data_filepath": ""
+            }
+          }
+        }
+      }
+    },
+    "enemy_10110_mjcsdw": {
+      "skins": {
+        "default": {
+          "base": {},
+          "battle": {
+            "Front": {
+              "atlas_filepath": "enemies/enemy_10110_mjcsdw/default/battle/Front/enemy_10110_mjcsdw.atlas",
+              "skel_filepath": "enemies/enemy_10110_mjcsdw/default/battle/Front/enemy_10110_mjcsdw.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "enemies/enemy_10110_mjcsdw/default/battle/Front/enemy_10110_mjcsdw.png",
+              "animations": [
+                "Attack",
+                "Default",
+                "Die",
+                "Idle",
+                "Move",
+                "Start"
+              ],
+              "use_straight_alpha": false,
+              "spritesheet_data_filepath": ""
+            }
+          }
+        }
+      }
+    },
+    "enemy_10110_mjcsdw_2": {
+      "skins": {
+        "default": {
+          "base": {},
+          "battle": {
+            "Front": {
+              "atlas_filepath": "enemies/enemy_10110_mjcsdw_2/default/battle/Front/enemy_10110_mjcsdw_2.atlas",
+              "skel_filepath": "enemies/enemy_10110_mjcsdw_2/default/battle/Front/enemy_10110_mjcsdw_2.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "enemies/enemy_10110_mjcsdw_2/default/battle/Front/enemy_10110_mjcsdw_2.png",
+              "animations": [
+                "Attack",
+                "Default",
+                "Die",
+                "Idle",
+                "Move",
+                "Start"
               ],
               "use_straight_alpha": false,
               "spritesheet_data_filepath": ""
@@ -32142,6 +32568,53 @@
                 "Revive_End",
                 "Revive_Loop",
                 "Revive_Start"
+              ],
+              "use_straight_alpha": false,
+              "spritesheet_data_filepath": ""
+            }
+          }
+        }
+      }
+    },
+    "enemy_1569_ldevil": {
+      "skins": {
+        "default": {
+          "base": {},
+          "battle": {
+            "Front": {
+              "atlas_filepath": "enemies/enemy_1569_ldevil/default/battle/Front/enemy_1569_ldevil.atlas",
+              "skel_filepath": "enemies/enemy_1569_ldevil/default/battle/Front/enemy_1569_ldevil.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "enemies/enemy_1569_ldevil/default/battle/Front/enemy_1569_ldevil.png",
+              "animations": [
+                "A_Attack",
+                "A_Default",
+                "A_Idle",
+                "A_Move",
+                "A_Revive_1",
+                "A_Revive_2",
+                "A_Revive_3",
+                "A_Skill_1",
+                "A_Skill_2_Begin",
+                "A_Skill_2_End",
+                "A_Skill_2_Loop",
+                "A_Skill_3",
+                "A_Skill_4_Begin",
+                "A_Skill_4_End",
+                "A_Skill_4_Loop",
+                "B_Attack",
+                "B_Default",
+                "B_Die",
+                "B_Idle",
+                "B_Move",
+                "B_Skill_1",
+                "B_Skill_2_Begin",
+                "B_Skill_2_End",
+                "B_Skill_2_Loop",
+                "B_Skill_3",
+                "B_Skill_4_Begin",
+                "B_Skill_4_End",
+                "B_Skill_4_Loop"
               ],
               "use_straight_alpha": false,
               "spritesheet_data_filepath": ""
