@@ -4509,6 +4509,38 @@
         "Kouhei Mifune",
         "MF"
     ],
+    "enemy_18001_lhship": [
+        "Transport Boat",
+        "IL01"
+    ],
+    "enemy_18002_lhbetl": [
+        "Pincerbug",
+        "IL02"
+    ],
+    "enemy_18003_lhkarb": [
+        "Rampaging Vacuum",
+        "IL03"
+    ],
+    "enemy_18004_lhbmom": [
+        "Giant Pincerbug",
+        "IL04"
+    ],
+    "enemy_18005_lhwand": [
+        "Wanderer",
+        "IL05"
+    ],
+    "enemy_18006_lhprie": [
+        "Praying Benefactor",
+        "IL06"
+    ],
+    "enemy_18007_lhbque": [
+        "Kaleidoqueen",
+        "IL07"
+    ],
+    "enemy_18008_lhbbos": [
+        "Old Fanged One",
+        "IL08"
+    ],
     "enemy_2001_duckmi": [
         "Duck Lord",
         "DLD"

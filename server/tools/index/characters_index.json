@@ -3778,6 +3778,86 @@
               "spritesheet_data_filepath": ""
             }
           }
+        },
+        "sanrio": {
+          "base": {
+            "Front": {
+              "atlas_filepath": "characters/char_1032_excu2/sanrio#2/base/Front/build_char_1032_excu2_sanrio#2.atlas",
+              "skel_filepath": "characters/char_1032_excu2/sanrio#2/base/Front/build_char_1032_excu2_sanrio#2.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "characters/char_1032_excu2/sanrio#2/base/Front/build_char_1032_excu2_sanrio#2.png",
+              "animations": [
+                "Default",
+                "Interact",
+                "Move",
+                "Relax",
+                "Sit",
+                "Sleep",
+                "Special"
+              ],
+              "use_straight_alpha": false,
+              "spritesheet_data_filepath": ""
+            }
+          },
+          "battle": {
+            "Back": {
+              "atlas_filepath": "characters/char_1032_excu2/sanrio#2/battle/Back/char_1032_excu2_sanrio#2.atlas",
+              "skel_filepath": "characters/char_1032_excu2/sanrio#2/battle/Back/char_1032_excu2_sanrio#2.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "characters/char_1032_excu2/sanrio#2/battle/Back/char_1032_excu2_sanrio#2.png",
+              "animations": [
+                "Attack_A",
+                "Attack_B",
+                "Default",
+                "Idle",
+                "Skill_2_Attack_A",
+                "Skill_2_Attack_B",
+                "Skill_2_Begin",
+                "Skill_2_End",
+                "Skill_2_Idle",
+                "Skill_3_Attack_A",
+                "Skill_3_Attack_B",
+                "Skill_3_Begin",
+                "Skill_3_End",
+                "Skill_3_Idle",
+                "Start"
+              ],
+              "use_straight_alpha": false,
+              "spritesheet_data_filepath": ""
+            },
+            "Front": {
+              "atlas_filepath": "characters/char_1032_excu2/sanrio#2/battle/Front/char_1032_excu2_sanrio#2.atlas",
+              "skel_filepath": "characters/char_1032_excu2/sanrio#2/battle/Front/char_1032_excu2_sanrio#2.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "characters/char_1032_excu2/sanrio#2/battle/Front/char_1032_excu2_sanrio#2.png",
+              "animations": [
+                "Attack_A",
+                "Attack_B",
+                "Attack_Down_A",
+                "Attack_Down_B",
+                "Default",
+                "Die",
+                "Idle",
+                "Skill_2_Attack_A",
+                "Skill_2_Attack_B",
+                "Skill_2_Begin",
+                "Skill_2_End",
+                "Skill_2_Idle",
+                "Skill_3_Attack_A",
+                "Skill_3_Attack_B",
+                "Skill_3_Begin",
+                "Skill_3_End",
+                "Skill_3_Idle",
+                "Skill_Down_2_Attack_A",
+                "Skill_Down_2_Attack_B",
+                "Skill_Down_3_Attack_A",
+                "Skill_Down_3_Attack_B",
+                "Start"
+              ],
+              "use_straight_alpha": false,
+              "spritesheet_data_filepath": ""
+            }
+          }
         }
       }
     },
@@ -11990,6 +12070,61 @@
               "skel_filepath": "characters/char_180_amgoat/default/battle/Front/char_180_amgoat.skel",
               "skel_json_filepath": "",
               "png_filepath": "characters/char_180_amgoat/default/battle/Front/char_180_amgoat.png",
+              "animations": [
+                "Attack",
+                "Default",
+                "Die",
+                "Idle",
+                "Skill_End",
+                "Skill_Loop",
+                "Skill_Start",
+                "Start"
+              ],
+              "use_straight_alpha": false,
+              "spritesheet_data_filepath": ""
+            }
+          }
+        },
+        "sanrio": {
+          "base": {
+            "Front": {
+              "atlas_filepath": "characters/char_180_amgoat/sanrio#2/base/Front/build_char_180_amgoat_sanrio#2.atlas",
+              "skel_filepath": "characters/char_180_amgoat/sanrio#2/base/Front/build_char_180_amgoat_sanrio#2.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "characters/char_180_amgoat/sanrio#2/base/Front/build_char_180_amgoat_sanrio#2.png",
+              "animations": [
+                "Default",
+                "Interact",
+                "Move",
+                "Relax",
+                "Sit",
+                "Sleep",
+                "Special"
+              ],
+              "use_straight_alpha": false,
+              "spritesheet_data_filepath": ""
+            }
+          },
+          "battle": {
+            "Back": {
+              "atlas_filepath": "characters/char_180_amgoat/sanrio#2/battle/Back/char_180_amgoat_sanrio#2.atlas",
+              "skel_filepath": "characters/char_180_amgoat/sanrio#2/battle/Back/char_180_amgoat_sanrio#2.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "characters/char_180_amgoat/sanrio#2/battle/Back/char_180_amgoat_sanrio#2.png",
+              "animations": [
+                "Attack",
+                "Default",
+                "Idle",
+                "Start"
+              ],
+              "use_straight_alpha": false,
+              "spritesheet_data_filepath": ""
+            },
+            "Front": {
+              "atlas_filepath": "characters/char_180_amgoat/sanrio#2/battle/Front/char_180_amgoat_sanrio#2.atlas",
+              "skel_filepath": "characters/char_180_amgoat/sanrio#2/battle/Front/char_180_amgoat_sanrio#2.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "characters/char_180_amgoat/sanrio#2/battle/Front/char_180_amgoat_sanrio#2.png",
               "animations": [
                 "Attack",
                 "Default",
@@ -31293,6 +31428,70 @@
               "spritesheet_data_filepath": ""
             }
           }
+        },
+        "shining": {
+          "base": {
+            "Front": {
+              "atlas_filepath": "characters/char_4017_puzzle/shining#3/base/Front/build_char_4017_puzzle_shining#3.atlas",
+              "skel_filepath": "characters/char_4017_puzzle/shining#3/base/Front/build_char_4017_puzzle_shining#3.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "characters/char_4017_puzzle/shining#3/base/Front/build_char_4017_puzzle_shining#3.png",
+              "animations": [
+                "Default",
+                "Interact",
+                "Move",
+                "Relax",
+                "Sit",
+                "Sleep",
+                "Special"
+              ],
+              "use_straight_alpha": false,
+              "spritesheet_data_filepath": ""
+            }
+          },
+          "battle": {
+            "Back": {
+              "atlas_filepath": "characters/char_4017_puzzle/shining#3/battle/Back/char_4017_puzzle_shining#3.atlas",
+              "skel_filepath": "characters/char_4017_puzzle/shining#3/battle/Back/char_4017_puzzle_shining#3.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "characters/char_4017_puzzle/shining#3/battle/Back/char_4017_puzzle_shining#3.png",
+              "animations": [
+                "Attack",
+                "Combat",
+                "Default",
+                "Idle",
+                "Skill_2_Attack",
+                "Skill_2_Begin",
+                "Skill_2_Combat",
+                "Skill_2_End",
+                "Skill_2_Idle",
+                "Start"
+              ],
+              "use_straight_alpha": false,
+              "spritesheet_data_filepath": ""
+            },
+            "Front": {
+              "atlas_filepath": "characters/char_4017_puzzle/shining#3/battle/Front/char_4017_puzzle_shining#3.atlas",
+              "skel_filepath": "characters/char_4017_puzzle/shining#3/battle/Front/char_4017_puzzle_shining#3.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "characters/char_4017_puzzle/shining#3/battle/Front/char_4017_puzzle_shining#3.png",
+              "animations": [
+                "Attack",
+                "Combat",
+                "Default",
+                "Die",
+                "Idle",
+                "Skill_2_Attack",
+                "Skill_2_Begin",
+                "Skill_2_Combat",
+                "Skill_2_End",
+                "Skill_2_Idle",
+                "Start"
+              ],
+              "use_straight_alpha": false,
+              "spritesheet_data_filepath": ""
+            }
+          }
         }
       }
     },
@@ -33010,6 +33209,70 @@
               "skel_filepath": "characters/char_4042_lumen/default/battle/Front/char_4042_lumen.skel",
               "skel_json_filepath": "",
               "png_filepath": "characters/char_4042_lumen/default/battle/Front/char_4042_lumen.png",
+              "animations": [
+                "Attack",
+                "Default",
+                "Die",
+                "Idle",
+                "Skill_1",
+                "Skill_2",
+                "Skill_3_Begin",
+                "Skill_3_End",
+                "Skill_3_Idle",
+                "Skill_3_Loop",
+                "Start"
+              ],
+              "use_straight_alpha": false,
+              "spritesheet_data_filepath": ""
+            }
+          }
+        },
+        "sanrio": {
+          "base": {
+            "Front": {
+              "atlas_filepath": "characters/char_4042_lumen/sanrio#2/base/Front/build_char_4042_lumen_sanrio#2.atlas",
+              "skel_filepath": "characters/char_4042_lumen/sanrio#2/base/Front/build_char_4042_lumen_sanrio#2.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "characters/char_4042_lumen/sanrio#2/base/Front/build_char_4042_lumen_sanrio#2.png",
+              "animations": [
+                "Default",
+                "Interact",
+                "Move",
+                "Relax",
+                "Sit",
+                "Sleep",
+                "Special"
+              ],
+              "use_straight_alpha": false,
+              "spritesheet_data_filepath": ""
+            }
+          },
+          "battle": {
+            "Back": {
+              "atlas_filepath": "characters/char_4042_lumen/sanrio#2/battle/Back/char_4042_lumen_sanrio#2.atlas",
+              "skel_filepath": "characters/char_4042_lumen/sanrio#2/battle/Back/char_4042_lumen_sanrio#2.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "characters/char_4042_lumen/sanrio#2/battle/Back/char_4042_lumen_sanrio#2.png",
+              "animations": [
+                "Attack",
+                "Default",
+                "Idle",
+                "Skill_1",
+                "Skill_2",
+                "Skill_3_Begin",
+                "Skill_3_End",
+                "Skill_3_Idle",
+                "Skill_3_Loop",
+                "Start"
+              ],
+              "use_straight_alpha": false,
+              "spritesheet_data_filepath": ""
+            },
+            "Front": {
+              "atlas_filepath": "characters/char_4042_lumen/sanrio#2/battle/Front/char_4042_lumen_sanrio#2.atlas",
+              "skel_filepath": "characters/char_4042_lumen/sanrio#2/battle/Front/char_4042_lumen_sanrio#2.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "characters/char_4042_lumen/sanrio#2/battle/Front/char_4042_lumen_sanrio#2.png",
               "animations": [
                 "Attack",
                 "Default",
@@ -41982,6 +42245,73 @@
               "skel_filepath": "characters/char_4155_talr/default/battle/Front/char_4155_talr.skel",
               "skel_json_filepath": "",
               "png_filepath": "characters/char_4155_talr/default/battle/Front/char_4155_talr.png",
+              "animations": [
+                "Attack",
+                "Default",
+                "Die",
+                "Idle",
+                "Skill_1_Begin",
+                "Skill_1_End",
+                "Skill_1_Idle",
+                "Skill_1_Loop",
+                "Skill_2_Begin",
+                "Skill_2_End",
+                "Skill_2_Loop",
+                "Skill_Down_1_Loop",
+                "Start"
+              ],
+              "use_straight_alpha": false,
+              "spritesheet_data_filepath": ""
+            }
+          }
+        },
+        "yun": {
+          "base": {
+            "Front": {
+              "atlas_filepath": "characters/char_4155_talr/yun#9/base/Front/build_char_4155_talr_yun#9.atlas",
+              "skel_filepath": "characters/char_4155_talr/yun#9/base/Front/build_char_4155_talr_yun#9.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "characters/char_4155_talr/yun#9/base/Front/build_char_4155_talr_yun#9.png",
+              "animations": [
+                "Default",
+                "Interact",
+                "Move",
+                "Relax",
+                "Sit",
+                "Sleep",
+                "Special"
+              ],
+              "use_straight_alpha": false,
+              "spritesheet_data_filepath": ""
+            }
+          },
+          "battle": {
+            "Back": {
+              "atlas_filepath": "characters/char_4155_talr/yun#9/battle/Back/char_4155_talr_yun#9.atlas",
+              "skel_filepath": "characters/char_4155_talr/yun#9/battle/Back/char_4155_talr_yun#9.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "characters/char_4155_talr/yun#9/battle/Back/char_4155_talr_yun#9.png",
+              "animations": [
+                "Attack",
+                "Default",
+                "Idle",
+                "Skill_1_Begin",
+                "Skill_1_End",
+                "Skill_1_Idle",
+                "Skill_1_Loop",
+                "Skill_2_Begin",
+                "Skill_2_End",
+                "Skill_2_Loop",
+                "Start"
+              ],
+              "use_straight_alpha": false,
+              "spritesheet_data_filepath": ""
+            },
+            "Front": {
+              "atlas_filepath": "characters/char_4155_talr/yun#9/battle/Front/char_4155_talr_yun#9.atlas",
+              "skel_filepath": "characters/char_4155_talr/yun#9/battle/Front/char_4155_talr_yun#9.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "characters/char_4155_talr/yun#9/battle/Front/char_4155_talr_yun#9.png",
               "animations": [
                 "Attack",
                 "Default",
