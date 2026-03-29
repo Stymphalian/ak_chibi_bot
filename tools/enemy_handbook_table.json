@@ -32254,6 +32254,635 @@
       "OverrideKillCntInfos": null,
       "SortId": 1057
     },
+    "enemy_10120_uaghst": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Cannot be blocked.",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Can fight 1 <Miner Guerrilla> at a time",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        0
+      ],
+      "DamageTypeAsNumpy": [
+        0
+      ],
+      "Description": "Members of the Ursus Infiltrator Squad. They have already infiltrated every corner of the battlefield, waiting for a chance to strike when the main Army arrives.",
+      "EnemyId": "enemy_10120_uaghst",
+      "EnemyIndex": "JTJ01",
+      "EnemyLevel": 0,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "Army Infiltrator",
+      "OverrideKillCntInfos": null,
+      "SortId": 1058
+    },
+    "enemy_10120_uaghst_2": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Cannot be blocked.",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Can fight 1 <Miner Guerrilla> at a time",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        0
+      ],
+      "DamageTypeAsNumpy": [
+        0
+      ],
+      "Description": "Members of the Ursus Phantom Infiltrator Squad. Equipped with advanced stealth gear, they are tasked with performing the decapitation strike when battle begins.",
+      "EnemyId": "enemy_10120_uaghst_2",
+      "EnemyIndex": "JTJ02",
+      "EnemyLevel": 0,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "Army Phantom",
+      "OverrideKillCntInfos": null,
+      "SortId": 1059
+    },
+    "enemy_10121_uasnip": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Cannot perform ranged attacks if allied units or <Miner Guerrillas> are nearby",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Interference area decreased when under a commander's <@eb.key>orders</>",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        0
+      ],
+      "DamageTypeAsNumpy": [
+        0
+      ],
+      "Description": "Mobile crossbowmen of the Ursus Army, pushing on the flanks to disrupt and contain the enemy. Cheap to recruit and train, they are often deployed in large numbers.",
+      "EnemyId": "enemy_10121_uasnip",
+      "EnemyIndex": "JTJ03",
+      "EnemyLevel": 0,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": [
+        "enemy_10125_uacomd",
+        "enemy_10125_uacomd_2"
+      ],
+      "Name": "Army Mobile Crossbowman",
+      "OverrideKillCntInfos": null,
+      "SortId": 1060
+    },
+    "enemy_10121_uasnip_2": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Cannot perform ranged attacks if allied units or <Miner Guerrillas> are nearby",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Interference area decreased when under a commander's <@eb.key>orders</>",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        0
+      ],
+      "DamageTypeAsNumpy": [
+        0
+      ],
+      "Description": "Elite crossbowmen of the Ursus Army, equipped with heavy weapons that can penetrate thick armor. They typically operate in a squad with multiple mobile crossbowmen, ensuring plenty of firepower.",
+      "EnemyId": "enemy_10121_uasnip_2",
+      "EnemyIndex": "JTJ04",
+      "EnemyLevel": 0,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": [
+        "enemy_10125_uacomd",
+        "enemy_10125_uacomd_2"
+      ],
+      "Name": "Army Elite Crossbowman",
+      "OverrideKillCntInfos": null,
+      "SortId": 1061
+    },
+    "enemy_10122_uacann": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Attacks leave behind a burning area",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Prioritizes <Miner Guerrillas> when under a commander's <@eb.key>orders</>",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        0
+      ],
+      "DamageTypeAsNumpy": [
+        0
+      ],
+      "Description": "Standard-issue light artillery of the Ursus Army, typically used for city defense. Aging artillery are passed down to the Patrol Units, as they are still perfectly adequate for the task of suppressing rebellions.",
+      "EnemyId": "enemy_10122_uacann",
+      "EnemyIndex": "JTJ05",
+      "EnemyLevel": 0,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": [
+        "enemy_10125_uacomd",
+        "enemy_10125_uacomd_2"
+      ],
+      "Name": "Army Light Artillery",
+      "OverrideKillCntInfos": null,
+      "SortId": 1062
+    },
+    "enemy_10122_uacann_2": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Attacks leave behind a burning area",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Prioritizes <Miner Guerrillas> when under a commander's <@eb.key>orders</>",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        0
+      ],
+      "DamageTypeAsNumpy": [
+        0
+      ],
+      "Description": "Heavy artillery manufactured by the Ursus Army, first revealed at the Grypherburg Grand Parade five years ago. Rumors say that a single shell from one can engulf an entire city block in flames, but the number of units in service remains unknown.",
+      "EnemyId": "enemy_10122_uacann_2",
+      "EnemyIndex": "JTJ06",
+      "EnemyLevel": 0,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": [
+        "enemy_10125_uacomd",
+        "enemy_10125_uacomd_2"
+      ],
+      "Name": "Army Heavy Artillery",
+      "OverrideKillCntInfos": null,
+      "SortId": 1063
+    },
+    "enemy_10123_uareap": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Can only be blocked by units with at least 3 Block; can fight 3 <Miner Guerrillas> at a time",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Fires several rockets, dealing AoE damage",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Fires more rockets when under a commander's <@eb.key>orders</>",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        0
+      ],
+      "DamageTypeAsNumpy": [
+        0
+      ],
+      "Description": "War machine developed by the First Arsenal of Ursus, representing the cutting-edge of Ursus's military technology. Only used in important battles due to massive energy requirements.",
+      "EnemyId": "enemy_10123_uareap",
+      "EnemyIndex": "JTJ07",
+      "EnemyLevel": 1,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": [
+        "enemy_10125_uacomd",
+        "enemy_10125_uacomd_2"
+      ],
+      "Name": "Fortbreaker",
+      "OverrideKillCntInfos": null,
+      "SortId": 1064
+    },
+    "enemy_10123_uareap_2": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Can only be blocked by units with at least 3 Block; can fight 3 <Miner Guerrillas> at a time",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Fires several rockets, dealing AoE damage",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Fires more rockets when under a commander's <@eb.key>orders</>",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        0
+      ],
+      "DamageTypeAsNumpy": [
+        0
+      ],
+      "Description": "Next-generation war machine developed by the First Arsenal of Ursus, with increased power output and ammo capacity. The trade-off is that the pilot's escape pod was removed.",
+      "EnemyId": "enemy_10123_uareap_2",
+      "EnemyIndex": "JTJ08",
+      "EnemyLevel": 1,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": [
+        "enemy_10125_uacomd",
+        "enemy_10125_uacomd_2"
+      ],
+      "Name": "Fortbreaker Mk-II",
+      "OverrideKillCntInfos": null,
+      "SortId": 1065
+    },
+    "enemy_10124_uashld": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "More likely to be attacked by friendly units; can fight 3 <Miner Guerrillas> at a time",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Takes less damage when under a commander's <@eb.key>orders</>",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        0
+      ],
+      "DamageTypeAsNumpy": [
+        0
+      ],
+      "Description": "Shieldguards of the Ursus Army. In the distance, a faint black line presses slowly forward. No one knows what their massive shields signify, only that screams keep coming from the cloud of dust in their wake.",
+      "EnemyId": "enemy_10124_uashld",
+      "EnemyIndex": "JTJ09",
+      "EnemyLevel": 1,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": [
+        "enemy_10125_uacomd",
+        "enemy_10125_uacomd_2"
+      ],
+      "Name": "Army Shieldguard",
+      "OverrideKillCntInfos": null,
+      "SortId": 1066
+    },
+    "enemy_10124_uashld_2": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "More likely to be attacked by friendly units; can fight 3 <Miner Guerrillas> at a time",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Takes less damage when under a commander's <@eb.key>orders</>",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        0
+      ],
+      "DamageTypeAsNumpy": [
+        0
+      ],
+      "Description": "Veteran Shieldguards of the Ursus army, responsible for defending the command headquarters. Any enemy that makes it that far will not make it past the final line of defense.",
+      "EnemyId": "enemy_10124_uashld_2",
+      "EnemyIndex": "JTJ10",
+      "EnemyLevel": 1,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": [
+        "enemy_10125_uacomd",
+        "enemy_10125_uacomd_2"
+      ],
+      "Name": "Army Veteran Shieldguard",
+      "OverrideKillCntInfos": null,
+      "SortId": 1067
+    },
+    "enemy_10125_uacomd": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Gives <@eb.key>orders</> to Army enemies on the field",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Can fight 1 <Miner Guerrilla> at a time",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        0
+      ],
+      "DamageTypeAsNumpy": [
+        0
+      ],
+      "Description": "Frontline commanders of the Ursus Army, who have received rigorous training and education from the military academy from a young age, ensuring their absolute loyalty to the empire.",
+      "EnemyId": "enemy_10125_uacomd",
+      "EnemyIndex": "JTJ11",
+      "EnemyLevel": 1,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "Army Frontline Commander",
+      "OverrideKillCntInfos": null,
+      "SortId": 1068
+    },
+    "enemy_10125_uacomd_2": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Gives <@eb.key>orders</> to Army enemies on the field",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Can fight 1 <Miner Guerrilla> at a time",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        0
+      ],
+      "DamageTypeAsNumpy": [
+        0
+      ],
+      "Description": "Senior commanders of the Ursus Army. Their loyalty to Ursus is beyond doubt, signified by the emblems of nobility on their uniform.",
+      "EnemyId": "enemy_10125_uacomd_2",
+      "EnemyIndex": "JTJ12",
+      "EnemyLevel": 1,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "Army Senior Commander",
+      "OverrideKillCntInfos": null,
+      "SortId": 1069
+    },
+    "enemy_10126_rkbomb": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "More likely to be attacked by friendly units; takes less damage, and deals Arts damage to the attacker when attacked",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Loses abilities after being attacked several times by <Miner Guerrillas>",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        0
+      ],
+      "DamageTypeAsNumpy": [
+        0
+      ],
+      "Description": "These Originium slugs have mutated due to the environmental changes in the mines, caused by an unknown substance. Approach with care, as they are highly unstable.",
+      "EnemyId": "enemy_10126_rkbomb",
+      "EnemyIndex": "KD01",
+      "EnemyLevel": 0,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "Abnormal Originium Slug",
+      "OverrideKillCntInfos": null,
+      "SortId": 1070
+    },
+    "enemy_10126_rkbomb_2": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "More likely to be attacked by friendly units; takes less damage, and deals Arts damage to the attacker when attacked",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Loses abilities after being attacked several times by <Miner Guerrillas>",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        0
+      ],
+      "DamageTypeAsNumpy": [
+        0
+      ],
+      "Description": "Dangerous mutated Originium slugs that are reproducing rapidly in the new underground environment. Rapid genetic iterations have increased their threat considerably.",
+      "EnemyId": "enemy_10126_rkbomb_2",
+      "EnemyIndex": "KD02",
+      "EnemyLevel": 0,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "Abnormal Originium Slug α",
+      "OverrideKillCntInfos": null,
+      "SortId": 1071
+    },
+    "enemy_10127_rkmbst": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "More likely to be attacked by friendly units; takes less damage, and gains ASPD",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Loses abilities after being attacked several times by <Miner Guerrillas>",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        0
+      ],
+      "DamageTypeAsNumpy": [
+        0
+      ],
+      "Description": "Mutated beast that dwells within the mines. It knew to avoid the strange rocks, but could not avoid drinking the black water. It lay on the gravel for several days, before standing up again.",
+      "EnemyId": "enemy_10127_rkmbst",
+      "EnemyIndex": "KD03",
+      "EnemyLevel": 1,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "Abnormal Manglerbeast",
+      "OverrideKillCntInfos": null,
+      "SortId": 1072
+    },
+    "enemy_10127_rkmbst_2": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "More likely to be attacked by friendly units; takes less damage, and gains ASPD",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Loses abilities after being attacked several times by <Miner Guerrillas>",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        0
+      ],
+      "DamageTypeAsNumpy": [
+        0
+      ],
+      "Description": "Mutated beast that dwells within the mines. As the number of living creatures dwindled, the starving beast cut deep claw marks on the rock walls. Black rocks grew along the blood, climbing up the beast's famished hide, making it massive and terrifying once more.",
+      "EnemyId": "enemy_10127_rkmbst_2",
+      "EnemyIndex": "KD04",
+      "EnemyLevel": 1,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "Abnormal Manglerbeast α",
+      "OverrideKillCntInfos": null,
+      "SortId": 1073
+    },
+    "enemy_10128_fearpj": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Flying unit.",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Self-destructs when nearing allied units, dealing AoE Arts damage and afflicting <Miner Guerrillas> with <$ba.fear>Fear</>",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        1
+      ],
+      "DamageTypeAsNumpy": [
+        1
+      ],
+      "Description": "Originating from the ignorance and confusion in the deepest depths of thought, it eats away at reason until all are dragged into the abyss of nothingness.",
+      "EnemyId": "enemy_10128_fearpj",
+      "EnemyIndex": "GAB",
+      "EnemyLevel": 0,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": [
+        "enemy_1572_folchr"
+      ],
+      "Name": "'Core of Stupor'",
+      "OverrideKillCntInfos": null,
+      "SortId": 1074
+    },
+    "enemy_3010_mcreep": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Allied unit; recovers HP when within any Medic Operator's Attack Range",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        0
+      ],
+      "DamageTypeAsNumpy": [
+        0
+      ],
+      "Description": "Resistance unit formed by miners, many of whom are still relatively young. They are not a rampaging mob: all they want to do is protect their families who are still underground.",
+      "EnemyId": "enemy_3010_mcreep",
+      "EnemyIndex": "KG01",
+      "EnemyLevel": 0,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "Miner Guerrilla",
+      "OverrideKillCntInfos": null,
+      "SortId": 1075
+    },
+    "enemy_3011_dyegrd": {
+      "Ability": null,
+      "AbilityList": null,
+      "AttackType": null,
+      "DamageType": [
+        0
+      ],
+      "DamageTypeAsNumpy": [
+        0
+      ],
+      "Description": "His actions are the will of Ursus. The breaking of a Blade perhaps signifies that this will is wavering.",
+      "EnemyId": "enemy_3011_dyegrd",
+      "EnemyIndex": "BBM",
+      "EnemyLevel": 2,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "'Emperor's Blade', Halberd Breaker",
+      "OverrideKillCntInfos": null,
+      "SortId": 1076
+    },
     "enemy_3009_mpprss": {
       "Ability": null,
       "AbilityList": null,
@@ -32423,6 +33052,38 @@
       "Name": "Fatty",
       "OverrideKillCntInfos": null,
       "SortId": 1082
+    },
+    "enemy_2125_dylnpp": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "<$ba.float>Low-Altitude Hovering</>",
+          "TextFormat": 0
+        },
+        {
+          "Text": "After receiving a certain number of hits, deals Arts damage to all allied units in a large area and <$ba.stun>stuns</> them",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        1
+      ],
+      "DamageTypeAsNumpy": [
+        1
+      ],
+      "Description": "A mascot for the Garden of Grotesqueries that Yi made himself, transformed into a geist from the adoration of visitors. One of the few geists not under the supervision of the Sui Regulator or Tianshi Bureaus. It spends its days interacting with visitors at the souvenir shop, or playing with ritual processions on the days when the garden is closed.",
+      "EnemyId": "enemy_2125_dylnpp",
+      "EnemyIndex": "BA",
+      "EnemyLevel": 1,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "Little Ba'jie",
+      "OverrideKillCntInfos": null,
+      "SortId": 1083
     },
     "enemy_2009_csaudc": {
       "Ability": null,
@@ -39103,6 +39764,124 @@
       "OverrideKillCntInfos": null,
       "SortId": 1270
     },
+    "enemy_1571_mirbst": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "First Form",
+          "TextFormat": 1
+        },
+        {
+          "Text": "Attacks hit twice and greatly increase the damage the target takes from this unit",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Enraged. Attacks both friend and foe, and seeks out units that have dealt damage to it; Physical and Arts damage taken greatly reduced, ASPD and Movement Speed greatly increased",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Loses rage and attempts to flee after some time, or if HP drops below a certain level",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Second Form",
+          "TextFormat": 1
+        },
+        {
+          "Text": "Reappears after a short delay, remaining enraged for a while; during this time, Physical and Arts damage taken is greatly reduced, while ATK is greatly increased",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Attacks all nearby allied units",
+          "TextFormat": 0
+        },
+        {
+          "Text": "[Rockfall] Deals Physical damage to the unit that has dealt the most damage to it, inflicting <$ba.stun>Stun</>",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        0
+      ],
+      "DamageTypeAsNumpy": [
+        0
+      ],
+      "Description": "Has long lost its divinity. Only its survival instinct keeps it going.",
+      "EnemyId": "enemy_1571_mirbst",
+      "EnemyIndex": "KD",
+      "EnemyLevel": 2,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "Rampaging Abnormal Manglerbeast",
+      "OverrideKillCntInfos": null,
+      "SortId": 1271
+    },
+    "enemy_1572_folchr": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Cannot be blocked and spreads <@eb.key>Toxic Pollution</> at its location",
+          "TextFormat": 0
+        },
+        {
+          "Text": "First Form",
+          "TextFormat": 1
+        },
+        {
+          "Text": "[Cocoon of Ignorance] Deals Arts damage to nearby allied units, inflicting <$ba.fear>Fear</> on <Miner Guerrillas> and causing them to lose visibility; <Miner Guerrillas> lose <$ba.fear>Fear</> when their HP is at max",
+          "TextFormat": 0
+        },
+        {
+          "Text": "[Spiritual Burden] Every 4th attack gains increased ATK and creates [Dominion] around the target; target is instantly defeated if already within [Dominion]",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Second Form",
+          "TextFormat": 1
+        },
+        {
+          "Text": "Enters a new battlefield and spreads <@eb.key>Toxic Pollution</> throughout the field",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Attacks deal Arts damage 5 times, prioritizing different targets",
+          "TextFormat": 0
+        },
+        {
+          "Text": "[Spreading Fear] Summons a number of <Cores of Stupor>",
+          "TextFormat": 0
+        },
+        {
+          "Text": "[Vapid Chaos] For every 20% HP lost, Yurodstvo deals Arts damage to nearby allied units, inflicting <$ba.fear>Fear</> on <Miner Guerrillas> and causing them to lose visibility; <Miner Guerrillas> lose <$ba.fear>Fear</> when their HP is at max",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        1
+      ],
+      "DamageTypeAsNumpy": [
+        1
+      ],
+      "Description": "Do not complain. Do not hesitate. Do not struggle. Just accept it.",
+      "EnemyId": "enemy_1572_folchr",
+      "EnemyIndex": "GAB",
+      "EnemyLevel": 2,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": [
+        "enemy_10128_fearpj"
+      ],
+      "Name": "Yurodstvo",
+      "OverrideKillCntInfos": null,
+      "SortId": 1272
+    },
     "enemy_2003_rockman": {
       "Ability": null,
       "AbilityList": [
@@ -41743,6 +42522,110 @@
       "Name": "'Wang'",
       "OverrideKillCntInfos": null,
       "SortId": 1342
+    },
+    "enemy_2123_dyjsww": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "First Form",
+          "TextFormat": 1
+        },
+        {
+          "Text": "[Inaction] Cannot be attacked; enters 2nd form when <Bestial Ju> is defeated or leaves the field, or when enough time has elapsed, activating all Ancient Statuegeists on the field",
+          "TextFormat": 0
+        },
+        {
+          "Text": "[Timeshift] Periodically teleports to a certain tile, reducing the ASPD of your units deployed in the opposite direction of its movement, and increasing the Movement Speed of enemy units moving in the same direction",
+          "TextFormat": 0
+        },
+        {
+          "Text": "[Transmogrification] When touched by an enemy other than <Bestial Ju>, removes them from the field, deducts 1 Life Point, deals Arts damage to all your units, and permanently gains increased ATK",
+          "TextFormat": 0
+        },
+        {
+          "Text": "[Altruism] Periodically locks on to one of your Operators parallel to it and attacks in a straight line, dealing splash Arts damage to the first Operator hit, and deploying an Ancient Statuegeist on a nearby passable tile",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Second Form",
+          "TextFormat": 1
+        },
+        {
+          "Text": "[Transmogrification] Causes all enemies other than <Bestial Ju> to move towards this unit until it is defeated or leaves the field; when touched by an enemy other than <Bestial Ju>, removes them from the field, deducts 1 Life Point, deals Arts damage to all your units, and permanently gains increased ATK",
+          "TextFormat": 0
+        },
+        {
+          "Text": "[Timeshift] Periodically reduces the ASPD of your units deployed in the opposite direction of its movement, and increasing the Movement Speed of enemy units moving in the same direction",
+          "TextFormat": 0
+        },
+        {
+          "Text": "When a long time has passed in the battle, disappears and drains 50 Life Points",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        1
+      ],
+      "DamageTypeAsNumpy": [
+        1
+      ],
+      "Description": "Of the same form as the earth, of the same height as the mountains. None amongst the many are its equal, and its name is Hou.",
+      "EnemyId": "enemy_2123_dyjsww",
+      "EnemyIndex": "HOU",
+      "EnemyLevel": 2,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": [
+        "enemy_2124_dyjsfg"
+      ],
+      "Name": "Bestial Hou",
+      "OverrideKillCntInfos": null,
+      "SortId": 1343
+    },
+    "enemy_2124_dyjsfg": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "[Sober] Duration of negative statuses such as Stun, Cold, and Freeze greatly reduced; Physical and Arts damage taken greatly reduced; damage reduction effect reduced when blocked or prevented from moving",
+          "TextFormat": 0
+        },
+        {
+          "Text": "[Concordance] Continuously deals Physical damage around itself, and deals one instance of heavy Physical damage around itself whenever it is blocked",
+          "TextFormat": 0
+        },
+        {
+          "Text": "[Unlife] When HP drops below 50% for the first time, gains increased Block cost, ATK, and Movement Speed",
+          "TextFormat": 0
+        },
+        {
+          "Text": "[Benevolence] When defeated or on leaving the field, removes all enemies other than <Bestial Hou> from the field, and deals one instance of heavy Physical damage to all your units, ignoring Invisibility",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        0
+      ],
+      "DamageTypeAsNumpy": [
+        0
+      ],
+      "Description": "Bring unity and order, halt conflict and quell disaster. It is upright and unyielding, and its name is Ju.",
+      "EnemyId": "enemy_2124_dyjsfg",
+      "EnemyIndex": "JU",
+      "EnemyLevel": 2,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": [
+        "enemy_2123_dyjsww"
+      ],
+      "Name": "Bestial Ju",
+      "OverrideKillCntInfos": null,
+      "SortId": 1344
     },
     "enemy_5008_cstrwd": {
       "Ability": null,

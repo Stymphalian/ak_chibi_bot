@@ -985,6 +985,74 @@
         "Caster Leader",
         "A4"
     ],
+    "enemy_10120_uaghst": [
+        "Army Infiltrator",
+        "JTJ01"
+    ],
+    "enemy_10120_uaghst_2": [
+        "Army Phantom",
+        "JTJ02"
+    ],
+    "enemy_10121_uasnip": [
+        "Army Mobile Crossbowman",
+        "JTJ03"
+    ],
+    "enemy_10121_uasnip_2": [
+        "Army Elite Crossbowman",
+        "JTJ04"
+    ],
+    "enemy_10122_uacann": [
+        "Army Light Artillery",
+        "JTJ05"
+    ],
+    "enemy_10122_uacann_2": [
+        "Army Heavy Artillery",
+        "JTJ06"
+    ],
+    "enemy_10123_uareap": [
+        "Fortbreaker",
+        "JTJ07"
+    ],
+    "enemy_10123_uareap_2": [
+        "Fortbreaker Mk-II",
+        "JTJ08"
+    ],
+    "enemy_10124_uashld": [
+        "Army Shieldguard",
+        "JTJ09"
+    ],
+    "enemy_10124_uashld_2": [
+        "Army Veteran Shieldguard",
+        "JTJ10"
+    ],
+    "enemy_10125_uacomd": [
+        "Army Frontline Commander",
+        "JTJ11"
+    ],
+    "enemy_10125_uacomd_2": [
+        "Army Senior Commander",
+        "JTJ12"
+    ],
+    "enemy_10126_rkbomb": [
+        "Abnormal Originium Slug",
+        "KD01"
+    ],
+    "enemy_10126_rkbomb_2": [
+        "Abnormal Originium Slug α",
+        "KD02"
+    ],
+    "enemy_10127_rkmbst": [
+        "Abnormal Manglerbeast",
+        "KD03"
+    ],
+    "enemy_10127_rkmbst_2": [
+        "Abnormal Manglerbeast α",
+        "KD04"
+    ],
+    "enemy_10128_fearpj": [
+        "Core of Stupor",
+        "GAB"
+    ],
     "enemy_1012_dcross": [
         "Sarkaz Crossbowman",
         "S3"
@@ -4509,6 +4577,14 @@
         "Kouhei Mifune",
         "MF"
     ],
+    "enemy_1571_mirbst": [
+        "Rampaging Abnormal Manglerbeast",
+        "KD"
+    ],
+    "enemy_1572_folchr": [
+        "Yurodstvo",
+        "GAB"
+    ],
     "enemy_18001_lhship": [
         "Transport Boat",
         "IL01"
@@ -4991,6 +5067,18 @@
         "Liang",
         "YIS"
     ],
+    "enemy_2123_dyjsww": [
+        "Bestial Hou",
+        "HOU"
+    ],
+    "enemy_2124_dyjsfg": [
+        "Bestial Ju",
+        "JU"
+    ],
+    "enemy_2125_dylnpp": [
+        "Little Bajie",
+        "BA"
+    ],
     "enemy_3001_upeopl": [
         "Ursus Civilian",
         "U16"
@@ -5021,6 +5109,14 @@
     "enemy_3009_mpprss": [
         "EYESOFPRIESTESS",
         "RI3"
+    ],
+    "enemy_3010_mcreep": [
+        "Miner Guerrilla",
+        "KG01"
+    ],
+    "enemy_3011_dyegrd": [
+        "Emperors Blade, Halberd Breaker",
+        "BBM"
     ],
     "enemy_4001_toxcar": [
         "Retrofitted Gastruck",
