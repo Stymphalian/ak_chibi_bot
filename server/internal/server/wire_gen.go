@@ -57,6 +57,7 @@ func InitializeMainServer() (*MainServer, error) {
 	roomsManager := room.NewRoomsManager(assetService, roomRepositoryPsql, userRepositoryPsql, userPreferencesRepositoryPsql, chatterRepositoryPsql, twitchApiClient, botConfig)
 	operatorService := operator.NewDefaultOperatorService(assetService)
 	apiServer := api.NewApiServer(roomsManager, authService, roomRepositoryPsql, userRepositoryPsql, userPreferencesRepositoryPsql, operatorService, botConfig)
-	mainServer := NewMainServer(commandLineArgs, botConfig, assetService, roomRepositoryPsql, userRepositoryPsql, chatterRepositoryPsql, authRepositoryPsql, twitchApiClient, authService, loginServer, roomsManager, apiServer, datbaseConn)
+	assetStore := akdb.ProvideAssetStore(datbaseConn)
+	mainServer := NewMainServer(commandLineArgs, botConfig, assetService, roomRepositoryPsql, userRepositoryPsql, chatterRepositoryPsql, authRepositoryPsql, twitchApiClient, authService, loginServer, roomsManager, apiServer, datbaseConn, assetStore)
 	return mainServer, nil
 }

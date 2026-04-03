@@ -1,0 +1,5 @@
+export DATABASE_HOST=
+export DATABASE_PORT=
+export DATABASE_USER=
+export DATABASE_PASSWORD=
+export DATABASE_DB=

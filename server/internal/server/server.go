@@ -6,11 +6,13 @@ import (
 	"fmt"
 	"log"
 	"math"
+	"mime"
 	"net/http"
 	"net/url"
 	"os"
 	"os/signal"
 	"path"
+	"path/filepath"
 	"strconv"
 	"strings"
 	"sync"
@@ -40,6 +42,7 @@ type MainServer struct {
 	botConfig *misc.BotConfig
 
 	akDb         *akdb.DatbaseConn
+	assetStore   *akdb.AssetStore
 	roomsRepo    room.RoomRepository
 	usersRepo    users.UserRepository
 	chattersRepo users.ChatterRepository
@@ -67,12 +70,14 @@ func NewMainServer(
 	roomsManager *room.RoomsManager,
 	apiServer *api.ApiServer,
 	akDb *akdb.DatbaseConn,
+	assetStore *akdb.AssetStore,
 ) *MainServer {
 	return &MainServer{
 		args:      *args,
 		botConfig: botConfig,
 
 		akDb:         akDb,
+		assetStore:   assetStore,
 		roomsRepo:    roomsRepo,
 		usersRepo:    usersRepo,
 		chattersRepo: chattersRepo,
@@ -133,10 +138,25 @@ func (s *MainServer) Run() {
 		),
 	)
 
-	// Image File Server
+	// Image Asset Handler (served from DB)
 	mux.Handle("/image/assets/",
 		http.TimeoutHandler(
-			http.StripPrefix("/image/assets/", http.FileServer(http.Dir(s.args.ImageAssetDir))),
+			http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+				filePath := strings.TrimPrefix(r.URL.Path, "/image/assets/")
+				data, err := s.assetStore.GetAsset(filePath)
+				if err != nil || len(data) == 0 {
+					http.NotFound(w, r)
+					return
+				}
+				ct := mime.TypeByExtension(filepath.Ext(filePath))
+				if ct == "" {
+					ct = "application/octet-stream"
+				}
+				w.Header().Set("Content-Type", ct)
+				w.Header().Set("Content-Encoding", "gzip")
+				w.WriteHeader(http.StatusOK)
+				w.Write(data)
+			}),
 			DEFAULT_TIMEOUT,
 			"",
 		),

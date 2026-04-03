@@ -23,6 +23,8 @@ static/spine/dist/
 static/web_app/build/*
 
 db/certs/
+data/.db-data/
+data/.db-data*
 
 release/assets/
 
@@ -36,6 +38,7 @@ secrets/
 thirdparty/
 tmp/
 .env
+.envrc
 assets.zip
 assets2.zip
 .venv/

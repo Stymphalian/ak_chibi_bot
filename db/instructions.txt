@@ -2,3 +2,13 @@
 2. Run db/udpate_certs.sh
 3. docker compose deploy up
 4. docker container restart db 
+
+
+We use golang-migrate to handle migrations
+Here are some example command (run from the db folder)
+docker run -it -v ./migrations:/migrations --network ak-services_default migrate/migrate -database postgres://postgres:<PASSWORD>@db:5432/akdb  -path ./migrations up
+docker run -it -v ./migrations:/migrations --network ak-services_default migrate/migrate -database postgres://postgres:<PASSWORD>@db:5432/akdb  -path ./migrations down
+docker run -it -v ./migrations:/migrations --network ak-services_default migrate/migrate -database postgres://postgres:<PASSWORD>@db:5432/akdb  -path ./migrations goto 20241003052356
+docker run -it -v ./migrations:/migrations --network ak-services_default migrate/migrate -database postgres://postgres:<PASSWORD>@db:5432/akdb  -path ./migrations force 20241003052356
+docker run -it -v ./migrations:/migrations --network ak-services_default migrate/migrate -database postgres://postgres:<PASSWORD>@db:5432/akdb  -path ./migrations version
+docker run -it -v ./migrations:/migrations migrate/migrate create -ext sql -dir /migrations user_pref

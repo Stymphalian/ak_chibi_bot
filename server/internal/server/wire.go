@@ -28,6 +28,7 @@ func InitializeMainServer() (*MainServer, error) {
 
 		// Repositories
 		akdb.ProvideDatabaseConn,
+		akdb.ProvideAssetStore,
 		room.NewRoomRepositoryPsql,
 		wire.Bind(new(room.RoomRepository), new(*room.RoomRepositoryPsql)),
 		users.NewUserRepositoryPsql,

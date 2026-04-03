@@ -1,11 +1,9 @@
 ## BASE
 FROM golang:1.23 AS base
 RUN mkdir -p /ak_chibi_assets
-RUN mkdir -p /ak_chibi_assets/assets
 RUN mkdir -p /ak_chibi_assets/public
 RUN mkdir -p /ak_chibi_assets/spine/dist
 RUN mkdir -p /ak_chibi_assets/web_app/build
-COPY ./static/assets /ak_chibi_assets/assets
 COPY ./static/public /ak_chibi_assets/public
 COPY ./static/spine/dist /ak_chibi_assets/spine/dist
 COPY ./static/web_app/build /ak_chibi_assets/web_app/build
@@ -61,7 +59,6 @@ USER botuser
 ENTRYPOINT [ \
     "./ak_chibi_bot", \
     "-address=:8080", \
-    "-image_assetdir=static/assets", \
     "-static_dir=static", \
     "-bot_config=config.json" \
 ]

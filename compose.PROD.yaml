@@ -44,7 +44,7 @@ services:
     secrets:
       - postgres-password.txt
     volumes:
-      - db-data:/var/lib/postgresql/data
+      - ./data/.db-data:/var/lib/postgresql/data
     environment:
       - POSTGRES_DB=akdb
       - POSTGRES_USER=postgres
