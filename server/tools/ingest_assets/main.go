@@ -110,6 +110,7 @@ func run(assetDir string, dryRun bool, diffOnly bool) error {
 	ingested := 0
 	skipped := 0
 	var totalRaw, totalCompressed int64
+	seenHashes := make(map[int64][]string) // hash -> all paths that produced it
 	for i, relPath := range paths {
 		fullPath := filepath.Join(assetDir, filepath.FromSlash(relPath))
 		_, err := os.Stat(fullPath)
@@ -132,6 +133,13 @@ func run(assetDir string, dryRun bool, diffOnly bool) error {
 			continue
 		}
 		hash := hashFilePath(relPath)
+
+		seenHashes[hash] = append(seenHashes[hash], relPath)
+		if len(seenHashes[hash]) == 2 {
+			log.Printf("HASH CONFLICT: hash=%d first collision for paths: %v", hash, seenHashes[hash])
+		} else if len(seenHashes[hash]) > 2 {
+			log.Printf("HASH CONFLICT: hash=%d additional path=%q", hash, relPath)
+		}
 
 		totalRaw += int64(len(raw))
 		totalCompressed += int64(len(data))
@@ -159,12 +167,25 @@ func run(assetDir string, dryRun bool, diffOnly bool) error {
 		}
 	}
 
+	var conflicting []int64
+	for hash, paths := range seenHashes {
+		if len(paths) > 1 {
+			conflicting = append(conflicting, hash)
+		}
+	}
+	if len(conflicting) > 0 {
+		log.Printf("WARNING: %d hash collision(s) detected:", len(conflicting))
+		for _, hash := range conflicting {
+			log.Printf("  hash=%d paths=%v", hash, seenHashes[hash])
+		}
+	}
+
 	var savingsPct float64
 	if totalRaw > 0 {
 		savingsPct = float64(totalRaw-totalCompressed) / float64(totalRaw) * 100
 	}
-	log.Printf("Done — ingested: %d, skipped: %d, raw: %.1f MB, compressed: %.1f MB, savings: %.1f%%, elapsed: %s",
-		ingested, skipped,
+	log.Printf("Done — ingested: %d, skipped: %d, collisions: %d, raw: %.1f MB, compressed: %.1f MB, savings: %.1f%%, elapsed: %s",
+		ingested, skipped, len(conflicting),
 		float64(totalRaw)/1e6, float64(totalCompressed)/1e6,
 		savingsPct,
 		time.Since(start).Round(time.Millisecond),
