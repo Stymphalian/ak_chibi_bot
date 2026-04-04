@@ -1,8 +1,9 @@
 package main
 
 // go run server/tools/ingest_assets/main.go -assetDir static/assets -dry-run
-// go run server/tools/ingest_assets/main.go -assetDir static/assets -diff
-// DB connection is configured via environment variables (see .envrc)
+// go run server/tools/ingest_assets/main.go -assetDir static/assets -diff -password-file secrets/postgres-password.txt
+// go run server/tools/ingest_assets/main.go -assetDir static/assets -diff -host <prod-host> -user <prod-user> -dbname <prod-db> -password-file secrets/prod-postgress-password.txt
+// If -password-file is not set, DB connection falls back to environment variables (see .envrc)
 
 import (
 	"bytes"
@@ -75,12 +76,12 @@ func fetchExistingHashes(dbConn *akdb.DatbaseConn) (map[int64]bool, error) {
 	return existing, nil
 }
 
-func run(assetDir string, dryRun bool, diffOnly bool) error {
+func run(assetDir string, dryRun bool, diffOnly bool, getConn func() (*akdb.DatbaseConn, error)) error {
 	start := time.Now()
 	var dbConn *akdb.DatbaseConn
 	var err error
 	if !dryRun {
-		dbConn, err = akdb.ProvideDatabaseConn()
+		dbConn, err = getConn()
 		if err != nil {
 			return err
 		}
@@ -197,12 +198,34 @@ func main() {
 	assetDirPtr := flag.String("assetDir", "static/assets", "path to the assets root directory")
 	dryRunPtr := flag.Bool("dry-run", false, "log what would be ingested without writing to the DB")
 	diffOnlyPtr := flag.Bool("diff", false, "only insert files not already present in the DB")
+	hostPtr := flag.String("host", "localhost", "database host")
+	portPtr := flag.String("port", "55443", "database port")
+	userPtr := flag.String("user", "postgres", "database user")
+	dbnamePtr := flag.String("dbname", "akdb", "database name")
+	passwordFilePtr := flag.String("password-file", "", "path to file containing the database password; if set, CLI flags are used instead of environment variables")
 	flag.Parse()
 
 	log.Printf("-assetDir: %s", *assetDirPtr)
 	log.Printf("-dry-run: %v", *dryRunPtr)
 	log.Printf("-diff: %v", *diffOnlyPtr)
-	if err := run(*assetDirPtr, *dryRunPtr, *diffOnlyPtr); err != nil {
+	log.Printf("-host: %s", *hostPtr)
+	log.Printf("-port: %s", *portPtr)
+	log.Printf("-user: %s", *userPtr)
+	log.Printf("-dbname: %s", *dbnamePtr)
+	log.Printf("-password-file: %s", *passwordFilePtr)
+
+	getConn := func() (*akdb.DatbaseConn, error) {
+		if *passwordFilePtr != "" {
+			paswdBytes, err := os.ReadFile(*passwordFilePtr)
+			if err != nil {
+				return nil, fmt.Errorf("reading password file: %w", err)
+			}
+			return akdb.ProvideConnWithParams(*hostPtr, *portPtr, *userPtr, *dbnamePtr, strings.TrimSpace(string(paswdBytes)))
+		}
+		return akdb.ProvideDatabaseConn()
+	}
+
+	if err := run(*assetDirPtr, *dryRunPtr, *diffOnlyPtr, getConn); err != nil {
 		log.Fatal(err)
 	}
 }

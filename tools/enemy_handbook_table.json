@@ -36006,6 +36006,578 @@
       "OverrideKillCntInfos": null,
       "SortId": 1181
     },
+    "enemy_4040_mugoal": {
+      "Ability": null,
+      "AbilityList": null,
+      "AttackType": null,
+      "DamageType": [
+        3
+      ],
+      "DamageTypeAsNumpy": [
+        3
+      ],
+      "Description": "The ending point of Obstacle Drift. The signal tower in the middle sends out the signal announcing the end of the match as soon as the Drifter touches the buoy.",
+      "EnemyId": "enemy_4040_mugoal",
+      "EnemyIndex": "IB56",
+      "EnemyLevel": 0,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "Beacon Tower",
+      "OverrideKillCntInfos": null,
+      "SortId": 1182
+    },
+    "enemy_4041_mundr": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Flying unit.",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Shoot it down to earn a small amount of points",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        3
+      ],
+      "DamageTypeAsNumpy": [
+        3
+      ],
+      "Description": "Cargo drone commissioned by the organizers to ensure the smooth operation of Obstacle Drift. The red version still has some bugs to iron out in the software. Please report any drone failures to the organizers.",
+      "EnemyId": "enemy_4041_mundr",
+      "EnemyIndex": "IB57",
+      "EnemyLevel": 0,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "Ruby Flightwing",
+      "OverrideKillCntInfos": null,
+      "SortId": 1183
+    },
+    "enemy_4042_murdr": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Flying unit.",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Shoot it down to earn a moderate amount of points",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        3
+      ],
+      "DamageTypeAsNumpy": [
+        3
+      ],
+      "Description": "Cargo drone commissioned by the organizers to ensure the smooth operation of Obstacle Drift. The blue version has not completed the quality checks yet. Watch out for debris created when they crash.",
+      "EnemyId": "enemy_4042_murdr",
+      "EnemyIndex": "IB58",
+      "EnemyLevel": 0,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "Sapphire Flightwing",
+      "OverrideKillCntInfos": null,
+      "SortId": 1184
+    },
+    "enemy_4043_muedr": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Flying unit.",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Shoot it down to earn a large amount of points!",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        3
+      ],
+      "DamageTypeAsNumpy": [
+        3
+      ],
+      "Description": "Cargo drone commissioned by the organizers to ensure the smooth operation of Obstacle Drift. The white version has successfully passed all performance tests. Please contact the organizers if you would like to make a purchase.",
+      "EnemyId": "enemy_4043_muedr",
+      "EnemyIndex": "IB59",
+      "EnemyLevel": 0,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "Diamond Flightwing",
+      "OverrideKillCntInfos": null,
+      "SortId": 1185
+    },
+    "enemy_4044_mutdek": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Attaches itself to the Drifter when it comes into contact",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Gives a large amount of points if not destroyed after being attached to the Drifter!",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        3
+      ],
+      "DamageTypeAsNumpy": [
+        3
+      ],
+      "Description": "Floating board with supply crates on it. Competitors are scored based on the amount of supplies they bring back. Be careful, as the board can be quite fragile.",
+      "EnemyId": "enemy_4044_mutdek",
+      "EnemyIndex": "IB60",
+      "EnemyLevel": 0,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "Supplies Floater",
+      "OverrideKillCntInfos": null,
+      "SortId": 1186
+    },
+    "enemy_4045_murtre": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Gains <$ba.invisible>Invisibility</> while in water",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Provides <Basic Floater> or <Gravity Floater> at random",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        3
+      ],
+      "DamageTypeAsNumpy": [
+        3
+      ],
+      "Description": "Sports gear boxes lying along the course that have not been cleaned up, from previous competitors who failed to complete the event.",
+      "EnemyId": "enemy_4045_murtre",
+      "EnemyIndex": "IB61",
+      "EnemyLevel": 0,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "Submerged Supply Crate",
+      "OverrideKillCntInfos": null,
+      "SortId": 1187
+    },
+    "enemy_4046_muobst": {
+      "Ability": null,
+      "AbilityList": null,
+      "AttackType": null,
+      "DamageType": [
+        3
+      ],
+      "DamageTypeAsNumpy": [
+        3
+      ],
+      "Description": "A buoy that marks the boundaries of Obstacle Drift. It is not nearly as flimsy as it looks.",
+      "EnemyId": "enemy_4046_muobst",
+      "EnemyIndex": "IB62",
+      "EnemyLevel": 0,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "Moored Buoy",
+      "OverrideKillCntInfos": null,
+      "SortId": 1188
+    },
+    "enemy_4047_mustak": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Deals Physical damage to <Basic Floater>, <Gravity Floater>, and <Supplies Floater>",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        0
+      ],
+      "DamageTypeAsNumpy": [
+        0
+      ],
+      "Description": "A buoy set up on the Obstacle Drift course. The brazier is not firmly fastened. It is doubtful that you will ever be able to find the safety official responsible for these buoys.",
+      "EnemyId": "enemy_4047_mustak",
+      "EnemyIndex": "IB63",
+      "EnemyLevel": 0,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "Brazier Buoy",
+      "OverrideKillCntInfos": null,
+      "SortId": 1189
+    },
+    "enemy_4048_mubarn": {
+      "Ability": null,
+      "AbilityList": null,
+      "AttackType": null,
+      "DamageType": [
+        0
+      ],
+      "DamageTypeAsNumpy": [
+        0
+      ],
+      "Description": "A cragpincer that feels the need to strengthen its limbs, but something is not quite right with its training, resulting in one limb being significantly larger than the other.",
+      "EnemyId": "enemy_4048_mubarn",
+      "EnemyIndex": "IB64",
+      "EnemyLevel": 0,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "Salty Gym-goer",
+      "OverrideKillCntInfos": null,
+      "SortId": 1190
+    },
+    "enemy_4048_mubarn_2": {
+      "Ability": null,
+      "AbilityList": null,
+      "AttackType": null,
+      "DamageType": [
+        0
+      ],
+      "DamageTypeAsNumpy": [
+        0
+      ],
+      "Description": "A cragpincer that feels the need to strengthen its limbs. Amongst its kind, the size of one's limb has become a status symbol.",
+      "EnemyId": "enemy_4048_mubarn_2",
+      "EnemyIndex": "IB65",
+      "EnemyLevel": 0,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "'Super Pincer' Salty Gym-goer",
+      "OverrideKillCntInfos": null,
+      "SortId": 1191
+    },
+    "enemy_4049_muston": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Unable to move",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Continuously deals <$ba.dt.erosion>Corrosion</> to its surroundings",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Revives when defeated for the first time, summoning specific enemies; after reviving, deals more <$ba.dt.erosion>Corrosion</> with expanded range",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        3
+      ],
+      "DamageTypeAsNumpy": [
+        3
+      ],
+      "Description": "A creature that drifts leisurely along the course. The locals see it as a mascot, and attacking it will invoke their fury.",
+      "EnemyId": "enemy_4049_muston",
+      "EnemyIndex": "IB66",
+      "EnemyLevel": 1,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "Wavebringer",
+      "OverrideKillCntInfos": null,
+      "SortId": 1192
+    },
+    "enemy_4049_muston_2": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Unable to move",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Continuously deals <$ba.dt.erosion>Corrosion</> to its surroundings",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Revives when defeated for the first time, summoning specific enemies; after reviving, deals more <$ba.dt.erosion>Corrosion</> with expanded range",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        3
+      ],
+      "DamageTypeAsNumpy": [
+        3
+      ],
+      "Description": "A creature that drifts leisurely along the course. When disturbed, it disturbs the currents with its body, creating significant danger.",
+      "EnemyId": "enemy_4049_muston_2",
+      "EnemyIndex": "IB67",
+      "EnemyLevel": 1,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "'Pearl of the Waves' Wavebringer",
+      "OverrideKillCntInfos": null,
+      "SortId": 1193
+    },
+    "enemy_4050_mubbar": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Can only be blocked by Operators with 3 or more Block",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Gains <$ba.invisible>Invisibility</> while in water, and performs ranged attacks",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Throws Salty Gym-goer when performing ranged attacks",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        0
+      ],
+      "DamageTypeAsNumpy": [
+        0
+      ],
+      "Description": "Large cragpincer that can lift very heavy objects. It shows off by lifting barbells, in order to persuade other cragpincers to train under it.",
+      "EnemyId": "enemy_4050_mubbar",
+      "EnemyIndex": "IB68",
+      "EnemyLevel": 1,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": [
+        "enemy_4048_mubarn"
+      ],
+      "Name": "Marine Strongman",
+      "OverrideKillCntInfos": null,
+      "SortId": 1194
+    },
+    "enemy_4050_mubbar_2": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Can only be blocked by Operators with 3 or more Block",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Gains <$ba.invisible>Invisibility</> while in water, and performs ranged attacks",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Throws 'Super Pincer' Salty Gym-goer when performing ranged attacks",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        0
+      ],
+      "DamageTypeAsNumpy": [
+        0
+      ],
+      "Description": "Large cragpincer that can lift massive barbells. It has many students and fans, all of whom believe that the strength of one's limb is everything.",
+      "EnemyId": "enemy_4050_mubbar_2",
+      "EnemyIndex": "IB69",
+      "EnemyLevel": 1,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": [
+        "enemy_4048_mubarn_2"
+      ],
+      "Name": "'Weightlifting Champ' Marine Strongman",
+      "OverrideKillCntInfos": null,
+      "SortId": 1195
+    },
+    "enemy_4051_mublow": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Starts battle in Standby and will not attack",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Becomes Combat-Ready and Aerial when damaged",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Periodically stops attack, dealing AoE Arts damage while pushing the Drifter in the targeted direction; then escapes into the distance",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        0
+      ],
+      "DamageTypeAsNumpy": [
+        0
+      ],
+      "Description": "Fowlbeast with an unusual plume, able to manipulate airflow by spinning its head, bringing unexpected challenges to the match.",
+      "EnemyId": "enemy_4051_mublow",
+      "EnemyIndex": "IB70",
+      "EnemyLevel": 1,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "Seawind Manipulator",
+      "OverrideKillCntInfos": null,
+      "SortId": 1196
+    },
+    "enemy_4051_mublow_2": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Starts battle in Standby and will not attack",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Becomes Combat-Ready and Aerial when damaged",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Periodically stops attack, dealing AoE Arts damage while pushing the Drifter in the targeted direction; then escapes into the distance",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        0
+      ],
+      "DamageTypeAsNumpy": [
+        0
+      ],
+      "Description": "Fowlbeast with an unusual plume, able to manipulate airflow by spinning its head, which it uses as a form of attack.",
+      "EnemyId": "enemy_4051_mublow_2",
+      "EnemyIndex": "IB71",
+      "EnemyLevel": 1,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "'Weathervane' Seawind Manipulator",
+      "OverrideKillCntInfos": null,
+      "SortId": 1197
+    },
+    "enemy_4052_mulaze": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Flying unit.",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Deals Arts damage",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Periodically locks onto a unit, dealing AoE Arts damage in its direction after a short delay",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        1
+      ],
+      "DamageTypeAsNumpy": [
+        1
+      ],
+      "Description": "Photography drone that records what is happening in the arena. The programmers accidentally set triggers for both 'recording' and 'warning' to 'unconditional', causing it to attack all competitors.",
+      "EnemyId": "enemy_4052_mulaze",
+      "EnemyIndex": "IB72",
+      "EnemyLevel": 1,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "Radiance Scorer",
+      "OverrideKillCntInfos": null,
+      "SortId": 1198
+    },
+    "enemy_4052_mulaze_2": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Flying unit.",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Deals Arts damage",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Periodically locks onto a unit, dealing AoE Arts damage in its direction after a short delay",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        1
+      ],
+      "DamageTypeAsNumpy": [
+        1
+      ],
+      "Description": "Photography drone that records what is happening in the arena. Learning to identify its attack cues is an important part of any competitor's training.",
+      "EnemyId": "enemy_4052_mulaze_2",
+      "EnemyIndex": "IB73",
+      "EnemyLevel": 1,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "'Judgment' Radiance Scorer",
+      "OverrideKillCntInfos": null,
+      "SortId": 1199
+    },
     "enemy_1050_lslime": {
       "Ability": null,
       "AbilityList": [

@@ -138,6 +138,23 @@ func ProvideDatabaseConn() (*DatbaseConn, error) {
 	}, nil
 }
 
+func ProvideConnWithParams(host, port, user, dbname, password string) (*DatbaseConn, error) {
+	connInfo := &databaseConnInfo{
+		password: password,
+		hostname: host,
+		port:     port,
+		username: user,
+		dbname:   dbname,
+	}
+	db, err := Connect(connInfo)
+	if err != nil {
+		return nil, err
+	}
+	return &DatbaseConn{
+		DefaultDB: db,
+	}, nil
+}
+
 // TODO: Find a way to setup a test database cleanly that works well with go test
 func ProvideTestDatabaseConn() (*DatbaseConn, error) {
 	return ProvideDatabaseConn()

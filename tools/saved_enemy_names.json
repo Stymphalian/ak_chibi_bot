@@ -5350,6 +5350,78 @@
         "Monument to Swiftness",
         "IB55"
     ],
+    "enemy_4040_mugoal": [
+        "Beacon Tower",
+        "IB56"
+    ],
+    "enemy_4041_mundr": [
+        "Ruby Flightwing",
+        "IB57"
+    ],
+    "enemy_4042_murdr": [
+        "Sapphire Flightwing",
+        "IB58"
+    ],
+    "enemy_4043_muedr": [
+        "Diamond Flightwing",
+        "IB59"
+    ],
+    "enemy_4044_mutdek": [
+        "Supplies Floater",
+        "IB60"
+    ],
+    "enemy_4045_murtre": [
+        "Submerged Supply Crate",
+        "IB61"
+    ],
+    "enemy_4046_muobst": [
+        "Moored Buoy",
+        "IB62"
+    ],
+    "enemy_4047_mustak": [
+        "Brazier Buoy",
+        "IB63"
+    ],
+    "enemy_4048_mubarn": [
+        "Salty Gym-goer",
+        "IB64"
+    ],
+    "enemy_4048_mubarn_2": [
+        "Super Pincer Salty Gym-goer",
+        "IB65"
+    ],
+    "enemy_4049_muston": [
+        "Wavebringer",
+        "IB66"
+    ],
+    "enemy_4049_muston_2": [
+        "Pearl of the Waves Wavebringer",
+        "IB67"
+    ],
+    "enemy_4050_mubbar": [
+        "Marine Strongman",
+        "IB68"
+    ],
+    "enemy_4050_mubbar_2": [
+        "Weightlifting Champ Marine Strongman",
+        "IB69"
+    ],
+    "enemy_4051_mublow": [
+        "Seawind Manipulator",
+        "IB70"
+    ],
+    "enemy_4051_mublow_2": [
+        "Weathervane Seawind Manipulator",
+        "IB71"
+    ],
+    "enemy_4052_mulaze": [
+        "Radiance Scorer",
+        "IB72"
+    ],
+    "enemy_4052_mulaze_2": [
+        "Judgment Radiance Scorer",
+        "IB73"
+    ],
     "enemy_5008_cstrwd": [],
     "enemy_5009_shtrwd": [],
     "enemy_5010_catrdg": [],

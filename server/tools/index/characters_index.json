@@ -27143,6 +27143,60 @@
               "spritesheet_data_filepath": ""
             }
           }
+        },
+        "race": {
+          "base": {
+            "Front": {
+              "atlas_filepath": "characters/char_349_chiave/race#2/base/Front/build_char_349_chiave_race#2.atlas",
+              "skel_filepath": "characters/char_349_chiave/race#2/base/Front/build_char_349_chiave_race#2.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "characters/char_349_chiave/race#2/base/Front/build_char_349_chiave_race#2.png",
+              "animations": [
+                "Default",
+                "Interact",
+                "Move",
+                "Relax",
+                "Sit",
+                "Sleep",
+                "Special"
+              ],
+              "use_straight_alpha": false,
+              "spritesheet_data_filepath": ""
+            }
+          },
+          "battle": {
+            "Back": {
+              "atlas_filepath": "characters/char_349_chiave/race#2/battle/Back/char_349_chiave_race#2.atlas",
+              "skel_filepath": "characters/char_349_chiave/race#2/battle/Back/char_349_chiave_race#2.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "characters/char_349_chiave/race#2/battle/Back/char_349_chiave_race#2.png",
+              "animations": [
+                "Attack",
+                "Default",
+                "Idle",
+                "Skill",
+                "Start"
+              ],
+              "use_straight_alpha": false,
+              "spritesheet_data_filepath": ""
+            },
+            "Front": {
+              "atlas_filepath": "characters/char_349_chiave/race#2/battle/Front/char_349_chiave_race#2.atlas",
+              "skel_filepath": "characters/char_349_chiave/race#2/battle/Front/char_349_chiave_race#2.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "characters/char_349_chiave/race#2/battle/Front/char_349_chiave_race#2.png",
+              "animations": [
+                "Attack",
+                "Default",
+                "Die",
+                "Idle",
+                "Skill",
+                "Start"
+              ],
+              "use_straight_alpha": false,
+              "spritesheet_data_filepath": ""
+            }
+          }
         }
       }
     },
