@@ -206,6 +206,12 @@
         "Hoshi 2",
         "Hoshiguma the breacher"
     ],
+    "char_1045_svash2": [
+        "SilverAsh Alter",
+        "SilverAsh the Reignfrost",
+        "SilverAsh 2",
+        "Silver Ash 2"
+    ],
     "char_106_franka": [
         "Franka"
     ],
@@ -755,6 +761,9 @@
     "char_391_rosmon": [
         "Rosmontis"
     ],
+    "char_394_hadiya": [
+        "Hadiya"
+    ],
     "char_4000_jnight": [
         "Justice Knight",
         "'Justice Knight'"
@@ -852,6 +861,9 @@
     ],
     "char_4048_doroth": [
         "Dorothy"
+    ],
+    "char_4051_akkord": [
+        "Akkord"
     ],
     "char_4052_surfer": [
         "Surfer"
@@ -1176,6 +1188,9 @@
     ],
     "char_420_flamtl": [
         "Flametail"
+    ],
+    "char_4211_snhunt": [
+        "Snow Hunter"
     ],
     "char_421_crow": [
         "La Pluma"

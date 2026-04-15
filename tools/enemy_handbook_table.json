@@ -32832,6 +32832,530 @@
       "OverrideKillCntInfos": null,
       "SortId": 1074
     },
+    "enemy_10138_xdsnow": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Takes extra damage on colliding with high ground",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        0
+      ],
+      "DamageTypeAsNumpy": [
+        0
+      ],
+      "Description": "Tiny creatures that hop around the uninhabited Kjerag snowfields. Rather careless and prone to accidents. In spring, their coat turns from snow-white to a dusty gray and grows fluffy.",
+      "EnemyId": "enemy_10138_xdsnow",
+      "EnemyIndex": "KL01",
+      "EnemyLevel": 0,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "Snowchild",
+      "OverrideKillCntInfos": null,
+      "SortId": 1075
+    },
+    "enemy_10138_xdsnow_2": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Takes extra damage on colliding with high ground",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        0
+      ],
+      "DamageTypeAsNumpy": [
+        0
+      ],
+      "Description": "Taller and more solidly built than other Snowchildren, they have become even more hyperactive due to the mysterious substance that landed on Karlan. Most have completed the achievement of going all the way around Kjerag.",
+      "EnemyId": "enemy_10138_xdsnow_2",
+      "EnemyIndex": "KL02",
+      "EnemyLevel": 0,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "Snowbrat",
+      "OverrideKillCntInfos": null,
+      "SortId": 1076
+    },
+    "enemy_10139_xdseal": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Absorbs passing Snowchildren to increase its weight, HP, ATK, DEF, and RES",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Returns to initial form on colliding with high ground",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        0
+      ],
+      "DamageTypeAsNumpy": [
+        0
+      ],
+      "Description": "Creatures indigenous to Kjerag, popular amongst tourists for their soft, fluffy fur and friendly nature. Some claim that their fur was once the main clothing material for the people of Kjerag, but there is no evidence to verify this claim.",
+      "EnemyId": "enemy_10139_xdseal",
+      "EnemyIndex": "KL03",
+      "EnemyLevel": 0,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": [
+        "enemy_10138_xdsnow"
+      ],
+      "Name": "Fluffy Snowball",
+      "OverrideKillCntInfos": null,
+      "SortId": 1077
+    },
+    "enemy_10139_xdseal_2": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Absorbs passing Snowbrats to increase its weight, HP, ATK, DEF, and RES",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Returns to initial form on colliding with high ground",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        0
+      ],
+      "DamageTypeAsNumpy": [
+        0
+      ],
+      "Description": "Creatures indigenous to Kjerag. The influence of the mysterious substance that landed on Karlan seems to have changed their friendly nature, and made their fur even softer and fluffier, providing excellent protection against the cold.",
+      "EnemyId": "enemy_10139_xdseal_2",
+      "EnemyIndex": "KL04",
+      "EnemyLevel": 0,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": [
+        "enemy_10138_xdsnow_2"
+      ],
+      "Name": "Penumbral Snowball",
+      "OverrideKillCntInfos": null,
+      "SortId": 1078
+    },
+    "enemy_10140_xdbird": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Flying unit.",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Can land on deployable high ground, where its attacks become ranged and deal Arts damage",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Increases Avalanche Warning Index when landing in an Avalanche Area",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Takes off again after some time",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        1
+      ],
+      "DamageTypeAsNumpy": [
+        1
+      ],
+      "Description": "Nocturnal creatures that dwell in the caves of Kjerag, able to fly in even the fiercest blizzards. Their main diet is berries, moss, and mushrooms. Kjerag hunter lore says that encountering them in the forests is a sign that the hunt will go well.",
+      "EnemyId": "enemy_10140_xdbird",
+      "EnemyIndex": "KL05",
+      "EnemyLevel": 0,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "Cave Snowsprite",
+      "OverrideKillCntInfos": null,
+      "SortId": 1079
+    },
+    "enemy_10140_xdbird_2": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Flying unit.",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Can land on deployable high ground, where its attacks become ranged and deal Arts damage",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Increases Avalanche Warning Index when landing in an Avalanche Area",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Takes off again after some time",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        1
+      ],
+      "DamageTypeAsNumpy": [
+        1
+      ],
+      "Description": "Free creatures that dwell in the valleys of Kjerag. They are no longer afraid of the light due to the influence of the substance that landed on Karlan. Stronger and more agile, they are dangerous creatures that snatch prey from hunters.",
+      "EnemyId": "enemy_10140_xdbird_2",
+      "EnemyIndex": "KL06",
+      "EnemyLevel": 0,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "Valley Snowsprite",
+      "OverrideKillCntInfos": null,
+      "SortId": 1080
+    },
+    "enemy_10141_xdpeng": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Loses egg after being shifted, gaining Movement Speed and becoming unblockable",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        0
+      ],
+      "DamageTypeAsNumpy": [
+        0
+      ],
+      "Description": "Fowlbeasts indigenous to Kjerag, clutching their eggs tightly with powerful claws. The eggs never drop or break. Rhine Lab bionics researchers are studying them in the hope of developing a new type of stabilizer.",
+      "EnemyId": "enemy_10141_xdpeng",
+      "EnemyIndex": "KL07",
+      "EnemyLevel": 0,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "Eggcradler Fowlbeast",
+      "OverrideKillCntInfos": null,
+      "SortId": 1081
+    },
+    "enemy_10141_xdpeng_2": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Loses egg after being shifted, gaining Movement Speed and becoming unblockable",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        0
+      ],
+      "DamageTypeAsNumpy": [
+        0
+      ],
+      "Description": "Fowlbeasts indigenous to Kjerag. The influence of the mysterious substance that landed on Karlan has strengthened their vision and sense of smell, but also made them more aggressive. They clutch an icy rock formed from an unhatched egg, which they use to dig for food and crack the skulls of enemies.",
+      "EnemyId": "enemy_10141_xdpeng_2",
+      "EnemyIndex": "KL08",
+      "EnemyLevel": 0,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "Frostcradler Fowlbeast\n",
+      "OverrideKillCntInfos": null,
+      "SortId": 1082
+    },
+    "enemy_10142_xdturt": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Loses all DEF and RES and becomes unable to move for some time on colliding with high ground",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        0
+      ],
+      "DamageTypeAsNumpy": [
+        0
+      ],
+      "Description": "Creatures with heavy shells on their backs. Despite their intimidating appearance, they are actually docile and friendly and can be trained to serve as burdenbeasts. They can get back on their feet even when flipped on their backs.",
+      "EnemyId": "enemy_10142_xdturt",
+      "EnemyIndex": "KL09",
+      "EnemyLevel": 1,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "Frostdillo",
+      "OverrideKillCntInfos": null,
+      "SortId": 1083
+    },
+    "enemy_10142_xdturt_2": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Loses all DEF and RES and becomes unable to move for some time on colliding with high ground",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        0
+      ],
+      "DamageTypeAsNumpy": [
+        0
+      ],
+      "Description": "Creatures with heavy spiked shells on their backs. The influence of the mysterious substance that landed on Karlan has made them aggressive and agile. They can perform flips, turns, 180-degree about-faces, and triple rolls.",
+      "EnemyId": "enemy_10142_xdturt_2",
+      "EnemyIndex": "KL10",
+      "EnemyLevel": 1,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "Rime Frostdillo",
+      "OverrideKillCntInfos": null,
+      "SortId": 1084
+    },
+    "enemy_10143_xdmush": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Cannot be shifted",
+          "TextFormat": 0
+        },
+        {
+          "Text": "[Takes Root] at specific locations, causing its tile to become undeployable",
+          "TextFormat": 0
+        },
+        {
+          "Text": "[Takes Root] Reduces damage taken and protects all units behind it from avalanches",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        0
+      ],
+      "DamageTypeAsNumpy": [
+        0
+      ],
+      "Description": "Large, umbrella-shaped mushrooms. They accumulate nutrients from spring through autumn, then grow rapidly in winter, reaching nearly a meter tall in two weeks. A favorite ingredient in Kjerag cheese fondue.",
+      "EnemyId": "enemy_10143_xdmush",
+      "EnemyIndex": "KL11",
+      "EnemyLevel": 1,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "Snowcap",
+      "OverrideKillCntInfos": null,
+      "SortId": 1085
+    },
+    "enemy_10143_xdmush_2": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Cannot be shifted",
+          "TextFormat": 0
+        },
+        {
+          "Text": "[Takes Root] at specific locations, causing its tile to become undeployable",
+          "TextFormat": 0
+        },
+        {
+          "Text": "[Takes Root] Reduces damage taken and protects all units behind it from avalanches",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        0
+      ],
+      "DamageTypeAsNumpy": [
+        0
+      ],
+      "Description": "Massive, umbrella-shaped mushrooms. The influence of the mysterious substance that landed on Karlan makes their colors brighter and their texture more appealing, but Kjeragandr taught us to never eat colorful mushrooms.",
+      "EnemyId": "enemy_10143_xdmush_2",
+      "EnemyIndex": "KL12",
+      "EnemyLevel": 1,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "Bright Snowcap",
+      "OverrideKillCntInfos": null,
+      "SortId": 1086
+    },
+    "enemy_10144_xdelk": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "[Clash of Brawn] Performs Charged Attacks and tries to push units that block it",
+          "TextFormat": 0
+        },
+        {
+          "Text": "After charging, deals damage to the target and pushes it back one tile; if unable to push, deals more damage and stuns the target for several seconds",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Charge can be interrupted by negative statuses like Stun and Shift",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        0
+      ],
+      "DamageTypeAsNumpy": [
+        0
+      ],
+      "Description": "Burdenbeasts with massive horns on their heads. Their unique name comes from Kjeragandr's blessing. It is said that someone once witnessed Her mumbling to this creature: 'Rhuul, rhuul...' Since then, 'Rhuul' has become its new name.",
+      "EnemyId": "enemy_10144_xdelk",
+      "EnemyIndex": "KL13",
+      "EnemyLevel": 1,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "Greathorn Rhuul",
+      "OverrideKillCntInfos": null,
+      "SortId": 1087
+    },
+    "enemy_10144_xdelk_2": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "[Clash of Brawn] Performs Charged Attacks and tries to push units that block it",
+          "TextFormat": 0
+        },
+        {
+          "Text": "After charging, deals damage to the target and pushes it back one tile; if unable to push, deals more damage and stuns the target for several seconds",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Charge can be interrupted by negative statuses like Stun and Shift",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        0
+      ],
+      "DamageTypeAsNumpy": [
+        0
+      ],
+      "Description": "Sturdy burdenbeasts with massive horns on their heads. The influence of the mysterious substance that landed on Karlan has turned their horns black. The Saintess said: Once upon a time, there was a girl who, finding the sight of others accompanied by their pets endearing, wanted a pet of her own. She thought she should first give it a name...",
+      "EnemyId": "enemy_10144_xdelk_2",
+      "EnemyIndex": "KL14",
+      "EnemyLevel": 1,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "Blackhorn Rhuul",
+      "OverrideKillCntInfos": null,
+      "SortId": 1088
+    },
+    "enemy_10145_xdrock": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Attacks deal splash damage",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Loses HP proportional to distance moved when shifted",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        0
+      ],
+      "DamageTypeAsNumpy": [
+        0
+      ],
+      "Description": "Icy rock giants with a mind of their own. The name 'Isbit' means 'ice cube' in Kjeragi. Kjeragi legends say that frozen rocks turn into giants to throw intruders off the side of Mount Karlan. The tale has proven effective at dissuading children from climbing Karlan on their own.",
+      "EnemyId": "enemy_10145_xdrock",
+      "EnemyIndex": "KL15",
+      "EnemyLevel": 1,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "Isbit",
+      "OverrideKillCntInfos": null,
+      "SortId": 1089
+    },
+    "enemy_10145_xdrock_2": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Attacks deal splash damage",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Loses HP proportional to distance moved when shifted",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        0
+      ],
+      "DamageTypeAsNumpy": [
+        0
+      ],
+      "Description": "Icy rock giants with a mind of their own. The name 'Storisbit' means 'giant ice cube' in Kjeragi. Even more massive due to influence from the mysterious substance that landed on Karlan, they indiscriminately attack anyone who climbs the holy mountain, forcing Rhine Lab researchers to postpone their plans to survey the peaks.",
+      "EnemyId": "enemy_10145_xdrock_2",
+      "EnemyIndex": "KL16",
+      "EnemyLevel": 1,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "Storisbit",
+      "OverrideKillCntInfos": null,
+      "SortId": 1090
+    },
     "enemy_3010_mcreep": {
       "Ability": null,
       "AbilityList": [
@@ -32858,7 +33382,7 @@
       "LinkEnemies": null,
       "Name": "Miner Guerrilla",
       "OverrideKillCntInfos": null,
-      "SortId": 1075
+      "SortId": 1107
     },
     "enemy_3011_dyegrd": {
       "Ability": null,
@@ -32881,7 +33405,7 @@
       "LinkEnemies": null,
       "Name": "'Emperor's Blade', Halberd Breaker",
       "OverrideKillCntInfos": null,
-      "SortId": 1076
+      "SortId": 1108
     },
     "enemy_3009_mpprss": {
       "Ability": null,
@@ -32904,7 +33428,7 @@
       "LinkEnemies": null,
       "Name": "EYESOFPRIESTESS",
       "OverrideKillCntInfos": null,
-      "SortId": 1077
+      "SortId": 1109
     },
     "enemy_3006_tersia": {
       "Ability": null,
@@ -32932,7 +33456,7 @@
       "LinkEnemies": null,
       "Name": "Theresa, King of Sarkaz",
       "OverrideKillCntInfos": null,
-      "SortId": 1078
+      "SortId": 1110
     },
     "enemy_2001_duckmi": {
       "Ability": null,
@@ -32964,7 +33488,7 @@
       "LinkEnemies": null,
       "Name": "Duck Lord",
       "OverrideKillCntInfos": null,
-      "SortId": 1079
+      "SortId": 1111
     },
     "enemy_2002_bearmi": {
       "Ability": null,
@@ -32987,7 +33511,7 @@
       "LinkEnemies": null,
       "Name": "Gopnik",
       "OverrideKillCntInfos": null,
-      "SortId": 1080
+      "SortId": 1113
     },
     "enemy_2034_sythef": {
       "Ability": null,
@@ -33019,7 +33543,7 @@
       "LinkEnemies": null,
       "Name": "Crying Thief",
       "OverrideKillCntInfos": null,
-      "SortId": 1081
+      "SortId": 1115
     },
     "enemy_2085_skzjxd": {
       "Ability": null,
@@ -33051,7 +33575,7 @@
       "LinkEnemies": null,
       "Name": "Fatty",
       "OverrideKillCntInfos": null,
-      "SortId": 1082
+      "SortId": 1117
     },
     "enemy_2125_dylnpp": {
       "Ability": null,
@@ -33083,7 +33607,7 @@
       "LinkEnemies": null,
       "Name": "Little Ba'jie",
       "OverrideKillCntInfos": null,
-      "SortId": 1083
+      "SortId": 1119
     },
     "enemy_2009_csaudc": {
       "Ability": null,
@@ -33111,7 +33635,7 @@
       "LinkEnemies": null,
       "Name": "Derisive Audience",
       "OverrideKillCntInfos": null,
-      "SortId": 1084
+      "SortId": 1120
     },
     "enemy_2010_csdcr": {
       "Ability": null,
@@ -33143,7 +33667,7 @@
       "LinkEnemies": null,
       "Name": "Scarlet Singer",
       "OverrideKillCntInfos": null,
-      "SortId": 1085
+      "SortId": 1121
     },
     "enemy_2011_csppt": {
       "Ability": null,
@@ -33175,7 +33699,7 @@
       "LinkEnemies": null,
       "Name": "Theater Golem",
       "OverrideKillCntInfos": null,
-      "SortId": 1086
+      "SortId": 1122
     },
     "enemy_2012_csbln": {
       "Ability": null,
@@ -33207,7 +33731,7 @@
       "LinkEnemies": null,
       "Name": "'Small Surprise'",
       "OverrideKillCntInfos": null,
-      "SortId": 1087
+      "SortId": 1123
     },
     "enemy_2017_csphts": {
       "Ability": null,
@@ -33245,7 +33769,7 @@
       ],
       "Name": "Ominous Apparition",
       "OverrideKillCntInfos": null,
-      "SortId": 1088
+      "SortId": 1124
     },
     "enemy_2021_syfish": {
       "Ability": null,
@@ -33273,7 +33797,7 @@
       "LinkEnemies": null,
       "Name": "Bone Sea Drifter",
       "OverrideKillCntInfos": null,
-      "SortId": 1089
+      "SortId": 1125
     },
     "enemy_2022_syzeni": {
       "Ability": null,
@@ -33301,7 +33825,7 @@
       "LinkEnemies": null,
       "Name": "Ocean Stonecutter",
       "OverrideKillCntInfos": null,
-      "SortId": 1090
+      "SortId": 1126
     },
     "enemy_2023_sypult": {
       "Ability": null,
@@ -33335,7 +33859,7 @@
       ],
       "Name": "Retching Broodmother",
       "OverrideKillCntInfos": null,
-      "SortId": 1091
+      "SortId": 1127
     },
     "enemy_2024_synut": {
       "Ability": null,
@@ -33373,7 +33897,7 @@
       ],
       "Name": "Baleful Broodling",
       "OverrideKillCntInfos": null,
-      "SortId": 1092
+      "SortId": 1128
     },
     "enemy_2025_syufo": {
       "Ability": null,
@@ -33405,7 +33929,7 @@
       "LinkEnemies": null,
       "Name": "Skimming Sea Drifter",
       "OverrideKillCntInfos": null,
-      "SortId": 1093
+      "SortId": 1129
     },
     "enemy_2033_syboys": {
       "Ability": null,
@@ -33440,7 +33964,7 @@
       ],
       "Name": "Pathshaper Fractal",
       "OverrideKillCntInfos": null,
-      "SortId": 1094
+      "SortId": 1130
     },
     "enemy_2040_syrott": {
       "Ability": null,
@@ -33478,7 +34002,7 @@
       ],
       "Name": "Ishar'mla's Tears",
       "OverrideKillCntInfos": null,
-      "SortId": 1095
+      "SortId": 1131
     },
     "enemy_2041_syjely": {
       "Ability": null,
@@ -33508,7 +34032,7 @@
       ],
       "Name": "Izumik's Offspring",
       "OverrideKillCntInfos": null,
-      "SortId": 1096
+      "SortId": 1132
     },
     "enemy_2035_sybox": {
       "Ability": null,
@@ -33531,7 +34055,7 @@
       "LinkEnemies": null,
       "Name": "Chest Seaborn",
       "OverrideKillCntInfos": null,
-      "SortId": 1097
+      "SortId": 1133
     },
     "enemy_2043_smsbr": {
       "Ability": null,
@@ -33559,7 +34083,7 @@
       "LinkEnemies": null,
       "Name": "Tainted Carcass",
       "OverrideKillCntInfos": null,
-      "SortId": 1098
+      "SortId": 1134
     },
     "enemy_2044_smwiz": {
       "Ability": null,
@@ -33587,7 +34111,7 @@
       "LinkEnemies": null,
       "Name": "Distorted Caster",
       "OverrideKillCntInfos": null,
-      "SortId": 1099
+      "SortId": 1135
     },
     "enemy_2045_smdrn": {
       "Ability": null,
@@ -33615,7 +34139,7 @@
       "LinkEnemies": null,
       "Name": "Collapsed Construct",
       "OverrideKillCntInfos": null,
-      "SortId": 1100
+      "SortId": 1136
     },
     "enemy_2046_smwar": {
       "Ability": null,
@@ -33638,7 +34162,7 @@
       "LinkEnemies": null,
       "Name": "Shattered Champion",
       "OverrideKillCntInfos": null,
-      "SortId": 1101
+      "SortId": 1137
     },
     "enemy_2059_smbox": {
       "Ability": null,
@@ -33661,7 +34185,7 @@
       "LinkEnemies": null,
       "Name": "Testaceous Vinecreeps",
       "OverrideKillCntInfos": null,
-      "SortId": 1102
+      "SortId": 1138
     },
     "enemy_2047_smtree": {
       "Ability": null,
@@ -33684,7 +34208,7 @@
       "LinkEnemies": null,
       "Name": "Silvernwhite Bulwark",
       "OverrideKillCntInfos": null,
-      "SortId": 1103
+      "SortId": 1139
     },
     "enemy_2060_smshdw": {
       "Ability": null,
@@ -33707,7 +34231,7 @@
       "LinkEnemies": null,
       "Name": "Khaganshadow",
       "OverrideKillCntInfos": null,
-      "SortId": 1104
+      "SortId": 1140
     },
     "enemy_2061_smhond": {
       "Ability": null,
@@ -33730,7 +34254,7 @@
       "LinkEnemies": null,
       "Name": "Royal Companion",
       "OverrideKillCntInfos": null,
-      "SortId": 1105
+      "SortId": 1141
     },
     "enemy_2063_skzlch": {
       "Ability": null,
@@ -33758,7 +34282,7 @@
       "LinkEnemies": null,
       "Name": "Sarkaz Maze Guide",
       "OverrideKillCntInfos": null,
-      "SortId": 1106
+      "SortId": 1142
     },
     "enemy_2064_skzwdd": {
       "Ability": null,
@@ -33786,7 +34310,7 @@
       "LinkEnemies": null,
       "Name": "Sarkaz Maze Returner",
       "OverrideKillCntInfos": null,
-      "SortId": 1107
+      "SortId": 1143
     },
     "enemy_2065_skzjs": {
       "Ability": null,
@@ -33814,7 +34338,7 @@
       "LinkEnemies": null,
       "Name": "Dreadkaz",
       "OverrideKillCntInfos": null,
-      "SortId": 1108
+      "SortId": 1144
     },
     "enemy_2066_skzlcp": {
       "Ability": null,
@@ -33842,7 +34366,7 @@
       "LinkEnemies": null,
       "Name": "Sarkaz Maze Spellweaver",
       "OverrideKillCntInfos": null,
-      "SortId": 1109
+      "SortId": 1145
     },
     "enemy_2067_skzcy": {
       "Ability": null,
@@ -33870,7 +34394,7 @@
       "LinkEnemies": null,
       "Name": "'Portal'",
       "OverrideKillCntInfos": null,
-      "SortId": 1110
+      "SortId": 1146
     },
     "enemy_2068_skzirn": {
       "Ability": null,
@@ -33902,7 +34426,7 @@
       "LinkEnemies": null,
       "Name": "Holy Automaton",
       "OverrideKillCntInfos": null,
-      "SortId": 1111
+      "SortId": 1147
     },
     "enemy_2069_skzbox": {
       "Ability": null,
@@ -33930,7 +34454,7 @@
       "LinkEnemies": null,
       "Name": "Lost Contraption",
       "OverrideKillCntInfos": null,
-      "SortId": 1112
+      "SortId": 1148
     },
     "enemy_2070_skzfbx": {
       "Ability": null,
@@ -33962,7 +34486,7 @@
       "LinkEnemies": null,
       "Name": "Lost Hovercraft",
       "OverrideKillCntInfos": null,
-      "SortId": 1113
+      "SortId": 1149
     },
     "enemy_2090_skzjbc": {
       "Ability": null,
@@ -33994,7 +34518,7 @@
       "LinkEnemies": null,
       "Name": "Padmasana of Rebirth",
       "OverrideKillCntInfos": null,
-      "SortId": 1114
+      "SortId": 1150
     },
     "enemy_2091_skzgds": {
       "Ability": null,
@@ -34022,7 +34546,7 @@
       "LinkEnemies": null,
       "Name": "'Window'",
       "OverrideKillCntInfos": null,
-      "SortId": 1115
+      "SortId": 1151
     },
     "enemy_2093_skzams": {
       "Ability": null,
@@ -34050,7 +34574,7 @@
       "LinkEnemies": null,
       "Name": "Finale Cadence",
       "OverrideKillCntInfos": null,
-      "SortId": 1116
+      "SortId": 1152
     },
     "enemy_2101_dyspll": {
       "Ability": null,
@@ -34082,7 +34606,7 @@
       "LinkEnemies": null,
       "Name": "Talisman",
       "OverrideKillCntInfos": null,
-      "SortId": 1117
+      "SortId": 1153
     },
     "enemy_2102_dytmbr": {
       "Ability": null,
@@ -34112,7 +34636,7 @@
       ],
       "Name": "Shadow Scholar",
       "OverrideKillCntInfos": null,
-      "SortId": 1118
+      "SortId": 1154
     },
     "enemy_2103_dykens": {
       "Ability": null,
@@ -34142,7 +34666,7 @@
       ],
       "Name": "Bottle Swordsman",
       "OverrideKillCntInfos": null,
-      "SortId": 1119
+      "SortId": 1155
     },
     "enemy_2104_dycast": {
       "Ability": null,
@@ -34172,7 +34696,7 @@
       ],
       "Name": "Mirror Tianshi",
       "OverrideKillCntInfos": null,
-      "SortId": 1120
+      "SortId": 1156
     },
     "enemy_2105_dyrnge": {
       "Ability": null,
@@ -34204,7 +34728,7 @@
       "LinkEnemies": null,
       "Name": "Pseudomut",
       "OverrideKillCntInfos": null,
-      "SortId": 1121
+      "SortId": 1157
     },
     "enemy_2106_dyremy": {
       "Ability": null,
@@ -34236,7 +34760,7 @@
       "LinkEnemies": null,
       "Name": "Strange Gourd",
       "OverrideKillCntInfos": null,
-      "SortId": 1122
+      "SortId": 1158
     },
     "enemy_2122_dybgzd": {
       "Ability": null,
@@ -34268,7 +34792,7 @@
       "LinkEnemies": null,
       "Name": "Liang",
       "OverrideKillCntInfos": null,
-      "SortId": 1123
+      "SortId": 1159
     },
     "enemy_4001_toxcar": {
       "Ability": null,
@@ -34296,7 +34820,7 @@
       "LinkEnemies": null,
       "Name": "Retrofitted Gastruck",
       "OverrideKillCntInfos": null,
-      "SortId": 1124
+      "SortId": 1160
     },
     "enemy_4001_toxcar_2": {
       "Ability": null,
@@ -34324,7 +34848,7 @@
       "LinkEnemies": null,
       "Name": "Supercharged Gastruck",
       "OverrideKillCntInfos": null,
-      "SortId": 1125
+      "SortId": 1161
     },
     "enemy_4002_syokai": {
       "Ability": null,
@@ -34360,7 +34884,7 @@
       "LinkEnemies": null,
       "Name": "Cheap Second-hand Drone",
       "OverrideKillCntInfos": null,
-      "SortId": 1126
+      "SortId": 1162
     },
     "enemy_4002_syokai_2": {
       "Ability": null,
@@ -34396,7 +34920,7 @@
       "LinkEnemies": null,
       "Name": "Remodeled Second-hand Drone",
       "OverrideKillCntInfos": null,
-      "SortId": 1127
+      "SortId": 1163
     },
     "enemy_4003_pbank": {
       "Ability": null,
@@ -34432,7 +34956,7 @@
       "LinkEnemies": null,
       "Name": "Mobile Power Source",
       "OverrideKillCntInfos": null,
-      "SortId": 1128
+      "SortId": 1164
     },
     "enemy_4004_muvltr": {
       "Ability": null,
@@ -34464,7 +34988,7 @@
       "LinkEnemies": null,
       "Name": "Supply Wagon",
       "OverrideKillCntInfos": null,
-      "SortId": 1129
+      "SortId": 1165
     },
     "enemy_4004_muvltr_2": {
       "Ability": null,
@@ -34496,7 +35020,7 @@
       "LinkEnemies": null,
       "Name": "'Soda POP!' Supply Wagon",
       "OverrideKillCntInfos": null,
-      "SortId": 1130
+      "SortId": 1166
     },
     "enemy_4005_musqrl": {
       "Ability": null,
@@ -34528,7 +35052,7 @@
       "LinkEnemies": null,
       "Name": "Musbeast Supplier",
       "OverrideKillCntInfos": null,
-      "SortId": 1131
+      "SortId": 1167
     },
     "enemy_4005_musqrl_2": {
       "Ability": null,
@@ -34560,7 +35084,7 @@
       "LinkEnemies": null,
       "Name": "'Big Brawn' Musbeast Supplier",
       "OverrideKillCntInfos": null,
-      "SortId": 1132
+      "SortId": 1168
     },
     "enemy_4006_mumole": {
       "Ability": null,
@@ -34588,7 +35112,7 @@
       "LinkEnemies": null,
       "Name": "Sandbeast Supplier",
       "OverrideKillCntInfos": null,
-      "SortId": 1133
+      "SortId": 1169
     },
     "enemy_4006_mumole_2": {
       "Ability": null,
@@ -34616,7 +35140,7 @@
       "LinkEnemies": null,
       "Name": "'Faircare' Sandbeast Supplier",
       "OverrideKillCntInfos": null,
-      "SortId": 1134
+      "SortId": 1170
     },
     "enemy_4007_murino": {
       "Ability": null,
@@ -34648,7 +35172,7 @@
       "LinkEnemies": null,
       "Name": "Burdenbeast Supplier",
       "OverrideKillCntInfos": null,
-      "SortId": 1135
+      "SortId": 1171
     },
     "enemy_4007_murino_2": {
       "Ability": null,
@@ -34680,7 +35204,7 @@
       "LinkEnemies": null,
       "Name": "'Timidthy' Burdenbeast Supplier",
       "OverrideKillCntInfos": null,
-      "SortId": 1136
+      "SortId": 1172
     },
     "enemy_4008_mucat": {
       "Ability": null,
@@ -34712,7 +35236,7 @@
       "LinkEnemies": null,
       "Name": "Hammer Supplier",
       "OverrideKillCntInfos": null,
-      "SortId": 1137
+      "SortId": 1173
     },
     "enemy_4008_mucat_2": {
       "Ability": null,
@@ -34744,7 +35268,7 @@
       "LinkEnemies": null,
       "Name": "'Rampage' Hammer Supplier",
       "OverrideKillCntInfos": null,
-      "SortId": 1138
+      "SortId": 1174
     },
     "enemy_4009_murgby": {
       "Ability": null,
@@ -34772,7 +35296,7 @@
       "LinkEnemies": null,
       "Name": "Ironhead Forward",
       "OverrideKillCntInfos": null,
-      "SortId": 1139
+      "SortId": 1175
     },
     "enemy_4009_murgby_2": {
       "Ability": null,
@@ -34800,7 +35324,7 @@
       "LinkEnemies": null,
       "Name": "'Charger' Ironhead Forward",
       "OverrideKillCntInfos": null,
-      "SortId": 1140
+      "SortId": 1176
     },
     "enemy_4010_mubsbl": {
       "Ability": null,
@@ -34836,7 +35360,7 @@
       "LinkEnemies": null,
       "Name": "Long-Armed Pitcher",
       "OverrideKillCntInfos": null,
-      "SortId": 1141
+      "SortId": 1177
     },
     "enemy_4010_mubsbl_2": {
       "Ability": null,
@@ -34872,7 +35396,7 @@
       "LinkEnemies": null,
       "Name": "'True Shot' Long-Armed Pitcher",
       "OverrideKillCntInfos": null,
-      "SortId": 1142
+      "SortId": 1178
     },
     "enemy_4012_mumssi": {
       "Ability": null,
@@ -34900,7 +35424,7 @@
       "LinkEnemies": null,
       "Name": "Field Shooter",
       "OverrideKillCntInfos": null,
-      "SortId": 1143
+      "SortId": 1179
     },
     "enemy_4012_mumssi_2": {
       "Ability": null,
@@ -34928,7 +35452,7 @@
       "LinkEnemies": null,
       "Name": "'Longshot' Field Shooter",
       "OverrideKillCntInfos": null,
-      "SortId": 1144
+      "SortId": 1180
     },
     "enemy_4013_mubufn": {
       "Ability": null,
@@ -34956,7 +35480,7 @@
       "LinkEnemies": null,
       "Name": "Field Goalie",
       "OverrideKillCntInfos": null,
-      "SortId": 1145
+      "SortId": 1181
     },
     "enemy_4013_mubufn_2": {
       "Ability": null,
@@ -34984,7 +35508,7 @@
       "LinkEnemies": null,
       "Name": "'Brain Barrier' Field Goalie",
       "OverrideKillCntInfos": null,
-      "SortId": 1146
+      "SortId": 1182
     },
     "enemy_4014_mugnfu": {
       "Ability": null,
@@ -35012,7 +35536,7 @@
       "LinkEnemies": null,
       "Name": "Field Bludgeoner",
       "OverrideKillCntInfos": null,
-      "SortId": 1147
+      "SortId": 1183
     },
     "enemy_4014_mugnfu_2": {
       "Ability": null,
@@ -35040,7 +35564,7 @@
       "LinkEnemies": null,
       "Name": "'Basher' Field Bludgeoner",
       "OverrideKillCntInfos": null,
-      "SortId": 1148
+      "SortId": 1184
     },
     "enemy_4015_musucr": {
       "Ability": null,
@@ -35072,7 +35596,7 @@
       "LinkEnemies": null,
       "Name": "RMA70 Spikeball",
       "OverrideKillCntInfos": null,
-      "SortId": 1149
+      "SortId": 1185
     },
     "enemy_4016_mubuln": {
       "Ability": null,
@@ -35104,7 +35628,7 @@
       "LinkEnemies": null,
       "Name": "Fluffy Pink Balloon",
       "OverrideKillCntInfos": null,
-      "SortId": 1150
+      "SortId": 1186
     },
     "enemy_4017_muinbl": {
       "Ability": null,
@@ -35136,7 +35660,7 @@
       "LinkEnemies": null,
       "Name": "Compressed Ball",
       "OverrideKillCntInfos": null,
-      "SortId": 1151
+      "SortId": 1187
     },
     "enemy_4018_muboom": {
       "Ability": null,
@@ -35168,7 +35692,7 @@
       "LinkEnemies": null,
       "Name": "Infused Originium Ball",
       "OverrideKillCntInfos": null,
-      "SortId": 1152
+      "SortId": 1188
     },
     "enemy_4019_mugold": {
       "Ability": null,
@@ -35200,7 +35724,7 @@
       "LinkEnemies": null,
       "Name": "Originite Prime Ball",
       "OverrideKillCntInfos": null,
-      "SortId": 1153
+      "SortId": 1189
     },
     "enemy_4020_muboun": {
       "Ability": null,
@@ -35232,7 +35756,7 @@
       "LinkEnemies": null,
       "Name": "Perpetual Rebounder",
       "OverrideKillCntInfos": null,
-      "SortId": 1154
+      "SortId": 1190
     },
     "enemy_4022_mushtm": {
       "Ability": null,
@@ -35260,7 +35784,7 @@
       "LinkEnemies": null,
       "Name": "Tactical Team Shooter",
       "OverrideKillCntInfos": null,
-      "SortId": 1155
+      "SortId": 1191
     },
     "enemy_4022_mushtm_2": {
       "Ability": null,
@@ -35288,7 +35812,7 @@
       "LinkEnemies": null,
       "Name": "Elite Tactical Team Shooter",
       "OverrideKillCntInfos": null,
-      "SortId": 1156
+      "SortId": 1192
     },
     "enemy_4023_mushtb": {
       "Ability": null,
@@ -35316,7 +35840,7 @@
       "LinkEnemies": null,
       "Name": "Tactical Team Goalie",
       "OverrideKillCntInfos": null,
-      "SortId": 1157
+      "SortId": 1193
     },
     "enemy_4023_mushtb_2": {
       "Ability": null,
@@ -35344,7 +35868,7 @@
       "LinkEnemies": null,
       "Name": "Elite Tactical Team Goalie",
       "OverrideKillCntInfos": null,
-      "SortId": 1158
+      "SortId": 1194
     },
     "enemy_4024_mushtg": {
       "Ability": null,
@@ -35372,7 +35896,7 @@
       "LinkEnemies": null,
       "Name": "Tactical Team Hitter",
       "OverrideKillCntInfos": null,
-      "SortId": 1159
+      "SortId": 1195
     },
     "enemy_4024_mushtg_2": {
       "Ability": null,
@@ -35400,7 +35924,7 @@
       "LinkEnemies": null,
       "Name": "Elite Tactical Team Hitter",
       "OverrideKillCntInfos": null,
-      "SortId": 1160
+      "SortId": 1196
     },
     "enemy_4025_muhrym": {
       "Ability": null,
@@ -35428,7 +35952,7 @@
       "LinkEnemies": null,
       "Name": "Ball Mania Club Shooter",
       "OverrideKillCntInfos": null,
-      "SortId": 1161
+      "SortId": 1197
     },
     "enemy_4025_muhrym_2": {
       "Ability": null,
@@ -35456,7 +35980,7 @@
       "LinkEnemies": null,
       "Name": "Ball Mania Club Honorary Shooter",
       "OverrideKillCntInfos": null,
-      "SortId": 1162
+      "SortId": 1198
     },
     "enemy_4026_muhryb": {
       "Ability": null,
@@ -35484,7 +36008,7 @@
       "LinkEnemies": null,
       "Name": "Ball Mania Club Goalie",
       "OverrideKillCntInfos": null,
-      "SortId": 1163
+      "SortId": 1199
     },
     "enemy_4026_muhryb_2": {
       "Ability": null,
@@ -35512,7 +36036,7 @@
       "LinkEnemies": null,
       "Name": "Ball Mania Club Honorary Goalie",
       "OverrideKillCntInfos": null,
-      "SortId": 1164
+      "SortId": 1200
     },
     "enemy_4027_muhryg": {
       "Ability": null,
@@ -35540,7 +36064,7 @@
       "LinkEnemies": null,
       "Name": "Ball Mania Club Hitter",
       "OverrideKillCntInfos": null,
-      "SortId": 1165
+      "SortId": 1201
     },
     "enemy_4027_muhryg_2": {
       "Ability": null,
@@ -35568,7 +36092,7 @@
       "LinkEnemies": null,
       "Name": "Ball Mania Club Honorary Hitter",
       "OverrideKillCntInfos": null,
-      "SortId": 1166
+      "SortId": 1202
     },
     "enemy_4028_mukfum": {
       "Ability": null,
@@ -35596,7 +36120,7 @@
       "LinkEnemies": null,
       "Name": "Sportsmen United Shooter",
       "OverrideKillCntInfos": null,
-      "SortId": 1167
+      "SortId": 1203
     },
     "enemy_4028_mukfum_2": {
       "Ability": null,
@@ -35624,7 +36148,7 @@
       "LinkEnemies": null,
       "Name": "Sportsmen United Veteran Shooter",
       "OverrideKillCntInfos": null,
-      "SortId": 1168
+      "SortId": 1204
     },
     "enemy_4029_mukfub": {
       "Ability": null,
@@ -35652,7 +36176,7 @@
       "LinkEnemies": null,
       "Name": "Sportsmen United Goalie",
       "OverrideKillCntInfos": null,
-      "SortId": 1169
+      "SortId": 1205
     },
     "enemy_4029_mukfub_2": {
       "Ability": null,
@@ -35680,7 +36204,7 @@
       "LinkEnemies": null,
       "Name": "Sportsmen United Veteran Goalie",
       "OverrideKillCntInfos": null,
-      "SortId": 1170
+      "SortId": 1206
     },
     "enemy_4030_mukfug": {
       "Ability": null,
@@ -35708,7 +36232,7 @@
       "LinkEnemies": null,
       "Name": "Sportsmen United Hitter",
       "OverrideKillCntInfos": null,
-      "SortId": 1171
+      "SortId": 1207
     },
     "enemy_4030_mukfug_2": {
       "Ability": null,
@@ -35736,7 +36260,7 @@
       "LinkEnemies": null,
       "Name": "Sportsmen United Veteran Hitter",
       "OverrideKillCntInfos": null,
-      "SortId": 1172
+      "SortId": 1208
     },
     "enemy_4031_muftsn": {
       "Ability": null,
@@ -35768,7 +36292,7 @@
       "LinkEnemies": null,
       "Name": "Leaking Beetleball",
       "OverrideKillCntInfos": null,
-      "SortId": 1173
+      "SortId": 1209
     },
     "enemy_4032_muftmg": {
       "Ability": null,
@@ -35800,7 +36324,7 @@
       "LinkEnemies": null,
       "Name": "Bloated Beetleball",
       "OverrideKillCntInfos": null,
-      "SortId": 1174
+      "SortId": 1210
     },
     "enemy_4033_muftic": {
       "Ability": null,
@@ -35832,7 +36356,7 @@
       "LinkEnemies": null,
       "Name": "Will of the North Ball",
       "OverrideKillCntInfos": null,
-      "SortId": 1175
+      "SortId": 1211
     },
     "enemy_4034_muftgl": {
       "Ability": null,
@@ -35864,7 +36388,7 @@
       "LinkEnemies": null,
       "Name": "Deep Sea Slider Ball",
       "OverrideKillCntInfos": null,
-      "SortId": 1176
+      "SortId": 1212
     },
     "enemy_4035_mufbsa": {
       "Ability": null,
@@ -35892,7 +36416,7 @@
       "LinkEnemies": null,
       "Name": "Monument to Force",
       "OverrideKillCntInfos": null,
-      "SortId": 1177
+      "SortId": 1213
     },
     "enemy_4036_mufbsb": {
       "Ability": null,
@@ -35920,7 +36444,7 @@
       "LinkEnemies": null,
       "Name": "Monument to Toughness",
       "OverrideKillCntInfos": null,
-      "SortId": 1178
+      "SortId": 1214
     },
     "enemy_4037_mufbsc": {
       "Ability": null,
@@ -35948,7 +36472,7 @@
       "LinkEnemies": null,
       "Name": "Monument to Accuracy",
       "OverrideKillCntInfos": null,
-      "SortId": 1179
+      "SortId": 1215
     },
     "enemy_4038_mufbsd": {
       "Ability": null,
@@ -35976,7 +36500,7 @@
       "LinkEnemies": null,
       "Name": "Monument to Passion",
       "OverrideKillCntInfos": null,
-      "SortId": 1180
+      "SortId": 1216
     },
     "enemy_4039_mufbse": {
       "Ability": null,
@@ -36004,7 +36528,7 @@
       "LinkEnemies": null,
       "Name": "Monument to Swiftness",
       "OverrideKillCntInfos": null,
-      "SortId": 1181
+      "SortId": 1217
     },
     "enemy_4040_mugoal": {
       "Ability": null,
@@ -36027,7 +36551,7 @@
       "LinkEnemies": null,
       "Name": "Beacon Tower",
       "OverrideKillCntInfos": null,
-      "SortId": 1182
+      "SortId": 1218
     },
     "enemy_4041_mundr": {
       "Ability": null,
@@ -36059,7 +36583,7 @@
       "LinkEnemies": null,
       "Name": "Ruby Flightwing",
       "OverrideKillCntInfos": null,
-      "SortId": 1183
+      "SortId": 1219
     },
     "enemy_4042_murdr": {
       "Ability": null,
@@ -36091,7 +36615,7 @@
       "LinkEnemies": null,
       "Name": "Sapphire Flightwing",
       "OverrideKillCntInfos": null,
-      "SortId": 1184
+      "SortId": 1220
     },
     "enemy_4043_muedr": {
       "Ability": null,
@@ -36123,7 +36647,7 @@
       "LinkEnemies": null,
       "Name": "Diamond Flightwing",
       "OverrideKillCntInfos": null,
-      "SortId": 1185
+      "SortId": 1221
     },
     "enemy_4044_mutdek": {
       "Ability": null,
@@ -36155,7 +36679,7 @@
       "LinkEnemies": null,
       "Name": "Supplies Floater",
       "OverrideKillCntInfos": null,
-      "SortId": 1186
+      "SortId": 1222
     },
     "enemy_4045_murtre": {
       "Ability": null,
@@ -36187,7 +36711,7 @@
       "LinkEnemies": null,
       "Name": "Submerged Supply Crate",
       "OverrideKillCntInfos": null,
-      "SortId": 1187
+      "SortId": 1223
     },
     "enemy_4046_muobst": {
       "Ability": null,
@@ -36210,7 +36734,7 @@
       "LinkEnemies": null,
       "Name": "Moored Buoy",
       "OverrideKillCntInfos": null,
-      "SortId": 1188
+      "SortId": 1224
     },
     "enemy_4047_mustak": {
       "Ability": null,
@@ -36238,7 +36762,7 @@
       "LinkEnemies": null,
       "Name": "Brazier Buoy",
       "OverrideKillCntInfos": null,
-      "SortId": 1189
+      "SortId": 1225
     },
     "enemy_4048_mubarn": {
       "Ability": null,
@@ -36261,7 +36785,7 @@
       "LinkEnemies": null,
       "Name": "Salty Gym-goer",
       "OverrideKillCntInfos": null,
-      "SortId": 1190
+      "SortId": 1226
     },
     "enemy_4048_mubarn_2": {
       "Ability": null,
@@ -36284,7 +36808,7 @@
       "LinkEnemies": null,
       "Name": "'Super Pincer' Salty Gym-goer",
       "OverrideKillCntInfos": null,
-      "SortId": 1191
+      "SortId": 1227
     },
     "enemy_4049_muston": {
       "Ability": null,
@@ -36320,7 +36844,7 @@
       "LinkEnemies": null,
       "Name": "Wavebringer",
       "OverrideKillCntInfos": null,
-      "SortId": 1192
+      "SortId": 1228
     },
     "enemy_4049_muston_2": {
       "Ability": null,
@@ -36356,7 +36880,7 @@
       "LinkEnemies": null,
       "Name": "'Pearl of the Waves' Wavebringer",
       "OverrideKillCntInfos": null,
-      "SortId": 1193
+      "SortId": 1229
     },
     "enemy_4050_mubbar": {
       "Ability": null,
@@ -36394,7 +36918,7 @@
       ],
       "Name": "Marine Strongman",
       "OverrideKillCntInfos": null,
-      "SortId": 1194
+      "SortId": 1230
     },
     "enemy_4050_mubbar_2": {
       "Ability": null,
@@ -36432,7 +36956,7 @@
       ],
       "Name": "'Weightlifting Champ' Marine Strongman",
       "OverrideKillCntInfos": null,
-      "SortId": 1195
+      "SortId": 1231
     },
     "enemy_4051_mublow": {
       "Ability": null,
@@ -36468,7 +36992,7 @@
       "LinkEnemies": null,
       "Name": "Seawind Manipulator",
       "OverrideKillCntInfos": null,
-      "SortId": 1196
+      "SortId": 1232
     },
     "enemy_4051_mublow_2": {
       "Ability": null,
@@ -36504,7 +37028,7 @@
       "LinkEnemies": null,
       "Name": "'Weathervane' Seawind Manipulator",
       "OverrideKillCntInfos": null,
-      "SortId": 1197
+      "SortId": 1233
     },
     "enemy_4052_mulaze": {
       "Ability": null,
@@ -36540,7 +37064,7 @@
       "LinkEnemies": null,
       "Name": "Radiance Scorer",
       "OverrideKillCntInfos": null,
-      "SortId": 1198
+      "SortId": 1234
     },
     "enemy_4052_mulaze_2": {
       "Ability": null,
@@ -36576,7 +37100,7 @@
       "LinkEnemies": null,
       "Name": "'Judgment' Radiance Scorer",
       "OverrideKillCntInfos": null,
-      "SortId": 1199
+      "SortId": 1235
     },
     "enemy_1050_lslime": {
       "Ability": null,
@@ -36612,7 +37136,7 @@
       "LinkEnemies": null,
       "Name": "'Pompeii'",
       "OverrideKillCntInfos": null,
-      "SortId": 1200
+      "SortId": 1236
     },
     "enemy_1500_skulsr": {
       "Ability": null,
@@ -36644,7 +37168,7 @@
       "LinkEnemies": null,
       "Name": "Skullshatterer",
       "OverrideKillCntInfos": null,
-      "SortId": 1201
+      "SortId": 1237
     },
     "enemy_1502_crowns": {
       "Ability": null,
@@ -36672,7 +37196,7 @@
       "LinkEnemies": null,
       "Name": "Crownslayer",
       "OverrideKillCntInfos": null,
-      "SortId": 1202
+      "SortId": 1238
     },
     "enemy_1503_talula": {
       "Ability": null,
@@ -36712,7 +37236,7 @@
       "LinkEnemies": null,
       "Name": "Talulah",
       "OverrideKillCntInfos": null,
-      "SortId": 1203
+      "SortId": 1239
     },
     "enemy_1504_cqbw": {
       "Ability": null,
@@ -36744,7 +37268,7 @@
       "LinkEnemies": null,
       "Name": "W",
       "OverrideKillCntInfos": null,
-      "SortId": 1204
+      "SortId": 1240
     },
     "enemy_1505_frstar": {
       "Ability": null,
@@ -36780,7 +37304,7 @@
       "LinkEnemies": null,
       "Name": "FrostNova",
       "OverrideKillCntInfos": null,
-      "SortId": 1205
+      "SortId": 1241
     },
     "enemy_1507_mephi": {
       "Ability": null,
@@ -36812,7 +37336,7 @@
       "LinkEnemies": null,
       "Name": "Mephisto",
       "OverrideKillCntInfos": null,
-      "SortId": 1206
+      "SortId": 1242
     },
     "enemy_1508_faust": {
       "Ability": null,
@@ -36848,7 +37372,7 @@
       "LinkEnemies": null,
       "Name": "Faust",
       "OverrideKillCntInfos": null,
-      "SortId": 1207
+      "SortId": 1243
     },
     "enemy_1509_mousek": {
       "Ability": null,
@@ -36888,7 +37412,7 @@
       "LinkEnemies": null,
       "Name": "'Rat King'",
       "OverrideKillCntInfos": null,
-      "SortId": 1208
+      "SortId": 1244
     },
     "enemy_1510_frstar2": {
       "Ability": null,
@@ -36924,7 +37448,7 @@
       "LinkEnemies": null,
       "Name": "FrostNova, 'Winter's Scar'",
       "OverrideKillCntInfos": null,
-      "SortId": 1209
+      "SortId": 1245
     },
     "enemy_1506_patrt": {
       "Ability": null,
@@ -36984,7 +37508,7 @@
       "LinkEnemies": null,
       "Name": "Patriot",
       "OverrideKillCntInfos": null,
-      "SortId": 1210
+      "SortId": 1246
     },
     "enemy_1511_mdrock": {
       "Ability": null,
@@ -37024,7 +37548,7 @@
       "LinkEnemies": null,
       "Name": "Mudrock",
       "OverrideKillCntInfos": null,
-      "SortId": 1211
+      "SortId": 1247
     },
     "enemy_1512_mcmstr": {
       "Ability": null,
@@ -37072,7 +37596,7 @@
       "LinkEnemies": null,
       "Name": "'The Big Ugly Thing'",
       "OverrideKillCntInfos": null,
-      "SortId": 1212
+      "SortId": 1248
     },
     "enemy_1513_dekght": {
       "Ability": null,
@@ -37110,7 +37634,7 @@
       ],
       "Name": "Corrupted Knight",
       "OverrideKillCntInfos": null,
-      "SortId": 1213
+      "SortId": 1249
     },
     "enemy_1513_dekght_2": {
       "Ability": null,
@@ -37148,7 +37672,7 @@
       ],
       "Name": "Withered Knight",
       "OverrideKillCntInfos": null,
-      "SortId": 1214
+      "SortId": 1250
     },
     "enemy_1514_smephi": {
       "Ability": null,
@@ -37196,7 +37720,7 @@
       "LinkEnemies": null,
       "Name": "Mephisto, 'The Singer'",
       "OverrideKillCntInfos": null,
-      "SortId": 1215
+      "SortId": 1251
     },
     "enemy_1515_bsnake": {
       "Ability": null,
@@ -37252,7 +37776,7 @@
       "LinkEnemies": null,
       "Name": "'Deathless Black Snake'",
       "OverrideKillCntInfos": null,
-      "SortId": 1216
+      "SortId": 1252
     },
     "enemy_1516_jakill": {
       "Ability": null,
@@ -37312,7 +37836,7 @@
       "LinkEnemies": null,
       "Name": "Jesselton Williams",
       "OverrideKillCntInfos": null,
-      "SortId": 1217
+      "SortId": 1253
     },
     "enemy_1517_xi": {
       "Ability": null,
@@ -37368,7 +37892,7 @@
       "LinkEnemies": null,
       "Name": "'Free'",
       "OverrideKillCntInfos": null,
-      "SortId": 1218
+      "SortId": 1254
     },
     "enemy_1519_bgball": {
       "Ability": null,
@@ -37435,7 +37959,7 @@
       ],
       "Name": "'Essence of Evolution'",
       "OverrideKillCntInfos": null,
-      "SortId": 1219
+      "SortId": 1255
     },
     "enemy_1520_empgrd": {
       "Ability": null,
@@ -37487,7 +38011,7 @@
       "LinkEnemies": null,
       "Name": "'Emperor's Blade', Pursuer",
       "OverrideKillCntInfos": null,
-      "SortId": 1220
+      "SortId": 1256
     },
     "enemy_1521_dslily": {
       "Ability": null,
@@ -37531,7 +38055,7 @@
       "LinkEnemies": null,
       "Name": "Sal Viento Bishop Quintus",
       "OverrideKillCntInfos": null,
-      "SortId": 1221
+      "SortId": 1257
     },
     "enemy_1522_captan": {
       "Ability": null,
@@ -37589,7 +38113,7 @@
       ],
       "Name": "Pancho Salas",
       "OverrideKillCntInfos": null,
-      "SortId": 1222
+      "SortId": 1258
     },
     "enemy_1523_mandra": {
       "Ability": null,
@@ -37641,7 +38165,7 @@
       "LinkEnemies": null,
       "Name": "Mandragora",
       "OverrideKillCntInfos": null,
-      "SortId": 1223
+      "SortId": 1259
     },
     "enemy_1524_bldkgt": {
       "Ability": null,
@@ -37705,7 +38229,7 @@
       ],
       "Name": "The Blood Knight Dikaiopolis",
       "OverrideKillCntInfos": null,
-      "SortId": 1224
+      "SortId": 1260
     },
     "enemy_1525_blkswb": {
       "Ability": null,
@@ -37769,7 +38293,7 @@
       "LinkEnemies": null,
       "Name": "Degenbrecher",
       "OverrideKillCntInfos": null,
-      "SortId": 1225
+      "SortId": 1261
     },
     "enemy_1526_sfsui": {
       "Ability": null,
@@ -37839,7 +38363,7 @@
       ],
       "Name": "'Sui-Xiang'",
       "OverrideKillCntInfos": null,
-      "SortId": 1226
+      "SortId": 1262
     },
     "enemy_1527_martyr": {
       "Ability": null,
@@ -37899,7 +38423,7 @@
       "LinkEnemies": null,
       "Name": "Andoain, the 'Martyr'",
       "OverrideKillCntInfos": null,
-      "SortId": 1227
+      "SortId": 1263
     },
     "enemy_1528_manfri": {
       "Ability": null,
@@ -37951,7 +38475,7 @@
       "LinkEnemies": null,
       "Name": "Manfred",
       "OverrideKillCntInfos": null,
-      "SortId": 1228
+      "SortId": 1264
     },
     "enemy_1529_dsdevr": {
       "Ability": null,
@@ -37994,7 +38518,7 @@
       ],
       "Name": "The Endspeaker, Will of We Many",
       "OverrideKillCntInfos": null,
-      "SortId": 1229
+      "SortId": 1265
     },
     "enemy_1530_white": {
       "Ability": null,
@@ -38046,7 +38570,7 @@
       "LinkEnemies": null,
       "Name": "Kreide, 'Worldly Remains'",
       "OverrideKillCntInfos": null,
-      "SortId": 1230
+      "SortId": 1266
     },
     "enemy_1531_bbrain": {
       "Ability": null,
@@ -38110,7 +38634,7 @@
       "LinkEnemies": null,
       "Name": "'Awaken'",
       "OverrideKillCntInfos": null,
-      "SortId": 1231
+      "SortId": 1267
     },
     "enemy_1532_minima": {
       "Ability": null,
@@ -38178,7 +38702,7 @@
       "LinkEnemies": null,
       "Name": "'Materialist Antagonizer'",
       "OverrideKillCntInfos": null,
-      "SortId": 1232
+      "SortId": 1268
     },
     "enemy_1533_stmkgt": {
       "Ability": null,
@@ -38242,7 +38766,7 @@
       "LinkEnemies": null,
       "Name": "'The Last Steam Knight'",
       "OverrideKillCntInfos": null,
-      "SortId": 1233
+      "SortId": 1269
     },
     "enemy_1535_wlfmster": {
       "Ability": null,
@@ -38302,7 +38826,7 @@
       "LinkEnemies": null,
       "Name": "Zaaro, Signore dei Lupi",
       "OverrideKillCntInfos": null,
-      "SortId": 1234
+      "SortId": 1270
     },
     "enemy_1536_ncrmcr": {
       "Ability": null,
@@ -38365,7 +38889,7 @@
       ],
       "Name": "'The Leader'",
       "OverrideKillCntInfos": null,
-      "SortId": 1235
+      "SortId": 1271
     },
     "enemy_1538_ymmons": {
       "Ability": null,
@@ -38429,7 +38953,7 @@
       ],
       "Name": "'Ya'",
       "OverrideKillCntInfos": null,
-      "SortId": 1236
+      "SortId": 1272
     },
     "enemy_1538_ymmons_2": {
       "Ability": null,
@@ -38454,7 +38978,7 @@
       ],
       "Name": "Mirage",
       "OverrideKillCntInfos": null,
-      "SortId": 1237
+      "SortId": 1273
     },
     "enemy_1538_ymmons_3": {
       "Ability": null,
@@ -38479,7 +39003,7 @@
       ],
       "Name": "Delusion",
       "OverrideKillCntInfos": null,
-      "SortId": 1238
+      "SortId": 1274
     },
     "enemy_1537_mhrors": {
       "Ability": null,
@@ -38561,7 +39085,7 @@
       "LinkEnemies": null,
       "Name": "Rathalos",
       "OverrideKillCntInfos": null,
-      "SortId": 1239
+      "SortId": 1275
     },
     "enemy_1539_reid": {
       "Ability": null,
@@ -38597,7 +39121,7 @@
       "LinkEnemies": null,
       "Name": "'Hateful Avenger'",
       "OverrideKillCntInfos": null,
-      "SortId": 1240
+      "SortId": 1276
     },
     "enemy_1540_wdncr": {
       "Ability": null,
@@ -38620,7 +39144,7 @@
       "LinkEnemies": null,
       "Name": "Eblana",
       "OverrideKillCntInfos": null,
-      "SortId": 1241
+      "SortId": 1277
     },
     "enemy_1541_wdslms": {
       "Ability": null,
@@ -38643,7 +39167,7 @@
       "LinkEnemies": null,
       "Name": "'Damazti Cluster'",
       "OverrideKillCntInfos": null,
-      "SortId": 1242
+      "SortId": 1278
     },
     "enemy_1542_wdslm": {
       "Ability": null,
@@ -38713,7 +39237,7 @@
       ],
       "Name": "'Damazti Cluster'",
       "OverrideKillCntInfos": null,
-      "SortId": 1243
+      "SortId": 1279
     },
     "enemy_1543_cstlrs": {
       "Ability": null,
@@ -38777,7 +39301,7 @@
       "LinkEnemies": null,
       "Name": "Kristen",
       "OverrideKillCntInfos": null,
-      "SortId": 1244
+      "SortId": 1280
     },
     "enemy_1544_cledub": {
       "Ability": null,
@@ -38839,7 +39363,7 @@
       ],
       "Name": "'The Gardener'",
       "OverrideKillCntInfos": null,
-      "SortId": 1245
+      "SortId": 1281
     },
     "enemy_1545_shpkg": {
       "Ability": null,
@@ -38911,7 +39435,7 @@
       "LinkEnemies": null,
       "Name": "Dolly, Sovereign of Sheep",
       "OverrideKillCntInfos": null,
-      "SortId": 1246
+      "SortId": 1282
     },
     "enemy_1546_cliff": {
       "Ability": null,
@@ -38967,7 +39491,7 @@
       "LinkEnemies": null,
       "Name": "'Clip' Cliff",
       "OverrideKillCntInfos": null,
-      "SortId": 1247
+      "SortId": 1283
     },
     "enemy_1547_blord": {
       "Ability": null,
@@ -39033,7 +39557,7 @@
       ],
       "Name": "Duq'arael, 'Regent's Crimson'",
       "OverrideKillCntInfos": null,
-      "SortId": 1248
+      "SortId": 1284
     },
     "enemy_1548_ltniak": {
       "Ability": null,
@@ -39109,7 +39633,7 @@
       "LinkEnemies": null,
       "Name": "Herkunftshorn, 'Witch King'",
       "OverrideKillCntInfos": null,
-      "SortId": 1249
+      "SortId": 1285
     },
     "enemy_1549_windoc": {
       "Ability": null,
@@ -39169,7 +39693,7 @@
       "LinkEnemies": null,
       "Name": "Harold Craigavon",
       "OverrideKillCntInfos": null,
-      "SortId": 1250
+      "SortId": 1286
     },
     "enemy_1550_dhnzzh": {
       "Ability": null,
@@ -39225,7 +39749,7 @@
       "LinkEnemies": null,
       "Name": "'Slumbering of Sui'",
       "OverrideKillCntInfos": null,
-      "SortId": 1251
+      "SortId": 1287
     },
     "enemy_1551_bolicp": {
       "Ability": null,
@@ -39279,7 +39803,7 @@
       ],
       "Name": "Captain Mateo",
       "OverrideKillCntInfos": null,
-      "SortId": 1252
+      "SortId": 1288
     },
     "enemy_1552_mmamiy": {
       "Ability": null,
@@ -39323,7 +39847,7 @@
       "LinkEnemies": null,
       "Name": "'Amiya'",
       "OverrideKillCntInfos": null,
-      "SortId": 1253
+      "SortId": 1289
     },
     "enemy_1553_lrdead": {
       "Ability": null,
@@ -39381,7 +39905,7 @@
       ],
       "Name": "Kindling Revenant",
       "OverrideKillCntInfos": null,
-      "SortId": 1254
+      "SortId": 1290
     },
     "enemy_1554_lrtsia": {
       "Ability": null,
@@ -39451,7 +39975,7 @@
       ],
       "Name": "Theresa",
       "OverrideKillCntInfos": null,
-      "SortId": 1255
+      "SortId": 1291
     },
     "enemy_1556_dsbish": {
       "Ability": null,
@@ -39514,7 +40038,7 @@
       ],
       "Name": "Mártus, 'Seaborn'",
       "OverrideKillCntInfos": null,
-      "SortId": 1256
+      "SortId": 1292
     },
     "enemy_1557_trcerb": {
       "Ability": null,
@@ -39584,7 +40108,7 @@
       "LinkEnemies": null,
       "Name": "'Tri-Maw'",
       "OverrideKillCntInfos": null,
-      "SortId": 1257
+      "SortId": 1293
     },
     "enemy_1558_sgactr": {
       "Ability": null,
@@ -39636,7 +40160,7 @@
       "LinkEnemies": null,
       "Name": "Zubayidamu the Timeless",
       "OverrideKillCntInfos": null,
-      "SortId": 1258
+      "SortId": 1294
     },
     "enemy_1559_vtlionk": {
       "Ability": null,
@@ -39680,7 +40204,7 @@
       ],
       "Name": "Alistair, Final Flame of the Empire",
       "OverrideKillCntInfos": null,
-      "SortId": 1259
+      "SortId": 1295
     },
     "enemy_1560_cnvlap": {
       "Ability": null,
@@ -39758,7 +40282,7 @@
       "LinkEnemies": null,
       "Name": "'La Signora del Carnevale'",
       "OverrideKillCntInfos": null,
-      "SortId": 1260
+      "SortId": 1296
     },
     "enemy_1561_crzjdg": {
       "Ability": null,
@@ -39826,7 +40350,7 @@
       "LinkEnemies": null,
       "Name": "Anastasio, the Atoner",
       "OverrideKillCntInfos": null,
-      "SortId": 1261
+      "SortId": 1297
     },
     "enemy_1562_cjtaot": {
       "Ability": null,
@@ -39900,7 +40424,7 @@
       ],
       "Name": "Gluttony",
       "OverrideKillCntInfos": null,
-      "SortId": 1262
+      "SortId": 1298
     },
     "enemy_1563_fthlgj": {
       "Ability": null,
@@ -39972,7 +40496,7 @@
       "LinkEnemies": null,
       "Name": "'All Flames Returned'",
       "OverrideKillCntInfos": null,
-      "SortId": 1263
+      "SortId": 1299
     },
     "enemy_1564_mpprts": {
       "Ability": null,
@@ -40014,7 +40538,7 @@
       ],
       "Name": "PRTS, Source Code",
       "OverrideKillCntInfos": null,
-      "SortId": 1264
+      "SortId": 1300
     },
     "enemy_1565_mpprme": {
       "Ability": null,
@@ -40060,7 +40584,7 @@
       ],
       "Name": "Mimic Machine",
       "OverrideKillCntInfos": null,
-      "SortId": 1265
+      "SortId": 1301
     },
     "enemy_1566_mpascl": {
       "Ability": null,
@@ -40088,7 +40612,7 @@
       "LinkEnemies": null,
       "Name": "'Ascalon'",
       "OverrideKillCntInfos": null,
-      "SortId": 1266
+      "SortId": 1302
     },
     "enemy_1567_pope": {
       "Ability": null,
@@ -40142,7 +40666,7 @@
       "LinkEnemies": null,
       "Name": "'Saint'",
       "OverrideKillCntInfos": null,
-      "SortId": 1267
+      "SortId": 1303
     },
     "enemy_1568_dirctr": {
       "Ability": null,
@@ -40202,71 +40726,7 @@
       "LinkEnemies": null,
       "Name": "'Tragodia'",
       "OverrideKillCntInfos": null,
-      "SortId": 1268
-    },
-    "enemy_1569_ldevil": {
-      "Ability": null,
-      "AbilityList": [
-        {
-          "Text": "Morpheus unleashes threads that can be blocked by your units; each unblocked thread increases Morpheus' ATK",
-          "TextFormat": 0
-        },
-        {
-          "Text": "First Form",
-          "TextFormat": 1
-        },
-        {
-          "Text": "[Binding Dream] Connects a thread to the furthest allied unit within Attack Range, dealing continuous Arts damage",
-          "TextFormat": 0
-        },
-        {
-          "Text": "[Dissociative Sensation] Connects to enemies with threads, causing most of the damage taken by Morpheus to be split among them",
-          "TextFormat": 0
-        },
-        {
-          "Text": "[Evolution of Dream] Morpheus summons and rides a 'Sleep Companion Beast', becomes unblockable, gains increased Movement Speed and <$ba.barrier>Barrier</>; ends after some time has passed, or if the <$ba.barrier>Barrier</> is destroyed",
-          "TextFormat": 0
-        },
-        {
-          "Text": "Second Form",
-          "TextFormat": 1
-        },
-        {
-          "Text": "When defeated for the first time, deals Arts damage to the whole field several times; when in 2nd form, Attack Range covers the entire field, and connects to all enemies with [Dissociative Sensation]",
-          "TextFormat": 0
-        },
-        {
-          "Text": "[Binding Dream] Causes your defeated units to be unable to retreat for a while",
-          "TextFormat": 0
-        },
-        {
-          "Text": "[Dissociative Sensation] Other enemies share more damage for Morpheus",
-          "TextFormat": 0
-        },
-        {
-          "Text": "[Evolution of Dream] Morpheus summons and rides a 'Background Clown' instead, and the increase in block cost is replaced with <$ba.float>Low-Altitude Hovering</>",
-          "TextFormat": 0
-        }
-      ],
-      "AttackType": null,
-      "DamageType": [
-        1
-      ],
-      "DamageTypeAsNumpy": [
-        1
-      ],
-      "Description": "Why would anyone want to escape the dream? Stay here, where everything is fun.",
-      "EnemyId": "enemy_1569_ldevil",
-      "EnemyIndex": "TR",
-      "EnemyLevel": 2,
-      "HideInHandbook": false,
-      "HideInStage": true,
-      "InvisibleDetail": false,
-      "IsInvalidKilled": false,
-      "LinkEnemies": null,
-      "Name": "Morpheus",
-      "OverrideKillCntInfos": null,
-      "SortId": 1269
+      "SortId": 1304
     },
     "enemy_1570_ymgscm": {
       "Ability": null,
@@ -40334,7 +40794,71 @@
       "LinkEnemies": null,
       "Name": "Kouhei Mifune",
       "OverrideKillCntInfos": null,
-      "SortId": 1270
+      "SortId": 1305
+    },
+    "enemy_1569_ldevil": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Morpheus unleashes threads that can be blocked by your units; each unblocked thread increases Morpheus' ATK",
+          "TextFormat": 0
+        },
+        {
+          "Text": "First Form",
+          "TextFormat": 1
+        },
+        {
+          "Text": "[Binding Dream] Connects a thread to the furthest allied unit within Attack Range, dealing continuous Arts damage",
+          "TextFormat": 0
+        },
+        {
+          "Text": "[Dissociative Sensation] Connects to enemies with threads, causing most of the damage taken by Morpheus to be split among them",
+          "TextFormat": 0
+        },
+        {
+          "Text": "[Evolution of Dream] Morpheus summons and rides a 'Sleep Companion Beast', becomes unblockable, gains increased Movement Speed and <$ba.barrier>Barrier</>; ends after some time has passed, or if the <$ba.barrier>Barrier</> is destroyed",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Second Form",
+          "TextFormat": 1
+        },
+        {
+          "Text": "When defeated for the first time, deals Arts damage to the whole field several times; when in 2nd form, Attack Range covers the entire field, and connects to all enemies with [Dissociative Sensation]",
+          "TextFormat": 0
+        },
+        {
+          "Text": "[Binding Dream] Causes your defeated units to be unable to retreat for a while",
+          "TextFormat": 0
+        },
+        {
+          "Text": "[Dissociative Sensation] Other enemies share more damage for Morpheus",
+          "TextFormat": 0
+        },
+        {
+          "Text": "[Evolution of Dream] Morpheus summons and rides a 'Background Clown' instead, and the increase in block cost is replaced with <$ba.float>Low-Altitude Hovering</>",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        1
+      ],
+      "DamageTypeAsNumpy": [
+        1
+      ],
+      "Description": "Why would anyone want to escape the dream? Stay here, where everything is fun.",
+      "EnemyId": "enemy_1569_ldevil",
+      "EnemyIndex": "MO",
+      "EnemyLevel": 2,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "Morpheus",
+      "OverrideKillCntInfos": null,
+      "SortId": 1306
     },
     "enemy_1571_mirbst": {
       "Ability": null,
@@ -40390,7 +40914,7 @@
       "LinkEnemies": null,
       "Name": "Rampaging Abnormal Manglerbeast",
       "OverrideKillCntInfos": null,
-      "SortId": 1271
+      "SortId": 1307
     },
     "enemy_1572_folchr": {
       "Ability": null,
@@ -40452,7 +40976,240 @@
       ],
       "Name": "Yurodstvo",
       "OverrideKillCntInfos": null,
-      "SortId": 1272
+      "SortId": 1308
+    },
+    "enemy_1574_xdagt": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Can perform long-ranged attacks that inflict <$ba.cold>Cold</>",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Periodically gains increased ATK and DEF",
+          "TextFormat": 0
+        },
+        {
+          "Text": "After a long time has passed, deals Arts splash damage to all allied units on the field, and drains all Life Points",
+          "TextFormat": 0
+        },
+        {
+          "Text": "[Rimechill] Stops attacking, summoning several <'Coldness'> to lock on to the location of the <Karlan Saintess> and release there; the number of <'Coldness'> increases with each cast",
+          "TextFormat": 0
+        },
+        {
+          "Text": "<'Coldness'> takes shape after some time and flies towards the target; if not destroyed before it reaches the target, deals Arts damage in a large area and increases Avalanche Warning Index in the area",
+          "TextFormat": 0
+        },
+        {
+          "Text": "When <Kjeragandr> is on the field, also summons an equivalent number of <'Coldness'> and releases them at a targeted Operator",
+          "TextFormat": 0
+        },
+        {
+          "Text": "First Phase",
+          "TextFormat": 1
+        },
+        {
+          "Text": "Cannot be attacked; can only be damaged by [Pious Prayer] from the <Karlan Saintess>",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Phase 2",
+          "TextFormat": 1
+        },
+        {
+          "Text": "[Wintertide] Stops attacking whenever HP drops by a certain percentage, summoning <Saintess' Snowrobe> to imprison the <Karlan Saintess>; during this time, <Kjeragandr> will continuously summon icicles to attack allied units, increasing the Avalanche Warning Index of areas where the icicles land",
+          "TextFormat": 0
+        },
+        {
+          "Text": "<Saintess' Snowrobe> continuously loses HP, releasing the <Karlan Saintess> when destroyed, allowing her to move again",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        0
+      ],
+      "DamageTypeAsNumpy": [
+        0
+      ],
+      "Description": "The eons and the frost both weigh upon her. Beneath her silent visage, you see the complexity of her regard, regret, relief, and resolve.",
+      "EnemyId": "enemy_1574_xdagt",
+      "EnemyIndex": "KL",
+      "EnemyLevel": 2,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": [
+        "enemy_1575_xdmon",
+        "enemy_1576_spbell"
+      ],
+      "Name": "Maiden of Snow and Ice",
+      "OverrideKillCntInfos": null,
+      "SortId": 1309
+    },
+    "enemy_1575_xdmon": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Periodically gives <Maiden of Snow and Ice> protection, preventing her from being attacked",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Attacks together with <Maiden of Snow and Ice>, dealing Arts damage to units in an entire row and inflicting <$ba.cold>Cold</>",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Partners with <Maiden of Snow and Ice> to unleash [Rimechill] and [Wintertide], boosting skill effects",
+          "TextFormat": 0
+        },
+        {
+          "Text": "[Silent Whiteout] Deals heavy Arts damage to all units on the field and inflicts <$ba.cold>Cold</>, shared by all allied units; <$ba.cold>Cold</> duration increases with each cast; can be cast when not on the field",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        1
+      ],
+      "DamageTypeAsNumpy": [
+        1
+      ],
+      "Description": "As white, as beautiful, as vast as the great icefields, She is mesmerizing and magnificent, beyond reckoning then, now, and forever.",
+      "EnemyId": "enemy_1575_xdmon",
+      "EnemyIndex": "Kj",
+      "EnemyLevel": 2,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": [
+        "enemy_1574_xdagt",
+        "enemy_1576_spbell"
+      ],
+      "Name": "Kjeragandr",
+      "OverrideKillCntInfos": null,
+      "SortId": 1310
+    },
+    "enemy_1576_spbell": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Revives when defeated",
+          "TextFormat": 0
+        },
+        {
+          "Text": "First Phase",
+          "TextFormat": 1
+        },
+        {
+          "Text": "[Pious Prayer] Prays at specific locations, dealing damage to and paralyzing the <Maiden of Snow and Ice> when prayer is complete",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Prayer can be interrupted by negative statuses like Stun and Shift",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Ritual enters the second phase when all prayer steps are complete",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Phase 2",
+          "TextFormat": 1
+        },
+        {
+          "Text": "[Heart of Breakthrough] Periodically attacks, breaking the protection of <Kjeragandr> and allowing the <Maiden of Snow and Ice> to be attacked",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        1
+      ],
+      "DamageTypeAsNumpy": [
+        1
+      ],
+      "Description": "The chosen one. She rings her bell, again and again, for you, and for Her.",
+      "EnemyId": "enemy_1576_spbell",
+      "EnemyIndex": "KL",
+      "EnemyLevel": 1,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": true,
+      "LinkEnemies": [
+        "enemy_1574_xdagt",
+        "enemy_1575_xdmon"
+      ],
+      "Name": "Karlan Saintess",
+      "OverrideKillCntInfos": null,
+      "SortId": 1311
+    },
+    "enemy_1577_iceball": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Flying unit.",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Takes shape in place after some time and flies towards the target; if not destroyed before it reaches the target, self-destructs to deal Arts damage in a large area and increase Avalanche Warning Index in the area",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        3
+      ],
+      "DamageTypeAsNumpy": [
+        3
+      ],
+      "Description": "A chill comes over you. You feel a heavy weight on your shoulders, like snow gathering on pine branches.",
+      "EnemyId": "enemy_1577_iceball",
+      "EnemyIndex": "FR",
+      "EnemyLevel": 0,
+      "HideInHandbook": true,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "'Coldness'",
+      "OverrideKillCntInfos": null,
+      "SortId": 1312
+    },
+    "enemy_1578_icecage": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "When <Saintess's Snowrobe> is on the field, the <Karlan Saintess> is imprisoned and unable to move or attack",
+          "TextFormat": 0
+        },
+        {
+          "Text": "<Saintess' Snowrobe> continuously loses HP, releasing the <Karlan Saintess> when destroyed",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        3
+      ],
+      "DamageTypeAsNumpy": [
+        3
+      ],
+      "Description": "This 'fine dress', perfectly fitting yet just like tears, once clothed many young women like her.",
+      "EnemyId": "enemy_1578_icecage",
+      "EnemyIndex": "KL",
+      "EnemyLevel": 0,
+      "HideInHandbook": true,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "Saintess's Snowrobe",
+      "OverrideKillCntInfos": null,
+      "SortId": 1313
     },
     "enemy_2003_rockman": {
       "Ability": null,
@@ -40480,7 +41237,7 @@
       "LinkEnemies": null,
       "Name": "Lost Colossus",
       "OverrideKillCntInfos": null,
-      "SortId": 1273
+      "SortId": 1315
     },
     "enemy_2004_balloon": {
       "Ability": null,
@@ -40508,7 +41265,7 @@
       "LinkEnemies": null,
       "Name": "Jetman",
       "OverrideKillCntInfos": null,
-      "SortId": 1274
+      "SortId": 1316
     },
     "enemy_2005_axetro": {
       "Ability": null,
@@ -40536,7 +41293,7 @@
       "LinkEnemies": null,
       "Name": "'Forsaken One'",
       "OverrideKillCntInfos": null,
-      "SortId": 1275
+      "SortId": 1317
     },
     "enemy_2006_flsnip": {
       "Ability": null,
@@ -40568,7 +41325,7 @@
       "LinkEnemies": null,
       "Name": "Rusthammer Warrior",
       "OverrideKillCntInfos": null,
-      "SortId": 1276
+      "SortId": 1318
     },
     "enemy_2007_flwitch": {
       "Ability": null,
@@ -40604,7 +41361,7 @@
       "LinkEnemies": null,
       "Name": "'Frozen Monstrosity'",
       "OverrideKillCntInfos": null,
-      "SortId": 1277
+      "SortId": 1319
     },
     "enemy_2008_flking": {
       "Ability": null,
@@ -40636,7 +41393,7 @@
       "LinkEnemies": null,
       "Name": "'Gravestone'",
       "OverrideKillCntInfos": null,
-      "SortId": 1278
+      "SortId": 1320
     },
     "enemy_2013_csbot": {
       "Ability": null,
@@ -40664,7 +41421,7 @@
       "LinkEnemies": null,
       "Name": "Wandering Puppet",
       "OverrideKillCntInfos": null,
-      "SortId": 1279
+      "SortId": 1321
     },
     "enemy_2014_csicer": {
       "Ability": null,
@@ -40698,7 +41455,7 @@
       ],
       "Name": "'Snow Doe'",
       "OverrideKillCntInfos": null,
-      "SortId": 1280
+      "SortId": 1322
     },
     "enemy_2015_csicem": {
       "Ability": null,
@@ -40732,7 +41489,7 @@
       ],
       "Name": "'Frost Buck'",
       "OverrideKillCntInfos": null,
-      "SortId": 1281
+      "SortId": 1323
     },
     "enemy_2016_csphtm": {
       "Ability": null,
@@ -40766,7 +41523,7 @@
       ],
       "Name": "Lucian, 'Blood Diamond'",
       "OverrideKillCntInfos": null,
-      "SortId": 1282
+      "SortId": 1324
     },
     "enemy_2018_csdoll": {
       "Ability": null,
@@ -40810,7 +41567,7 @@
       "LinkEnemies": null,
       "Name": "Big Sad Lock",
       "OverrideKillCntInfos": null,
-      "SortId": 1283
+      "SortId": 1325
     },
     "enemy_2019_cshost": {
       "Ability": null,
@@ -40850,7 +41607,7 @@
       "LinkEnemies": null,
       "Name": "'Troupe Mouthpiece'",
       "OverrideKillCntInfos": null,
-      "SortId": 1284
+      "SortId": 1326
     },
     "enemy_2020_cswrtr": {
       "Ability": null,
@@ -40890,7 +41647,7 @@
       "LinkEnemies": null,
       "Name": "'Playwright'",
       "OverrideKillCntInfos": null,
-      "SortId": 1285
+      "SortId": 1327
     },
     "enemy_2026_syudg": {
       "Ability": null,
@@ -40922,7 +41679,7 @@
       "LinkEnemies": null,
       "Name": "Saint Carmen",
       "OverrideKillCntInfos": null,
-      "SortId": 1286
+      "SortId": 1328
     },
     "enemy_2027_syudg2": {
       "Ability": null,
@@ -40958,7 +41715,7 @@
       "LinkEnemies": null,
       "Name": "Saint Iberia",
       "OverrideKillCntInfos": null,
-      "SortId": 1287
+      "SortId": 1329
     },
     "enemy_2028_syevil": {
       "Ability": null,
@@ -40989,7 +41746,7 @@
       ],
       "Name": "Tidelinked Bishop",
       "OverrideKillCntInfos": null,
-      "SortId": 1288
+      "SortId": 1330
     },
     "enemy_2029_symon": {
       "Ability": null,
@@ -41023,7 +41780,7 @@
       ],
       "Name": "Tidelinked Archon",
       "OverrideKillCntInfos": null,
-      "SortId": 1289
+      "SortId": 1331
     },
     "enemy_2030_symon2": {
       "Ability": null,
@@ -41061,7 +41818,7 @@
       ],
       "Name": "Tidelinked Immortal",
       "OverrideKillCntInfos": null,
-      "SortId": 1290
+      "SortId": 1332
     },
     "enemy_2031_syboy": {
       "Ability": null,
@@ -41095,7 +41852,7 @@
       ],
       "Name": "Pathshaper",
       "OverrideKillCntInfos": null,
-      "SortId": 1291
+      "SortId": 1333
     },
     "enemy_2032_syboy2": {
       "Ability": null,
@@ -41133,7 +41890,7 @@
       ],
       "Name": "Lingering Pathshaper",
       "OverrideKillCntInfos": null,
-      "SortId": 1292
+      "SortId": 1334
     },
     "enemy_2037_sygirl": {
       "Ability": null,
@@ -41181,7 +41938,7 @@
       "LinkEnemies": null,
       "Name": "'Paranoia Illusion'",
       "OverrideKillCntInfos": null,
-      "SortId": 1293
+      "SortId": 1335
     },
     "enemy_2038_sydonq": {
       "Ability": null,
@@ -41229,7 +41986,7 @@
       "LinkEnemies": null,
       "Name": "The Last Knight",
       "OverrideKillCntInfos": null,
-      "SortId": 1294
+      "SortId": 1336
     },
     "enemy_2039_syskad": {
       "Ability": null,
@@ -41279,7 +42036,7 @@
       ],
       "Name": "Ishar'mla, Heart of Corruption",
       "OverrideKillCntInfos": null,
-      "SortId": 1295
+      "SortId": 1337
     },
     "enemy_2042_syboss": {
       "Ability": null,
@@ -41329,7 +42086,7 @@
       ],
       "Name": "Izumik, Source of Ecology",
       "OverrideKillCntInfos": null,
-      "SortId": 1296
+      "SortId": 1338
     },
     "enemy_2036_syshop": {
       "Ability": null,
@@ -41361,7 +42118,7 @@
       "LinkEnemies": null,
       "Name": "Cannot",
       "OverrideKillCntInfos": null,
-      "SortId": 1297
+      "SortId": 1339
     },
     "enemy_2048_smgrd": {
       "Ability": null,
@@ -41393,7 +42150,7 @@
       "LinkEnemies": null,
       "Name": "'Demon's Blade'",
       "OverrideKillCntInfos": null,
-      "SortId": 1298
+      "SortId": 1340
     },
     "enemy_2049_smgrd2": {
       "Ability": null,
@@ -41425,7 +42182,7 @@
       "LinkEnemies": null,
       "Name": "'Demon's Blade,' the Vagabond",
       "OverrideKillCntInfos": null,
-      "SortId": 1299
+      "SortId": 1341
     },
     "enemy_2050_smsha": {
       "Ability": null,
@@ -41457,7 +42214,7 @@
       "LinkEnemies": null,
       "Name": "Fallen Snowpriest",
       "OverrideKillCntInfos": null,
-      "SortId": 1300
+      "SortId": 1342
     },
     "enemy_2051_smsha2": {
       "Ability": null,
@@ -41489,7 +42246,7 @@
       "LinkEnemies": null,
       "Name": "Hollow Snowpriest",
       "OverrideKillCntInfos": null,
-      "SortId": 1301
+      "SortId": 1343
     },
     "enemy_2052_smgia": {
       "Ability": null,
@@ -41521,7 +42278,7 @@
       "LinkEnemies": null,
       "Name": "Weaving Vinecreeps",
       "OverrideKillCntInfos": null,
-      "SortId": 1302
+      "SortId": 1344
     },
     "enemy_2053_smgia2": {
       "Ability": null,
@@ -41553,7 +42310,7 @@
       "LinkEnemies": null,
       "Name": "Elder Vinecreeps",
       "OverrideKillCntInfos": null,
-      "SortId": 1303
+      "SortId": 1345
     },
     "enemy_2054_smdeer": {
       "Ability": null,
@@ -41595,7 +42352,7 @@
       "LinkEnemies": null,
       "Name": "'Samivilinn,' the Resolution of the Very North",
       "OverrideKillCntInfos": null,
-      "SortId": 1304
+      "SortId": 1346
     },
     "enemy_2055_smlead": {
       "Ability": null,
@@ -41655,7 +42412,7 @@
       "LinkEnemies": null,
       "Name": "'Eikthyrnir,' the Scar of the Shattered",
       "OverrideKillCntInfos": null,
-      "SortId": 1305
+      "SortId": 1347
     },
     "enemy_2056_smedzi": {
       "Ability": null,
@@ -41699,7 +42456,7 @@
       "LinkEnemies": null,
       "Name": "Crazelyseon, the Ascendant of Cosmoi",
       "OverrideKillCntInfos": null,
-      "SortId": 1306
+      "SortId": 1348
     },
     "enemy_2057_smkght": {
       "Ability": null,
@@ -41735,7 +42492,7 @@
       "LinkEnemies": null,
       "Name": "Kharanduu Khagan, the Scourge of the Land",
       "OverrideKillCntInfos": null,
-      "SortId": 1307
+      "SortId": 1349
     },
     "enemy_2058_smlion": {
       "Ability": null,
@@ -41771,7 +42528,7 @@
       "LinkEnemies": null,
       "Name": "Lugalszargus, the Overlord of Ages",
       "OverrideKillCntInfos": null,
-      "SortId": 1308
+      "SortId": 1350
     },
     "enemy_2062_smcar": {
       "Ability": null,
@@ -41799,7 +42556,7 @@
       "LinkEnemies": null,
       "Name": "Self-Driving Recon Cart",
       "OverrideKillCntInfos": null,
-      "SortId": 1309
+      "SortId": 1351
     },
     "enemy_2071_skzdny": {
       "Ability": null,
@@ -41831,7 +42588,7 @@
       "LinkEnemies": null,
       "Name": "Laqeramaline",
       "OverrideKillCntInfos": null,
-      "SortId": 1310
+      "SortId": 1352
     },
     "enemy_2072_skdny2": {
       "Ability": null,
@@ -41863,7 +42620,7 @@
       "LinkEnemies": null,
       "Name": "The Tear Weaver",
       "OverrideKillCntInfos": null,
-      "SortId": 1311
+      "SortId": 1353
     },
     "enemy_2074_skzgly": {
       "Ability": null,
@@ -41891,7 +42648,7 @@
       "LinkEnemies": null,
       "Name": "Goliath",
       "OverrideKillCntInfos": null,
-      "SortId": 1312
+      "SortId": 1354
     },
     "enemy_2075_skgly2": {
       "Ability": null,
@@ -41923,7 +42680,7 @@
       "LinkEnemies": null,
       "Name": "Champion of Lost Agonies",
       "OverrideKillCntInfos": null,
-      "SortId": 1313
+      "SortId": 1355
     },
     "enemy_2076_skzklz": {
       "Ability": null,
@@ -41951,7 +42708,7 @@
       "LinkEnemies": null,
       "Name": "Kal'tsit",
       "OverrideKillCntInfos": null,
-      "SortId": 1314
+      "SortId": 1356
     },
     "enemy_2077_skklz2": {
       "Ability": null,
@@ -41979,7 +42736,7 @@
       "LinkEnemies": null,
       "Name": "The Doomsday Prophet",
       "OverrideKillCntInfos": null,
-      "SortId": 1315
+      "SortId": 1357
     },
     "enemy_2078_skzmst": {
       "Ability": null,
@@ -42007,7 +42764,7 @@
       "LinkEnemies": null,
       "Name": "Mon2tr",
       "OverrideKillCntInfos": null,
-      "SortId": 1316
+      "SortId": 1358
     },
     "enemy_2079_skmst2": {
       "Ability": null,
@@ -42035,7 +42792,7 @@
       "LinkEnemies": null,
       "Name": "Evolving Monster",
       "OverrideKillCntInfos": null,
-      "SortId": 1317
+      "SortId": 1359
     },
     "enemy_2080_skzlwy": {
       "Ability": null,
@@ -42095,7 +42852,7 @@
       "LinkEnemies": null,
       "Name": "Fremont, Enlightener of Minds",
       "OverrideKillCntInfos": null,
-      "SortId": 1318
+      "SortId": 1360
     },
     "enemy_2081_skztxs": {
       "Ability": null,
@@ -42151,7 +42908,7 @@
       "LinkEnemies": null,
       "Name": "Theresis, Black Crowned Lord",
       "OverrideKillCntInfos": null,
-      "SortId": 1319
+      "SortId": 1361
     },
     "enemy_2082_skzdd": {
       "Ability": null,
@@ -42219,7 +42976,7 @@
       "LinkEnemies": null,
       "Name": "Buldrokkas'tee, Holy Gun-Knight",
       "OverrideKillCntInfos": null,
-      "SortId": 1320
+      "SortId": 1362
     },
     "enemy_2084_skzcan": {
       "Ability": null,
@@ -42255,7 +43012,7 @@
       "LinkEnemies": null,
       "Name": "Mr. Goodenough",
       "OverrideKillCntInfos": null,
-      "SortId": 1321
+      "SortId": 1363
     },
     "enemy_2089_skzjkl": {
       "Ability": null,
@@ -42327,7 +43084,7 @@
       "LinkEnemies": null,
       "Name": "Qui'lon, Avatar of the Mahasattva",
       "OverrideKillCntInfos": null,
-      "SortId": 1322
+      "SortId": 1364
     },
     "enemy_2092_skzamy": {
       "Ability": null,
@@ -42387,7 +43144,7 @@
       "LinkEnemies": null,
       "Name": "'Amiya', Furnace's Finale",
       "OverrideKillCntInfos": null,
-      "SortId": 1323
+      "SortId": 1365
     },
     "enemy_2097_skzfdd": {
       "Ability": null,
@@ -42423,7 +43180,7 @@
       "LinkEnemies": null,
       "Name": "Buldrokkas'tee, Holy Gun-Knight",
       "OverrideKillCntInfos": null,
-      "SortId": 1324
+      "SortId": 1366
     },
     "enemy_2098_skzftx": {
       "Ability": null,
@@ -42451,7 +43208,7 @@
       "LinkEnemies": null,
       "Name": "Theresis, Black Crowned Lord",
       "OverrideKillCntInfos": null,
-      "SortId": 1325
+      "SortId": 1367
     },
     "enemy_2099_skzfkl": {
       "Ability": null,
@@ -42479,7 +43236,7 @@
       "LinkEnemies": null,
       "Name": "Qui'lon, Avatar of the Mahasattva",
       "OverrideKillCntInfos": null,
-      "SortId": 1326
+      "SortId": 1368
     },
     "enemy_2100_skzfmf": {
       "Ability": null,
@@ -42511,7 +43268,7 @@
       "LinkEnemies": null,
       "Name": "Manfred",
       "OverrideKillCntInfos": null,
-      "SortId": 1327
+      "SortId": 1369
     },
     "enemy_2107_dycant": {
       "Ability": null,
@@ -42547,7 +43304,7 @@
       "LinkEnemies": null,
       "Name": "Can Doe",
       "OverrideKillCntInfos": null,
-      "SortId": 1328
+      "SortId": 1370
     },
     "enemy_2108_dypryg": {
       "Ability": null,
@@ -42585,7 +43342,7 @@
       ],
       "Name": "Dusk Beauty",
       "OverrideKillCntInfos": null,
-      "SortId": 1329
+      "SortId": 1371
     },
     "enemy_2109_dypry2": {
       "Ability": null,
@@ -42623,7 +43380,7 @@
       ],
       "Name": "Lady of the Twin Moons",
       "OverrideKillCntInfos": null,
-      "SortId": 1330
+      "SortId": 1372
     },
     "enemy_2114_dylbgg": {
       "Ability": null,
@@ -42659,7 +43416,7 @@
       "LinkEnemies": null,
       "Name": "Jade Twin-Swords",
       "OverrideKillCntInfos": null,
-      "SortId": 1331
+      "SortId": 1373
     },
     "enemy_2112_dyhlgy": {
       "Ability": null,
@@ -42687,7 +43444,7 @@
       "LinkEnemies": null,
       "Name": "Crimson Crescent Blade",
       "OverrideKillCntInfos": null,
-      "SortId": 1332
+      "SortId": 1374
     },
     "enemy_2110_dyyrzf": {
       "Ability": null,
@@ -42719,7 +43476,7 @@
       "LinkEnemies": null,
       "Name": "Ash Spear",
       "OverrideKillCntInfos": null,
-      "SortId": 1333
+      "SortId": 1375
     },
     "enemy_2115_dylbg2": {
       "Ability": null,
@@ -42755,7 +43512,7 @@
       "LinkEnemies": null,
       "Name": "Lord Zhaolie",
       "OverrideKillCntInfos": null,
-      "SortId": 1334
+      "SortId": 1376
     },
     "enemy_2113_dyhlg2": {
       "Ability": null,
@@ -42783,7 +43540,7 @@
       "LinkEnemies": null,
       "Name": "Lord Wenheng",
       "OverrideKillCntInfos": null,
-      "SortId": 1335
+      "SortId": 1377
     },
     "enemy_2111_dyyrz2": {
       "Ability": null,
@@ -42815,7 +43572,7 @@
       "LinkEnemies": null,
       "Name": "Lord Huan",
       "OverrideKillCntInfos": null,
-      "SortId": 1336
+      "SortId": 1378
     },
     "enemy_2116_dyyysg": {
       "Ability": null,
@@ -42853,7 +43610,7 @@
       ],
       "Name": "Revered Grandmaster",
       "OverrideKillCntInfos": null,
-      "SortId": 1337
+      "SortId": 1379
     },
     "enemy_2117_dyyys2": {
       "Ability": null,
@@ -42891,7 +43648,7 @@
       ],
       "Name": "Grand Duke",
       "OverrideKillCntInfos": null,
-      "SortId": 1338
+      "SortId": 1380
     },
     "enemy_2118_dylbhm": {
       "Ability": null,
@@ -42945,7 +43702,7 @@
       ],
       "Name": "Yi",
       "OverrideKillCntInfos": null,
-      "SortId": 1339
+      "SortId": 1381
     },
     "enemy_2119_dyshhj": {
       "Ability": null,
@@ -42989,7 +43746,7 @@
       "LinkEnemies": null,
       "Name": "'Sui'",
       "OverrideKillCntInfos": null,
-      "SortId": 1340
+      "SortId": 1382
     },
     "enemy_2119_dyshhj_2": {
       "Ability": null,
@@ -43025,7 +43782,7 @@
       "LinkEnemies": null,
       "Name": "'Body of Sui'",
       "OverrideKillCntInfos": null,
-      "SortId": 1341
+      "SortId": 1383
     },
     "enemy_2120_dywqgs": {
       "Ability": null,
@@ -43093,7 +43850,7 @@
       "LinkEnemies": null,
       "Name": "'Wang'",
       "OverrideKillCntInfos": null,
-      "SortId": 1342
+      "SortId": 1384
     },
     "enemy_2123_dyjsww": {
       "Ability": null,
@@ -43155,7 +43912,7 @@
       ],
       "Name": "Bestial Hou",
       "OverrideKillCntInfos": null,
-      "SortId": 1343
+      "SortId": 1385
     },
     "enemy_2124_dyjsfg": {
       "Ability": null,
@@ -43197,7 +43954,7 @@
       ],
       "Name": "Bestial Ju",
       "OverrideKillCntInfos": null,
-      "SortId": 1344
+      "SortId": 1386
     },
     "enemy_5008_cstrwd": {
       "Ability": null,
@@ -43225,7 +43982,7 @@
       "LinkEnemies": null,
       "Name": "The Boons of Art!",
       "OverrideKillCntInfos": null,
-      "SortId": 1345
+      "SortId": 1387
     },
     "enemy_5009_shtrwd": {
       "Ability": null,
@@ -43253,7 +44010,7 @@
       "LinkEnemies": null,
       "Name": "The Clutchness of Art!",
       "OverrideKillCntInfos": null,
-      "SortId": 1346
+      "SortId": 1388
     },
     "enemy_5010_catrdg": {
       "Ability": null,
@@ -43281,7 +44038,7 @@
       "LinkEnemies": null,
       "Name": "Weaksauce",
       "OverrideKillCntInfos": null,
-      "SortId": 1347
+      "SortId": 1389
     },
     "enemy_6001_trsgst": {
       "Ability": null,
@@ -43313,7 +44070,7 @@
       "LinkEnemies": null,
       "Name": "Fleet-footed Thief",
       "OverrideKillCntInfos": null,
-      "SortId": 1348
+      "SortId": 1390
     },
     "enemy_6002_trswlf": {
       "Ability": null,
@@ -43349,7 +44106,7 @@
       "LinkEnemies": null,
       "Name": "Teary Detective",
       "OverrideKillCntInfos": null,
-      "SortId": 1349
+      "SortId": 1391
     },
     "enemy_6003_trsslm": {
       "Ability": null,
@@ -43381,7 +44138,7 @@
       "LinkEnemies": null,
       "Name": "'Shiny Pooloo'",
       "OverrideKillCntInfos": null,
-      "SortId": 1350
+      "SortId": 1392
     },
     "enemy_6004_pleslm": {
       "Ability": null,
@@ -43417,7 +44174,7 @@
       "LinkEnemies": null,
       "Name": "'Milan'",
       "OverrideKillCntInfos": null,
-      "SortId": 1351
+      "SortId": 1393
     },
     "enemy_6005_llstone": {
       "Ability": null,
@@ -43457,7 +44214,7 @@
       ],
       "Name": "Spherical Colossus",
       "OverrideKillCntInfos": null,
-      "SortId": 1352
+      "SortId": 1394
     },
     "enemy_6006_fystone": {
       "Ability": null,
@@ -43491,7 +44248,7 @@
       ],
       "Name": "Crude Sphere",
       "OverrideKillCntInfos": null,
-      "SortId": 1353
+      "SortId": 1395
     },
     "enemy_6007_mtslm": {
       "Ability": null,
@@ -43525,7 +44282,7 @@
       ],
       "Name": "'Drifting Cabin'",
       "OverrideKillCntInfos": null,
-      "SortId": 1354
+      "SortId": 1396
     },
     "enemy_6008_mtslms": {
       "Ability": null,
@@ -43550,7 +44307,7 @@
       ],
       "Name": "Fluorescent Originium Slug",
       "OverrideKillCntInfos": null,
-      "SortId": 1355
+      "SortId": 1397
     },
     "enemy_6009_nlkgtbs": {
       "Ability": null,
@@ -43586,7 +44343,7 @@
       "LinkEnemies": null,
       "Name": "'Fruit of Gluttony'",
       "OverrideKillCntInfos": null,
-      "SortId": 1356
+      "SortId": 1398
     },
     "enemy_6010_boxing": {
       "Ability": null,
@@ -43618,7 +44375,7 @@
       "LinkEnemies": null,
       "Name": "'Boy Wonder' Sandel",
       "OverrideKillCntInfos": null,
-      "SortId": 1357
+      "SortId": 1399
     },
     "enemy_6011_planty": {
       "Ability": null,
@@ -43656,7 +44413,7 @@
       ],
       "Name": "'Nature's Compromise'",
       "OverrideKillCntInfos": null,
-      "SortId": 1358
+      "SortId": 1400
     },
     "enemy_6012_plants": {
       "Ability": null,
@@ -43681,7 +44438,7 @@
       ],
       "Name": "Small Symbiont",
       "OverrideKillCntInfos": null,
-      "SortId": 1359
+      "SortId": 1401
     },
     "enemy_6013_smith": {
       "Ability": null,
@@ -43717,7 +44474,7 @@
       "LinkEnemies": null,
       "Name": "Mama's 'Rebel Girl'",
       "OverrideKillCntInfos": null,
-      "SortId": 1360
+      "SortId": 1402
     },
     "enemy_6014_crzgas": {
       "Ability": null,
@@ -43753,7 +44510,7 @@
       "LinkEnemies": null,
       "Name": "'Tumor'",
       "OverrideKillCntInfos": null,
-      "SortId": 1361
+      "SortId": 1403
     },
     "enemy_6015_ictruck": {
       "Ability": null,
@@ -43799,7 +44556,7 @@
       ],
       "Name": "'Supersweetie Smiley'",
       "OverrideKillCntInfos": null,
-      "SortId": 1362
+      "SortId": 1404
     },
     "enemy_6016_splash": {
       "Ability": null,
@@ -43843,7 +44600,7 @@
       "LinkEnemies": null,
       "Name": "Thirster",
       "OverrideKillCntInfos": null,
-      "SortId": 1363
+      "SortId": 1405
     },
     "enemy_6017_icdrone": {
       "Ability": null,
@@ -43877,7 +44634,7 @@
       ],
       "Name": "Supersweetie Delivery Drone",
       "OverrideKillCntInfos": null,
-      "SortId": 1364
+      "SortId": 1406
     },
     "enemy_6018_carrier": {
       "Ability": null,
@@ -43922,7 +44679,7 @@
       ],
       "Name": "'Hatred Without Root'",
       "OverrideKillCntInfos": null,
-      "SortId": 1365
+      "SortId": 1407
     },
     "enemy_6019_escort": {
       "Ability": null,
@@ -43952,7 +44709,7 @@
       ],
       "Name": "Seeding Drone",
       "OverrideKillCntInfos": null,
-      "SortId": 1366
+      "SortId": 1408
     },
     "enemy_6020_orang": {
       "Ability": null,
@@ -43994,7 +44751,7 @@
       ],
       "Name": "'Spirit of Liquor'",
       "OverrideKillCntInfos": null,
-      "SortId": 1367
+      "SortId": 1409
     },
     "enemy_6021_cask": {
       "Ability": null,
@@ -44024,7 +44781,7 @@
       ],
       "Name": "Aged Mead",
       "OverrideKillCntInfos": null,
-      "SortId": 1368
+      "SortId": 1410
     },
     "enemy_6022_m2cnt": {
       "Ability": null,
@@ -44068,7 +44825,7 @@
       "LinkEnemies": null,
       "Name": "'Count Grimscore'",
       "OverrideKillCntInfos": null,
-      "SortId": 1369
+      "SortId": 1411
     },
     "enemy_6023_crane": {
       "Ability": null,
@@ -44114,7 +44871,7 @@
       ],
       "Name": "'Greedy Catcher'",
       "OverrideKillCntInfos": null,
-      "SortId": 1370
+      "SortId": 1412
     },
     "enemy_6024_crnbug": {
       "Ability": null,
@@ -44144,7 +44901,7 @@
       ],
       "Name": "'Really Unruly Creature'",
       "OverrideKillCntInfos": null,
-      "SortId": 1371
+      "SortId": 1413
     },
     "enemy_6025_tinker": {
       "Ability": null,
@@ -44182,7 +44939,7 @@
       ],
       "Name": "Altar of Hatred",
       "OverrideKillCntInfos": null,
-      "SortId": 1372
+      "SortId": 1414
     },
     "enemy_6026_techn": {
       "Ability": null,
@@ -44212,7 +44969,7 @@
       ],
       "Name": "Witchcraft Orb",
       "OverrideKillCntInfos": null,
-      "SortId": 1373
+      "SortId": 1415
     },
     "enemy_6027_bqthie": {
       "Ability": null,
@@ -44256,7 +45013,7 @@
       "LinkEnemies": null,
       "Name": "Ye Wuqing, Rooftop Runner",
       "OverrideKillCntInfos": null,
-      "SortId": 1374
+      "SortId": 1416
     },
     "enemy_6028_cosgia": {
       "Ability": null,
@@ -44300,7 +45057,7 @@
       "LinkEnemies": null,
       "Name": "'Song of the Pack'",
       "OverrideKillCntInfos": null,
-      "SortId": 1375
+      "SortId": 1417
     },
     "enemy_6029_solzac": {
       "Ability": null,
@@ -44351,7 +45108,7 @@
       ],
       "Name": "'Aubade'",
       "OverrideKillCntInfos": null,
-      "SortId": 1376
+      "SortId": 1418
     },
     "enemy_6030_frgzac": {
       "Ability": null,
@@ -44393,7 +45150,7 @@
       ],
       "Name": "'Twitter'",
       "OverrideKillCntInfos": null,
-      "SortId": 1377
+      "SortId": 1419
     },
     "enemy_6031_visfrg": {
       "Ability": null,
@@ -44427,7 +45184,7 @@
       ],
       "Name": "'Woodthreads'",
       "OverrideKillCntInfos": null,
-      "SortId": 1378
+      "SortId": 1420
     },
     "enemy_6032_fxdjj": {
       "Ability": null,
@@ -44471,7 +45228,7 @@
       "LinkEnemies": null,
       "Name": "'Absolute Security' Prototype",
       "OverrideKillCntInfos": null,
-      "SortId": 1379
+      "SortId": 1421
     },
     "enemy_7001_blwzad": {
       "Ability": null,
@@ -44499,7 +45256,7 @@
       "LinkEnemies": null,
       "Name": "Tribal Shaman",
       "OverrideKillCntInfos": null,
-      "SortId": 1380
+      "SortId": 1423
     },
     "enemy_7001_blwzad_2": {
       "Ability": null,
@@ -44527,7 +45284,7 @@
       "LinkEnemies": null,
       "Name": "Lord Ameer Shaman",
       "OverrideKillCntInfos": null,
-      "SortId": 1381
+      "SortId": 1424
     },
     "enemy_7002_veingd": {
       "Ability": null,
@@ -44555,7 +45312,7 @@
       "LinkEnemies": null,
       "Name": "Vein Guardian",
       "OverrideKillCntInfos": null,
-      "SortId": 1382
+      "SortId": 1425
     },
     "enemy_7002_veingd_2": {
       "Ability": null,
@@ -44583,7 +45340,7 @@
       "LinkEnemies": null,
       "Name": "Maddened Vein Guardian",
       "OverrideKillCntInfos": null,
-      "SortId": 1383
+      "SortId": 1426
     },
     "enemy_7003_catapt": {
       "Ability": null,
@@ -44611,7 +45368,7 @@
       "LinkEnemies": null,
       "Name": "'Anything Can Be Broken'",
       "OverrideKillCntInfos": null,
-      "SortId": 1384
+      "SortId": 1427
     },
     "enemy_7003_catapt_2": {
       "Ability": null,
@@ -44639,7 +45396,7 @@
       "LinkEnemies": null,
       "Name": "'Everything Should Be Smashed'",
       "OverrideKillCntInfos": null,
-      "SortId": 1385
+      "SortId": 1428
     },
     "enemy_7004_xbdeer": {
       "Ability": null,
@@ -44667,7 +45424,7 @@
       "LinkEnemies": null,
       "Name": "Leporibeast Shorthorn",
       "OverrideKillCntInfos": null,
-      "SortId": 1386
+      "SortId": 1429
     },
     "enemy_7004_xbdeer_2": {
       "Ability": null,
@@ -44695,7 +45452,7 @@
       "LinkEnemies": null,
       "Name": "Leporibeast Longhorn",
       "OverrideKillCntInfos": null,
-      "SortId": 1387
+      "SortId": 1430
     },
     "enemy_7005_xbbull": {
       "Ability": null,
@@ -44727,7 +45484,7 @@
       "LinkEnemies": null,
       "Name": "Mossback Beast",
       "OverrideKillCntInfos": null,
-      "SortId": 1388
+      "SortId": 1431
     },
     "enemy_7005_xbbull_2": {
       "Ability": null,
@@ -44759,7 +45516,7 @@
       "LinkEnemies": null,
       "Name": "Lush Mossback Beast",
       "OverrideKillCntInfos": null,
-      "SortId": 1389
+      "SortId": 1432
     },
     "enemy_7006_xbcrab": {
       "Ability": null,
@@ -44787,7 +45544,7 @@
       "LinkEnemies": null,
       "Name": "Cragpincer",
       "OverrideKillCntInfos": null,
-      "SortId": 1390
+      "SortId": 1433
     },
     "enemy_7006_xbcrab_2": {
       "Ability": null,
@@ -44815,7 +45572,7 @@
       "LinkEnemies": null,
       "Name": "Crystalline Cragpincer",
       "OverrideKillCntInfos": null,
-      "SortId": 1391
+      "SortId": 1434
     },
     "enemy_7015_xbcrab2": {
       "Ability": null,
@@ -44843,7 +45600,7 @@
       "LinkEnemies": null,
       "Name": "'Consortium of Pincers'",
       "OverrideKillCntInfos": null,
-      "SortId": 1392
+      "SortId": 1435
     },
     "enemy_7007_xbbird": {
       "Ability": null,
@@ -44875,7 +45632,7 @@
       "LinkEnemies": null,
       "Name": "Sandfall Crystalhoof",
       "OverrideKillCntInfos": null,
-      "SortId": 1393
+      "SortId": 1436
     },
     "enemy_7008_wrkwrk": {
       "Ability": null,
@@ -44903,7 +45660,7 @@
       "LinkEnemies": null,
       "Name": "Basic Harvester",
       "OverrideKillCntInfos": null,
-      "SortId": 1394
+      "SortId": 1437
     },
     "enemy_7009_mtmoun": {
       "Ability": null,
@@ -44935,7 +45692,7 @@
       "LinkEnemies": null,
       "Name": "'The Immortal'",
       "OverrideKillCntInfos": null,
-      "SortId": 1395
+      "SortId": 1438
     },
     "enemy_7010_bldrgn": {
       "Ability": null,
@@ -44973,7 +45730,7 @@
       "LinkEnemies": null,
       "Name": "Great Wingbeast",
       "OverrideKillCntInfos": null,
-      "SortId": 1396
+      "SortId": 1439
     },
     "enemy_7011_paki": {
       "Ability": null,
@@ -45001,7 +45758,7 @@
       "LinkEnemies": null,
       "Name": "Sargonian Contract Assassin",
       "OverrideKillCntInfos": null,
-      "SortId": 1397
+      "SortId": 1440
     },
     "enemy_7012_wilder": {
       "Ability": null,
@@ -45041,7 +45798,7 @@
       "LinkEnemies": null,
       "Name": "Dauntless Linebreaker",
       "OverrideKillCntInfos": null,
-      "SortId": 1398
+      "SortId": 1441
     },
     "enemy_7013_slwazd": {
       "Ability": null,
@@ -45088,7 +45845,7 @@
       ],
       "Name": "'The Ruinbringer'",
       "OverrideKillCntInfos": null,
-      "SortId": 1399
+      "SortId": 1442
     },
     "enemy_7014_dva": {
       "Ability": null,
@@ -45140,7 +45897,7 @@
       "LinkEnemies": null,
       "Name": "'Al-Rafiq'",
       "OverrideKillCntInfos": null,
-      "SortId": 1400
+      "SortId": 1443
     },
     "enemy_8006_flmgd": {
       "Ability": null,
@@ -45171,7 +45928,7 @@
       ],
       "Name": "Reforged Retinue",
       "OverrideKillCntInfos": null,
-      "SortId": 1401
+      "SortId": 1444
     },
     "enemy_8008_eltswd": {
       "Ability": null,
@@ -45217,7 +45974,7 @@
       ],
       "Name": "V.T.E.",
       "OverrideKillCntInfos": null,
-      "SortId": 1402
+      "SortId": 1445
     },
     "enemy_8009_eltufo": {
       "Ability": null,
@@ -45263,7 +46020,7 @@
       ],
       "Name": "Rosmontis's Drone",
       "OverrideKillCntInfos": null,
-      "SortId": 1403
+      "SortId": 1446
     },
     "enemy_8012_mcnd": {
       "Ability": null,
@@ -45291,7 +46048,7 @@
       "LinkEnemies": null,
       "Name": "Document",
       "OverrideKillCntInfos": null,
-      "SortId": 1404
+      "SortId": 1447
     },
     "enemy_8013_mcnrsh": {
       "Ability": null,
@@ -45327,7 +46084,7 @@
       "LinkEnemies": null,
       "Name": "Leafcarpet",
       "OverrideKillCntInfos": null,
-      "SortId": 1405
+      "SortId": 1448
     },
     "enemy_8014_mcnelp": {
       "Ability": null,
@@ -45355,7 +46112,7 @@
       "LinkEnemies": null,
       "Name": "Stopwatch",
       "OverrideKillCntInfos": null,
-      "SortId": 1406
+      "SortId": 1449
     },
     "enemy_8015_mcnrhd": {
       "Ability": null,
@@ -45387,7 +46144,7 @@
       "LinkEnemies": null,
       "Name": "Uproar",
       "OverrideKillCntInfos": null,
-      "SortId": 1407
+      "SortId": 1450
     },
     "enemy_8001_flmlod": {
       "Ability": null,
@@ -45435,7 +46192,7 @@
       ],
       "Name": "Sverdsmeltr, Guardian Ember of the King",
       "OverrideKillCntInfos": null,
-      "SortId": 1408
+      "SortId": 1451
     },
     "enemy_8001_flmlod_2": {
       "Ability": null,
@@ -45499,7 +46256,7 @@
       ],
       "Name": "Sverdsmeltr, Guardian Ember of the King",
       "OverrideKillCntInfos": null,
-      "SortId": 1409
+      "SortId": 1452
     },
     "enemy_8001_flmlod_3": {
       "Ability": null,
@@ -45567,7 +46324,7 @@
       ],
       "Name": "Sverdsmeltr, Guardian Ember of the King",
       "OverrideKillCntInfos": null,
-      "SortId": 1410
+      "SortId": 1453
     },
     "enemy_8007_eltrsm": {
       "Ability": null,
@@ -45612,7 +46369,7 @@
       ],
       "Name": "Rosmontis, Simulated Sentry",
       "OverrideKillCntInfos": null,
-      "SortId": 1411
+      "SortId": 1454
     },
     "enemy_8007_eltrsm_2": {
       "Ability": null,
@@ -45673,7 +46430,7 @@
       ],
       "Name": "Rosmontis, Simulated Sentry",
       "OverrideKillCntInfos": null,
-      "SortId": 1412
+      "SortId": 1455
     },
     "enemy_8007_eltrsm_3": {
       "Ability": null,
@@ -45742,7 +46499,7 @@
       ],
       "Name": "Rosmontis, Simulated Sentry",
       "OverrideKillCntInfos": null,
-      "SortId": 1413
+      "SortId": 1456
     },
     "enemy_8010_mcnist": {
       "Ability": null,
@@ -45790,7 +46547,7 @@
       ],
       "Name": "Mechanist, Mechanical Mind",
       "OverrideKillCntInfos": null,
-      "SortId": 1414
+      "SortId": 1457
     },
     "enemy_8010_mcnist_2": {
       "Ability": null,
@@ -45850,7 +46607,7 @@
       ],
       "Name": "Mechanist, Mechanical Mind",
       "OverrideKillCntInfos": null,
-      "SortId": 1415
+      "SortId": 1458
     },
     "enemy_8010_mcnist_3": {
       "Ability": null,
@@ -45914,7 +46671,7 @@
       ],
       "Name": "Mechanist, Mechanical Mind",
       "OverrideKillCntInfos": null,
-      "SortId": 1416
+      "SortId": 1459
     },
     "enemy_8011_mcndog": {
       "Ability": null,
@@ -45956,7 +46713,7 @@
       ],
       "Name": "Structural Principle",
       "OverrideKillCntInfos": null,
-      "SortId": 1417
+      "SortId": 1460
     },
     "enemy_8011_mcndog_2": {
       "Ability": null,
@@ -46006,7 +46763,7 @@
       ],
       "Name": "Structural Principle",
       "OverrideKillCntInfos": null,
-      "SortId": 1418
+      "SortId": 1461
     },
     "enemy_8011_mcndog_3": {
       "Ability": null,
@@ -46056,7 +46813,7 @@
       ],
       "Name": "Structural Principle",
       "OverrideKillCntInfos": null,
-      "SortId": 1419
+      "SortId": 1462
     },
     "enemy_7016_shushu": {
       "Ability": null,
@@ -46084,7 +46841,7 @@
       "LinkEnemies": null,
       "Name": "Barrenlands Musbeast",
       "OverrideKillCntInfos": null,
-      "SortId": 1420
+      "SortId": 1463
     },
     "enemy_7017_miner": {
       "Ability": null,
@@ -46112,7 +46869,7 @@
       "LinkEnemies": null,
       "Name": "Mine Drudge",
       "OverrideKillCntInfos": null,
-      "SortId": 1421
+      "SortId": 1464
     },
     "enemy_7018_scarab": {
       "Ability": null,
@@ -46140,7 +46897,7 @@
       "LinkEnemies": null,
       "Name": "Volatile Originium Slug",
       "OverrideKillCntInfos": null,
-      "SortId": 1422
+      "SortId": 1465
     },
     "enemy_7019_thief": {
       "Ability": null,
@@ -46168,7 +46925,7 @@
       "LinkEnemies": null,
       "Name": "Wilderness Rogue",
       "OverrideKillCntInfos": null,
-      "SortId": 1423
+      "SortId": 1466
     },
     "enemy_7020_xbtor": {
       "Ability": null,
@@ -46196,7 +46953,7 @@
       "LinkEnemies": null,
       "Name": "Spined Shellbeast",
       "OverrideKillCntInfos": null,
-      "SortId": 1424
+      "SortId": 1467
     },
     "enemy_7021_xbmoth": {
       "Ability": null,
@@ -46224,7 +46981,7 @@
       "LinkEnemies": null,
       "Name": "Luminous Fowlbeast",
       "OverrideKillCntInfos": null,
-      "SortId": 1425
+      "SortId": 1468
     },
     "enemy_7022_gatgod": {
       "Ability": null,
@@ -46256,7 +47013,7 @@
       "LinkEnemies": null,
       "Name": "Zümrütrüyası Priestess",
       "OverrideKillCntInfos": null,
-      "SortId": 1426
+      "SortId": 1469
     },
     "enemy_7023_gatbb": {
       "Ability": null,
@@ -46284,7 +47041,7 @@
       "LinkEnemies": null,
       "Name": "Zümrütrüyası Acolyte",
       "OverrideKillCntInfos": null,
-      "SortId": 1427
+      "SortId": 1470
     },
     "enemy_7024_clking": {
       "Ability": null,
@@ -46316,7 +47073,7 @@
       "LinkEnemies": null,
       "Name": "Wandering Troubadour",
       "OverrideKillCntInfos": null,
-      "SortId": 1428
+      "SortId": 1471
     },
     "enemy_7025_clbb": {
       "Ability": null,
@@ -46348,7 +47105,7 @@
       "LinkEnemies": null,
       "Name": "Wandering Apprentice",
       "OverrideKillCntInfos": null,
-      "SortId": 1429
+      "SortId": 1472
     },
     "enemy_7026_xbele": {
       "Ability": null,
@@ -46384,7 +47141,7 @@
       "LinkEnemies": null,
       "Name": "Timestream Guardian",
       "OverrideKillCntInfos": null,
-      "SortId": 1430
+      "SortId": 1473
     },
     "enemy_7027_xbbtl": {
       "Ability": null,
@@ -46418,7 +47175,7 @@
       ],
       "Name": "Crystalline Titanibeast",
       "OverrideKillCntInfos": null,
-      "SortId": 1431
+      "SortId": 1474
     },
     "enemy_7028_xbscp": {
       "Ability": null,
@@ -46456,7 +47213,7 @@
       ],
       "Name": "Crystalline Oberobeast",
       "OverrideKillCntInfos": null,
-      "SortId": 1432
+      "SortId": 1475
     },
     "enemy_7029_pilot": {
       "Ability": null,
@@ -46496,7 +47253,7 @@
       "LinkEnemies": null,
       "Name": "Sailraider",
       "OverrideKillCntInfos": null,
-      "SortId": 1433
+      "SortId": 1476
     },
     "enemy_7030_skodo": {
       "Ability": null,
@@ -46528,7 +47285,7 @@
       "LinkEnemies": null,
       "Name": "Dustweaver",
       "OverrideKillCntInfos": null,
-      "SortId": 1434
+      "SortId": 1477
     },
     "enemy_7031_ghking": {
       "Ability": null,
@@ -46568,7 +47325,7 @@
       "LinkEnemies": null,
       "Name": "Annihilator",
       "OverrideKillCntInfos": null,
-      "SortId": 1435
+      "SortId": 1478
     },
     "enemy_7034_xbmsn": {
       "Ability": null,
@@ -46596,7 +47353,7 @@
       "LinkEnemies": null,
       "Name": "Diligent Laborer",
       "OverrideKillCntInfos": null,
-      "SortId": 1436
+      "SortId": 1479
     },
     "enemy_7044_xblbug": {
       "Ability": null,
@@ -46624,7 +47381,7 @@
       "LinkEnemies": null,
       "Name": "Flying Originium Slug",
       "OverrideKillCntInfos": null,
-      "SortId": 1437
+      "SortId": 1480
     },
     "enemy_7045_xbtd": {
       "Ability": null,
@@ -46652,7 +47409,7 @@
       "LinkEnemies": null,
       "Name": "Charging Originium Slug",
       "OverrideKillCntInfos": null,
-      "SortId": 1438
+      "SortId": 1481
     },
     "enemy_7046_xbslug": {
       "Ability": null,
@@ -46680,7 +47437,7 @@
       "LinkEnemies": null,
       "Name": "Armored Originium Slug",
       "OverrideKillCntInfos": null,
-      "SortId": 1439
+      "SortId": 1482
     },
     "enemy_7047_xbdit": {
       "Ability": null,
@@ -46720,7 +47477,7 @@
       "LinkEnemies": null,
       "Name": "'Liquid Shifter'",
       "OverrideKillCntInfos": null,
-      "SortId": 1440
+      "SortId": 1483
     },
     "enemy_7049_xbnum": {
       "Ability": null,
@@ -46756,7 +47513,7 @@
       "LinkEnemies": null,
       "Name": "Rogue Burdenbeast",
       "OverrideKillCntInfos": null,
-      "SortId": 1441
+      "SortId": 1484
     },
     "enemy_7051_xbcas": {
       "Ability": null,
@@ -46796,7 +47553,7 @@
       "LinkEnemies": null,
       "Name": "Thalebeast",
       "OverrideKillCntInfos": null,
-      "SortId": 1442
+      "SortId": 1485
     },
     "enemy_7053_xbcasz": {
       "Ability": null,
@@ -46840,7 +47597,7 @@
       "LinkEnemies": null,
       "Name": "Thalebeast",
       "OverrideKillCntInfos": null,
-      "SortId": 1443
+      "SortId": 1486
     },
     "enemy_7054_xbsmi": {
       "Ability": null,
@@ -46888,7 +47645,7 @@
       "LinkEnemies": null,
       "Name": "Vanillawing",
       "OverrideKillCntInfos": null,
-      "SortId": 1444
+      "SortId": 1487
     },
     "enemy_7056_xbsmiz": {
       "Ability": null,
@@ -46928,7 +47685,7 @@
       "LinkEnemies": null,
       "Name": "Vanillawing",
       "OverrideKillCntInfos": null,
-      "SortId": 1445
+      "SortId": 1488
     },
     "enemy_7057_xbrok": {
       "Ability": null,
@@ -46976,7 +47733,7 @@
       "LinkEnemies": null,
       "Name": "Quicksand Beast",
       "OverrideKillCntInfos": null,
-      "SortId": 1446
+      "SortId": 1489
     },
     "enemy_7059_xbrokz": {
       "Ability": null,
@@ -47020,7 +47777,7 @@
       "LinkEnemies": null,
       "Name": "Quicksand Beast",
       "OverrideKillCntInfos": null,
-      "SortId": 1447
+      "SortId": 1490
     },
     "enemy_9001_ayokai": {
       "Ability": null,
@@ -47048,7 +47805,7 @@
       "LinkEnemies": null,
       "Name": "Surprise Sponsor Drone",
       "OverrideKillCntInfos": null,
-      "SortId": 1448
+      "SortId": 1491
     },
     "enemy_9002_adsham": {
       "Ability": null,
@@ -47076,7 +47833,7 @@
       "LinkEnemies": null,
       "Name": "Sarkaz Bloodthirst Caster",
       "OverrideKillCntInfos": null,
-      "SortId": 1449
+      "SortId": 1492
     },
     "enemy_9003_askate": {
       "Ability": null,
@@ -47108,7 +47865,7 @@
       "LinkEnemies": null,
       "Name": "Pathfinder Armicustos",
       "OverrideKillCntInfos": null,
-      "SortId": 1450
+      "SortId": 1493
     },
     "enemy_9004_anlock": {
       "Ability": null,
@@ -47136,7 +47893,7 @@
       "LinkEnemies": null,
       "Name": "Technician Prisoner",
       "OverrideKillCntInfos": null,
-      "SortId": 1451
+      "SortId": 1494
     },
     "enemy_9005_aicemn": {
       "Ability": null,
@@ -47164,7 +47921,7 @@
       "LinkEnemies": null,
       "Name": "Glacial Archer",
       "OverrideKillCntInfos": null,
-      "SortId": 1452
+      "SortId": 1495
     },
     "enemy_5501_arcbank": {
       "Ability": null,
@@ -47196,7 +47953,7 @@
       "LinkEnemies": null,
       "Name": "Tycoon",
       "OverrideKillCntInfos": null,
-      "SortId": 1453
+      "SortId": 1496
     },
     "enemy_5502_arcthf": {
       "Ability": null,
@@ -47224,7 +47981,7 @@
       "LinkEnemies": null,
       "Name": "Treasure Thief",
       "OverrideKillCntInfos": null,
-      "SortId": 1454
+      "SortId": 1497
     },
     "enemy_5503_arcslma": {
       "Ability": null,
@@ -47254,7 +48011,7 @@
       ],
       "Name": "Jelly Kid",
       "OverrideKillCntInfos": null,
-      "SortId": 1455
+      "SortId": 1498
     },
     "enemy_5504_arcslmi": {
       "Ability": null,
@@ -47288,7 +48045,7 @@
       ],
       "Name": "Jello",
       "OverrideKillCntInfos": null,
-      "SortId": 1456
+      "SortId": 1499
     },
     "enemy_5505_arctxi": {
       "Ability": null,
@@ -47322,7 +48079,7 @@
       ],
       "Name": "'The Amphibian' Ship-Car",
       "OverrideKillCntInfos": null,
-      "SortId": 1457
+      "SortId": 1500
     },
     "enemy_5506_arcgo": {
       "Ability": null,
@@ -47376,7 +48133,7 @@
       ],
       "Name": "'Washed-Up Parts'",
       "OverrideKillCntInfos": null,
-      "SortId": 1458
+      "SortId": 1501
     },
     "enemy_5507_arctolm": {
       "Ability": null,
@@ -47408,7 +48165,7 @@
       "LinkEnemies": null,
       "Name": "Fountain 'Soda Knight'",
       "OverrideKillCntInfos": null,
-      "SortId": 1459
+      "SortId": 1502
     },
     "enemy_18001_lhship": {
       "Ability": null,
@@ -47440,7 +48197,7 @@
       "LinkEnemies": null,
       "Name": "Transport Boat",
       "OverrideKillCntInfos": null,
-      "SortId": 1460
+      "SortId": 1503
     },
     "enemy_18002_lhbetl": {
       "Ability": null,
@@ -47471,7 +48228,7 @@
       ],
       "Name": "Pincerbug",
       "OverrideKillCntInfos": null,
-      "SortId": 1461
+      "SortId": 1504
     },
     "enemy_18003_lhkarb": {
       "Ability": null,
@@ -47499,7 +48256,7 @@
       "LinkEnemies": null,
       "Name": "Rampaging Vacuum",
       "OverrideKillCntInfos": null,
-      "SortId": 1462
+      "SortId": 1505
     },
     "enemy_18004_lhbmom": {
       "Ability": null,
@@ -47534,7 +48291,7 @@
       ],
       "Name": "Giant Pincerbug",
       "OverrideKillCntInfos": null,
-      "SortId": 1463
+      "SortId": 1506
     },
     "enemy_18005_lhwand": {
       "Ability": null,
@@ -47570,7 +48327,7 @@
       "LinkEnemies": null,
       "Name": "'Wanderer'",
       "OverrideKillCntInfos": null,
-      "SortId": 1464
+      "SortId": 1507
     },
     "enemy_18006_lhprie": {
       "Ability": null,
@@ -47622,7 +48379,7 @@
       "LinkEnemies": null,
       "Name": "Praying Benefactor",
       "OverrideKillCntInfos": null,
-      "SortId": 1465
+      "SortId": 1508
     },
     "enemy_18007_lhbque": {
       "Ability": null,
@@ -47681,7 +48438,7 @@
       ],
       "Name": "Kaleidoqueen",
       "OverrideKillCntInfos": null,
-      "SortId": 1466
+      "SortId": 1509
     },
     "enemy_18008_lhbbos": {
       "Ability": null,
@@ -47739,7 +48496,39 @@
       "LinkEnemies": null,
       "Name": "'Old Fanged One'",
       "OverrideKillCntInfos": null,
-      "SortId": 1467
+      "SortId": 1510
+    },
+    "enemy_9016_acstmr": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Explodes when it reaches the target, <$ba.stun>stunning</> the target and Operators in the 8 surrounding tiles, and dealing Physical damage every second",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Must be attacked several times to defeat",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        0
+      ],
+      "DamageTypeAsNumpy": [
+        0
+      ],
+      "Description": null,
+      "EnemyId": "enemy_9016_acstmr",
+      "EnemyIndex": "SP11",
+      "EnemyLevel": 0,
+      "HideInHandbook": true,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "Armor Piercer",
+      "OverrideKillCntInfos": null,
+      "SortId": 1521
     }
   },
   "LevelInfoList": [

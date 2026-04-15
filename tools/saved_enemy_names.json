@@ -1061,6 +1061,22 @@
         "Sarkaz Crossbowman Leader",
         "S4"
     ],
+    "enemy_10138_xdsnow": [
+        "Snowchild",
+        "KL01"
+    ],
+    "enemy_10138_xdsnow_2": [
+        "Snowbrat",
+        "KL02"
+    ],
+    "enemy_10139_xdseal": [
+        "Fluffy Snowball",
+        "KL03"
+    ],
+    "enemy_10139_xdseal_2": [
+        "Penumbral Snowball",
+        "KL04"
+    ],
     "enemy_1013_airdrp": [
         "Airborne Soldier",
         "2"
@@ -1068,6 +1084,54 @@
     "enemy_1013_airdrp_2": [
         "Airborne Soldier Leader",
         "3"
+    ],
+    "enemy_10140_xdbird": [
+        "Cave Snowsprite",
+        "KL05"
+    ],
+    "enemy_10140_xdbird_2": [
+        "Valley Snowsprite",
+        "KL06"
+    ],
+    "enemy_10141_xdpeng": [
+        "Eggcradler Fowlbeast",
+        "KL07"
+    ],
+    "enemy_10141_xdpeng_2": [
+        "Frostcradler Fowlbeast\n",
+        "KL08"
+    ],
+    "enemy_10142_xdturt": [
+        "Frostdillo",
+        "KL09"
+    ],
+    "enemy_10142_xdturt_2": [
+        "Rime Frostdillo",
+        "KL10"
+    ],
+    "enemy_10143_xdmush": [
+        "Snowcap",
+        "KL11"
+    ],
+    "enemy_10143_xdmush_2": [
+        "Bright Snowcap",
+        "KL12"
+    ],
+    "enemy_10144_xdelk": [
+        "Greathorn Rhuul",
+        "KL13"
+    ],
+    "enemy_10144_xdelk_2": [
+        "Blackhorn Rhuul",
+        "KL14"
+    ],
+    "enemy_10145_xdrock": [
+        "Isbit",
+        "KL15"
+    ],
+    "enemy_10145_xdrock_2": [
+        "Storisbit",
+        "KL16"
     ],
     "enemy_1014_rogue": [
         "Dual Swordsman",
@@ -4585,6 +4649,26 @@
         "Yurodstvo",
         "GAB"
     ],
+    "enemy_1574_xdagt": [
+        "Maiden of Snow and Ice",
+        "KL"
+    ],
+    "enemy_1575_xdmon": [
+        "Kjeragandr",
+        "Kj"
+    ],
+    "enemy_1576_spbell": [
+        "Karlan Saintess",
+        "KL"
+    ],
+    "enemy_1577_iceball": [
+        "Coldness",
+        "FR"
+    ],
+    "enemy_1578_icecage": [
+        "Saintesss Snowrobe",
+        "KL"
+    ],
     "enemy_18001_lhship": [
         "Transport Boat",
         "IL01"
@@ -5867,5 +5951,9 @@
     "enemy_9005_aicemn": [
         "Glacial Archer",
         "PM05"
+    ],
+    "enemy_9016_acstmr": [
+        "Armor Piercer",
+        "SP11"
     ]
 }
