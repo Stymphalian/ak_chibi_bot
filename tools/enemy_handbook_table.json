@@ -33490,6 +33490,38 @@
       "OverrideKillCntInfos": null,
       "SortId": 1111
     },
+    "enemy_2001_duckmi_2": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Cannot be blocked.",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Gains significantly increased Movement Speed after being attacked",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        3
+      ],
+      "DamageTypeAsNumpy": [
+        3
+      ],
+      "Description": "A famous Columbian investor, entrepreneur, and master of 'Duck Power.' Out of the public eye, enjoys kicking back with others...",
+      "EnemyId": "enemy_2001_duckmi_2",
+      "EnemyIndex": "DLD",
+      "EnemyLevel": 1,
+      "HideInHandbook": true,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "Duck Lord",
+      "OverrideKillCntInfos": null,
+      "SortId": 1112
+    },
     "enemy_2002_bearmi": {
       "Ability": null,
       "AbilityList": null,
@@ -33512,6 +33544,29 @@
       "Name": "Gopnik",
       "OverrideKillCntInfos": null,
       "SortId": 1113
+    },
+    "enemy_2002_bearmi_2": {
+      "Ability": null,
+      "AbilityList": null,
+      "AttackType": null,
+      "DamageType": [
+        0
+      ],
+      "DamageTypeAsNumpy": [
+        0
+      ],
+      "Description": "The Ursus security guard hired by Duck Lord. Powerful, but not very smart. Mainly responsible for carrying luggage for Duck Lord.",
+      "EnemyId": "enemy_2002_bearmi_2",
+      "EnemyIndex": "GPN",
+      "EnemyLevel": 1,
+      "HideInHandbook": true,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "Gopnik",
+      "OverrideKillCntInfos": null,
+      "SortId": 1114
     },
     "enemy_2034_sythef": {
       "Ability": null,
@@ -33545,6 +33600,38 @@
       "OverrideKillCntInfos": null,
       "SortId": 1115
     },
+    "enemy_2034_sythef_2": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "<$ba.invisible>Invisible</>",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Attacks <$ba.stun>Stun</> the target",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        0
+      ],
+      "DamageTypeAsNumpy": [
+        0
+      ],
+      "Description": "A Perro who left his family to seek out a new life... but all that people know is that he is always weeping.",
+      "EnemyId": "enemy_2034_sythef_2",
+      "EnemyIndex": "THF",
+      "EnemyLevel": 1,
+      "HideInHandbook": true,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "Crying Thief",
+      "OverrideKillCntInfos": null,
+      "SortId": 1116
+    },
     "enemy_2085_skzjxd": {
       "Ability": null,
       "AbilityList": [
@@ -33576,6 +33663,38 @@
       "Name": "Fatty",
       "OverrideKillCntInfos": null,
       "SortId": 1117
+    },
+    "enemy_2085_skzjxd_2": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Always faces the direction with the most Operators.",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Takes 80% less Physical/Arts damage from the front.",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        3
+      ],
+      "DamageTypeAsNumpy": [
+        3
+      ],
+      "Description": "Duck Lord's associate and apprentice, an opportunist with a slick tongue. Frequently appears on dubious TV shows, preaching about how he cares little for losses or gains, as they are part of the natural money-making process.",
+      "EnemyId": "enemy_2085_skzjxd_2",
+      "EnemyIndex": "FAT",
+      "EnemyLevel": 1,
+      "HideInHandbook": true,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "Fatty",
+      "OverrideKillCntInfos": null,
+      "SortId": 1118
     },
     "enemy_2125_dylnpp": {
       "Ability": null,
@@ -48498,6 +48617,372 @@
       "OverrideKillCntInfos": null,
       "SortId": 1510
     },
+    "enemy_9006_actoxi": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "When defeated, fires a poison cloud at the target that defeated it, continuously dealing Arts damage to the surroundings",
+          "TextFormat": 2
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        1
+      ],
+      "DamageTypeAsNumpy": [
+        1
+      ],
+      "Description": "OpFor unit designed to emulate the corrosive nature of Originium. Originium in nature corrodes other substances, just as it eats away at biological tissue in Oripathy patients. Is coexistence with Originium possible? That is what we want to find out in these simulations.",
+      "EnemyId": "enemy_9006_actoxi",
+      "EnemyIndex": "SP01",
+      "EnemyLevel": 1,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "OpFor: Fissure",
+      "OverrideKillCntInfos": null,
+      "SortId": 1511
+    },
+    "enemy_9007_acelem": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Less likely to be attacked",
+          "TextFormat": 0
+        },
+        {
+          "Text": "When blocked, plants itself on the blocker, causing them to take continuous Arts damage and increased <$ba.dt.element>Elemental Injury</>",
+          "TextFormat": 0
+        },
+        {
+          "Text": "When an <$ba.dt.element>Elemental Injury</> burst occurs on the parasitized target, inflicts a large amount of <$ba.dt.element>Elemental Injury</> of the same type on other allied units in the four adjacent tiles",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        1
+      ],
+      "DamageTypeAsNumpy": [
+        1
+      ],
+      "Description": "OpFor unit designed to emulate the liquid form of Originium. No one knows why it began to take such form, but it may be the precursor to another Originium disaster. Through simulation, we will find a way to destroy it, control it, or utilize it.",
+      "EnemyId": "enemy_9007_acelem",
+      "EnemyIndex": "SP02",
+      "EnemyLevel": 1,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "OpFor: Quagmire",
+      "OverrideKillCntInfos": null,
+      "SortId": 1512
+    },
+    "enemy_9008_acbunn": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "<$ba.invisible>Invisible</>",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Attacks multiple targets simultaneously when <$ba.invisible>Invisible</>",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        1
+      ],
+      "DamageTypeAsNumpy": [
+        1
+      ],
+      "Description": "OpFor unit designed to emulate the structure of Originium formations. Flaws and inaccuracies are inevitable in metallic construction, but the dangerous sharpness of crystal formations has been faithfully recreated. Overcome your primal fears through simulation.",
+      "EnemyId": "enemy_9008_acbunn",
+      "EnemyIndex": "SP03",
+      "EnemyLevel": 1,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "OpFor: Bonespur",
+      "OverrideKillCntInfos": null,
+      "SortId": 1513
+    },
+    "enemy_9009_acfort": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Periodically binds and devours several non-Elite or non-Leader flying enemies, recovering an equal amount of ammunition",
+          "TextFormat": 2
+        },
+        {
+          "Text": "Fires all ammunition, dealing heavy Physical damage to the target",
+          "TextFormat": 2
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        0
+      ],
+      "DamageTypeAsNumpy": [
+        0
+      ],
+      "Description": "OpFor unit designed to emulate Catastrophe clouds. Catastrophes have been the enemy of civilization since the beginning of time, and the Originium clusters forming beneath them are the symbol of death. Find ways to fight Catastrophes through simulation.",
+      "EnemyId": "enemy_9009_acfort",
+      "EnemyIndex": "SP04",
+      "EnemyLevel": 1,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "OpFor: BlackCloud",
+      "OverrideKillCntInfos": null,
+      "SortId": 1514
+    },
+    "enemy_9010_acpupp": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "When defeated, enters a revival state and gives other enemies within range a shield that protects against Physical and Arts damage, which is broken after taking a certain number of attacks",
+          "TextFormat": 0
+        },
+        {
+          "Text": "In the revival state, it needs to be damaged multiple times to be knocked down, and revives after some time",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        0
+      ],
+      "DamageTypeAsNumpy": [
+        0
+      ],
+      "Description": "OpFor unit designed to emulate monsters born from Originium. We have fought such foes on the Rhodes Island landship, adversaries that regenerate, rise again, and kill wearing the form of the fallen. Study ways to counter them through simulation.",
+      "EnemyId": "enemy_9010_acpupp",
+      "EnemyIndex": "SP05",
+      "EnemyLevel": 1,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "OpFor: Rebirth",
+      "OverrideKillCntInfos": null,
+      "SortId": 1515
+    },
+    "enemy_9011_acrefr": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "<$ba.refraction>Refraction</>",
+          "TextFormat": 2
+        },
+        {
+          "Text": "HP greatly increased when Refraction is active",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        0
+      ],
+      "DamageTypeAsNumpy": [
+        0
+      ],
+      "Description": "OpFor unit designed to emulate machines hijacked by Originium. We have fought such foes on the Rhodes Island landship, as Originium took our machines and gave them dangerous new abilities. Discover solutions through simulation.",
+      "EnemyId": "enemy_9011_acrefr",
+      "EnemyIndex": "SP06",
+      "EnemyLevel": 1,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "OpFor: Mirror",
+      "OverrideKillCntInfos": null,
+      "SortId": 1516
+    },
+    "enemy_9012_acloon": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "At the start of battle, Yan's Protection gains ATK and HP equal to a percentage of the total ATK and HP of all Yan Alliance Operators on the field",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Attacks inflict a certain percentage of damage as <$ba.dt.burning2>Burn</>, and nearby enemy units gain a certain percentage of <$ba.elementfragile>Elemental Fragility</>",
+          "TextFormat": 0
+        },
+        {
+          "Text": "[Cleansing Flame] Continuously shoots fires at an enemy in attack range, dealing Arts damage equal to a percentage of ATK every second, and dealing damage to several enemies around the target",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        1
+      ],
+      "DamageTypeAsNumpy": [
+        1
+      ],
+      "Description": "The creations of Yanese Tianshis allow ordinary wood and iron to take to the skies through fire, and scatter as a firmament of sparks to protect the land and its people. They are beacons of joy in times of peace, and powerful weapons in times of war.",
+      "EnemyId": "enemy_9012_acloon",
+      "EnemyIndex": "SP07",
+      "EnemyLevel": 1,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": true,
+      "LinkEnemies": null,
+      "Name": "Yan's Protection",
+      "OverrideKillCntInfos": null,
+      "SortId": 1517
+    },
+    "enemy_9013_acstmk": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Randomly selects a target and fires in a line, dealing Arts damage",
+          "TextFormat": 0
+        },
+        {
+          "Text": "[Woe of Extinction] Fires an <Armor Piercer> at the Operator with the highest ATK, which explodes when it reaches the target, <$ba.stun>stunning</> them and units in the 8 surrounding tiles for an extended time and causing them to take Physical damage every second; <Armor Piercer> can be destroyed by attacking it several times when it is flying",
+          "TextFormat": 0
+        },
+        {
+          "Text": "When HP drops below a certain percentage, Physical and Arts damage taken is reduced, and [Woe of Extinction] fires additional <Armor Piercer>",
+          "TextFormat": 0
+        },
+        {
+          "Text": "[Deathswarm] Periodically summons drones",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Hidden Core",
+          "TextFormat": 1
+        },
+        {
+          "Text": "[Sword and Hammer of Olden Days] OpFor: Armor enters its final form after fulfilling specific conditions and entering the Hidden Core round",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        0,
+        1
+      ],
+      "DamageTypeAsNumpy": [
+        0,
+        1
+      ],
+      "Description": "Steam armor thoroughly corrupted by Originium, an OpFor unit based on the scenario of a Terra-wide Originium disaster. As Originium spreads, courage, resolve and glory are turned to crystalline dust, leaving behind the armor, torn apart by crystals to march towards the fading light of the sunset.",
+      "EnemyId": "enemy_9013_acstmk",
+      "EnemyIndex": "SP08",
+      "EnemyLevel": 2,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "OpFor: Armor",
+      "OverrideKillCntInfos": null,
+      "SortId": 1518
+    },
+    "enemy_9014_acstma": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "<$ba.permanentatk>Continuously attacks</>, dealing AoE Physical damage",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Starts Invulnerable; When shot down, transfers a percentage of the damage taken to OpFor: Armor",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Periodically flies towards the Operator with the lowest ATK, <$ba.stun>stunning</> the target and Operators in the 8 surrounding tiles, and dealing Physical damage every second",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Flying 'Armor Cleaver' is shot down after taking a certain number of attacks",
+          "TextFormat": 0
+        },
+        {
+          "Text": "'Armor Cleaver' becomes a low ground unit and takes more damage when shot down",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        0
+      ],
+      "DamageTypeAsNumpy": [
+        0
+      ],
+      "Description": null,
+      "EnemyId": "enemy_9014_acstma",
+      "EnemyIndex": "SP09",
+      "EnemyLevel": 1,
+      "HideInHandbook": true,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "'Armor Cleaver'",
+      "OverrideKillCntInfos": null,
+      "SortId": 1519
+    },
+    "enemy_9015_acstmb": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "<$ba.permanentatk>Continuously attacks</>, dealing AoE Physical damage",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Starts Invulnerable; When shot down, transfers a percentage of the damage taken to OpFor: Armor",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Periodically flies towards the Operator with the lowest ATK, <$ba.stun>stunning</> the target and Operators in the 8 surrounding tiles, and dealing Physical damage every second",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Flying 'Armor Crusher' is shot down after taking a certain number of attacks",
+          "TextFormat": 0
+        },
+        {
+          "Text": "'Armor Crusher' becomes a low ground unit and takes more damage when shot down",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        0
+      ],
+      "DamageTypeAsNumpy": [
+        0
+      ],
+      "Description": null,
+      "EnemyId": "enemy_9015_acstmb",
+      "EnemyIndex": "SP10",
+      "EnemyLevel": 1,
+      "HideInHandbook": true,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "'Armor Crusher'",
+      "OverrideKillCntInfos": null,
+      "SortId": 1520
+    },
     "enemy_9016_acstmr": {
       "Ability": null,
       "AbilityList": [
@@ -48529,6 +49014,542 @@
       "Name": "Armor Piercer",
       "OverrideKillCntInfos": null,
       "SortId": 1521
+    },
+    "enemy_9017_achunt": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Attacks prioritize units with the highest DEF",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Attacks inflict <$ba.dt.erosion>Corrosion</>",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Cannot be blocked.",
+          "TextFormat": 0
+        },
+        {
+          "Text": "ASPD gradually increases when attacking the same enemy repeatedly",
+          "TextFormat": 0
+        },
+        {
+          "Text": "[Final Judgment] Stops attacking and gains greatly increased Movement Speed, charging at the unit with the highest DEF and dealing Physical damage to units it passes by",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Hidden Core",
+          "TextFormat": 1
+        },
+        {
+          "Text": "[Unending Confession] After fulfilling specific conditions and entering the Hidden Core round in the simulation, <'Gunshatter'> appears on the field, and Physical and Arts damage taken by <OpFor: Gun> is significantly reduced",
+          "TextFormat": 0
+        },
+        {
+          "Text": "[Blind Faith] Connects to all <'Gunshatters'> on the field; a percentage of damage taken by <'Gunshatters'> is transferred to <OpFor: Gun>, and allied units on the [Blind Faith] link take Physical damage every second",
+          "TextFormat": 0
+        },
+        {
+          "Text": "[Doomsaying] Continuously calls all <'Gunshatters'> towards it; <'Gunshatters'> gain greatly increased Movement Speed, become immune to damage, and deal damage to allied units that they pass by",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        0
+      ],
+      "DamageTypeAsNumpy": [
+        0
+      ],
+      "Description": "Holy Gun-Knight corrupted and reshaped by Originium, an OpFor unit based on the scenario of a Terra-wide Originium disaster. As Originium spreads, it seizes everything we revere and takes its place. It will be the new order when all others are shattered.\n",
+      "EnemyId": "enemy_9017_achunt",
+      "EnemyIndex": "SP12",
+      "EnemyLevel": 2,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": [
+        "enemy_9018_actrpa"
+      ],
+      "Name": "OpFor: Gun",
+      "OverrideKillCntInfos": null,
+      "SortId": 1522
+    },
+    "enemy_9018_actrpa": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "[Unfinished Prayer] Starts with one of the following special shields; cannot be blocked while the shield is active; regains the shield a certain period after it disappears",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Elemental Shield: Physical and Arts damage taken greatly reduced; shield disappears when <$ba.dt.element>Elemental Injury</> burst occurs. When this shield is active, periodically fires a projectile that inflicts <$ba.dt.element>Elemental Injury</> and ricochets several times, reducing damage with each bounce",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Arts Shield: Gains a certain amount of Arts Barrier, greatly reduces Physical damage taken while active. If Physical damage is taken when shield is active, deals Physical damage to and inflicts <$ba.dt.erosion>Corrosion</> on the source.",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Modulated Shield: Disappears after taking damage several times. Periodically performs a 10-combo attack when shield is active.",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        0
+      ],
+      "DamageTypeAsNumpy": [
+        0
+      ],
+      "Description": "Confessional corrupted and reshaped by Originium. It will be the Holy Gun-Knight's bullet, carrying out its will faithfully, regardless of the nature of the will.",
+      "EnemyId": "enemy_9018_actrpa",
+      "EnemyIndex": "SP13",
+      "EnemyLevel": 1,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": [
+        "enemy_9017_achunt"
+      ],
+      "Name": "'Gunshatter'",
+      "OverrideKillCntInfos": null,
+      "SortId": 1523
+    },
+    "enemy_9019_actrpb": {
+      "Ability": null,
+      "AbilityList": null,
+      "AttackType": null,
+      "DamageType": [
+        0
+      ],
+      "DamageTypeAsNumpy": [
+        0
+      ],
+      "Description": null,
+      "EnemyId": "enemy_9019_actrpb",
+      "EnemyIndex": "SP14",
+      "EnemyLevel": 1,
+      "HideInHandbook": true,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "'Gunshatter'",
+      "OverrideKillCntInfos": null,
+      "SortId": 1524
+    },
+    "enemy_9020_actrpc": {
+      "Ability": null,
+      "AbilityList": null,
+      "AttackType": null,
+      "DamageType": [
+        0
+      ],
+      "DamageTypeAsNumpy": [
+        0
+      ],
+      "Description": null,
+      "EnemyId": "enemy_9020_actrpc",
+      "EnemyIndex": "SP15",
+      "EnemyLevel": 1,
+      "HideInHandbook": true,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "'Gunshatter'",
+      "OverrideKillCntInfos": null,
+      "SortId": 1525
+    },
+    "enemy_9021_acduml": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "When on the field, continuously summons <'Echoes'> in [Penumbral Lament] form; summon interval reduces when HP drops below a certain point",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Attacks prioritize <'Echoes'> in [Penumbral Lament] form",
+          "TextFormat": 0
+        },
+        {
+          "Text": "[Cracked Pipe] Attacks all <'Echoes'> in [Penumbral Lament] form three times in a row, dealing AoE Arts damage and inflicting <$ba.dt.apoptosis>Necrosis</>",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Hidden Core",
+          "TextFormat": 1
+        },
+        {
+          "Text": "<OpFor: String> and <OpFor: Pipe> will appear at the same time after fulfilling specific conditions and entering the Hidden Core round",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        1
+      ],
+      "DamageTypeAsNumpy": [
+        1
+      ],
+      "Description": "The 'Empresses' Voice' recreated by Originium, an OpFor unit based on the scenario of a Terra-wide Originium disaster. As Originium spreads, it overcomes all praise and reproach, the echoes upon its surface merely another name for Originium.",
+      "EnemyId": "enemy_9021_acduml",
+      "EnemyIndex": "SP16",
+      "EnemyLevel": 2,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": [
+        "enemy_9022_acdumm",
+        "enemy_9023_acdums"
+      ],
+      "Name": "OpFor: Pipe",
+      "OverrideKillCntInfos": null,
+      "SortId": 1526
+    },
+    "enemy_9022_acdumm": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Permanently Invulnerable; leaves the field when <OpFor: Pipe> is defeated",
+          "TextFormat": 0
+        },
+        {
+          "Text": "When on the field, continuously summons <'Echoes'> in [Golden Wail] form",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Attacks prioritize <'Echoes'> in [Golden Wail] form",
+          "TextFormat": 0
+        },
+        {
+          "Text": "[Broken Strings] Targets all <'Echoes'> in [Golden Wail] form on the field, dealing Arts damage in a large area centered around them and inflicting <$ba.dt.apoptosis>Necrosis</>, and transforms the targets' <'Echoes'> form",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        1
+      ],
+      "DamageTypeAsNumpy": [
+        1
+      ],
+      "Description": "The 'Witch King's Voice' recreated by Originium, an OpFor unit based on the scenario of a Terra-wide Originium disaster. Originium retrieves a shadow from the boundless ocean, giving it a new body and voice. The silent sea encompasses all, except for that future the shadow caught a glimpse of in the Pavillon.",
+      "EnemyId": "enemy_9022_acdumm",
+      "EnemyIndex": "SP17",
+      "EnemyLevel": 1,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": [
+        "enemy_9021_acduml",
+        "enemy_9023_acdums"
+      ],
+      "Name": "OpFor: String",
+      "OverrideKillCntInfos": null,
+      "SortId": 1527
+    },
+    "enemy_9023_acdums": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Must be attacked several times to defeat",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Can only be blocked by units with at least 2 Block",
+          "TextFormat": 0
+        },
+        {
+          "Text": "[Polytonality]: Switches between [Golden Wail] and [Penumbral Lament] forms",
+          "TextFormat": 0
+        },
+        {
+          "Text": "ASPD increased in [Golden Wail] form, transforms into [Penumbral Lament] form after taking damage several times",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Movement Speed is reduced while ATK is increased in [Penumbral Lament] form, transforms into [Golden Wail] form after taking damage several times",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Upon taking damage, deals Arts damage in an area around itself, inflicting <$ba.dt.apoptosis>Necrosis</>",
+          "TextFormat": 0
+        },
+        {
+          "Text": "All <'Echoes'> periodically play in ensemble, dealing AoE Arts damage and inflicting <$ba.dt.apoptosis>Necrosis</>",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        1
+      ],
+      "DamageTypeAsNumpy": [
+        1
+      ],
+      "Description": "A lingering beat, a dull echo. Who conducts it, and why does it sing?",
+      "EnemyId": "enemy_9023_acdums",
+      "EnemyIndex": "SP18",
+      "EnemyLevel": 0,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": [
+        "enemy_9021_acduml",
+        "enemy_9022_acdumm"
+      ],
+      "Name": "'Echoes'",
+      "OverrideKillCntInfos": null,
+      "SortId": 1528
+    },
+    "enemy_9013_acstmk_2": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Randomly selects a target and performs an Arts attack",
+          "TextFormat": 0
+        },
+        {
+          "Text": "When HP drops below a certain percentage, Physical and Arts damage taken is reduced, and [Woe of Extinction] fires additional <Armor Piercer>",
+          "TextFormat": 0
+        },
+        {
+          "Text": "[Woe of Extinction] Fires an <Armor Piercer> at the Operator with the highest ATK within range, which explodes when it reaches the target, <$ba.stun>stunning</> them and units in the 8 surrounding tiles and causing them to take Physical damage every second; <Armor Piercer> can be destroyed by attacking it several times when it is flying",
+          "TextFormat": 0
+        },
+        {
+          "Text": "[Deathswarm] Periodically summons drones",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Hidden Core",
+          "TextFormat": 1
+        },
+        {
+          "Text": "[Sword and Hammer of Olden Days] OpFor: Armor enters its final form after fulfilling specific conditions and entering the Hidden Core round",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        0,
+        1
+      ],
+      "DamageTypeAsNumpy": [
+        0,
+        1
+      ],
+      "Description": "Steam armor thoroughly corrupted by Originium, an OpFor unit based on the scenario of a Terra-wide Originium disaster. As Originium spreads, courage, resolve and glory are turned to crystalline dust, leaving behind the armor, torn apart by crystals to march towards the fading light of the sunset.\nAppears during the Hidden Core round and initiates the final attack.",
+      "EnemyId": "enemy_9013_acstmk_2",
+      "EnemyIndex": "SP08",
+      "EnemyLevel": 2,
+      "HideInHandbook": true,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "OpFor: Armor",
+      "OverrideKillCntInfos": null,
+      "SortId": 1529
+    },
+    "enemy_9017_achunt_2": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Attacks prioritize units with the highest DEF",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Attacks inflict <$ba.dt.erosion>Corrosion</>",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Cannot be blocked.",
+          "TextFormat": 0
+        },
+        {
+          "Text": "ASPD gradually increases when attacking the same enemy repeatedly",
+          "TextFormat": 0
+        },
+        {
+          "Text": "[Final Judgment] Stops attacking and gains greatly increased Movement Speed, charging at the unit with the highest DEF and dealing Physical damage to units it passes by",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Hidden Core",
+          "TextFormat": 1
+        },
+        {
+          "Text": "[Unending Confession] After fulfilling specific conditions and entering the Hidden Core round in the simulation, <'Gunshatter'> appears on the field, and Physical and Arts damage taken by <OpFor: Gun> is massively reduced",
+          "TextFormat": 0
+        },
+        {
+          "Text": "[Blind Faith] Connects to all <'Gunshatters'> on the field; a percentage of damage taken by <'Gunshatters'> is transferred to <OpFor: Gun> and other <'Gunshatters'> on the field, and allied units on the [Blind Faith] link take Physical damage every second",
+          "TextFormat": 0
+        },
+        {
+          "Text": "[Doomsaying] Continuously calls all <'Gunshatters'> towards it; <'Gunshatters'> gain greatly increased Movement Speed, become immune to damage, and deal damage to allied units that they pass by",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        0
+      ],
+      "DamageTypeAsNumpy": [
+        0
+      ],
+      "Description": "Holy Gun-Knight corrupted and reshaped by Originium, an OpFor unit based on the scenario of a Terra-wide Originium disaster. As Originium spreads, it seizes everything we revere and takes its place. It will be the new order when all others are shattered.\nAppears during the Hidden Core round and initiates the final attack.",
+      "EnemyId": "enemy_9017_achunt_2",
+      "EnemyIndex": "SP12",
+      "EnemyLevel": 2,
+      "HideInHandbook": true,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": [
+        "enemy_9018_actrpa"
+      ],
+      "Name": "OpFor: Gun",
+      "OverrideKillCntInfos": null,
+      "SortId": 1530
+    },
+    "enemy_9021_acduml_2": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "When on the field, continuously summons <'Echoes'> in [Penumbral Lament] form; summon interval reduces when HP drops below a certain point",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Attacks prioritize <'Echoes'> in [Penumbral Lament] form",
+          "TextFormat": 0
+        },
+        {
+          "Text": "[Cracked Pipe] Attacks all <'Echoes'> in [Penumbral Lament] form three times in a row, dealing AoE Arts damage and inflicting <$ba.dt.apoptosis>Necrosis</>",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Hidden Core",
+          "TextFormat": 1
+        },
+        {
+          "Text": "<OpFor: String> and <OpFor: Pipe> will appear at the same time after fulfilling specific conditions and entering the Hidden Core round",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        1
+      ],
+      "DamageTypeAsNumpy": [
+        1
+      ],
+      "Description": "The 'Empresses' Voice' recreated by Originium, an OpFor unit based on the scenario of a Terra-wide Originium disaster. As Originium spreads, it overcomes all praise and reproach, the echoes upon its surface merely another name for Originium.\nAppears during the Hidden Core round and initiates the final attack.",
+      "EnemyId": "enemy_9021_acduml_2",
+      "EnemyIndex": "SP16",
+      "EnemyLevel": 2,
+      "HideInHandbook": true,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": [
+        "enemy_9022_acdumm",
+        "enemy_9023_acdums"
+      ],
+      "Name": "OpFor: Pipe",
+      "OverrideKillCntInfos": null,
+      "SortId": 1531
+    },
+    "enemy_9032_aclionk": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "When HP drops below half, DEF and RES increase, and [Imperial Domain] activates two pieces of gear",
+          "TextFormat": 0
+        },
+        {
+          "Text": "[Expulsion] After some time has passed, deals Arts splash damage to all your units, and drains all Life Points",
+          "TextFormat": 0
+        },
+        {
+          "Text": "[Royal Decree] Locks onto an allied unit and their surrounding 4 tiles, dealing heavy Physical damage to targets within that range once and generating random gear on tiles within that range",
+          "TextFormat": 0
+        },
+        {
+          "Text": "[Imperial Domain] Activates a piece of gear on the field; different types of gear will result in different effects",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        0
+      ],
+      "DamageTypeAsNumpy": [
+        0
+      ],
+      "Description": "The final flame of the empire, a specter adorned with a rusted crown. Refute him. Refute Victoria's supreme glory and authority. He will examine the evidence. He may yet forgive.",
+      "EnemyId": "enemy_9032_aclionk",
+      "EnemyIndex": "ALS",
+      "EnemyLevel": 2,
+      "HideInHandbook": true,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": [
+        "enemy_10028_vtswd",
+        "enemy_10029_vtshld",
+        "enemy_10030_vtwand"
+      ],
+      "Name": "Alistair, Final Flame of the Empire",
+      "OverrideKillCntInfos": null,
+      "SortId": 1532
+    },
+    "enemy_9033_acdeer": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "[Icicle Fall] Attacks deal Physical damage to allied units in a column",
+          "TextFormat": 0
+        },
+        {
+          "Text": "[Surge of Nature] Inflicts <$ba.stun>Stun</> on an allied unit and causes the target to take Arts damage over time",
+          "TextFormat": 0
+        },
+        {
+          "Text": "After falling below half HP, takes reduced Physical and Arts damage and [Icicle Fall] and [Surge of Nature] both target an additional unit",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        0,
+        1
+      ],
+      "DamageTypeAsNumpy": [
+        0,
+        1
+      ],
+      "Description": "Born from a memory of the soil, stone, ice, and snow, it stands tall, blocking the path of every living being until satisfied.",
+      "EnemyId": "enemy_9033_acdeer",
+      "EnemyIndex": "SAM",
+      "EnemyLevel": 2,
+      "HideInHandbook": true,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "'Samivilinn,' the Resolution of the Very North",
+      "OverrideKillCntInfos": null,
+      "SortId": 1533
     }
   },
   "LevelInfoList": [

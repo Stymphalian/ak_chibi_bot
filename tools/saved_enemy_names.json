@@ -4705,7 +4705,15 @@
         "Duck Lord",
         "DLD"
     ],
+    "enemy_2001_duckmi_2": [
+        "Duck Lord",
+        "DLD"
+    ],
     "enemy_2002_bearmi": [
+        "Gopnik",
+        "GPN"
+    ],
+    "enemy_2002_bearmi_2": [
         "Gopnik",
         "GPN"
     ],
@@ -4834,6 +4842,10 @@
         "SY6"
     ],
     "enemy_2034_sythef": [
+        "Crying Thief",
+        "THF"
+    ],
+    "enemy_2034_sythef_2": [
         "Crying Thief",
         "THF"
     ],
@@ -5024,6 +5036,10 @@
         "KNS"
     ],
     "enemy_2085_skzjxd": [
+        "Fatty",
+        "FAT"
+    ],
+    "enemy_2085_skzjxd_2": [
         "Fatty",
         "FAT"
     ],
@@ -5952,8 +5968,96 @@
         "Glacial Archer",
         "PM05"
     ],
+    "enemy_9006_actoxi": [
+        "OpFor: Fissure",
+        "SP01"
+    ],
+    "enemy_9007_acelem": [
+        "OpFor: Quagmire",
+        "SP02"
+    ],
+    "enemy_9008_acbunn": [
+        "OpFor: Bonespur",
+        "SP03"
+    ],
+    "enemy_9009_acfort": [
+        "OpFor: BlackCloud",
+        "SP04"
+    ],
+    "enemy_9010_acpupp": [
+        "OpFor: Rebirth",
+        "SP05"
+    ],
+    "enemy_9011_acrefr": [
+        "OpFor: Mirror",
+        "SP06"
+    ],
+    "enemy_9012_acloon": [
+        "Yans Protection",
+        "SP07"
+    ],
+    "enemy_9013_acstmk": [
+        "OpFor: Armor",
+        "SP08"
+    ],
+    "enemy_9013_acstmk_2": [
+        "OpFor: Armor",
+        "SP08"
+    ],
+    "enemy_9014_acstma": [
+        "Armor Cleaver",
+        "SP09"
+    ],
+    "enemy_9015_acstmb": [
+        "Armor Crusher",
+        "SP10"
+    ],
     "enemy_9016_acstmr": [
         "Armor Piercer",
         "SP11"
+    ],
+    "enemy_9017_achunt": [
+        "OpFor: Gun",
+        "SP12"
+    ],
+    "enemy_9017_achunt_2": [
+        "OpFor: Gun",
+        "SP12"
+    ],
+    "enemy_9018_actrpa": [
+        "Gunshatter",
+        "SP13"
+    ],
+    "enemy_9019_actrpb": [
+        "Gunshatter",
+        "SP14"
+    ],
+    "enemy_9020_actrpc": [
+        "Gunshatter",
+        "SP15"
+    ],
+    "enemy_9021_acduml": [
+        "OpFor: Pipe",
+        "SP16"
+    ],
+    "enemy_9021_acduml_2": [
+        "OpFor: Pipe",
+        "SP16"
+    ],
+    "enemy_9022_acdumm": [
+        "OpFor: String",
+        "SP17"
+    ],
+    "enemy_9023_acdums": [
+        "Echoes",
+        "SP18"
+    ],
+    "enemy_9032_aclionk": [
+        "Alistair, Final Flame of the Empire",
+        "ALS"
+    ],
+    "enemy_9033_acdeer": [
+        "Samivilinn, the Resolution of the Very North",
+        "SAM"
     ]
 }
