@@ -33356,6 +33356,534 @@
       "OverrideKillCntInfos": null,
       "SortId": 1090
     },
+    "enemy_10146_nscola": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Flying unit.",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Gradually accelerates when moving, but loses HP over time",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        0
+      ],
+      "DamageTypeAsNumpy": [
+        0
+      ],
+      "Description": "Shake the bottle vigorously for three hundred seconds then pry the cap open according to the instructions, and it will shoot into the sky with immense force. Don't worry, the bottle is made of high-toughness acrylic that will not break easily.\nAs for the soda inside... does anyone actually buy it for the soda?",
+      "EnemyId": "enemy_10146_nscola",
+      "EnemyIndex": "AS01",
+      "EnemyLevel": 0,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "Skybuster Soda",
+      "OverrideKillCntInfos": null,
+      "SortId": 1091
+    },
+    "enemy_10146_nscola_2": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Flying unit.",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Gradually accelerates when moving, but loses HP over time",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        0
+      ],
+      "DamageTypeAsNumpy": [
+        0
+      ],
+      "Description": "Shake the bottle vigorously for three hundred seconds then pry the cap open according to the instructions, and it will shoot into the sky with immense force. Don't worry, the bottle is made of high-toughness acrylic that will not break easily.\nThe soda inside is a strong sour and spicy flavor. Do not open indoors.",
+      "EnemyId": "enemy_10146_nscola_2",
+      "EnemyIndex": "AS02",
+      "EnemyLevel": 0,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "Skybuster Soda (Sour and Spicy)",
+      "OverrideKillCntInfos": null,
+      "SortId": 1092
+    },
+    "enemy_10147_nsbomb": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Flying unit.",
+          "TextFormat": 0
+        },
+        {
+          "Text": "When not blocked, continuously deals splash damage to surrounding allied units",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        0
+      ],
+      "DamageTypeAsNumpy": [
+        0
+      ],
+      "Description": "A crisp beep, then fresh toast falls directly onto your plate.\nRestaurants that use it typically require customers to take off their hats. Not for good manners, but because it often mistakes hats for plates.",
+      "EnemyId": "enemy_10147_nsbomb",
+      "EnemyIndex": "AS03",
+      "EnemyLevel": 0,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "Flying Toaster",
+      "OverrideKillCntInfos": null,
+      "SortId": 1093
+    },
+    "enemy_10147_nsbomb_2": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Flying unit.",
+          "TextFormat": 0
+        },
+        {
+          "Text": "When not blocked, continuously deals splash damage to surrounding allied units",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        0
+      ],
+      "DamageTypeAsNumpy": [
+        0
+      ],
+      "Description": "A crisp beep, then fresh toast spread with jam falls directly onto your plate.\nRestaurants that use it typically require customers to take off their hats. Not for good manners, but because it often mistakes hats for plates.",
+      "EnemyId": "enemy_10147_nsbomb_2",
+      "EnemyIndex": "AS04",
+      "EnemyLevel": 0,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "Flying Toaster (With Jam)",
+      "OverrideKillCntInfos": null,
+      "SortId": 1094
+    },
+    "enemy_10148_nsmos": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Flying unit.",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Periodically searches for nearby Balloons, Powerful Balloons or allied units and attacks them for some time while absorbing certain SP",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        0
+      ],
+      "DamageTypeAsNumpy": [
+        0
+      ],
+      "Description": "For other appliances, the ability to fly is just a gimmick. For vacuum cleaners, the ability to fly is a revolutionary breakthrough, allowing it to vacuum the ceiling with ease.\nPlease follow the instructions in the safety manual if it catches your hair as it flies over your head.",
+      "EnemyId": "enemy_10148_nsmos",
+      "EnemyIndex": "AS05",
+      "EnemyLevel": 0,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "Skyhowl Vacuum",
+      "OverrideKillCntInfos": null,
+      "SortId": 1095
+    },
+    "enemy_10148_nsmos_2": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Flying unit.",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Periodically searches for nearby Balloons, Powerful Balloons or allied units and attacks them for some time while absorbing certain SP",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        0
+      ],
+      "DamageTypeAsNumpy": [
+        0
+      ],
+      "Description": "Merely vacuuming the ceiling isn't enough of a selling point. This new model has had its sucking power massively boosted, claiming that it can suck all the dust out of the air.\nDon't bother looking for the safety manual if this upgraded model catches your hair. Find a clinic to book a scalp replacement surgery.",
+      "EnemyId": "enemy_10148_nsmos_2",
+      "EnemyIndex": "AS06",
+      "EnemyLevel": 0,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "High-Powered Skyhowl Vacuum",
+      "OverrideKillCntInfos": null,
+      "SortId": 1096
+    },
+    "enemy_10149_nscan": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Flying unit.",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Gradually accelerates when moving, but loses HP over time; the first attack after being blocked deals bonus damage based on Movement Speed, and blows away Balloons and Powerful Balloons at the target's tile",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        0
+      ],
+      "DamageTypeAsNumpy": [
+        0
+      ],
+      "Description": "A flying soda keg that was banned by the ATAO three days after its release for being too dangerous.\nPerhaps a hat with a hole in it will one day be displayed in the Columbian Aerospace Museum, commemorating the wrong turns in the development of flight technology.\n",
+      "EnemyId": "enemy_10149_nscan",
+      "EnemyIndex": "AS07",
+      "EnemyLevel": 1,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "Skybreaker Soda Keg",
+      "OverrideKillCntInfos": null,
+      "SortId": 1097
+    },
+    "enemy_10149_nscan_2": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Flying unit.",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Gradually accelerates when moving, but loses HP over time; the first attack after being blocked deals bonus damage based on Movement Speed, and blows away Balloons and Powerful Balloons at the target's tile",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        0
+      ],
+      "DamageTypeAsNumpy": [
+        0
+      ],
+      "Description": "A family-size version of the flying soda keg compresses the soda further, making it so dangerous that it was banned by the ATAO just three days after release. It packs an even bigger punch.\nPerhaps a skull with a hole in it will one day be displayed in the Columbian Aerospace Museum, commemorating the wrong turns in the development of flight technology.\n",
+      "EnemyId": "enemy_10149_nscan_2",
+      "EnemyIndex": "AS08",
+      "EnemyLevel": 1,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "Skybreaker Soda Keg (Family Size)",
+      "OverrideKillCntInfos": null,
+      "SortId": 1098
+    },
+    "enemy_10150_nsheat": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Flying unit.",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Continuously inflicts <$ba.dt.burning>Burn</> on all other nearby units",
+          "TextFormat": 2
+        },
+        {
+          "Text": "Grants 1 Buoyancy when on a Levitatable Zone",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        1
+      ],
+      "DamageTypeAsNumpy": [
+        1
+      ],
+      "Description": "Widely used in Propeller Paradise to keep things afloat, it is an excellent performer that offers both power and stability.\nUnfortunately, its poor cooling causes platforms equipped with it to feel like midsummer all year round.\n",
+      "EnemyId": "enemy_10150_nsheat",
+      "EnemyIndex": "AS09",
+      "EnemyLevel": 1,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "Scorching Propeller",
+      "OverrideKillCntInfos": null,
+      "SortId": 1099
+    },
+    "enemy_10150_nsheat_2": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Flying unit.",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Continuously inflicts <$ba.dt.burning>Burn</> on all other nearby units",
+          "TextFormat": 2
+        },
+        {
+          "Text": "Grants 1 Buoyancy when on a Levitatable Zone",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        1
+      ],
+      "DamageTypeAsNumpy": [
+        1
+      ],
+      "Description": "Widely used in Propeller Paradise to keep things afloat, this upgraded version is an excellent performer that offers both power and stability, as well as the ability to repel fowlbeasts.\nUnfortunately, the upgrade has only exacerbated its cooling issues, causing platforms equipped with it to give off an annoying scorched aroma all year round.",
+      "EnemyId": "enemy_10150_nsheat_2",
+      "EnemyIndex": "AS10",
+      "EnemyLevel": 1,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "Scorched-Scent Propeller",
+      "OverrideKillCntInfos": null,
+      "SortId": 1100
+    },
+    "enemy_10151_nspace": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Flying unit.",
+          "TextFormat": 0
+        },
+        {
+          "Text": "When defeated for the first time, crashes and becomes debris with extremely high DEF, nullifying 1 Buoyancy if on a Levitatable Zone",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        0
+      ],
+      "DamageTypeAsNumpy": [
+        0
+      ],
+      "Description": "What is the most important feature for a facility that can avoid the traffic and reach the client in time, regardless of road conditions?\nThe Volvort Kochinski Flying Restroom, which ceased production after just two weeks, was definitely not the answer. Perhaps the price of 500 certs per call was too much?",
+      "EnemyId": "enemy_10151_nspace",
+      "EnemyIndex": "AS11",
+      "EnemyLevel": 1,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "Skystrider Porta-Potty",
+      "OverrideKillCntInfos": null,
+      "SortId": 1101
+    },
+    "enemy_10151_nspace_2": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Flying unit.",
+          "TextFormat": 0
+        },
+        {
+          "Text": "When defeated for the first time, crashes and becomes debris with extremely high DEF, nullifying 1 Buoyancy if on a Levitatable Zone",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        0
+      ],
+      "DamageTypeAsNumpy": [
+        0
+      ],
+      "Description": "Learning from their previous mistakes, Volvort Kochinski R&D repurposed the failed flying restroom into an ambulance.\nUnfortunately, their invention was still ahead of its time. Not everywhere in Propeller Paradise has a landing pad, and grabbing patients with pincers was considered too rough.",
+      "EnemyId": "enemy_10151_nspace_2",
+      "EnemyIndex": "AS12",
+      "EnemyLevel": 1,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "Skystrider Ambulance",
+      "OverrideKillCntInfos": null,
+      "SortId": 1102
+    },
+    "enemy_10152_nstree": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Flying unit.",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Only attacks allied units in aerial state",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        0
+      ],
+      "DamageTypeAsNumpy": [
+        0
+      ],
+      "Description": "In the era of Sky Fever, everything must fly, even trees. What once planted its roots in the soil now flies away to every corner of Terra.",
+      "EnemyId": "enemy_10152_nstree",
+      "EnemyIndex": "AS13",
+      "EnemyLevel": 1,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "'Liberated Tree'",
+      "OverrideKillCntInfos": null,
+      "SortId": 1103
+    },
+    "enemy_10152_nstree_2": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Flying unit.",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Only attacks allied units in aerial state",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        0
+      ],
+      "DamageTypeAsNumpy": [
+        0
+      ],
+      "Description": "In the era of Sky Fever, everything must fly, even trees. What once planted its roots in the soil now flies away to every corner of Terra.\nThey chase the sun according to their primal instincts, and even their leaves have been dyed red.",
+      "EnemyId": "enemy_10152_nstree_2",
+      "EnemyIndex": "AS14",
+      "EnemyLevel": 1,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "'Sunchaser Tree'",
+      "OverrideKillCntInfos": null,
+      "SortId": 1104
+    },
+    "enemy_10153_nsblon": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Flying unit.",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Does not count towards the defeated enemies counter",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Grants 1 Buoyancy when on a Levitatable Zone",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        3
+      ],
+      "DamageTypeAsNumpy": [
+        3
+      ],
+      "Description": "One of the thousands of hot-air balloons that comprise the first levitating plate on Terra.\nKing Charles the Mad believed the only reason his castle would not move was because it did not have enough Originium engines. People never change, even after centuries.",
+      "EnemyId": "enemy_10153_nsblon",
+      "EnemyIndex": "AS15",
+      "EnemyLevel": 0,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "Balloon",
+      "OverrideKillCntInfos": null,
+      "SortId": 1105
+    },
+    "enemy_10153_nsblon_2": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Flying unit.",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Does not count towards the defeated enemies counter",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Grants 1 Buoyancy when on a Levitatable Zone",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        3
+      ],
+      "DamageTypeAsNumpy": [
+        3
+      ],
+      "Description": "One of many powerful hot-air balloons that comprise the first levitating plate on Terra.\nTurn the technological legacy of the Ring Lab into children's toys, and balloons for children into a levitating plate's source of power. That is the Columbian way.",
+      "EnemyId": "enemy_10153_nsblon_2",
+      "EnemyIndex": "AS16",
+      "EnemyLevel": 0,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "Powerful Balloon",
+      "OverrideKillCntInfos": null,
+      "SortId": 1106
+    },
     "enemy_3010_mcreep": {
       "Ability": null,
       "AbilityList": [
@@ -41330,6 +41858,60 @@
       "OverrideKillCntInfos": null,
       "SortId": 1313
     },
+    "enemy_1579_nstmom": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Attacks deal Physical damage and splash damage to allied units, Balloons, and Powerful Balloons in a large area around the target",
+          "TextFormat": 0
+        },
+        {
+          "Text": "[Return to Oblivion] Sequentially locks on to up to 2 allied units, dealing gradually increasing Arts damage; if the unit retreats or is defeated, nullifies 2 additional Buoyancy on their Levitatable Zone for the remainder of the skill; prioritizes low ground units",
+          "TextFormat": 0
+        },
+        {
+          "Text": "ATK, DEF, and RES reduced for a period of time when [Return to Oblivion] expires; the more targets the skill had, the longer the duration",
+          "TextFormat": 0
+        },
+        {
+          "Text": "When HP drops to 0 for the first time, takes the battlefield into the sky and revives",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Flight Phase",
+          "TextFormat": 1
+        },
+        {
+          "Text": "Permanent Field Change: All units on the ground are defeated, and tiles and Levitatable Zones on the ground are destroyed",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Increases starting ATK, DEF, and RES; immune to <$ba.stun>Stun</>, <$ba.frozen>Freeze</>, and <$ba.fear>Fear</>; [Return to Oblivion] locks onto 1 additional target",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        0,
+        1
+      ],
+      "DamageTypeAsNumpy": [
+        0,
+        1
+      ],
+      "Description": "If only there were something she could still do, for Convallis, for the Banshee, for her.",
+      "EnemyId": "enemy_1579_nstmom",
+      "EnemyIndex": "VOV",
+      "EnemyLevel": 2,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "Væla of Convallis",
+      "OverrideKillCntInfos": null,
+      "SortId": 1314
+    },
     "enemy_2003_rockman": {
       "Ability": null,
       "AbilityList": [
@@ -45348,6 +45930,50 @@
       "Name": "'Absolute Security' Prototype",
       "OverrideKillCntInfos": null,
       "SortId": 1421
+    },
+    "enemy_6033_skagod": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Gains <$ba.buffres>status resistance</> and gains Physical and Arts Dodge based on current Movement Speed",
+          "TextFormat": 0
+        },
+        {
+          "Text": "[Whirlwind Smash] Curls into a ball and dashes forward for a distance based on current Movement Speed, <$ba.stun>stunning</> Operators around the tiles it passes through for several seconds, and dealing Physical damage based on Movement Speed; immune to most control effects while skill is active, and Movement Speed is permanently increased when skill expires. The <$ba.stun>Stun</> effect is enhanced based on the number of times the skill is activated",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Gradually accelerates and enters 'roll form' when unblocked; the first attack after entering 'roll form' triggers [Whirlwind Smash]",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Triggers [Whirlwind Smash] after being blocked for some time",
+          "TextFormat": 0
+        },
+        {
+          "Text": "[Whirlwind Smash] cooldown resets immediately when Danger Level increases, or when a certain amount of HP is lost",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        0
+      ],
+      "DamageTypeAsNumpy": [
+        0
+      ],
+      "Description": "This massive beast is no longer recognizable. It is a cave-dwelling creature with poor vision and a passion for digging its nest. Covered in frigid scales, it moves by curling up and rolling wherever it needs to go.",
+      "EnemyId": "enemy_6033_skagod",
+      "EnemyIndex": "DL33",
+      "EnemyLevel": 2,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "'Iceball'",
+      "OverrideKillCntInfos": null,
+      "SortId": 1422
     },
     "enemy_7001_blwzad": {
       "Ability": null,

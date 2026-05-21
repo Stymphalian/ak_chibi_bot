@@ -1133,6 +1133,38 @@
         "Storisbit",
         "KL16"
     ],
+    "enemy_10146_nscola": [
+        "Skybuster Soda",
+        "AS01"
+    ],
+    "enemy_10146_nscola_2": [
+        "Skybuster Soda (Sour and Spicy)",
+        "AS02"
+    ],
+    "enemy_10147_nsbomb": [
+        "Flying Toaster",
+        "AS03"
+    ],
+    "enemy_10147_nsbomb_2": [
+        "Flying Toaster (With Jam)",
+        "AS04"
+    ],
+    "enemy_10148_nsmos": [
+        "Skyhowl Vacuum",
+        "AS05"
+    ],
+    "enemy_10148_nsmos_2": [
+        "High-Powered Skyhowl Vacuum",
+        "AS06"
+    ],
+    "enemy_10149_nscan": [
+        "Skybreaker Soda Keg",
+        "AS07"
+    ],
+    "enemy_10149_nscan_2": [
+        "Skybreaker Soda Keg (Family Size)",
+        "AS08"
+    ],
     "enemy_1014_rogue": [
         "Dual Swordsman",
         "4"
@@ -1140,6 +1172,38 @@
     "enemy_1014_rogue_2": [
         "Dual Swordsman Leader",
         "5"
+    ],
+    "enemy_10150_nsheat": [
+        "Scorching Propeller",
+        "AS09"
+    ],
+    "enemy_10150_nsheat_2": [
+        "Scorched-Scent Propeller",
+        "AS10"
+    ],
+    "enemy_10151_nspace": [
+        "Skystrider Porta-Potty",
+        "AS11"
+    ],
+    "enemy_10151_nspace_2": [
+        "Skystrider Ambulance",
+        "AS12"
+    ],
+    "enemy_10152_nstree": [
+        "Liberated Tree",
+        "AS13"
+    ],
+    "enemy_10152_nstree_2": [
+        "Sunchaser Tree",
+        "AS14"
+    ],
+    "enemy_10153_nsblon": [
+        "Balloon",
+        "AS15"
+    ],
+    "enemy_10153_nsblon_2": [
+        "Powerful Balloon",
+        "AS16"
     ],
     "enemy_1015_litamr": [
         "Light-Armored Soldier",
@@ -4669,6 +4733,10 @@
         "Saintesss Snowrobe",
         "KL"
     ],
+    "enemy_1579_nstmom": [
+        "Væla of Convallis",
+        "VOV"
+    ],
     "enemy_18001_lhship": [
         "Transport Boat",
         "IL01"
@@ -5677,6 +5745,10 @@
     "enemy_6032_fxdjj": [
         "Absolute Security Prototype",
         "DL32"
+    ],
+    "enemy_6033_skagod": [
+        "Iceball",
+        "DL33"
     ],
     "enemy_7001_blwzad": [
         "Tribal Shaman",
