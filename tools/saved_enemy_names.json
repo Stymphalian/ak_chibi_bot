@@ -1205,6 +1205,50 @@
         "Powerful Balloon",
         "AS16"
     ],
+    "enemy_10154_mnmblx": [
+        "Heros Call",
+        "MIN01"
+    ],
+    "enemy_10155_mntjsd": [
+        "Javelineer",
+        "MIN02"
+    ],
+    "enemy_10155_mntjsd_2": [
+        "Peltast",
+        "MIN03"
+    ],
+    "enemy_10156_mncrer": [
+        "Novice Acolyte",
+        "MIN04"
+    ],
+    "enemy_10156_mncrer_2": [
+        "Trainee Acolyte",
+        "MIN05"
+    ],
+    "enemy_10157_mnggyl": [
+        "Questioning Statue",
+        "MIN06"
+    ],
+    "enemy_10157_mnggyl_2": [
+        "Disappointed Statue",
+        "MIN07"
+    ],
+    "enemy_10158_mnzeno": [
+        "Pheidippides the Jogger",
+        "MIN08"
+    ],
+    "enemy_10158_mnzeno_2": [
+        "Pheidippides the Marathoner",
+        "MIN09"
+    ],
+    "enemy_10159_mntrjn": [
+        "Wooden Burdenbeast of Ilion",
+        "MIN10"
+    ],
+    "enemy_10159_mntrjn_2": [
+        "Iron Burdenbeast of Ilion",
+        "MIN11"
+    ],
     "enemy_1015_litamr": [
         "Light-Armored Soldier",
         "6"
@@ -1212,6 +1256,38 @@
     "enemy_1015_litamr_2": [
         "Light-Armored Soldier Leader",
         "7"
+    ],
+    "enemy_10160_mnlaur": [
+        "Comedic Poet",
+        "MIN12"
+    ],
+    "enemy_10160_mnlaur_2": [
+        "Tragic Poet",
+        "MIN13"
+    ],
+    "enemy_10161_mnserv": [
+        "Heroic Ideal",
+        "MIN14"
+    ],
+    "enemy_10161_mnserv_2": [
+        "Heroic Spirit",
+        "MIN15"
+    ],
+    "enemy_10162_mnctpt": [
+        "Handmade Catapult",
+        "MIN16"
+    ],
+    "enemy_10162_mnctpt_2": [
+        "Refurbished Lithobolos",
+        "MIN17"
+    ],
+    "enemy_10163_mnctur": [
+        "Palladulis",
+        "MIN18"
+    ],
+    "enemy_10163_mnctur_2": [
+        "Brave Palladulis",
+        "MIN19"
     ],
     "enemy_1016_diaman": [
         "Metal Crab",
@@ -4736,6 +4812,14 @@
     "enemy_1579_nstmom": [
         "Væla of Convallis",
         "VOV"
+    ],
+    "enemy_1580_mnchrn": [
+        "Xanthos, the Avenger",
+        "XAN"
+    ],
+    "enemy_1581_mnchrs": [
+        "Ithakos Innumerable",
+        "XAN"
     ],
     "enemy_18001_lhship": [
         "Transport Boat",
