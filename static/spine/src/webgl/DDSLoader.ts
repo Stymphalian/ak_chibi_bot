@@ -62,7 +62,15 @@ export function parseDDS(buffer: ArrayBuffer): DDSInfo | null {
     // Read header fields
     const height = header[3];
     const width = header[4];
-    const mipmapCount = (header[2] & DDSD_MIPMAPCOUNT) ? Math.max(1, header[7]) : 1;
+    const reportedMipmapCount = (header[2] & DDSD_MIPMAPCOUNT) ? Math.max(1, header[7]) : 1;
+
+    if (width <= 0 || height <= 0) {
+        console.error(`Invalid DDS dimensions: ${width}x${height}`);
+        return null;
+    }
+
+    const maxPossibleMipmaps = Math.floor(Math.log2(Math.max(width, height))) + 1;
+    const mipmapCount = Math.min(reportedMipmapCount, maxPossibleMipmaps);
     
     // Read pixel format
     const pixelFormatFlags = header[20];
@@ -110,6 +118,15 @@ export function parseDDS(buffer: ArrayBuffer): DDSInfo | null {
         const dataLength = Math.max(1, Math.floor((mipWidth + 3) / 4)) *
                           Math.max(1, Math.floor((mipHeight + 3) / 4)) *
                           blockBytes;
+
+        if (dataOffset + dataLength > buffer.byteLength) {
+            console.error(
+                `Invalid DDS mip data length at level ${i}: ` +
+                `need ${dataLength} bytes at offset ${dataOffset}, ` +
+                `but file size is ${buffer.byteLength}`
+            );
+            return null;
+        }
         
         const data = new Uint8Array(buffer, dataOffset, dataLength);
         mipmaps.push(data);

@@ -46,3 +46,5 @@ third_party/
 compressed/
 *.scratch
 **/.scratch
+output.log.txt
+*.log.txt

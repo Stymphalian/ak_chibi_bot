@@ -38,6 +38,7 @@ import { CompressionCapabilities } from "./CompressionCapabilities";
 type AssetManagerContext = ManagedWebGLRenderingContext | WebGL2RenderingContext;
 type AssetManagerContextList = AssetManagerContext[];
 
+
 export class AssetManager extends spineAssetManager {
 
 	// HACK!!!!
@@ -51,6 +52,7 @@ export class AssetManager extends spineAssetManager {
 	// TODO: This saved seenImages should happen within the spineAssetManager 
 	// instead of here.
 	private seenImages = new Map<string, GLTexture>();
+	private failedCompressedPaths = new Set<string>();
 	private compressionCapabilities: CompressionCapabilities | null = null;
 	private useCompressedTextures: boolean = false;
 	private context: AssetManagerContextList | AssetManagerContext;
@@ -100,6 +102,10 @@ export class AssetManager extends spineAssetManager {
 		if (!this.useCompressedTextures) {
 			return null;
 		}
+
+		if (this.failedCompressedPaths.has(path)) {
+			return null;
+		}
 		
 		try {
 			// Convert path: /assets/characters/char_001.png -> /assets/characters/char_001.dds
@@ -110,9 +116,11 @@ export class AssetManager extends spineAssetManager {
 		} catch (error) {
 			// Compressed texture not available, will fall back to uncompressed
 			// Only log actual errors (not 404s which are expected)
-			if (error.message) {
-				console.warn(`Error loading compressed texture for ${path}:`, error.message);
+			const message = error instanceof Error ? error.message : String(error);
+			if (message) {
+				console.warn(`Error loading compressed texture for ${path}:`, message);
 			}
+			this.failedCompressedPaths.add(path);
 			return null;
 		}
 	}
@@ -161,26 +169,32 @@ export class AssetManager extends spineAssetManager {
 		// Try loading compressed texture first
 		this.tryLoadCompressedTexture(fullPath).then(ddsInfo => {
 			if (ddsInfo) {
-				// Successfully loaded compressed texture
-				// console.log(`✅ Loaded compressed: ${path}`);
-				
-				// Create compressed texture for each context
-				const contexts = this.getContexts();
-				
-				if (contexts.length > 1) {
-					for (let i = 1; i < contexts.length; i++) {
-						this.altTextures.push(new GLCompressedTexture(contexts[i], ddsInfo));
+				try {
+					// Create compressed texture for each context
+					const contexts = this.getContexts();
+
+					if (contexts.length > 1) {
+						for (let i = 1; i < contexts.length; i++) {
+							this.altTextures.push(new GLCompressedTexture(contexts[i], ddsInfo));
+						}
 					}
+
+					const primaryTexture = new GLCompressedTexture(contexts[0], ddsInfo);
+
+					// Store under original path so atlas lookups work
+					this.seenImages.set(fullPath, primaryTexture);
+					this.setAsset(fullPath, primaryTexture);
+
+					// Call success with null image (we don't have an HTMLImageElement)
+					if (success) success(fullPath, null);
+				} catch (compressedUploadError) {
+					const message = compressedUploadError instanceof Error
+						? compressedUploadError.message
+						: String(compressedUploadError);
+					console.warn(`⚠️  Compressed upload failed for ${path}, falling back to uncompressed: ${message}`);
+					this.failedCompressedPaths.add(fullPath);
+					super.loadTexture(path, success, error);
 				}
-				
-				const primaryTexture = new GLCompressedTexture(contexts[0], ddsInfo);
-				
-				// Store under original path so atlas lookups work
-				this.seenImages.set(fullPath, primaryTexture);
-				this.setAsset(fullPath, primaryTexture);
-				
-				// Call success with null image (we don't have an HTMLImageElement)
-				if (success) success(fullPath, null);
 			} else {
 				// Fall back to uncompressed texture loading
 				super.loadTexture(path, (loadedPath, image) => {

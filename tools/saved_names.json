@@ -76,6 +76,11 @@
         "Kroos 2",
         "Kroos2"
     ],
+    "char_1022_flwr2": [
+        "Perfumer Alter",
+        "Perfumer the Distilled",
+        "Perfumer 2"
+    ],
     "char_1023_ghost2": [
         "Specter Alter",
         "Specter the Unchained",
@@ -211,6 +216,11 @@
         "SilverAsh the Reignfrost",
         "SilverAsh 2",
         "Silver Ash 2"
+    ],
+    "char_1050_chen3": [
+        "chen alter 3",
+        "chen the dawnstreak",
+        "Ch'en the Dawnstreak"
     ],
     "char_106_franka": [
         "Franka"
@@ -441,6 +451,9 @@
     ],
     "char_2026_yu": [
         "Yu"
+    ],
+    "char_2027_wang": [
+        "Wang"
     ],
     "char_202_demkni": [
         "Saria"
@@ -1210,6 +1223,12 @@
     ],
     "char_421_crow": [
         "La Pluma"
+    ],
+    "char_4221_ju": [
+        "Ju"
+    ],
+    "char_4222_taraxa": [
+        "Taraxacum"
     ],
     "char_422_aurora": [
         "Aurora"

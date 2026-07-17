@@ -14,6 +14,7 @@ Usage:
 """
 
 import argparse
+from datetime import datetime
 import logging
 import shutil
 import subprocess
@@ -31,16 +32,46 @@ class DeploymentScript:
         self.tools_dir = project_root / "tools"
         self.static_assets_dir = project_root / "static" / "assets"
         self.server_tools_index_dir = project_root / "server" / "tools" / "index"
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        self.output_log_path = project_root / "tools" / f"deploy_assets_{timestamp}.log.txt"
         self.skip_zip = skip_zip
+
+    def _append_command_output(
+        self,
+        command_display: str,
+        cwd: Path,
+        stdout: str,
+        stderr: str,
+        success: bool,
+    ) -> None:
+        """Append command output to output.log.txt."""
+        status = "SUCCESS" if success else "FAILED"
+        try:
+            with self.output_log_path.open("a", encoding="utf-8") as log_file:
+                log_file.write(f"[{status}] {command_display}\n")
+                log_file.write(f"[CWD] {cwd}\n")
+                if stdout:
+                    log_file.write("[STDOUT]\n")
+                    log_file.write(stdout)
+                    if not stdout.endswith("\n"):
+                        log_file.write("\n")
+                if stderr:
+                    log_file.write("[STDERR]\n")
+                    log_file.write(stderr)
+                    if not stderr.endswith("\n"):
+                        log_file.write("\n")
+                log_file.write("-" * 80)
+                log_file.write("\n")
+        except OSError as e:
+            logger.warning(f"Could not write command output to {self.output_log_path}: {e}")
 
     def run_command(self, command: list, cwd: Path = None, shell: bool = False) -> bool:
         """Run a shell command and return success status."""
         if cwd is None:
             cwd = self.project_root
 
-        logger.info(
-            f"Running: {' '.join(command) if isinstance(command, list) else command}"
-        )
+        command_display = " ".join(command) if isinstance(command, list) else command
+        logger.info(f"Running: {command_display}")
         try:
             result = subprocess.run(
                 command,
@@ -52,11 +83,27 @@ class DeploymentScript:
             )
             if result.stdout:
                 logger.debug(result.stdout)
+            if result.stderr:
+                logger.debug(result.stderr)
+            self._append_command_output(
+                command_display=command_display,
+                cwd=cwd,
+                stdout=result.stdout,
+                stderr=result.stderr,
+                success=True,
+            )
             return True
         except subprocess.CalledProcessError as e:
             logger.error(f"Command failed: {e}")
             if e.stderr:
                 logger.error(e.stderr)
+            self._append_command_output(
+                command_display=command_display,
+                cwd=cwd,
+                stdout=e.stdout or "",
+                stderr=e.stderr or "",
+                success=False,
+            )
             return False
 
     def step_collect_enemy_names(self) -> bool:

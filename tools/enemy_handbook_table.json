@@ -34614,6 +34614,672 @@
       "OverrideKillCntInfos": null,
       "SortId": 1129
     },
+    "enemy_3012_tjgcb": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Friendly Unit",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Grants DP when entering the Objective Point",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        3
+      ],
+      "DamageTypeAsNumpy": [
+        3
+      ],
+      "Description": "Scriptgeist born of the beautiful wishes of the people, whose original name was 'Money'. In the Great Hunt a thousand years ago, the wealthy gave their wealth, and the poor their strength, joining forces to defeat the might of heaven. Historians recorded this for posterity and archived it in Sky Mirror Pavilion.",
+      "EnemyId": "enemy_3012_tjgcb",
+      "EnemyIndex": "TA17",
+      "EnemyLevel": 0,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "Matters of Money",
+      "OverrideKillCntInfos": null,
+      "SortId": 1130
+    },
+    "enemy_3013_tjglb": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Friendly Unit",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Provides SP to friendly Operators when approaching them, then disappears",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        3
+      ],
+      "DamageTypeAsNumpy": [
+        3
+      ],
+      "Description": "Scriptgeist born of the fire and smoke of kitchens, whose original name was 'Food'. In the Great Hunt a thousand years ago, the people worked their kitchens around the clock to supply the soldiers with food, giving them the courage to fight. Historians recorded this for posterity and archived it in Sky Mirror Pavilion.",
+      "EnemyId": "enemy_3013_tjglb",
+      "EnemyIndex": "TA18",
+      "EnemyLevel": 0,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "Matters of Cooking",
+      "OverrideKillCntInfos": null,
+      "SortId": 1131
+    },
+    "enemy_10164_tjgxb": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Vanishes when encountering another type of enemy, granting the target a portion of this unit's ATK, DEF, and RES, stacking up to 3 times per unit",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        0
+      ],
+      "DamageTypeAsNumpy": [
+        0
+      ],
+      "Description": "Scriptgeist born of the influence of a Sui proxy, whose original name was 'Soldier'. The histories write: 'Upon the peaks was the beast cornered and killed.' It was the battlefield where the Feranmut was hunted, and where countless soldiers were buried. The smoke dissipates and the broken armor sinks into the sand, as the bleached bones hope to return in spring.",
+      "EnemyId": "enemy_10164_tjgxb",
+      "EnemyIndex": "TA1",
+      "EnemyLevel": 0,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "Wield Arms",
+      "OverrideKillCntInfos": null,
+      "SortId": 1132
+    },
+    "enemy_10164_tjgxb_2": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Vanishes when encountering another type of enemy, granting the target a portion of this unit's ATK, DEF, and RES, stacking up to 3 times per unit",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        0
+      ],
+      "DamageTypeAsNumpy": [
+        0
+      ],
+      "Description": "Scriptgeist driven mad from the influence of Sui, whose original name was 'Soldier'. The histories write: 'Upon the peaks was the beast cornered and killed.' It was the battlefield where the Feranmut was hunted, and where countless soldiers were buried. Swords and spears lie buried, and tears of blood have stopped flowing. The bleached bones shall know spring no more.",
+      "EnemyId": "enemy_10164_tjgxb_2",
+      "EnemyIndex": "TA2",
+      "EnemyLevel": 0,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "Wield Arms - Oppress",
+      "OverrideKillCntInfos": null,
+      "SortId": 1133
+    },
+    "enemy_10165_tjggb": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Hits 3 times",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Prioritizes attacking allies on Glyph Tiles",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        0
+      ],
+      "DamageTypeAsNumpy": [
+        0
+      ],
+      "Description": "Scriptgeist born of the influence of a Sui proxy, whose original name was 'Bow. The histories write: 'Where does the bowstring return, across thousands of miles to the Pass?' Every goodbye on that bridge was solemn and earnest. The wind stirs the sand, the long bow a full moon; listen to the string ring, and hope for its bearer's return.",
+      "EnemyId": "enemy_10165_tjggb",
+      "EnemyIndex": "TA3",
+      "EnemyLevel": 0,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "Draw Bow",
+      "OverrideKillCntInfos": null,
+      "SortId": 1134
+    },
+    "enemy_10165_tjggb_2": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Hits 3 times",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Prioritizes attacking allies on Glyph Tiles",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        0
+      ],
+      "DamageTypeAsNumpy": [
+        0
+      ],
+      "Description": "Scriptgeist driven mad from the influence of Sui, whose original name was 'Bow'. The histories write: 'Where does the bowstring return, across thousands of miles to the Pass?' Every goodbye on that bridge was solemn and earnest. The sandstorm rages, and the bowstring wails, yet its bearer is nowhere to be seen, but for the lingering echoes of the string's ring.",
+      "EnemyId": "enemy_10165_tjggb_2",
+      "EnemyIndex": "TA4",
+      "EnemyLevel": 0,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "Draw Bow - Screech",
+      "OverrideKillCntInfos": null,
+      "SortId": 1135
+    },
+    "enemy_10166_tjgdlb": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Damage from Stamp reduced",
+          "TextFormat": 0
+        },
+        {
+          "Text": "When on a Glyph Tile, disables stamp effects for all glyphs on current tile and all connected Glyph Tiles",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        0
+      ],
+      "DamageTypeAsNumpy": [
+        0
+      ],
+      "Description": "Scriptgeist born of the influence of a Sui proxy, whose original name was 'Strength'. The histories write: 'Cold wind howls, for the brave never returned.' Their names are forgotten to history, but their legacies remain in a nation secure. So long as their strength holds, the way home shall be found.",
+      "EnemyId": "enemy_10166_tjgdlb",
+      "EnemyIndex": "TA5",
+      "EnemyLevel": 1,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "Uproot Mountain",
+      "OverrideKillCntInfos": null,
+      "SortId": 1136
+    },
+    "enemy_10166_tjgdlb_2": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Damage from Stamp reduced",
+          "TextFormat": 0
+        },
+        {
+          "Text": "When on a Glyph Tile, disables stamp effects for all glyphs on current tile and all connected Glyph Tiles",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        0
+      ],
+      "DamageTypeAsNumpy": [
+        0
+      ],
+      "Description": "Scriptgeist driven mad from the influence of Sui, whose original name was 'Strength'. The histories write: 'Cold wind howls, for the brave never returned.' Their names are forgotten to history, and the nation is not yet secure. Even as their strength holds, they shall never find their way home.",
+      "EnemyId": "enemy_10166_tjgdlb_2",
+      "EnemyIndex": "TA6",
+      "EnemyLevel": 1,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "Uproot Mountain - Overshadow",
+      "OverrideKillCntInfos": null,
+      "SortId": 1137
+    },
+    "enemy_10167_tjgsfj": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Writes the glyph Soldier when first entering an empty Glyph Tile",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        1
+      ],
+      "DamageTypeAsNumpy": [
+        1
+      ],
+      "Description": "Scriptgeist born of the influence of a Sui proxy, whose original name was 'Brush'. At the end of the history book is a comment in light-colored ink: 'Spring and autumn know me, and I shall fear not the long night.' The writer believes that right and wrong will become apparent by the historian's brush.",
+      "EnemyId": "enemy_10167_tjgsfj",
+      "EnemyIndex": "TA7",
+      "EnemyLevel": 1,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": [
+        "enemy_10164_tjgxb"
+      ],
+      "Name": "Raise Tide",
+      "OverrideKillCntInfos": null,
+      "SortId": 1138
+    },
+    "enemy_10167_tjgsfj_2": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Writes the glyph Soldier when first entering an empty Glyph Tile",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        1
+      ],
+      "DamageTypeAsNumpy": [
+        1
+      ],
+      "Description": "Scriptgeist driven mad from the influence of Sui, whose original name was 'Brush'. At the end of the history book is a comment in dried ink: 'Spring and autumn are not me. How could they know how long the night is?' If history can be altered, and writing forged, who will seek justice for the innumerable souls lost to the ages?",
+      "EnemyId": "enemy_10167_tjgsfj_2",
+      "EnemyIndex": "TA8",
+      "EnemyLevel": 1,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": [
+        "enemy_10164_tjgxb_2"
+      ],
+      "Name": "Raise Tide - Summon",
+      "OverrideKillCntInfos": null,
+      "SortId": 1139
+    },
+    "enemy_10173_tjgbsf": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Writes the glyph Friend when first entering an empty Glyph Tile",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        1
+      ],
+      "DamageTypeAsNumpy": [
+        1
+      ],
+      "Description": "Scriptgeist born from the brush of a great calligrapher, whose original name was 'Book'. 'Adversity births the chronicle; Darkness completes the tome.' The writings that expose stories of injustice will become the torch that guides those who are to come.",
+      "EnemyId": "enemy_10173_tjgbsf",
+      "EnemyIndex": "TA9",
+      "EnemyLevel": 0,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "Ride Tide",
+      "OverrideKillCntInfos": null,
+      "SortId": 1140
+    },
+    "enemy_10173_tjgbsf_2": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Writes the glyph Friend when first entering an empty Glyph Tile",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        1
+      ],
+      "DamageTypeAsNumpy": [
+        1
+      ],
+      "Description": "Scriptgeist born from the brush of a great calligrapher, whose original name was 'Book'. 'Adversity births the chronicle; Darkness completes the tome.' The writings that expose stories of injustice will become the torch that lights the way home for the indomitable souls in the great river of history.",
+      "EnemyId": "enemy_10173_tjgbsf_2",
+      "EnemyIndex": "TA10",
+      "EnemyLevel": 0,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "Ride Tide - Return",
+      "OverrideKillCntInfos": null,
+      "SortId": 1141
+    },
+    "enemy_10168_tjgly": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Can move through empty Glyph Tiles",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Exits glyph form when stamped by a Stamp, becoming <$ba.stun>stunned</>, and cannot turn back to glyph form for a while",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Cannot be teleported",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        0
+      ],
+      "DamageTypeAsNumpy": [
+        0
+      ],
+      "Description": "Scriptgeist born of the influence of a Sui proxy, whose original name was 'Falsehood'. 'He who claims himself pure should be cast into murky waters.' Purity and corruption, truth and falsehood, are never decided by the fins swimming in the river.",
+      "EnemyId": "enemy_10168_tjgly",
+      "EnemyIndex": "TA11",
+      "EnemyLevel": 1,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "Ribbon in the Waves",
+      "OverrideKillCntInfos": null,
+      "SortId": 1142
+    },
+    "enemy_10168_tjgly_2": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Can move through empty Glyph Tiles",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Exits glyph form when stamped by a Stamp, becoming <$ba.stun>stunned</>, and cannot turn back to glyph form for a while",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Cannot be teleported",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        0
+      ],
+      "DamageTypeAsNumpy": [
+        0
+      ],
+      "Description": "Scriptgeist driven mad from the influence of Sui, whose original name was 'Falsehood'. 'He who claims himself pure should be cast into murky waters.' Purity and corruption, truth and falsehood, are never easy to tell. Who can tell if the words of the swimming fins are true?",
+      "EnemyId": "enemy_10168_tjgly_2",
+      "EnemyIndex": "TA12",
+      "EnemyLevel": 1,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "Ribbon in the Waves - Rust",
+      "OverrideKillCntInfos": null,
+      "SortId": 1143
+    },
+    "enemy_10169_tjgtsz": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Flying unit.",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Steals the first glyph encountered after a delay, losing Movement Speed",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        0
+      ],
+      "DamageTypeAsNumpy": [
+        0
+      ],
+      "Description": "Scriptgeist born of the influence of a Sui proxy, whose original name was 'Thief'. At the end of the history book is a comment in light-colored ink: 'The thief stole the ink, and sundered spring and autumn.' The writer understands it well. It is not easy to write with honesty and integrity, but history will never be forgotten, so long as those who write continue to do so.",
+      "EnemyId": "enemy_10169_tjgtsz",
+      "EnemyIndex": "TA13",
+      "EnemyLevel": 1,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "Thief in the Clouds",
+      "OverrideKillCntInfos": null,
+      "SortId": 1144
+    },
+    "enemy_10169_tjgtsz_2": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Flying unit.",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Steals the first glyph encountered after a delay, losing Movement Speed",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        0
+      ],
+      "DamageTypeAsNumpy": [
+        0
+      ],
+      "Description": "Scriptgeist driven mad from the influence of Sui, whose original name was 'Thief'. At the end of the history book is a comment in dried colored ink: 'The thief stole the ink, and sundered spring and autumn.' The writer's brush stops. How could one brush hope to stand against oblivion itself?",
+      "EnemyId": "enemy_10169_tjgtsz_2",
+      "EnemyIndex": "TA14",
+      "EnemyLevel": 1,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "Thief in the Clouds - Erode",
+      "OverrideKillCntInfos": null,
+      "SortId": 1145
+    },
+    "enemy_10170_wangz": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Becomes the glyph Broken when stamped, sealing its Glyph Tile",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        1
+      ],
+      "DamageTypeAsNumpy": [
+        1
+      ],
+      "Description": "The work of 'White'. Invade and advance at the same time, relying not on advantage, nor placing oneself in disadvantage. 'Honor is vice; deceit is virtue.'",
+      "EnemyId": "enemy_10170_wangz",
+      "EnemyIndex": "TA15",
+      "EnemyLevel": 0,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": [
+        "enemy_3014_wangw"
+      ],
+      "Name": "Frost Play",
+      "OverrideKillCntInfos": null,
+      "SortId": 1146
+    },
+    "enemy_10170_wangz_2": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Becomes the glyph Broken when stamped, sealing its Glyph Tile",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        1
+      ],
+      "DamageTypeAsNumpy": [
+        1
+      ],
+      "Description": "The work of 'White'. Like jade and gem complementing each other, like the stars illuminating the heavens. 'Honor is vice; deceit is virtue.'",
+      "EnemyId": "enemy_10170_wangz_2",
+      "EnemyIndex": "TA16",
+      "EnemyLevel": 0,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": [
+        "enemy_3014_wangw"
+      ],
+      "Name": "Frost Play - Fight",
+      "OverrideKillCntInfos": null,
+      "SortId": 1147
+    },
+    "enemy_3014_wangw": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Invulnerable",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Summons <Frost Play> and <Frost Play - Fight> to affect the game",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        3
+      ],
+      "DamageTypeAsNumpy": [
+        3
+      ],
+      "Description": "A nightmare born of the void of 'evolution'. Long has it hidden in the shadows, but now it takes its place at the board.",
+      "EnemyId": "enemy_3014_wangw",
+      "EnemyIndex": "W180",
+      "EnemyLevel": 1,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": true,
+      "IsInvalidKilled": false,
+      "LinkEnemies": [
+        "enemy_10170_wangz",
+        "enemy_10170_wangz_2"
+      ],
+      "Name": "'White'",
+      "OverrideKillCntInfos": null,
+      "SortId": 1148
+    },
+    "enemy_10171_ssttz": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Immune to most control effects when using a skill",
+          "TextFormat": 0
+        },
+        {
+          "Text": "[Unsubmerged] After Stamp hits, stops moving and continuously absorbs <Matters of Money>, <Matters of Cooking>, <Wield Arms> and <Wield Arms - Oppress>, gaining barrier whenever one is successfully absorbed",
+          "TextFormat": 0
+        },
+        {
+          "Text": "[Opening Statement] Selects the nearest 'Soldier' Glyph Tile, then after a short delay stamps it once along with each connected Glyph Tile",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Revives when HP drops to 0 for the first time, writes the Friend glyph on the two furthest Glyph Tiles, and immediately activates Stamp",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        1
+      ],
+      "DamageTypeAsNumpy": [
+        1
+      ],
+      "Description": "'The elf who wanders a thousand realms, the fire that illuminates the long night, the visitor lost in the past, the lingerer who reminisces on the departed.'",
+      "EnemyId": "enemy_10171_ssttz",
+      "EnemyIndex": "CHUN",
+      "EnemyLevel": 1,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "Chun",
+      "OverrideKillCntInfos": null,
+      "SortId": 1149
+    },
+    "enemy_10172_sheart": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "When ignited by [Wrath of Eons], deals Arts damage to your surrounding units",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        0
+      ],
+      "DamageTypeAsNumpy": [
+        0
+      ],
+      "Description": "Sui's wrath. Go forth and face Its wrath head-on, if you are prepared to never return.",
+      "EnemyId": "enemy_10172_sheart",
+      "EnemyIndex": "SUI5",
+      "EnemyLevel": 0,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": [
+        "enemy_1582_suisho",
+        "enemy_1585_suiwei"
+      ],
+      "Name": "'Unquenched'",
+      "OverrideKillCntInfos": null,
+      "SortId": 1150
+    },
     "enemy_2001_duckmi": {
       "Ability": null,
       "AbilityList": [
@@ -36068,6 +36734,98 @@
       "Name": "Liang",
       "OverrideKillCntInfos": null,
       "SortId": 1199
+    },
+    "enemy_2129_dylong": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Deals Arts damage",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        1
+      ],
+      "DamageTypeAsNumpy": [
+        1
+      ],
+      "Description": "Under the influence of the tomb's host, these inanimate objects have gained vessels just like It, and a life of their own. The Sui Regulator has termed such changes 'geistification'.",
+      "EnemyId": "enemy_2129_dylong",
+      "EnemyIndex": "YH",
+      "EnemyLevel": 1,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "Hateful Carrion",
+      "OverrideKillCntInfos": null,
+      "SortId": 1200
+    },
+    "enemy_2130_dyswrd": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Aerial unit.",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Self-destructs when near an Operator, dealing Physical damage",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        0
+      ],
+      "DamageTypeAsNumpy": [
+        0
+      ],
+      "Description": "The tail was born to be a blade, which men take to be a sword. Once, It let Its arrogance run unchecked. Now, It knows to conceal the blade.",
+      "EnemyId": "enemy_2130_dyswrd",
+      "EnemyIndex": "LA",
+      "EnemyLevel": 1,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "Restrained Pride",
+      "OverrideKillCntInfos": null,
+      "SortId": 1201
+    },
+    "enemy_2131_dyfire": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Aerial unit.",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Self-destructs when near an Operator, dealing Arts damage and inflicting <$ba.dt.burning>Burn</>",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        1
+      ],
+      "DamageTypeAsNumpy": [
+        1
+      ],
+      "Description": "All that came to be because It saw the fire must end in fire.",
+      "EnemyId": "enemy_2131_dyfire",
+      "EnemyIndex": "YN",
+      "EnemyLevel": 1,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "Fume of Anger",
+      "OverrideKillCntInfos": null,
+      "SortId": 1202
     },
     "enemy_4001_toxcar": {
       "Ability": null,
@@ -42632,6 +43390,168 @@
       "OverrideKillCntInfos": null,
       "SortId": 1359
     },
+    "enemy_1582_suisho": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "The four body parts share an HP pool and cast skills in order; individual body parts leave the battlefield after taking a certain amount of damage",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Parts are lifted when skills are used, preventing them from being attacked, and the tiles they are on become deployable and passable",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Bringing a body part under the influence of a suppression pillar weakens the corresponding stats and skills; Sui gains a large stat bonus and takes less Physical and Arts damage when it is at full strength",
+          "TextFormat": 0
+        },
+        {
+          "Text": "[Wrath of Eons] Raises Sui's Head and breathes fire at the northmost ally after a delay, dealing Arts damage and inflicting <$ba.dt.burning>Burn</>; flames spread southwards and continues to burn in an area, dealing Arts damage, inflicting <$ba.dt.burning>Burn</>, and igniting <'Unquenched'>; remains on the field for a while",
+          "TextFormat": 0
+        },
+        {
+          "Text": "[Sundered Pillars] When HP falls below a certain point, summons extra enemies, and the 4 body parts simultaneously cast [Wrath of Eons], [Hidden Moon], [Shrouded Sun], and [Order Overturned]",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Sui's ATK is reduced when weakened by a suppression pillar, and [Wrath of Eons] range is reduced",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        1
+      ],
+      "DamageTypeAsNumpy": [
+        1
+      ],
+      "Description": "The final god felled by Yan has risen again. It raises Its head and sees time immemorial from beginning to end, but It has never truly dwelled in the mortal realm.",
+      "EnemyId": "enemy_1582_suisho",
+      "EnemyIndex": "SUI1",
+      "EnemyLevel": 2,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": [
+        "enemy_10172_sheart",
+        "enemy_1583_suizzh",
+        "enemy_1584_suiyzh",
+        "enemy_1585_suiwei"
+      ],
+      "Name": "Sui",
+      "OverrideKillCntInfos": null,
+      "SortId": 1360
+    },
+    "enemy_1583_suizzh": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "[Hidden Moon] and [Shrouded Sun] are cast together; lifts Left Claw of Sui and attacks the eastmost ally after a delay, dealing heavy Physical damage to all allies in the area",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Sui's RES is reduced when weakened by a suppression pillar, and Its Left Claw will no longer use [Hidden Moon]",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        3
+      ],
+      "DamageTypeAsNumpy": [
+        3
+      ],
+      "Description": "-",
+      "EnemyId": "enemy_1583_suizzh",
+      "EnemyIndex": "SUI2",
+      "EnemyLevel": 2,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": [
+        "enemy_1582_suisho",
+        "enemy_1584_suiyzh",
+        "enemy_1585_suiwei"
+      ],
+      "Name": "Left Claw of Sui",
+      "OverrideKillCntInfos": null,
+      "SortId": 1361
+    },
+    "enemy_1584_suiyzh": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "[Shrouded Sun] and [Hidden Moon] are cast together; lifts Right Claw of Sui and attacks the westmost ally after a delay, dealing heavy Physical damage to all allies in the area",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Sui's DEF is reduced when weakened by a suppression pillar, and Its Right Claw will no longer use [Shrouded Sun]",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        3
+      ],
+      "DamageTypeAsNumpy": [
+        3
+      ],
+      "Description": "-",
+      "EnemyId": "enemy_1584_suiyzh",
+      "EnemyIndex": "SUI3",
+      "EnemyLevel": 2,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": [
+        "enemy_1582_suisho",
+        "enemy_1583_suizzh",
+        "enemy_1585_suiwei"
+      ],
+      "Name": "Right Claw of Sui",
+      "OverrideKillCntInfos": null,
+      "SortId": 1362
+    },
+    "enemy_1585_suiwei": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "[Order Overturned] Lifts Tail of Sui and attacks the southmost ally after a delay, dealing Physical damage to all allies in the area three times; spawns <'Unquenched'> based on the number of allies defeated this way",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Sui's HP is reduced when weakened by a suppression pillar, and range and damage of [Order Overturned] are reduced",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        3
+      ],
+      "DamageTypeAsNumpy": [
+        3
+      ],
+      "Description": "-",
+      "EnemyId": "enemy_1585_suiwei",
+      "EnemyIndex": "SUI4",
+      "EnemyLevel": 2,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": [
+        "enemy_10172_sheart",
+        "enemy_1582_suisho",
+        "enemy_1583_suizzh",
+        "enemy_1584_suiyzh"
+      ],
+      "Name": "Tail of Sui",
+      "OverrideKillCntInfos": null,
+      "SortId": 1363
+    },
     "enemy_2003_rockman": {
       "Ability": null,
       "AbilityList": [
@@ -45376,6 +46296,123 @@
       "Name": "Bestial Ju",
       "OverrideKillCntInfos": null,
       "SortId": 1435
+    },
+    "enemy_2128_dysuib": {
+      "Ability": null,
+      "AbilityList": null,
+      "AttackType": null,
+      "DamageType": [
+        3
+      ],
+      "DamageTypeAsNumpy": [
+        3
+      ],
+      "Description": "Its least human feature.",
+      "EnemyId": "enemy_2128_dysuib",
+      "EnemyIndex": "WQH",
+      "EnemyLevel": 2,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "Body",
+      "OverrideKillCntInfos": null,
+      "SortId": 1436
+    },
+    "enemy_2126_dycyue": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "[Violence] Chance to dodge Physical and Arts damage from units who are not blocking this unit; ATK increased for every 'Olden Pride' in the Deployment Waiting Zone",
+          "TextFormat": 0
+        },
+        {
+          "Text": "[Drunken Stupor] Adds an 'Olden Pride' to the Deployment Waiting Zone",
+          "TextFormat": 0
+        },
+        {
+          "Text": "[Tracing the Law] Spawns 'Restrained Pride' at current location, and spawns another 'Restrained Pride' for every 'Olden Pride' in the Deployment Waiting Zone",
+          "TextFormat": 0
+        },
+        {
+          "Text": "[Depict] Summons a 'Body' segment, forcing units on it to retreat; cannot be attacked while 'Body' is on the field",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        0
+      ],
+      "DamageTypeAsNumpy": [
+        0
+      ],
+      "Description": "A vessel that has been annexed, containing all malice and wrath. Its original owner slumbers eternal, replaced by—",
+      "EnemyId": "enemy_2126_dycyue",
+      "EnemyIndex": "SQ",
+      "EnemyLevel": 2,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": [
+        "enemy_2130_dyswrd",
+        "enemy_2128_dysuib"
+      ],
+      "Name": "Vessel of Shuo",
+      "OverrideKillCntInfos": null,
+      "SortId": 1437
+    },
+    "enemy_2127_dysuih": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "[Wisdom] Physical and Arts damage taken reduced by 50% for every 'Body' segment on the field",
+          "TextFormat": 0
+        },
+        {
+          "Text": "[Flame of Intrigue] Adds an 'Olden Grudge' to the Deployment Waiting Zone",
+          "TextFormat": 0
+        },
+        {
+          "Text": "[Build Foundation] Summons a 'Body' segment; summons 'Body' every time it loses a certain amount of HP",
+          "TextFormat": 0
+        },
+        {
+          "Text": "[Purifying Flame] Spawns 'Fume of Anger' at current location, and spawns another 'Fume of Anger' for every 'Olden Grudge' in the Deployment Waiting Zone",
+          "TextFormat": 0
+        },
+        {
+          "Text": "[Woven Prison] Continuously casts, summoning multiple 'Fumes of Anger' to attack the target",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Leave the field and drains 50 Life Points after a long time has passed in the battle",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        1
+      ],
+      "DamageTypeAsNumpy": [
+        1
+      ],
+      "Description": "—It, awakened.",
+      "EnemyId": "enemy_2127_dysuih",
+      "EnemyIndex": "WQH",
+      "EnemyLevel": 2,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": [
+        "enemy_2131_dyfire",
+        "enemy_2128_dysuib"
+      ],
+      "Name": "Arrogance Embodied",
+      "OverrideKillCntInfos": null,
+      "SortId": 1438
     },
     "enemy_5008_cstrwd": {
       "Ability": null,

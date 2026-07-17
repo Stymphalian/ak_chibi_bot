@@ -52,15 +52,25 @@ export class GLCompressedTexture extends GLTexture {
         
         // Upload each mipmap level
         for (let i = 0; i < this.ddsInfo.mipmaps.length; i++) {
+            const mipWidth = Math.max(1, this.ddsInfo.width >> i);
+            const mipHeight = Math.max(1, this.ddsInfo.height >> i);
             gl.compressedTexImage2D(
                 gl.TEXTURE_2D,
                 i,                              // Mipmap level
                 this.ddsInfo.format,            // Internal format (DXT1/3/5)
-                this.ddsInfo.width >> i,        // Width at this level
-                this.ddsInfo.height >> i,       // Height at this level
+                mipWidth,                       // Width at this level
+                mipHeight,                      // Height at this level
                 0,                              // Border (must be 0)
                 this.ddsInfo.mipmaps[i]         // Compressed data
             );
+
+            const uploadError = gl.getError();
+            if (uploadError !== gl.NO_ERROR) {
+                throw new Error(
+                    `compressedTexImage2D failed at mip ${i} ` +
+                    `(${mipWidth}x${mipHeight}), gl error 0x${uploadError.toString(16)}`
+                );
+            }
         }
         
         // Set texture parameters

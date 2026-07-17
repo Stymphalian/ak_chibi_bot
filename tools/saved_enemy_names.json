@@ -1289,9 +1289,81 @@
         "Brave Palladulis",
         "MIN19"
     ],
+    "enemy_10164_tjgxb": [
+        "Wield Arms",
+        "TA1"
+    ],
+    "enemy_10164_tjgxb_2": [
+        "Wield Arms - Oppress",
+        "TA2"
+    ],
+    "enemy_10165_tjggb": [
+        "Draw Bow",
+        "TA3"
+    ],
+    "enemy_10165_tjggb_2": [
+        "Draw Bow - Screech",
+        "TA4"
+    ],
+    "enemy_10166_tjgdlb": [
+        "Uproot Mountain",
+        "TA5"
+    ],
+    "enemy_10166_tjgdlb_2": [
+        "Uproot Mountain - Overshadow",
+        "TA6"
+    ],
+    "enemy_10167_tjgsfj": [
+        "Raise Tide",
+        "TA7"
+    ],
+    "enemy_10167_tjgsfj_2": [
+        "Raise Tide - Summon",
+        "TA8"
+    ],
+    "enemy_10168_tjgly": [
+        "Ribbon in the Waves",
+        "TA11"
+    ],
+    "enemy_10168_tjgly_2": [
+        "Ribbon in the Waves - Rust",
+        "TA12"
+    ],
+    "enemy_10169_tjgtsz": [
+        "Thief in the Clouds",
+        "TA13"
+    ],
+    "enemy_10169_tjgtsz_2": [
+        "Thief in the Clouds - Erode",
+        "TA14"
+    ],
     "enemy_1016_diaman": [
         "Metal Crab",
         "B8"
+    ],
+    "enemy_10170_wangz": [
+        "Frost Play",
+        "TA15"
+    ],
+    "enemy_10170_wangz_2": [
+        "Frost Play - Fight",
+        "TA16"
+    ],
+    "enemy_10171_ssttz": [
+        "Chun",
+        "CHUN"
+    ],
+    "enemy_10172_sheart": [
+        "Unquenched",
+        "SUI5"
+    ],
+    "enemy_10173_tjgbsf": [
+        "Ride Tide",
+        "TA9"
+    ],
+    "enemy_10173_tjgbsf_2": [
+        "Ride Tide - Return",
+        "TA10"
     ],
     "enemy_1017_defdrn": [
         "Defender-4",
@@ -4821,6 +4893,22 @@
         "Ithakos Innumerable",
         "XAN"
     ],
+    "enemy_1582_suisho": [
+        "Sui",
+        "SUI1"
+    ],
+    "enemy_1583_suizzh": [
+        "Left Claw of Sui",
+        "SUI2"
+    ],
+    "enemy_1584_suiyzh": [
+        "Right Claw of Sui",
+        "SUI3"
+    ],
+    "enemy_1585_suiwei": [
+        "Tail of Sui",
+        "SUI4"
+    ],
     "enemy_18001_lhship": [
         "Transport Boat",
         "IL01"
@@ -5331,6 +5419,30 @@
         "Little Bajie",
         "BA"
     ],
+    "enemy_2126_dycyue": [
+        "Vessel of Shuo",
+        "SQ"
+    ],
+    "enemy_2127_dysuih": [
+        "Arrogance Embodied",
+        "WQH"
+    ],
+    "enemy_2128_dysuib": [
+        "Body",
+        "WQH"
+    ],
+    "enemy_2129_dylong": [
+        "Hateful Carrion",
+        "YH"
+    ],
+    "enemy_2130_dyswrd": [
+        "Restrained Pride",
+        "LA"
+    ],
+    "enemy_2131_dyfire": [
+        "Fume of Anger",
+        "YN"
+    ],
     "enemy_3001_upeopl": [
         "Ursus Civilian",
         "U16"
@@ -5369,6 +5481,18 @@
     "enemy_3011_dyegrd": [
         "Emperors Blade, Halberd Breaker",
         "BBM"
+    ],
+    "enemy_3012_tjgcb": [
+        "Matters of Money",
+        "TA17"
+    ],
+    "enemy_3013_tjglb": [
+        "Matters of Cooking",
+        "TA18"
+    ],
+    "enemy_3014_wangw": [
+        "White",
+        "W180"
     ],
     "enemy_4001_toxcar": [
         "Retrofitted Gastruck",
