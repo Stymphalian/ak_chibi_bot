@@ -13605,6 +13605,60 @@
             }
           }
         },
+        "marthe": {
+          "base": {
+            "Front": {
+              "atlas_filepath": "characters/char_185_frncat/marthe#12/base/Front/build_char_185_frncat_marthe#12.atlas",
+              "skel_filepath": "characters/char_185_frncat/marthe#12/base/Front/build_char_185_frncat_marthe#12.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "characters/char_185_frncat/marthe#12/base/Front/build_char_185_frncat_marthe#12.png",
+              "animations": [
+                "Default",
+                "Interact",
+                "Move",
+                "Relax",
+                "Sit",
+                "Sleep",
+                "Special"
+              ],
+              "use_straight_alpha": false,
+              "spritesheet_data_filepath": ""
+            }
+          },
+          "battle": {
+            "Back": {
+              "atlas_filepath": "characters/char_185_frncat/marthe#12/battle/Back/char_185_frncat_marthe#12.atlas",
+              "skel_filepath": "characters/char_185_frncat/marthe#12/battle/Back/char_185_frncat_marthe#12.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "characters/char_185_frncat/marthe#12/battle/Back/char_185_frncat_marthe#12.png",
+              "animations": [
+                "Attack",
+                "Attack_2",
+                "Default",
+                "Idle",
+                "Start"
+              ],
+              "use_straight_alpha": false,
+              "spritesheet_data_filepath": ""
+            },
+            "Front": {
+              "atlas_filepath": "characters/char_185_frncat/marthe#12/battle/Front/char_185_frncat_marthe#12.atlas",
+              "skel_filepath": "characters/char_185_frncat/marthe#12/battle/Front/char_185_frncat_marthe#12.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "characters/char_185_frncat/marthe#12/battle/Front/char_185_frncat_marthe#12.png",
+              "animations": [
+                "Attack",
+                "Attack_2",
+                "Default",
+                "Die",
+                "Idle",
+                "Start"
+              ],
+              "use_straight_alpha": false,
+              "spritesheet_data_filepath": ""
+            }
+          }
+        },
         "wild": {
           "base": {
             "Front": {
@@ -45879,6 +45933,74 @@
               "skel_filepath": "characters/char_4177_brigid/default/battle/Front/char_4177_brigid.skel",
               "skel_json_filepath": "",
               "png_filepath": "characters/char_4177_brigid/default/battle/Front/char_4177_brigid.png",
+              "animations": [
+                "Attack",
+                "Attack_Down",
+                "Default",
+                "Die",
+                "Idle",
+                "Skill_1",
+                "Skill_2_Begin",
+                "Skill_2_End",
+                "Skill_2_Idle",
+                "Skill_2_Loop",
+                "Skill_Down_1",
+                "Skill_Down_2_Begin",
+                "Skill_Down_2_End",
+                "Skill_Down_2_Idle",
+                "Skill_Down_2_Loop",
+                "Start"
+              ],
+              "use_straight_alpha": false,
+              "spritesheet_data_filepath": ""
+            }
+          }
+        },
+        "epoque": {
+          "base": {
+            "Front": {
+              "atlas_filepath": "characters/char_4177_brigid/epoque#53/base/Front/build_char_4177_brigid_epoque#53.atlas",
+              "skel_filepath": "characters/char_4177_brigid/epoque#53/base/Front/build_char_4177_brigid_epoque#53.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "characters/char_4177_brigid/epoque#53/base/Front/build_char_4177_brigid_epoque#53.png",
+              "animations": [
+                "Default",
+                "Interact",
+                "Move",
+                "Relax",
+                "Sit",
+                "Sleep",
+                "Special"
+              ],
+              "use_straight_alpha": false,
+              "spritesheet_data_filepath": ""
+            }
+          },
+          "battle": {
+            "Back": {
+              "atlas_filepath": "characters/char_4177_brigid/epoque#53/battle/Back/char_4177_brigid_epoque#53.atlas",
+              "skel_filepath": "characters/char_4177_brigid/epoque#53/battle/Back/char_4177_brigid_epoque#53.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "characters/char_4177_brigid/epoque#53/battle/Back/char_4177_brigid_epoque#53.png",
+              "animations": [
+                "Attack",
+                "Default",
+                "Idle",
+                "Skill_1",
+                "Skill_2_Begin",
+                "Skill_2_End",
+                "Skill_2_Idle",
+                "Skill_2_Loop",
+                "Start"
+              ],
+              "use_straight_alpha": false,
+              "spritesheet_data_filepath": ""
+            },
+            "Front": {
+              "atlas_filepath": "characters/char_4177_brigid/epoque#53/battle/Front/char_4177_brigid_epoque#53.atlas",
+              "skel_filepath": "characters/char_4177_brigid/epoque#53/battle/Front/char_4177_brigid_epoque#53.skel",
+              "skel_json_filepath": "",
+              "png_filepath": "characters/char_4177_brigid/epoque#53/battle/Front/char_4177_brigid_epoque#53.png",
               "animations": [
                 "Attack",
                 "Attack_Down",
