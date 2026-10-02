@@ -222,6 +222,10 @@
         "chen the dawnstreak",
         "Ch'en the Dawnstreak"
     ],
+    "char_1051_headb2": [
+        "Zima Alter",
+        "Zima the raging tide"
+    ],
     "char_106_franka": [
         "Franka"
     ],
@@ -372,6 +376,10 @@
     ],
     "char_174_slbell": [
         "Pramanix"
+    ],
+    "char_1046_sbell2": [
+      "Pramanix alter",
+      "Pramanix the Prerita"
     ],
     "char_179_cgbird": [
         "Nightingale"
@@ -1235,6 +1243,12 @@
     ],
     "char_4222_taraxa": [
         "Taraxacum"
+    ],
+    "char_4223_botany": [
+        "Botani"
+    ],
+    "char_4224_turdus": [
+        "Ukusik"
     ],
     "char_422_aurora": [
         "Aurora"

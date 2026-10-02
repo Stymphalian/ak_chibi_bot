@@ -35280,6 +35280,534 @@
       "OverrideKillCntInfos": null,
       "SortId": 1150
     },
+    "enemy_10193_ubhh": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "When any unit is discovered by Sentry Turrets, increases Movement Speed and dashes towards the discovered unit within a certain search range",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        0
+      ],
+      "DamageTypeAsNumpy": [
+        0
+      ],
+      "Description": "Someone who mistakes recklessness for courage. The Sixteen Warriors have never had a dress code, but everyone simply chose to wear stripes of their own accord.",
+      "EnemyId": "enemy_10193_ubhh",
+      "EnemyIndex": "SW1",
+      "EnemyLevel": 0,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "Crowbar Patrolman",
+      "OverrideKillCntInfos": null,
+      "SortId": 1151
+    },
+    "enemy_10193_ubhh_2": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "When any unit is discovered by Sentry Turrets, increases Movement Speed and dashes towards the discovered unit within a certain search range",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        0
+      ],
+      "DamageTypeAsNumpy": [
+        0
+      ],
+      "Description": "Someone who mistakes cruelty for strength. His shirt, his pants, his hands... As one of the Sixteen Warriors, any of these could be stained in blood. But not the double-striped jacket. No, that must stay pristine.",
+      "EnemyId": "enemy_10193_ubhh_2",
+      "EnemyIndex": "SW2",
+      "EnemyLevel": 0,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "Crowbar Pursuer\n",
+      "OverrideKillCntInfos": null,
+      "SortId": 1152
+    },
+    "enemy_10194_ubdg": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Deals more damage to units discovered by Sentry Turrets",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Prioritizes units discovered by Sentry Turrets",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        0
+      ],
+      "DamageTypeAsNumpy": [
+        0
+      ],
+      "Description": "Someone who mistakenly believes bottle caps to be bullets. She hates windows where warmth and laughter can be seen on the other side. Smash the window, and she can briefly steal that light and those smiles for herself.",
+      "EnemyId": "enemy_10194_ubdg",
+      "EnemyIndex": "SW3",
+      "EnemyLevel": 0,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "Window Smasher",
+      "OverrideKillCntInfos": null,
+      "SortId": 1153
+    },
+    "enemy_10194_ubdg_2": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Deals more damage to units discovered by Sentry Turrets",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Prioritizes units discovered by Sentry Turrets",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        0
+      ],
+      "DamageTypeAsNumpy": [
+        0
+      ],
+      "Description": "Someone who mistakenly believes destruction is possession. She lowered her slingshot as she watched the lamp shatter onto the dirty carpet, but the warmth she imagined coming from it never reached her bloody fingers.",
+      "EnemyId": "enemy_10194_ubdg_2",
+      "EnemyIndex": "SW4",
+      "EnemyLevel": 0,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "Window Destroyer",
+      "OverrideKillCntInfos": null,
+      "SortId": 1154
+    },
+    "enemy_10195_ubsb": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Attacks shoot flares, temporarily disabling Disguise Kits",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        1
+      ],
+      "DamageTypeAsNumpy": [
+        1
+      ],
+      "Description": "Someone obsessed with creating artificial light. Infected living in Grypherburg never see the light of day, so it is best to create some yourself.",
+      "EnemyId": "enemy_10195_ubsb",
+      "EnemyIndex": "SW5",
+      "EnemyLevel": 0,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "Floodlight Intimidator",
+      "OverrideKillCntInfos": null,
+      "SortId": 1155
+    },
+    "enemy_10195_ubsb_2": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Attacks shoot flares, temporarily disabling Disguise Kits",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        1
+      ],
+      "DamageTypeAsNumpy": [
+        1
+      ],
+      "Description": "Someone obsessed with pointing their flashlight Arts staff at other people's eyes, unconcerned if this could blind them. Accustomed to being 'unseen', it makes no difference to them.",
+      "EnemyId": "enemy_10195_ubsb_2",
+      "EnemyIndex": "SW6",
+      "EnemyLevel": 0,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "Floodlight Supervisor",
+      "OverrideKillCntInfos": null,
+      "SortId": 1156
+    },
+    "enemy_10196_ubba": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "When any unit is discovered by Sentry Turrets, increases Movement Speed and dashes towards the discovered unit within a large search range",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Nearby enemies take reduced Physical and Arts damage",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        0
+      ],
+      "DamageTypeAsNumpy": [
+        0
+      ],
+      "Description": "An employee of the Warehouse 22 security firm. With every punch he throws, he silently mutters the name of his severely sick child.\n'You made a mistake, soldier. You can't stay in the army, but we can give you another chance.'",
+      "EnemyId": "enemy_10196_ubba",
+      "EnemyIndex": "SW7",
+      "EnemyLevel": 1,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "Desperate Breadwinner",
+      "OverrideKillCntInfos": null,
+      "SortId": 1157
+    },
+    "enemy_10196_ubba_2": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "When any unit is discovered by Sentry Turrets, increases Movement Speed and dashes towards the discovered unit within a large search range",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Nearby enemies take reduced Physical and Arts damage",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        0
+      ],
+      "DamageTypeAsNumpy": [
+        0
+      ],
+      "Description": "An employee of the Warehouse 22 security firm. With every punch he throws, he imagines how the splattered blood would taste on his tongue.\n'You made a mistake, soldier. You can't stay in the army, but... Wait, that was no accident? What do you mean you don't want the severance pay and would rather have protein powder?!'",
+      "EnemyId": "enemy_10196_ubba_2",
+      "EnemyIndex": "SW8",
+      "EnemyLevel": 1,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "Desperate Indulger",
+      "OverrideKillCntInfos": null,
+      "SortId": 1158
+    },
+    "enemy_10197_ublyb": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "When any unit is discovered by Sentry Turrets, increases Movement Speed and dashes towards the discovered unit within a certain search range",
+          "TextFormat": 0
+        },
+        {
+          "Text": "ATK and ASPD increased when illuminated by a Sentry Turret",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        0
+      ],
+      "DamageTypeAsNumpy": [
+        0
+      ],
+      "Description": "Someone who took off his jacket because he thought the snowy ground was too warm. The sobering technique passed down from his forefathers is to start a fight, which is likely to work as long as he doesn't end up dead first.",
+      "EnemyId": "enemy_10197_ublyb",
+      "EnemyIndex": "SW9",
+      "EnemyLevel": 1,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "Drunk Ruffian\n",
+      "OverrideKillCntInfos": null,
+      "SortId": 1159
+    },
+    "enemy_10197_ublyb_2": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "When any unit is discovered by Sentry Turrets, increases Movement Speed and dashes towards the discovered unit within a certain search range",
+          "TextFormat": 0
+        },
+        {
+          "Text": "ATK and ASPD increased when illuminated by a Sentry Turret",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        0
+      ],
+      "DamageTypeAsNumpy": [
+        0
+      ],
+      "Description": "Someone who took off his jacket because he thought the snowy ground was too warm. The lesson he learned from defeated opponents is to never pick a fight with someone even more wasted—done that way, it doesn't hurt at all.",
+      "EnemyId": "enemy_10197_ublyb_2",
+      "EnemyIndex": "SW10",
+      "EnemyLevel": 1,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "Drunk Brawler",
+      "OverrideKillCntInfos": null,
+      "SortId": 1160
+    },
+    "enemy_10198_ubjxs": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Prioritizes units discovered by Sentry Turrets regardless of distance",
+          "TextFormat": 0
+        },
+        {
+          "Text": "When attacking units discovered by Sentry Turrets, reduces their DEF by 100% for a certain duration",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Takes reduced Physical and Arts damage when not attacking",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        0
+      ],
+      "DamageTypeAsNumpy": [
+        0
+      ],
+      "Description": "Someone who boasts of knowing aerodynamics better than the students at the University of Deity Grypherburg. Her unpublished 'Imprisoned Scholar Thesis' is about blowing paper balls at napping officers with a straw.",
+      "EnemyId": "enemy_10198_ubjxs",
+      "EnemyIndex": "SW11",
+      "EnemyLevel": 1,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "Scrapmetal Destroyer",
+      "OverrideKillCntInfos": null,
+      "SortId": 1161
+    },
+    "enemy_10198_ubjxs_2": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Prioritizes units discovered by Sentry Turrets regardless of distance",
+          "TextFormat": 0
+        },
+        {
+          "Text": "When attacking units discovered by Sentry Turrets, reduces their DEF by 100% for a certain duration",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Takes reduced Physical and Arts damage when not attacking",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        0
+      ],
+      "DamageTypeAsNumpy": [
+        0
+      ],
+      "Description": "Someone who boasts of knowing aerodynamics better than the students at the Imperial College of Science and Engineering, and she might actually be right. Her unpublished 'Scrawny Scholar Thesis' is about blowing damaged cans open with Originium pipe bombs.",
+      "EnemyId": "enemy_10198_ubjxs_2",
+      "EnemyIndex": "SW12",
+      "EnemyLevel": 1,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "Scrapmetal Blaster",
+      "OverrideKillCntInfos": null,
+      "SortId": 1162
+    },
+    "enemy_10199_ubhb": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "When an allied unit is in attack range, Sentry Turrets will turn towards them",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        1
+      ],
+      "DamageTypeAsNumpy": [
+        1
+      ],
+      "Description": "Someone who forces everyone else to enjoy hardbass like him. He thinks sleep is a waste of precious time, so he'll save you with his true music.",
+      "EnemyId": "enemy_10199_ubhb",
+      "EnemyIndex": "SW13",
+      "EnemyLevel": 1,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "Hardcore Troublemaker",
+      "OverrideKillCntInfos": null,
+      "SortId": 1163
+    },
+    "enemy_10199_ubhb_2": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "When an allied unit is in attack range, Sentry Turrets will turn towards them",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        1
+      ],
+      "DamageTypeAsNumpy": [
+        1
+      ],
+      "Description": "Someone who believes hardbass should be the only music genre on the land. He no longer cares about his uninterested audience, because he can no longer tell if the unresponsive people around him are asleep or dead.",
+      "EnemyId": "enemy_10199_ubhb_2",
+      "EnemyIndex": "SW14",
+      "EnemyLevel": 1,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "Hardcore Aggressor",
+      "OverrideKillCntInfos": null,
+      "SortId": 1164
+    },
+    "enemy_10200_ubglmf": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "When an allied unit is in attack range, Sentry Turrets will turn towards them",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Deals more damage to units discovered by Sentry Turrets",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        0
+      ],
+      "DamageTypeAsNumpy": [
+        0
+      ],
+      "Description": "Someone who doesn't know how to spell the word 'wrong', has never taken a shower since birth, and who occasionally thinks about how many members the Sixteen Warriors should have.",
+      "EnemyId": "enemy_10200_ubglmf",
+      "EnemyIndex": "GRO",
+      "EnemyLevel": 1,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "Gromov",
+      "OverrideKillCntInfos": null,
+      "SortId": 1165
+    },
+    "enemy_3015_ubstb": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Friendly Unit",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Invulnerable",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        3
+      ],
+      "DamageTypeAsNumpy": [
+        3
+      ],
+      "Description": "Someone who was imprisoned. Basically, it makes no difference who you are once you are in jail.",
+      "EnemyId": "enemy_3015_ubstb",
+      "EnemyIndex": "STU1",
+      "EnemyLevel": 0,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "Jailed Student",
+      "OverrideKillCntInfos": null,
+      "SortId": 1166
+    },
+    "enemy_3016_ubstg": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Friendly Unit",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Invulnerable",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        3
+      ],
+      "DamageTypeAsNumpy": [
+        3
+      ],
+      "Description": "Someone who was imprisoned. Basically, it makes no difference who you are once you are in jail.",
+      "EnemyId": "enemy_3016_ubstg",
+      "EnemyIndex": "STU2",
+      "EnemyLevel": 0,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": null,
+      "Name": "Jailed Student",
+      "OverrideKillCntInfos": null,
+      "SortId": 1167
+    },
     "enemy_2001_duckmi": {
       "Ability": null,
       "AbilityList": [
@@ -43551,6 +44079,110 @@
       "Name": "Tail of Sui",
       "OverrideKillCntInfos": null,
       "SortId": 1380
+    },
+    "enemy_1587_ubbplwq": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "[Civil Servant of the Empire Exemption Act] Takes greatly reduced Physical and Arts damage",
+          "TextFormat": 0
+        },
+        {
+          "Text": "[Deity Grypherburg Public Opinion Clarification Act] Allied Operators discovered by Sentry Turrets are locked up in Cell when retreated or defeated; imprisoned Operators cannot be redeployed until their Cell is destroyed",
+          "TextFormat": 0
+        },
+        {
+          "Text": "[Magistrate Personal Safety Clause] When an allied unit is in his attack range, Sentry Turrets will turn towards that unit",
+          "TextFormat": 0
+        },
+        {
+          "Text": "'Empire's Conscience'",
+          "TextFormat": 1
+        },
+        {
+          "Text": "[Spontaneous Mobilization] Periodically makes speeches. Loses Damage Reduction effect while speaking, but continuously summons enemies around him and grants combat buffs to enemy units within range",
+          "TextFormat": 0
+        },
+        {
+          "Text": "[Frontline Inspection] When making a speech, calls 'Personal Security Consultants' back to his side",
+          "TextFormat": 0
+        },
+        {
+          "Text": "'Bastion of Turbulence'",
+          "TextFormat": 1
+        },
+        {
+          "Text": "[Spontaneous Mobilization] Summons stronger enemy unit(s)",
+          "TextFormat": 0
+        },
+        {
+          "Text": "[Explosive Counterargument] Calls for air support, bombarding zones where the Sentry Turrets' alert is triggered and dealing a percentage of ATK as Arts damage and <$ba.dt.burning>Burn</> to allied units in the area; also illuminates the tiles, dealing continuous <$ba.dt.burning>Burn</> and temporarily disabling Disguise Kits used by units on those tiles",
+          "TextFormat": 0
+        },
+        {
+          "Text": "[Peaceful Quarantine Zone Management Plan] After 6 minutes, unleashes a bombardment dealing lethal damage to all units",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        0
+      ],
+      "DamageTypeAsNumpy": [
+        0
+      ],
+      "Description": "Someone who firmly believes he has done nothing wrong. There are about a hundred or so people like him sitting in the Duma.",
+      "EnemyId": "enemy_1587_ubbplwq",
+      "EnemyIndex": "PAV",
+      "EnemyLevel": 2,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": [
+        "enemy_1588_ubbphw"
+      ],
+      "Name": "Pavlovich, Magistrate",
+      "OverrideKillCntInfos": null,
+      "SortId": 1381
+    },
+    "enemy_1588_ubbphw": {
+      "Ability": null,
+      "AbilityList": [
+        {
+          "Text": "Sticks close to <Pavlovich, Magistrate> when he is making a speech, and retreats when Pavlovich is dead",
+          "TextFormat": 0
+        },
+        {
+          "Text": "When any unit is discovered by Sentry Turrets, increases Movement Speed and dashes towards the discovered unit within a large search range",
+          "TextFormat": 0
+        },
+        {
+          "Text": "Nearby enemies take reduced Physical and Arts damage",
+          "TextFormat": 0
+        }
+      ],
+      "AttackType": null,
+      "DamageType": [
+        0
+      ],
+      "DamageTypeAsNumpy": [
+        0
+      ],
+      "Description": "An employee of the Warehouse 22 security firm. He's considered resigning, but fears ending up next on his colleagues' hit list.\nPrefers being a private soldier for a perfumed noble to being an unidentified corpse found in a pipe. At the very least, he wasn't assigned to that smelly fool Gromov.",
+      "EnemyId": "enemy_1588_ubbphw",
+      "EnemyIndex": "PMC",
+      "EnemyLevel": 1,
+      "HideInHandbook": false,
+      "HideInStage": true,
+      "InvisibleDetail": false,
+      "IsInvalidKilled": false,
+      "LinkEnemies": [
+        "enemy_1587_ubbplwq"
+      ],
+      "Name": "'Personal Security Consultant'",
+      "OverrideKillCntInfos": null,
+      "SortId": 1382
     },
     "enemy_2003_rockman": {
       "Ability": null,

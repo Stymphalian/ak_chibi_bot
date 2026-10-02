@@ -1377,6 +1377,62 @@
         "Senior Caster Leader",
         "A6"
     ],
+    "enemy_10193_ubhh": [
+        "Crowbar Patrolman",
+        "SW1"
+    ],
+    "enemy_10193_ubhh_2": [
+        "Crowbar Pursuer\n",
+        "SW2"
+    ],
+    "enemy_10194_ubdg": [
+        "Window Smasher",
+        "SW3"
+    ],
+    "enemy_10194_ubdg_2": [
+        "Window Destroyer",
+        "SW4"
+    ],
+    "enemy_10195_ubsb": [
+        "Floodlight Intimidator",
+        "SW5"
+    ],
+    "enemy_10195_ubsb_2": [
+        "Floodlight Supervisor",
+        "SW6"
+    ],
+    "enemy_10196_ubba": [
+        "Desperate Breadwinner",
+        "SW7"
+    ],
+    "enemy_10196_ubba_2": [
+        "Desperate Indulger",
+        "SW8"
+    ],
+    "enemy_10197_ublyb": [
+        "Drunk Ruffian\n",
+        "SW9"
+    ],
+    "enemy_10197_ublyb_2": [
+        "Drunk Brawler",
+        "SW10"
+    ],
+    "enemy_10198_ubjxs": [
+        "Scrapmetal Destroyer",
+        "SW11"
+    ],
+    "enemy_10198_ubjxs_2": [
+        "Scrapmetal Blaster",
+        "SW12"
+    ],
+    "enemy_10199_ubhb": [
+        "Hardcore Troublemaker",
+        "SW13"
+    ],
+    "enemy_10199_ubhb_2": [
+        "Hardcore Aggressor",
+        "SW14"
+    ],
     "enemy_1019_jshoot": [
         "Invisible Crossbowman",
         "C1"
@@ -1384,6 +1440,10 @@
     "enemy_1019_jshoot_2": [
         "Invisible Crossbowman Leader",
         "C2"
+    ],
+    "enemy_10200_ubglmf": [
+        "Gromov",
+        "GRO"
     ],
     "enemy_1020_obsv": [
         "Technical Scout"
@@ -4909,6 +4969,14 @@
         "Tail of Sui",
         "SUI4"
     ],
+    "enemy_1587_ubbplwq": [
+        "Pavlovich, Magistrate",
+        "PAV"
+    ],
+    "enemy_1588_ubbphw": [
+        "Personal Security Consultant",
+        "PMC"
+    ],
     "enemy_18001_lhship": [
         "Transport Boat",
         "IL01"
@@ -5493,6 +5561,14 @@
     "enemy_3014_wangw": [
         "White",
         "W180"
+    ],
+    "enemy_3015_ubstb": [
+        "Jailed Student",
+        "STU1"
+    ],
+    "enemy_3016_ubstg": [
+        "Jailed Student",
+        "STU2"
     ],
     "enemy_4001_toxcar": [
         "Retrofitted Gastruck",
