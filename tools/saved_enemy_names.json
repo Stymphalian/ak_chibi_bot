@@ -1445,8 +1445,92 @@
         "Gromov",
         "GRO"
     ],
+    "enemy_10201_muinf": [
+        "Experimental Subject F-009",
+        "ES1"
+    ],
+    "enemy_10201_muinf_2": [
+        "Rampaging F-009",
+        "ES2"
+    ],
+    "enemy_10202_mubow": [
+        "Experimental Subject R-044",
+        "ES3"
+    ],
+    "enemy_10202_mubow_2": [
+        "Rampaging R-044",
+        "ES4"
+    ],
+    "enemy_10203_mumag": [
+        "Heterogeneous Fungi",
+        "ES5"
+    ],
+    "enemy_10203_mumag_2": [
+        "Sanguine Heterogeneous Fungi",
+        "ES6"
+    ],
+    "enemy_10204_mudia": [
+        "Rockbreaker",
+        "ES7"
+    ],
+    "enemy_10204_mudia_2": [
+        "Sanguine Rockbreaker",
+        "ES8"
+    ],
+    "enemy_10205_mufly": [
+        "Experimental Subject A-000",
+        "ES9"
+    ],
+    "enemy_10205_mufly_2": [
+        "Rampaging A-000",
+        "ES10"
+    ],
+    "enemy_10206_muveg": [
+        "Trimortalis",
+        "ES11"
+    ],
+    "enemy_10206_muveg_2": [
+        "Sanguine Trimortalis",
+        "ES12"
+    ],
+    "enemy_10207_mubrut": [
+        "Shishiga",
+        "ES13"
+    ],
+    "enemy_10207_mubrut_2": [
+        "Angry Shishiga",
+        "ES14"
+    ],
+    "enemy_10208_mucow": [
+        "Likho",
+        "ES15"
+    ],
+    "enemy_10208_mucow_2": [
+        "Roaming Likho",
+        "ES16"
+    ],
+    "enemy_10209_mubag": [
+        "Rusalka",
+        "ES17"
+    ],
+    "enemy_10209_mubag_2": [
+        "Dancing Rusalka",
+        "ES18"
+    ],
     "enemy_1020_obsv": [
         "Technical Scout"
+    ],
+    "enemy_10210_muwiz": [
+        "Ursus War Caster",
+        "ES19"
+    ],
+    "enemy_10210_muwiz_2": [
+        "Ursus War Caster",
+        "ES19"
+    ],
+    "enemy_10211_murad": [
+        "Leak Source",
+        "ES20"
     ],
     "enemy_1021_bslime": [
         "Infused Originium Slug",
@@ -4976,6 +5060,22 @@
     "enemy_1588_ubbphw": [
         "Personal Security Consultant",
         "PMC"
+    ],
+    "enemy_1590_muama": [
+        "AMa-10",
+        "ALC"
+    ],
+    "enemy_1591_mutwin": [
+        "AMa-10 Isomer",
+        "ALC"
+    ],
+    "enemy_1591_mutwin_2": [
+        "AMa-10 Isomer",
+        "ALC"
+    ],
+    "enemy_1593_musnake": [
+        "Alpha and Omega",
+        "E0B"
     ],
     "enemy_18001_lhship": [
         "Transport Boat",
